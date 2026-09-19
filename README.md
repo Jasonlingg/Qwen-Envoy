@@ -133,12 +133,14 @@ favored SFT, because complete yes/no sentences often share no tokens with refere
 [docs/QASPER_FAILURE_ATTRIBUTION.md](docs/QASPER_FAILURE_ATTRIBUTION.md) for the transcripts,
 controls, and next experiment.
 
-The first passage-deduplication attempt also produced a useful negative result. Aggressively
-merging overlapping windows raised automatic reward to 0.330 and rescued two target failures, but
-it broke one previously correct control; a conservative merger preserved the controls but rescued
-nothing. Neither became the default. A new `ranked_diverse` mode keeps the original top-three
-results and adds only non-overlapping windows. Offline, it exposes nearly as much unique evidence
-as raw top eight with 25% less returned text; its end-to-end GPU check is pending.
+The passage-presentation experiments also produced useful negative results. Aggressively merging
+overlapping windows raised automatic reward to 0.330 and rescued two target failures, but broke one
+previously correct control; a conservative merger preserved the controls but rescued nothing. A
+`ranked_diverse` mode then kept the original top three and added three non-overlapping windows. It
+looked strong offline and scored 0.328 end to end, but semantic review found only 7/10 controls
+still correct. None of these modes became the default. Raw top eight remains the only tested
+retrieval change that rescued two target failures while retaining all ten controls, so the next
+experiment targets query planning instead of more passage formatting.
 
 ## Training approach
 

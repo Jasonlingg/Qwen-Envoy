@@ -142,6 +142,7 @@ Two merged-passage variants were run end to end on the same checkpoint and 25-qu
 | Original raw top 3 | 0.266 | 10 / 4 / 11 | 0 / 15 | 10 / 10 | 2.68 |
 | Aggressive merged top 3 | **0.330** | 11 / 5 / 9 | 2 / 15 | 9 / 10 | **2.56** |
 | Rank-bounded merged top 3 | 0.288 | 10 / 4 / 11 | 0 / 15 | 10 / 10 | 2.72 |
+| Ranked-diverse top 6 | 0.328 | 9 / 7 / 9 | 2 / 15 | 7 / 10 | 2.96 |
 
 Neither merged variant passed the pre-registered acceptance rule. The aggressive version rescued
 two failures but flipped a correct control answer about whether hashtag prediction was an
@@ -149,17 +150,25 @@ established task. The conservative version kept every control correct but rescue
 The automatic reward would have selected the aggressive version, again demonstrating why semantic
 review and controls are required for harness changes.
 
-A third mode, `ranked_diverse`, is implemented but remains experimental. It preserves the original
-top-three windows byte for byte, then fills three additional slots only with non-overlapping
-windows. On the saved queries from the 15 failures, this raised mean gold-evidence coverage from
-0.330 to 0.617. It returned 4,356 characters on average versus 5,833 for raw top eight, while
-exposing almost the same amount of unique text (3,103 versus 3,156 characters). Its end-to-end GPU
-run is still pending, so it is not the default.
+A third mode, `ranked_diverse`, preserves the original top-three windows byte for byte, then fills
+three additional slots only with non-overlapping windows. On the saved queries from the 15
+failures, this raised mean gold-evidence coverage from 0.330 to 0.617. It returned 4,356 characters
+on average versus 5,833 for raw top eight, while exposing almost the same amount of unique text
+(3,103 versus 3,156 characters).
 
-These figures are assistant-reviewed development diagnostics, not held-out results. The aggressive
-and conservative transcripts and disclosed reviews are stored under
+The end-to-end result did not pass the acceptance gate. It rescued two target failures, matching
+raw top eight, but only seven of the ten controls remained semantic passes. The regressions were
+not all retrieval misses: the model declined to identify two answerable control facts that were
+available in the paper, and it substituted ranking behavior for an absent evaluation metric on
+one insufficient-evidence control. Mean steps rose from 2.68 to 2.96 and episodes with an exact
+repeated action rose from two to three compared with raw top eight. This mode therefore remains
+available for experiments but is not the default.
+
+These figures are assistant-reviewed development diagnostics, not held-out results. The aggressive,
+conservative, and ranked-diverse transcripts and disclosed reviews are stored under
 `out/research/qasper-search-within-dedupe-v1-gpu/` and
-`out/research/qasper-search-within-dedupe-v2-gpu/` respectively.
+`out/research/qasper-search-within-dedupe-v2-gpu/`, and
+`out/research/qasper-search-within-diverse-v1-gpu/` respectively.
 
 ## Reproduction
 
@@ -208,7 +217,7 @@ Run the offline passage-presentation comparison with:
 python scripts/compare_search_within_modes.py
 ```
 
-Run the pending `ranked_diverse` behavioral condition with:
+Run the `ranked_diverse` behavioral condition with:
 
 ```bash
 BASE_MODEL_PATH=/path/to/Qwen3-8B \
@@ -218,13 +227,9 @@ CHECKPOINT_PATH=/path/to/checkpoint-50 \
 
 ## Decision and next experiment
 
-Do not adopt the recovery prompt or either merged-passage mode, and do not start another SFT run
-yet. Raw top eight remains the only end-to-end condition that rescued two target cases while
-preserving all ten controls, but it costs 2.5 times the original observation text. The pending
-`ranked_diverse` top-six condition is the bounded attempt to retain that coverage more cheaply.
-
-Accept `ranked_diverse` only if its end-to-end run rescues at least the same two target cases,
-preserves all ten controls, and does not materially increase tool loops. If it passes, make that
-mode the inference default and rerun the locked 40-question base/SFT comparison. If it fails, keep
-raw retrieval and move the next experiment to query planning rather than more passage formatting
-or more SFT data.
+Do not adopt the recovery prompt, either merged-passage mode, or `ranked_diverse` as the default.
+Raw top eight remains the only end-to-end condition that rescued two target cases while preserving
+all ten controls, but it costs 2.5 times the original observation text. Keep raw top three as the
+stable default for now and move the next experiment to query planning rather than more passage
+formatting or more SFT data. Any production change still needs the locked 40-question base/SFT
+comparison after it passes this selected development diagnostic.
