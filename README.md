@@ -121,7 +121,15 @@ action from 1 to 7 at top three, while semantic passes fell from 10 to 9.
 
 These diagnostic numbers are not held-out performance because the questions were selected after
 examining failures. Their value is causal: retrieval depth explains part of the remaining error,
-while prompt wording alone does not. See
+while prompt wording alone does not.
+
+An oracle-evidence follow-up removed retrieval entirely on five valid cases by handing both models
+the same answer-bearing passages. SFT produced 4 passes, 1 partial, and 0 failures; base produced 2
+passes, 2 partials, and 1 failure. This small diagnostic says the adapter can use good evidence and
+the next change belongs in retrieval/passage presentation, not another training run. It also
+exposed a metric problem: token-overlap reward ranked base higher even though semantic review
+favored SFT, because complete yes/no sentences often share no tokens with references such as
+`Yes`. See
 [docs/QASPER_FAILURE_ATTRIBUTION.md](docs/QASPER_FAILURE_ATTRIBUTION.md) for the transcripts,
 controls, and next experiment.
 

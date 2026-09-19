@@ -13,7 +13,7 @@ from transformers import GPT2Config, GPT2LMHeadModel
 from typer.testing import CliRunner
 
 import scripts.train_grpo_custom as grpo
-from scripts.run_eval import save_transcripts
+from scripts.run_eval import _policy_settings, save_transcripts
 from scripts.summarize_eval import load, paired_delta
 from src.env.document_env import DocumentExplorationEnv
 from src.eval.artifacts import outcome_reward
@@ -132,6 +132,19 @@ def test_eval_artifacts_keep_checkpoint_identity_and_recorded_outcome(tmp_path):
         paired_delta(a, b)
     with pytest.raises(FileExistsError):
         save_transcripts([result], paths[0])
+
+
+def test_eval_metadata_does_not_assign_adapter_to_base_policy(monkeypatch):
+    monkeypatch.setenv("BASE_MODEL_PATH", "Qwen/Qwen3-8B")
+    monkeypatch.setenv("CHECKPOINT_PATH", "adapter/checkpoint-50")
+    policy = SimpleNamespace(_max_tokens=1024, _temperature=0.0)
+
+    base = _policy_settings("qwen_base_policy", policy)
+    sft = _policy_settings("qwen_sft_policy", policy)
+
+    assert base["model"] == sft["model"] == "Qwen/Qwen3-8B"
+    assert "checkpoint" not in base
+    assert sft["checkpoint"] == "adapter/checkpoint-50"
 
 
 def test_historical_files_are_not_merged_or_rescored(tmp_path):

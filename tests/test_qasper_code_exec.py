@@ -127,6 +127,30 @@ def test_question_text_names_the_known_paper(tmp_path):
     assert "A paper about retrieval" in answerable["question"]
 
 
+def test_code_exec_grader_notes_keep_all_gold_evidence(tmp_path):
+    """List answers can require more than five evidence paragraphs."""
+    row = paper()
+    evidence = [f"Evidence paragraph {index}." for index in range(7)]
+    row["full_text"] = {"section_name": ["Results"], "paragraphs": [evidence]}
+    row["qas"]["question"] = ["Which seven results are reported?"]
+    row["qas"]["question_id"] = ["q-many"]
+    row["qas"]["nlp_background"] = ["five"]
+    row["qas"]["topic_background"] = ["familiar"]
+    row["qas"]["paper_read"] = ["yes"]
+    row["qas"]["search_query"] = [""]
+    row["qas"]["question_writer"] = ["w1"]
+    row["qas"]["answers"] = [[
+        annotation("a-many", evidence=evidence, extractive=["seven results"])
+    ]]
+
+    _, benchmark = build_qasper_code_exec_benchmark(
+        [row], tmp_path / "qasper-code-exec", source_split="test",
+        num_questions=None, seed=1,
+    )
+
+    assert benchmark["questions"][0]["grader_notes"] == evidence
+
+
 def test_reserved_doc_ids_match_every_paper_in_the_corpus(tmp_path):
     output = tmp_path / "qasper-code-exec"
     manifest, benchmark = build_qasper_code_exec_benchmark(

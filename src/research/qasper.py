@@ -408,7 +408,7 @@ def _to_code_exec_question(converted: dict) -> dict | None:
     grader_notes = [
         item["text"] for annotation in converted["answer_annotations"]
         for item in annotation["evidence"]
-    ][:5]
+    ]
     return {
         "id": converted["id"],
         "split": "pilot_evaluation",

@@ -93,6 +93,41 @@ the explicit instruction. This is a concrete example of why reward alone cannot 
 production configuration: the combined run has the best automatic reward but not the best
 semantic pass rate.
 
+## Oracle-evidence result
+
+The follow-up oracle test ran on September 19, 2026. It replaced each paper with the QASPER gold
+evidence excerpts and forced the first action to read that document. Base Qwen3-8B and the v5 SFT
+`checkpoint-50` adapter therefore received exactly the same answer-bearing text, prompt, decoding,
+and five-step budget. The run used seed 42 and one RTX 4090. All 12 episodes submitted after the
+forced read, in two steps.
+
+One of the six fixtures was invalid: the reference names ten datasets, but the converted
+`grader_notes` contained evidence for only the first four. The code-execution converter had
+silently capped these notes at five paragraphs. That cap is now removed, and the affected case is
+excluded from the semantic comparison rather than counted against either model.
+
+| Policy | Pass | Partial | Fail | Excluded |
+|---|---:|---:|---:|---:|
+| Base Qwen3-8B | 2 | 2 | 1 | 1 |
+| Qwen3-8B + SFT | **4** | **1** | **0** | 1 |
+
+The two decisive SFT wins were concrete. For the tweet-count question, base returned only 19,300;
+SFT included the additional 2,500 tweets and the correct 21,800 total. For the English-only
+question, base answered `No` while SFT correctly said the paper reported only English data. Both
+models remained incomplete on the classifier-list question, returning only the best SVM setup
+instead of all four evaluated classifier families.
+
+The automatic metric gives the opposite ranking: base outcome reward is 0.504 and SFT is 0.411
+over all six cases. This is a scoring artifact. Exact token F1 awards base a perfect score for the
+one-word answer `No`, but gives SFT zero for the semantically correct sentence “The paper reports
+results only on English data” when the reference is `Yes`. These oracle results must therefore be
+read from the answers, not selected by the MuSiQue-oriented token-overlap reward.
+
+This is a small, selected development diagnostic, not a held-out performance estimate. Its causal
+signal is still useful: SFT does not become worse when retrieval is removed, and on these cases it
+uses supplied evidence better than base. The remaining end-to-end failures should be addressed in
+retrieval and evidence presentation before generating another SFT batch.
+
 ## Reproduction
 
 ```bash
@@ -136,16 +171,14 @@ The saved transcripts, manifests, GPU log, and disclosed semantic self-review ar
 
 ## Decision and next experiment
 
-Do not adopt the recovery prompt and do not make top eight the global default yet. Top eight is a
-useful candidate, but it did not solve the central yes/no interpretation failures and its context
-cost is substantial.
+Do not adopt the recovery prompt and do not start another SFT run yet. The oracle result rules out
+the current adapter as the main cause of this failure cluster. Top eight is a useful retrieval
+candidate, but its overlapping windows cost 2.5 times as much observation text and rescued only
+two cases.
 
-Before training another adapter, run the pre-registered oracle-evidence comparison on the six
-`evidence_surfaced__interpretation_or_completeness` cases. Give base and SFT the same gold evidence
-windows while keeping decoding fixed:
-
-- If SFT refuses or misreads evidence that base uses correctly, add targeted answerable
-  trajectories and retrain.
-- If both models fail, improve the answer-reasoning prompt or use a stronger policy model.
-- If both models succeed, keep the weights and improve retrieval presentation, ideally with
-  deduplicated or section-aware windows rather than a permanent top-eight expansion.
+The next bounded experiment should change evidence presentation while holding the SFT checkpoint
+fixed: deduplicate overlapping `search_within()` windows, merge adjacent hits into readable
+passages, and compare that against the original top-three and raw top-eight conditions. Accept the
+change only if it rescues more previously failing answers without reducing the ten control passes
+or materially increasing tool loops. After that harness is frozen, rerun the locked 40-question
+base/SFT comparison before deciding whether more training data is justified.

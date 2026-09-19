@@ -21,6 +21,7 @@ from src.env.reward import REWARD_VERSION, REWARD_WEIGHTS
 from src.eval.artifacts import configuration_hash, content_hash
 from src.eval.harness import run_eval
 from src.eval.report import print_results
+from src.policies.forced_first_read import ForcedFirstReadPolicy
 from src.policies.registry import build_policies as build_registered_policies
 from src.policies.code_execution import SYSTEM_PROMPT as CODE_EXECUTION_SYSTEM_PROMPT
 
@@ -75,7 +76,9 @@ def _policy_settings(policy_name: str, policy: object) -> dict:
         settings.setdefault("backend", "openai_compatible")
         settings.setdefault("endpoint", os.environ.get("ENVOY_MODEL_ENDPOINT"))
         settings.setdefault("model", os.environ.get("ENVOY_MODEL_ID"))
-    elif policy_name in {"qwen_base_policy", "qwen_sft_policy", "grpo_policy"}:
+    elif policy_name == "qwen_base_policy":
+        settings.setdefault("model", os.environ.get("BASE_MODEL_PATH", "Qwen/Qwen2.5-7B-Instruct"))
+    elif policy_name in {"qwen_sft_policy", "grpo_policy"}:
         settings.setdefault("model", os.environ.get("BASE_MODEL_PATH", "Qwen/Qwen2.5-7B-Instruct"))
         settings.setdefault("checkpoint", os.environ.get("CHECKPOINT_PATH"))
 
@@ -147,6 +150,11 @@ def main(
         min=1,
         help="Default number of windows returned by search_within()",
     ),
+    force_known_paper_read: bool = typer.Option(
+        False,
+        "--force-known-paper-read",
+        help="Diagnostic only: execute read(doc_id) before the policy's first model turn",
+    ),
 ) -> None:
     """Run evaluation: policies through the document exploration environment."""
     console.print("[bold]Envoy — Evaluation[/bold]\n")
@@ -212,6 +220,16 @@ def main(
         as_factories=workers > 1,
         system_prompt=system_prompt,
     )
+    if force_known_paper_read:
+        if workers > 1:
+            policies = {
+                name: (lambda factory=value: ForcedFirstReadPolicy(factory()))
+                for name, value in policies.items()
+            }
+        else:
+            policies = {
+                name: ForcedFirstReadPolicy(value) for name, value in policies.items()
+            }
     if not policies:
         raise typer.BadParameter(f"Unknown policy: {policy}")
     console.print(f"Policies: {', '.join(policies.keys())}\n")
@@ -252,17 +270,22 @@ def main(
         "system_prompt_sha256": sha256(system_prompt.encode()).hexdigest(),
         "system_prompt_suffix": str(system_prompt_suffix) if system_prompt_suffix else None,
         "search_within_top_k": search_within_top_k,
+        "force_known_paper_read": force_known_paper_read,
         "decoding": sorted({
             json.dumps({"max_tokens": settings.get("max_tokens"),
                         "temperature": settings.get("temperature")}, sort_keys=True)
             for settings in policy_settings.values()
         }),
     }
+    checkpoints = {
+        settings.get("checkpoint") for settings in policy_settings.values()
+        if settings.get("checkpoint")
+    }
     manifest = {
         **protocol,
         "comparison_id": configuration_hash(protocol),
         "split": split if musique else questions_path,
-        "checkpoint_id": os.environ.get("CHECKPOINT_PATH"),
+        "checkpoint_id": next(iter(checkpoints)) if len(checkpoints) == 1 else None,
         "base_model": next((settings.get("model") for settings in policy_settings.values()
                             if settings.get("model")), None),
         "git_commit": subprocess.run(
@@ -300,13 +323,19 @@ def save_transcripts(
 
     transcripts = []
     for r in results:
+        per_policy = manifest.get("policy_settings", {}).get(r.policy_name)
+        checkpoint_id = (
+            per_policy.get("checkpoint")
+            if per_policy is not None
+            else manifest.get("checkpoint_id")
+        )
         transcripts.append({
             "question_id": r.question_id,
             "question": r.question,
             "policy": r.policy_name,
             "run_id": run_id,
             "run_label": run_label or r.policy_name,
-            "checkpoint_id": manifest.get("checkpoint_id"),
+            "checkpoint_id": checkpoint_id,
             "comparison_id": manifest.get("comparison_id"),
             "reward": r.reward,
             "outcome_reward": r.outcome_reward,
