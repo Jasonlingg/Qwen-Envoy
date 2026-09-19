@@ -126,6 +126,141 @@ def test_search_within_default_depth_is_configurable(tmp_path, monkeypatch) -> N
     assert output.strip() == "8"
 
 
+def test_search_within_deduplicates_and_merges_overlapping_hits(
+    tmp_path, monkeypatch,
+) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    text = list("x" * 3000)
+    for offset, value in [
+        (100, "needle"), (300, "needle"), (500, "needle"),
+        (2000, "needle"),
+    ]:
+        text[offset:offset + len(value)] = value
+    document = "".join(text)
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": document,
+    }))
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_MODE", "dedupe_merge")
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(
+            'print(json.dumps(search_within("paper", "needle", top_k=3)))'
+        )
+    finally:
+        repl.kill_session()
+    results = json.loads(output)
+    intervals = [
+        (item["offset"], item["offset"] + len(item["text"]))
+        for item in results
+    ]
+
+    assert len(results) == 2
+    assert any(start <= 2000 < end for start, end in intervals)
+    assert all(end - start <= 900 for start, end in intervals)
+    assert all(left[1] <= right[0] for left, right in zip(intervals, intervals[1:]))
+    assert all(item["text"] == document[start:end]
+               for item, (start, end) in zip(results, intervals))
+
+
+def test_search_within_raw_mode_preserves_ranked_windows(tmp_path, monkeypatch) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    document = "needle " + "x" * 200 + "needle " + "x" * 800
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": document,
+    }))
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_MODE", "raw")
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(
+            'print(json.dumps(search_within("paper", "needle", top_k=2)))'
+        )
+    finally:
+        repl.kill_session()
+    results = json.loads(output)
+
+    assert len(results) == 2
+    assert all(len(item["text"]) <= 500 for item in results)
+
+
+def test_search_within_dedupe_does_not_expand_filled_results(
+    tmp_path, monkeypatch,
+) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    text = list("x" * 3000)
+    # These produce three equally ranked regions. Once the third region fills
+    # the final slot, its later overlapping windows must not expand it.
+    for offset in [450, 1450, 2450]:
+        text[offset:offset + len("needle needle")] = "needle needle"
+    document = "".join(text)
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": document,
+    }))
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_MODE", "dedupe_merge")
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(
+            'print(json.dumps(search_within("paper", "needle", top_k=3)))'
+        )
+    finally:
+        repl.kill_session()
+    results = json.loads(output)
+
+    assert len(results) == 3
+    assert [item["offset"] for item in results] == [0, 1000, 2000]
+    assert [len(item["text"]) for item in results] == [900, 900, 500]
+
+
+def test_search_within_ranked_diverse_preserves_raw_prefix(
+    tmp_path, monkeypatch,
+) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    text = list("x" * 5000)
+    for offset in [450, 1450, 2450, 3450, 4450]:
+        text[offset:offset + len("needle needle")] = "needle needle"
+    document = "".join(text)
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": document,
+    }))
+
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_MODE", "raw")
+    raw = LocalREPL(corpus_path=str(corpus))
+    raw.start_session()
+    try:
+        raw_results = json.loads(raw.execute(
+            'print(json.dumps(search_within("paper", "needle", top_k=3)))'
+        ))
+    finally:
+        raw.kill_session()
+
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_MODE", "ranked_diverse")
+    diverse = LocalREPL(corpus_path=str(corpus))
+    diverse.start_session()
+    try:
+        diverse_results = json.loads(diverse.execute(
+            'print(json.dumps(search_within("paper", "needle", top_k=6)))'
+        ))
+    finally:
+        diverse.kill_session()
+
+    assert diverse_results[:3] == raw_results
+    assert len(diverse_results) == 6
+    prefix_intervals = [
+        (item["offset"], item["offset"] + len(item["text"]))
+        for item in diverse_results[:3]
+    ]
+    for item in diverse_results[3:]:
+        interval = (item["offset"], item["offset"] + len(item["text"]))
+        assert all(interval[1] <= start or interval[0] >= end
+                   for start, end in prefix_intervals)
+
+
 def test_read_tool(repl: LocalREPL) -> None:
     """read() should return document text."""
     output = repl.execute('text = read("apex_corp_2024_financial"); print("Apex" in text)')

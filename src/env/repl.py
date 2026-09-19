@@ -146,6 +146,9 @@ class DockerREPL(BaseREPL):
         search_top_k = os.environ.get("ENVOY_SEARCH_WITHIN_TOP_K")
         if search_top_k:
             command.extend(["-e", f"ENVOY_SEARCH_WITHIN_TOP_K={search_top_k}"])
+        search_mode = os.environ.get("ENVOY_SEARCH_WITHIN_MODE")
+        if search_mode:
+            command.extend(["-e", f"ENVOY_SEARCH_WITHIN_MODE={search_mode}"])
         command.extend([
                 "-i", self.image,
                 "python3", "-i",

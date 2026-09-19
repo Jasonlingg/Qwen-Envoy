@@ -128,6 +128,39 @@ signal is still useful: SFT does not become worse when retrieval is removed, and
 uses supplied evidence better than base. The remaining end-to-end failures should be addressed in
 retrieval and evidence presentation before generating another SFT batch.
 
+## Passage-presentation follow-up
+
+The next experiment changed `search_within()` rather than the model. The original implementation
+ranked overlapping 500-character windows independently, so near-duplicate passages could consume
+most of the three result slots. The hypothesis was that merging or diversifying those windows
+would expose more answer-bearing text without paying the full raw top-eight context cost.
+
+Two merged-passage variants were run end to end on the same checkpoint and 25-question diagnostic:
+
+| Condition | Outcome reward | Semantic pass / partial / fail | Target cases rescued | Controls retained | Mean steps |
+|---|---:|---:|---:|---:|---:|
+| Original raw top 3 | 0.266 | 10 / 4 / 11 | 0 / 15 | 10 / 10 | 2.68 |
+| Aggressive merged top 3 | **0.330** | 11 / 5 / 9 | 2 / 15 | 9 / 10 | **2.56** |
+| Rank-bounded merged top 3 | 0.288 | 10 / 4 / 11 | 0 / 15 | 10 / 10 | 2.72 |
+
+Neither merged variant passed the pre-registered acceptance rule. The aggressive version rescued
+two failures but flipped a correct control answer about whether hashtag prediction was an
+established task. The conservative version kept every control correct but rescued no target case.
+The automatic reward would have selected the aggressive version, again demonstrating why semantic
+review and controls are required for harness changes.
+
+A third mode, `ranked_diverse`, is implemented but remains experimental. It preserves the original
+top-three windows byte for byte, then fills three additional slots only with non-overlapping
+windows. On the saved queries from the 15 failures, this raised mean gold-evidence coverage from
+0.330 to 0.617. It returned 4,356 characters on average versus 5,833 for raw top eight, while
+exposing almost the same amount of unique text (3,103 versus 3,156 characters). Its end-to-end GPU
+run is still pending, so it is not the default.
+
+These figures are assistant-reviewed development diagnostics, not held-out results. The aggressive
+and conservative transcripts and disclosed reviews are stored under
+`out/research/qasper-search-within-dedupe-v1-gpu/` and
+`out/research/qasper-search-within-dedupe-v2-gpu/` respectively.
+
 ## Reproduction
 
 ```bash
@@ -169,16 +202,29 @@ CHECKPOINT_PATH=/path/to/checkpoint-50 \
 The saved transcripts, manifests, GPU log, and disclosed semantic self-review are under
 `out/research/qasper-failure-ablation-v1-gpu/`.
 
+Run the offline passage-presentation comparison with:
+
+```bash
+python scripts/compare_search_within_modes.py
+```
+
+Run the pending `ranked_diverse` behavioral condition with:
+
+```bash
+BASE_MODEL_PATH=/path/to/Qwen3-8B \
+CHECKPOINT_PATH=/path/to/checkpoint-50 \
+./scripts/run_qasper_dedupe_ablation.sh
+```
+
 ## Decision and next experiment
 
-Do not adopt the recovery prompt and do not start another SFT run yet. The oracle result rules out
-the current adapter as the main cause of this failure cluster. Top eight is a useful retrieval
-candidate, but its overlapping windows cost 2.5 times as much observation text and rescued only
-two cases.
+Do not adopt the recovery prompt or either merged-passage mode, and do not start another SFT run
+yet. Raw top eight remains the only end-to-end condition that rescued two target cases while
+preserving all ten controls, but it costs 2.5 times the original observation text. The pending
+`ranked_diverse` top-six condition is the bounded attempt to retain that coverage more cheaply.
 
-The next bounded experiment should change evidence presentation while holding the SFT checkpoint
-fixed: deduplicate overlapping `search_within()` windows, merge adjacent hits into readable
-passages, and compare that against the original top-three and raw top-eight conditions. Accept the
-change only if it rescues more previously failing answers without reducing the ten control passes
-or materially increasing tool loops. After that harness is frozen, rerun the locked 40-question
-base/SFT comparison before deciding whether more training data is justified.
+Accept `ranked_diverse` only if its end-to-end run rescues at least the same two target cases,
+preserves all ten controls, and does not materially increase tool loops. If it passes, make that
+mode the inference default and rerun the locked 40-question base/SFT comparison. If it fails, keep
+raw retrieval and move the next experiment to query planning rather than more passage formatting
+or more SFT data.

@@ -180,9 +180,88 @@ try:
 except ValueError:
     _default_search_within_top_k = 3
 _default_search_within_top_k = max(1, _default_search_within_top_k)
+_search_within_mode = os.environ.get("ENVOY_SEARCH_WITHIN_MODE", "raw")
+if _search_within_mode not in {"raw", "dedupe_merge", "ranked_diverse"}:
+    _search_within_mode = "raw"
+
+def _dedupe_merge_windows(windows: list[dict], text: str, top_k: int) -> list[dict]:
+    """Return distinct evidence regions while keeping rank and size bounded.
+
+    Ranking happens before this function. Overlapping high-ranked windows are
+    merged into one passage instead of consuming several result slots. A merged
+    region is capped so a frequent query term cannot expand into an entire paper.
+    Selection stops as soon as ``top_k`` distinct regions have been filled. This
+    prevents lower-ranked overlaps from rewriting the context around results that
+    already won a slot.
+    """
+    regions = []
+    max_passage_chars = 900
+    for candidate in windows:
+        overlapping = [
+            (min(candidate["end"], region["end"])
+             - max(candidate["offset"], region["offset"]), index)
+            for index, region in enumerate(regions)
+            if candidate["offset"] < region["end"]
+            and candidate["end"] > region["offset"]
+        ]
+        if overlapping:
+            _, index = max(overlapping)
+            region = regions[index]
+            start = min(region["offset"], candidate["offset"])
+            end = max(region["end"], candidate["end"])
+            overlaps_other_region = any(
+                other_index != index
+                and start < other["end"]
+                and end > other["offset"]
+                for other_index, other in enumerate(regions)
+            )
+            if end - start <= max_passage_chars and not overlaps_other_region:
+                region.update({
+                    "offset": start,
+                    "end": end,
+                    "text": text[start:end],
+                    "score": max(region["score"], candidate["score"]),
+                })
+            # Even when the bounded region cannot grow, this candidate is a
+            # duplicate of evidence already selected and gets no result slot.
+            continue
+        if len(regions) < top_k:
+            regions.append(dict(candidate))
+            if len(regions) == top_k:
+                break
+
+    regions.sort(key=lambda item: (-item["score"], item["offset"]))
+    return [
+        {"text": item["text"], "offset": item["offset"], "score": item["score"]}
+        for item in regions[:top_k]
+    ]
+
+def _ranked_diverse_windows(windows: list[dict], top_k: int) -> list[dict]:
+    """Keep the legacy top-three prefix, then add non-overlapping evidence.
+
+    The first three windows are byte-for-byte compatible with raw retrieval.
+    Additional slots go only to windows outside every selected region, avoiding
+    the repeated sliding-window snippets that made a raw top-eight result large.
+    """
+    prefix_size = min(3, top_k)
+    selected = [dict(item) for item in windows[:prefix_size]]
+    for candidate in windows[prefix_size:]:
+        if any(
+            candidate["offset"] < item["end"]
+            and candidate["end"] > item["offset"]
+            for item in selected
+        ):
+            continue
+        selected.append(dict(candidate))
+        if len(selected) == top_k:
+            break
+    return [
+        {"text": item["text"], "offset": item["offset"], "score": item["score"]}
+        for item in selected
+    ]
 
 def search_within(doc_id: str, query: str, top_k: int | None = None) -> list[dict]:
-    """Search within a specific document. Returns the most relevant 500-char windows."""
+    """Search within a document for raw windows or distinct merged passages."""
     doc = _load_doc(doc_id)
     if doc is None:
         return [{"error": f"Document '{doc_id}' not found"}]
@@ -193,13 +272,22 @@ def search_within(doc_id: str, query: str, top_k: int | None = None) -> list[dic
     windows = []
     step = 200
     for start in range(0, len(text), step):
-        end = start + 500
+        end = min(start + 500, len(text))
         window = text[start:end]
         score = sum(window.lower().count(t) for t in query_terms)
         if score > 0:
-            windows.append({"text": window, "offset": start, "score": score})
-    windows.sort(key=lambda x: x["score"], reverse=True)
-    return windows[:top_k]
+            windows.append({
+                "text": window, "offset": start, "end": end, "score": score,
+            })
+    windows.sort(key=lambda item: (-item["score"], item["offset"]))
+    if _search_within_mode == "dedupe_merge":
+        return _dedupe_merge_windows(windows, text, top_k)
+    if _search_within_mode == "ranked_diverse":
+        return _ranked_diverse_windows(windows, top_k)
+    return [
+        {"text": item["text"], "offset": item["offset"], "score": item["score"]}
+        for item in windows[:top_k]
+    ]
 
 def verify(doc_id: str, claim: str) -> dict:
     """Check if a claim's keywords appear in a document. Returns bool + matching excerpt."""

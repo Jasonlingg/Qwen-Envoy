@@ -133,6 +133,13 @@ favored SFT, because complete yes/no sentences often share no tokens with refere
 [docs/QASPER_FAILURE_ATTRIBUTION.md](docs/QASPER_FAILURE_ATTRIBUTION.md) for the transcripts,
 controls, and next experiment.
 
+The first passage-deduplication attempt also produced a useful negative result. Aggressively
+merging overlapping windows raised automatic reward to 0.330 and rescued two target failures, but
+it broke one previously correct control; a conservative merger preserved the controls but rescued
+nothing. Neither became the default. A new `ranked_diverse` mode keeps the original top-three
+results and adds only non-overlapping windows. Offline, it exposes nearly as much unique evidence
+as raw top eight with 25% less returned text; its end-to-end GPU check is pending.
+
 ## Training approach
 
 The current run distills QASPER-grounded research trajectories into Qwen3-8B with rank-4 QLoRA:

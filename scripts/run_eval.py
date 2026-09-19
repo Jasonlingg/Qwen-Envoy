@@ -150,6 +150,11 @@ def main(
         min=1,
         help="Default number of windows returned by search_within()",
     ),
+    search_within_mode: str = typer.Option(
+        "raw",
+        "--search-within-mode",
+        help="Within-paper result mode: raw, dedupe_merge, or ranked_diverse",
+    ),
     force_known_paper_read: bool = typer.Option(
         False,
         "--force-known-paper-read",
@@ -170,7 +175,12 @@ def main(
             + system_prompt_suffix.read_text().strip()
             + "\n"
         )
+    if search_within_mode not in {"raw", "dedupe_merge", "ranked_diverse"}:
+        raise typer.BadParameter(
+            "--search-within-mode must be raw, dedupe_merge, or ranked_diverse"
+        )
     os.environ["ENVOY_SEARCH_WITHIN_TOP_K"] = str(search_within_top_k)
+    os.environ["ENVOY_SEARCH_WITHIN_MODE"] = search_within_mode
     random.seed(seed)
     import numpy as np
     np.random.seed(seed)
@@ -270,6 +280,7 @@ def main(
         "system_prompt_sha256": sha256(system_prompt.encode()).hexdigest(),
         "system_prompt_suffix": str(system_prompt_suffix) if system_prompt_suffix else None,
         "search_within_top_k": search_within_top_k,
+        "search_within_mode": search_within_mode,
         "force_known_paper_read": force_known_paper_read,
         "decoding": sorted({
             json.dumps({"max_tokens": settings.get("max_tokens"),
