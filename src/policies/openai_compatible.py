@@ -75,6 +75,7 @@ class OpenAICompatiblePolicy:
         timeout: float = 120.0,
         extra_body: dict[str, Any] | None = None,
         transport: Transport = _post_json,
+        system_prompt: str | None = None,
     ) -> None:
         self.endpoint = endpoint or os.environ.get("ENVOY_MODEL_ENDPOINT", "")
         self.model = model or os.environ.get("ENVOY_MODEL_ID", "")
@@ -94,6 +95,7 @@ class OpenAICompatiblePolicy:
         self.timeout = timeout
         self.extra_body = extra_body or {}
         self._transport = transport
+        self.system_prompt = system_prompt or SYSTEM_PROMPT
         self.history: list[dict[str, str]] = []
         self.config = {
             "backend": "openai_compatible",
@@ -105,7 +107,7 @@ class OpenAICompatiblePolicy:
 
     def act(self, observation: str) -> str:
         self.history.append({"role": "user", "content": observation})
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}, *self.history]
+        messages = [{"role": "system", "content": self.system_prompt}, *self.history]
         payload = {
             **self.extra_body,
             "model": self.model,

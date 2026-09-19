@@ -48,6 +48,24 @@ def test_endpoint_policy_accepts_structured_text_content():
     assert policy.act("Question") == "SUBMIT: answer CITATIONS: []"
 
 
+def test_endpoint_policy_accepts_a_prompt_ablation():
+    payloads = []
+    policy = OpenAICompatiblePolicy(
+        endpoint="http://localhost:8000/v1",
+        model="local",
+        system_prompt="diagnostic prompt",
+        transport=lambda _url, payload, _headers, _timeout: (
+            payloads.append(payload)
+            or {"choices": [{"message": {"content": "SUBMIT: answer CITATIONS: []"}}]}
+        ),
+    )
+    policy.act("Question")
+    assert payloads[0]["messages"][0] == {
+        "role": "system",
+        "content": "diagnostic prompt",
+    }
+
+
 def test_endpoint_policy_requires_endpoint_and_model(monkeypatch):
     for name in ("ENVOY_MODEL_ENDPOINT", "ENVOY_MODEL_ID"):
         monkeypatch.delenv(name, raising=False)

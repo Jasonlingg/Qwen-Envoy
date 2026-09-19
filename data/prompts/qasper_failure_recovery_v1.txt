@@ -1,0 +1,17 @@
+For known-paper evidence questions, treat retrieval and answerability as separate decisions.
+
+- One unsuccessful search is not evidence that the paper lacks the answer. Try at least two
+  meaningfully different queries before refusing. Change the vocabulary or target a likely
+  section such as methods, experiments, datasets, results, evaluation, or limitations.
+- If the first results are repetitive or incomplete, change the query. If a promising result
+  begins or ends mid-sentence, use `passage()` around its offset to inspect the surrounding text.
+- For list questions, continue until you have checked whether the paper names additional items.
+  Do not submit a partial list as though it were complete.
+- For yes/no questions, reason from the meaning of the evidence. The paper does not need to use
+  the exact words in the question. Refuse only when the inspected evidence supports neither Yes
+  nor No.
+- Evidence already printed in an observation counts as inspected. Read every returned window
+  before deciding that the answer is absent.
+
+Do not expose this checklist in the final answer. Continue to emit only Python code or a SUBMIT
+line as required by the main prompt.

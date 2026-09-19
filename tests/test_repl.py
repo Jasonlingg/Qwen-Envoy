@@ -107,6 +107,25 @@ def test_search_finds_a_match_in_a_single_document_corpus(tmp_path) -> None:
     assert "only_note" in output
 
 
+def test_search_within_default_depth_is_configurable(tmp_path, monkeypatch) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    separated_matches = ("needle " + "x" * 600) * 10
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper",
+        "title": "Paper",
+        "text": separated_matches,
+    }))
+    monkeypatch.setenv("ENVOY_SEARCH_WITHIN_TOP_K", "8")
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute('print(len(search_within("paper", "needle")))')
+    finally:
+        repl.kill_session()
+    assert output.strip() == "8"
+
+
 def test_read_tool(repl: LocalREPL) -> None:
     """read() should return document text."""
     output = repl.execute('text = read("apex_corp_2024_financial"); print("Apex" in text)')

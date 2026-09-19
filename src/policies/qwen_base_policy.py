@@ -32,8 +32,13 @@ class QwenBasePolicy(BaseQwenPolicy):
         base_model: str | None = None,
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = 0.0,
+        system_prompt: str | None = None,
     ) -> None:
-        super().__init__(max_tokens=max_tokens, temperature=temperature)
+        super().__init__(
+            max_tokens=max_tokens,
+            temperature=temperature,
+            system_prompt=system_prompt,
+        )
         model_path = base_model or os.environ.get("BASE_MODEL_PATH") or DEFAULT_BASE_MODEL
 
         try:

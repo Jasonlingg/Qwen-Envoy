@@ -53,9 +53,11 @@ class BaseQwenPolicy:
         self,
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = 0.0,
+        system_prompt: str | None = None,
     ) -> None:
         self._max_tokens = max_tokens
         self._temperature = temperature
+        self.system_prompt = system_prompt or SYSTEM_PROMPT
         self.history: list[dict] = []
 
     def act(self, observation: str) -> str:
@@ -63,7 +65,7 @@ class BaseQwenPolicy:
 
         self.history.append({"role": "user", "content": observation})
 
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}] + self.history
+        messages = [{"role": "system", "content": self.system_prompt}] + self.history
         text = self._tokenizer.apply_chat_template(
             messages, tokenize=False, add_generation_prompt=True, enable_thinking=False
         )

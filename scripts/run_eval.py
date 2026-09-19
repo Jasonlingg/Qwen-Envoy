@@ -7,6 +7,7 @@ import os
 import platform
 import random
 import subprocess
+from hashlib import sha256
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
@@ -21,6 +22,7 @@ from src.eval.artifacts import configuration_hash, content_hash
 from src.eval.harness import run_eval
 from src.eval.report import print_results
 from src.policies.registry import build_policies as build_registered_policies
+from src.policies.code_execution import SYSTEM_PROMPT as CODE_EXECUTION_SYSTEM_PROMPT
 
 # An exported-but-EMPTY key shadows .env: load_dotenv() defaults to
 # override=False and treats "" as already-set, so the blank value wins and
@@ -48,9 +50,15 @@ def build_policies(
     corpus: Corpus,
     policy_names: list[str] | None = None,
     as_factories: bool = False,
+    system_prompt: str | None = None,
 ) -> dict[str, object]:
     """Build registered policies while keeping the CLI's historical seam."""
-    return build_registered_policies(corpus, policy_names, as_factories=as_factories)
+    return build_registered_policies(
+        corpus,
+        policy_names,
+        as_factories=as_factories,
+        system_prompt=system_prompt,
+    )
 
 
 def _policy_settings(policy_name: str, policy: object) -> dict:
@@ -128,11 +136,33 @@ def main(
         "--question-only-observation",
         help="Omit the duplicate tool preamble when the policy system prompt already provides it",
     ),
+    system_prompt_suffix: Path | None = typer.Option(
+        None,
+        "--system-prompt-suffix",
+        help="Append a committed prompt variant to the code-execution system prompt",
+    ),
+    search_within_top_k: int = typer.Option(
+        3,
+        "--search-within-top-k",
+        min=1,
+        help="Default number of windows returned by search_within()",
+    ),
 ) -> None:
     """Run evaluation: policies through the document exploration environment."""
     console.print("[bold]Envoy — Evaluation[/bold]\n")
     if output is not None and (output.exists() or output.with_suffix(".manifest.json").exists()):
         raise typer.BadParameter(f"Output already exists: {output}")
+    system_prompt = CODE_EXECUTION_SYSTEM_PROMPT
+    if system_prompt_suffix is not None:
+        if not system_prompt_suffix.is_file():
+            raise typer.BadParameter(f"Prompt suffix not found: {system_prompt_suffix}")
+        system_prompt = (
+            CODE_EXECUTION_SYSTEM_PROMPT.rstrip()
+            + "\n\n"
+            + system_prompt_suffix.read_text().strip()
+            + "\n"
+        )
+    os.environ["ENVOY_SEARCH_WITHIN_TOP_K"] = str(search_within_top_k)
     random.seed(seed)
     import numpy as np
     np.random.seed(seed)
@@ -176,7 +206,12 @@ def main(
 
     # Build policies (factories when parallel so each worker gets a fresh instance)
     policy_names = [policy] if policy else None
-    policies = build_policies(corpus, policy_names, as_factories=workers > 1)
+    policies = build_policies(
+        corpus,
+        policy_names,
+        as_factories=workers > 1,
+        system_prompt=system_prompt,
+    )
     if not policies:
         raise typer.BadParameter(f"Unknown policy: {policy}")
     console.print(f"Policies: {', '.join(policies.keys())}\n")
@@ -214,6 +249,9 @@ def main(
         "workers": workers, "require_evidence": require_evidence,
         "observation_preamble": not question_only_observation,
         "vector_index": not no_vector_index,
+        "system_prompt_sha256": sha256(system_prompt.encode()).hexdigest(),
+        "system_prompt_suffix": str(system_prompt_suffix) if system_prompt_suffix else None,
+        "search_within_top_k": search_within_top_k,
         "decoding": sorted({
             json.dumps({"max_tokens": settings.get("max_tokens"),
                         "temperature": settings.get("temperature")}, sort_keys=True)

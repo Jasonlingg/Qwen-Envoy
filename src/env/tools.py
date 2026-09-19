@@ -175,11 +175,19 @@ def aggregate(doc_ids: list[str], field: str) -> list[dict]:
         results.append({"doc_id": doc_id, field: value})
     return results
 
-def search_within(doc_id: str, query: str, top_k: int = 3) -> list[dict]:
+try:
+    _default_search_within_top_k = int(os.environ.get("ENVOY_SEARCH_WITHIN_TOP_K", "3"))
+except ValueError:
+    _default_search_within_top_k = 3
+_default_search_within_top_k = max(1, _default_search_within_top_k)
+
+def search_within(doc_id: str, query: str, top_k: int | None = None) -> list[dict]:
     """Search within a specific document. Returns the most relevant 500-char windows."""
     doc = _load_doc(doc_id)
     if doc is None:
         return [{"error": f"Document '{doc_id}' not found"}]
+    if top_k is None:
+        top_k = _default_search_within_top_k
     text = doc["text"]
     query_terms = query.lower().split()
     windows = []

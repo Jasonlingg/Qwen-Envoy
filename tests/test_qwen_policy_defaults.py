@@ -14,3 +14,8 @@ def test_all_local_qwen_policies_share_the_generation_budget():
     for policy in policies:
         default = inspect.signature(policy.__init__).parameters["max_tokens"].default
         assert default == DEFAULT_MAX_TOKENS == 1024
+
+
+def test_shared_qwen_policy_accepts_a_prompt_ablation():
+    policy = BaseQwenPolicy(system_prompt="diagnostic prompt")
+    assert policy.system_prompt == "diagnostic prompt"

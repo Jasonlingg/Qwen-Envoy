@@ -1,0 +1,710 @@
+{
+  "schema_version": "research-benchmark-v1",
+  "benchmark_id": "qasper-failure-ablation-v1",
+  "status": "development_diagnostic_only",
+  "domain": "Evidence-grounded question answering over NLP research papers (QASPER)",
+  "corpus_hash": "927f97bf4b07d4318d216467c00a5cc59f55fe20de554de1be93596d45df481f",
+  "reserved_doc_ids": [
+    "qasper_1912_01214",
+    "qasper_1801_05147",
+    "qasper_1811_00383",
+    "qasper_1909_09067",
+    "qasper_1909_00512",
+    "qasper_2003_03106",
+    "qasper_1909_11687",
+    "qasper_1605_06083",
+    "qasper_1804_05918",
+    "qasper_1809_04267",
+    "qasper_1901_05287",
+    "qasper_1612_06685",
+    "qasper_1910_10781",
+    "qasper_1603_09631",
+    "qasper_2001_02284",
+    "qasper_2002_01664",
+    "qasper_1808_09111",
+    "qasper_1906_08593",
+    "qasper_1809_00540",
+    "qasper_2004_03354",
+    "qasper_1611_04798",
+    "qasper_1912_13337",
+    "qasper_1809_01541",
+    "qasper_1809_09194",
+    "qasper_1604_05372",
+    "qasper_2002_08795",
+    "qasper_1809_00530",
+    "qasper_1710_07960",
+    "qasper_1912_03804",
+    "qasper_1912_08960",
+    "qasper_2002_11910",
+    "qasper_1909_09587",
+    "qasper_1802_07862",
+    "qasper_1710_03348",
+    "qasper_1612_03226",
+    "qasper_1809_02286",
+    "qasper_1809_01202",
+    "qasper_1909_02027",
+    "qasper_1911_02855",
+    "qasper_1906_01081",
+    "qasper_1812_10479",
+    "qasper_1611_01576",
+    "qasper_1904_09535",
+    "qasper_1911_03059",
+    "qasper_1909_08089",
+    "qasper_1609_00559",
+    "qasper_1604_00727",
+    "qasper_1612_02482",
+    "qasper_1608_01084",
+    "qasper_1904_10503",
+    "qasper_1912_01772",
+    "qasper_1603_01987",
+    "qasper_1908_06941",
+    "qasper_1702_03856",
+    "qasper_1904_01548",
+    "qasper_1606_03676",
+    "qasper_1909_04002",
+    "qasper_1712_00991",
+    "qasper_1805_08241",
+    "qasper_1907_04433",
+    "qasper_2003_04642",
+    "qasper_2001_09215",
+    "qasper_1909_07575",
+    "qasper_1701_04056",
+    "qasper_1904_07904",
+    "qasper_2003_11645",
+    "qasper_1909_02304",
+    "qasper_1604_03114",
+    "qasper_1608_06757",
+    "qasper_2001_03131",
+    "qasper_1606_02891",
+    "qasper_1803_09123",
+    "qasper_1910_01863",
+    "qasper_1912_06262",
+    "qasper_1709_07814",
+    "qasper_1806_00738",
+    "qasper_1811_00147",
+    "qasper_1806_04330",
+    "qasper_1610_09225",
+    "qasper_2003_08380",
+    "qasper_1811_05711",
+    "qasper_1805_04508",
+    "qasper_1904_03288",
+    "qasper_1909_13714",
+    "qasper_1910_05603",
+    "qasper_1909_03405",
+    "qasper_1801_07887",
+    "qasper_1907_03060",
+    "qasper_2002_04095",
+    "qasper_1710_04203",
+    "qasper_1804_00720",
+    "qasper_1911_10049",
+    "qasper_1812_06864",
+    "qasper_1911_01371",
+    "qasper_1811_12254",
+    "qasper_1909_09551",
+    "qasper_1701_02962",
+    "qasper_1806_05504",
+    "qasper_1909_13104",
+    "qasper_1707_06806",
+    "qasper_1806_04511",
+    "qasper_1912_08904",
+    "qasper_1703_10344",
+    "qasper_2003_13032",
+    "qasper_1902_09666",
+    "qasper_1604_00400",
+    "qasper_1810_12196",
+    "qasper_1707_05236",
+    "qasper_1810_04428",
+    "qasper_1908_11047",
+    "qasper_1908_09246",
+    "qasper_1612_08205",
+    "qasper_1907_09369",
+    "qasper_1503_00841",
+    "qasper_1804_11346",
+    "qasper_1611_08661",
+    "qasper_1910_07601",
+    "qasper_1909_00175",
+    "qasper_2002_01984",
+    "qasper_1910_14599",
+    "qasper_1906_00790",
+    "qasper_1903_03530",
+    "qasper_1806_05513",
+    "qasper_1903_09722",
+    "qasper_1806_11432",
+    "qasper_1910_14537",
+    "qasper_1805_03710",
+    "qasper_1807_07279",
+    "qasper_1706_09673",
+    "qasper_1906_07662",
+    "qasper_2002_12612",
+    "qasper_1811_08603",
+    "qasper_1909_03135",
+    "qasper_1804_07789",
+    "qasper_1905_11268",
+    "qasper_1603_01514",
+    "qasper_1908_04042",
+    "qasper_1610_00956",
+    "qasper_1912_03627",
+    "qasper_1810_12085",
+    "qasper_1610_07809",
+    "qasper_2003_03044",
+    "qasper_1909_00015",
+    "qasper_1705_01214",
+    "qasper_1908_07195",
+    "qasper_2001_07786",
+    "qasper_1912_00903",
+    "qasper_1703_04001",
+    "qasper_1907_06292",
+    "qasper_1703_07090",
+    "qasper_1810_04635",
+    "qasper_1707_03569",
+    "qasper_1912_10011",
+    "qasper_2003_11563",
+    "qasper_1909_09534",
+    "qasper_1909_00105",
+    "qasper_2001_02885",
+    "qasper_1801_10293",
+    "qasper_1908_08345",
+    "qasper_1611_02988",
+    "qasper_1604_08504",
+    "qasper_1802_08636",
+    "qasper_2002_01320",
+    "qasper_1605_07333",
+    "qasper_2003_08385",
+    "qasper_1901_10133",
+    "qasper_1911_00841",
+    "qasper_1605_03481",
+    "qasper_1901_01010",
+    "qasper_1809_02279",
+    "qasper_2002_01207",
+    "qasper_1803_05223",
+    "qasper_1909_06162",
+    "qasper_1905_10851",
+    "qasper_1906_07701",
+    "qasper_2002_07306",
+    "qasper_1810_12091",
+    "qasper_1810_05241",
+    "qasper_1805_01445",
+    "qasper_1909_01362",
+    "qasper_2004_01862",
+    "qasper_1908_01294",
+    "qasper_1906_01040",
+    "qasper_1909_01383",
+    "qasper_1705_05437",
+    "qasper_2003_02249",
+    "qasper_1910_03634",
+    "qasper_2001_08868",
+    "qasper_1910_12795",
+    "qasper_2003_04866",
+    "qasper_2003_11562",
+    "qasper_1608_08188",
+    "qasper_1906_06849",
+    "qasper_1901_08079",
+    "qasper_1805_06966",
+    "qasper_1806_03125",
+    "qasper_1910_14076",
+    "qasper_1911_06118",
+    "qasper_1907_03187",
+    "qasper_1608_01884",
+    "qasper_1705_01265",
+    "qasper_1906_10225",
+    "qasper_1712_05999",
+    "qasper_2001_05865",
+    "qasper_1808_03738",
+    "qasper_1910_08293",
+    "qasper_1909_01296",
+    "qasper_1902_09243",
+    "qasper_1801_06482",
+    "qasper_1909_05359",
+    "qasper_1603_08594",
+    "qasper_1703_07476",
+    "qasper_1906_00346",
+    "qasper_1909_08970",
+    "qasper_1903_11283",
+    "qasper_1709_05036",
+    "qasper_1706_00139",
+    "qasper_1912_01852",
+    "qasper_1808_09029",
+    "qasper_2004_04721",
+    "qasper_1905_07791",
+    "qasper_2002_04181",
+    "qasper_1908_06264",
+    "qasper_1709_10367",
+    "qasper_1908_06267",
+    "qasper_1701_05574",
+    "qasper_1907_01468"
+  ],
+  "training_exclusion": "QASPER validation-split papers and questions \u2014 do not use in training data.",
+  "converter_version": "qasper-code-exec-v1",
+  "source_dataset": "allenai/qasper",
+  "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+  "source_split": "validation",
+  "selection_seed": 20260918,
+  "selection": {
+    "source": "qwen3-qasper-v5-sft eval40 semantic review",
+    "nonpassing_answerable": 15,
+    "passing_answerable_controls": 5,
+    "passing_insufficient_controls": 5,
+    "warning": "Selected after observing eval40 failures; never report as held-out performance."
+  },
+  "questions": [
+    {
+      "id": "qasper_validation_2275b0e195cd9cb25f50c5c570da97a4cce5dca8",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_2002_07306"
+      ],
+      "expected_citations": [
+        "qasper_2002_07306"
+      ],
+      "question": "Use the known paper \"From English To Foreign Languages: Transferring Pre-trained Language Models\" (doc_id: \"qasper_2002_07306\") to answer: How is the model transferred to other languages?",
+      "answer": "Build a bilingual language model,   learn the target language specific parameters starting from a pretrained English LM , fine-tune both English and target model to obtain the bilingual LM.",
+      "grader_notes": [
+        "Do multilingual models always need to be trained from scratch? Can we transfer linguistic knowledge learned by English pre-trained models to other languages? In this work, we develop a technique to rapidly transfer an existing pre-trained model from English to other languages in an energy efficient way BIBREF8. As the first step, we focus on building a bilingual language model (LM) of English and a target language. Starting from a pre-trained English LM, we learn the target language specific parameters (i.e., word embeddings), while keeping the encoder layers of the pre-trained English LM fixed. We then fine-tune both English and target model to obtain the bilingual LM. We apply our approach to autoencoding language models with masked language model objective and show the advantage of the proposed approach in zero-shot transfer. Our main contributions in this work are:"
+      ]
+    },
+    {
+      "id": "qasper_validation_3c93894c4baf49deacc6ed2a14ef5e0f13b7d96f",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1612_06685"
+      ],
+      "expected_citations": [
+        "qasper_1612_06685"
+      ],
+      "question": "Use the known paper \"Stateology: State-Level Interactive Charting of Language, Feelings, and Values\" (doc_id: \"qasper_1612_06685\") to answer: Which demographic dimensions of people do they obtain?",
+      "answer": "occupation, industry, profile information, language use, gender ",
+      "grader_notes": [
+        "We first started by collecting a set of profiles of bloggers that met our location specifications by searching individual states on the profile finder on http://www.blogger.com. Starting with this list, we can locate the profile page for a user, and subsequently extract additional information, which includes fields such as name, email, occupation, industry, and so forth. It is important to note that the profile finder only identifies users that have an exact match to the location specified in the query; we thus built and ran queries that used both state abbreviations (e.g., TX, AL), as well as the states' full names (e.g., Texas, Alabama).",
+        "We also generate two maps that delineate the gender distribution in the dataset. Overall, the blogging world seems to be dominated by females: out of 153,209 users who self-reported their gender, only 52,725 are men and 100,484 are women. Figures FIGREF1 and FIGREF1 show the percentage of male and female bloggers in each of the 50 states. As seen in this figure, there are more than the average number of male bloggers in states such as California and New York, whereas Utah and Idaho have a higher percentage of women bloggers.",
+        "Our dataset provides mappings between location, profile information, and language use, which we can leverage to generate maps that reflect demographic, linguistic, and psycholinguistic properties of the population represented in the dataset.",
+        "The first map we generate depicts the distribution of the bloggers in our dataset across the U.S. Figure FIGREF1 shows the density of users in our dataset in each of the 50 states. For instance, the densest state was found to be California with 11,701 users. The second densest is Texas, with 9,252 users, followed by New York, with 9,136. The state with the fewest bloggers is Delaware with 1,217 users. Not surprisingly, this distribution correlates well with the population of these states, with a Spearman's rank correlation INLINEFORM0 of 0.91 and a p-value INLINEFORM1 0.0001, and is very similar to the one reported in Lin and Halavais Lin04.",
+        "We also generate two maps that delineate the gender distribution in the dataset. Overall, the blogging world seems to be dominated by females: out of 153,209 users who self-reported their gender, only 52,725 are men and 100,484 are women. Figures FIGREF1 and FIGREF1 show the percentage of male and female bloggers in each of the 50 states. As seen in this figure, there are more than the average number of male bloggers in states such as California and New York, whereas Utah and Idaho have a higher percentage of women bloggers."
+      ]
+    },
+    {
+      "id": "qasper_validation_7b4fb6da74e6bd1baea556788a02969134cf0800",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1909_03405"
+      ],
+      "expected_citations": [
+        "qasper_1909_03405"
+      ],
+      "question": "Use the known paper \"Symmetric Regularization based BERT for Pair-wise Semantic Reasoning\" (doc_id: \"qasper_1909_03405\") to answer: Do they train their model starting from a checkpoint?",
+      "answer": "No",
+      "grader_notes": [
+        "This section gives detailed experiment settings. The method is evaluated on the BERTbase model, which has 12 layers, 12 self-attention heads with a hidden size of 768.",
+        "To accelerate the training speed, two-phase training BIBREF1 is adopted. The first phase uses a maximal sentence length of 128, and 512 for the second phase. The numbers of training steps of two phases are 50K and 40K for the BERTBase model. We used AdamW BIBREF13 optimizer with a learning rate of 1e-4, a $\\beta _1$ of 0.9, a $\\beta _2$ of 0.999 and a L2 weight decay rate of $0.01$. The first 10% of the total steps are used for learning rate warming up, followed by the linear decay schema. We used a dropout probability of 0.1 on all layers. The data used for pre-training is the same as BERT, i.e., English Wikipedia (2500M words) and BookCorpus (800M words) BIBREF14. For the Masked LM task, we followed the same masking rate and settings as in BERT.",
+        "This section gives detailed experiment settings. The method is evaluated on the BERTbase model, which has 12 layers, 12 self-attention heads with a hidden size of 768.",
+        "To accelerate the training speed, two-phase training BIBREF1 is adopted. The first phase uses a maximal sentence length of 128, and 512 for the second phase. The numbers of training steps of two phases are 50K and 40K for the BERTBase model. We used AdamW BIBREF13 optimizer with a learning rate of 1e-4, a $\\beta _1$ of 0.9, a $\\beta _2$ of 0.999 and a L2 weight decay rate of $0.01$. The first 10% of the total steps are used for learning rate warming up, followed by the linear decay schema. We used a dropout probability of 0.1 on all layers. The data used for pre-training is the same as BERT, i.e., English Wikipedia (2500M words) and BookCorpus (800M words) BIBREF14. For the Masked LM task, we followed the same masking rate and settings as in BERT."
+      ]
+    },
+    {
+      "id": "qasper_validation_9193006f359c53eb937deff1248ee3317978e576",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1908_06267"
+      ],
+      "expected_citations": [
+        "qasper_1908_06267"
+      ],
+      "question": "Use the known paper \"Message Passing Attention Networks for Document Understanding\" (doc_id: \"qasper_1908_06267\") to answer: Which datasets are used?",
+      "answer": "Reuters,  BBCSport, Polarity, Subjectivity, MPQA, IMDB, TREC, SST-1, SST-2, Yelp2013",
+      "grader_notes": [
+        "We evaluate the quality of the document embeddings learned by MPAD on 10 document classification datasets, covering the topic identification, coarse and fine sentiment analysis and opinion mining, and subjectivity detection tasks. We briefly introduce the datasets next. Their statistics are reported in Table TABREF21.",
+        "(1) Reuters. This dataset contains stories collected from the Reuters news agency in 1987. Following common practice, we used the ModApte split and considered only the 10 classes with the highest number of positive training examples. We also removed documents belonging to more than one class and then classes left with no document (2 classes).",
+        "(2) BBCSport BIBREF30 contains documents from the BBC Sport website corresponding to 2004-2005 sports news articles.",
+        "(3) Polarity BIBREF31 features positive and negative labeled snippets from Rotten Tomatoes.",
+        "(4) Subjectivity BIBREF32 contains movie review snippets from Rotten Tomatoes (subjective sentences), and Internet Movie Database plot summaries (objective sentences)."
+      ]
+    },
+    {
+      "id": "qasper_validation_9a05a5f4351db75da371f7ac12eb0b03607c4b87",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1912_01214"
+      ],
+      "expected_citations": [
+        "qasper_1912_01214"
+      ],
+      "question": "Use the known paper \"Cross-lingual Pre-training Based Transfer for Zero-shot Neural Machine Translation\" (doc_id: \"qasper_1912_01214\") to answer: which datasets did they experiment with?",
+      "answer": "Europarl, MultiUN",
+      "grader_notes": [
+        "We evaluate our cross-lingual pre-training based transfer approach against several strong baselines on two public datatsets, Europarl BIBREF31 and MultiUN BIBREF32, which contain multi-parallel evaluation data to assess the zero-shot performance. In all experiments, we use BLEU as the automatic metric for translation evaluation.",
+        "We evaluate our cross-lingual pre-training based transfer approach against several strong baselines on two public datatsets, Europarl BIBREF31 and MultiUN BIBREF32, which contain multi-parallel evaluation data to assess the zero-shot performance. In all experiments, we use BLEU as the automatic metric for translation evaluation."
+      ]
+    },
+    {
+      "id": "qasper_validation_9bfebf8e5bc0bacf0af96a9a951eb7b96b359faa",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1909_00105"
+      ],
+      "expected_citations": [
+        "qasper_1909_00105"
+      ],
+      "question": "Use the known paper \"Generating Personalized Recipes from Historical User Preferences\" (doc_id: \"qasper_1909_00105\") to answer: What were their results on the new dataset?",
+      "answer": "average recipe-level coherence scores of 1.78-1.82, human evaluators preferred personalized model outputs to baseline 63% of the time",
+      "grader_notes": [
+        "Recipe Level Coherence: A plausible recipe should possess a coherent step order, and we evaluate this via a metric for recipe-level coherence. We use the neural scoring model from BIBREF33 to measure recipe-level coherence for each generated recipe. Each recipe step is encoded by BERT BIBREF34. Our scoring model is a GRU network that learns the overall recipe step ordering structure by minimizing the cosine similarity of recipe step hidden representations presented in the correct and reverse orders. Once pretrained, our scorer calculates the similarity of a generated recipe to the forward and backwards ordering of its corresponding gold label, giving a score equal to the difference between the former and latter. A higher score indicates better step ordering (with a maximum score of 2). tab:coherencemetrics shows that our personalized models achieve average recipe-level coherence scores of 1.78-1.82, surpassing the baseline at 1.77.",
+        "Human Evaluation: We presented 310 pairs of recipes for pairwise comparison BIBREF8 (details in appendix) between baseline and each personalized model, with results shown in tab:metricsontest. On average, human evaluators preferred personalized model outputs to baseline 63% of the time, confirming that personalized attention improves the semantic plausibility of generated recipes. We also performed a small-scale human coherence survey over 90 recipes, in which 60% of users found recipes generated by personalized models to be more coherent and preferable to those generated by baseline models."
+      ]
+    },
+    {
+      "id": "qasper_validation_bcc0cd4e262f2db4270429ab520971bcf39414cf",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_2001_09215"
+      ],
+      "expected_citations": [
+        "qasper_2001_09215"
+      ],
+      "question": "Use the known paper \"An Iterative Approach for Identifying Complaint Based Tweets in Social Media Platforms\" (doc_id: \"qasper_2001_09215\") to answer: How many tweets were collected?",
+      "answer": "$19,300$, added 2500 randomly sampled tweets",
+      "grader_notes": [
+        "We aimed to mimic the presence of sparse/noisy content distribution, mandating the need to curate a novel dataset via specific lexicons. We scraped 500 random posts from recognized transport forum. A pool of 50 uni/bi-grams was created based on tf-idf representations, extracted from the posts, which was further pruned by annotators. Querying posts on Twitter with extracted lexicons led to a collection of $19,300$ tweets. In order to have lexical diversity, we added 2500 randomly sampled tweets to our dataset. In spite of the sparse nature of these posts, the lexical characteristics act as information cues.",
+        "We aimed to mimic the presence of sparse/noisy content distribution, mandating the need to curate a novel dataset via specific lexicons. We scraped 500 random posts from recognized transport forum. A pool of 50 uni/bi-grams was created based on tf-idf representations, extracted from the posts, which was further pruned by annotators. Querying posts on Twitter with extracted lexicons led to a collection of $19,300$ tweets. In order to have lexical diversity, we added 2500 randomly sampled tweets to our dataset. In spite of the sparse nature of these posts, the lexical characteristics act as information cues."
+      ]
+    },
+    {
+      "id": "qasper_validation_d004ca2e999940ac5c1576046e30efa3059832fa",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1909_13104"
+      ],
+      "expected_citations": [
+        "qasper_1909_13104"
+      ],
+      "question": "Use the known paper \"Attention-based method for categorizing different types of online harassment language\" (doc_id: \"qasper_1909_13104\") to answer: What are the different variations of the attention-based approach which are examined?",
+      "answer": "classic RNN model, avgRNN model, attentionRNN model and multiattention RNN model with and without a projected layer",
+      "grader_notes": [
+        "We compare eight different models in our experiments. Four of them have a Projected Layer (see Fig. FIGREF2), while the others do not have, and this is the only difference between these two groups of our models. So, we actually include four models in our experiments (having a projected layer or not). Firstly, LastStateRNN is the classic RNN model, where the last state passes through an MLP and then the LR Layer estimates the corresponding probability. In contrast, in the AvgRNN model we consider the average vector of all states that come out of the cells. The AttentionRNN model is the one that it has been presented in BIBREF9. Moreover, we introduce the MultiAttentionRNN model for the harassment language detection, which instead of one attention, it includes four attentions, one for each category.",
+        "where $h_{*}$ is the state that comes out from the MLP. The weights $\\alpha _{t}$ are produced by an attention mechanism presented in BIBREF9 (see Fig. FIGREF7), which is an MLP with l layers. This attention mechanism differs from most previous ones BIBREF16, BIBREF17, because it is used in a classification setting, where there is no previously generated output sub-sequence to drive the attention. It assigns larger weights $\\alpha _{t}$ to hidden states $h_{t}$ corresponding to positions, where there is more evidence that the tweet should be harassment (or any other specific type of harassment) or not. In our work we are using four attention mechanisms instead of one that is presented in BIBREF9. Particularly, we are using one attention mechanism per category. Another element that differentiates our approach from Pavlopoulos et al. BIBREF9 is that we are using a projection layer for the word embeddings (see Fig. FIGREF2). In the next subsection we describe the Model Architecture of our approach."
+      ]
+    },
+    {
+      "id": "qasper_validation_d78f7f84a76a07b777d4092cb58161528ca3803c",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_2002_11910"
+      ],
+      "expected_citations": [
+        "qasper_2002_11910"
+      ],
+      "question": "Use the known paper \"Integrating Boundary Assembling into a DNN Framework for Named Entity Recognition in Chinese Social Media Text\" (doc_id: \"qasper_2002_11910\") to answer: What boundary assembling method is used?",
+      "answer": "This motivates us to carry out a backward greedy search over each sentence's label sequence to identify word boundaries. If two words segmented in a sentence are identified as nouns, and one word is immediately before the other, we assemble their boundaries, creating a new word candidate for entity recognition.",
+      "grader_notes": [
+        "In each sentence, Chinese characters are labeled as either Begin, Inside, End, or Singleton (BIES labeling). The likelihood of individual Chinese characters being labeled as each type is calculated by the LSTM module described in the previous section. BIBREF12 found in a Chinese corpus that the word label \"End\" has a better performance than \"Begin\". This motivates us to carry out a backward greedy search over each sentence's label sequence to identify word boundaries. If two words segmented in a sentence are identified as nouns, and one word is immediately before the other, we assemble their boundaries, creating a new word candidate for entity recognition. This strategy has the advantage to find named entities with long word length. It also reduces the influence caused by different segmentation criteria.",
+        "In each sentence, Chinese characters are labeled as either Begin, Inside, End, or Singleton (BIES labeling). The likelihood of individual Chinese characters being labeled as each type is calculated by the LSTM module described in the previous section. BIBREF12 found in a Chinese corpus that the word label \"End\" has a better performance than \"Begin\". This motivates us to carry out a backward greedy search over each sentence's label sequence to identify word boundaries. If two words segmented in a sentence are identified as nouns, and one word is immediately before the other, we assemble their boundaries, creating a new word candidate for entity recognition. This strategy has the advantage to find named entities with long word length. It also reduces the influence caused by different segmentation criteria."
+      ]
+    },
+    {
+      "id": "qasper_validation_dc1cec824507fc85ac1ba87882fe1e422ff6cffb",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1911_03059"
+      ],
+      "expected_citations": [
+        "qasper_1911_03059"
+      ],
+      "question": "Use the known paper \"A Comprehensive Comparison of Machine Learning Based Methods Used in Bengali Question Classification\" (doc_id: \"qasper_1911_03059\") to answer: what datasets did they use?",
+      "answer": "Dataset of total 3500 questions from the Internet and other sources such as books of general knowledge questions, history, etc.",
+      "grader_notes": [
+        "Though Bengali is the seventh most spoken language in terms of number of native speakers BIBREF23, there is no standard corpus of questions available BIBREF0. We have collected total 3500 questions from the Internet and other sources such as books of general knowledge questions, history etc. The corpus contains the questions and the classes each question belongs to.",
+        "Though Bengali is the seventh most spoken language in terms of number of native speakers BIBREF23, there is no standard corpus of questions available BIBREF0. We have collected total 3500 questions from the Internet and other sources such as books of general knowledge questions, history etc. The corpus contains the questions and the classes each question belongs to."
+      ]
+    },
+    {
+      "id": "qasper_validation_dea9e7fe8e47da5e7f31d9b1a46ebe34e731a596",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1806_05513"
+      ],
+      "expected_citations": [
+        "qasper_1806_05513"
+      ],
+      "question": "Use the known paper \"Humor Detection in English-Hindi Code-Mixed Social Media Content : Corpus and Baseline System\" (doc_id: \"qasper_1806_05513\") to answer: What type of system does the baseline classification use?",
+      "answer": "support vector machine BIBREF18 , random forest, extra tree and naive bayes classifier BIBREF19",
+      "grader_notes": [
+        "We experimented with four different classifiers, namely, support vector machine BIBREF18 , random forest, extra tree and naive bayes classifier BIBREF19 . Chi square feature selection algorithm is applied to reduces the size of our feature vector. For training our system classifier, we used Scikit-learn BIBREF19 .",
+        "We experimented with four different classifiers, namely, support vector machine BIBREF18 , random forest, extra tree and naive bayes classifier BIBREF19 . Chi square feature selection algorithm is applied to reduces the size of our feature vector. For training our system classifier, we used Scikit-learn BIBREF19 .",
+        "In this paper, we describe a freely available corpus of 3453 English-Hindi code-mixed tweets. The tweets are annotated with humorous(H) and non-humorous(N) tags along with the language tags at the word level. The task of humor identification in social media texts is analyzed as a classification problem and several machine learning classification models are used. The features used in our classification system are n-grams, bag-of-words, common words and hashtags. N-grams when trained with support vector machines with radial basis function kernel performed better than other features and yielded an accuracy of 68.5%. The best accuracy (69.3%) was given by support vector machines with radial basis function kernel."
+      ]
+    },
+    {
+      "id": "qasper_validation_ee2c9bc24d70daa0c87e38e0558e09ab97feb4f2",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1910_14599"
+      ],
+      "expected_citations": [
+        "qasper_1910_14599"
+      ],
+      "question": "Use the known paper \"Adversarial NLI: A New Benchmark for Natural Language Understanding\" (doc_id: \"qasper_1910_14599\") to answer: Do they use active learning to create their dataset?",
+      "answer": "Yes",
+      "grader_notes": [
+        "In our setup, our starting point is a base model, trained on NLI data. Rather than employing automated adversarial methods, here the model's \u201cadversary\u201d is a human annotator. Given a context (also often called a \u201cpremise\u201d in NLI), and a desired target label, we ask the human writer to provide a hypothesis that fools the model into misclassifying the label. One can think of the writer as a \u201cwhite hat\u201d hacker, trying to identify vulnerabilities in the system. For each human-generated example that is misclassified, we also ask the writer to provide a reason why they believe it was misclassified."
+      ]
+    },
+    {
+      "id": "qasper_validation_f03112b868b658c954db62fc64430bebbaa7d9e0",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1802_08636"
+      ],
+      "expected_citations": [
+        "qasper_1802_08636"
+      ],
+      "question": "Use the known paper \"Ranking Sentences for Extractive Summarization with Reinforcement Learning\" (doc_id: \"qasper_1802_08636\") to answer: Do they use other evaluation metrics besides ROUGE?",
+      "answer": "Yes",
+      "grader_notes": [
+        "We report results on the CNN and DailyMail news highlights datasets BIBREF14 which have been recently used as testbeds for the evaluation of neural summarization systems. Experimental results show that when evaluated automatically (in terms of ROUGE), our model outperforms state-of-the-art extractive and abstractive systems. We also conduct two human evaluations in order to assess (a) which type of summary participants prefer (we compare extractive and abstractive systems) and (b) how much key information from the document is preserved in the summary (we ask participants to answer questions pertaining to the content in the document by reading system summaries). Both evaluations overwhelmingly show that human subjects find our summaries more informative and complete."
+      ]
+    },
+    {
+      "id": "qasper_validation_f20a389ace2267aa61eddcc235535452ccdae0e6",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1909_09534"
+      ],
+      "expected_citations": [
+        "qasper_1909_09534"
+      ],
+      "question": "Use the known paper \"Creative GANs for generating poems, lyrics, and metaphors\" (doc_id: \"qasper_1909_09534\") to answer: Do they report results only on English data?",
+      "answer": "Yes",
+      "grader_notes": [
+        "We utilize AWD-LSTM BIBREF20 and TransformerXL BIBREF21 based language models. For model hyperparameters please to refer to Supplementary Section Table TABREF5. We use Adam optimizer BIBREF22 with $\\beta 1= 0.7$ and $\\beta 2= 0.8$ similar to BIBREF19 and use a batch size of 50. Other practices for LM training were the same as BIBREF21 and BIBREF20 for Transformer-XL and AWD-LSTM respectively. We refer to our proposed GAN as Creative-GAN and compare it to a baseline (a language model equivalent to our pre-trained generator) and a GumbelGAN model BIBREF14 across all proposed datasets. We use three creative English datasets with distinct linguistic characteristics: (1) A corpus of 740 classical and contemporary English poems, (2) a corpus of 14950 metaphor sentences retrieved from a metaphor database website and (3) a corpus of 1500 song lyrics ranging across genres. The mix of linguistic styles within this corpus offers the potential for interesting variation during the generation phase. We use the same pre-processing as in earlier work BIBREF19, BIBREF23. We reserve 10% of our data for test set and another 10% for our validation set.",
+        "We utilize AWD-LSTM BIBREF20 and TransformerXL BIBREF21 based language models. For model hyperparameters please to refer to Supplementary Section Table TABREF5. We use Adam optimizer BIBREF22 with $\\beta 1= 0.7$ and $\\beta 2= 0.8$ similar to BIBREF19 and use a batch size of 50. Other practices for LM training were the same as BIBREF21 and BIBREF20 for Transformer-XL and AWD-LSTM respectively. We refer to our proposed GAN as Creative-GAN and compare it to a baseline (a language model equivalent to our pre-trained generator) and a GumbelGAN model BIBREF14 across all proposed datasets. We use three creative English datasets with distinct linguistic characteristics: (1) A corpus of 740 classical and contemporary English poems, (2) a corpus of 14950 metaphor sentences retrieved from a metaphor database website and (3) a corpus of 1500 song lyrics ranging across genres. The mix of linguistic styles within this corpus offers the potential for interesting variation during the generation phase. We use the same pre-processing as in earlier work BIBREF19, BIBREF23. We reserve 10% of our data for test set and another 10% for our validation set."
+      ]
+    },
+    {
+      "id": "qasper_validation_fe2666ace293b4bfac3182db6d0c6f03ea799277",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1906_07662"
+      ],
+      "expected_citations": [
+        "qasper_1906_07662"
+      ],
+      "question": "Use the known paper \"State-of-the-Art Vietnamese Word Segmentation\" (doc_id: \"qasper_1906_07662\") to answer: Why challenges does word segmentation in Vietnamese pose?",
+      "answer": "Acquire very large Vietnamese corpus and build a classifier with it, design a develop a big data warehouse and analytic framework, build a system to incrementally learn new corpora and interactively process feedback.",
+      "grader_notes": [
+        "There are several challenges on supervised learning approaches in future work. The first challenge is to acquire very large Vietnamese corpus and to use them in building a classifier, which could further improve accuracy. In addition, applying linguistics knowledge on word context to extract useful features also enhances prediction performance. The second challenge is design and development of big data warehouse and analytic framework for Vietnamese documents, which corresponds to the rapid and continuous growth of gigantic volume of articles and/or documents from Web 2.0 applications, such as, Facebook, Twitter, and so on. It should be addressed that there are many kinds of Vietnamese documents, for example, Han - Nom documents and old and modern Vietnamese documents that are essential and still needs further analysis. According to our study, there is no a powerful Vietnamese language processing used for processing Vietnamese big data as well as understanding such language. The final challenge relates to building a system, which is able to incrementally learn new corpora and interactively process feedback. In particular, it is feasible to build an advance NLP system for Vietnamese based on Hadoop platform to improve system performance and to address existing limitations.",
+        "There are several challenges on supervised learning approaches in future work. The first challenge is to acquire very large Vietnamese corpus and to use them in building a classifier, which could further improve accuracy. In addition, applying linguistics knowledge on word context to extract useful features also enhances prediction performance. The second challenge is design and development of big data warehouse and analytic framework for Vietnamese documents, which corresponds to the rapid and continuous growth of gigantic volume of articles and/or documents from Web 2.0 applications, such as, Facebook, Twitter, and so on. It should be addressed that there are many kinds of Vietnamese documents, for example, Han - Nom documents and old and modern Vietnamese documents that are essential and still needs further analysis. According to our study, there is no a powerful Vietnamese language processing used for processing Vietnamese big data as well as understanding such language. The final challenge relates to building a system, which is able to incrementally learn new corpora and interactively process feedback. In particular, it is feasible to build an advance NLP system for Vietnamese based on Hadoop platform to improve system performance and to address existing limitations."
+      ]
+    },
+    {
+      "id": "qasper_validation_154a721ccc1d425688942e22e75af711b423e086",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1803_05223"
+      ],
+      "expected_citations": [
+        "qasper_1803_05223"
+      ],
+      "question": "Use the known paper \"MCScript: A Novel Dataset for Assessing Machine Comprehension Using Script Knowledge\" (doc_id: \"qasper_1803_05223\") to answer: what crowdsourcing platform was used?",
+      "answer": "Amazon Mechanical Turk",
+      "grader_notes": [
+        "Machine comprehension datasets consist of three main components: texts, questions and answers. In this section, we describe our data collection for these 3 components. We first describe a series of pilot studies that we conducted in order to collect commonsense inference questions (Section SECREF4 ). In Section SECREF5 , we discuss the resulting data collection of questions, texts and answers via crowdsourcing on Amazon Mechanical Turk (henceforth MTurk). Section SECREF17 gives information about some necessary postprocessing steps and the dataset validation. Lastly, Section SECREF19 gives statistics about the final dataset.",
+        "Machine comprehension datasets consist of three main components: texts, questions and answers. In this section, we describe our data collection for these 3 components. We first describe a series of pilot studies that we conducted in order to collect commonsense inference questions (Section SECREF4 ). In Section SECREF5 , we discuss the resulting data collection of questions, texts and answers via crowdsourcing on Amazon Mechanical Turk (henceforth MTurk). Section SECREF17 gives information about some necessary postprocessing steps and the dataset validation. Lastly, Section SECREF19 gives statistics about the final dataset."
+      ]
+    },
+    {
+      "id": "qasper_validation_74e866137b3452ec50fb6feaf5753c8637459e62",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1604_00400"
+      ],
+      "expected_citations": [
+        "qasper_1604_00400"
+      ],
+      "question": "Use the known paper \"Revisiting Summarization Evaluation for Scientific Articles\" (doc_id: \"qasper_1604_00400\") to answer: What manual Pyramid scores are used?",
+      "answer": " higher tiers of the pyramid",
+      "grader_notes": [
+        "In the TAC 2014 summarization track, Rouge was suggested as the evaluation metric for summarization and no human assessment was provided for the topics. Therefore, to study the effectiveness of the evaluation metrics, we use the semi-manual Pyramid evaluation framework BIBREF7 , BIBREF8 . In the pyramid scoring, the content units in the gold human written summaries are organized in a pyramid. In this pyramid, the content units are organized in tiers and higher tiers of the pyramid indicate higher importance. The content quality of a given candidate summary is evaluated with respect to this pyramid.",
+        "In the TAC 2014 summarization track, Rouge was suggested as the evaluation metric for summarization and no human assessment was provided for the topics. Therefore, to study the effectiveness of the evaluation metrics, we use the semi-manual Pyramid evaluation framework BIBREF7 , BIBREF8 . In the pyramid scoring, the content units in the gold human written summaries are organized in a pyramid. In this pyramid, the content units are organized in tiers and higher tiers of the pyramid indicate higher importance. The content quality of a given candidate summary is evaluated with respect to this pyramid.",
+        "To analyze the quality of the evaluation metrics, following the pyramid framework, we design an annotation scheme that is based on identification of important content units. Consider the following example:"
+      ]
+    },
+    {
+      "id": "qasper_validation_792f6d76d2befba2af07198584aac1b189583ae4",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1605_03481"
+      ],
+      "expected_citations": [
+        "qasper_1605_03481"
+      ],
+      "question": "Use the known paper \"Tweet2Vec: Character-Based Distributed Representations for Social Media\" (doc_id: \"qasper_1605_03481\") to answer: Is this hashtag prediction task an established task, or something new?",
+      "answer": "established task",
+      "grader_notes": [
+        "Hashtag prediction for social media has been addressed earlier, for example in BIBREF15 , BIBREF16 . BIBREF15 also use a neural architecture, but compose text embeddings from a lookup table of words. They also show that the learned embeddings can generalize to an unrelated task of document recommendation, justifying the use of hashtags as supervision for learning text representations.",
+        "Hashtag prediction for social media has been addressed earlier, for example in BIBREF15 , BIBREF16 . BIBREF15 also use a neural architecture, but compose text embeddings from a lookup table of words. They also show that the learned embeddings can generalize to an unrelated task of document recommendation, justifying the use of hashtags as supervision for learning text representations."
+      ]
+    },
+    {
+      "id": "qasper_validation_cfcdd73e712caf552ba44d0aa264d8dace65a589",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1909_02027"
+      ],
+      "expected_citations": [
+        "qasper_1909_02027"
+      ],
+      "question": "Use the known paper \"An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction\" (doc_id: \"qasper_1909_02027\") to answer: Where does the data come from?",
+      "answer": "crowsourcing platform",
+      "grader_notes": [
+        "We introduce a new crowdsourced dataset of 23,700 queries, including 22,500 in-scope queries covering 150 intents, which can be grouped into 10 general domains. The dataset also includes 1,200 out-of-scope queries. Table TABREF2 shows examples of the data.",
+        "We defined the intents with guidance from queries collected using a scoping crowdsourcing task, which prompted crowd workers to provide questions and commands related to topic domains in the manner they would interact with an artificially intelligent assistant. We manually grouped data generated by scoping tasks into intents. To collect additional data for each intent, we used the rephrase and scenario crowdsourcing tasks proposed by BIBREF2. For each intent, there are 100 training queries, which is representative of what a team with a limited budget could gather while developing a task-driven dialog system. Along with the 100 training queries, there are 20 validation and 30 testing queries per intent.",
+        "Out-of-scope queries were collected in two ways. First, using worker mistakes: queries written for one of the 150 intents that did not actually match any of the intents. Second, using scoping and scenario tasks with prompts based on topic areas found on Quora, Wikipedia, and elsewhere. To help ensure the richness of this additional out-of-scope data, each of these task prompts contributed to at most four queries. Since we use the same crowdsourcing method for collecting out-of-scope data, these queries are similar in style to their in-scope counterparts."
+      ]
+    },
+    {
+      "id": "qasper_validation_f651cd144b7749e82aa1374779700812f64c8799",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": [
+        "qasper_1810_04428"
+      ],
+      "expected_citations": [
+        "qasper_1810_04428"
+      ],
+      "question": "Use the known paper \"Improving Neural Text Simplification Model with Simplified Corpora\" (doc_id: \"qasper_1810_04428\") to answer: what evaluation metrics did they use?",
+      "answer": "BLEU , FKGL , SARI ",
+      "grader_notes": [
+        "Metrics. Three metrics in text simplification are chosen in this paper. BLEU BIBREF5 is one traditional machine translation metric to assess the degree to which translated simplifications differed from reference simplifications. FKGL measures the readability of the output BIBREF23 . A small FKGL represents simpler output. SARI is a recent text-simplification metric by comparing the output against the source and reference simplifications BIBREF20 .",
+        "Metrics. Three metrics in text simplification are chosen in this paper. BLEU BIBREF5 is one traditional machine translation metric to assess the degree to which translated simplifications differed from reference simplifications. FKGL measures the readability of the output BIBREF23 . A small FKGL represents simpler output. SARI is a recent text-simplification metric by comparing the output against the source and reference simplifications BIBREF20 .",
+        "We evaluate the output of all systems using human evaluation. The metric is denoted as Simplicity BIBREF8 . The three non-native fluent English speakers are shown reference sentences and output sentences. They are asked whether the output sentence is much simpler (+2), somewhat simpler (+1), equally (0), somewhat more difficult (-1), and much more difficult (-2) than the reference sentence."
+      ]
+    },
+    {
+      "id": "qasper_validation_007b13f05d234d37966d1aa7d85b5fd78564ff45",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "expected_citations": [],
+      "question": "Use the known paper \"A Portuguese Native Language Identification Dataset\" (doc_id: \"qasper_1804_11346\") to answer: Do the errors of the model reflect linguistic similarity between different L1s?",
+      "answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ]
+    },
+    {
+      "id": "qasper_validation_252a645af9876241fb166e5822992ce17fec6eb6",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "expected_citations": [],
+      "question": "Use the known paper \"Shallow reading with Deep Learning: Predicting popularity of online content using only its title\" (doc_id: \"qasper_1707_06806\") to answer: What is the average length of the title text?",
+      "answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ]
+    },
+    {
+      "id": "qasper_validation_27cf16bc9ef71761b9df6217f00f39f21130ce15",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "expected_citations": [],
+      "question": "Use the known paper \"A Surprising Density of Illusionable Natural Speech\" (doc_id: \"qasper_1906_01040\") to answer: Are humans and machine learning systems fooled by the same kinds of illusions?",
+      "answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ]
+    },
+    {
+      "id": "qasper_validation_31101dc9937f108e27e08a5f34be44f0090b8b6b",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "expected_citations": [],
+      "question": "Use the known paper \"PolyResponse: A Rank-based Approach to Task-Oriented Dialogue with Application in Restaurant Search and Booking\" (doc_id: \"qasper_1909_01296\") to answer: What metric is used to evaluate PolyReponse system?",
+      "answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ]
+    },
+    {
+      "id": "qasper_validation_4d7ff4e5d06902de85b0e9a364dc455196d06a7d",
+      "split": "pilot_evaluation",
+      "focus": "qasper_known_paper_evidence_qa",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "expected_citations": [],
+      "question": "Use the known paper \"Improving Distributed Representations of Tweets - Present and Future\" (doc_id: \"qasper_1706_09673\") to answer: Which representation learning architecture do they adopt?",
+      "answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ]
+    }
+  ]
+}

@@ -63,7 +63,7 @@ SUBMIT: The paper excludes retrieved tokens from the policy loss ... CITATIONS: 
 | Markdown/PDF and Obsidian snapshot import | Working |
 | Qwen2.5-7B SFT and GRPO comparison on MuSiQue | Complete |
 | Qwen3-8B baseline on AI-paper and QASPER tasks | Complete |
-| Qwen3-8B QLoRA on QASPER code trajectories | Training; behavioral result pending |
+| Qwen3-8B QLoRA on QASPER code trajectories | Complete; improved the locked 40-question evaluation |
 | Weekly paper discovery and ranking | Designed, not complete |
 | MCP server for host assistants | Interface drafted, server not complete |
 
@@ -100,9 +100,30 @@ occasionally mischaracterized a correctly cited passage. That diagnosis led to t
 QASPER-grounded SFT experiment. See
 [docs/QWEN3_BASELINE_PILOT.md](docs/QWEN3_BASELINE_PILOT.md).
 
-The Qwen3 training result is deliberately omitted until the adapter and base model have been run
-through the same locked 40-question evaluation. Training loss and token accuracy alone are not
-evidence that research behavior improved.
+### Qwen3-8B SFT and harness diagnosis
+
+The base model and QASPER SFT adapter have now been run through the same locked 40-question
+evaluation. SFT raised outcome reward from 0.152 to 0.203 and semantic passes from 9/40 to 19/40.
+It also eliminated malformed tool actions in this run and increased required-paper recall from
+0.65 to 1.00. The adapter is better at operating the research environment, although 7 of the 20
+answerable questions were still refused incorrectly.
+
+A follow-up ablation separated model failures from harness failures. In several cases, Qwen wrote
+a reasonable query but `search_within()` returned only the three highest-scoring windows. Those
+windows often overlapped, while the passage containing the answer ranked fourth through eighth.
+The model cannot reason from evidence the harness never places in its context.
+
+On a 25-question development diagnostic selected from the earlier failures, changing only the
+number of returned windows from three to eight increased outcome reward from 0.266 to 0.314 and
+semantic passes from 10/25 to 12/25 without breaking any of the ten control cases. A longer prompt
+performed worse: it encouraged more tool calls and increased episodes containing an exact repeated
+action from 1 to 7 at top three, while semantic passes fell from 10 to 9.
+
+These diagnostic numbers are not held-out performance because the questions were selected after
+examining failures. Their value is causal: retrieval depth explains part of the remaining error,
+while prompt wording alone does not. See
+[docs/QASPER_FAILURE_ATTRIBUTION.md](docs/QASPER_FAILURE_ATTRIBUTION.md) for the transcripts,
+controls, and next experiment.
 
 ## Training approach
 
@@ -134,8 +155,9 @@ Every evaluation writes full trajectories plus a manifest containing the checkpo
 IDs, corpus hash, prompt settings, decoding settings, reward version, hardware, seed, and source
 commit. Results with different protocol hashes are not treated as checkpoint comparisons.
 
-The Qwen3 abstention experiment uses 40 held-out QASPER test questions: 20 answerable and 20
-unanswerable, with no paper overlap with training. Its pre-registered decision rule requires:
+The Qwen3 abstention experiment uses 40 held-out QASPER validation-split questions: 20 answerable
+and 20 unanswerable, with no paper overlap with training. Its pre-registered decision rule
+requires:
 
 - a statistically significant increase in abstention recall;
 - no more than a 0.15 absolute increase in false abstentions on answerable questions; and

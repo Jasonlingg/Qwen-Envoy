@@ -125,6 +125,7 @@ def build_policies(
     *,
     api_key: str | None = None,
     as_factories: bool = False,
+    system_prompt: str | None = None,
 ) -> dict[str, object]:
     """Build selected policies without coupling the harness to model classes."""
     factories = {
@@ -133,10 +134,10 @@ def build_policies(
         "sparse_rag": lambda: SparseRAGPolicy(corpus=corpus, api_key=api_key),
         "context_stuffing": lambda: ContextStuffingPolicy(corpus=corpus, api_key=api_key),
         "single_shot": lambda: SingleShotPolicy(corpus=corpus, api_key=api_key),
-        "qwen_base_policy": lambda: QwenBasePolicy(),
-        "qwen_sft_policy": lambda: QwenSFTPolicy(),
-        "grpo_policy": lambda: GRPOPolicy(),
-        "openai_compatible": lambda: OpenAICompatiblePolicy(),
+        "qwen_base_policy": lambda: QwenBasePolicy(system_prompt=system_prompt),
+        "qwen_sft_policy": lambda: QwenSFTPolicy(system_prompt=system_prompt),
+        "grpo_policy": lambda: GRPOPolicy(system_prompt=system_prompt),
+        "openai_compatible": lambda: OpenAICompatiblePolicy(system_prompt=system_prompt),
     }
     selected = {
         name: factory

@@ -134,8 +134,7 @@ class DockerREPL(BaseREPL):
         The supplied host corpus is mounted read-only over any baked-in corpus.
         CORPUS_DIR tells the tool preamble which mounted corpus to use.
         """
-        result = subprocess.run(
-            [
+        command = [
                 "docker", "create",
                 "--memory", self.memory_limit,
                 "--network", "none",
@@ -143,9 +142,16 @@ class DockerREPL(BaseREPL):
                 f"type=bind,src={self.corpus_path},"
                 f"dst={self._container_corpus_dir},readonly",
                 "-e", f"CORPUS_DIR={self._container_corpus_dir}",
+        ]
+        search_top_k = os.environ.get("ENVOY_SEARCH_WITHIN_TOP_K")
+        if search_top_k:
+            command.extend(["-e", f"ENVOY_SEARCH_WITHIN_TOP_K={search_top_k}"])
+        command.extend([
                 "-i", self.image,
                 "python3", "-i",
-            ],
+        ])
+        result = subprocess.run(
+            command,
             capture_output=True, text=True, timeout=30,
         )
         if result.returncode != 0:
