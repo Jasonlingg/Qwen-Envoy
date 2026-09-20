@@ -214,6 +214,42 @@ reformulation is useful, while the control regression and extra calls show that 
 text is not a safe production policy. The saved transcript, manifest, GPU log, and disclosed
 25-case semantic self-review are under `out/research/qasper-query-planning-v1-gpu/`.
 
+## Bounded scan-helper follow-up
+
+The next intervention moved the full-paper windowing loop into a model-agnostic REPL helper:
+`scan(doc_id, pattern)`. It returns at most six non-overlapping 900-character passages around
+case-insensitive regular-expression matches. The model still chooses the paper, pattern, and when
+to use the fallback. This tests whether the earlier prompt failed because Qwen had to write an
+unfamiliar multi-line program.
+
+The first live version immediately exposed an interface hazard. On the fourth question Qwen
+generated a 6,654-character regular expression that enumerated guessed dataset names, then repeated
+the exact action three times. The run was stopped after three completed episodes because it had
+already failed the loop and cost gate. The helper was then limited to 160-character patterns, and
+the prompt required two to six generic anchors, one scan call at most, and no guessed candidate
+answers. The aborted log is retained as `out/research/qasper-scan-v1-gpu/eval-v1-aborted.log`.
+
+The corrected condition used the same checkpoint, questions, raw top-three retrieval, decoding,
+seed, and RTX 4090 as the earlier runs:
+
+| Condition | Outcome reward | Semantic pass / partial / fail | Target cases rescued | Controls retained | Tool actions | Mean steps |
+|---|---:|---:|---:|---:|---:|---:|
+| Original prompt, raw top 3 | **0.266** | 10 / 4 / 11 | 0 / 15 | **10 / 10** | 42 | 2.68 |
+| Bounded scan prompt, raw top 3 | 0.262 | **12 / 4 / 9** | **3 / 15** | 9 / 10 | **37** | **2.48** |
+
+The bounded version eliminated the runaway behavior and reduced tool use, but it still failed the
+acceptance gate. It invoked `scan()` in only one of 25 episodes. That invocation correctly found
+the 3,500-question Bengali corpus, but Qwen skipped the helper on the other diagnosed misses. The
+prompt also regressed the previously correct Amazon Mechanical Turk control. The helper remains
+available for explicit experiments, but it is not advertised in the default environment prompt
+and the scan-recovery suffix is not a production configuration.
+
+This closes the prompt-versus-interface diagnosis. A long program was too difficult to elicit; a
+one-line helper was easy enough when selected, but instructions alone did not make the checkpoint
+select it reliably. The remaining behavior is now suitable for a small targeted SFT continuation:
+demonstrations should show one failed topical query, one compact scan or answer-shaped query,
+evidence-based submission, and matched insufficient-evidence examples that preserve abstention.
+
 These figures are assistant-reviewed development diagnostics, not held-out results. The aggressive,
 conservative, and ranked-diverse transcripts and disclosed reviews are stored under
 `out/research/qasper-search-within-dedupe-v1-gpu/` and
@@ -292,10 +328,10 @@ Raw top eight remains the only end-to-end condition that rescued two target case
 all ten controls, but it costs 2.5 times the original observation text. Keep raw top three as the
 stable default.
 
-The bounded full-text experiment now isolates a behavior that demonstrations can teach: after a
-topical search misses, formulate an answer-shaped query or inspect the paper broadly, then stop
-once the answer is supported. Before another full SFT run, build and inspect a small set of focused
-trajectories containing that recovery behavior and the failed insufficient-evidence control. A
-cheaper alternative is to expose the bounded scan as one simple REPL helper and test whether Qwen
-uses it without additional training. Either candidate must first pass the same 25-question gate;
-only then should it run on the locked 40-question comparison.
+The bounded full-text and scan-helper experiments isolate a behavior that demonstrations can teach:
+after a topical search misses, formulate an answer-shaped query or inspect the paper broadly, then
+stop once the answer is supported. Build and inspect a small set of focused trajectories containing
+that recovery behavior and matched insufficient-evidence controls, then continue SFT briefly from
+the current adapter with multiple early checkpoints. The new checkpoint must first pass the same
+25-question gate; only then should it run on a new paper-disjoint evaluation. The original locked
+40-question set has already been consumed for diagnosis and must not be presented as held-out.

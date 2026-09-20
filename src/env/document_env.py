@@ -52,7 +52,6 @@ SYSTEM_PREAMBLE = """You have a Python REPL with these functions loaded:
   read(doc_id)                        → full document text
   passage(doc_id, start, length)      → exact text with stable character offsets
   extract(doc_id, pattern)            → regex matches
-  scan(doc_id, pattern)               → bounded context around full-document regex matches
   search_within(doc_id, query)        → search inside a specific document
   verify(doc_id, claim)               → check if a claim is supported by a doc
   list_docs()                         → [{"doc_id", "title", "chars"}]
