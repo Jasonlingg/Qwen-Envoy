@@ -8,6 +8,12 @@ to a larger assistant. The small model does the bounded, repeatable work: write 
 with source IDs. The larger assistant can decide when research is needed and explain the returned
 evidence to the user.
 
+This boundary is the reason to use Qwen. It sits between the paper corpus and a stronger reasoning
+model as a cheaper research worker. Qwen converts a bounded question into a compact, cited evidence
+packet; Claude, GPT, or another host model reasons over that packet in the wider conversation. A
+successful checkpoint does not need to replace the host model. It needs to reduce expensive
+context and retrieval work without losing evidence, inventing support, or hiding uncertainty.
+
 The user-facing product is a weekly research radar: discover new work in selected AI topics, rank
 what matters, investigate the strongest candidates, save durable notes and a weekly digest to
 Obsidian, and expose the resulting library to Claude, GPT, or another host through MCP. See

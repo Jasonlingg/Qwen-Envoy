@@ -9,6 +9,13 @@ needed, sends a bounded question to Envoy, and receives an evidence packet it ca
 a broader task. The first product target is a weekly AI-research workflow over papers and an
 Obsidian vault.
 
+Qwen's role is the inexpensive middle layer between that reasoning model and the paper library. It
+handles repeated search, reading, extraction, and citation work so the larger model receives a
+small evidence packet instead of entire papers. The checkpoint is therefore judged as a research
+worker: it must find the right evidence reliably, preserve uncertainty, and cost less than asking
+the larger model to perform every retrieval step. The larger model remains responsible for the
+final explanation and broader reasoning.
+
 This repository contains the working code-execution environment, data and training pipelines,
 Qwen and Claude policies, reproducible evaluation harnesses, and the vault importer. The scheduled
 weekly pipeline and MCP server are still planned work.

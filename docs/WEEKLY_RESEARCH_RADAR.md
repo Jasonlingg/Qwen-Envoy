@@ -9,6 +9,11 @@ This document is the active scope. Keep the project centered on one outcome:
 > through MCP. Demonstrate that training measurably improves the Qwen code-execution worker used
 > inside that product.
 
+The architectural claim is specific: Qwen is a low-cost query worker between the reasoning model
+and the paper library. It searches and compresses the relevant source material into a cited
+evidence packet. The host model uses that packet to explain, compare, and apply the research. Keep
+model training and harness work focused on making this middle layer more reliable and economical.
+
 The project has two non-negotiable success gates.
 
 ### 1. The product must be useful
