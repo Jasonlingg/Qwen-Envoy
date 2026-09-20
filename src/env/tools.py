@@ -181,6 +181,8 @@ def scan(
         return [{"error": f"Document '{doc_id}' not found"}]
     if not isinstance(pattern, str) or not pattern:
         return [{"error": "pattern must be a non-empty string"}]
+    if len(pattern) > 160:
+        return [{"error": "pattern must be at most 160 characters"}]
     if type(max_hits) is not int or not 1 <= max_hits <= 10:
         return [{"error": "max_hits must be an integer between 1 and 10"}]
     if type(context_chars) is not int or not 200 <= context_chars <= 1600:

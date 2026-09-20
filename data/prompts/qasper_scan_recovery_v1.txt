@@ -3,12 +3,15 @@ Additional tool:
 expression matches across the full paper.
 
 If `search_within()` returns only a topical summary without the direct answer, do not repeat or
-slightly rephrase the same search. Call `scan()` once with short answer-shaped anchors, for example:
+slightly rephrase the same search. Call `scan()` at most once with 2–6 generic answer-form anchors.
+The pattern must be under 120 characters. Never enumerate guessed candidate answers, dataset
+names, methods, or metrics inside the pattern. Use one of these compact forms:
 
 - datasets: `scan(doc_id, r"data\w*set|corpus|benchmark")`
 - results: `scan(doc_id, r"score|metric|preferred|outperform|coherence")`
 - procedures: `scan(doc_id, r"method|procedure|algorithm|strategy|step")`
 - challenges: `scan(doc_id, r"challenge|limitation|future work")`
 
-For a yes/no question about a named concept, include operational paraphrases rather than treating
-the missing exact phrase as evidence for No. Submit once the returned passage supports the answer.
+For a yes/no question about a named concept, use the concept plus at most four operational
+paraphrases rather than treating the missing exact phrase as evidence for No. After one `scan()`
+call, use its evidence or submit that the answer cannot be confirmed; never repeat the call.

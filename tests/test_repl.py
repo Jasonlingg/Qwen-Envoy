@@ -306,6 +306,7 @@ def test_scan_returns_bounded_non_overlapping_contexts(tmp_path) -> None:
     [
         ('scan("missing", "answer")', "not found"),
         ('scan("paper", "[")', "Invalid regex"),
+        (f'scan("paper", {"x" * 161!r})', "at most 160"),
         ('scan("paper", "answer", max_hits=0)', "max_hits"),
         ('scan("paper", "answer", context_chars=100)', "context_chars"),
     ],
