@@ -275,6 +275,57 @@ def test_passage_returns_exact_text_and_offsets(repl: LocalREPL) -> None:
     assert output.strip() == "0 20 20"
 
 
+def test_scan_returns_bounded_non_overlapping_contexts(tmp_path) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    text = "prefix " + "x" * 300 + "Dataset Alpha and corpus Beta. " + "y" * 1000
+    text += "Benchmark Gamma contains the answer."
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": text,
+    }))
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(
+            'print(json.dumps(scan("paper", r"dataset|corpus|benchmark", '
+            'max_hits=3, context_chars=300)))'
+        )
+    finally:
+        repl.kill_session()
+    results = json.loads(output)
+
+    assert len(results) == 2
+    assert [item["match"].lower() for item in results] == ["dataset", "benchmark"]
+    assert all(item["text"] == text[item["offset"]:item["end"]] for item in results)
+    assert all(len(item["text"]) <= 300 for item in results)
+    assert results[0]["end"] <= results[1]["offset"]
+
+
+@pytest.mark.parametrize(
+    ("call", "message"),
+    [
+        ('scan("missing", "answer")', "not found"),
+        ('scan("paper", "[")', "Invalid regex"),
+        ('scan("paper", "answer", max_hits=0)', "max_hits"),
+        ('scan("paper", "answer", context_chars=100)', "context_chars"),
+    ],
+)
+def test_scan_reports_invalid_inputs(tmp_path, call, message) -> None:
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    (corpus / "paper.json").write_text(json.dumps({
+        "doc_id": "paper", "title": "Paper", "text": "answer",
+    }))
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(call)
+    finally:
+        repl.kill_session()
+
+    assert message in output
+
+
 def test_bare_search_call_auto_prints_its_result(repl: LocalREPL) -> None:
     """A bare search(...) with no print() must still produce visible output —
     otherwise the model gets zero feedback and keeps retrying blind."""

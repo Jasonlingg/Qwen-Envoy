@@ -1,8 +1,9 @@
 """Tool preamble injected into the REPL at session start.
 
-Defines search(), read(), extract(), aggregate(), search_within(), verify()
-functions that operate on the mounted corpus directory. Includes memoization
-so re-running the cumulative script doesn't repeat expensive file reads.
+Defines search(), read(), passage(), extract(), scan(), aggregate(),
+search_within(), and verify() functions that operate on the mounted corpus
+directory. Includes memoization so re-running the cumulative script doesn't
+repeat expensive file reads.
 """
 
 TOOL_PREAMBLE = '''
@@ -163,6 +164,53 @@ def extract(doc_id: str, pattern: str) -> list[str]:
         return [f"ERROR: Document '{doc_id}' not found"]
     return re.findall(pattern, doc["text"])
 
+def scan(
+    doc_id: str,
+    pattern: str,
+    max_hits: int = 6,
+    context_chars: int = 900,
+) -> list[dict]:
+    """Return bounded, non-overlapping contexts around full-document regex matches.
+
+    This is the context-preserving counterpart to ``extract()``. It lets an
+    agent search for answer-shaped language anywhere in a known document
+    without printing the full text or writing its own windowing loop.
+    """
+    doc = _load_doc(doc_id)
+    if doc is None:
+        return [{"error": f"Document '{doc_id}' not found"}]
+    if not isinstance(pattern, str) or not pattern:
+        return [{"error": "pattern must be a non-empty string"}]
+    if type(max_hits) is not int or not 1 <= max_hits <= 10:
+        return [{"error": "max_hits must be an integer between 1 and 10"}]
+    if type(context_chars) is not int or not 200 <= context_chars <= 1600:
+        return [{"error": "context_chars must be an integer between 200 and 1600"}]
+
+    text = doc["text"]
+    before = context_chars // 3
+    results = []
+    try:
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+        for match in matches:
+            start = max(0, match.start() - before)
+            end = min(len(text), start + context_chars)
+            # Multiple nearby matches should not spend the bounded result
+            # budget on nearly identical evidence.
+            if results and start < results[-1]["end"]:
+                continue
+            results.append({
+                "doc_id": doc_id,
+                "text": text[start:end],
+                "offset": start,
+                "end": end,
+                "match": match.group(0)[:160],
+            })
+            if len(results) == max_hits:
+                break
+    except re.error as error:
+        return [{"error": f"Invalid regex: {error}"}]
+    return results
+
 def aggregate(doc_ids: list[str], field: str) -> list[dict]:
     """Extract a JSON metadata field across multiple documents."""
     results = []
@@ -319,7 +367,7 @@ def list_docs() -> list[dict]:
     ]
 
 print(
-    "Tools loaded: search(), read(), passage(), extract(), aggregate(), "
+    "Tools loaded: search(), read(), passage(), extract(), scan(), aggregate(), "
     "search_within(), verify(), list_docs()"
 )
 print(f"Corpus: {len(list_docs())} documents available")

@@ -1,0 +1,14 @@
+Additional tool:
+`scan(doc_id, pattern, max_hits=6)` returns bounded passages around case-insensitive regular-
+expression matches across the full paper.
+
+If `search_within()` returns only a topical summary without the direct answer, do not repeat or
+slightly rephrase the same search. Call `scan()` once with short answer-shaped anchors, for example:
+
+- datasets: `scan(doc_id, r"data\w*set|corpus|benchmark")`
+- results: `scan(doc_id, r"score|metric|preferred|outperform|coherence")`
+- procedures: `scan(doc_id, r"method|procedure|algorithm|strategy|step")`
+- challenges: `scan(doc_id, r"challenge|limitation|future work")`
+
+For a yes/no question about a named concept, include operational paraphrases rather than treating
+the missing exact phrase as evidence for No. Submit once the returned passage supports the answer.

@@ -313,6 +313,7 @@ model family.
 | `read(doc_id)` | Read a complete document |
 | `passage(doc_id, start, length)` | Return an exact passage with stable character offsets |
 | `extract(doc_id, pattern)` | Run a regular expression over one document |
+| `scan(doc_id, pattern)` | Return bounded context around regex matches across a full document |
 | `aggregate(doc_ids, field)` | Collect a metadata field across documents |
 | `search_within(doc_id, query)` | Rank passages inside one document |
 | `verify(doc_id, claim)` | Check claim keywords and return a matching excerpt |
