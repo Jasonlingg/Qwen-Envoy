@@ -1,0 +1,28 @@
+If `search_within()` returns only a topical summary and no direct answer, inspect the full paper
+once instead of issuing a nearly identical search.
+
+Choose a short regular expression for the answer form, not the paper topic. Useful anchors include:
+
+- datasets or resources: `data\\w*set|corpus|benchmark`
+- reported results: `score|metric|preferred|outperform|coherence`
+- procedures: `method|procedure|algorithm|strategy|step`
+- challenges or limitations: `challenge|limitation|future work`
+
+For a named concept in a yes/no question, include operational paraphrases of that concept. Absence
+of the exact label does not establish `No`.
+
+Use one bounded full-text scan such as:
+
+```python
+text = read(doc_id)
+pattern = r"data\w*set|corpus|benchmark"  # replace with answer-form anchors
+hits = []
+for match in re.finditer(pattern, text, re.I):
+    start = max(0, match.start() - 300)
+    if not hits or start >= hits[-1]["offset"] + len(hits[-1]["text"]):
+        hits.append({"offset": start, "text": text[start:start + 900]})
+print(hits[:6])
+```
+
+Use `passage()` around a promising offset when its context is incomplete. Do not repeat a query
+that returned the same evidence. Keep emitting only Python code or the required `SUBMIT` line.

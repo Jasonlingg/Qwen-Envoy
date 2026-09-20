@@ -164,6 +164,33 @@ one insufficient-evidence control. Mean steps rose from 2.68 to 2.96 and episode
 repeated action rose from two to three compared with raw top eight. This mode therefore remains
 available for experiments but is not the default.
 
+## Query-planning recovery candidate
+
+The five failures attributed to query planning share one behavior: Qwen searches with topical
+labels such as `results new dataset` or `boundary assembling method`, sees an abstract or summary,
+and either stops or repeats nearly the same query. Increasing lexical depth, changing to BM25, and
+adding dense MiniLM ranking did not reliably retrieve these passages from the same generic query.
+The missing text often uses answer-shaped language that is absent from the query, such as metric
+names, procedural verbs, or future-work wording.
+
+The next candidate keeps raw top-three retrieval unchanged. A short prompt teaches Qwen to fall
+back to one bounded full-text regular-expression scan using answer-form anchors—datasets,
+reported scores, procedures, challenges, or operational paraphrases of a named concept. This uses
+the existing `read()` function and Python runtime, so it adds no retrieval service or model-specific
+tool.
+
+An offline diagnostic applied those generic answer-form patterns to the five query-planning
+failures. Gold evidence was used only to score coverage: observed model windows covered at least
+20% of an answer-bearing span in 0/5 cases, while the bounded scan covered it in 5/5. This is an
+upper bound on tool capability, not model performance; it does not show that Qwen will select the
+right pattern or interpret the returned passage. The diagnostic is reproducible with
+`scripts/audit_qasper_query_planning.py`.
+
+The behavioral acceptance rule remains unchanged: rescue at least two of the fifteen target
+failures, preserve all ten controls, and avoid a material increase in repeated actions. The
+candidate must pass that rule before changing the default or running the locked 40-question
+comparison.
+
 These figures are assistant-reviewed development diagnostics, not held-out results. The aggressive,
 conservative, and ranked-diverse transcripts and disclosed reviews are stored under
 `out/research/qasper-search-within-dedupe-v1-gpu/` and
@@ -225,11 +252,22 @@ CHECKPOINT_PATH=/path/to/checkpoint-50 \
 ./scripts/run_qasper_dedupe_ablation.sh
 ```
 
+Run the offline query-planning audit and its pending behavioral condition with:
+
+```bash
+python scripts/audit_qasper_query_planning.py
+
+BASE_MODEL_PATH=/path/to/Qwen3-8B \
+CHECKPOINT_PATH=/path/to/checkpoint-50 \
+./scripts/run_qasper_query_planning_ablation.sh
+```
+
 ## Decision and next experiment
 
 Do not adopt the recovery prompt, either merged-passage mode, or `ranked_diverse` as the default.
 Raw top eight remains the only end-to-end condition that rescued two target cases while preserving
 all ten controls, but it costs 2.5 times the original observation text. Keep raw top three as the
-stable default for now and move the next experiment to query planning rather than more passage
-formatting or more SFT data. Any production change still needs the locked 40-question base/SFT
-comparison after it passes this selected development diagnostic.
+stable default while testing the bounded full-text query-recovery candidate. Do not generate more
+SFT data unless that experiment isolates a remaining model behavior that demonstrations can teach.
+Any production change still needs the locked 40-question base/SFT comparison after it passes this
+selected development diagnostic.
