@@ -336,6 +336,8 @@ model family.
 - [Weekly research radar](docs/WEEKLY_RESEARCH_RADAR.md): product scope and remaining components
 - [Qwen3 baseline pilot](docs/QWEN3_BASELINE_PILOT.md): measured research-agent failures
 - [Qwen3 SFT prefix diagnosis](docs/QWEN3_SFT_PREFIX_DIAGNOSIS.md): failed run analysis and repair
+- [QASPER GRPO experiment](docs/qasper-grpo/README.md): checkpoint curve, behavioral regressions,
+  optimization diagnosis, and the next bounded ablation
 - [Evaluation runbook](docs/EVAL_RUNBOOK.md): reproducible checkpoint comparison
 - [Obsidian workflow](docs/OBSIDIAN_WORKFLOW.md): snapshot import and cited-note export
 - [Results](RESULTS.md): dated experiment history
