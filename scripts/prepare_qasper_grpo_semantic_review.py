@@ -81,6 +81,7 @@ def main() -> None:
     parser.add_argument("--corpus", type=Path, required=True)
     parser.add_argument("--sft", type=Path, required=True)
     parser.add_argument("--rl", type=Path, required=True)
+    parser.add_argument("--rl-label", default="rl-5")
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
@@ -97,7 +98,7 @@ def main() -> None:
     review, key = [], []
     counter = 1
     for question in questions:
-        systems = ["sft", "rl-5"]
+        systems = ["sft", args.rl_label]
         rng.shuffle(systems)
         candidates = []
         for system in systems:

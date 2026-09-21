@@ -384,3 +384,17 @@ The verified local archive is
 `out/research/qasper-rl-v2/artifacts/envoy-drgrpo-centered-20260921.tar.gz` (SHA-256
 `db7412a82b1a9513cf49de6344374f93aea274e13ce38abea57c66c36c166aed`). Estimated A40 compute was
 $3.06, below the $5 ceiling. The RunPod pod is stopped.
+
+## Paper-disjoint confirmation result — September 21, 2026
+
+Centered checkpoint 2 was then compared with unchanged SFT on a previously frozen 40-question
+confirmation set covering 39 unseen QASPER papers. The development improvement did not replicate:
+SFT scored 0.3462 automatic reward and GRPO scored 0.3531, a +0.0069 paired difference with a 95%
+bootstrap interval of [-0.0169, 0.0375]. Thirty-eight questions tied automatically.
+
+The pre-registered identity-blind semantic review favored SFT by one question: SFT produced 13
+passes, 2 partials, and 25 failures; GRPO produced 12, 3, and 25. The automatic GRPO win replaced a
+false refusal with an unsupported answer and was not a semantic win. GRPO's only semantic change
+was a pass-to-partial regression. The checkpoint fails the confirmation gates and is not promoted.
+See [`QASPER_GRPO_CONFIRMATION.md`](QASPER_GRPO_CONFIRMATION.md) for the complete result and
+artifacts.

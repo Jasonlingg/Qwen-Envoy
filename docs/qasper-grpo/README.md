@@ -56,6 +56,24 @@ episodes. The verified 256 MB archive is
 evaluation, packaging, and transfer was about 6.25 hours, or roughly $3.06 at $0.49/hour. The pod
 was stopped after the local archive checksum matched.
 
+## Fresh paper-disjoint confirmation — September 21, 2026
+
+The centered checkpoint's development gain did **not** generalize. On a separately frozen set of
+40 QASPER validation questions from 39 papers excluded from RL training, RL development, the
+earlier QASPER pilot, and targeted SFT data, unchanged SFT scored 0.3462 automatic reward and
+centered checkpoint 2 scored 0.3531. The +0.0069 paired difference had a 95% bootstrap interval of
+[-0.0169, 0.0375], with one win, one loss, and 38 ties.
+
+Identity-blind source review slightly favored SFT: 13 pass / 2 partial / 25 fail for SFT versus
+12 / 3 / 25 for GRPO. GRPO had zero semantic wins, one loss, and 39 ties. Its sole automatic win
+changed a false refusal into an answer whose quote did not support the claim, leaving both outputs
+as semantic failures. Its automatic loss was also the only semantic change: it omitted the
+heuristic-selection step from an otherwise correct OpenIE answer.
+
+Checkpoint 2 therefore fails the pre-registered confirmation and is not promoted. The full
+decision record, gate results, review disclosure, and artifact checksums are in
+[`../QASPER_GRPO_CONFIRMATION.md`](../QASPER_GRPO_CONFIRMATION.md).
+
 ## Experiment setup
 
 | Item | Value |
