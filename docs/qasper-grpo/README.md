@@ -8,6 +8,54 @@ held-out score from **0.4563 to 0.5233**. Continuing the same training erased th
 checkpoint 20 scored **0.4535**, slightly below the SFT starting point. The early checkpoint
 is a candidate for semantic review, not a promoted model.
 
+## Follow-up: centered-advantage ablation — September 21, 2026
+
+The pre-registered five-update follow-up changed one optimization detail. Standard GRPO divides
+each group's centered rewards by that group's standard deviation. The ablation used the centered
+rewards directly, so a tiny within-group reward difference stayed tiny instead of being expanded
+to the same advantage scale as a clear success. Everything else stayed fixed: starting adapter,
+questions, corpus, prompt, reward, rollout count, learning rate, KL reference, seed, and decoding.
+
+| Model | Mean reward | Supported-answer proxy | Correct abstentions | False refusals | Valid submissions | Execution-error episodes |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Starting SFT | 0.4563 | 10 | 12 | 4 | 39/40 | 3 |
+| Previous standard-GRPO checkpoint 5 | 0.5233 | 12 | 14 | 3 | 39/40 | 3 |
+| Centered checkpoint 1 | 0.4766 | 10 | 13 | 4 | 39/40 | 3 |
+| **Centered checkpoint 2** | **0.5485** | **12** | **15** | **3** | **39/40** | **3** |
+| Centered checkpoint 3 | 0.5063 | 10 | 14 | 5 | 39/40 | 3 |
+| Centered checkpoint 4 | 0.4786 | 11 | 13 | **3** | **40/40** | 3 |
+| Centered checkpoint 5 | 0.5020 | 11 | 13 | 4 | 39/40 | 3 |
+
+Checkpoint 2 passed the ablation's automatic decision rule. It exceeded the previous 0.5233 best
+score while keeping false refusals at three, valid submissions at 39/40, and execution-error
+episodes at three. Relative to SFT, it gained 0.0922 mean reward: five questions improved, two
+regressed, and 33 tied. A paired question-level bootstrap put that difference's 95% interval at
+**[0.0146, 0.1914]**. Relative to the previous GRPO checkpoint, it gained 0.0252 with three wins,
+three losses, and 34 ties; that interval was **[-0.0518, 0.1209]**, so this small development set
+does not establish that centered advantages are better than standard GRPO.
+
+A source-based, unblinded review of the seven outputs that changed from SFT found four clear
+improvements: the model corrected a yes/no answer and correctly abstained on three questions whose
+requested facts were absent. One small automatic gain was not a semantic gain: the Vietnamese
+segmentation response cited a true passage but answered a different interpretation of the
+question. One lower-scoring output gave the same correct metric list with a shifted evidence span.
+The remaining regression made a supported transfer-learning answer too vague. This review supports
+the conclusion that checkpoint 2 improved over SFT, but it is neither independent nor a fresh-test
+result.
+
+The curve still peaked early and then moved backward. That reproduces the practical lesson from
+the first run: save and evaluate frequent checkpoints, and do not select the final update merely
+because it trained longest. The 40 questions have now selected two rounds of checkpoints. The next
+model claim needs a paper-disjoint confirmation set and a blinded semantic review; another longer
+run on this development set would mainly optimize model selection against the same examples.
+
+The follow-up trained for 3,822 seconds on one NVIDIA A40. Its five evaluations covered 200
+episodes. The verified 256 MB archive is
+`out/research/qasper-rl-v2/artifacts/envoy-drgrpo-centered-20260921.tar.gz`, with SHA-256
+`db7412a82b1a9513cf49de6344374f93aea274e13ce38abea57c66c36c166aed`. GPU uptime for training,
+evaluation, packaging, and transfer was about 6.25 hours, or roughly $3.06 at $0.49/hour. The pod
+was stopped after the local archive checksum matched.
+
 ## Experiment setup
 
 | Item | Value |

@@ -149,6 +149,24 @@ still correct. None of these modes became the default. Raw top eight remains the
 retrieval change that rescued two target failures while retaining all ten controls, so the next
 experiment targets query planning instead of more passage formatting.
 
+### Qwen3-8B GRPO pilot
+
+Starting from the targeted SFT adapter, a bounded QASPER GRPO run found a useful early checkpoint
+and then regressed with more updates. Standard GRPO peaked at 0.5233 automatic reward after five
+updates, versus 0.4563 for unchanged SFT, before falling to 0.4535 at update 20. A one-variable
+follow-up removed per-group standard-deviation scaling. Its second checkpoint reached **0.5485**,
+with 15 correct abstentions, 3 false refusals, 39/40 valid submissions, and the same three
+execution-error episodes as SFT.
+
+The centered checkpoint beat SFT by 0.0922 mean reward on the paired 40-question development set;
+a question-level bootstrap gave a 95% interval of [0.0146, 0.1914]. Its smaller 0.0252 lead over
+the earlier standard-GRPO checkpoint was inconclusive. Reviewing the seven outputs that changed
+from SFT found four clear improvements and one clear regression, plus two cases where the overlap
+reward did not reflect semantic quality cleanly. This is evidence of improvement over SFT on the
+development task, not a final held-out or product-readiness result. See the complete setup,
+failure analysis, artifacts, and limits in
+[docs/qasper-grpo/README.md](docs/qasper-grpo/README.md).
+
 ## Training approach
 
 The current run distills QASPER-grounded research trajectories into Qwen3-8B with rank-4 QLoRA:

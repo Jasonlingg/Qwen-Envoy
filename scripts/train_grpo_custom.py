@@ -27,6 +27,7 @@ Usage:
 from __future__ import annotations
 
 from contextlib import contextmanager
+import inspect
 import json
 import os
 from pathlib import Path
@@ -159,6 +160,19 @@ def _truncation_rate() -> float:
     return (_trunc_hit / _trunc_seen) if _trunc_seen else 0.0
 
 
+def _action_logits(model: Any, full_ids: torch.Tensor, ctx_len: int) -> torch.Tensor:
+    """Avoid materializing vocabulary logits for thousands of context tokens.
+
+    Recent Qwen implementations expose logits_to_keep; retain compatibility with
+    older transformers and the regression-test models that do not expose it.
+    """
+    base = model.get_base_model() if hasattr(model, "get_base_model") else model
+    act_len = full_ids.shape[1] - ctx_len
+    if "logits_to_keep" in inspect.signature(base.forward).parameters:
+        return model(full_ids, logits_to_keep=act_len + 1).logits[0, :-1]
+    return model(full_ids).logits[0, ctx_len - 1:ctx_len - 1 + act_len]
+
+
 @torch.no_grad()
 def _compute_token_log_probs(
     model: Any, ctx_ids: torch.Tensor, action_ids: torch.Tensor, temperature: float = 1.0
@@ -177,8 +191,7 @@ def _compute_token_log_probs(
     act_len = act.shape[0]
 
     full_ids = torch.cat([ctx, act]).unsqueeze(0)
-    logits = model(full_ids).logits[0]
-    act_logits = logits[ctx_len - 1 : ctx_len - 1 + act_len]
+    act_logits = _action_logits(model, full_ids, ctx_len)
     act_log_probs = _action_log_probs(act_logits, temperature)
     token_lp = act_log_probs.gather(1, act.unsqueeze(1)).squeeze(1)
     return token_lp.detach().cpu()
@@ -332,20 +345,17 @@ def _step_log_prob_and_kl(
     act_len = act.shape[0]
 
     full_ids = torch.cat([ctx, act]).unsqueeze(0)
-    logits = model(full_ids).logits[0]
-    act_logits = logits[ctx_len - 1 : ctx_len - 1 + act_len].clone()
-    del logits
+    act_logits = _action_logits(model, full_ids, ctx_len)
     torch.cuda.empty_cache()
 
     act_log_probs = _action_log_probs(act_logits, temperature)
     token_lp = act_log_probs.gather(1, act.unsqueeze(1)).squeeze(1)
 
     with torch.no_grad(), _reference_adapter(model, kl_ref):
-        ref_logits = model(full_ids).logits[0]
-        ref_act_logits = ref_logits[ctx_len - 1 : ctx_len - 1 + act_len]
+        ref_act_logits = _action_logits(model, full_ids, ctx_len)
         ref_log_probs = _action_log_probs(ref_act_logits, temperature)
         ref_token_lp = ref_log_probs.gather(1, act.unsqueeze(1)).squeeze(1)
-        del ref_logits
+        del ref_act_logits
         torch.cuda.empty_cache()
 
     # k3 estimator: exp(ref - policy) - (ref - policy) - 1 — always >= 0, low variance.
@@ -362,6 +372,17 @@ PPO_CLIP_EPS = 0.2
 PPO_EPOCHS = 3
 
 
+def _group_advantages(group_rewards: list[float], normalization: str) -> list[float]:
+    """Center group rewards, optionally retaining standard GRPO's std scaling."""
+    if normalization not in {"std", "centered"}:
+        raise ValueError("advantage_normalization must be 'std' or 'centered'")
+    rewards = torch.tensor(group_rewards, dtype=torch.float32)
+    advantages = rewards - rewards.mean()
+    if normalization == "std":
+        advantages = advantages / (rewards.std() + 1e-8)
+    return advantages.tolist()
+
+
 def _grpo_update(
     model: Any,
     optimizer: torch.optim.Optimizer,
@@ -370,6 +391,8 @@ def _grpo_update(
     step_num: int = 0,
     temperature: float = 1.0,
     kl_ref: str = "base",
+    use_gradient_checkpointing: bool = False,
+    advantage_normalization: str = "std",
 ) -> tuple[float, float, int, list[dict[str, float]]]:
     """GRPO gradient accumulation across a BATCH of questions, PPO_EPOCHS times.
 
@@ -385,6 +408,16 @@ def _grpo_update(
     # that "old" and "new" are comparable. eval() disables dropout WITHOUT disabling
     # gradients (only torch.no_grad() does that), so backward still works.
     model.eval()
+    if use_gradient_checkpointing:
+        # HF checkpointing is conditional on training=True. Disable individual
+        # dropout modules so the policy distribution still matches rollout mode.
+        model.train()
+        for module in model.modules():
+            if isinstance(module, torch.nn.Dropout):
+                module.eval()
+
+    if advantage_normalization not in {"std", "centered"}:
+        raise ValueError("advantage_normalization must be 'std' or 'centered'")
 
     n_uniform = 0
     batch_n = len(batch_rewards)
@@ -397,10 +430,7 @@ def _grpo_update(
             raise ValueError("Each rollout group needs at least two finite rewards")
         if len({round(r, 4) for r in group_rewards}) == 1:
             n_uniform += 1
-        rewards = torch.tensor(group_rewards, dtype=torch.float32)
-        batch_advantages.append(
-            ((rewards - rewards.mean()) / (rewards.std() + 1e-8)).tolist()
-        )
+        batch_advantages.append(_group_advantages(group_rewards, advantage_normalization))
 
     total_loss = 0.0
     total_kl = 0.0

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import re
 
 SYSTEM_PROMPT = """You are an agent exploring a document corpus via Python code.
@@ -26,6 +27,21 @@ When you have the answer:
 SUBMIT: <your answer> CITATIONS: ["doc_id_1", "doc_id_2"]
 """
 
+# Shared byte-for-byte by the teacher, SFT exporter, and Qwen diagnostics.
+QASPER_SYSTEM_PROMPT = SYSTEM_PROMPT + '''
+Additional tool: passage(doc_id, start=0, length=1600) returns exact text and offsets.
+For this task, support your answer with exact character spans in the paper text.
+Use read() or passage() to inspect evidence. You can use text.find(quote) to get
+the start offset after reading text. End offsets are exclusive. Cite only the
+relevant passages, not entire papers. Keep the answer concise and address all parts.
+Final format (one line, no code around it):
+SUBMIT: <answer> CITATIONS: ["doc_id"] EVIDENCE: [{"doc_id":"doc_id","start":100,"end":200}]
+For yes/no questions, put only Yes or No in the answer field, with supporting evidence.
+If the paper does not answer the question after investigation, submit exactly:
+SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []
+Do not guess missing details. Submit as soon as the evidence is sufficient.
+'''
+
 DEFAULT_MAX_TOKENS = 1024
 
 
@@ -47,3 +63,14 @@ def clean_action(text: str) -> str:
         return "\n".join(code_blocks).strip()
 
     return stripped
+
+
+def used_document_tool(action, observation):
+    if "Traceback (most recent call last)" in observation or "SyntaxError" in observation:
+        return False
+    try:
+        return any(isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+                   and node.func.id in {"search", "read", "passage", "extract", "search_within"}
+                   for node in ast.walk(ast.parse(action)))
+    except SyntaxError:
+        return False

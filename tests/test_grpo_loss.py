@@ -4,6 +4,7 @@ import contextlib
 from contextlib import contextmanager
 from types import SimpleNamespace
 
+import pytest
 import torch
 from typer.testing import CliRunner
 
@@ -179,6 +180,42 @@ def test_dropout_in_train_mode_would_break_the_ratio() -> None:
         "train-mode dropout should perturb the ratio — if this passes, the fake "
         "model no longer exercises the failure mode and the guard is vacuous"
     )
+
+
+def test_checkpointing_mode_keeps_dropout_off_and_updates_weights():
+    torch.manual_seed(0)
+    model = _FakeLoRAModel(dropout_p=0.5)
+    data, rewards = _one_question_batch(model)
+    # Different actions avoid an exactly cancelling identical-rollout gradient.
+    ctx, act, _ = data[0][1][0]
+    act = act.flip(0)
+    model.eval()
+    data[0][1] = [(ctx, act, _compute_token_log_probs(model,ctx,act))]
+    optimizer = torch.optim.SGD(model.parameters(),lr=1e-3)
+    before = model.adapter.weight.detach().clone()
+    _grpo_update(model,optimizer,data,rewards,use_gradient_checkpointing=True)
+    assert model.training
+    assert not model.dropout.training
+    assert not torch.equal(before,model.adapter.weight)
+
+
+def test_centered_advantages_do_not_amplify_tiny_reward_differences():
+    from scripts.train_grpo_custom import _group_advantages
+
+    rewards = [0.0, 0.0, 0.027, 0.0]
+    assert _group_advantages(rewards, "centered") == pytest.approx(
+        [-0.00675, -0.00675, 0.02025, -0.00675]
+    )
+    assert _group_advantages(rewards, "std") == pytest.approx(
+        [-0.5, -0.5, 1.5, -0.5], abs=1e-4
+    )
+
+
+def test_invalid_advantage_normalization_is_rejected():
+    from scripts.train_grpo_custom import _group_advantages
+
+    with pytest.raises(ValueError, match="advantage_normalization"):
+        _group_advantages([1.0, 0.0], "unknown")
 
 
 # --- regression: truncation must not evict the system prompt ----------------
