@@ -22,6 +22,13 @@ weekly pipeline and MCP server are still planned work.
 
 The environment was inspired by [arXiv:2512.24601](https://arxiv.org/abs/2512.24601).
 
+**Current architecture work:** The [repository map](docs/REPOSITORY_LAYOUT.md) separates the
+new research-library harness from historical training and personal-memory demos. The first
+CPU-only replay now verifies source spans, checks a structured draft, records the run outside
+the vault, and stages only under `_inbox/`. Live Qwen tool-call logging, Nemotron drafting,
+and migration of older direct vault writers remain open. See the
+[harness design](docs/RESEARCH_LIBRARY_HARNESS_DESIGN.md) for the intended boundaries.
+
 ## What the agent does
 
 Each episode gives the model a question and a persistent Python REPL with document tools already
