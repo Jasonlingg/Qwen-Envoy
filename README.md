@@ -6,8 +6,9 @@ turns before returning an answer with source IDs.
 
 The intended deployment is an agent-as-tool system. A larger assistant decides when research is
 needed, sends a bounded question to Envoy, and receives an evidence packet it can explain or use in
-a broader task. The first product target is a weekly AI-research workflow over papers and an
-Obsidian vault.
+a broader task. The current build starts with a public-paper research library: a weekly AI-research
+digest and question answers become drafts in an Obsidian vault, where a person reviews them before
+adding them to the library. Personal notes can join that library later.
 
 Qwen's role is the inexpensive middle layer between that reasoning model and the paper library. It
 handles repeated search, reading, extraction, and citation work so the larger model receives a
