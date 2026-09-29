@@ -81,11 +81,15 @@ def import_vault(vault: Path, collection: str, output: Path) -> dict:
     selected = _inside(vault, collection)
     if not selected.is_dir():
         raise ValueError("Collection must be an existing directory inside the vault")
+    if any(part.casefold() == "_inbox" for part in selected.relative_to(vault).parts):
+        raise ValueError("Staged _inbox drafts cannot be imported as reviewed sources")
     if output.resolve().is_relative_to(vault):
         raise ValueError("Keep frozen snapshots outside the vault to avoid recursive imports")
     paths, skipped = [], []
     for path in sorted(selected.rglob("*")):
         relative = path.relative_to(vault).as_posix()
+        if any(part.casefold() == "_inbox" for part in path.relative_to(vault).parts):
+            continue
         if any(part.startswith(".") for part in path.relative_to(selected).parts):
             continue
         if path.suffix.lower() not in {".md", ".pdf"}:
