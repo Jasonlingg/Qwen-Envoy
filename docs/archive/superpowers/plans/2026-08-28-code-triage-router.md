@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+, PyTorch 2.4.0+cu121, TRL 1.3.0, transformers 4.45.2, peft 0.13.2, Qwen2.5-7B-Instruct + LoRA, Pydantic for schemas, pytest, RunPod (A100).
 
-**Spec:** [docs/superpowers/specs/2026-08-27-code-triage-router-design.md](../specs/2026-08-27-code-triage-router-design.md)
+**Spec:** [code-triage-router design](../specs/2026-08-27-code-triage-router-design.md)
 
 ## Global Constraints
 
