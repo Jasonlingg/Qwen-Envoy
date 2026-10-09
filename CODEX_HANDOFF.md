@@ -1,5 +1,33 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 9: public technical case study shipped.** The user chose to finish
+> Qwen-Envoy as an inspectable training/evaluation project. The saved Studio is
+> live at <https://jasonlingg.github.io/Qwen-Envoy/>. Commit `b53d70b` publishes
+> `docs/TECHNICAL_CASE_STUDY.md`, original September 19 training records under
+> `release/qwen-v5-training/`, the standard-library-only
+> `python scripts/reproduce_case_study.py` checker, and GitHub Actions for
+> artifact verification and Pages deployment. Public demo links and release
+> status are updated in the following documentation commit.
+>
+> Verification: **755 tests passed** offline; the 14 new corruption/binding
+> tests also passed in a clean Python 3.11 environment with only pytest.
+> GitHub's verification and Pages workflows passed for `b53d70b`. Hosted HTML
+> byte-matches the packaged snapshot. Browser QA confirmed all four run entries
+> and exercised question navigation, full saved traces, JSON export, and token-likelihood
+> expansion with no JavaScript errors or model/API requests. Six training
+> archive checksums and three original data bindings passed. The historical
+> training manifest still has a blank Git commit and a script hash that differs
+> from the current script; exact original weight reproduction is not claimed.
+>
+> The saved inference/review JSON is unchanged: base/v5 provisional passes
+> 5/40 versus 15/40, answerable passes 3/20 versus 3/20, recorded-error episodes
+> 22/40 versus 1/40. Independent source/answer review remains unfinished. No
+> trained-model promotion, new training, paid inference, or Runpod launch was
+> performed. The public viewer is read-only and needs no credentials. It is
+> not a live hosted paper-agent service or a submitted hackathon entry; live
+> judge-access instructions, video, sponsor feedback, and submission remain.
+> Preserve this scope rather than starting another product pivot.
+
 > **October 8: release scope frozen and accumulated work committed.** The user
 > chose to ship the current text-only EnvoyBench Studio, with simple runs,
 > scores, answers, and complete tool traces. GTLM, diagram generation, new

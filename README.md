@@ -12,7 +12,7 @@ comes from correct abstention. This is a useful failure analysis, not evidence
 that fine-tuning produced a better general research assistant.
 
 **Start here:** [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
-[saved-run demo](release/envoybench-v0.1/studio.html) ·
+[public demo](https://jasonlingg.github.io/Qwen-Envoy/) ·
 [training evidence](release/qwen-v5-training/README.md) ·
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
@@ -29,9 +29,10 @@ and [data provenance](benchmarks/envoybench/data/README.md).
 
 ## Open the demo
 
-**No setup:** download [the standalone Studio](release/envoybench-v0.1/studio.html)
-and open it in a browser. It includes the saved runs and makes no model calls;
-no GPU, Docker, or API key is needed. GitHub's file preview does not run the HTML.
+**No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
+It includes the saved runs and makes no model calls; no GPU, Docker, login,
+or API key is needed. You can also download [the standalone HTML](release/envoybench-v0.1/studio.html)
+and open it offline. GitHub's file preview does not run the HTML.
 
 **Recompute the recorded numbers:** after cloning this repository, Python 3.10+
 alone is enough. No package installation, network access, GPU, or model call:

@@ -3,9 +3,10 @@
 **Recording status:** draft. The current build has four saved runs, and an
 NVIDIA Nemotron-3-Ultra run completed through Nebius in the local Studio.
 Its answer had citation errors and its trace had execution failures. A
-judge-accessible build and the public video are still pending. The complete
-video must be public, under three minutes, and reflect what the shipped build
-does.
+live test build for judges and the public video are still pending. The saved
+viewer is [public](https://jasonlingg.github.io/Qwen-Envoy/); it supports the
+first five scenes below without credentials. The complete video must be public,
+under three minutes, and reflect what the shipped build does.
 
 | Time | On screen | Suggested narration |
 | --- | --- | --- |

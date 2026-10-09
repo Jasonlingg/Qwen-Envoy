@@ -13,7 +13,8 @@ examples. Original training records are in the separate
 
 ## Explore saved runs
 
-Open [`studio.html`](studio.html) directly in a browser. It is self-contained,
+Open the [public Studio](https://jasonlingg.github.io/Qwen-Envoy/), or download
+[`studio.html`](studio.html) and open it directly in a browser. It is self-contained,
 read-only, and makes no model or API calls. Its 40 paired questions, actions,
 tool observations, answers, and provisional review labels come from the JSON
 artifacts in this directory. No GPU is needed. The Studio flow is **Runs →
@@ -137,7 +138,13 @@ three Lightning attempts failed to submit. The [live validation record](LIVE_VAL
 preserves all four outcomes. This demonstrates local integration, not a reliable
 paper-answering model or a new benchmark score.
 
+The saved viewer is hosted on GitHub Pages. Its deployed HTML was checked
+against the packaged file; runs, question navigation, traces, export, and token
+panels were exercised in a browser. The publication workflow verifies the
+recorded artifact hashes before deployment. This public site runs no inference.
+
 This release is **not a completed Nebius × NVIDIA hackathon submission**.
-A public judge-accessible build, video, sponsor feedback, and submission remain
-pending. The [Devpost draft](DEVPOST_DRAFT.md) distinguishes the demonstrated
-local workflow from those unfinished submission steps.
+The live Nebius/NVIDIA test-build instructions still need validation for judge
+access; the public video, sponsor feedback, and submission remain pending.
+The [Devpost draft](DEVPOST_DRAFT.md) separates the published saved viewer from
+those unfinished submission steps.

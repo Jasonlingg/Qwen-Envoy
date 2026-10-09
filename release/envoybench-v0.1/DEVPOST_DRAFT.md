@@ -2,8 +2,9 @@
 
 **Draft, not submitted.** Proposed track: Coding and Agentic Engineering;
 confirm the final track and rules before submission. A local NVIDIA/Nebius
-Studio run completed. A public judge-accessible build, the public video,
-sponsor feedback, and the final submission remain **pending verification**.
+Studio run completed. The [saved-run viewer](https://jasonlingg.github.io/Qwen-Envoy/)
+is public. Judge access to the live test build, the public video, sponsor
+feedback, and the final submission remain **pending verification**.
 
 ## Title and short description
 
@@ -86,7 +87,10 @@ the trained adapter has not passed the project's held-out supported-answer
 quality gate. The saved viewer itself makes no model call. The live paper
 reader is a trusted-operator demo, not a multi-user hosted service.
 
-- **Public repository and commit:** [pending final public release].
+- **Public repository and technical release:** [Qwen-Envoy](https://github.com/Jasonlingg/Qwen-Envoy),
+  [case-study commit b53d70b](https://github.com/Jasonlingg/Qwen-Envoy/commit/b53d70b).
+- **Saved-run demo:** [public Studio](https://jasonlingg.github.io/Qwen-Envoy/),
+  read-only; does not call Nebius or any model.
 - **Working URL or test build with live Nebius/NVIDIA path:** [pending public validation].
 - **Public YouTube video under three minutes:** [pending].
 - **Sponsor feedback:** [pending].
