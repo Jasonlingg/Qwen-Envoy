@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import random
 from collections import Counter, defaultdict
+from itertools import combinations
 from pathlib import Path
 
 VERDICTS = {"pass", "partial", "fail"}
@@ -53,8 +54,8 @@ def _load_runs(paths: list[Path], expected_ids: set[str]) -> list[dict]:
             raise ValueError(f"Duplicate system label: {system}")
         systems.add(system)
         runs.append({"path": str(path), "system": system, "rows": rows})
-    if len(runs) != 2:
-        raise ValueError("The minimal blind comparison requires exactly two transcript files")
+    if len(runs) < 2:
+        raise ValueError("Blind comparison requires at least two transcript files")
     return runs
 
 
@@ -226,8 +227,8 @@ def score_review(review: dict, key: dict) -> dict:
         by_system[system]["total"] += 1
         paired[assignment["question_id"]][system] = verdict
     systems = sorted(by_system)
-    if len(systems) != 2:
-        raise ValueError("Blind key must contain exactly two systems")
+    if len(systems) < 2:
+        raise ValueError("Blind key must contain at least two systems")
     summary = {}
     for system in systems:
         counts = by_system[system]
@@ -241,29 +242,41 @@ def score_review(review: dict, key: dict) -> dict:
                 sum(VERDICT_SCORE[label] * counts[label] for label in VERDICTS) / total, 4
             ),
         }
-    wins = {system: 0 for system in systems}
-    ties = 0
+    pairwise = {
+        left: {right: {"wins": 0, "losses": 0, "ties": 0} for right in systems if right != left}
+        for left in systems
+    }
     for outcomes in paired.values():
         if set(outcomes) != set(systems):
-            raise ValueError("Every question must contain both systems")
-        left, right = systems
-        difference = VERDICT_SCORE[outcomes[left]] - VERDICT_SCORE[outcomes[right]]
-        if difference > 0:
-            wins[left] += 1
-        elif difference < 0:
-            wins[right] += 1
-        else:
-            ties += 1
-    return {
+            raise ValueError("Every question must contain every system")
+        for left, right in combinations(systems, 2):
+            difference = VERDICT_SCORE[outcomes[left]] - VERDICT_SCORE[outcomes[right]]
+            if difference > 0:
+                pairwise[left][right]["wins"] += 1
+                pairwise[right][left]["losses"] += 1
+            elif difference < 0:
+                pairwise[left][right]["losses"] += 1
+                pairwise[right][left]["wins"] += 1
+            else:
+                pairwise[left][right]["ties"] += 1
+                pairwise[right][left]["ties"] += 1
+    result = {
         "schema_version": "code-exec-human-score-v1",
         "systems": summary,
-        "paired_wins": wins,
-        "paired_ties": ties,
+        "pairwise": pairwise,
         "decision_note": (
             "Treat the trained model as improved only if its supported-answer rate is higher and "
             "automatic execution metrics show no unacceptable regression."
         ),
     }
+    if len(systems) == 2:
+        left, right = systems
+        result["paired_wins"] = {
+            left: pairwise[left][right]["wins"],
+            right: pairwise[right][left]["wins"],
+        }
+        result["paired_ties"] = pairwise[left][right]["ties"]
+    return result
 
 
 def review_markdown(review: dict) -> str:
@@ -316,8 +329,11 @@ def score_markdown(score: dict) -> str:
             f"- Supported-answer rate: {values['supported_answer_rate']:.1%}",
             f"- Pass / partial / fail: {values['pass']} / {values['partial']} / {values['fail']}",
             f"- Mean review score: {values['mean_review_score_0_to_2']:.2f} / 2",
-            f"- Paired wins: {score['paired_wins'][system]}",
-            "",
         ]
-    lines += [f"Paired ties: {score['paired_ties']}", "", score["decision_note"], ""]
+        if "paired_wins" in score:
+            lines.append(f"- Paired wins: {score['paired_wins'][system]}")
+        lines.append("")
+    if "paired_ties" in score:
+        lines += [f"Paired ties: {score['paired_ties']}", ""]
+    lines += [score["decision_note"], ""]
     return "\n".join(lines)

@@ -54,9 +54,13 @@ class BaseQwenPolicy:
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = 0.0,
         system_prompt: str | None = None,
+        top_p: float = 1.0,
     ) -> None:
+        if temperature < 0 or not 0 < top_p <= 1:
+            raise ValueError("temperature must be nonnegative and top_p must be in (0, 1]")
         self._max_tokens = max_tokens
         self._temperature = temperature
+        self._top_p = top_p
         self.system_prompt = system_prompt or SYSTEM_PROMPT
         self.history: list[dict] = []
 
@@ -77,6 +81,7 @@ class BaseQwenPolicy:
                 max_new_tokens=self._max_tokens,
                 do_sample=self._temperature > 0,
                 temperature=self._temperature if self._temperature > 0 else None,
+                top_p=self._top_p if self._temperature > 0 else None,
                 pad_token_id=self._tokenizer.eos_token_id,
             )
 

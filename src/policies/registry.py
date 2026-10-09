@@ -8,10 +8,12 @@ from typing import Any
 
 from src.env.corpus import Corpus
 from src.policies.claude_policy import ClaudePolicy
+from src.policies.claude_prompts import SYSTEM_PROMPT as CLAUDE_SYSTEM_PROMPT
 from src.policies.grpo_policy import GRPOPolicy
 from src.policies.naive_rag import NaiveRAGPolicy
 from src.policies.openai_compatible import OpenAICompatiblePolicy
 from src.policies.qwen_base_policy import QwenBasePolicy
+from src.policies.qwen_rag import QwenRAGPolicy
 from src.policies.qwen_sft_policy import QwenSFTPolicy
 from src.policies.single_shot import SingleShotPolicy
 from src.policies.sparse_rag import SparseRAGPolicy
@@ -74,6 +76,13 @@ POLICY_SPECS = {
             requires_checkpoint=True,
         ),
         PolicySpec(
+            "qwen_rag_policy",
+            "Local Qwen sparse RAG",
+            "One-pass diversified BM25 retrieval with the Qwen SFT checkpoint",
+            requires_checkpoint=True,
+            select_by_default=False,
+        ),
+        PolicySpec(
             "grpo_policy",
             "Local Qwen GRPO",
             "Local Hugging Face base plus GRPO adapter",
@@ -129,13 +138,26 @@ def build_policies(
 ) -> dict[str, object]:
     """Build selected policies without coupling the harness to model classes."""
     factories = {
-        "claude_policy": lambda: ClaudePolicy(api_key=api_key),
+        "claude_policy": lambda: ClaudePolicy(
+            api_key=api_key,
+            system_prompt=system_prompt or CLAUDE_SYSTEM_PROMPT,
+            max_tokens=int(os.environ.get("ENVOY_CLAUDE_MAX_TOKENS", "4096")),
+            expected_model=os.environ.get("ENVOY_CLAUDE_EXPECTED_MODEL"),
+            temperature=(
+                None if os.environ.get("ENVOY_CLAUDE_THINKING_DISABLED") == "1" else 0.0
+            ),
+        ),
         "naive_rag": lambda: NaiveRAGPolicy(corpus=corpus, api_key=api_key),
         "sparse_rag": lambda: SparseRAGPolicy(corpus=corpus, api_key=api_key),
         "context_stuffing": lambda: ContextStuffingPolicy(corpus=corpus, api_key=api_key),
         "single_shot": lambda: SingleShotPolicy(corpus=corpus, api_key=api_key),
         "qwen_base_policy": lambda: QwenBasePolicy(system_prompt=system_prompt),
-        "qwen_sft_policy": lambda: QwenSFTPolicy(system_prompt=system_prompt),
+        "qwen_sft_policy": lambda: QwenSFTPolicy(
+            system_prompt=system_prompt,
+            temperature=float(os.environ.get("ENVOY_QWEN_TEMPERATURE", "0")),
+            top_p=float(os.environ.get("ENVOY_QWEN_TOP_P", "1")),
+        ),
+        "qwen_rag_policy": lambda: QwenRAGPolicy(corpus=corpus),
         "grpo_policy": lambda: GRPOPolicy(system_prompt=system_prompt),
         "openai_compatible": lambda: OpenAICompatiblePolicy(system_prompt=system_prompt),
     }

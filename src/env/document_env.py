@@ -11,6 +11,13 @@ from loguru import logger
 from pydantic import BaseModel, Field
 
 from src.env.corpus import Corpus
+from src.env.evidence_state import (
+    EscalationEvent,
+    EvidenceState,
+    VerifierEvent,
+    format_escalation,
+    format_feedback,
+)
 from src.env.repl import PersistentREPL
 from src.env.reward import (
     RewardBreakdown,
@@ -35,6 +42,8 @@ class StepRecord(BaseModel):
     observation: str
     reward: float
     done: bool
+    reasoning: str | None = None
+    logprob_diagnostics: dict | None = None
 
 
 class EpisodeInfo(BaseModel):
@@ -43,6 +52,8 @@ class EpisodeInfo(BaseModel):
     gold_answer: str
     gold_citations: list[str]
     trajectory: list[StepRecord] = Field(default_factory=list)
+    verifier_events: list[VerifierEvent] = Field(default_factory=list)
+    escalation: EscalationEvent | None = None
     final_reward: RewardBreakdown | None = None
 
 
@@ -77,6 +88,9 @@ class DocumentExplorationEnv:
         corpus_path: str = "data/corpus",
         require_evidence: bool = False,
         include_preamble: bool = True,
+        evidence_verifier: bool = False,
+        verifier_feedback_budget: int = 1,
+        escalate_after_verifier_failure: bool = False,
     ) -> None:
         self.corpus = corpus
         self.questions = questions
@@ -85,6 +99,11 @@ class DocumentExplorationEnv:
         self._corpus_path = corpus_path
         self.require_evidence = require_evidence
         self.include_preamble = include_preamble
+        self.evidence_verifier = evidence_verifier
+        if verifier_feedback_budget < 0:
+            raise ValueError("verifier_feedback_budget must be non-negative")
+        self.verifier_feedback_budget = verifier_feedback_budget
+        self.escalate_after_verifier_failure = escalate_after_verifier_failure
         self.repl = PersistentREPL(
             use_docker=use_docker, corpus_path=corpus_path,
         )
@@ -92,6 +111,7 @@ class DocumentExplorationEnv:
         self._step_count: int = 0
         self._done: bool = False
         self._question_idx: int = 0
+        self._evidence_state: EvidenceState | None = None
 
     def reset(self, question_idx: int | None = None) -> str:
         """Start a new episode. Returns initial observation (question + tools)."""
@@ -114,6 +134,11 @@ class DocumentExplorationEnv:
         )
         self._step_count = 0
         self._done = False
+        self._evidence_state = None
+        if self.evidence_verifier:
+            self._evidence_state = EvidenceState({
+                doc.doc_id: doc.chars for doc in self.corpus.list_documents()
+            })
 
         # Start fresh REPL
         self.repl = PersistentREPL(
@@ -154,6 +179,12 @@ class DocumentExplorationEnv:
 
         if submission is not None:
             answer, citations, evidence = submission
+            reasons = self._submission_verifier_reasons(answer, citations, evidence)
+            if reasons:
+                if self._can_give_verifier_feedback():
+                    return self._reject_with_verifier_feedback(action, "submission", reasons)
+                if self.escalate_after_verifier_failure:
+                    return self._escalate(action, "submission", reasons)
             reward_breakdown = compute_reward(
                 predicted_answer=answer,
                 predicted_citations=citations,
@@ -191,8 +222,20 @@ class DocumentExplorationEnv:
             }
             return "", reward_breakdown.total, True, info
 
+        if self._evidence_state is not None:
+            duplicate = self._evidence_state.duplicate_reason(action)
+            if duplicate:
+                if self._can_give_verifier_feedback():
+                    return self._reject_with_verifier_feedback(
+                        action, "duplicate_action", [duplicate]
+                    )
+                if self.escalate_after_verifier_failure:
+                    return self._escalate(action, "duplicate_action", [duplicate])
+
         # Execute code in REPL
         observation = self.repl.execute(action, timeout=30)
+        if self._evidence_state is not None:
+            self._evidence_state.observe(action, observation)
 
         # If SyntaxError, add a hint to help the model recover
         if "SyntaxError" in observation:
@@ -240,6 +283,108 @@ class DocumentExplorationEnv:
 
         info = {"step": self._step_count, "code": action, "output": observation}
         return observation, step_reward, done, info
+
+    def _submission_verifier_reasons(
+        self, answer: str, citations: list[str], evidence: list[dict]
+    ) -> list[str]:
+        if not self.evidence_verifier or self._evidence_state is None:
+            return []
+        return self._evidence_state.submission_reasons(
+            answer=answer,
+            citations=citations,
+            evidence=evidence,
+            require_evidence=self.require_evidence,
+        )
+
+    def _can_give_verifier_feedback(self) -> bool:
+        return bool(
+            self.evidence_verifier
+            and self._evidence_state is not None
+            and self._evidence_state.feedback_used < self.verifier_feedback_budget
+            and self._step_count < self.max_steps
+        )
+
+    def _reject_with_verifier_feedback(
+        self,
+        action: str,
+        kind: str,
+        reasons: list[str],
+    ) -> tuple[str, float, bool, dict]:
+        assert self._episode is not None
+        assert self._evidence_state is not None
+        if any("refusal is premature" in reason.lower() for reason in reasons):
+            self._evidence_state.abstention_recovery_active = True
+        self._evidence_state.feedback_used += 1
+        feedback = format_feedback(
+            reasons=reasons,
+            state=self._evidence_state,
+            feedback_number=self._evidence_state.feedback_used,
+            feedback_budget=self.verifier_feedback_budget,
+            kind=kind,
+        )
+        event = VerifierEvent(
+            step=self._step_count,
+            kind=kind,
+            reasons=reasons,
+            feedback=feedback,
+            state=self._evidence_state.snapshot(),
+        )
+        self._episode.verifier_events.append(event)
+        self._episode.trajectory.append(StepRecord(
+            step=self._step_count,
+            action=action,
+            observation=feedback,
+            reward=0.0,
+            done=False,
+        ))
+        info = {
+            "step": self._step_count,
+            "verifier_intervention": event,
+            "output": feedback,
+        }
+        return feedback, 0.0, False, info
+
+    def _escalate(
+        self,
+        action: str,
+        kind: str,
+        reasons: list[str],
+    ) -> tuple[str, float, bool, dict]:
+        """End the small-model episode with a structured host-model handoff."""
+        assert self._episode is not None
+        assert self._evidence_state is not None
+        message = format_escalation(
+            reasons=reasons,
+            state=self._evidence_state,
+            feedback_budget=self.verifier_feedback_budget,
+        )
+        escalation = EscalationEvent(
+            step=self._step_count,
+            kind=kind,
+            reasons=reasons,
+            candidate_action=action,
+            message=message,
+            state=self._evidence_state.snapshot(),
+        )
+        self._episode.escalation = escalation
+        self._episode.trajectory.append(StepRecord(
+            step=self._step_count,
+            action=action,
+            observation=message,
+            reward=0.0,
+            done=True,
+        ))
+        self._done = True
+        logger.info(
+            f"Episode escalated after {self._evidence_state.feedback_used} "
+            "verifier recoveries"
+        )
+        return message, 0.0, True, {
+            "step": self._step_count,
+            "escalated": True,
+            "escalation": escalation,
+            "output": message,
+        }
 
     def get_trajectory(self) -> list[StepRecord]:
         """Return the full trajectory for this episode."""

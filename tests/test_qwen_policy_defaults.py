@@ -19,3 +19,9 @@ def test_all_local_qwen_policies_share_the_generation_budget():
 def test_shared_qwen_policy_accepts_a_prompt_ablation():
     policy = BaseQwenPolicy(system_prompt="diagnostic prompt")
     assert policy.system_prompt == "diagnostic prompt"
+
+
+def test_shared_qwen_policy_records_sampling_settings():
+    policy = BaseQwenPolicy(temperature=0.7, top_p=0.8)
+    assert policy._temperature == 0.7
+    assert policy._top_p == 0.8

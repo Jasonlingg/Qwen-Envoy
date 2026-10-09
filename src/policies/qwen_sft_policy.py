@@ -37,11 +37,13 @@ class QwenSFTPolicy(BaseQwenPolicy):
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = 0.0,
         system_prompt: str | None = None,
+        top_p: float = 1.0,
     ) -> None:
         super().__init__(
             max_tokens=max_tokens,
             temperature=temperature,
             system_prompt=system_prompt,
+            top_p=top_p,
         )
         path = checkpoint_path or os.environ.get("CHECKPOINT_PATH")
         if not path:

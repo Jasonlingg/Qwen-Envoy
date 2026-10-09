@@ -97,3 +97,24 @@ def test_score_review_reports_supported_answers_and_paired_winner(tmp_path):
     review["rows"][0]["verdict"] = None
     with pytest.raises(ValueError, match="needs pass"):
         score_review(review, key)
+
+
+def test_multi_system_review_reports_each_pair(tmp_path):
+    questions, corpus, base, trained = _write_fixture(tmp_path)
+    third = tmp_path / "third.json"
+    rows = json.loads(base.read_text())
+    rows[0]["run_label"] = "third"
+    third.write_text(json.dumps(rows))
+    review, key, automatic = prepare_review(
+        questions, corpus, [base, trained, third], seed=42
+    )
+    labels = {row["blind_id"]: row["system"] for row in key["assignments"]}
+    for row in review["rows"]:
+        row["verdict"] = "pass" if labels[row["blind_id"]] == "trained" else "fail"
+    score = score_review(review, key)
+    assert len(review["rows"]) == 3
+    assert len(automatic["systems"]) == 3
+    assert score["pairwise"]["trained"]["base"] == {
+        "wins": 1, "losses": 0, "ties": 0
+    }
+    assert score["pairwise"]["base"]["third"]["ties"] == 1

@@ -8,6 +8,7 @@ with code, and multi-step dumps in a single response.
 from __future__ import annotations
 
 import re
+import textwrap
 
 
 def _truncate_to_first_step(code: str) -> str:
@@ -33,21 +34,18 @@ def _truncate_to_first_step(code: str) -> str:
 
 def clean_action(text: str) -> str:
     """Extract executable Python from model output, stripping fences, XML, and prose."""
-    stripped = text.strip()
+    # Dedent before the boundary-only .strip() below: a model that writes
+    # consistently-indented code (e.g. inside a narration paragraph) has that
+    # common indentation on every line, including the first — .strip() alone
+    # only touches the string's absolute start/end, so it would strip line 1's
+    # indentation but leave line 2's, turning valid code into an IndentationError.
+    stripped = textwrap.dedent(text).strip()
 
     # If there's a SUBMIT line anywhere, extract and return it
     # (model is ready to answer — don't try to run code too)
-    submit_match = re.search(
-        r"(SUBMIT:\s*.*?CITATIONS:\s*\[.*?\])",
-        stripped,
-        re.DOTALL | re.IGNORECASE,
-    )
-    if not submit_match:
-        submit_match = re.search(
-            r"(SUBMIT:\s*.+)",
-            stripped,
-            re.IGNORECASE,
-        )
+    # A complete final line may carry EVIDENCE after CITATIONS. Do not stop at
+    # the citation bracket: that silently strips exact spans before verification.
+    submit_match = re.search(r"(SUBMIT:[^\n]+)", stripped, re.IGNORECASE)
     if submit_match:
         return submit_match.group(1).strip()
 
@@ -103,8 +101,11 @@ def clean_action(text: str) -> str:
             code_lines.append(line)
         # else: drop the line (it's prose)
 
+    # No fallback to the unfiltered text here: if nothing survived the code-line
+    # filter, the input wasn't code (e.g. tag-stripped XML parameter fragments,
+    # bare words with no assignment/call shape) and returning it anyway just
+    # trades a clear "nothing to run" for a confusing multi-line SyntaxError.
     result = "\n".join(code_lines).strip()
-    result = result if result else stripped
 
     # Haiku often generates ALL steps at once (# Step 1 ... # Step 2 ...).
     # Truncate to just the first step to avoid running code that depends

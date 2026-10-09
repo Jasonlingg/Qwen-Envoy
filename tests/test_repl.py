@@ -13,6 +13,7 @@ from src.env.repl import (
     PersistentREPL,
     _auto_print_trailing_expression,
 )
+from src.env.tools import SEARCH_PROTOCOL_VERSION
 
 
 @pytest.fixture
@@ -105,6 +106,32 @@ def test_search_finds_a_match_in_a_single_document_corpus(tmp_path) -> None:
     finally:
         repl.kill_session()
     assert "only_note" in output
+
+
+def test_search_ranks_relevant_paper_above_long_generic_text(tmp_path) -> None:
+    """Repeated common question words must not bury a title-specific source."""
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    for doc_id, title, content in (
+        ("generic", "General Review", "how does the method compare to reported results " * 500),
+        ("agent_flan", "Agent FLAN", "Agent FLAN trains Llama2-7B on agent tuning data."),
+        ("other", "Other Agent", "Searches documents and reports results."),
+    ):
+        (corpus / f"{doc_id}.json").write_text(json.dumps({
+            "doc_id": doc_id, "title": title, "text": content,
+        }))
+    repl = LocalREPL(corpus_path=str(corpus))
+    repl.start_session()
+    try:
+        output = repl.execute(
+            'search("How does Agent FLAN compare to reported results?", top_k=3)'
+        )
+        protocol_version = repl.execute("SEARCH_PROTOCOL_VERSION").strip()
+    finally:
+        repl.kill_session()
+    assert output.index("'doc_id': 'agent_flan'") < output.index("'doc_id': 'generic'")
+    assert f"'search_version': '{SEARCH_PROTOCOL_VERSION}'" in output
+    assert protocol_version == SEARCH_PROTOCOL_VERSION
 
 
 def test_search_within_default_depth_is_configurable(tmp_path, monkeypatch) -> None:

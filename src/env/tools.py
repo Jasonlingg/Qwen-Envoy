@@ -6,6 +6,8 @@ directory. Includes memoization so re-running the cumulative script doesn't
 repeat expensive file reads.
 """
 
+SEARCH_PROTOCOL_VERSION = "passage-bm25-okapi-v1"
+
 TOOL_PREAMBLE = '''
 import json
 import math
@@ -13,6 +15,8 @@ import os
 import re
 from pathlib import Path
 from collections import Counter
+
+SEARCH_PROTOCOL_VERSION = "passage-bm25-okapi-v1"
 
 # Memoization cache — persists across cumulative script re-runs
 if "_memo" not in dir():
@@ -90,46 +94,89 @@ def _idf_scores() -> dict[str, float]:
     _memo["_idf"] = idf
     return idf
 
-def search(query: str, top_k: int = 5, method: str = "keyword") -> list[dict]:
-    """Search over corpus. method: 'keyword' (BM25-like) or 'chunk' (chunk-level TF-IDF).
+def _bm25_passages():
+    """Cache passage terms so long papers cannot win merely by being long."""
+    if "_bm25_passages" in _memo:
+        return _memo["_bm25_passages"]
+    chunks = _get_chunks(chunk_size=512, chunk_overlap=64)
+    counts = [Counter(re.findall(r"\\w+", (
+        chunk["title"] + " " + chunk["title"] + " " + chunk["text"]
+    ).casefold())) for chunk in chunks]
+    lengths = [sum(terms.values()) for terms in counts]
+    frequencies = Counter(term for terms in counts for term in terms)
+    passage_count = len(chunks)
+    raw_idf = {
+        term: math.log(passage_count - frequency + 0.5)
+              - math.log(frequency + 0.5)
+        for term, frequency in frequencies.items()
+    }
+    average_idf = sum(raw_idf.values()) / len(raw_idf) if raw_idf else 0.0
+    # Standard BM25Okapi floors ubiquitous terms at 0.25 * average IDF.
+    # A one-note vault can have a negative average, so retain a small positive
+    # floor there instead of making all its matching searches disappear.
+    idf_floor = max(0.25 * average_idf, 0.01)
+    idf = {term: max(value, idf_floor) for term, value in raw_idf.items()}
+    average_length = sum(lengths) / len(lengths) if lengths else 1.0
+    index = (chunks, counts, lengths, idf, average_length)
+    _memo["_bm25_passages"] = index
+    return index
 
-    'keyword' — scores whole documents by TF-IDF, returns top matches with preview.
+def _bm25_document_search(query: str, top_k: int) -> list[dict]:
+    terms = re.findall(r"\\w+", query.casefold())
+    if not terms or top_k < 1:
+        return []
+    chunks, counts, lengths, idf, average_length = _bm25_passages()
+    best_by_doc = {}
+    for chunk, counts_for_chunk, length in zip(chunks, counts, lengths):
+        score = 0.0
+        normalizer = 1.5 * (0.25 + 0.75 * length / average_length)
+        for term in terms:
+            frequency = counts_for_chunk.get(term, 0)
+            if not frequency:
+                continue
+            score += idf[term] * frequency * 2.5 / (frequency + normalizer)
+        if score <= 0:
+            continue
+        doc_id = chunk["doc_id"]
+        previous = best_by_doc.get(doc_id)
+        if previous is None or score > previous[0]:
+            best_by_doc[doc_id] = (score, {
+                "doc_id": doc_id,
+                "title": chunk["title"],
+                "chunk": chunk["text"],
+                "offset": chunk["start"],
+                "score": round(score, 3),
+                "search_version": SEARCH_PROTOCOL_VERSION,
+            })
+    ranked = sorted(best_by_doc.values(), key=lambda pair: (-pair[0], pair[1]["doc_id"]))
+    return [row for _, row in ranked[:top_k]]
+
+def search(query: str, top_k: int = 5, method: str = "keyword") -> list[dict]:
+    """Search over corpus. method: 'keyword' (passage BM25) or 'chunk' (legacy TF-IDF).
+
+    'keyword' — ranks documents by their best passage, with title terms boosted.
     'chunk'   — scores individual 500-char chunks, finds buried facts in long docs.
     """
+    if method != "chunk":
+        return _bm25_document_search(query, top_k)
     query_terms = query.lower().split()
     idf = _idf_scores()
 
-    if method == "chunk":
-        chunks = _get_chunks()
-        scored = []
-        for chunk in chunks:
-            text_lower = chunk["text"].lower()
-            score = sum(text_lower.count(t) * idf.get(t, 1.0) for t in query_terms)
-            if score > 0:
-                scored.append({
-                    "doc_id": chunk["doc_id"],
-                    "title": chunk["title"],
-                    "chunk": chunk["text"],
-                    "score": round(score, 2),
-                    "offset": chunk["start"],
-                })
-        scored.sort(key=lambda x: x["score"], reverse=True)
-        return scored[:top_k]
-    else:
-        # Default: document-level TF-IDF search
-        results = []
-        for doc in _load_all_docs():
-            text_lower = doc["text"].lower()
-            score = sum(text_lower.count(t) * idf.get(t, 1.0) for t in query_terms)
-            if score > 0:
-                results.append({
-                    "doc_id": doc["doc_id"],
-                    "title": doc.get("title", doc["doc_id"]),
-                    "chunk": doc["text"][:500],
-                    "score": round(score, 2),
-                })
-        results.sort(key=lambda x: x["score"], reverse=True)
-        return results[:top_k]
+    chunks = _get_chunks()
+    scored = []
+    for chunk in chunks:
+        text_lower = chunk["text"].lower()
+        score = sum(text_lower.count(t) * idf.get(t, 1.0) for t in query_terms)
+        if score > 0:
+            scored.append({
+                "doc_id": chunk["doc_id"],
+                "title": chunk["title"],
+                "chunk": chunk["text"],
+                "score": round(score, 2),
+                "offset": chunk["start"],
+            })
+    scored.sort(key=lambda x: x["score"], reverse=True)
+    return scored[:top_k]
 
 def read(doc_id: str) -> str:
     """Read full document text by ID."""

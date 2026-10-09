@@ -7,8 +7,8 @@ import os
 import platform
 import random
 import subprocess
-from hashlib import sha256
 from datetime import datetime
+from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
@@ -18,12 +18,13 @@ from rich.console import Console
 
 from src.env.corpus import Corpus
 from src.env.reward import REWARD_VERSION, REWARD_WEIGHTS
+from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.eval.artifacts import configuration_hash, content_hash
 from src.eval.harness import run_eval
 from src.eval.report import print_results
+from src.policies.code_execution import SYSTEM_PROMPT as CODE_EXECUTION_SYSTEM_PROMPT
 from src.policies.forced_first_read import ForcedFirstReadPolicy
 from src.policies.registry import build_policies as build_registered_policies
-from src.policies.code_execution import SYSTEM_PROMPT as CODE_EXECUTION_SYSTEM_PROMPT
 
 # An exported-but-EMPTY key shadows .env: load_dotenv() defaults to
 # override=False and treats "" as already-set, so the blank value wins and
@@ -67,10 +68,13 @@ def _policy_settings(policy_name: str, policy: object) -> dict:
     settings = dict(getattr(policy, "config", {}) or {})
     max_tokens = getattr(policy, "_max_tokens", getattr(policy, "max_tokens", None))
     temperature = getattr(policy, "_temperature", getattr(policy, "temperature", None))
+    top_p = getattr(policy, "_top_p", None)
     if max_tokens is not None:
         settings.setdefault("max_tokens", max_tokens)
     if temperature is not None:
         settings.setdefault("temperature", temperature)
+    if top_p is not None:
+        settings.setdefault("top_p", top_p)
 
     if policy_name == "openai_compatible":
         settings.setdefault("backend", "openai_compatible")
@@ -78,9 +82,11 @@ def _policy_settings(policy_name: str, policy: object) -> dict:
         settings.setdefault("model", os.environ.get("ENVOY_MODEL_ID"))
     elif policy_name == "qwen_base_policy":
         settings.setdefault("model", os.environ.get("BASE_MODEL_PATH", "Qwen/Qwen2.5-7B-Instruct"))
-    elif policy_name in {"qwen_sft_policy", "grpo_policy"}:
+    elif policy_name in {"qwen_sft_policy", "qwen_rag_policy", "grpo_policy"}:
         settings.setdefault("model", os.environ.get("BASE_MODEL_PATH", "Qwen/Qwen2.5-7B-Instruct"))
         settings.setdefault("checkpoint", os.environ.get("CHECKPOINT_PATH"))
+    elif policy_name == "claude_policy":
+        settings.setdefault("model", getattr(policy, "model", None))
 
     revision = getattr(getattr(getattr(policy, "_model", None),
                                "config", None), "_commit_hash", None)
@@ -159,6 +165,22 @@ def main(
         False,
         "--force-known-paper-read",
         help="Diagnostic only: execute read(doc_id) before the policy's first model turn",
+    ),
+    evidence_verifier: bool = typer.Option(
+        False,
+        "--evidence-verifier",
+        help="Enable bounded evidence-state verification and recovery turns",
+    ),
+    verifier_feedback_budget: int = typer.Option(
+        1,
+        "--verifier-feedback-budget",
+        min=0,
+        help="Maximum verifier recovery messages per episode",
+    ),
+    escalate_after_verifier_failure: bool = typer.Option(
+        False,
+        "--escalate-after-verifier-failure",
+        help="Return a host-model handoff when a violation remains after recovery",
     ),
 ) -> None:
     """Run evaluation: policies through the document exploration environment."""
@@ -259,6 +281,9 @@ def main(
         workers=workers,
         require_evidence=require_evidence,
         include_preamble=not question_only_observation,
+        evidence_verifier=evidence_verifier,
+        verifier_feedback_budget=verifier_feedback_budget,
+        escalate_after_verifier_failure=escalate_after_verifier_failure,
     )
 
     # Always print and save, even on partial results
@@ -282,9 +307,13 @@ def main(
         "search_within_top_k": search_within_top_k,
         "search_within_mode": search_within_mode,
         "force_known_paper_read": force_known_paper_read,
+        "evidence_verifier": evidence_verifier,
+        "verifier_feedback_budget": verifier_feedback_budget,
+        "escalate_after_verifier_failure": escalate_after_verifier_failure,
         "decoding": sorted({
             json.dumps({"max_tokens": settings.get("max_tokens"),
-                        "temperature": settings.get("temperature")}, sort_keys=True)
+                        "temperature": settings.get("temperature"),
+                        "top_p": settings.get("top_p")}, sort_keys=True)
             for settings in policy_settings.values()
         }),
     }
@@ -294,6 +323,8 @@ def main(
     }
     manifest = {
         **protocol,
+        "tool_search_version": SEARCH_PROTOCOL_VERSION,
+        "tool_preamble_sha256": sha256(TOOL_PREAMBLE.encode()).hexdigest(),
         "comparison_id": configuration_hash(protocol),
         "split": split if musique else questions_path,
         "checkpoint_id": next(iter(checkpoints)) if len(checkpoints) == 1 else None,
@@ -365,6 +396,9 @@ def save_transcripts(
             "predicted_answer": r.predicted_answer,
             "predicted_citations": r.predicted_citations,
             "predicted_evidence": r.predicted_evidence,
+            "verifier_events": [event.model_dump() for event in r.verifier_events],
+            "escalation": r.escalation.model_dump() if r.escalation is not None else None,
+            "policy_metadata": r.policy_metadata,
             "trajectory": [
                 {
                     "step": s.step,
