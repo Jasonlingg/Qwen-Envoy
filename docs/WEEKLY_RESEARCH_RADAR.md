@@ -1,8 +1,19 @@
 # Weekly AI research radar
 
+> September 28 corpus clarification: the initial Obsidian research library is
+> built from reviewed public-paper notes because the user has no existing note
+> collection. Qwen searches and reads the frozen original papers; the host
+> drafts explanations and the reviewed writer creates Obsidian notes. The
+> first new trained-Qwen claim is public-paper investigation, not transfer to
+> private life notes. See the [corpus amendment](QWEN_RESEARCH_LIBRARY_CORPUS_AMENDMENT_20260928.md).
+
+> September 25 product direction: make the weekly radar a personal [AI learning loop](WEEKLY_AI_LEARNING_LOOP.md). The user wants to keep learning recent research, including curiosity-driven topics. Preserve the digest, Obsidian/MCP library, and base-versus-trained Qwen gates below; treat local experiments as an optional way to apply an idea.
+
+> September 26 update: the broader product is the [chat-first Obsidian second brain](PERSONAL_LEARNING_MEMORY_BUILD_PLAN.md). This document defines its AI-research discovery and weekly-digest workflow, not the whole user experience. Vault links and Obsidian's native graph are part of the broader product; a separate graph database or custom graph UI still needs a measured reason.
+
 ## Scope contract
 
-This document is the active scope. Keep the project centered on one outcome:
+This document is the active scope for the weekly AI-research workflow. Its outcome is:
 
 > Deliver a useful weekly update on state-of-the-art research in selected AI areas, accumulate an
 > evidence-backed second brain in Obsidian, and let Claude, GPT, or another main assistant query it
@@ -13,6 +24,9 @@ The architectural claim is specific: Qwen is a low-cost query worker between the
 and the paper library. It searches and compresses the relevant source material into a cited
 evidence packet. The host model uses that packet to explain, compare, and apply the research. Keep
 model training and harness work focused on making this middle layer more reliable and economical.
+
+The [R&D research-workflow review](RND_RESEARCH_WORKFLOW.md) explains why the weekly output should
+connect new findings to existing problems, evidence, and local experiments.
 
 The project has two non-negotiable success gates.
 
@@ -67,9 +81,11 @@ Work belongs in the active scope when it directly improves one of these stages:
 7. reproducible evaluation of the product or Qwen improvement.
 
 MuSiQue remains a controlled training benchmark. QASPER may supply paper questions or evidence
-labels only when converted to the code-execution protocol. Knowledge graphs, new rerankers, an
-Obsidian plugin, additional model families, and new RL algorithms wait until a measured failure in
-the active product justifies them.
+labels only when converted to the code-execution protocol. An external graph database, new
+rerankers, a custom graph UI, additional model families, and new RL algorithms wait until a
+measured failure in the active product justifies them. Ordinary Obsidian links and backlinks are
+part of the chat-first second-brain plan. An Obsidian chat plugin remains an interface choice
+after the underlying chat loop works.
 
 Before accepting a new direction, answer three questions:
 
@@ -187,17 +203,29 @@ required to obtain Obsidian backlinks and topic navigation.
 - A multi-turn Qwen policy and persistent local worker per episode.
 - MuSiQue base/SFT/GRPO evaluation and saved code trajectories.
 - Exact-span machinery in the earlier research path that can be reused at the output boundary.
+- CPU-only [topic profiles and retry-safe candidate collection](WEEKLY_RADAR_CANDIDATES.md),
+  with a persisted cursor, overlapping fetch windows, revision records, and conservative title
+  deduplication. It pairs a submission-date search with a bounded latest-update scan; an
+  incomplete scan leaves the cursor unchanged. The latest visible version may still hide an
+  intermediate revision between runs, and this is not a completeness benchmark.
+- An [offline weekly digest writer](WEEKLY_DIGEST_DEMO.md) that validates frozen public-paper
+  identities and exact spans, renders linked Obsidian paper notes and a weekly note, and writes
+  only after an explicit declared human review. [Historical 2025-W32](../data/research/weekly_digest_2025_w32_agent_draft.json)
+  and [current 2026-W39](../data/research/weekly_digest_2026_w39_agent_draft.json) selections
+  are agent-authored previews, not reviewed weekly publications or relevance benchmarks.
+- A [local read-only MCP bridge](PERSONAL_MEMORY_LOCAL_DEMO.md) for pinned-snapshot search and
+  source inspection. It does not yet expose weekly digests or call Qwen.
 
 ## What remains
 
-1. Topic-profile schema and saved discovery cursor.
-2. Candidate database with deduplication and revision handling.
-3. A code-execution question format for paper investigation and comparison.
-4. Exact-span citations in the executable-code submission protocol.
-5. Weekly digest and paper-note writers.
-6. Read-only MCP server wrapping the Qwen worker and saved artifacts.
-7. A scheduler that can run while the laptop is closed.
-8. Evaluation over several historical weeks before enabling unattended updates.
+1. Verify discovery recall and version coverage on historical weeks; the bounded update scan
+   observes latest visible versions, not every intermediate revision.
+2. Review candidate relevance and implement a bounded ranking decision against those labels.
+3. Define a code-execution question and exact-span submission protocol for paper investigation
+   and comparison; compare base and trained Qwen on the same held-out tasks.
+4. Review the historical digest's relevance and interpretations before publishing any paper notes.
+5. Extend MCP to saved weekly digests and evidence packets, with Qwen behind a bounded call.
+6. Add a scheduler that can run while the laptop is closed only after the historical replay passes.
 
 ## Evaluation before automation
 

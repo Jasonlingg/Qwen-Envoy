@@ -1,39 +1,111 @@
-# Qwen Envoy
+# Qwen Envoy / EnvoyBench Studio
 
-Qwen Envoy is an experimental research worker that answers questions by writing Python against a
-document collection. It can search, read, extract, compare, and verify evidence across several
-turns before returning an answer with source IDs.
+EnvoyBench evaluates paper-reading agents that write Python to search, read,
+and cite document text. Studio is the inspection interface: **Runs → Questions
+→ Trace**, with scores, answers, Python actions, tool observations, and saved
+token logprobs when available. Qwen Envoy is the experimental fine-tuned worker
+used in the recorded base-versus-v5 case study.
 
-The intended deployment is an agent-as-tool system. A larger assistant decides when research is
-needed, sends a bounded question to Envoy, and receives an evidence packet it can explain or use in
-a broader task. The current build starts with a public-paper research library: a weekly AI-research
-digest and question answers become drafts in an Obsidian vault, where a person reviews them before
-adding them to the library. Personal notes can join that library later.
+**Current scope, October 8, 2026:** finish the text-only EnvoyBench v0.1
+candidate release. Graph-aware model training and partial-paper reasoning tests
+are not implemented or part of this release. Earlier Obsidian and systems-map
+prototypes remain in the repository as historical work.
 
-Qwen's role is the inexpensive middle layer between that reasoning model and the paper library. It
-handles repeated search, reading, extraction, and citation work so the larger model receives a
-small evidence packet instead of entire papers. The checkpoint is therefore judged as a research
-worker: it must find the right evidence reliably, preserve uncertainty, and cost less than asking
-the larger model to perform every retrieval step. The larger model remains responsible for the
-final explanation and broader reasoning.
+EnvoyBench builds on **QASPER's existing paper questions**, with a bounded
+code-tool protocol and inspectable failure diagnostics. It is a candidate
+evaluation protocol, not an independently validated leaderboard or a new
+collection of original questions. See the [benchmark guide](benchmarks/envoybench/README.md)
+and [data provenance](benchmarks/envoybench/data/README.md).
 
-This repository contains the working code-execution environment, data and training pipelines,
-Qwen and Claude policies, reproducible evaluation harnesses, and the vault importer. The scheduled
-weekly pipeline and MCP server are still planned work.
+## Open the demo
 
-The environment was inspired by [arXiv:2512.24601](https://arxiv.org/abs/2512.24601).
+**No setup:** download [the standalone Studio](release/envoybench-v0.1/studio.html)
+and open it in a browser. It includes the saved runs and makes no model calls;
+no GPU, Docker, or API key is needed. GitHub's file preview does not run the HTML.
 
-**Current architecture work:** The [repository map](docs/REPOSITORY_LAYOUT.md) separates the
-new research-library harness from historical training and personal-memory demos. The first
-CPU-only replay now verifies source spans, checks a structured draft, records the run outside
-the vault, and stages only under `_inbox/`. Live Qwen tool-call logging, Nemotron drafting,
-and migration of older direct vault writers remain open. See the
-[harness design](docs/RESEARCH_LIBRARY_HARNESS_DESIGN.md) for the intended boundaries.
+**Local Studio:** with Python 3.10+, run from a checkout:
+
+```bash
+git clone https://github.com/Jasonlingg/Qwen-Envoy.git
+cd Qwen-Envoy
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[viewer,qasper]'
+python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
+python scripts/launch_studio.py
+```
+
+Open <http://127.0.0.1:8765>. The data builder downloads the pinned QASPER
+revision if needed; viewing the recorded runs does not perform inference.
+The [release guide](release/envoybench-v0.1/README.md) documents artifact
+verification and the distinction between saved and live runs.
+
+## Latest recorded comparison
+
+The September 30 run compared base Qwen3-8B with the v5 SFT adapter on the same
+40 QASPER-derived candidate questions. Each question names its paper, so this
+tests known-paper answering and evidence selection, not discovery of papers.
+
+| Measure | Base Qwen3-8B | v5 SFT |
+| --- | ---: | ---: |
+| Provisional passes, all questions | 5/40 | 15/40 |
+| Supported-answer passes on answerable questions | 3/20 | 3/20 |
+| Correct abstentions on unanswerable questions | 2/20 | 12/20 |
+| Episodes with a recorded tool, runtime, or endpoint error | 22/40 | 1/40 |
+| Final answers submitted | 29/40 | 40/40 |
+
+**Answer-quality judgments are model-assisted and provisional.** References and
+answers have not been independently human-reviewed. V5 improved correct
+abstention and execution reliability in this run; supported answering on the
+answerable subset did not improve. An always-refuse policy would be expected
+to pass 20/40 under these labels, illustrating why the aggregate score alone
+is misleading. That is an analytical baseline, not another recorded run.
+
+All 11 missing base submissions hit the shared 8,192-token serving cap.
+Historical timing and usage are incomplete, so no full cost or latency win is
+claimed. See the [case-study report](benchmarks/envoybench/COMPARISON_2026_09_30.md)
+for protocol details, source bindings, and limitations.
+
+The separate October 3 two-question token diagnostic is **unscored**. Its
+generated-token logprobs are likelihoods of emitted tokens, not probabilities
+that answers are correct. Neither it nor the interrupted larger diagnostic
+changes the September 30 scores. See the [logprob analysis](benchmarks/envoybench/LOGPROB_ANALYSIS.md).
+
+## Read your own paper
+
+The [paper reader](benchmarks/envoybench/PAPER_READER.md) fetches PDFs from
+arXiv/direct HTTPS links and accepts PDF/Markdown/text uploads. It saves model
+answers, exact source spans, code-tool traces, and observed usage separately
+from the benchmark. These answers are unreviewed and receive no benchmark score.
+
+**PDF support is text extraction only.** Images and diagrams are not passed
+to a vision model; table rows/columns are not reliably preserved. Scanned PDFs
+need OCR, which is not implemented. Figures, tables, and equations may be
+missing from the model's input.
+
+Live investigations require Docker and a configured model endpoint. To use
+the optional Nebius setup, put `NEBIUS_API_KEY` in your local `.env` or
+environment, build the sandbox, and launch explicitly:
+
+```bash
+docker build -f benchmarks/envoybench/Dockerfile -t rlm-sandbox .
+python scripts/launch_studio.py --live-nebius
+```
+
+Only an explicit **Run** on `/papers` starts inference and consumes API credits.
+The [live validation record](release/envoybench-v0.1/LIVE_VALIDATION.md) covers
+four NVIDIA Nemotron/Nebius attempts: three Lightning failures and one Ultra
+completion with a correct answer but incomplete citations. This verifies a
+local integration, not reliable semantic support or a Qwen improvement.
+
+The [v5 model card](benchmarks/envoybench/MODEL_CARD.md) records the checkpoint,
+QLoRA recipe, and data. The release is not a completed hackathon submission;
+public hosting, video, sponsor feedback, and submission remain pending in the
+[release checklist and draft](release/envoybench-v0.1/DEVPOST_DRAFT.md).
 
 ## What the agent does
 
-Each episode gives the model a question and a persistent Python REPL with document tools already
-loaded:
+Each episode gives the model a question and a bounded Python tool session:
 
 ```text
 Question
@@ -45,15 +117,19 @@ Qwen writes Python  ──>  search / read / extract / verify
    +──────────── stdout and errors
    |
    v
-SUBMIT: <answer> CITATIONS: [<document IDs>]
+SUBMIT: <answer> CITATIONS: [<document IDs>] EVIDENCE: [<source spans>]
 ```
 
-The same Python process lives for the whole episode, so variables and intermediate results survive
-between actions. This lets the policy do more than issue isolated tool calls: it can filter search
-results, inspect multiple documents, run regular expressions, aggregate metadata, and revise a
-query based on earlier output.
+The model can filter search results, inspect documents, run regular expressions,
+and revise queries using earlier output. Execution depends on the backend:
 
-An episode looks like this:
+- The local backend keeps one Python worker alive per episode and executes each action once.
+- The released benchmark and live paper reader require Docker. Its current backend reconstructs
+  state by replaying prior successful actions; it is not equivalent to the local worker, and
+  measured episode time includes replay overhead.
+
+An illustrative episode looks like this (the final placeholders must be replaced
+with the actual answer, source ID, and observed character offsets):
 
 ```text
 # action 1
@@ -65,24 +141,32 @@ text = read(hits[0]["doc_id"])
 print(extract(hits[0]["doc_id"], r"(?i).{0,180}mask.{0,240}"))
 
 # final action
-SUBMIT: The paper excludes retrieved tokens from the policy loss ... CITATIONS: ["paper_id"]
+SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","start":<start>,"end":<end>}]
 ```
 
 ## Project status
 
 | Component | Status |
 | --- | --- |
-| Persistent local/GPU Python worker | Working; one isolated process per episode |
-| Search, read, passage, extraction, and verification tools | Working |
-| Reproducible transcripts and experiment manifests | Working |
-| Markdown/PDF and Obsidian snapshot import | Working |
-| Qwen2.5-7B SFT and GRPO comparison on MuSiQue | Complete |
-| Qwen3-8B baseline on AI-paper and QASPER tasks | Complete |
-| Qwen3-8B QLoRA on QASPER code trajectories | Complete; improved the locked 40-question evaluation |
-| Weekly paper discovery and ranking | Designed, not complete |
-| MCP server for host assistants | Interface drafted, server not complete |
+| Recorded Studio | Runs, questions, full transcripts, provisional scores; standalone HTML available |
+| September 30 base/v5 comparison | Inference complete; model-assisted review only; no validated promotion |
+| Source and anonymous answer review | Local review interfaces available; independent review remains incomplete |
+| Paper reader | Frozen text snapshots, optional endpoint inference, saved evidence and traces |
+| Token logprobs | Recorded in a separate small diagnostic; no calibrated correctness score |
+| Qwen v5 training recipe | Pinned adapter and observed QLoRA settings documented in the model card |
+| Retrieval, thinking, and prefix-cache comparisons | Prepared protocols; no completed comparative result claimed |
+| Historical training and Obsidian/map demos | Retained for reproducibility; outside the current release scope |
+| Hackathon submission | Local artifacts and draft ready; public hosting, video, feedback, and submission pending |
 
-## Results
+## Historical training experiments
+
+These experiments use different questions, checkpoints, and protocols from the
+September 30 release. Their pass counts are not directly comparable. Historical
+QASPER semantic judgments were model-assisted; development results do not
+establish an independently validated held-out improvement.
+
+<details>
+<summary>Expand earlier MuSiQue, QASPER, SFT, and GRPO results</summary>
 
 ### Historical MuSiQue experiment
 
@@ -111,14 +195,17 @@ each other, so their reward values should not be compared across rows.
 
 The model usually found the right paper but was less reliable at using it. It guessed on
 unanswerable questions, sometimes answered the general topic instead of the requested fact, and
-occasionally mischaracterized a correctly cited passage. That diagnosis led to the current
+occasionally mischaracterized a correctly cited passage. That diagnosis led to the earlier
 QASPER-grounded SFT experiment. See
 [docs/QWEN3_BASELINE_PILOT.md](docs/QWEN3_BASELINE_PILOT.md).
 
 ### Qwen3-8B SFT and harness diagnosis
 
-The base model and QASPER SFT adapter have now been run through the same locked 40-question
-evaluation. SFT raised outcome reward from 0.152 to 0.203 and semantic passes from 9/40 to 19/40.
+An earlier base model and targeted QASPER SFT adapter were compared on a locked
+40-question set subsequently used during development. SFT raised outcome reward
+from 0.152 to 0.203 and provisional model-assisted semantic passes from 9/40 to
+19/40. The adapter did not pass the full promotion rule. These are not the
+September 30 v5 results.
 It also eliminated malformed tool actions in this run and increased required-paper recall from
 0.65 to 1.00. The adapter is better at operating the research environment, although 7 of the 20
 answerable questions were still refused incorrectly.
@@ -153,9 +240,10 @@ overlapping windows raised automatic reward to 0.330 and rescued two target fail
 previously correct control; a conservative merger preserved the controls but rescued nothing. A
 `ranked_diverse` mode then kept the original top three and added three non-overlapping windows. It
 looked strong offline and scored 0.328 end to end, but semantic review found only 7/10 controls
-still correct. None of these modes became the default. Raw top eight remains the only tested
-retrieval change that rescued two target failures while retaining all ten controls, so the next
-experiment targets query planning instead of more passage formatting.
+still correct. None of these modes became the default. In that diagnostic, raw
+top eight was the only tested retrieval change that rescued two target failures
+while retaining all ten controls. The recorded query-planning follow-up is a
+historical proposal, not the current release plan.
 
 ### Qwen3-8B GRPO pilot
 
@@ -175,9 +263,9 @@ development task, not a final held-out or product-readiness result. See the comp
 failure analysis, artifacts, and limits in
 [docs/qasper-grpo/README.md](docs/qasper-grpo/README.md).
 
-## Training approach
+### Historical training approach
 
-The current run distills QASPER-grounded research trajectories into Qwen3-8B with rank-4 QLoRA:
+The targeted SFT run distilled QASPER-grounded research trajectories into Qwen3-8B with rank-4 QLoRA:
 
 1. QASPER supplies paper questions, evidence, and expert answerability labels.
 2. A stronger teacher produces multi-step Python trajectories against the frozen corpus.
@@ -199,36 +287,71 @@ The project also found and fixed an independent GRPO bug. PPO ratios were comput
 generation scores instead of fresh policy logits, which suppressed gradients for some samples.
 Regression coverage lives in `tests/test_grpo_loss.py`.
 
+### Scale-SFT continuation: negative result
+
+A later run continued the targeted Qwen3-8B adapter on 995 QASPER-derived code-execution
+conversations. The starting adapter, epoch 1, and epoch 2 were evaluated on the **same new**
+40-question QASPER validation set, with identical tools, corpus, prompt, decoding, and seed.
+The identity-blind, model-assisted semantic review found 15, 10, and 4 passes respectively.
+Mean automatic reward fell from 0.363 to 0.179 and 0.127. Neither continuation checkpoint met
+the preregistered promotion rule. This is a separate evaluation from the earlier 9/40 versus
+19/40 base-to-targeted-SFT comparison, so the two sets of pass counts are not directly comparable.
+
+The failure was concentrated in answerability: epoch 1 improved on answerable questions (5 to
+8 passes out of 20) but fell on insufficient-evidence questions (10 to 2 passes out of 20).
+The continuation training set had only 31 abstention examples among 796 training conversations.
+That imbalance is a plausible mechanism, not a causal conclusion. No additional
+training is part of the current Studio release. See the
+[public experiment report](reports/qasper-scale-sft-2026-09-25.json) and
+[demo walkthrough](docs/DEMO_AND_EVIDENCE.md).
+
+</details>
+
 ## Evaluation
 
-Every evaluation writes full trajectories plus a manifest containing the checkpoint, question
-IDs, corpus hash, prompt settings, decoding settings, reward version, hardware, seed, and source
-commit. Results with different protocol hashes are not treated as checkpoint comparisons.
+EnvoyBench stores question and corpus identities, declared model revisions,
+policy settings, full trajectories, and review provenance. Protocol hashes
+bind paired comparisons. Recorded gaps, including missing historical timings
+and unverified endpoint weight identity, remain explicit.
 
-The Qwen3 abstention experiment uses 40 held-out QASPER validation-split questions: 20 answerable
-and 20 unanswerable, with no paper overlap with training. Its pre-registered decision rule
-requires:
+Verify the packaged case study after building the corpus with the demo setup:
 
-- a statistically significant increase in abstention recall;
-- no more than a 0.15 absolute increase in false abstentions on answerable questions; and
-- identical base and adapter inference conditions.
+```bash
+python -m benchmarks.envoybench.verify \
+  --run-dir release/envoybench-v0.1/run \
+  --review-dir release/envoybench-v0.1/review-prepared \
+  --judged-review release/envoybench-v0.1/review-model-assisted/review.json \
+  --provisional
+```
 
-See [docs/SFT_ABSTENTION_PREREGISTRATION.md](docs/SFT_ABSTENTION_PREREGISTRATION.md) and
-`scripts/run_qwen3_qasper_abstention_eval.sh`.
+This checks artifact integrity, paired completeness, exact spans, and review
+bindings. It does not independently judge answer correctness or validate the
+references. The candidate split remains distinct from the older development
+sets; upstream model pretraining exposure to these papers is unknown.
+
+Historical overlap rewards are separate from supported-answer judgments.
+`src/env/reward.py` defines the active MuSiQue reward; document-ID overlap and
+exact quote matching do not establish that a claim follows from its evidence.
+The earlier [abstention preregistration](docs/SFT_ABSTENTION_PREREGISTRATION.md)
+is preserved as experiment history, not the current release's validation status.
 
 ## Repository map
 
 | Path | Purpose |
 | --- | --- |
+| `benchmarks/envoybench/` | Candidate data protocol, paired runner, review tools, verifier, and Studio |
+| `release/envoybench-v0.1/` | Saved comparison, review artifacts, standalone Studio, and release notes |
+| `scripts/launch_studio.py` | Main local demo entry point; live Nebius inference is opt-in |
 | `src/env/` | Gym-style document environment, persistent REPL, corpus, tools, and reward |
 | `src/policies/` | Qwen base/SFT/GRPO policies, Claude reference policy, and RAG baselines |
 | `src/eval/` | Evaluation harness, manifests, scoring, and abstention metrics |
 | `src/research/` | Paper/vault ingestion and the earlier structured research-agent path |
+| `src/product/qwen_investigator.py` | Bounded Docker-only paper investigation used by the live reader |
 | `scripts/train_sft.py` | Qwen3 QLoRA training with per-action target masking |
 | `scripts/train_grpo_custom.py` | Custom GRPO loop for the historical MuSiQue experiment |
 | `scripts/run_eval.py` | Shared policy evaluation entry point |
 | `scripts/research_vault.py` | Immutable Markdown/PDF/Obsidian snapshot import and export |
-| `scripts/viewer.py` | Browser viewer for saved trajectories |
+| `scripts/viewer.py` | Earlier general-purpose trajectory viewer; separate from Studio |
 
 The local worker executes each action once. The optional Docker backend still rebuilds state by
 replaying successful actions and is not considered behaviorally equivalent yet.
@@ -236,12 +359,12 @@ replaying successful actions and is not considered behaviorally equivalent yet.
 Core stack: Python, PyTorch, Hugging Face Transformers, TRL, PEFT/QLoRA, bitsandbytes, FAISS,
 sentence-transformers, Docker, and pytest.
 
-## Getting started
+## Development and historical commands
+
+Use **Open the demo** above for the current release. The commands here are for
+environment development and earlier experiments. From an existing checkout:
 
 ```bash
-git clone https://github.com/Jasonlingg/DocTracerRL.git
-cd DocTracerRL
-python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
@@ -262,7 +385,8 @@ python scripts/research_vault.py import \
   --output out/research/my-vault-snapshot
 ```
 
-Run base Qwen3-8B on the frozen AI-paper pilot (GPU required):
+Run base Qwen3-8B on the historical AI-paper pilot (GPU and the named local
+corpus snapshot required; it is not created by the Studio setup):
 
 ```bash
 pip install -e ".[training]"
@@ -278,7 +402,8 @@ BASE_MODEL_PATH=Qwen/Qwen3-8B python scripts/run_eval.py \
   --output out/research/qwen3-baseline/base.json
 ```
 
-Compare a Qwen3 adapter with base Qwen on the locked abstention evaluation:
+Re-run an earlier Qwen3 adapter experiment with its original local artifacts
+(these questions have since been used during development):
 
 ```bash
 CHECKPOINT_PATH=/path/to/adapter/final \
@@ -288,13 +413,16 @@ CHECKPOINT_PATH=/path/to/adapter/final \
 See [docs/GPU_TRAINING_READINESS.md](docs/GPU_TRAINING_READINESS.md) before starting a GPU run and
 [docs/EVAL_RUNBOOK.md](docs/EVAL_RUNBOOK.md) before comparing checkpoints.
 
-### Local trajectory UI
+### Earlier trajectory UI
+
+This is the older general-purpose viewer, not the Studio release entry point.
 
 The viewer can run an agent live, stream every Python action and tool result, and browse saved
 evaluation transcripts. It discovers the synthetic, MuSiQue, QASPER, AI-paper, and imported-vault
 corpora available under `out/research/`. Select a saved question or type a new one. **Watch
-Replay** runs a bundled, recorded QASPER trajectory without loading a model or using an API key;
-it is labeled as a Claude reference trace in the UI.
+Replay** runs bundled, recorded trajectories without loading a model or using an API key. The
+selector includes two paired three-checkpoint Qwen cases and a Claude reference trace; each is
+labeled by source and review status in the UI.
 
 ```bash
 pip install -e ".[viewer]"
@@ -312,7 +440,8 @@ export ENVOY_MODEL_ID=Qwen/Qwen3-8B
 # Useful for a Qwen3 model served by vLLM:
 export ENVOY_MODEL_EXTRA_JSON='{"chat_template_kwargs":{"enable_thinking":false}}'
 
-python scripts/viewer.py
+python scripts/viewer.py --port 8001
+# Viewer: http://127.0.0.1:8001 (separate from the model endpoint on port 8000)
 ```
 
 The same adapter works in the command-line evaluator:
@@ -334,38 +463,72 @@ model family.
 
 | Tool | Description |
 | --- | --- |
-| `search(query, top_k=5)` | Document-level TF-IDF search |
-| `search(query, method="chunk")` | Search overlapping windows inside the corpus |
+| `search(query, top_k=5)` | Passage BM25, returning documents ranked by their best passage |
+| `search(query, method="chunk")` | Legacy TF-IDF scoring over overlapping text windows |
 | `read(doc_id)` | Read a complete document |
 | `passage(doc_id, start, length)` | Return an exact passage with stable character offsets |
 | `extract(doc_id, pattern)` | Run a regular expression over one document |
 | `scan(doc_id, pattern)` | Return bounded context around regex matches across a full document |
 | `aggregate(doc_ids, field)` | Collect a metadata field across documents |
 | `search_within(doc_id, query)` | Rank passages inside one document |
-| `verify(doc_id, claim)` | Check claim keywords and return a matching excerpt |
+| `verify(doc_id, claim)` | Check claim keywords and return an excerpt; not semantic entailment |
 | `list_docs()` | List document IDs, titles, and lengths |
 
 ## Current limitations
 
-- The MCP server and unattended weekly scheduler are not implemented yet.
-- Citation existence is checked mechanically; whether a passage supports a claim still needs a
-  semantic metric or human review.
-- The current research training set is small. Its value must be established on held-out papers.
-- Qwen inference and training require a CUDA GPU; the vault importer and environment tests run on
-  CPU.
+- Scores and reference answerability labels lack independent human validation.
+  No held-out supported-answer improvement or model promotion is established.
+- Exact source spans verify provenance, not whether a passage supports a claim.
+- The reader is text-only; figures, structured tables, and scanned pages are not reliably parsed.
+- Known-paper questions do not measure open-ended research or paper discovery.
+- Token logprobs are diagnostic telemetry, not calibrated answer confidence.
+- Historical timing/usage gaps prevent a complete cost or latency comparison.
+- Local Qwen training/evaluation used CUDA GPUs. Hosted inference needs a configured endpoint;
+  saved Studio runs can be viewed without a GPU or API key.
 - Docker execution does not yet match the persistent local worker exactly.
+
+## Earlier product prototypes
+
+The repository retains earlier Obsidian, memory, and map experiments. These are
+outside the current Studio release scope; their dated plans are not the active
+shipping roadmap. The proposed cost benefit of a small research worker has not
+been established by a complete cost comparison.
+
+- [Learning-memory API](docs/PERSONAL_MEMORY_LOCAL_DEMO.md) and
+  [Learning Lab](docs/LEARNING_LAB_VERTICAL_SLICE.md): local notes, exact source
+  receipts, and approval-gated revisions. `python scripts/launch_sample_demo.py`
+  opens a disposable synthetic-note demo; `/chat` is its older chat page.
+- [Question desk](docs/QUESTION_DESK_PRODUCT_DIRECTION.md) and
+  [systems-map prototype](docs/SYSTEM_MAP_PROTOTYPE.md): earlier interaction
+  experiments. `python scripts/launch_research_map_demo.py` uses curated maps
+  and updates, not model-generated diagrams.
+- [Report-derived memory demo](docs/QWEN_EXPERIMENT_MEMORY_DEMO.md): recorded
+  Qwen experiment results presented as a dated Obsidian thread.
+- [Research-library layout](docs/REPOSITORY_LAYOUT.md) and
+  [harness design](docs/RESEARCH_LIBRARY_HARNESS_DESIGN.md): the earlier staging
+  harness has an offline fixture replay; it is separate from the live Studio
+  paper reader. The read-only MCP bridge serves snapshot passages; unattended
+  weekly scheduling and end-to-end product validation remain incomplete.
+
+The original code-execution environment was inspired by
+[arXiv:2512.24601](https://arxiv.org/abs/2512.24601).
 
 ## Documentation
 
-- [Code-execution second brain](docs/CODE_EXECUTION_SECOND_BRAIN.md): product boundary and active
-  model architecture
-- [Weekly research radar](docs/WEEKLY_RESEARCH_RADAR.md): product scope and remaining components
+- [Release bundle](release/envoybench-v0.1/README.md): saved demo and verification instructions
+- [Benchmark protocol](benchmarks/envoybench/README.md): splits, runners, scoring, and review
+- [Latest comparison](benchmarks/envoybench/COMPARISON_2026_09_30.md): provisional results and failures
+- [Paper reader](benchmarks/envoybench/PAPER_READER.md): optional live endpoint setup
+- [V5 model card](benchmarks/envoybench/MODEL_CARD.md): observed training recipe and checkpoint identity
+- [Code-execution second brain](docs/CODE_EXECUTION_SECOND_BRAIN.md) and
+  [weekly research radar](docs/WEEKLY_RESEARCH_RADAR.md): historical product plans
 - [Qwen3 baseline pilot](docs/QWEN3_BASELINE_PILOT.md): measured research-agent failures
 - [Qwen3 SFT prefix diagnosis](docs/QWEN3_SFT_PREFIX_DIAGNOSIS.md): failed run analysis and repair
-- [QASPER GRPO experiment](docs/qasper-grpo/README.md): checkpoint curve, behavioral regressions,
-  optimization diagnosis, and the next bounded ablation
+- [QASPER GRPO experiment](docs/qasper-grpo/README.md): historical checkpoint curve and optimization diagnosis
 - [Evaluation runbook](docs/EVAL_RUNBOOK.md): reproducible checkpoint comparison
 - [Obsidian workflow](docs/OBSIDIAN_WORKFLOW.md): snapshot import and cited-note export
+- [Demo and evidence](docs/DEMO_AND_EVIDENCE.md): recorded Qwen traces, reproducibility, and
+  recruiter-facing scope
 - [Results](RESULTS.md): dated experiment history
 
 ## License

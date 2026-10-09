@@ -1,8 +1,16 @@
 # Code-execution second brain
 
+> September 28 scope clarification: the user has no pre-existing substantive
+> Obsidian vault. Seed a growing AI-research library from version-pinned public
+> papers. Qwen investigates frozen sources with multi-step Python tools and
+> returns evidence; the host drafts and the reviewed writer saves notes. The
+> first new base-versus-trained Qwen claim is scoped to that public research
+> library, per the [prospective corpus amendment](QWEN_RESEARCH_LIBRARY_CORPUS_AMENDMENT_20260928.md).
+> Personal notes can be added later without pretending they already exist.
+
 ## Product goal
 
-Build a small knowledge-query agent that searches a personal Obsidian library and returns evidence
+Build a small knowledge-query agent that searches a growing Obsidian research library and returns evidence
 to a larger assistant. The small model does the bounded, repeatable work: write Python, call
 `search()`, `read()`, and `extract()`, inspect results across several turns, and submit an answer
 with source IDs. The larger assistant can decide when research is needed and explain the returned
@@ -14,14 +22,18 @@ packet; Claude, GPT, or another host model reasons over that packet in the wider
 successful checkpoint does not need to replace the host model. It needs to reduce expensive
 context and retrieval work without losing evidence, inventing support, or hiding uncertainty.
 
-The user-facing product is a weekly research radar: discover new work in selected AI topics, rank
-what matters, investigate the strongest candidates, save durable notes and a weekly digest to
-Obsidian, and expose the resulting library to Claude, GPT, or another host through MCP. See
-[the weekly product plan](WEEKLY_RESEARCH_RADAR.md).
+The user-facing product is now a [chat-first lifelong-learning second brain](PERSONAL_LEARNING_MEMORY_BUILD_PLAN.md)
+over an Obsidian vault. People ask how their understanding changed, inspect the
+dated linked sources, and revisit or apply what they learned. The
+[weekly research radar](WEEKLY_RESEARCH_RADAR.md) supplies one ongoing stream of
+AI-research evidence and a digest; Claude, GPT, or another host can also query
+the library through MCP. The Qwen worker remains a bounded evidence
+investigator inside that wider conversation.
 
-The differentiated capability is reliable exploration through executable code. The Obsidian vault
-is the first useful domain, while MuSiQue remains the labeled benchmark for measuring whether the
-same exploration skill improves after training.
+The differentiated capability is reliable exploration through executable code. The first new
+product-task comparison uses a frozen public AI-paper library; Obsidian holds
+the reviewed notes that accumulate from it. MuSiQue remains a historical labeled
+benchmark, not the product improvement gate.
 
 ## Active architecture
 
@@ -31,8 +43,12 @@ same exploration skill improves after training.
 4. A Qwen policy observes each result and chooses the next code step or `SUBMIT:`.
 5. The caller receives the answer, cited document IDs, and the full auditable trajectory.
 
-Obsidian itself is only the authoring interface. No plugin or running Obsidian process is needed.
-Imported snapshots stay outside the vault and are immutable for reproducible runs.
+Obsidian is the durable linked memory and a navigation surface through its
+native graph and backlinks. A chat side panel is an eventual interface option;
+the backend does not require a running Obsidian process. Imported snapshots
+stay outside the vault and are immutable for reproducible runs. Frontmatter
+IDs alone do not create graph edges, so approved notes need actual internal
+links and a small deterministic index of their typed relationships.
 
 ## Evidence as of September 15, 2026
 
@@ -71,6 +87,12 @@ Create a small private evaluation set over the frozen vault. Start with 10 to 20
 require finding, combining, or checking information across notes. Record expected source notes and
 review answers manually; exact string matching is insufficient for personal notes.
 
+The current, bounded before/after version of this experiment is specified in
+[the targeted Qwen vault transfer test](TARGETED_QWEN_VAULT_TRANSFER_TEST.md).
+It locks twelve new transfer questions and a separate four-question development
+baseline before any targeted SFT run; the two-note demo snapshot is not enough
+to instantiate its gold questions.
+
 **Hypothesis:** the SFT checkpoint completes more vault questions with supported answers than the
 base checkpoint because it learned the executable research loop on MuSiQue.
 
@@ -89,7 +111,8 @@ The runnable pilot is intentionally small: six reserved papers and ten questions
 format without changing the MuSiQue reward. On a GPU machine with the SFT adapter available:
 
 ```bash
-CHECKPOINT_PATH=jasonlingg/doctracerrl-sft-qwen2.5-7b \
+BASE_MODEL_PATH=Qwen/Qwen3-8B \
+CHECKPOINT_PATH=jasonlingg/qwen-envoy-qwen3-8b-qasper-targeted-sft-v1 \
   ./scripts/run_ai_paper_code_eval.sh
 ```
 
