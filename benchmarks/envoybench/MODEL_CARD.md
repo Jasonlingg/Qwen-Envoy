@@ -32,12 +32,15 @@ selected near the epoch-two validation-loss minimum and checked on development
 questions; it is not the final checkpoint. Nine validation conversations provide
 limited evidence for checkpoint selection.
 
-The original manifest is local at
-`out/research/qwen3-qasper-v5-sft-20260919/artifacts/full/run-manifest.json`.
+The [original manifest](../../release/qwen-v5-training/run-manifest.json),
+[launch script](../../release/qwen-v5-training/run-sft-v5.sh), package versions,
+and saved trainer state are published in the
+[training evidence bundle](../../release/qwen-v5-training/README.md).
 Its training-script SHA-256 is recorded, but its git commit is blank and the
 current script differs. This is an observed recipe, not a guarantee that the
 current working tree reproduces the original weights exactly. The archived
-`run-sft-v5.sh` records the original launch arguments. No new training was run
+`run-sft-v5.sh` records the original launch arguments and historical workspace paths.
+No new training was run
 to prepare this card.
 
 ## Latest comparison

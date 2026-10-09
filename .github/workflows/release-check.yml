@@ -1,0 +1,41 @@
+name: Verify recorded case study
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Recompute results without installed packages
+        run: python -I -S scripts/reproduce_case_study.py
+      - name: Verify archived training records and data bindings
+        run: |
+          cd release/qwen-v5-training
+          sha256sum --check SHA256SUMS
+          cd ../..
+          python -I -S - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          manifest = json.loads(Path('release/qwen-v5-training/run-manifest.json').read_text())
+          for key in ('data', 'validation', 'corpus_manifest'):
+              record = manifest[key]
+              actual = hashlib.sha256(Path(record['path']).read_bytes()).hexdigest()
+              assert actual == record['sha256'], f'{key}: training input changed'
+          print('Three original training input hashes match.')
+          PY
+      - name: Install test runner only
+        run: python -m pip install 'pytest>=8,<9'
+      - name: Test corruption and review-binding checks
+        run: python -m pytest tests/test_reproduce_case_study.py -q

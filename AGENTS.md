@@ -1,5 +1,19 @@
 # Envoy agent guide
 
+## Current release scope — October 9, 2026
+
+The user chose to finish Qwen-Envoy as a public technical case study: the trained
+code-execution worker, its environment, reproducible saved evaluation, and the
+Studio trace inspector. Read `docs/TECHNICAL_CASE_STUDY.md` and `CODEX_HANDOFF.md`.
+Paper recommenders, method finders, new memory products, new benchmark tasks, and
+additional paid training/inference are outside this finishing pass.
+
+The weekly-digest/Obsidian plans and their success gates below are historical
+product goals, not blockers for publishing this narrower case study. Publishing
+the study does not mean those gates were achieved. Keep the safeguards and
+evidence distinctions below; never fill an independent human review with model
+judgments or equate a mechanical artifact check with answer correctness.
+
 Read [the Astra improvement brief](docs/GPT_ASTRA_IMPROVEMENT_BRIEF.md) before changing
 the training or reward code. It records the current evidence, research, and order of work.
 

@@ -1,0 +1,52 @@
+name: Publish saved Studio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'release/envoybench-v0.1/**'
+      - 'scripts/reproduce_case_study.py'
+      - '.github/workflows/studio-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Verify the frozen comparison before publishing
+        run: python -I -S scripts/reproduce_case_study.py
+      - uses: actions/configure-pages@v5
+      - name: Stage only the read-only viewer
+        run: |
+          mkdir -p _site
+          cp release/envoybench-v0.1/studio.html _site/index.html
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy saved-run viewer
+        id: deployment
+        uses: actions/deploy-pages@v4

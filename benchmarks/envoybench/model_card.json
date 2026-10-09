@@ -78,11 +78,11 @@
   "reproduce": [
     {
       "label": "Inspect the saved comparison \u00b7 no inference",
-      "command": "python -m benchmarks.envoybench.demo --port 8766 --run-dir out/envoybench/provisional-full-20260930 --review-dir out/envoybench/provisional-review-20260930 --judged-review out/envoybench/codex-reviewed-20260930/review.json --provisional"
+      "command": "python scripts/launch_studio.py"
     },
     {
-      "label": "Start the reader \u00b7 no model configured",
-      "command": "python -m benchmarks.envoybench.demo --port 8766"
+      "label": "Recompute the saved counts \u00b7 offline, no dependencies",
+      "command": "python scripts/reproduce_case_study.py"
     },
     {
       "label": "Enable live paper runs \u00b7 needs your served checkpoint",
@@ -95,12 +95,12 @@
       "path": "data/sft/qasper-v5/README.md"
     },
     {
-      "label": "Training manifest (local artifact)",
-      "path": "out/research/qwen3-qasper-v5-sft-20260919/artifacts/full/run-manifest.json"
+      "label": "Original training manifest",
+      "path": "release/qwen-v5-training/run-manifest.json"
     },
     {
-      "label": "Recorded launch recipe (local artifact)",
-      "path": "out/research/qwen3-qasper-v5-sft-20260919/run-sft-v5.sh"
+      "label": "Archived training launch script",
+      "path": "release/qwen-v5-training/run-sft-v5.sh"
     },
     {
       "label": "September 30 comparison",

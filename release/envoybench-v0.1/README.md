@@ -6,6 +6,11 @@ benchmark code, a recorded base-Qwen3-8B versus v5 case study, and a read-only
 Studio snapshot. It is a **candidate evaluation protocol, not a validated
 leaderboard**.
 
+Read the [technical case study](../../docs/TECHNICAL_CASE_STUDY.md) for the
+training objective, observed behavior changes, confounds, and concrete trace
+examples. Original training records are in the separate
+[training evidence bundle](../qwen-v5-training/README.md).
+
 ## Explore saved runs
 
 Open [`studio.html`](studio.html) directly in a browser. It is self-contained,
@@ -41,6 +46,20 @@ not establish a useful error-warning signal. Neither diagnostic changes the
 September 30 grades.
 
 ## Rebuild the corpus and verify the artifacts
+
+To recompute the reported comparison first, from the repository root:
+
+```bash
+python scripts/reproduce_case_study.py
+```
+
+This standard-library command works offline without package installation. It
+checks this release's hashes and review bindings, then recomputes passes,
+answerability breakdown, error-affected episodes and submissions. `--json`
+prints the audit as machine-readable output. It does not run models, download
+papers, verify source spans against a reconstructed corpus, or independently
+validate the model-assisted judgments. The fuller verification below checks
+the corpus and spans as well.
 
 From a fresh clone at the repository root, with Python 3.10+ and Docker
 available for **new inference** (Docker is not needed for this saved run):

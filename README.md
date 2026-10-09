@@ -1,15 +1,25 @@
-# Qwen Envoy / EnvoyBench Studio
+# Qwen Envoy — training and inspecting a code-executing research agent
 
-EnvoyBench evaluates paper-reading agents that write Python to search, read,
-and cite document text. Studio is the inspection interface: **Runs → Questions
-→ Trace**, with scores, answers, Python actions, tool observations, and saved
-token logprobs when available. Qwen Envoy is the experimental fine-tuned worker
-used in the recorded base-versus-v5 case study.
+Qwen Envoy is a small-model training and evaluation case study. Qwen writes
+Python to search, read, and cite a frozen paper collection; a bounded execution
+environment returns tool observations and errors. EnvoyBench records the
+comparison, and Studio lets you inspect **Runs → Questions → Trace**.
 
-**Current scope, October 8, 2026:** finish the text-only EnvoyBench v0.1
-candidate release. Graph-aware model training and partial-paper reasoning tests
-are not implemented or part of this release. Earlier Obsidian and systems-map
-prototypes remain in the repository as historical work.
+**Main finding:** in the recorded base-versus-v5 comparison, error-affected
+episodes fell from 22/40 to 1/40, while provisional supported-answer passes on
+answerable questions stayed at 3/20 for both models. The higher aggregate score
+comes from correct abstention. This is a useful failure analysis, not evidence
+that fine-tuning produced a better general research assistant.
+
+**Start here:** [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
+[saved-run demo](release/envoybench-v0.1/studio.html) ·
+[training evidence](release/qwen-v5-training/README.md) ·
+[detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
+
+**Current scope, October 9, 2026:** publish the text-only technical case study
+and inspectable v0.1 evaluation candidate. Recommendations, new memory products,
+graph-aware model training and partial-paper reasoning tests are outside this
+release. Earlier Obsidian and systems-map prototypes remain as historical work.
 
 EnvoyBench builds on **QASPER's existing paper questions**, with a bounded
 code-tool protocol and inspectable failure diagnostics. It is a candidate
@@ -22,6 +32,18 @@ and [data provenance](benchmarks/envoybench/data/README.md).
 **No setup:** download [the standalone Studio](release/envoybench-v0.1/studio.html)
 and open it in a browser. It includes the saved runs and makes no model calls;
 no GPU, Docker, or API key is needed. GitHub's file preview does not run the HTML.
+
+**Recompute the recorded numbers:** after cloning this repository, Python 3.10+
+alone is enough. No package installation, network access, GPU, or model call:
+
+```bash
+python scripts/reproduce_case_study.py
+```
+
+This checks the release hashes, binds the saved blind reviews to the runs,
+and recomputes the table below from the recorded artifacts. Add `--json` for
+machine-readable output. It reaggregates existing provisional judgments; it
+does not independently grade answers or reconstruct the paper corpus.
 
 **Local Studio:** with Python 3.10+, run from a checkout:
 
@@ -39,6 +61,11 @@ Open <http://127.0.0.1:8765>. The data builder downloads the pinned QASPER
 revision if needed; viewing the recorded runs does not perform inference.
 The [release guide](release/envoybench-v0.1/README.md) documents artifact
 verification and the distinction between saved and live runs.
+
+For a dependency-free local demo server, run
+`python -m http.server 8765 --bind 127.0.0.1 --directory release/envoybench-v0.1`
+and open <http://127.0.0.1:8765/studio.html>. This serves the saved snapshot only;
+the full local Studio above adds source review and optional paper investigations.
 
 ## Latest recorded comparison
 
