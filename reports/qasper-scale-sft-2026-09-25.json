@@ -1,0 +1,196 @@
+{
+  "schema_version": "envoy-public-eval-report-v1",
+  "date": "2026-09-25",
+  "status": "completed; neither continuation checkpoint promoted",
+  "task": "QASPER paper QA through persistent executable Python tools",
+  "dataset_source": "https://huggingface.co/datasets/allenai/qasper",
+  "scope_limit": "This is not a personal-vault product evaluation or a base-Qwen comparison.",
+  "protocol": {
+    "source_split": "validation",
+    "question_ids": [
+      "qasper_validation_003d6f9722ddc2ee13e879fefafc315fb8e87cb9",
+      "qasper_validation_04bde1d2b445f971e97bb46ade2d0290981c7a32",
+      "qasper_validation_0767ca8ff1424f7a811222ca108a33b6411aaa8a",
+      "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d",
+      "qasper_validation_1d197cbcac7b3f4015416f0152a6692e881ada6c",
+      "qasper_validation_1f085b9bb7bfd0d6c8cba1a9d73f08fcf2da7590",
+      "qasper_validation_206739417251064b910ae9e5ff096e867ee10fb8",
+      "qasper_validation_26e2d4d0e482e6963a76760323b8e1c26b6eee91",
+      "qasper_validation_2ccc26e11df4eb26fcccdd1f446dc749aff5d572",
+      "qasper_validation_31735ec3d83c40b79d11df5c34154849aeb3fb47",
+      "qasper_validation_477d9d3376af4d938bb01280fe48d9ae7c9cf7f7",
+      "qasper_validation_4907096cf16d506937e592c50ae63b642da49052",
+      "qasper_validation_568fb7989a133564d84911e7cb58e4d8748243ef",
+      "qasper_validation_596aede2b311deb8cb0a82d2e7de314ef6e83e4e",
+      "qasper_validation_612c3675b6c55b60ae6d24265ed8e20f62cb117e",
+      "qasper_validation_63c3550c6fb42f41a0c93133e9fca12ac00df9b3",
+      "qasper_validation_6415f38a06c2f99e8627e8ba6251aa4b364ade2d",
+      "qasper_validation_67ec8ef85844e01746c13627090dc2706bb2a4f3",
+      "qasper_validation_6f024d4c952fbb53b6f8cf27020659aa4d9a6590",
+      "qasper_validation_71e4ba4e87e6596aeca187127c0d088df6570c57",
+      "qasper_validation_7438b6b146e41c08cf8f4c5e1d130c3b4cfc6d93",
+      "qasper_validation_7d483077ed7f2f504d59f4fc2f162741fa5ac23b",
+      "qasper_validation_88ab7811662157680144ed3fdd00939e36552672",
+      "qasper_validation_89497e93980ab6d8c34a6d95ebf8c1e1d98ba43f",
+      "qasper_validation_899ed05c460bf2aa0aa65101cad1986d4f622652",
+      "qasper_validation_8e12b5c459fa963b3e549deadb864c244879fe82",
+      "qasper_validation_968b7c3553a668ba88da105eff067d57f393c63f",
+      "qasper_validation_a253749e3b4c4f340778235f640ce694642a4555",
+      "qasper_validation_a66a275a817f980c36e0b67d2e00bd823f63abf8",
+      "qasper_validation_b4f881331b975e6e4cab1868267211ed729d782d",
+      "qasper_validation_bfbd6040cb95b179118557352e8e3899ef25c525",
+      "qasper_validation_c262d3d1c5a8b6fef6b594d5eee86bc2b09e3baf",
+      "qasper_validation_c34e80fbbfda0f1786d3b00e06cef5ada78a3f3c",
+      "qasper_validation_c9b8d3858c112859eabee54248b874331c48f71b",
+      "qasper_validation_cb196725edc9cdb2c54b72364f3bbf7c76471490",
+      "qasper_validation_dd09db5eb321083dba16c2550676e60682f9a0cd",
+      "qasper_validation_ddf5e1f600b9ce2e8f63213982ef4209bab01fd8",
+      "qasper_validation_df6d327e176740da9edcc111a06374c54c8e809c",
+      "qasper_validation_ee2ad0ab64579cffb60853db6a8c0f971d7cf0ff",
+      "qasper_validation_ff338921e34c15baf1eae0074938bf79ee65fdd2"
+    ],
+    "benchmark_sha256": "d5d4cff9a4a4ff711d022792c7b520c5b948231a1afbc684f1ccbbb405513a83",
+    "corpus_content_sha256": "6abb65821917c11d9cda4fa82415c31623a8566e1ad3b9bd74a09dd6df1743b2",
+    "base_model": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_sha256": {
+      "starting_sft": "70143ec6933494efe60cab726e792fcc182965fd13a8561453202b41bba9bfb4",
+      "epoch_1": "7c259d36b196a7a9541d152be9f192ebb600ad1fd3845ee9ae07847c71f40b1c",
+      "epoch_2": "6ae2fdcd33ddc18c9fd2ed04011953106268c6b735f5ce7211ba7603e7175d66"
+    },
+    "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+    "reward_version": "qasper-answer-evidence-v1",
+    "decoding": {
+      "thinking": false,
+      "max_context_tokens": 8192,
+      "max_action_tokens": 1024,
+      "max_steps": 10,
+      "temperature": 0.0,
+      "do_sample": false,
+      "seed": 42
+    },
+    "hardware": {
+      "pod_id": "4fxjp6q9nt62vr",
+      "cloud": "SECURE",
+      "data_center": "EU-RO-1",
+      "gpu_type": "NVIDIA RTX PRO 4500 Blackwell",
+      "gpu_count": 1,
+      "price_usd_per_hour": 0.72,
+      "verified_before_inference": true,
+      "gpu_vram_mib_nvidia_smi": 32623,
+      "nvidia_driver": "580.178.04"
+    },
+    "source_git_head": "c52341c8c958a3cd47df599fd1ff6ff41604afa8",
+    "raw_eval_archive_sha256": "cb191a0d2877c7c0ff15ed90c72e534bdaf996f4c8f3a2925a52c6e5214a171b"
+  },
+  "training_data": {
+    "conversations": 995,
+    "answerable": 955,
+    "abstention": 40,
+    "train_conversations": 796,
+    "train_abstentions": 31,
+    "paper_disjoint_validation": 199,
+    "manifest_sha256": "96a0a9271dda5f003d682fb6e7b1067a2cbe50cfc5379e3c23646ce05effe201"
+  },
+  "results": {
+    "starting_sft": {
+      "semantic": {
+        "pass": 15,
+        "partial": 3,
+        "fail": 22,
+        "mean_score_0_to_2": 0.825
+      },
+      "mean_automatic_reward": 0.3633466002684737,
+      "valid_submissions": 40,
+      "execution_error_episodes": 3,
+      "false_refusals": 7,
+      "mean_latency_seconds": 38.94516449780203
+    },
+    "epoch_1": {
+      "semantic": {
+        "pass": 10,
+        "partial": 2,
+        "fail": 28,
+        "mean_score_0_to_2": 0.55
+      },
+      "mean_automatic_reward": 0.17930030179279208,
+      "valid_submissions": 40,
+      "execution_error_episodes": 3,
+      "false_refusals": 1,
+      "mean_latency_seconds": 44.657654307514896
+    },
+    "epoch_2": {
+      "semantic": {
+        "pass": 4,
+        "partial": 3,
+        "fail": 33,
+        "mean_score_0_to_2": 0.275
+      },
+      "mean_automatic_reward": 0.12705559594395038,
+      "valid_submissions": 40,
+      "execution_error_episodes": 1,
+      "false_refusals": 1,
+      "mean_latency_seconds": 43.45424674426904
+    }
+  },
+  "paired_vs_starting_sft": {
+    "epoch_1": {
+      "baseline": "starting_sft",
+      "wins": 5,
+      "losses": 10,
+      "ties": 25,
+      "mean_delta_0_to_2": -0.275
+    },
+    "epoch_2": {
+      "baseline": "starting_sft",
+      "wins": 2,
+      "losses": 14,
+      "ties": 24,
+      "mean_delta_0_to_2": -0.55
+    }
+  },
+  "semantic_passes_by_answerability": {
+    "starting_sft": {
+      "sufficient": 5,
+      "insufficient": 10
+    },
+    "epoch_1": {
+      "sufficient": 8,
+      "insufficient": 2
+    },
+    "epoch_2": {
+      "sufficient": 4,
+      "insufficient": 0
+    }
+  },
+  "review": {
+    "method": "identity-blind model-assisted review; not independent human review",
+    "model": "claude-sonnet-5",
+    "judgments_sha256": "4b9588d4a7f31dff49437743f08269a39178c5dc062e765043a126cbc64ac5a0",
+    "judged_question_count": 40,
+    "judged_candidate_count": 120
+  },
+  "decision_rule": {
+    "compare_to": "starting_sft",
+    "promote_only_if": [
+      "semantic mean exceeds starting_sft",
+      "at least two more paired wins than losses",
+      "at least 28 of 40 semantic passes",
+      "automatic mean reward exceeds starting_sft",
+      "at least 39 of 40 protocol-valid submissions",
+      "no more than starting_sft plus one false refusal",
+      "no more than starting_sft plus one execution-error episode"
+    ],
+    "review_disclosure": "Model-assisted blind review must be identified as such; not independent human review.",
+    "no_posthoc_threshold_changes": true
+  },
+  "decision": {
+    "epoch_1": "reject",
+    "epoch_2": "reject",
+    "reason": "both failed semantic, paired-win, pass-count, and automatic-reward gates"
+  },
+  "replay_cases": {
+    "qwen_answerable_tradeoff": "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d",
+    "qwen_abstention_regression": "qasper_validation_596aede2b311deb8cb0a82d2e7de314ef6e83e4e"
+  }
+}

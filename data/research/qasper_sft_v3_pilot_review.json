@@ -1,0 +1,214 @@
+{
+  "summary": {
+    "schema_version": "teacher-pilot-review-v1",
+    "status": "gate_failed_do_not_scale_or_train",
+    "new_mean_actions": 3.9166666666666665,
+    "old_same_questions_mean_actions": 8.166666666666666,
+    "new_action_range": [
+      2,
+      5
+    ],
+    "immediate_submissions": 0,
+    "episodes_with_execution_errors": 1,
+    "replay_verified": 12,
+    "strict_review_verdicts": {
+      "pass": 5,
+      "fail": 1,
+      "partial": 6
+    },
+    "accepted_by_answerability": {
+      "sufficient": 2,
+      "insufficient": 3
+    },
+    "required_passes": 10,
+    "required_passes_per_class": 5,
+    "hardware": {
+      "local": "macOS-26.2-arm64-arm-64bit",
+      "teacher_hardware": "provider-hosted; not exposed"
+    },
+    "seed": 20260918,
+    "seed_scope": "question selection; provider generation has no seed control here",
+    "review_sha256": "6a2c4bcd51997ee86b6665c4b343e8be612e697c1add01bb330943811044e56d",
+    "trajectory_sha256": "1afa51a016ad14dd731a5f542b97413f603c981d4f5c28e6f8510aa30480899e",
+    "question_ids": [
+      "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+      "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+      "qasper_train_53712f0ce764633dbb034e550bb6604f15c0cacd",
+      "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+      "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+      "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+      "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+      "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+      "qasper_train_e414d819f10c443cbefa8bdb9bd486ffc6d1fc6a",
+      "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+      "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba"
+    ]
+  },
+  "review": {
+    "reviewer": "Codex",
+    "reviewer_type": "assistant",
+    "review_status": "complete",
+    "limitation": "Not independent or blind. Strict training-demonstration acceptance includes stopping and protocol quality, not just final-answer correctness.",
+    "reviews": [
+      {
+        "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+        "trajectory_sha256": "4439e966e0c144a361682bde5598798ce7ebd66284638a15847361ca0f74a9aa",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "pass",
+        "semantic_support": "pass",
+        "stopping": "pass",
+        "notes": "The first observation directly compares pretraining objectives; the yes answer and task-dependent differences are supported. It submits on the next action. Checked the underlying comparison at source offsets 10000\u201311100 as well. No need to add the unrequested detail in future demonstrations, but it does not change this answer's supported conclusion."
+      },
+      {
+        "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+        "trajectory_sha256": "2312866deec798173ed8911d70b0cbac405d1f3e64fb28f01f392759e0c9214b",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [
+          "execution_error"
+        ],
+        "verdict": "fail",
+        "semantic_support": "pass",
+        "stopping": "fail",
+        "notes": "The final scoped abstention is consistent with the retrieved topic-modeling passages and expert label, but step 3 prints undefined variable r and raises NameError. Reject as a clean teaching demonstration, even though the later action recovers."
+      },
+      {
+        "question_id": "qasper_train_53712f0ce764633dbb034e550bb6604f15c0cacd",
+        "trajectory_sha256": "297cc9b37ceef2d7b9bd76252cc60714a1cb38d9f44636823a41debd1d64d3f6",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "partial",
+        "stopping": "pass",
+        "notes": "Finds the real 75%-English user filter, but rationalizes the privileged unanswerable label through the plural word datasets and asserts there are no other datasets or language splits elsewhere without reading the whole paper. A better response would state the observed filter and distinguish predominantly English data from exclusively English evaluation. Quarantine this ambiguous label/example rather than teach the current reasoning."
+      },
+      {
+        "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+        "trajectory_sha256": "18785cae4605648b335d9a2b1b13818425b91b17ce5c29613eb7ada5fdf54235",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "partial",
+        "stopping": "fail",
+        "notes": "Correctly identifies the WMT18 winners from the observed comparisons, but omits much of the reference's architecture description. Step 2 merely reprints the exact results already seen in step 1; step 4 adds no needed identification. Not a good stopping demonstration. Do not infer a uniform BLEU gain across every setting from the abstract's aggregate claim."
+      },
+      {
+        "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+        "trajectory_sha256": "58d300c88219907e530f95dac1c3405dc151cf934892dd7d05eeb08579aa2e48",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "pass",
+        "stopping": "fail",
+        "notes": "The qualitative faster-convergence claim and lack of a retrieved numerical speedup are distinguished correctly. However, step 4 revisits essentially the same experiment/setup windows returned at step 3, after earlier queries also revisited the abstract. Keep the scoped conclusion but regenerate a trajectory that reads a different relevant section or stops instead of repeating evidence."
+      },
+      {
+        "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+        "trajectory_sha256": "3d9c28903e7ac87e251f47fc3a2337f63262c408988912d854be4e433cee2cc8",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "pass",
+        "stopping": "fail",
+        "notes": "The final dataset names and details are supported by source text at offsets 18400\u201319200. But the question only asks which datasets; step 1 already names both in-house and ACE05. Two extra reads gather unrequested language/type counts instead of submitting the supported answer. Exclude from this focused stopping pilot, not because the final facts are wrong."
+      },
+      {
+        "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+        "trajectory_sha256": "a1330f3c488bfba25d8a2db4c451f47996aae86dbc0ab1eaa686cbc7babaca09",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "partial",
+        "stopping": "pass",
+        "notes": "The retrieved MTurk paragraph supports pairwise comparison, worker filters, and plausibility/content-richness criteria. But the answer invents the attribution Zhang et al. for BIBREF5; no Zhang appears anywhere in the frozen document. It also extends both with additive attention (LSTM and VHRED) to all compared systems. Remove these unsupported extras through a fresh or explicitly reviewed repair with replay; do not train the current answer."
+      },
+      {
+        "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+        "trajectory_sha256": "dd407059119d0b4c732d2deac4e21b2fd7e644044499fe37c0792fdd263e8633",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "pass",
+        "semantic_support": "pass",
+        "stopping": "pass",
+        "notes": "Checks ranking, current runs, and human-evaluation context before declining to invent a placement. Source offsets 15400\u201316600 confirm that only ROUGE recall was available for the current runs and the paper declined to comment on final results. The answer distinguishes rank correlation from competition placement and limits its conclusion to text it could locate."
+      },
+      {
+        "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+        "trajectory_sha256": "0c1a7c1cc27741586ba8aa5b3a89a888f5ad2e496ea2584daab8bf3eda4ed65f",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "pass",
+        "semantic_support": "pass",
+        "stopping": "pass",
+        "notes": "Inspects model, support-set, and scaling passages; does not mistake the average of about 20 candidate entities for a document-capacity limit. Its scoped abstention and quoted scaling statements match the observations and expert unanswerability label. Some retrieved windows overlap, but the follow-up questions check distinct candidate failure points and finish within five actions."
+      },
+      {
+        "question_id": "qasper_train_e414d819f10c443cbefa8bdb9bd486ffc6d1fc6a",
+        "trajectory_sha256": "8907eb9c32d788fcd96479bd2b299a08db3a04a3da5c8dda9f7e197bbc188265",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "partial",
+        "semantic_support": "partial",
+        "stopping": "partial",
+        "notes": "The reported 30\u201350 minute range is real, but it is not an average. The expert reference says 40 minutes while its cited passage supplies only a range; a midpoint alone does not establish a sample mean. Quarantine this reference/coverage ambiguity rather than overwrite the teacher answer with 40. The response should explicitly explain the missing mean or inspect further evidence."
+      },
+      {
+        "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+        "trajectory_sha256": "fa520221583ab5c93f49d089b5520ab1e502336628e73b04291f958418ec9317",
+        "expected_answerability": "insufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "pass",
+        "semantic_support": "pass",
+        "stopping": "pass",
+        "notes": "Observations support COCO image captioning, the Karpathy split, CIDEr reward and REINFORCE. The answer reports that useful context while declining to invent a separately named simulator/environment. It qualifies the absence to inspected text and matches the expert unanswerable label under that interpretation."
+      },
+      {
+        "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+        "trajectory_sha256": "546b70b36b6f76b7b1b93dba801a105c0c5d64c051d8af67d4ad4c6655bdb40c",
+        "expected_answerability": "sufficient",
+        "evidence_checked": true,
+        "stopping_checked": true,
+        "replay_verified": true,
+        "structural_issues": [],
+        "verdict": "pass",
+        "semantic_support": "pass",
+        "stopping": "pass",
+        "notes": "Reads a complete comparison passage after the first result begins mid-sentence. Correctly says no, explains Yahoo's stronger demographic term correlations, and preserves the Price/Buddhist exceptions. Submits immediately after that clarifying observation."
+      }
+    ]
+  }
+}

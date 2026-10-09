@@ -114,11 +114,13 @@ def test_eval_artifacts_keep_checkpoint_identity_and_recorded_outcome(tmp_path):
         finally:
             env.close()
         result.policy_name = "grpo_policy"
+        result.policy_metadata = {"retrieved_passages": [{"doc_id": "doc-1"}]}
         path = save_transcripts([result], tmp_path / f"{label}.json", label,
                                 {"checkpoint_id": checkpoint, "comparison_id": "same"})
         row = json.loads(path.read_text())[0]
         assert row["episode_return"] == row["outcome_reward"] == row["reward"]
         assert row["shaping_reward"] == 0
+        assert row["policy_metadata"] == result.policy_metadata
         manifest = json.loads(path.with_suffix(".manifest.json").read_text())
         assert manifest["checkpoint_id"] == checkpoint
         assert manifest["run_id"] == row["run_id"]

@@ -3,18 +3,19 @@
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
 import hashlib
 import json
-from pathlib import Path
 import random
 import re
 import sys
+from collections import defaultdict
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.eval.hashing import known_doc_id
 from src.eval.qasper_reward import parse_strict
-
+from src.eval.sft_quality import trajectory_hash
 
 STOP_WORDS = set(
     "use known paper doc id to answer what which who when where why how do does did is are was "
@@ -22,11 +23,6 @@ STOP_WORDS = set(
     "been being have has had can could would should may might about into than then there any all "
     "part based study authors".split()
 )
-
-
-def trajectory_hash(row: dict) -> str:
-    payload = {key: row[key] for key in ("question_id", "question", "trajectory")}
-    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
 def question_terms(question: str) -> list[str]:
@@ -38,13 +34,6 @@ def question_terms(question: str) -> list[str]:
             if token not in STOP_WORDS and len(token) > 2
         )
     )
-
-
-def known_doc_id(question: str) -> str:
-    match = re.search(r'doc_id:\s*"([^"\s]+)"', question)
-    if match is None:
-        raise ValueError("Known-paper question has no doc_id")
-    return match.group(1)
 
 
 def full_text_windows(text: str, question: str, count: int = 6) -> list[dict]:

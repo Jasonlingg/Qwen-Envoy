@@ -1,241 +1,199 @@
-"""Filter QASPER teacher trajectories and export Qwen chat-template SFT data.
+"""Prepare short code-execution demonstrations; export only reviewed candidates.
 
-Kept separate from collect_sft_data.py (which targets MuSiQue run_eval output)
-because the formats and the filter rules differ: these trajectories are JSONL
-with EvalResult field names, and the quality gates are answerability-specific.
-
-Filters, in order:
-  1. Drop episodes that never submitted (hit max_steps still searching).
-  2. Drop actions containing English prose — the protocol is code-or-SUBMIT only.
-  3. "sufficient" questions: drop when answer_score is below --min-answer-score,
-     which is a real signal the answer missed or contradicted the gold answer.
-  4. "insufficient" questions: answer_score is useless there (a good verbose
-     abstention scores low against the terse gold "Unanswerable"), so instead
-     require actual abstention language, and reject the hedge-then-guess pattern
-     ("does not state X. However, based on ... <confident answer>"), which is an
-     abstention in wording only.
-
-Usage:
-  python scripts/export_qasper_sft_data.py \
-      --trajectories out/research/qasper-teacher-batch-v2/trajectories.jsonl \
-      --out-dir data/sft/qasper-v2
+Without --reviews, writes candidates and a review template, NOT training files.
+Re-run into a new directory with a completed review to export paper-disjoint SFT
+splits. Failed/time-limited trajectories are never repaired by appending gold text.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
-import random
-import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 import typer
-from rich.console import Console
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.policies.qwen_common import SYSTEM_PROMPT
-
-console = Console()
-
-ABSTAIN_WORDS = re.compile(
-    r"unanswerable|does not (state|specify|explicitly|mention|provide|contain)|"
-    r"cannot be (determined|established|answered)|no (explicit )?(information|mention)|"
-    r"not (explicitly )?(stated|specified|provided)",
-    re.I,
+from src.eval.sft_quality import (
+    known_paper_id,
+    split_by_paper,
+    trajectory_hash,
+    trajectory_issues,
 )
-HEDGE_THEN_GUESS = re.compile(
-    r"(unanswerable|does not|cannot be|no explicit|not stated|not specified)"
-    r"[^.]*\.\s*(however|but|although|that said|based on)",
-    re.I,
-)
-PROSE_START = re.compile(
-    r"^(I('ll| will| can| need)|Let me|To |Here|Sure|First|Now|Next|Step|The |This )",
-    re.I,
-)
-
-
-STOPWORDS = {"that", "this", "with", "from", "they", "have", "which", "their",
-             "were", "used", "using", "about", "there", "these", "those"}
-
-# Varied so 40-odd recovered abstentions don't teach one canned sentence. Each
-# leads with "Unanswerable" (the gold token) then gives the useful reason.
-ABSTENTION_TEMPLATES = [
-    "Unanswerable — the paper does not explicitly state this.",
-    "Unanswerable. Searching the paper turns up no explicit statement of this.",
-    "Unanswerable — this is not specified anywhere in the paper's text.",
-    "Unanswerable. The paper does not report this explicitly.",
-]
-
-
-def _has_prose(action: str) -> bool:
-    first = action.strip().split("\n")[0].strip()
-    return bool(first) and bool(PROSE_START.match(first))
-
-
-def _gold_is_visible_in_evidence(row: dict, gold: str, threshold: float = 0.6) -> bool:
-    """True when the gold answer's distinctive words appear in what the model actually saw.
-
-    Appending a gold answer to a trajectory whose searches never surfaced it would
-    teach the model to assert facts its own evidence does not support — precisely
-    the hallucination we are trying to train out.
-    """
-    tokens = {t for t in re.findall(r"[a-z0-9]{4,}", gold.lower()) if t not in STOPWORDS}
-    if not tokens:
-        return False
-    observed = " ".join(s["observation"] for s in row["trajectory"]).lower()
-    return sum(1 for t in tokens if t in observed) / len(tokens) >= threshold
-
-
-def _recover_with_gold(row: dict, question: dict, rng: random.Random) -> bool:
-    """Replace a missing/incorrect conclusion with one grounded in QASPER's gold answer.
-
-    Returns False when recovery would be unsafe. Mutates row's trajectory in place.
-    """
-    trajectory = row.get("trajectory") or []
-    if not trajectory:
-        return False
-
-    if row.get("expected_answerability") == "insufficient":
-        # Concluding "not stated" after fruitless searching is justified by the
-        # absence of evidence, so this is always coherent.
-        answer = rng.choice(ABSTENTION_TEMPLATES)
-        submit = f"SUBMIT: {answer} CITATIONS: []"
-    else:
-        gold = question.get("answer") or ""
-        if not gold or not _gold_is_visible_in_evidence(row, gold):
-            return False
-        citations = json.dumps(question.get("expected_citations", []))
-        submit = f"SUBMIT: {gold} CITATIONS: {citations}"
-
-    last = trajectory[-1]["action"].strip().upper()
-    if last.startswith("SUBMIT:"):
-        trajectory[-1] = {**trajectory[-1], "action": submit}
-    else:
-        trajectory.append({"step": len(trajectory) + 1, "action": submit,
-                           "observation": "", "reward": 0.0, "done": True})
-    return True
+from src.policies.code_execution import SYSTEM_PROMPT, QASPER_SYSTEM_PROMPT
 
 
 def _to_conversation(row: dict, max_chars: int) -> dict | None:
-    trajectory = row.get("trajectory") or []
-    if not trajectory:
-        return None
-    if not trajectory[-1]["action"].strip().upper().startswith("SUBMIT:"):
-        return None
-
+    spans = row.get("student_protocol") == "qasper-span-v1"
+    prompt = QASPER_SYSTEM_PROMPT if spans else SYSTEM_PROMPT
+    initial = f"Question: {row['question']}" + ("\n" if spans else "")
+    if spans and row.get("initial_observation") != initial:
+        raise ValueError("Span-protocol initial observation differs from inference")
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": f"Question: {row['question']}"},
+        {"role": "system", "content": prompt},
+        {"role": "user", "content": initial},
     ]
-    for step in trajectory:
+    for step in row["trajectory"]:
         action = step["action"].strip()
-        if not action.upper().startswith("SUBMIT:") and _has_prose(action):
-            return None
-        messages.append({"role": "assistant", "content": action})
-        if action.upper().startswith("SUBMIT:"):
-            break
-        messages.append({"role": "user", "content": step["observation"].strip()})
-
+        target = step.get("raw_action", action) if spans else action
+        messages.append({"role": "assistant", "content": target})
+        if not action.upper().startswith("SUBMIT:"):
+            observation = step["observation"] if spans else step["observation"].strip()
+            messages.append({"role": "user", "content": observation})
     if sum(len(m["content"]) for m in messages) > max_chars:
         return None
     return {"messages": messages}
 
 
+def select_candidates(rows: list[dict], benchmark: dict, excluded: list[dict],
+                      max_actions: int, max_chars: int) -> tuple[list, list]:
+    if benchmark.get("source_split") != "train":
+        raise ValueError("Only QASPER's official train split may supply demonstrations")
+    questions = {q["id"]: q for q in benchmark["questions"]}
+    excluded_ids = {q["id"] for b in excluded for q in b["questions"]}
+    excluded_docs = {doc for b in excluded for doc in b.get("reserved_doc_ids", [])}
+    excluded_docs.update(known_paper_id(q["question"]) for b in excluded for q in b["questions"])
+    candidates, rejected, seen = [], [], set()
+    for original in rows:
+        row = dict(original)
+        qid = row["question_id"]
+        question = questions.get(qid)
+        reasons = []
+        if question is None or row.get("question") != question["question"]:
+            reasons.append("unknown_or_mismatched_question")
+        else:
+            # The benchmark, not a trajectory's self-reported label, is authoritative.
+            row["expected_answerability"] = question["expected_answerability"]
+            if qid in excluded_ids or known_paper_id(question["question"]) in excluded_docs:
+                reasons.append("reserved_question_or_paper")
+            reasons.extend(trajectory_issues(row, max_actions=max_actions))
+            if row.get("student_protocol") == "qasper-span-v1":
+                if row.get("status") == "error" or not row.get("qasper_score", {}).get("valid"):
+                    reasons.append("invalid_span_episode")
+                if row.get("qasper_score", {}).get("reason") in {"false_refusal", "unsupported_answer", "missing_evidence"}:
+                    reasons.append("answerability_or_evidence_failure")
+            if not reasons and _to_conversation(row, max_chars) is None:
+                reasons.append("too_long")
+        if qid in seen:
+            reasons.append("duplicate_question")
+        if reasons:
+            rejected.append({"question_id": qid, "reasons": reasons})
+        else:
+            seen.add(qid)
+            candidates.append(row)
+    return candidates, rejected
+
+
+def reviewed_candidates(candidates: list[dict], review: dict) -> list[dict]:
+    if not review.get("reviewer") or review.get("reviewer_type") not in {"human", "assistant"}:
+        raise ValueError("Review must name its reviewer and disclose human or assistant review")
+    entries = review.get("reviews", [])
+    by_id = {item["question_id"]: item for item in entries}
+    if len(by_id) != len(entries):
+        raise ValueError("Duplicate review question IDs")
+    accepted = []
+    for row in candidates:
+        item = by_id.get(row["question_id"], {})
+        if item.get("verdict") != "pass":
+            continue
+        if item.get("trajectory_sha256") != trajectory_hash(row):
+            raise ValueError(f"Stale review: {row['question_id']}")
+        if not (item.get("evidence_checked") is True and item.get("stopping_checked") is True
+                and item.get("replay_verified") is True and item.get("notes", "").strip()):
+            raise ValueError(f"Incomplete passing review: {row['question_id']}")
+        accepted.append(row)
+    return accepted
+
+
+def _identity(path: Path) -> dict:
+    return {"path": str(path), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
 def main(
     trajectories: list[Path] = typer.Option(..., "--trajectories"),
     out_dir: Path = typer.Option(..., "--out-dir"),
-    benchmark: Path = typer.Option(None, "--benchmark",
-        help="Required with --recover-with-gold; supplies QASPER's gold answers"),
-    recover_with_gold: bool = typer.Option(False, "--recover-with-gold",
-        help="Salvage trajectories with good searches but a missing/wrong conclusion "
-             "by grounding the SUBMIT in QASPER's human-annotated gold answer"),
-    min_answer_score: float = typer.Option(0.15),
-    val_fraction: float = typer.Option(0.2),
-    max_chars: int = typer.Option(32000, help="~8k tokens; longer conversations are dropped"),
+    benchmark: Path = typer.Option(..., "--benchmark"),
+    exclude_benchmark: list[Path] = typer.Option(..., "--exclude-benchmark",
+        help="Repeat for development and consumed evaluation benchmarks; reserve every paper"),
+    reviews: Path | None = typer.Option(None, "--reviews"),
+    max_actions: int = typer.Option(6, min=2, max=10),
+    val_fraction: float = typer.Option(0.2, min=0.01, max=0.99),
+    max_chars: int = typer.Option(32000, min=1),
     seed: int = typer.Option(42),
+    recover_with_gold: bool = typer.Option(False, "--recover-with-gold", hidden=True),
 ) -> None:
-    rows: list[dict] = []
+    if recover_with_gold:
+        raise typer.BadParameter("Gold recovery is disabled: regenerate and review a real episode")
+    rows = []
     for path in trajectories:
         text = path.read_text()
-        if path.suffix == ".jsonl":
-            rows += [json.loads(line) for line in text.splitlines() if line.strip()]
-        else:
-            rows += json.loads(text)
-    console.print(f"Loaded {len(rows)} trajectories")
-
-    questions = {}
-    if benchmark:
-        questions = {q["id"]: q for q in json.loads(benchmark.read_text())["questions"]}
-    if recover_with_gold and not questions:
-        raise typer.BadParameter("--recover-with-gold requires --benchmark")
-
-    rng = random.Random(seed)
-    kept, stats = [], {"no_submit": 0, "prose_or_long": 0, "low_score": 0,
-                       "no_abstention": 0, "hedge_then_guess": 0,
-                       "recovered": 0, "unsafe_to_recover": 0}
-    for row in rows:
-        answerability = row.get("expected_answerability")
-        traj = row.get("trajectory") or []
-        answer = row.get("predicted_answer", "")
-
-        submitted = bool(traj) and traj[-1]["action"].strip().upper().startswith("SUBMIT:")
-        if answerability == "insufficient":
-            passes = submitted and bool(ABSTAIN_WORDS.search(answer)) \
-                and not HEDGE_THEN_GUESS.search(answer)
-        else:
-            passes = submitted and row.get("answer_score", 0.0) >= min_answer_score
-
-        if not passes:
-            if recover_with_gold and traj and row["question_id"] in questions:
-                if _recover_with_gold(row, questions[row["question_id"]], rng):
-                    stats["recovered"] += 1
-                else:
-                    stats["unsafe_to_recover"] += 1
-                    continue
-            elif not submitted:
-                stats["no_submit"] += 1
-                continue
-            elif answerability == "insufficient":
-                key = "hedge_then_guess" if HEDGE_THEN_GUESS.search(answer) else "no_abstention"
-                stats[key] += 1
-                continue
-            else:
-                stats["low_score"] += 1
-                continue
-
-        conv = _to_conversation(row, max_chars)
-        if conv is None:
-            stats["prose_or_long"] += 1
-            continue
-        kept.append((row["question_id"], answerability, conv))
-
-    console.print(f"[yellow]Dropped: {stats}[/yellow]")
-
-    # Deduplicate by question_id (the v1 batch overlaps v2 on some questions).
-    seen, deduped = set(), []
-    for qid, answerability, conv in kept:
-        if qid in seen:
-            continue
-        seen.add(qid)
-        deduped.append((qid, answerability, conv))
-
-    random.Random(seed).shuffle(deduped)
-    n_val = max(1, int(len(deduped) * val_fraction))
-    val, train = deduped[:n_val], deduped[n_val:]
-
-    out_dir.mkdir(parents=True, exist_ok=True)
-    for name, split in (("train", train), ("val", val)):
-        path = out_dir / f"{name}.jsonl"
-        with path.open("w") as f:
-            for _, _, conv in split:
-                f.write(json.dumps(conv) + "\n")
-        n_insuff = sum(1 for _, a, _ in split if a == "insufficient")
-        console.print(f"[green]{name}: {len(split)} examples "
-                      f"({n_insuff} insufficient / {len(split) - n_insuff} sufficient) -> {path}[/green]")
-
-    turns = [sum(1 for m in c["messages"] if m["role"] == "assistant") for _, _, c in deduped]
-    console.print(f"Avg assistant turns per example: {sum(turns)/len(turns):.1f}")
+        rows.extend([json.loads(line) for line in text.splitlines() if line.strip()]
+                    if path.suffix == ".jsonl" else json.loads(text))
+    source = json.loads(benchmark.read_text())
+    candidates, rejected = select_candidates(
+        rows, source, [json.loads(p.read_text()) for p in exclude_benchmark], max_actions, max_chars
+    )
+    review = json.loads(reviews.read_text()) if reviews else None
+    accepted = reviewed_candidates(candidates, review) if review else []
+    protocols = {r.get("student_protocol", "document-v1") for r in candidates}
+    if len(protocols) > 1:
+        raise ValueError("Do not mix document-only and exact-span student protocols")
+    splits = split_by_paper(accepted, val_fraction, seed) if review else None
+    out_dir.mkdir(parents=True, exist_ok=False)
+    questions = {q["id"]: q for q in source["questions"]}
+    template = {
+        "reviewer": "", "reviewer_type": None,
+        "instructions": (
+            "Replay each episode against its frozen corpus. Read the actual observations and "
+            "source paper. Check every answer part, the scope of an abstention, and the earliest "
+            "supported stopping point. A real quote, keyword hit, or gold label is not enough. "
+            "Use pass/partial/fail; only fully checked passes are eligible for SFT."
+        ),
+        "reviews": [{
+            "question_id": r["question_id"], "trajectory_sha256": trajectory_hash(r),
+            "question": r["question"], "reference_answer": questions[r["question_id"]]["answer"],
+            "grader_notes": questions[r["question_id"]].get("grader_notes", []),
+            "verdict": None, "evidence_checked": False, "stopping_checked": False,
+            "replay_verified": False, "notes": "",
+        } for r in candidates],
+    }
+    (out_dir / "candidates.jsonl").write_text("".join(json.dumps(r) + "\n" for r in candidates))
+    (out_dir / "review-template.json").write_text(json.dumps(template, indent=2) + "\n")
+    report = {
+        "status": "reviewed_export" if review else "candidates_need_replay_and_semantic_review",
+        "sources": [_identity(p) for p in trajectories], "benchmark": _identity(benchmark),
+        "exclusions": [_identity(p) for p in exclude_benchmark],
+        "review": _identity(reviews) if reviews else None,
+        "corpus_hash": source["corpus_hash"], "seed": seed, "max_actions": max_actions,
+        "val_fraction": val_fraction, "max_chars": max_chars,
+        "student_protocol": next(iter(protocols), None),
+        "system_prompt_sha256": hashlib.sha256(
+            (QASPER_SYSTEM_PROMPT if protocols == {"qasper-span-v1"} else SYSTEM_PROMPT).encode()
+        ).hexdigest(),
+        "candidate_count": len(candidates), "reviewed_pass_count": len(accepted),
+        "candidate_answerability": dict(Counter(r["expected_answerability"] for r in candidates)),
+        "rejected": rejected,
+        "rejection_counts": dict(Counter(reason for r in rejected for reason in r["reasons"])),
+    }
+    if splits:
+        report["splits"] = {}
+        for name, split in zip(("train", "val"), splits):
+            path = out_dir / f"{name}.jsonl"
+            path.write_text("".join(
+                json.dumps(_to_conversation(r, max_chars)) + "\n" for r in split
+            ))
+            report["splits"][name] = {
+                **_identity(path), "question_ids": [r["question_id"] for r in split],
+                "doc_ids": sorted({known_paper_id(r["question"]) for r in split}),
+                "answerability": dict(Counter(r["expected_answerability"] for r in split)),
+            }
+    (out_dir / "manifest.json").write_text(json.dumps(report, indent=2) + "\n")
+    print(f"{len(candidates)} structural candidates; {len(accepted)} reviewed passes -> {out_dir}")
+    if not review:
+        print("No training files written. Complete replay and semantic review before export.")
 
 
 if __name__ == "__main__":

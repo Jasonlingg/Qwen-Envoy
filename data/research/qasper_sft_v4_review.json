@@ -1,0 +1,621 @@
+{
+  "reviewer": "Codex",
+  "reviewer_type": "assistant",
+  "limitations": "Reviewer edited the candidates and knew identities/references. This is not independent, human, or blind evaluation. Acceptance includes evidence, protocol and stopping quality; it is not answer accuracy.",
+  "source_split": "train",
+  "corpus_hash": "2647fb92032a2ac812adc6840fe8e27d9fb05cba0a7670263c144ac2ef6821a0",
+  "raw_reviews": [
+    {
+      "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+      "trajectory_sha256": "8ee87333c9ec5fdce6780299fff7155fa832711ffb36cb36495354eb7dfa630e",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "Hidden reference concepts drive first query; final confuses the without-ELMo objective comparison with the ELMo condition."
+    },
+    {
+      "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+      "trajectory_sha256": "143a3089fd9c4d8c35da87adfe8b515ac075389e6014d5fc30f4ecaa8639e472",
+      "reference_guidance": true,
+      "verdict": "partial",
+      "notes": "The engagement evidence is useful, but action 4 reprints the already visible motivation before submission; narrow the paper-wide absence claim."
+    },
+    {
+      "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+      "trajectory_sha256": "b600327ff701ad0015ab7b57aa86fc283362117af031689ac361b988f561be45",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "Reference-only author names enter the second query; answer double-counts the joint encoder and adds unrequested BLEU."
+    },
+    {
+      "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+      "trajectory_sha256": "4dfbeeb51dbc79bcaf4a442f68ff4ccb202b69731e3005616df38e062819a470",
+      "reference_guidance": true,
+      "verdict": "partial",
+      "notes": "Criteria names are visible, but their definitions in the final answer were not actually retrieved; reference guidance supplied them."
+    },
+    {
+      "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+      "trajectory_sha256": "3d96406b893a6a193af7997ce0c4566dae3ca4e996d7bb741068f1b5deb6c122",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "The very first query includes the hidden dataset answer; additional acronym expansion is not observed."
+    },
+    {
+      "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+      "trajectory_sha256": "2796a1c15500481a246d7791c4735c2bb457bf6be488144ebf964069a1013dcb",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "KeyError from chunk versus text; several repeated low-yield searches and a paper-wide absence claim."
+    },
+    {
+      "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+      "trajectory_sha256": "1a991666486fad31b31f8e8b588e7dbf424318ea11219375890fc4349ce44693",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "Final answer equates graph nodes with documents; these are not interchangeable counts."
+    },
+    {
+      "question_id": "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+      "trajectory_sha256": "c04d556906af14453d84a8b545d6599c73610dc58424352d22c0400a9b0c14dd",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "First query includes unseen numeric answer 10700 from reference supervision."
+    },
+    {
+      "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "trajectory_sha256": "70c85e26f8a2a240ff833e0302b5dd767b36362780f54cc3adbdf63b8d8b3f6d",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "Seven actions exceed the candidate budget; redundant searches and unrequested own-run details obscure the missing leaderboard rank."
+    },
+    {
+      "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+      "trajectory_sha256": "c77727940976a09939f937807a942d04cf41aebd33c9d8ac0d7bd15727792a85",
+      "reference_guidance": true,
+      "verdict": "partial",
+      "notes": "COCO setup is found, but final expands a truncated model name and makes an unsupported paper-wide environment assertion."
+    },
+    {
+      "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+      "trajectory_sha256": "6f72471ae5d310384a34b67432eaa2f42e67f012cb333f64e7ae72ac6f9dfd72",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "KeyError from chunk versus text; comparison itself is supported after recovery."
+    },
+    {
+      "question_id": "qasper_train_d43e868cae91b3dc393c05c55da0754b0fb3a46a",
+      "trajectory_sha256": "0ca18424c1e266fdadc78b604327db13ef58e8b383c0b284cea6ea7847a4e1b6",
+      "reference_guidance": true,
+      "verdict": "fail",
+      "notes": "Eight actions; full country list depends on missing table rows, and cited example countries mix this study with related-work examples."
+    },
+    {
+      "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+      "trajectory_sha256": "9605eea53b7adecd2a9dd9370d13f8f480d5bf2c360eae88361bd6a578178e15",
+      "reference_guidance": false,
+      "verdict": "partial",
+      "notes": "Adds standard English-language benchmark knowledge that the observed paper passages do not establish."
+    },
+    {
+      "question_id": "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+      "trajectory_sha256": "0b35a8ec9ecfd4d5801b76026d9f30128b6b2a0de8f51bdba5b7df574592d733",
+      "reference_guidance": false,
+      "verdict": "pass",
+      "notes": "Observed BLEU validation paragraph (13000), manual evaluation summary (20600), and usability survey read (18800:21000) support the answer. Additional read completes the survey method before stopping."
+    },
+    {
+      "question_id": "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+      "trajectory_sha256": "8a9cdd47b70957fa984d96ce6210b28349d80dd7f6fceae2ebbff25a4b17d99f",
+      "reference_guidance": false,
+      "verdict": "partial",
+      "notes": "Supplies Labeled Attachment Score from memory despite the observed text not defining LAS."
+    },
+    {
+      "question_id": "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+      "trajectory_sha256": "07e28dc6c5ba5d5e790516abc75228b0d0276397216558e9788cfdf8fa9a7bc2",
+      "reference_guidance": false,
+      "verdict": "partial",
+      "notes": "Redundant regex search for baseline; final claims inspected evaluation sections not actually shown."
+    },
+    {
+      "question_id": "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+      "trajectory_sha256": "69c41f1acc371bd9de298f3263214af5812a1a9f0bbe932742e12255aaea3b40",
+      "reference_guidance": false,
+      "verdict": "partial",
+      "notes": "Useful 42-language database evidence, but repeats it and overstates what the whole paper reports; evaluated scale is not a capacity ceiling."
+    },
+    {
+      "question_id": "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+      "trajectory_sha256": "54ce1f873a45f61f06027e2083deae3483a299aae6391d6c1e590f9f163a7bba",
+      "reference_guidance": false,
+      "verdict": "partial",
+      "notes": "Dataset list is supported, but unobserved author-name search guesses and unrequested collection statistics make this a weaker concise evidence-gathering target."
+    },
+    {
+      "question_id": "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+      "trajectory_sha256": "514b2780985a2e6b014c3968ff43dca6f8fd8f552bcee6e01553a27e4ea28564",
+      "reference_guidance": false,
+      "verdict": "pass",
+      "notes": "First observation explicitly gives 2396 ironic plus 2396 non-ironic tweets; 4792 is correct arithmetic. Stops once size is established."
+    },
+    {
+      "question_id": "qasper_train_7dce1b64c0040500951c864fce93d1ad7a1809bc",
+      "trajectory_sha256": "5e32928aeea920862c3b7484f6c55894e14eeb42b3dd1dde18608382401a6753",
+      "reference_guidance": false,
+      "verdict": "fail",
+      "notes": "Ten actions. Teacher eventually finds Wide-ResNet architecture, while the reference describes masking enhancement models in related work; quarantine reference/task mismatch instead of copying gold."
+    },
+    {
+      "question_id": "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+      "trajectory_sha256": "a1bce1fd10bba79604d69cf0b06bed36bf4d0ec7d0012366f7979762a8406fe6",
+      "reference_guidance": false,
+      "verdict": "pass",
+      "notes": "After observing three context models and both non-context models, a five-model query is a justified refinement, not a leaked reference. Third observation explicitly confirms a pool of five neural annotators."
+    },
+    {
+      "question_id": "qasper_train_be6971827707afcd13af3085d0a775a0bd61c5dd",
+      "trajectory_sha256": "4535221c6a3b9f00847caa61ae1048b5bbcf902af7eb666afdae3e7084fa367f",
+      "reference_guidance": false,
+      "verdict": "fail",
+      "notes": "Final invents SVM and most-frequent-class baselines not seen in tool results. Full source uses one-hot occurrence-weighted logistic regression, making a blanket no-word-association claim ambiguous."
+    },
+    {
+      "question_id": "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+      "trajectory_sha256": "c40cf7e4a9e3ec0b9f90ac646daab3a1f4294b1d1b02591ae275eca0a65607aa",
+      "reference_guidance": false,
+      "verdict": "pass",
+      "notes": "Observed 19800:22800 passage defines all four metrics; first search also names Exact Match and Goal Match. Final accurately describes F1 and edit operations without inventing scores."
+    },
+    {
+      "question_id": "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72",
+      "trajectory_sha256": "728b9245fa3e78496090bc127cb99ecc2083a00efc1c69646d25a25ceb1d2fc5",
+      "reference_guidance": false,
+      "verdict": "fail",
+      "notes": "Nine actions, repeated searches after reading the analysis outline through the conclusion; final claims broader analysis coverage than observed."
+    }
+  ],
+  "reviews": [
+    {
+      "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+      "trajectory_sha256": "accf73499fe83f3eeb51ef94b0a70930ffdc859cb23f81a5b272a081a2b03743",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Use question-derived search terms; distinguish the without-ELMo comparison from the separate ELMo condition."
+    },
+    {
+      "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+      "trajectory_sha256": "1ad38003e9d106201f876b133ee54d9403746b5bb63457a35a24f3775dcdc29b",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove a repeated read of the same motivation passage; limit the abstention to the inspected evidence."
+    },
+    {
+      "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+      "trajectory_sha256": "1e34d4fcc0ccdf5519ebaff3d8486f4c88b0f9600c1ec81c853d04a0b15d0709",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Do not put reference-only author names into searches or double-count the joint encoder. Omit unrequested new-model BLEU."
+    },
+    {
+      "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+      "trajectory_sha256": "dbcae033173153348071fea19735382a7fe3c41e791344510f79ee00bec89aaa",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Retrieve the definitions through a bounded read around the observed MTurk hit; do not copy unseen reference definitions or resolve anonymized authors."
+    },
+    {
+      "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+      "trajectory_sha256": "16f309210c5f13472b7c863d8de17f8d6c540df2e3141eaf7cc57ed6c7f535fc",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove hidden dataset names from the first query and unsupported expansion of the acronym."
+    },
+    {
+      "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+      "trajectory_sha256": "01e00e68b7b87ce240fae1235a64214d79c57394f0cba27fc615f990be083d18",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Fix the chunk/text field error, inspect actual convergence paragraphs, and remove repeated low-yield searches. State a bounded evidence gap, not exhaustive paper absence."
+    },
+    {
+      "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+      "trajectory_sha256": "b16c6500177bd5a26802057257d499342ef9105d5dae0964934a63d44bba58e1",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Do not equate entity graph nodes with documents; preserve the quantitative uncertainty."
+    },
+    {
+      "question_id": "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+      "trajectory_sha256": "8e4fd1a25ecbe5c7d738e41a442b82b1bb85c54c2a9e8aec96bbb79a579fb4f3",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove the unseen answer 10700 from the query; answer only after a neutral query returns it."
+    },
+    {
+      "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "trajectory_sha256": "9f285c2e5f132748c7cb134fa07c382fe9fc235e89d2aad19b43881707cb7c66",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove redundant score searches; keep the results/conclusion check and avoid presenting internal model comparisons as a leaderboard."
+    },
+    {
+      "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+      "trajectory_sha256": "ae2584d706ae823b07839fa51227cf823992fba48365d7baecee9014a555bc02",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Give the available task context and qualify the missing environment name; remove unobserved model names and redundant searches."
+    },
+    {
+      "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+      "trajectory_sha256": "c5def6b4639f418a9dcd7f1d14b18df48ef60ab3590b27d993419494e60c30e6",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Fix the chunk/text field error; read around the observed comparison before giving the negative answer and its exceptions."
+    },
+    {
+      "question_id": "qasper_train_d43e868cae91b3dc393c05c55da0754b0fb3a46a",
+      "trajectory_sha256": "0ca18424c1e266fdadc78b604327db13ef58e8b383c0b284cea6ea7847a4e1b6",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Missing country-table coverage and ambiguity between illustrative countries and complete study roster; exclude rather than train a forced refusal or invented complete list."
+    },
+    {
+      "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+      "trajectory_sha256": "47eae98bc9902270385dee4e27082f8cb8c13559660d89fd630935eb48cf266e",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove unsupported English-language benchmark knowledge and the paper-wide absence claim; retain actual dataset evidence."
+    },
+    {
+      "question_id": "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+      "trajectory_sha256": "0b35a8ec9ecfd4d5801b76026d9f30128b6b2a0de8f51bdba5b7df574592d733",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Observed BLEU validation paragraph (13000), manual evaluation summary (20600), and usability survey read (18800:21000) support the answer. Additional read completes the survey method before stopping."
+    },
+    {
+      "question_id": "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+      "trajectory_sha256": "0af5b7acb85f9693050893671d85438a53dba0bc9c0a64b32b537672c53f9105",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove the expansion Labeled Attachment Score that was not present in observed source text, including from the search query. Distinguish reported scores from a definition."
+    },
+    {
+      "question_id": "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+      "trajectory_sha256": "b5f3fa1a2e08701020afe91f35fa40365c30e23c44bcd8a4bfd783697abc22ba",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Print the empty result explicitly, remove the redundant regex search, and avoid claiming to have inspected evaluation sections not observed."
+    },
+    {
+      "question_id": "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+      "trajectory_sha256": "917e0577968b08e0bbcdecedf01799c73fcfb52f4f84be939b6c3ce626dbe02f",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Separate observed dataset scale from maximum capacity and remove a search that repeats the same database passages. Do not claim 42 is the only dataset size in the full paper."
+    },
+    {
+      "question_id": "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+      "trajectory_sha256": "2f77de58d1fb771844c5cabc5e6713d25210d963528c001791c5827033c192de",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Replace unobserved author-name search guesses with neutral dataset terms and answer only the requested dataset names."
+    },
+    {
+      "question_id": "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+      "trajectory_sha256": "514b2780985a2e6b014c3968ff43dca6f8fd8f552bcee6e01553a27e4ea28564",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "First observation explicitly gives 2396 ironic plus 2396 non-ironic tweets; 4792 is correct arithmetic. Stops once size is established."
+    },
+    {
+      "question_id": "qasper_train_7dce1b64c0040500951c864fce93d1ad7a1809bc",
+      "trajectory_sha256": "5e32928aeea920862c3b7484f6c55894e14eeb42b3dd1dde18608382401a6753",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Reference answer points to related-work masking enhancement models (around 6312); actual frozen acoustic architecture is Wide-ResNet-inspired (around 9776). Quarantine this annotation mismatch."
+    },
+    {
+      "question_id": "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+      "trajectory_sha256": "a1bce1fd10bba79604d69cf0b06bed36bf4d0ec7d0012366f7979762a8406fe6",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "After observing three context models and both non-context models, a five-model query is a justified refinement, not a leaked reference. Third observation explicitly confirms a pool of five neural annotators."
+    },
+    {
+      "question_id": "qasper_train_be6971827707afcd13af3085d0a775a0bd61c5dd",
+      "trajectory_sha256": "4535221c6a3b9f00847caa61ae1048b5bbcf902af7eb666afdae3e7084fa367f",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "The source describes one-hot occurrence-weighted logistic regression (around 7338), while the question leaves word association and enough undefined. Do not force an unanswerable rationale; exclude this ambiguity."
+    },
+    {
+      "question_id": "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+      "trajectory_sha256": "c40cf7e4a9e3ec0b9f90ac646daab3a1f4294b1d1b02591ae275eca0a65607aa",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Observed 19800:22800 passage defines all four metrics; first search also names Exact Match and Goal Match. Final accurately describes F1 and edit operations without inventing scores."
+    },
+    {
+      "question_id": "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72",
+      "trajectory_sha256": "3c529541572d2ac96edd09a501eb1038ce72e2c232579328495c7a252c04f289",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Read around the observed analysis outline and stop after its end/conclusion. Remove repeated searches and do not invent the missing ablation results."
+    }
+  ],
+  "action_edits": {
+    "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb": {
+      "parent_sha256": "8ee87333c9ec5fdce6780299fff7155fa832711ffb36cb36495354eb7dfa630e",
+      "actions": [
+        "print(search_within(\"qasper_1812_10860\", \"pretraining tasks performance comparison\"))",
+        "SUBMIT: Yes. When compared in isolation without ELMo, language modeling performs best, followed by MNLI; most remaining pretraining tasks perform near the random baseline. Different target tasks benefit from different forms of pretraining. CITATIONS: [\"qasper_1812_10860\"]"
+      ],
+      "notes": "Use question-derived search terms; distinguish the without-ELMo comparison from the separate ELMo condition."
+    },
+    "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36": {
+      "parent_sha256": "143a3089fd9c4d8c35da87adfe8b515ac075389e6014d5fc30f4ecaa8639e472",
+      "actions": [
+        "print(search_within(\"qasper_1911_08370\", \"engage in Twitter threads\"))",
+        "print(read(\"qasper_1911_08370\")[2300:3600])",
+        "print(search_within(\"qasper_1911_08370\", \"retweets replies thread engagement statistics\"))",
+        "SUBMIT: The inspected passages describe the topic-detection method as a baseline for a future extensive analysis of how people engage in Twitter threads across news types. They do not report engagement findings, so I cannot answer that comparison from this evidence. CITATIONS: [\"qasper_1911_08370\"]"
+      ],
+      "notes": "Remove a repeated read of the same motivation passage; limit the abstention to the inspected evidence."
+    },
+    "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115": {
+      "parent_sha256": "b600327ff701ad0015ab7b57aa86fc283362117af031689ac361b988f561be45",
+      "actions": [
+        "print(search_within(\"qasper_1908_06151\", \"previous state of the art automatic post editing\"))",
+        "print(search_within(\"qasper_1908_06151\", \"WMT 2018 multi-source APE encoders\"))",
+        "print(read(\"qasper_1908_06151\")[6000:8300])",
+        "SUBMIT: The paper describes prior state-of-the-art multi-source transformer APE systems from WMT 2018: pal-EtAl:2018:WMT used three self-attention-based encoders, including a joint encoder over source and MT; tebbifakhr-EtAl:2018:WMT won the NMT subtask using sequence-level losses; shin-lee:2018:WMT used separate encoders with additional source-to-MT and source-to-post-edit attention. The PBSMT-subtask winner used two encoders and stacked source-to-post-edit cross-attention above MT-to-post-edit cross-attention. CITATIONS: [\"qasper_1908_06151\"]"
+      ],
+      "notes": "Do not put reference-only author names into searches or double-count the joint encoder. Omit unrequested new-model BLEU."
+    },
+    "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63": {
+      "parent_sha256": "4dfbeeb51dbc79bcaf4a442f68ff4ccb202b69731e3005616df38e062819a470",
+      "actions": [
+        "print(search_within(\"qasper_2001_05467\", \"human evaluation procedure criteria\"))",
+        "print(read(\"qasper_2001_05467\")[17000:19000])",
+        "SUBMIT: Amazon MTurk annotators compared generated responses pairwise, with responses randomly shuffled to hide model identity. The criteria were Plausibility (whether a response fits its context) and Content Richness (whether it is diverse and informative). CITATIONS: [\"qasper_2001_05467\"]"
+      ],
+      "notes": "Retrieve the definitions through a bounded read around the observed MTurk hit; do not copy unseen reference definitions or resolve anonymized authors."
+    },
+    "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143": {
+      "parent_sha256": "3d96406b893a6a193af7997ce0c4566dae3ca4e996d7bb741068f1b5deb6c122",
+      "actions": [
+        "print(search_within(\"qasper_1911_00069\", \"datasets used experiments\"))",
+        "SUBMIT: The experiments use an in-house dataset and the ACE05 dataset. CITATIONS: [\"qasper_1911_00069\"]"
+      ],
+      "notes": "Remove hidden dataset names from the first query and unsupported expansion of the acronym."
+    },
+    "qasper_train_827464c79f33e69959de619958ade2df6f65fdee": {
+      "parent_sha256": "2796a1c15500481a246d7791c4735c2bb457bf6be488144ebf964069a1013dcb",
+      "actions": [
+        "print(search_within(\"qasper_1910_02789\", \"convergence faster natural language agents\"))",
+        "print(extract(\"qasper_1910_02789\", r\"[^\\n]*converg[^\\n]*\"))",
+        "SUBMIT: The retrieved abstract and results paragraph say natural-language agents converge faster than the comparison agents, but give no numerical speedup. I cannot quantify how much faster from those passages. CITATIONS: [\"qasper_1910_02789\"]"
+      ],
+      "notes": "Fix the chunk/text field error, inspect actual convergence paragraphs, and remove repeated low-yield searches. State a bounded evidence gap, not exhaustive paper absence."
+    },
+    "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef": {
+      "parent_sha256": "1a991666486fad31b31f8e8b588e7dbf424318ea11219375890fc4349ce44693",
+      "actions": [
+        "print(search_within(\"qasper_1808_09920\", \"number of documents Entity-GCN can handle scalability\"))",
+        "print(search_within(\"qasper_1808_09920\", \"up to documents scalability limit maximum\"))",
+        "SUBMIT: The inspected passages do not specify a maximum number of documents Entity-GCN can handle at once. Counts of candidate entities or graph nodes do not establish a document limit, so I cannot give that figure from this evidence. CITATIONS: [\"qasper_1808_09920\"]"
+      ],
+      "notes": "Do not equate entity graph nodes with documents; preserve the quantitative uncertainty."
+    },
+    "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b": {
+      "parent_sha256": "c04d556906af14453d84a8b545d6599c73610dc58424352d22c0400a9b0c14dd",
+      "actions": [
+        "print(search_within(\"qasper_1907_01413\", \"dataset training examples\"))",
+        "SUBMIT: The paper reports about 10,700 training examples after sampling. CITATIONS: [\"qasper_1907_01413\"]"
+      ],
+      "notes": "Remove the unseen answer 10700 from the query; answer only after a neutral query returns it."
+    },
+    "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf": {
+      "parent_sha256": "70c85e26f8a2a240ff833e0302b5dd767b36362780f54cc3adbdf63b8d8b3f6d",
+      "actions": [
+        "print(search_within(\"qasper_1909_00542\", \"rank among other submissions\"))",
+        "print(search_within(\"qasper_1909_00542\", \"leaderboard official results other systems best\"))",
+        "print(search_within(\"qasper_1909_00542\", \"conclusion future work\"))",
+        "print(passage(\"qasper_1909_00542\", 15000, 2000))",
+        "SUBMIT: No rank relative to other teams is given in the inspected results and conclusion. Human evaluation was not yet available at writing time, and the reported comparisons among the authors' own approaches do not establish a challenge ranking. CITATIONS: [\"qasper_1909_00542\"]"
+      ],
+      "notes": "Remove redundant score searches; keep the results/conclusion check and avoid presenting internal model comparisons as a leaderboard."
+    },
+    "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149": {
+      "parent_sha256": "c77727940976a09939f937807a942d04cf41aebd33c9d8ac0d7bd15727792a85",
+      "actions": [
+        "print(search_within(\"qasper_2003_09971\", \"environment self-critical sequence training reinforcement learning\"))",
+        "print(search_within(\"qasper_2003_09971\", \"experiment section dataset training details\"))",
+        "SUBMIT: The inspected setup describes image captioning experiments on COCO using the Karpathy split. It does not name a separate reinforcement-learning environment, so I cannot supply that name from these passages. CITATIONS: [\"qasper_2003_09971\"]"
+      ],
+      "notes": "Give the available task context and qualify the missing environment name; remove unobserved model names and redundant searches."
+    },
+    "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba": {
+      "parent_sha256": "6f72471ae5d310384a34b67432eaa2f42e67f012cb333f64e7ae72ac6f9dfd72",
+      "actions": [
+        "print(search_within(\"qasper_1701_04653\", \"Yahoo Answers Twitter demographic correlations\"))",
+        "print(read(\"qasper_1701_04653\")[12400:14000])",
+        "SUBMIT: No, not generally. Yahoo! Answers has more correlated terms for attributes related to religion or ethnicity; Twitter has more for the two exceptions, Price and Buddhist. CITATIONS: [\"qasper_1701_04653\"]"
+      ],
+      "notes": "Fix the chunk/text field error; read around the observed comparison before giving the negative answer and its exceptions."
+    },
+    "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136": {
+      "parent_sha256": "9605eea53b7adecd2a9dd9370d13f8f480d5bf2c360eae88361bd6a578178e15",
+      "actions": [
+        "print(search_within(\"qasper_1909_02635\", \"language English dataset\"))",
+        "print(search_within(\"qasper_1909_02635\", \"corpus language multilingual\"))",
+        "SUBMIT: The retrieved passages identify the Recipes and ProPara datasets but do not specify their language coverage. I cannot confirm from these passages whether the reported evaluations are English-only. CITATIONS: [\"qasper_1909_02635\"]"
+      ],
+      "notes": "Remove unsupported English-language benchmark knowledge and the paper-wide absence claim; retain actual dataset evidence."
+    },
+    "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b": {
+      "parent_sha256": "8a9cdd47b70957fa984d96ce6210b28349d80dd7f6fceae2ebbff25a4b17d99f",
+      "actions": [
+        "print(search_within(\"qasper_1804_05868\", \"LAS metric definition\"))",
+        "print(search_within(\"qasper_1804_05868\", \"evaluation metric UAS LAS\"))",
+        "SUBMIT: The retrieved passages report LAS and UAS scores for dependency parsing, but do not define how LAS is computed. I cannot supply the definition from this evidence. CITATIONS: [\"qasper_1804_05868\"]"
+      ],
+      "notes": "Remove the expansion Labeled Attachment Score that was not present in observed source text, including from the search query. Distinguish reported scores from a definition."
+    },
+    "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd": {
+      "parent_sha256": "07e28dc6c5ba5d5e790516abc75228b0d0276397216558e9788cfdf8fa9a7bc2",
+      "actions": [
+        "print(search_within(\"qasper_1910_05608\", \"baseline\"))",
+        "print(search_within(\"qasper_1910_05608\", \"baseline model comparison\"))",
+        "SUBMIT: The baseline search returned no matches. The model-comparison passages describe the proposed architectures but do not identify a baseline system, so I cannot name one from this evidence. CITATIONS: [\"qasper_1910_05608\"]"
+      ],
+      "notes": "Print the empty result explicitly, remove the redundant regex search, and avoid claiming to have inspected evaluation sections not observed."
+    },
+    "qasper_train_6a7370dd12682434248d006ffe0a72228c439693": {
+      "parent_sha256": "69c41f1acc371bd9de298f3263214af5812a1a9f0bbe932742e12255aaea3b40",
+      "actions": [
+        "print(search_within(\"qasper_2001_11899\", \"large language sets explored\"))",
+        "print(search_within(\"qasper_2001_11899\", \"conclusion future work scalable approach applicable\"))",
+        "SUBMIT: One retrieved database description covers 42 languages. That is an example of the evaluated scale, not a demonstrated upper limit; the retrieved conclusion gives no numerical capacity limit, so I cannot establish the maximum language-set size. CITATIONS: [\"qasper_2001_11899\"]"
+      ],
+      "notes": "Separate observed dataset scale from maximum capacity and remove a search that repeats the same database passages. Do not claim 42 is the only dataset size in the full paper."
+    },
+    "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7": {
+      "parent_sha256": "54ce1f873a45f61f06027e2083deae3483a299aae6391d6c1e590f9f163a7bba",
+      "actions": [
+        "print(search_within(\"qasper_1809_10644\", \"datasets used\"))",
+        "print(search_within(\"qasper_1809_10644\", \"data sets collected\"))",
+        "SUBMIT: The three datasets are Sexist/Racist (SR), HATE, and HAR. CITATIONS: [\"qasper_1809_10644\"]"
+      ],
+      "notes": "Replace unobserved author-name search guesses with neutral dataset terms and answer only the requested dataset names."
+    },
+    "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72": {
+      "parent_sha256": "728b9245fa3e78496090bc127cb99ecc2083a00efc1c69646d25a25ceb1d2fc5",
+      "actions": [
+        "print(search_within(\"qasper_1809_04686\", \"training data size impact multilingual encoder\"))",
+        "print(search_within(\"qasper_1809_04686\", \"effect of training data size on performance\"))",
+        "print(read(\"qasper_1809_04686\")[20000:24000])",
+        "SUBMIT: The retrieved data description reports 72 million training sentence pairs, and the analysis outline says training-data amount is studied. However, the retrieved analysis/conclusion text gives no numerical comparison across data sizes, so I cannot quantify the impact from that evidence. CITATIONS: [\"qasper_1809_04686\"]"
+      ],
+      "notes": "Read around the observed analysis outline and stop after its end/conclusion. Remove repeated searches and do not invent the missing ablation results."
+    }
+  },
+  "summary": {
+    "raw_episodes_generated": 24,
+    "raw_review_counts": {
+      "fail": 12,
+      "partial": 8,
+      "pass": 4
+    },
+    "raw_reference_guided_passes": 0,
+    "raw_without_reference_guidance_passes": 4,
+    "accepted": 21,
+    "accepted_as_generated": 4,
+    "accepted_after_assistant_repair": 17,
+    "quarantined": 3,
+    "answerability": {
+      "sufficient": 11,
+      "insufficient": 10
+    },
+    "mean_actions": 3.1904761904761907,
+    "action_distribution": {
+      "2": 4,
+      "4": 4,
+      "3": 11,
+      "5": 2
+    },
+    "exact_replay_accepted": 21,
+    "teacher_usage": {
+      "input_tokens": 300673,
+      "output_tokens": 13051,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0
+    },
+    "usage_limitations": "Completed API-response token counts, not an invoice; CPU repairs incur no additional teacher API calls."
+  },
+  "artifacts": {
+    "out/research/qasper-sft-v4/pilot.jsonl": "78244d298c99a33c955c5e9c5dc8c0415eb528d4ed1b2718cc89a2b0016dd351",
+    "out/research/qasper-sft-v4/second-pilot.jsonl": "0abf4d17a1b15f01d3a49e921dfe0cdbf9512615f1e7e1df302f19f8a11fcf6e",
+    "out/research/qasper-sft-v4/pilot.manifest.json": "cd9b65f6c1ce626c82e06c45060171dd64a287d86f60d80e7a09697349006801",
+    "out/research/qasper-sft-v4/second-pilot.manifest.json": "a0a3891858bb330b51277750e0dd820398d72cfeb3dd0d1b731742ed228a718b",
+    "out/research/qasper-sft-v4/pilot-curated-replay.json": "0efc5561843e7379954cb460b22418fb17648798f06120fec6de6da75d8d5a8e",
+    "out/research/qasper-sft-v4/second-pilot-curated-replay.json": "ac932453d05822bd9ecf524145c04f89a6d24fad248840b80774175b01bd483d",
+    "out/research/qasper-sft-v4/reviewed-trajectories.json": "d94852d69dcaf0bcc2dc07f86ddcbe720370518e5d4b51dec2415d8180f7bfd3",
+    "out/research/qasper-sft-v4/plan.json": "4cf634ec0aa0c9393c5d4c698ad5cee987b4494a5d0dc3066cc7ce9d4a4b3501",
+    "out/research/qasper-sft-v4/plan-revision.json": "738425544703c5df55aeb3e465e5ec4411b1a85d18235977487a0a978ea54772",
+    "out/research/qasper-sft-v4/combined-benchmark.json": "b50c9b231acc6afb3b202086d4743741f1367ada37789b2e3674b5d302976a86"
+  }
+}

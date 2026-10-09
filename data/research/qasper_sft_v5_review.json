@@ -1,0 +1,685 @@
+{
+  "reviewer": "Codex",
+  "reviewer_type": "assistant",
+  "limitations": "Same assistant authored edits and reviewed sources, with original labels visible. Not independent, human, or blind review. Original episodes were inspected for structure/final answers and selected source support; this is not a full raw-teacher accuracy evaluation.",
+  "corpus_hash": "2647fb92032a2ac812adc6840fe8e27d9fb05cba0a7670263c144ac2ef6821a0",
+  "plan": {
+    "hypothesis": "Source review plus CPU-executed repairs recovers useful concise demonstrations from existing teacher runs without new API generation.",
+    "selection_seed": 20260920,
+    "selected_per_class": 16,
+    "selection": "Answerable pool passes existing structural gate; unanswerable pool includes rejected old episodes. Exclude v3/v4 pilot target papers and all held-out target/reserved papers. Sample without replacement by paper; question list fixed before semantic review.",
+    "source": "out/research/qasper-teacher-batch-v2/trajectories.jsonl",
+    "source_sha256": "fa645c1b368076f610ce0cc908ec51d9c1fd41dbd311f60827c2161619360b76",
+    "benchmark_source_sha256": "57668b943a0ac2c72ba343be17251067c08a9caaeb163c0e2194a13d57ee1f41",
+    "corpus_hash": "2647fb92032a2ac812adc6840fe8e27d9fb05cba0a7670263c144ac2ef6821a0",
+    "question_ids": [
+      "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32",
+      "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+      "qasper_train_af1439c68b28c27848203f863675946380d28943",
+      "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9",
+      "qasper_train_91c81807374f2459990e5f9f8103906401abc5c2",
+      "qasper_train_ac706631f2b3fa39bf173cd62480072601e44f66",
+      "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed",
+      "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1",
+      "qasper_train_fdd9dea06550a2fd0df7a1e6a5109facf3601d76",
+      "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d",
+      "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19",
+      "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+      "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b",
+      "qasper_train_57586358dd01633aa2ebeef892e96a549b1d1930",
+      "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c",
+      "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af",
+      "qasper_train_7befb7a8354fca9d2a94e3fd4364625c98067ebb",
+      "qasper_train_be1c0816793a4549c811480170f30fab52a7a157",
+      "qasper_train_84aef81dae38e0dca0ad041141df60ab9ac29761",
+      "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7",
+      "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4",
+      "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4",
+      "qasper_train_e1f559da7fa501d3190073bca9ce4d4a12149e80",
+      "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047",
+      "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7",
+      "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43",
+      "qasper_train_940873658ee64e131cafcf9b3d26a45a98920cc2",
+      "qasper_train_f197e0f61f7980c64a76a3a9657762f1f0edb65b",
+      "qasper_train_e44a5514d7464993997212341606c2c0f3a72eb4",
+      "qasper_train_63337fd803f6fdd060ebd0f53f9de79d451810cd",
+      "qasper_train_e3dc8689d8db31f04797f515fe224f6075f5cb16",
+      "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51"
+    ],
+    "decision_rule": "Review all 32. Data salvage gate: at least 24 accepted including at least 10 per class. Accept only source-reviewed 2-6 action episodes with exact replay; allow explicit provenance-tracked repairs, exclude ambiguous labels or missing source evidence. No GPU training regardless of this data gate.",
+    "reviewer": "Codex",
+    "reviewer_type": "assistant; editor knows labels, not independent or blind",
+    "budget": "32 existing episodes; local CPU only; no teacher API calls",
+    "hardware": "macOS-26.2-arm64-arm-64bit",
+    "policy": "Original archived teacher; revised actions authored by Codex and fully re-executed; no Qwen checkpoint run."
+  },
+  "summary": {
+    "reviewed": 32,
+    "accepted": 23,
+    "accepted_as_generated": 3,
+    "accepted_after_repair": 20,
+    "quarantined": 9,
+    "answerability": {
+      "sufficient": 15,
+      "insufficient": 8
+    },
+    "mean_actions": 2.8260869565217392,
+    "action_distribution": {
+      "2": 8,
+      "3": 11,
+      "4": 4
+    },
+    "replay_exact": 23,
+    "data_salvage_gate_passed": false,
+    "gate_note": "23/32 accepted (15 sufficient, 8 insufficient) misses the declared >=24 and >=10 per class gate. Keep accepted examples, exclude the nine unsuitable targets, do not replace them after the fact to claim success.",
+    "new_teacher_api_calls": 0,
+    "gpu_training_runs": 0
+  },
+  "reviews": [
+    {
+      "question_id": "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32",
+      "question": "Use the known paper \"Grammatical Analysis of Pretrained Sentence Encoders with Acceptability Judgments\" (doc_id: \"qasper_1901_03438\") to answer: How is the CoLA grammatically annotated?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "3ed96ca5107f3f463361e43fc03beb1e190b973e4c6517dd007c7ee10dc855d8",
+      "parent_sha256": "e6e4213b9c2d7990a4da636dd23131040688e483508d8bb8b42db2bd755b3f4a",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Drop the verification preamble and echoed known_facts. The returned annotation passage supports the expert labels and hierarchy."
+    },
+    {
+      "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+      "question": "Use the known paper \"Can neural networks understand monotonicity reasoning?\" (doc_id: \"qasper_1906_06448\") to answer: What is monotonicity reasoning?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "3c9464bf1d8ebb2132b7b29d1ecc648f183819e29fa061cf05d5b6d481ce1a6d",
+      "parent_sha256": "6ec279803fda5bf2f4712ad11a08513c64bd18a39506eb9b8a0a308ab29a1663",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Read the introductory definition after the initial search only returns high-level descriptions. Remove duplicated searches and unobserved explanatory additions."
+    },
+    {
+      "question_id": "qasper_train_af1439c68b28c27848203f863675946380d28943",
+      "question": "Use the known paper \"Unsupervised Question Decomposition for Question Answering\" (doc_id: \"qasper_2002_09758\") to answer: What is the strong baseline that this work outperforms?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "ad75fa9c0a6e14f6ed2576f74aba341fb9f957cb60f16259f3027b96cff2b410",
+      "parent_sha256": "4e8d9ce4d958256d000f6746eead656764e681b256c802bfe9c28a2bc2ef44b3",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "The first targeted baseline result already identifies RoBERTa and the paragraph-wise setup; stop without six rounds of redundant work."
+    },
+    {
+      "question_id": "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9",
+      "question": "Use the known paper \"CrossWOZ: A Large-Scale Chinese Cross-Domain Task-Oriented Dialogue Dataset\" (doc_id: \"qasper_2002_11893\") to answer: What are the benchmark models?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "e5464dc3fedae7f35e760c9da9caee67d6e10fc354209e268b5335b3923ed009",
+      "parent_sha256": "cba73ca1644c7a9b86a5a6986ce3677fbefdc25f42ae740591bf02dcd5537563",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Extract the actual model-description paragraphs and keep their openings, which contain all requested names. Include the NLG models present in the paper even though the reference list omits them."
+    },
+    {
+      "question_id": "qasper_train_91c81807374f2459990e5f9f8103906401abc5c2",
+      "question": "Use the known paper \"A neural network system for transformation of regional cuisine style\" (doc_id: \"qasper_1705_03487\") to answer: What is barycentric Newton diagram?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "af392c62340bad338db5f89d8a9aad6af8127984ca57940e1586660590e7be5b",
+      "parent_sha256": "af392c62340bad338db5f89d8a9aad6af8127984ca57940e1586660590e7be5b",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Actual search windows 5600/5800 define barycentric mixtures, recipe class probabilities, and spectral placement of similar countries. Final is supported and stops immediately after the useful observation; verify is not used as proof."
+    },
+    {
+      "question_id": "qasper_train_ac706631f2b3fa39bf173cd62480072601e44f66",
+      "question": "Use the known paper \"Citation Data of Czech Apex Courts\" (doc_id: \"qasper_2002_02224\") to answer: Did they experiment on this dataset?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "940929fa94a2e201c414f0fb10b51b30ba91c04344968de9daad765f3a36844a",
+      "parent_sha256": "940929fa94a2e201c414f0fb10b51b30ba91c04344968de9daad765f3a36844a",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Ambiguous dataset referent: the citation dataset is produced from CzCDC 1.0, and pipeline experiments are described. Gold No and teacher Yes do not resolve whether the question means the produced citation dataset or its source. Do not train either unqualified answer."
+    },
+    {
+      "question_id": "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed",
+      "question": "Use the known paper \"Gibberish Semantics: How Good is Russian Twitter in Word Semantic Similarity Task?\" (doc_id: \"qasper_1602_08741\") to answer: Which Twitter corpus was used to train the word vectors?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "190b3e31b10766ed53e22ebd253c5f1a2b8c857fcfdaafd63bf2f6abea9b7475",
+      "parent_sha256": "468816ca93a55d9f1b955384c05aeb20fbc3e34ae1851fa908090bbc55f54cfa",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Use question-derived collection terms, then inspect API collection evidence. Remove unrequested corpus size/date details."
+    },
+    {
+      "question_id": "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1",
+      "question": "Use the known paper \"An empirical study on the effectiveness of images in Multimodal Neural Machine Translation\" (doc_id: \"qasper_1707_00995\") to answer: What misbehavior is identified?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "ba5ea2e56d2892945861553debcd5f6ed5b40863699dfa733a5406d172396274",
+      "parent_sha256": "eafa673cf9afe79a301b05d7599af3174a85039ce3e4556f228946154bcc109b",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Expand the truncated misbehavior passage at the returned offset; stop once the failure mechanism is supported."
+    },
+    {
+      "question_id": "qasper_train_fdd9dea06550a2fd0df7a1e6a5109facf3601d76",
+      "question": "Use the known paper \"Combining Acoustics, Content and Interaction Features to Find Hot Spots in Meetings\" (doc_id: \"qasper_1910_10869\") to answer: How big is ICSI meeting corpus?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "01f757552ab1d77ca740b6f3077916f36e7e4b8e48ab3a14645dc3b6e9dd2b86",
+      "parent_sha256": "01f757552ab1d77ca740b6f3077916f36e7e4b8e48ab3a14645dc3b6e9dd2b86",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "Actual first observation contains 75 meetings and about 70 hours. Final gives exactly the requested size and stops; no new facts are inferred."
+    },
+    {
+      "question_id": "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d",
+      "question": "Use the known paper \"Tagged Back-Translation\" (doc_id: \"qasper_1906_06442\") to answer: What datasets was the method evaluated on?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "a52c034bc8ce60fdc598f79a9374b9fc8de5e09d675d1c01827dd9d70f4beb1f",
+      "parent_sha256": "4751b979e5b803c0df51eba0ee758b19cc76e0cefa544b061df3aa7819231d4b",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Return the complete dataset list from the observed methods passage without collecting unrequested counts."
+    },
+    {
+      "question_id": "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19",
+      "question": "Use the known paper \"Short-Text Classification Using Unsupervised Keyword Expansion\" (doc_id: \"qasper_1909_07512\") to answer: What is the language model pre-trained on?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "a344df941f4ad10e65ce2b04839c7d19745c28aa657c05eb96a71f6cf9b73c9f",
+      "parent_sha256": "19cdceb9d3981961d3840f10c4849d95a589156c52c8fd498996db8b6859a059",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "The first returned source paragraph names both pretraining corpora. Omit model size and unrequested word counts."
+    },
+    {
+      "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+      "question": "Use the known paper \"Incorporating Sememes into Chinese Definition Modeling\" (doc_id: \"qasper_1905_06512\") to answer: Do they perform manual evaluation?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "59cc6628ec505d2db4579b5b7315cd1d8d893b79f040a3819231066185670805",
+      "parent_sha256": "e23269a9c2445469337e6ff0d70693e23536d8dc4cfc4942c1ef093dab8aed02",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Distinguish manual inspection from a formal human-rating experiment; avoid inventing annotators, scales, or agreement statistics."
+    },
+    {
+      "question_id": "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b",
+      "question": "Use the known paper \"Generative Adversarial Nets for Multiple Text Corpora\" (doc_id: \"qasper_1712_09127\") to answer: Which GAN do they use?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "8bc5cc3f5f14ca0d921fb1fd3368ebf8baf43cc6a9c9a8d085d251b470b1a968",
+      "parent_sha256": "4993b61b5732c9320836e0258838eb18a5407b20c023e1fd80ac788c47ab59eb",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Refine the query using word/document embeddings observed in the first result; do not put the hidden model names into the search."
+    },
+    {
+      "question_id": "qasper_train_57586358dd01633aa2ebeef892e96a549b1d1930",
+      "question": "Use the known paper \"Generative Dialog Policy for Task-oriented Dialog Systems\" (doc_id: \"qasper_1909_09484\") to answer: What two benchmark datasets are used?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "33c545e580179fc6052d7c233a67c40751d15889a3dccdd083ee6397d18decd5",
+      "parent_sha256": "33c545e580179fc6052d7c233a67c40751d15889a3dccdd083ee6397d18decd5",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": false,
+      "notes": "The first broad search misses the names but dataset evaluation in the same executed action returns DSTC2 and Maluuba. Final supplies both and stops; it does not rely on verify output."
+    },
+    {
+      "question_id": "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c",
+      "question": "Use the known paper \"A Deep Learning Architecture for De-identification of Patient Notes: Implementation and Evaluation\" (doc_id: \"qasper_1810_01570\") to answer: Do they use BERT?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "9e2e2e3f0832e8df013b2ebe5cd74f4634b47744892f61400817d4830c782083",
+      "parent_sha256": "42b72bc1b2a306a6c07e021761c3920d1058110bece6c54034bf9dbef7875fda",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Read the complete embedding-layer description; ground the negative answer in the described architecture rather than keyword absence or an inferred author identity."
+    },
+    {
+      "question_id": "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af",
+      "question": "Use the known paper \"BoolQ: Exploring the Surprising Difficulty of Natural Yes/No Questions\" (doc_id: \"qasper_1905_10044\") to answer: what is the size of BoolQ dataset?",
+      "expected_answerability": "sufficient",
+      "trajectory_sha256": "424a53006a11a2b1e57f560e0682c2e362af65d3dd27aebe195197cb69419a5e",
+      "parent_sha256": "2e5997231f6c72abe6f81c08469d9974bc0c3a3c4cccf17bc0d6551d078a43a1",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "After the broad search misses the count, ask for total questions without inserting the unseen gold number. Omit rounded split counts that need not sum exactly."
+    },
+    {
+      "question_id": "qasper_train_7befb7a8354fca9d2a94e3fd4364625c98067ebb",
+      "question": "Use the known paper \"Citation Text Generation\" (doc_id: \"qasper_2002_00317\") to answer: How was the evaluation corpus collected?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "12fc74c5011a0dca754de60962f8bbc6ac168bcd1289818534cba740bbbf953f",
+      "parent_sha256": "12fc74c5011a0dca754de60962f8bbc6ac168bcd1289818534cba740bbbf953f",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Conflict with insufficient label: source passage at 6800 describes selecting 154K S2-GORC articles, extracting 622K citing sentences, and holding out 2500 examples for validation and test. There is substantive collection evidence."
+    },
+    {
+      "question_id": "qasper_train_be1c0816793a4549c811480170f30fab52a7a157",
+      "question": "Use the known paper \"The Evolved Transformer\" (doc_id: \"qasper_1901_11117\") to answer: How much energy did the NAS consume?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "6dbb050a30dba17af78bb3683453a922e399d72e84373d3021655c141fa1ddea",
+      "parent_sha256": "ad424fa72fbe05acbc18313b89ff3cec8f6579b4276d5a31da86ee756c89c9dc",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Inspect compute-related paragraphs instead of treating runtime as energy or repeatedly rediscovering the paper."
+    },
+    {
+      "question_id": "qasper_train_84aef81dae38e0dca0ad041141df60ab9ac29761",
+      "question": "Use the known paper \"Unsupervised Cross-lingual Representation Learning at Scale\" (doc_id: \"qasper_1911_02116\") to answer: asdf",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "f929530a0808d80d3a6d1dcf65c1a587624f6d3f4ea8eb6541de6aa3deb8a01c",
+      "parent_sha256": "f929530a0808d80d3a6d1dcf65c1a587624f6d3f4ea8eb6541de6aa3deb8a01c",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Malformed question: asdf. Searching the paper for a placeholder teaches wasted retrieval, not research abstention."
+    },
+    {
+      "question_id": "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7",
+      "question": "Use the known paper \"Event Outcome Prediction using Sentiment Analysis and Crowd Wisdom in Microblog Feeds\" (doc_id: \"qasper_1912_05066\") to answer: What is the interannotator agreement of the crowd sourced users?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "5392e0a847749c226892af1bb5f19876659b212598981a846b71c8eda13d2c15",
+      "parent_sha256": "90ded30e75b0962b7e09849b642f47ef146038c68ee9a4764caa2c4e691138a0",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Distinguish annotation labels from annotator agreement; preserve the missing-statistic uncertainty without inventing an IAA score."
+    },
+    {
+      "question_id": "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4",
+      "question": "Use the known paper \"Schema-Guided Dialogue State Tracking Task at DSTC8\" (doc_id: \"qasper_2002_01359\") to answer: Do all teams use neural networks for their models?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "648d609d31309e4c3bbd7fa4f61e6d7f8c5b664ef8289189fb1eb5323749b13e",
+      "parent_sha256": "22113d2080da68da21c767be902dda3728b8db0bbe160d971e52d3b88eded35d",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Use the explicit coverage limit, not a leap from some described neural systems to all teams. Do not infer that any remaining team was non-neural."
+    },
+    {
+      "question_id": "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4",
+      "question": "Use the known paper \"A Density Ratio Approach to Language Model Fusion in End-to-End Automatic Speech Recognition\" (doc_id: \"qasper_2002_11268\") to answer: What language(s) is the model trained/tested on?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "fc7cbf3fda9eddab63a2e9b8cfd7a49dff5270810d9d1b6cc374bb42950ea7c3",
+      "parent_sha256": "485ce6792b570cecce52ae3530e25c4f8669e02e96247b122263674811e27d84",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove the unsupported assumption that YouTube or Voice Search implies English; inspect data descriptions and a language-specific search."
+    },
+    {
+      "question_id": "qasper_train_e1f559da7fa501d3190073bca9ce4d4a12149e80",
+      "question": "Use the known paper \"Weakly Supervised Domain Detection\" (doc_id: \"qasper_1907_11499\") to answer: What is the performance of their model?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "3febbc2c8dab48f46f21e5f7c18a563c5c24bb9df4f6c5a5b791d2cee2dec643",
+      "parent_sha256": "3febbc2c8dab48f46f21e5f7c18a563c5c24bb9df4f6c5a5b791d2cee2dec643",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Question asks performance broadly; qualitative results are available, while numerical tables are absent from the text. Do not turn an unspecified performance request into a blanket refusal or invent a score."
+    },
+    {
+      "question_id": "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047",
+      "question": "Use the known paper \"Transformer Transducer: A Streamable Speech Recognition Model with Transformer Encoders and RNN-T Loss\" (doc_id: \"qasper_2002_02562\") to answer: What was previous state of the art accuracy on LibriSpeech benchmark?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "7130104710c5f4123eb3fcb2747a3671f9ee5eb1c127a74242de998923d32878",
+      "parent_sha256": "709b76bee31e4cefeaf7bf7f3384f75e710fed80cefa5e2c39143e7277ac650c",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Do not confuse the new model, LM perplexity, dataset size, and a previous system's accuracy; inspect comparison paragraphs before stating the missing value."
+    },
+    {
+      "question_id": "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7",
+      "question": "Use the known paper \"The Effect of Context on Metaphor Paraphrase Aptness Judgments\" (doc_id: \"qasper_1809_01060\") to answer: Do they report results only on English data?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "65d561a51d77df193e389106dc3f919916f396dee1ad82a28d1a06a544f4fe1a",
+      "parent_sha256": "559528a7a7b4f51ac41d3e045453770318de773587bcf789e9cc00a4d3366709",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Remove the old invented claim about English-speaking AMT annotators. English-looking examples alone do not establish coverage of every evaluated item."
+    },
+    {
+      "question_id": "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43",
+      "question": "Use the known paper \"A Resource for Studying Chatino Verbal Morphology\" (doc_id: \"qasper_2004_02083\") to answer: How was the data collected?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "013e3fde6dabe68ac60b1b9698b7a71ebb589d04790dcd101398af540df2eac3",
+      "parent_sha256": "d74fd1c0864ad1586fe68c011b5dfad0ec64184714b0ee2467d165f13bf72ec9",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Report the documented curation while distinguishing it from an unreported original collection procedure."
+    },
+    {
+      "question_id": "qasper_train_940873658ee64e131cafcf9b3d26a45a98920cc2",
+      "question": "Use the known paper \"Trading the Twitter Sentiment with Reinforcement Learning\" (doc_id: \"qasper_1801_02243\") to answer: What is the optimal trading strategy based on reinforcement learning?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "d5ed1e281ae92971a9a31b3901279b00c2bf24bc94217b2af512bb7437c73aa8",
+      "parent_sha256": "d5ed1e281ae92971a9a31b3901279b00c2bf24bc94217b2af512bb7437c73aa8",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Optimal strategy is underspecified: the paper explicitly describes Q-learning as its trading-policy method, but does not thereby establish a universally optimal trading strategy. The insufficient label and question cannot be resolved without a clearer target."
+    },
+    {
+      "question_id": "qasper_train_f197e0f61f7980c64a76a3a9657762f1f0edb65b",
+      "question": "Use the known paper \"Racial Bias in Hate Speech and Abusive Language Detection Datasets\" (doc_id: \"qasper_1905_12516\") to answer: Any other bias may be detected?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "21781ad160d6c43e953a8aaeb95a7fd074181c544c970dd666efd7a93af9e597",
+      "parent_sha256": "21781ad160d6c43e953a8aaeb95a7fd074181c544c970dd666efd7a93af9e597",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Any other bias may be detected is an open-ended scope ambiguity. Related work discusses other biases; absence of further experiments is not proof that no other bias exists."
+    },
+    {
+      "question_id": "qasper_train_e44a5514d7464993997212341606c2c0f3a72eb4",
+      "question": "Use the known paper \"Word, Subword or Character? An Empirical Study of Granularity in Chinese-English NMT\" (doc_id: \"qasper_1711_04457\") to answer: What is the worst performing translation granularity?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "c4865113497433db3af6ea8d44a254609d0b853059ed5596e68c43d420584eaa",
+      "parent_sha256": "c4865113497433db3af6ea8d44a254609d0b853059ed5596e68c43d420584eaa",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Worst granularity depends on translation direction and vocabulary conditions; source contains comparative findings. Exclude the unconditional question rather than enforce an unanswerable label or erase the conditions."
+    },
+    {
+      "question_id": "qasper_train_63337fd803f6fdd060ebd0f53f9de79d451810cd",
+      "question": "Use the known paper \"Collecting Indicators of Compromise from Unstructured Text of Cybersecurity Articles using Neural-Based Sequence Labelling\" (doc_id: \"qasper_1907_02636\") to answer: What type of hand-crafted features are used in state of the art IOC detection systems?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "b1550b753a8307b3146be8b03e730d4aebf8087fd21d986a390d29c5c92549ba",
+      "parent_sha256": "b1550b753a8307b3146be8b03e730d4aebf8087fd21d986a390d29c5c92549ba",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Conflict/partial evidence for insufficient label: related-work comparison around 19601 explicitly identifies hand-crafted spelling features in Zhou et al. Distinguish this from the current model's spelling/contextual features; do not train a claim that no feature type is stated."
+    },
+    {
+      "question_id": "qasper_train_e3dc8689d8db31f04797f515fe224f6075f5cb16",
+      "question": "Use the known paper \"Joint Event and Temporal Relation Extraction with Shared Representations and Structured Prediction\" (doc_id: \"qasper_1909_05360\") to answer: What kind of events do they extract?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "a1347120b90d2d74ca50070880e081cfe8d253c926b3b5cd737a60c84d9fe0e2",
+      "parent_sha256": "a1347120b90d2d74ca50070880e081cfe8d253c926b3b5cd737a60c84d9fe0e2",
+      "verdict": "fail",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": false,
+      "assistant_repaired": false,
+      "notes": "Ambiguous kind of events: source at 18160 and 23849 gives noun/verb event types by dataset, although a semantic event taxonomy may be intended. The supplied question does not distinguish these interpretations."
+    },
+    {
+      "question_id": "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51",
+      "question": "Use the known paper \"Evaluation of basic modules for isolated spelling error correction in Polish texts\" (doc_id: \"qasper_1905_10810\") to answer: What solutions are proposed for error detection and context awareness?",
+      "expected_answerability": "insufficient",
+      "trajectory_sha256": "3e6c12be78ea23d12bb23944576d9c813a9a1d00d3afb122ffeb9f2a3e03e542",
+      "parent_sha256": "3c853685fb65ff93b30d6dd7f55b856d3a07bded1bb815532f27a2185367f843",
+      "verdict": "pass",
+      "evidence_checked": true,
+      "stopping_checked": true,
+      "replay_verified": true,
+      "assistant_repaired": true,
+      "notes": "Do not present ELMo correction results as implemented detection/context modules. State the available design discussion and the missing specifics separately."
+    }
+  ],
+  "action_edits": {
+    "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32": {
+      "parent_sha256": "e6e4213b9c2d7990a4da636dd23131040688e483508d8bb8b42db2bd755b3f4a",
+      "actions": [
+        "print(search_within('qasper_1901_03438', 'annotation scheme grammatical features'))",
+        "SUBMIT: Experts labeled the 1,043 sentences of the CoLA development set for 63 minor grammatical features grouped into 15 major features. A sentence receives a major-feature label when at least one of its corresponding minor features is present. CITATIONS: [\"qasper_1901_03438\"]"
+      ],
+      "notes": "Drop the verification preamble and echoed known_facts. The returned annotation passage supports the expert labels and hierarchy."
+    },
+    "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e": {
+      "parent_sha256": "6ec279803fda5bf2f4712ad11a08513c64bd18a39506eb9b8a0a308ab29a1663",
+      "actions": [
+        "print(search_within('qasper_1906_06448', 'monotonicity reasoning definition'))",
+        "print(read('qasper_1906_06448')[0:3300])",
+        "SUBMIT: Monotonicity reasoning is inference by replacing words while accounting for the interaction between lexical meaning and syntactic structure. It includes upward and downward reasoning. CITATIONS: [\"qasper_1906_06448\"]"
+      ],
+      "notes": "Read the introductory definition after the initial search only returns high-level descriptions. Remove duplicated searches and unobserved explanatory additions."
+    },
+    "qasper_train_af1439c68b28c27848203f863675946380d28943": {
+      "parent_sha256": "4e8d9ce4d958256d000f6746eead656764e681b256c802bfe9c28a2bc2ef44b3",
+      "actions": [
+        "print(search_within('qasper_2002_09758', 'strong baseline'))",
+        "SUBMIT: The strong baseline is the RoBERTa-based QA model, which processes each paragraph separately. CITATIONS: [\"qasper_2002_09758\"]"
+      ],
+      "notes": "The first targeted baseline result already identifies RoBERTa and the paragraph-wise setup; stop without six rounds of redundant work."
+    },
+    "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9": {
+      "parent_sha256": "cba73ca1644c7a9b86a5a6986ce3677fbefdc25f42ae740591bf02dcd5537563",
+      "actions": [
+        "print(search_within('qasper_2002_11893', 'benchmark models'))",
+        "print([section[:300] for section in extract(\"qasper_2002_11893\", r\"Model:\\s*([^\\n]+)\")])",
+        "SUBMIT: The benchmark models are BERTNLU for natural-language understanding; RuleDST and TRADE for dialogue state tracking; the supervised SL policy; and TemplateNLG and SC-LSTM for natural-language generation. The paper also provides a rule-based user simulator. CITATIONS: [\"qasper_2002_11893\"]"
+      ],
+      "notes": "Extract the actual model-description paragraphs and keep their openings, which contain all requested names. Include the NLG models present in the paper even though the reference list omits them."
+    },
+    "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed": {
+      "parent_sha256": "468816ca93a55d9f1b955384c05aeb20fbc3e34ae1851fa908090bbc55f54cfa",
+      "actions": [
+        "print(search_within('qasper_1602_08741', 'Twitter corpus collected'))",
+        "print(search_within('qasper_1602_08741', 'tweets collected query'))",
+        "SUBMIT: They collected their own Russian-language Twitter corpus through the Streaming API filter endpoint, using a heuristic query of Russian function words such as conjunctions, pronouns and prepositions. CITATIONS: [\"qasper_1602_08741\"]"
+      ],
+      "notes": "Use question-derived collection terms, then inspect API collection evidence. Remove unrequested corpus size/date details."
+    },
+    "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1": {
+      "parent_sha256": "eafa673cf9afe79a301b05d7599af3174a85039ce3e4556f228946154bcc109b",
+      "actions": [
+        "print(search_within('qasper_1707_00995', 'misbehavior'))",
+        "print(read('qasper_1707_00995')[22000:23800])",
+        "SUBMIT: When visual attention loses track of the objects, the model still uses that visual information and lets it override the text-based annotations, misleading the translation. CITATIONS: [\"qasper_1707_00995\"]"
+      ],
+      "notes": "Expand the truncated misbehavior passage at the returned offset; stop once the failure mechanism is supported."
+    },
+    "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d": {
+      "parent_sha256": "4751b979e5b803c0df51eba0ee758b19cc76e0cefa544b061df3aa7819231d4b",
+      "actions": [
+        "print(search_within('qasper_1906_06442', 'datasets experiments'))",
+        "SUBMIT: The experiments use WMT18 English-German, WMT16 English-Romanian, and WMT15 English-French bitext. WMT Newscrawl supplies the monolingual data. CITATIONS: [\"qasper_1906_06442\"]"
+      ],
+      "notes": "Return the complete dataset list from the observed methods passage without collecting unrequested counts."
+    },
+    "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19": {
+      "parent_sha256": "19cdceb9d3981961d3840f10c4849d95a589156c52c8fd498996db8b6859a059",
+      "actions": [
+        "print(search_within('qasper_1909_07512', 'language model pre-trained'))",
+        "SUBMIT: BERT was pre-trained on Wikipedia and BooksCorpus. CITATIONS: [\"qasper_1909_07512\"]"
+      ],
+      "notes": "The first returned source paragraph names both pretraining corpora. Omit model size and unrequested word counts."
+    },
+    "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2": {
+      "parent_sha256": "e23269a9c2445469337e6ff0d70693e23536d8dc4cfc4942c1ef093dab8aed02",
+      "actions": [
+        "print(search_within('qasper_1905_06512', 'manual evaluation inspection'))",
+        "SUBMIT: Yes, they report qualitative manual inspection of generated definitions and examples. The inspected passage supports that claim, without establishing a separate scored human-evaluation study. CITATIONS: [\"qasper_1905_06512\"]"
+      ],
+      "notes": "Distinguish manual inspection from a formal human-rating experiment; avoid inventing annotators, scales, or agreement statistics."
+    },
+    "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b": {
+      "parent_sha256": "4993b61b5732c9320836e0258838eb18a5407b20c023e1fd80ac788c47ab59eb",
+      "actions": [
+        "print(search_within('qasper_1712_09127', 'GAN models'))",
+        "print(search_within('qasper_1712_09127', 'word document embeddings GAN'))",
+        "SUBMIT: They use weGAN to train cross-corpus word embeddings and deGAN to generate document embeddings for multiple corpora. CITATIONS: [\"qasper_1712_09127\"]"
+      ],
+      "notes": "Refine the query using word/document embeddings observed in the first result; do not put the hidden model names into the search."
+    },
+    "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c": {
+      "parent_sha256": "42b72bc1b2a306a6c07e021761c3920d1058110bece6c54034bf9dbef7875fda",
+      "actions": [
+        "print(search_within('qasper_1810_01570', 'BERT model embeddings'))",
+        "print(read('qasper_1810_01570')[13400:15600])",
+        "SUBMIT: No BERT component is described in the inspected architecture. It uses GloVe, ELMo, and character-level LSTM embeddings. CITATIONS: [\"qasper_1810_01570\"]"
+      ],
+      "notes": "Read the complete embedding-layer description; ground the negative answer in the described architecture rather than keyword absence or an inferred author identity."
+    },
+    "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af": {
+      "parent_sha256": "2e5997231f6c72abe6f81c08469d9974bc0c3a3c4cccf17bc0d6551d078a43a1",
+      "actions": [
+        "print(search_within('qasper_1905_10044', 'BoolQ dataset size'))",
+        "print(search_within('qasper_1905_10044', 'total questions'))",
+        "SUBMIT: BoolQ contains about 16,000 questions. CITATIONS: [\"qasper_1905_10044\"]"
+      ],
+      "notes": "After the broad search misses the count, ask for total questions without inserting the unseen gold number. Omit rounded split counts that need not sum exactly."
+    },
+    "qasper_train_be1c0816793a4549c811480170f30fab52a7a157": {
+      "parent_sha256": "ad424fa72fbe05acbc18313b89ff3cec8f6579b4276d5a31da86ee756c89c9dc",
+      "actions": [
+        "print(search_within('qasper_1901_11117', 'energy consumption architecture search'))",
+        "import re\nparagraphs = read(\"qasper_1901_11117\").split(\"\\n\\n\")\nrelevant = [p for p in paragraphs if re.search(r\"\\b(?:TPUs?|GPUs?|energy|joules?|watts?|kWh|hours)\\b\", p, re.I)]\nprint(\"\\n\\n\".join(relevant))",
+        "SUBMIT: The retrieved passages discuss hardware and training time but provide no measured energy consumption for the NAS run. Hardware counts or runtime alone do not establish energy use, so I cannot give a kWh or joule figure from this evidence. CITATIONS: [\"qasper_1901_11117\"]"
+      ],
+      "notes": "Inspect compute-related paragraphs instead of treating runtime as energy or repeatedly rediscovering the paper."
+    },
+    "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7": {
+      "parent_sha256": "90ded30e75b0962b7e09849b642f47ef146038c68ee9a4764caa2c4e691138a0",
+      "actions": [
+        "print(search_within('qasper_1912_05066', 'interannotator agreement annotation'))",
+        "print(read('qasper_1912_05066')[11400:13000])",
+        "print(search_within('qasper_1912_05066', 'kappa interannotator agreement'))",
+        "SUBMIT: The inspected annotation description gives candidate and positive/negative sentiment labels for the debate tweets, but no interannotator-agreement statistic. I cannot report an agreement value from these passages. CITATIONS: [\"qasper_1912_05066\"]"
+      ],
+      "notes": "Distinguish annotation labels from annotator agreement; preserve the missing-statistic uncertainty without inventing an IAA score."
+    },
+    "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4": {
+      "parent_sha256": "22113d2080da68da21c767be902dda3728b8db0bbe160d971e52d3b88eded35d",
+      "actions": [
+        "print(search_within('qasper_2002_01359', 'teams neural models'))",
+        "print(read('qasper_2002_01359')[16600:18100])",
+        "SUBMIT: The paper reports 25 participating teams and a range of neural-network models, but its detailed approach summary covers nine workshop submissions. That evidence does not establish whether every one of the 25 teams used a neural network. CITATIONS: [\"qasper_2002_01359\"]"
+      ],
+      "notes": "Use the explicit coverage limit, not a leap from some described neural systems to all teams. Do not infer that any remaining team was non-neural."
+    },
+    "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4": {
+      "parent_sha256": "485ce6792b570cecce52ae3530e25c4f8669e02e96247b122263674811e27d84",
+      "actions": [
+        "print(search_within('qasper_2002_11268', 'training test language datasets'))",
+        "print(read('qasper_2002_11268')[12000:15000])",
+        "print(search_within('qasper_2002_11268', 'English multilingual language'))",
+        "SUBMIT: The inspected data and experiment passages describe YouTube and Voice Search data but do not specify their language coverage. I cannot identify the training and test languages from this evidence. CITATIONS: [\"qasper_2002_11268\"]"
+      ],
+      "notes": "Remove the unsupported assumption that YouTube or Voice Search implies English; inspect data descriptions and a language-specific search."
+    },
+    "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047": {
+      "parent_sha256": "709b76bee31e4cefeaf7bf7f3384f75e710fed80cefa5e2c39143e7277ac650c",
+      "actions": [
+        "print(search_within('qasper_2002_02562', 'LibriSpeech previous best'))",
+        "print(extract('qasper_2002_02562', '[^\\\\n]*Table[^\\\\n]*'))",
+        "SUBMIT: The retrieved text discusses comparisons with existing LibriSpeech systems and points to result tables, but it does not provide a recoverable previous-best accuracy value in these passages. I cannot supply that number from the available evidence. CITATIONS: [\"qasper_2002_02562\"]"
+      ],
+      "notes": "Do not confuse the new model, LM perplexity, dataset size, and a previous system's accuracy; inspect comparison paragraphs before stating the missing value."
+    },
+    "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7": {
+      "parent_sha256": "559528a7a7b4f51ac41d3e045453770318de773587bcf789e9cc00a4d3366709",
+      "actions": [
+        "print(search_within('qasper_1809_01060', 'English language data'))",
+        "print(read('qasper_1809_01060')[13400:15100])",
+        "print(search_within('qasper_1809_01060', 'English multilingual'))",
+        "SUBMIT: The inspected evaluation describes the original metaphor-paraphrase dataset and its contextualized extension, but does not state their language coverage. I cannot confirm that the reported results are English-only from these passages. CITATIONS: [\"qasper_1809_01060\"]"
+      ],
+      "notes": "Remove the old invented claim about English-speaking AMT annotators. English-looking examples alone do not establish coverage of every evaluated item."
+    },
+    "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43": {
+      "parent_sha256": "d74fd1c0864ad1586fe68c011b5dfad0ec64184714b0ee2467d165f13bf72ec9",
+      "actions": [
+        "print(search_within('qasper_2004_02083', 'data collection'))",
+        "print(search_within('qasper_2004_02083', 'inflection tables'))",
+        "print(read('qasper_2004_02083')[5400:7000])",
+        "SUBMIT: The paper describes a hand-curated resource of complete inflection tables for 198 lemmata, tagged using UniMorph. The inspected resource description does not explain how the underlying forms were originally collected or elicited, so that collection procedure remains unclear. CITATIONS: [\"qasper_2004_02083\"]"
+      ],
+      "notes": "Report the documented curation while distinguishing it from an unreported original collection procedure."
+    },
+    "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51": {
+      "parent_sha256": "3c853685fb65ff93b30d6dd7f55b856d3a07bded1bb815532f27a2185367f843",
+      "actions": [
+        "print(search_within('qasper_1905_10810', 'error detection context awareness'))",
+        "print(read('qasper_1905_10810')[0:3300])",
+        "SUBMIT: The inspected discussion suggests a modular approach combining correction with separate error detection and context handling, and mentions language models for context handling. It does not specify concrete modules for both tasks in these isolated spelling-correction experiments, so I cannot identify a complete proposed solution from these passages. CITATIONS: [\"qasper_1905_10810\"]"
+      ],
+      "notes": "Do not present ELMo correction results as implemented detection/context modules. State the available design discussion and the missing specifics separately."
+    }
+  },
+  "artifacts": {
+    "out/research/qasper-sft-v5/original.json": "ba80f4e8a3e4d55c1715403fe9b04d8fc3c6c8f26bfd011152c558643699bbfb",
+    "out/research/qasper-sft-v5/benchmark.json": "4e6c7e4d9780623827105b967af2a33bc3b09c75614f644aba91a74fea65a858",
+    "out/research/qasper-sft-v5/edits.json": "e92af701efda8ad5fbfe4334ef462920d6cc1661adf2b61f250c7b6091562307",
+    "out/research/qasper-sft-v5/curated.json": "79bcfdb83cfe1ca7e14b35e64b5bc03d7530a740c0864d5478e732d4dcaf8aa2",
+    "out/research/qasper-sft-v5/reviewed-trajectories.json": "2e058566c4265c93c2677675477e157b89248cf7e240040ad30d7a596876fc74",
+    "out/research/qasper-sft-v5/replay.json": "d5f367e2cc97171bf559cdff9a734a575c063e78dfcc3f6041648bac85084769"
+  }
+}

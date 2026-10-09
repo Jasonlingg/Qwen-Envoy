@@ -14,7 +14,6 @@ After training, sanity-check the checkpoint:
 
 from __future__ import annotations
 
-import hashlib
 import json
 import platform
 import subprocess
@@ -24,6 +23,8 @@ from pathlib import Path
 
 import typer
 from rich.console import Console
+
+from src.eval.hashing import sha256 as _sha256
 
 console = Console()
 app = typer.Typer()
@@ -136,14 +137,6 @@ def _tokenize_per_action(
     }
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _git_output(*args: str) -> str:
     return subprocess.run(
         ["git", *args], capture_output=True, text=True, check=False
@@ -154,10 +147,10 @@ def _load_training_deps():
     try:
         import torch
         from datasets import Dataset
-        from peft import LoraConfig, get_peft_model
+        from peft import LoraConfig, PeftModel, get_peft_model
         from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
         from trl import SFTConfig, SFTTrainer
-        return torch, Dataset, LoraConfig, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer
+        return torch, Dataset, LoraConfig, PeftModel, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer
     except ImportError as e:
         console.print(f"[red]Missing dependency: {e}[/red]")
         console.print("Run: pip install -e '.[training]'")
@@ -179,6 +172,11 @@ def train(
     max_seq_len: int = typer.Option(8192, "--max-seq-len"),
     base_model: str = typer.Option(BASE_MODEL, "--base-model"),
     base_revision: str = typer.Option(BASE_REVISION, "--base-revision"),
+    adapter_checkpoint: str = typer.Option(
+        None,
+        "--adapter-checkpoint",
+        help="Continue training an existing LoRA adapter instead of creating a new one",
+    ),
     load_in_4bit: bool = typer.Option(True, "--4bit/--no-4bit"),
     activation_offloading: bool = typer.Option(
         False,
@@ -200,7 +198,7 @@ def train(
         None, "--corpus-manifest", help="Source-corpus manifest recorded with the run"
     ),
 ) -> None:
-    torch, Dataset, LoraConfig, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer = _load_training_deps()
+    torch, Dataset, LoraConfig, PeftModel, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer = _load_training_deps()
 
     # Load data
     rows = [json.loads(line) for line in data.read_text().splitlines() if line.strip()]
@@ -278,7 +276,16 @@ def train(
         dtype=torch.bfloat16 if not load_in_4bit else None,
     )
 
-    lora_config = LoraConfig(**LORA_CONFIG)
+    if adapter_checkpoint:
+        model = PeftModel.from_pretrained(
+            model, adapter_checkpoint, is_trainable=True
+        )
+        lora_config = None
+        console.print(
+            f"[green]Continuing trainable adapter from {adapter_checkpoint}[/green]"
+        )
+    else:
+        lora_config = LoraConfig(**LORA_CONFIG)
 
     out_dir = str(out)
     final_dir = str(out / "final")
@@ -343,6 +350,7 @@ def train(
         "started_at": datetime.now(timezone.utc).isoformat(),
         "base_model": base_model,
         "base_revision": base_revision,
+        "adapter_checkpoint": adapter_checkpoint,
         "training_format": "per-action-prefix-aligned" if per_action else "conversation",
         "data": {"path": str(data), "sha256": _sha256(data), **train_stats},
         "validation": (

@@ -1,0 +1,641 @@
+{
+  "reviewer": "",
+  "reviewer_type": null,
+  "instructions": "Replay each episode against its frozen corpus. Read the actual observations and source paper. Check every answer part, the scope of an abstention, and the earliest supported stopping point. A real quote, keyword hit, or gold label is not enough. Use pass/partial/fail; only fully checked passes are eligible for SFT.",
+  "reviews": [
+    {
+      "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+      "trajectory_sha256": "accf73499fe83f3eeb51ef94b0a70930ffdc859cb23f81a5b272a081a2b03743",
+      "question": "Use the known paper \"Can You Tell Me How to Get Past Sesame Street? Sentence-Level Pretraining Beyond Language Modeling\" (doc_id: \"qasper_1812_10860\") to answer: Do some pretraining objectives perform better than others for sentence level understanding tasks?",
+      "reference_answer": "Yes",
+      "grader_notes": [
+        "Looking to other target tasks, the grammar-related CoLA task benefits dramatically from ELMo pretraining: The best result without language model pretraining is less than half the result achieved with such pretraining. In contrast, the meaning-oriented textual similarity benchmark STS sees good results with several kinds of pretraining, but does not benefit substantially from the use of ELMo."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+      "trajectory_sha256": "1ad38003e9d106201f876b133ee54d9403746b5bb63457a35a24f3775dcdc29b",
+      "question": "Use the known paper \"Event detection in Colombian security Twitter news using fine-grained latent topic analysis\" (doc_id: \"qasper_1911_08370\") to answer: How do people engage in Twitter threads on different types of news?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+      "trajectory_sha256": "1e34d4fcc0ccdf5519ebaff3d8486f4c88b0f9600c1ec81c853d04a0b15d0709",
+      "question": "Use the known paper \"The Transference Architecture for Automatic Post-Editing\" (doc_id: \"qasper_1908_06151\") to answer: What was previous state of the art model for automatic post editing?",
+      "reference_answer": "pal-EtAl:2018:WMT proposed an APE model that uses three self-attention-based encoders, tebbifakhr-EtAl:2018:WMT, the NMT-subtask winner of WMT 2018 ($wmt18^{nmt}_{best}$), employ sequence-level loss functions in order to avoid exposure bias during training and to be consistent with the automatic evaluation metrics., shin-lee:2018:WMT propose that each encoder has its own self-attention and feed-forward layer to process each input separately. , The APE PBSMT-subtask winner of WMT 2018 ($wmt18^{smt}_{best}$) BIBREF11 also presented another transformer-based multi-source APE which uses two encoders and stacks an additional cross-attention component for $src \\rightarrow pe$ above the previous cross-attention for $mt \\rightarrow pe$.",
+      "grader_notes": [
+        "Recently, in the WMT 2018 APE shared task, several adaptations of the transformer architecture have been presented for multi-source APE. pal-EtAl:2018:WMT proposed an APE model that uses three self-attention-based encoders. They introduce an additional joint encoder that attends over a combination of the two encoded sequences from $mt$ and $src$. tebbifakhr-EtAl:2018:WMT, the NMT-subtask winner of WMT 2018 ($wmt18^{nmt}_{best}$), employ sequence-level loss functions in order to avoid exposure bias during training and to be consistent with the automatic evaluation metrics. shin-lee:2018:WMT propose that each encoder has its own self-attention and feed-forward layer to process each input separately. On the decoder side, they add two additional multi-head attention layers, one for $src \\rightarrow mt$ and another for $src \\rightarrow pe$. Thereafter another multi-head attention between the output of those attention layers helps the decoder to capture common words in $mt$ which should remain in $pe$. The APE PBSMT-subtask winner of WMT 2018 ($wmt18^{smt}_{best}$) BIBREF11 also presented another transformer-based multi-source APE which uses two encoders and stacks an additional cross-attention component for $src \\rightarrow pe$ above the previous cross-attention for $mt \\rightarrow pe$. Comparing shin-lee:2018:WMT's approach with the winner system, there are only two differences in the architecture: (i) the cross-attention order of $src \\rightarrow mt$ and $src \\rightarrow pe$ in the decoder, and (ii) $wmt18^{smt}_{best}$ additionally shares parameters between two encoders."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+      "trajectory_sha256": "dbcae033173153348071fea19735382a7fe3c41e791344510f79ee00bec89aaa",
+      "question": "Use the known paper \"AvgOut: A Simple Output-Probability Measure to Eliminate Dull Responses\" (doc_id: \"qasper_2001_05467\") to answer: How is human evaluation performed, what was the criteria?",
+      "reference_answer": "Through Amazon MTurk annotators to determine plausibility and content richness of the response",
+      "grader_notes": [
+        "We thus also conducted human studies on Amazon MTurk to evaluate the generated responses with pairwise comparison for dialogue quality. We compare our models with an advanced decoding algorithm MMI BIBREF2 and two models, namely LSTM BIBREF0 and VHRED BIBREF7, both with additive attention. To our best knowledge, LSTM and VHRED were the primary models with which F1's were reported on the Ubuntu dataset. Following BIBREF5 (BIBREF5), we employ two criteria: Plausibility and Content Richness. The first criterion measures whether the response is plausible given the context, while the second gauges whether the response is diverse and informative. The utterances were randomly shuffled to anonymize model identity. We only allowed annotators located in the US-located with at least an approval rate of $98\\%$ and $10,000$ approved HITs. We collected 100 annotations in total after rejecting those completed by people who assign exactly the same score to all model responses. Since we evaluated 7 models, we collected 700 annotations in total, which came from a diverse pool of annotators."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+      "trajectory_sha256": "16f309210c5f13472b7c863d8de17f8d6c540df2e3141eaf7cc57ed6c7f535fc",
+      "question": "Use the known paper \"Neural Cross-Lingual Relation Extraction Based on Bilingual Word Embedding Mapping\" (doc_id: \"qasper_1911_00069\") to answer: What datasets are used?",
+      "reference_answer": "in-house dataset, ACE05 dataset ",
+      "grader_notes": [
+        "Our in-house dataset includes manually annotated RE data for 6 languages: English, German, Spanish, Italian, Japanese and Portuguese. It defines 56 entity types (e.g., Person, Organization, Geo-Political Entity, Location, Facility, Time, Event_Violence, etc.) and 53 relation types between the entities (e.g., AgentOf, LocatedAt, PartOf, TimeOf, AffectedBy, etc.).",
+        "The ACE05 dataset includes manually annotated RE data for 3 languages: English, Arabic and Chinese. It defines 7 entity types (Person, Organization, Geo-Political Entity, Location, Facility, Weapon, Vehicle) and 6 relation types between the entities (Agent-Artifact, General-Affiliation, ORG-Affiliation, Part-Whole, Personal-Social, Physical).",
+        "In this section, we evaluate the performance of the proposed cross-lingual RE approach on both in-house dataset and the ACE (Automatic Content Extraction) 2005 multilingual dataset BIBREF11."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+      "trajectory_sha256": "01e00e68b7b87ce240fae1235a64214d79c57394f0cba27fc615f990be083d18",
+      "question": "Use the known paper \"Natural Language State Representation for Reinforcement Learning\" (doc_id: \"qasper_1910_02789\") to answer: How much faster natural language agents converge in performed experiments?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+      "trajectory_sha256": "b16c6500177bd5a26802057257d499342ef9105d5dae0964934a63d44bba58e1",
+      "question": "Use the known paper \"Question Answering by Reasoning Across Documents with Graph Convolutional Networks\" (doc_id: \"qasper_1808_09920\") to answer: How many documents at a time can Entity-GCN handle?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+      "trajectory_sha256": "8e4fd1a25ecbe5c7d738e41a442b82b1bb85c54c2a9e8aec96bbb79a579fb4f3",
+      "question": "Use the known paper \"Speaker-independent classification of phonetic segments from raw ultrasound in child speech\" (doc_id: \"qasper_1907_01413\") to answer: How many instances does their dataset have?",
+      "reference_answer": "10700",
+      "grader_notes": [
+        "For each speaker, we divide all available utterances into disjoint train, development, and test sets. Using the force-aligned phone boundaries, we extract the mid-phone frame for each example across the four classes, which leads to a data imbalance. Therefore, for all utterances in the training set, we randomly sample additional examples within a window of 5 frames around the center phone, to at least 50 training examples per class per speaker. It is not always possible to reach the target of 50 examples, however, if no more data is available to sample from. This process gives a total of INLINEFORM0 10700 training examples with roughly 2000 to 3000 examples per class, with each speaker having an average of 185 examples. Because the amount of data varies per speaker, we compute a sampling score, which denotes the proportion of sampled examples to the speaker's total training examples. We expect speakers with high sampling scores (less unique data overall) to underperform when compared with speakers with more varied training examples."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "trajectory_sha256": "9f285c2e5f132748c7cb134fa07c382fe9fc235e89d2aad19b43881707cb7c66",
+      "question": "Use the known paper \"Classification Betters Regression in Query-based Multi-document Summarisation Techniques for Question Answering: Macquarie University at BioASQ7b\" (doc_id: \"qasper_1909_00542\") to answer: How did the author's work rank among other submissions on the challenge?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+      "trajectory_sha256": "ae2584d706ae823b07839fa51227cf823992fba48365d7baecee9014a555bc02",
+      "question": "Use the known paper \"A Better Variant of Self-Critical Sequence Training\" (doc_id: \"qasper_2003_09971\") to answer: What environment is used for self-critical sequence training?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+      "trajectory_sha256": "c5def6b4639f418a9dcd7f1d14b18df48ef60ab3590b27d993419494e60c30e6",
+      "question": "Use the known paper \"Community Question Answering Platforms vs. Twitter for Predicting Characteristics of Urban Neighbourhoods\" (doc_id: \"qasper_1701_04653\") to answer: On Twitter, do the demographic attributes and answers show more correlations than on Yahoo! Answers?",
+      "reference_answer": "No",
+      "grader_notes": [
+        "As the table shows, terms extracted from Yahoo! Answers tend to be more related, in terms of the number of correlated terms, to attributes related to religion or ethnicity compared to terms from Twitter. However, for two particular attributes (i.e., Price and Buddhist), the number of correlated terms from Twitter is higher than the ones from Yahoo! Answers . These results collectively suggest that there is a wealth of terms, both in Yahoo! Answers and Twitter, which can be used to predict the population demographics."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+      "trajectory_sha256": "47eae98bc9902270385dee4e27082f8cb8c13559660d89fd630935eb48cf266e",
+      "question": "Use the known paper \"Effective Use of Transformer Networks for Entity Tracking\" (doc_id: \"qasper_1909_02635\") to answer: Do they report results only on English?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+      "trajectory_sha256": "0b35a8ec9ecfd4d5801b76026d9f30128b6b2a0de8f51bdba5b7df574592d733",
+      "question": "Use the known paper \"Automatic Reminiscence Therapy for Dementia.\" (doc_id: \"qasper_1910_11949\") to answer: How is performance of this system measured?",
+      "reference_answer": "using the BLEU score as a quantitative metric and human evaluation for quality",
+      "grader_notes": [
+        "We use the BLEU BIBREF30 metric on the validation set for the VQG model training. BLEU is a measure of similitude between generated and target sequences of words, widely used in natural language processing. It assumes that valid generated responses have significant word overlap with the ground truth responses. We use it because in this case we have five different references for each of the generated questions. We obtain a BLEU score of 2.07.",
+        "Our chatbot model instead, only have one reference ground truth in training when generating a sequence of words. We considered that it was not a good metric to apply as in some occasions responses have the same meaning, but do not share any words in common. Thus, we save several models with different hyperparameters and at different number of training iterations and compare them using human evaluation, to chose the model that performs better in a conversation."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+      "trajectory_sha256": "0af5b7acb85f9693050893671d85438a53dba0bc9c0a64b32b537672c53f9105",
+      "question": "Use the known paper \"Universal Dependency Parsing for Hindi-English Code-switching\" (doc_id: \"qasper_1804_05868\") to answer: What is LAS metric?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+      "trajectory_sha256": "b5f3fa1a2e08701020afe91f35fa40365c30e23c44bcd8a4bfd783697abc22ba",
+      "question": "Use the known paper \"VAIS Hate Speech Detection System: A Deep Learning based Approach for System Combination\" (doc_id: \"qasper_1910_05608\") to answer: What was the baseline?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+      "trajectory_sha256": "917e0577968b08e0bbcdecedf01799c73fcfb52f4f84be939b6c3ce626dbe02f",
+      "question": "Use the known paper \"An efficient automated data analytics approach to large scale computational comparative linguistics\" (doc_id: \"qasper_2001_11899\") to answer: How large language sets are able to be explored using this approach?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+      "trajectory_sha256": "2f77de58d1fb771844c5cabc5e6713d25210d963528c001791c5827033c192de",
+      "question": "Use the known paper \"Predictive Embeddings for Hate Speech Detection on Twitter\" (doc_id: \"qasper_1809_10644\") to answer: which datasets were used?",
+      "reference_answer": "Sexist/Racist (SR) data set, HATE dataset, HAR",
+      "grader_notes": [
+        "Data collected by BIBREF3 , which we term the Sexist/Racist (SR) data set, was collected using an initial Twitter search followed by analysis and filtering by the authors and their team who identified 17 common phrases, hashtags, and users that were indicative of abusive speech. BIBREF4 collected the HATE dataset by searching for tweets using a lexicon provided by Hatebase.org. The final data set we used, which we call HAR, was collected by BIBREF9 ; we removed all retweets reducing the dataset to 20,000 tweets. Tweets were labeled as \u201cHarrassing\u201d or \u201cNon-Harrassing\u201d; hate speech was not explicitly labeled, but treated as an unlabeled subset of the broader \u201cHarrassing\u201d category BIBREF9 ."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+      "trajectory_sha256": "514b2780985a2e6b014c3968ff43dca6f8fd8f552bcee6e01553a27e4ea28564",
+      "question": "Use the known paper \"IIIDYT at SemEval-2018 Task 3: Irony detection in English tweets\" (doc_id: \"qasper_1804_08094\") to answer: What is the size of the dataset?",
+      "reference_answer": "a balanced dataset of 2,396 ironic and 2,396 non-ironic tweets is provided",
+      "grader_notes": [
+        "For the shared task, a balanced dataset of 2,396 ironic and 2,396 non-ironic tweets is provided. The ironic corpus was constructed by collecting self-annotated tweets with the hashtags #irony, #sarcasm and #not. The tweets were then cleaned and manually checked and labeled, using a fine-grained annotation scheme BIBREF3 . The corpus comprises different types of irony:"
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+      "trajectory_sha256": "a1bce1fd10bba79604d69cf0b06bed36bf4d0ec7d0012366f7979762a8406fe6",
+      "question": "Use the known paper \"Enriching Existing Conversational Emotion Datasets with Dialogue Acts using Neural Annotators.\" (doc_id: \"qasper_1912_00819\") to answer: How many models were used?",
+      "reference_answer": "five",
+      "grader_notes": [
+        "In this work, we apply an automated neural ensemble annotation process for dialogue act labeling. Several neural models are trained with the Switchboard Dialogue Act (SwDA) Corpus BIBREF9, BIBREF10 and used for inferring dialogue acts on the emotion datasets. We ensemble five model output labels by checking majority occurrences (most of the model labels are the same) and ranking confidence values of the models. We have annotated two potential multi-modal conversation datasets for emotion recognition: IEMOCAP (Interactive Emotional dyadic MOtion CAPture database) BIBREF6 and MELD (Multimodal EmotionLines Dataset) BIBREF8. Figure FIGREF2, shows an example of dialogue acts with emotion and sentiment labels from the MELD dataset. We confirmed the reliability of annotations with inter-annotator metrics. We analysed the co-occurrences of the dialogue act and emotion labels and discovered a key relationship between them; certain dialogue acts of the utterances show significant and useful association with respective emotional states. For example, Accept/Agree dialogue act often occurs with the Joy emotion while Reject with Anger, Acknowledgements with Surprise, Thanking with Joy, and Apology with Sadness, etc. The detailed analysis of the emotional dialogue acts (EDAs) and annotated datasets are being made available at the SECURE EU Project website.",
+        "We adopted the neural architectures based on Bothe et al. bothe2018discourse where two variants are: non-context model (classifying at utterance level) and context model (recognizing the dialogue act of the current utterance given a few preceding utterances). From conversational analysis using dialogue acts in Bothe et al. bothe2018interspeech, we learned that the preceding two utterances contribute significantly to recognizing the dialogue act of the current utterance. Hence, we adapt this setting for the context model and create a pool of annotators using recurrent neural networks (RNNs). RNNs can model the contextual information in the sequence of words of an utterance and in the sequence of utterances of a dialogue. Each word in an utterance is represented with a word embedding vector of dimension 1024. We use the word embedding vectors from pre-trained ELMo (Embeddings from Language Models) embeddings BIBREF22. We have a pool of five neural annotators as shown in Figure FIGREF6. Our online tool called Discourse-Wizard is available to practice automated dialogue act labeling. In this tool we use the same neural architectures but model-trained embeddings (while, in this work we use pre-trained ELMo embeddings, as they are better performant but computationally and size-wise expensive to be hosted in the online tool). The annotators are:"
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+      "trajectory_sha256": "c40cf7e4a9e3ec0b9f90ac646daab3a1f4294b1d1b02591ae275eca0a65607aa",
+      "question": "Use the known paper \"Translating Navigation Instructions in Natural Language to a High-Level Plan for Behavioral Robot Navigation\" (doc_id: \"qasper_1810_00663\") to answer: What evaluation metrics are used?",
+      "reference_answer": "exact match, f1 score, edit distance and goal match",
+      "grader_notes": [
+        "We compare the performance of translation approaches based on four metrics:",
+        "[align=left,leftmargin=0em,labelsep=0.4em,font=]",
+        "As in BIBREF20 , EM is 1 if a predicted plan matches exactly the ground truth; otherwise it is 0.",
+        "The harmonic average of the precision and recall over all the test set BIBREF26 .",
+        "The minimum number of insertions, deletions or swap operations required to transform a predicted sequence of behaviors into the ground truth sequence BIBREF27 ."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72",
+      "trajectory_sha256": "3c529541572d2ac96edd09a501eb1038ce72e2c232579328495c7a252c04f289",
+      "question": "Use the known paper \"Zero-Shot Cross-lingual Classification Using Multilingual Neural Machine Translation\" (doc_id: \"qasper_1809_04686\") to answer: How big is the impact of training data size on the performance of the multilingual encoder?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32",
+      "trajectory_sha256": "3ed96ca5107f3f463361e43fc03beb1e190b973e4c6517dd007c7ee10dc855d8",
+      "question": "Use the known paper \"Grammatical Analysis of Pretrained Sentence Encoders with Acceptability Judgments\" (doc_id: \"qasper_1901_03438\") to answer: How is the CoLA grammatically annotated?",
+      "reference_answer": "labeled by experts",
+      "grader_notes": [
+        "The effectiveness and ubiquity of pretrained sentence embeddings for natural language understanding has grown dramatically in recent years. Recent sentence encoders like OpenAI's Generative Pretrained Transformer BIBREF3 and BERT BIBREF2 achieve the state of the art on the GLUE benchmark BIBREF4 . Among the GLUE tasks, these state-of-the-art systems make their greatest gains on the acceptability task with the Corpus of Linguistic Acceptability BIBREF0 . CoLA contains example sentences from linguistics publications labeled by experts for grammatical acceptability, and written to show subtle grammatical features. Because minimal syntactic differences can separate acceptable sentences from unacceptable ones (What did Bo write a book about? / *What was a book about written by Bo?), and acceptability classifiers are more reliable when trained on GPT and BERT than on recurrent models, it stands to reason that GPT and BERT have better implicit knowledge of syntactic features relevant to acceptability."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+      "trajectory_sha256": "3c9464bf1d8ebb2132b7b29d1ecc648f183819e29fa061cf05d5b6d481ce1a6d",
+      "question": "Use the known paper \"Can neural networks understand monotonicity reasoning?\" (doc_id: \"qasper_1906_06448\") to answer: What is monotonicity reasoning?",
+      "reference_answer": "a type of reasoning based on word replacement, requires the ability to capture the interaction between lexical and syntactic structures",
+      "grader_notes": [
+        "Concerning logical inferences, monotonicity reasoning BIBREF6 , BIBREF7 , which is a type of reasoning based on word replacement, requires the ability to capture the interaction between lexical and syntactic structures. Consider examples in ( \"Introduction\" ) and ( \"Introduction\" )."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_af1439c68b28c27848203f863675946380d28943",
+      "trajectory_sha256": "ad75fa9c0a6e14f6ed2576f74aba341fb9f957cb60f16259f3027b96cff2b410",
+      "question": "Use the known paper \"Unsupervised Question Decomposition for Question Answering\" (doc_id: \"qasper_2002_09758\") to answer: What is the strong baseline that this work outperforms?",
+      "reference_answer": "RoBERTa baseline",
+      "grader_notes": [
+        "Table shows how unsupervised decompositions affect QA. Our RoBERTa baseline performs quite well on HotpotQA (77.0 F1), despite processing each paragraph separately, which prohibits inter-paragraph reasoning. The result is in line with prior work which found that a version of our baseline QA model using BERT BIBREF26 does well on HotpotQA by exploiting single-hop reasoning shortcuts BIBREF21. We achieve significant gains over our strong baseline by leveraging decompositions from our best decomposition model, trained with USeq2Seq on FastText pseudo-decompositions; we find a 3.1 F1 gain on the original dev set, 11 F1 gain on the multi-hop dev set, and 10 F1 gain on the out-of-domain dev set. Unsupervised decompositions even match the performance of using (within our pipeline) supervised and heuristic decompositions from DecompRC (i.e., 80.1 vs. 79.8 F1 on the original dev set).",
+        "We fine-tune a pre-trained model to take a question and several paragraphs and predicts the answer, similar to the single-hop QA model from BIBREF21. The model computes a separate forward pass on each paragraph (with the question). For each paragraph, the model learns to predict the answer span if the paragraph contains the answer and to predict \u201cno answer\u201d otherwise. We treat yes and no predictions as spans within the passage (prepended to each paragraph), as in BIBREF22 on HotpotQA. During inference, for the final softmax, we consider all paragraphs as a single chunk. Similar to BIBREF23, we subtract a paragraph's \u201cno answer\u201d logit from the logits of all spans in that paragraph, to reduce or increase span probabilities accordingly. In other words, we compute the probability $p(s_p)$ of each span $s_p$ in a paragraph $p \\in \\lbrace 1, \\dots , P \\rbrace $ using the predicted span logit $l(s_p)$ and \u201cno answer\u201d paragraph logit $n(p)$ as follows:",
+        "We use $\\textsc {RoBERTa}_{\\textsc {LARGE}}$ BIBREF24 as our pre-trained initialization. Later, we also experiment with using the $\\textsc {BERT}_{\\textsc {BASE}}$ ensemble from BIBREF3."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9",
+      "trajectory_sha256": "e5464dc3fedae7f35e760c9da9caee67d6e10fc354209e268b5335b3923ed009",
+      "question": "Use the known paper \"CrossWOZ: A Large-Scale Chinese Cross-Domain Task-Oriented Dialogue Dataset\" (doc_id: \"qasper_2002_11893\") to answer: What are the benchmark models?",
+      "reference_answer": "BERTNLU from ConvLab-2, a rule-based model (RuleDST) , TRADE (Transferable Dialogue State Generator) , a vanilla policy trained in a supervised fashion from ConvLab-2 (SL policy)",
+      "grader_notes": [
+        "Model: We adapted BERTNLU from ConvLab-2. BERT BIBREF22 has shown strong performance in many NLP tasks. We use Chinese pre-trained BERT BIBREF23 for initialization and then fine-tune the parameters on CrossWOZ. We obtain word embeddings and the sentence representation (embedding of [CLS]) from BERT. Since there may exist more than one intent in an utterance, we modify the traditional method accordingly. For dialogue acts of inform and recommend intents such as (intent=Inform, domain=Attraction, slot=fee, value=free) whose values appear in the sentence, we perform sequential labeling using an MLP which takes word embeddings (\"free\") as input and outputs tags in BIO schema (\"B-Inform-Attraction-fee\"). For each of the other dialogue acts (e.g., (intent=Request, domain=Attraction, slot=fee)) that do not have actual values, we use another MLP to perform binary classification on the sentence representation to predict whether the sentence should be labeled with this dialogue act. To incorporate context information, we use the same BERT to get the embedding of last three utterances. We separate the utterances with [SEP] tokens and insert a [CLS] token at the beginning. Then each original input of the two MLP is concatenated with the context embedding (embedding of [CLS]), serving as the new input. We also conducted an ablation test by removing context information. We trained models with both system-side and user-side utterances.",
+        "Model: We implemented a rule-based model (RuleDST) and adapted TRADE (Transferable Dialogue State Generator) BIBREF19 in this experiment. RuleDST takes as input the previous system state and the last user dialogue acts. Then, the system state is updated according to hand-crafted rules. For example, If one of user dialogue acts is (intent=Inform, domain=Attraction, slot=fee, value=free), then the value of the \"fee\" slot in the attraction domain will be filled with \"free\". TRADE generates the system state directly from all the previous utterances using a copy mechanism. As mentioned in Section SECREF18, the first query of the system often records full user constraints, while the last one records relaxed constraints for recommendation. Thus the last one involves system policy, which is out of the scope of state tracking. We used the first query for these models and left state tracking with recommendation for future work.",
+        "Model: We adapted a vanilla policy trained in a supervised fashion from ConvLab-2 (SL policy). The state $s$ consists of the last system dialogue acts, last user dialogue acts, system state of the current turn, the number of entities that satisfy the constraints in the current domain, and a terminal signal indicating whether the user goal is completed. The action $a$ is delexicalized dialogue acts of current turn which ignores the exact values of the slots, where the values will be filled back after prediction."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_91c81807374f2459990e5f9f8103906401abc5c2",
+      "trajectory_sha256": "af392c62340bad338db5f89d8a9aad6af8127984ca57940e1586660590e7be5b",
+      "question": "Use the known paper \"A neural network system for transformation of regional cuisine style\" (doc_id: \"qasper_1705_03487\") to answer: What is barycentric Newton diagram?",
+      "reference_answer": " The basic idea of the visualization, drawing on Isaac Newton\u2019s visualization of the color spectrum BIBREF8 , is to express a mixture in terms of its constituents as represented in barycentric coordinates.",
+      "grader_notes": [
+        "By using the probability values that emerge from the activation function in the neural network, rather than just the final classification, we can draw a barycentric Newton diagram, as shown in Figure 4 . The basic idea of the visualization, drawing on Isaac Newton\u2019s visualization of the color spectrum BIBREF8 , is to express a mixture in terms of its constituents as represented in barycentric coordinates. This visualization allows an intuitive interpretation of which country a recipe belongs to. If the probability of Japanese is high, the recipe is mapped near the Japanese. The countries on the Newton diagram are placed by spectral graph drawing BIBREF9 , so that similar countries are placed nearby on the circle. The calculation is as follows. First we define the adjacency matrix $W$ as the similarity between two countries. The similarity between country $i$ and $j$ is calculated by cosine similarity of county $i$ vector and $j$ vector. These vector are defined in next section. $W_{ij} = sim(vec_i, vec_j)$ . The degree matrix $D$ is a diagonal matrix where $D_{ii} = \\sum _{j} W_{ij}$ . Next we calculate the eigendecomposition of $D^{-1}W$ . The second and third smallest eingenvalues and corresponded eingevectors are used for placing the countries. Eigenvectors are normalized so as to place the countries on the circle."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed",
+      "trajectory_sha256": "190b3e31b10766ed53e22ebd253c5f1a2b8c857fcfdaafd63bf2f6abea9b7475",
+      "question": "Use the known paper \"Gibberish Semantics: How Good is Russian Twitter in Word Semantic Similarity Task?\" (doc_id: \"qasper_1602_08741\") to answer: Which Twitter corpus was used to train the word vectors?",
+      "reference_answer": "They collected tweets in Russian language using a heuristic query specific to Russian",
+      "grader_notes": [
+        "Twitter provides well-documented API, which allows to request any information about Tweets, users and their profiles, with respect to rate limits. There is special type of API, called Streaming API, that provides a real-time stream of tweets. The key difference with regular API is that connection is kept alive as long as possible, and Tweets are sent in real-time to the client. There are three endpoints of Streaming API of our interest: \u201csample\u201d, \u201cfilter\u201d and \u201cfirehose\u201d. The first one provides a sample (random subset) of the full Tweet stream. The second one allows to receive Tweets matching some search criteria: matching to one or more search keywords, produced by subset of users, or coming from certain geo location. The last one provides the full set of Tweets, although it is not available by default. In order to get Twitter \u201cfirehose\u201d one can contact Twitter, or buy this stream from third-parties.",
+        "In our case the simplest approach would be to use \u201csample\u201d endpoint, but it provides Tweets in all possible languages from all over the World, while we are concerned only about one language (Russian). In order to use this endpoint we implemented filtering based on language. The filter is simple: if Tweet does not contain a substring of 3 or more cyrillic symbols, it is considered non-Russian. Although this approach keeps Tweets in Mongolian, Ukrainian and other slavic languages (because they use cyrillic alphabet), the total amount of false-positives in this case is negligible. To demonstrate this we conducted simple experiment: on a random sample of 200 tweets only 5 were in a language different from Russian. In order not to rely on Twitter language detection, we chose to proceed with this method of language-based filtering.",
+        "However, the amount of Tweets received through \u201csample\u201d endpoint was not satisfying. This is probably because \u201csample\u201d endpoint always streams the same content to all its clients, and small portion of it comes in Russian language. In order to force mining of Tweets in Russian language, we chose \"filter\" endpoint, which requires some search query. We constructed heuristic query, containing some auxiliary words, specific to Russian language: conjunctions, pronouns, prepositions. The full list is as follows:",
+        "russian \u044f, \u0443, \u043a, \u0432, \u043f\u043e, \u043d\u0430, \u0442\u044b, \u043c\u044b, \u0434\u043e, \u043d\u0430, \u043e\u043d\u0430, \u043e\u043d, \u0438, \u0434\u0430."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1",
+      "trajectory_sha256": "ba5ea2e56d2892945861553debcd5f6ed5b40863699dfa733a5406d172396274",
+      "question": "Use the known paper \"An empirical study on the effectiveness of images in Multimodal Neural Machine Translation\" (doc_id: \"qasper_1707_00995\") to answer: What misbehavior is identified?",
+      "reference_answer": "if the attention loose track of the objects in the picture and \"gets lost\", the model still takes it into account and somehow overrides the information brought by the text-based annotations",
+      "grader_notes": [
+        "It is also worth to mention that we use a ResNet trained on 1.28 million images for a classification tasks. The features used by the attention mechanism are strongly object-oriented and the machine could miss important information for a multimodal translation task. We believe that the robust architecture of both encoders INLINEFORM0 combined with a GRU layer and word-embeddings took care of the right translation for relationships between objects and time-dependencies. Yet, we noticed a common misbehavior for all our multimodal models: if the attention loose track of the objects in the picture and \"gets lost\", the model still takes it into account and somehow overrides the information brought by the text-based annotations. The translation is then totally mislead. We illustrate with an example:",
+        "It is also worth to mention that we use a ResNet trained on 1.28 million images for a classification tasks. The features used by the attention mechanism are strongly object-oriented and the machine could miss important information for a multimodal translation task. We believe that the robust architecture of both encoders INLINEFORM0 combined with a GRU layer and word-embeddings took care of the right translation for relationships between objects and time-dependencies. Yet, we noticed a common misbehavior for all our multimodal models: if the attention loose track of the objects in the picture and \"gets lost\", the model still takes it into account and somehow overrides the information brought by the text-based annotations. The translation is then totally mislead. We illustrate with an example:"
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_fdd9dea06550a2fd0df7a1e6a5109facf3601d76",
+      "trajectory_sha256": "01f757552ab1d77ca740b6f3077916f36e7e4b8e48ab3a14645dc3b6e9dd2b86",
+      "question": "Use the known paper \"Combining Acoustics, Content and Interaction Features to Find Hot Spots in Meetings\" (doc_id: \"qasper_1910_10869\") to answer: How big is ICSI meeting corpus?",
+      "reference_answer": " 75 meetings and about 70 hours of real-time audio duration",
+      "grader_notes": [
+        "The ICSI Meeting Corpus BIBREF11 is a collection of meeting recordings that has been thoroughly annotated, including annotations for involvement hot spots BIBREF12, linguistic utterance units, and word time boundaries based on forced alignment. The dataset is comprised of 75 meetings and about 70 hours of real-time audio duration, with 6 speakers per meeting on average. Most of the participants are well-acquainted and friendly with each other. Hot spots were originally annotated with 8 levels and degrees, ranging from `not hot' to `luke warm' to `hot +'. Every utterance was labeled with one of these discrete labels by a single annotator. Hightened involvement is rare, being marked on only 1% of utterances."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d",
+      "trajectory_sha256": "a52c034bc8ce60fdc598f79a9374b9fc8de5e09d675d1c01827dd9d70f4beb1f",
+      "question": "Use the known paper \"Tagged Back-Translation\" (doc_id: \"qasper_1906_06442\") to answer: What datasets was the method evaluated on?",
+      "reference_answer": "WMT18 EnDe bitext, WMT16 EnRo bitext, WMT15 EnFr bitext, We perform our experiments on WMT18 EnDe bitext, WMT16 EnRo bitext, and WMT15 EnFr bitext respectively. We use WMT Newscrawl for monolingual data (2007-2017 for De, 2016 for Ro, 2007-2013 for En, and 2007-2014 for Fr). For bitext, we filter out empty sentences and sentences longer than 250 subwords. We remove pairs whose whitespace-tokenized length ratio is greater than 2. This results in about 5.0M pairs for EnDe, and 0.6M pairs for EnRo. We do not filter the EnFr bitext, resulting in 41M sentence pairs.",
+      "grader_notes": [
+        "To support this hypothesis, we first demonstrate that the permutation and word-dropping noise used by BIBREF19 do not improve or significantly degrade NMT accuracy, corroborating that noise might act as an indicator that the source is back-translated, without much loss in mutual information between the source and target. We then train models on WMT English-German (EnDe) without BT noise, and instead explicitly tag the synthetic data with a reserved token. We call this technique \u201cTagged Back-Translation\" (TaggedBT). These models achieve equal to slightly higher performance than the noised variants. We repeat these experiments with WMT English-Romanian (EnRo), where NoisedBT underperforms standard BT and TaggedBT improves over both techniques. We demonstrate that TaggedBT also allows for effective iterative back-translation with EnRo, a technique which saw quality losses when applied with standard back-translation.",
+        "We perform our experiments on WMT18 EnDe bitext, WMT16 EnRo bitext, and WMT15 EnFr bitext respectively. We use WMT Newscrawl for monolingual data (2007-2017 for De, 2016 for Ro, 2007-2013 for En, and 2007-2014 for Fr). For bitext, we filter out empty sentences and sentences longer than 250 subwords. We remove pairs whose whitespace-tokenized length ratio is greater than 2. This results in about 5.0M pairs for EnDe, and 0.6M pairs for EnRo. We do not filter the EnFr bitext, resulting in 41M sentence pairs."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19",
+      "trajectory_sha256": "a344df941f4ad10e65ce2b04839c7d19745c28aa657c05eb96a71f6cf9b73c9f",
+      "question": "Use the known paper \"Short-Text Classification Using Unsupervised Keyword Expansion\" (doc_id: \"qasper_1909_07512\") to answer: What is the language model pre-trained on?",
+      "reference_answer": "Wikipedea Corpus and BooksCorpus",
+      "grader_notes": [
+        "This method is unique since it avoids needing a prior dataset by using the information found within the weights of a general language model. Word embedding models, and BERT in particular, contain vast amounts of information collected through the course of their training. BERT Base for instance, has 110 Million parameters and was trained on both Wikipedea Corpus and BooksCorpus BIBREF0, a combined collection of over 3 Billion words. The full potential of such vastly trained general language models is still unfolding. This paper demonstrates that by carefully prompting and analysing these models, it is possible to extract new information from them, and extend short-text analysis beyond the limitations posed by word count."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+      "trajectory_sha256": "59cc6628ec505d2db4579b5b7315cd1d8d893b79f040a3819231066185670805",
+      "question": "Use the known paper \"Incorporating Sememes into Chinese Definition Modeling\" (doc_id: \"qasper_1905_06512\") to answer: Do they perform manual evaluation?",
+      "reference_answer": "Yes",
+      "grader_notes": [
+        "Table 2 lists some example definitions generated with different models. For each word-sememes pair, the generated three definitions are ordered according to the order: Baseline, AAM and SAAM. For AAM and SAAM, we use the model that incorporates sememes. These examples show that with sememes, the model can generate more accurate and concrete definitions. For example, for the word \u201c\u65c5\u9986\u201d (hotel), the baseline model fails to generate definition containing the token \u201c\u65c5\u884c\u8005\u201d(tourists). However, by incoporating sememes' information, especially the sememe \u201c\u65c5\u6e38\u201d (tour), AAM and SAAM successfully generate \u201c\u65c5\u884c\u8005\u201d(tourists). Manual inspection of others examples also supports our claim."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b",
+      "trajectory_sha256": "8bc5cc3f5f14ca0d921fb1fd3368ebf8baf43cc6a9c9a8d085d251b470b1a968",
+      "question": "Use the known paper \"Generative Adversarial Nets for Multiple Text Corpora\" (doc_id: \"qasper_1712_09127\") to answer: Which GAN do they use?",
+      "reference_answer": "We construct a GAN model which combines different sets of word embeddings INLINEFORM4 , INLINEFORM5 , into a single set of word embeddings INLINEFORM6 . ",
+      "grader_notes": [
+        "We assume that for each corpora INLINEFORM0 , we are given word embeddings for each word INLINEFORM1 , where INLINEFORM2 is the dimension of each word embedding. We are also given a classification task on documents that is represented by a parametric model INLINEFORM3 taking document embeddings as feature vectors. We construct a GAN model which combines different sets of word embeddings INLINEFORM4 , INLINEFORM5 , into a single set of word embeddings INLINEFORM6 . Note that INLINEFORM7 are given but INLINEFORM8 is trained. Here we consider INLINEFORM9 as the generator, and the goal of the discriminator is to distinguish documents represented by the original embeddings INLINEFORM10 and the same documents represented by the new embeddings INLINEFORM11 .",
+        "Suppose we have a number of different corpora INLINEFORM0 , which for example can be based on different categories or sentiments of text documents. We suppose that INLINEFORM1 , INLINEFORM2 , where each INLINEFORM3 represents a document. The words in all corpora are collected in a dictionary, and indexed from 1 to INLINEFORM4 . We name the GAN model to train cross-corpus word embeddings as \u201cweGAN,\u201d where \u201cwe\u201d stands for \u201cword embeddings,\u201d and the GAN model to generate document embeddings for multiple corpora as \u201cdeGAN,\u201d where \u201cde\u201d stands for \u201cdocument embeddings.\u201d"
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_57586358dd01633aa2ebeef892e96a549b1d1930",
+      "trajectory_sha256": "33c545e580179fc6052d7c233a67c40751d15889a3dccdd083ee6397d18decd5",
+      "question": "Use the known paper \"Generative Dialog Policy for Task-oriented Dialog Systems\" (doc_id: \"qasper_1909_09484\") to answer: What two benchmark datasets are used?",
+      "reference_answer": "DSTC2, Maluuba",
+      "grader_notes": [
+        "We adopt the DSTC2 BIBREF20 dataset and Maluuba BIBREF21 dataset to evaluate our proposed model. Both of them are the benchmark datasets for building the task-oriented dialog systems. Specifically, the DSTC2 is a human-machine dataset in the single domain of restaurant searching. The Maluuba is a very complex human-human dataset in travel booking domain which contains more slots and values than DSTC2. Detailed slot information in each dataset is shown in Table TABREF34."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c",
+      "trajectory_sha256": "9e2e2e3f0832e8df013b2ebe5cd74f4634b47744892f61400817d4830c782083",
+      "question": "Use the known paper \"A Deep Learning Architecture for De-identification of Patient Notes: Implementation and Evaluation\" (doc_id: \"qasper_1810_01570\") to answer: Do they use BERT?",
+      "reference_answer": "No",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af",
+      "trajectory_sha256": "424a53006a11a2b1e57f560e0682c2e362af65d3dd27aebe195197cb69419a5e",
+      "question": "Use the known paper \"BoolQ: Exploring the Surprising Difficulty of Natural Yes/No Questions\" (doc_id: \"qasper_1905_10044\") to answer: what is the size of BoolQ dataset?",
+      "reference_answer": " 16k questions",
+      "grader_notes": [
+        "We combine 13k questions gathered from this pipeline with an additional 3k questions with yes/no answers from the NQ training set to reach a total of 16k questions. We split these questions into a 3.2k dev set, 3.2k test set, and 9.4k train set, ensuring questions from NQ are always in the train set. \u201cYes\u201d answers are slightly more common (62.31% in the train set). The queries are typically short (average length 8.9 tokens) with longer passages (average length 108 tokens)."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_be1c0816793a4549c811480170f30fab52a7a157",
+      "trajectory_sha256": "6dbb050a30dba17af78bb3683453a922e399d72e84373d3021655c141fa1ddea",
+      "question": "Use the known paper \"The Evolved Transformer\" (doc_id: \"qasper_1901_11117\") to answer: How much energy did the NAS consume?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7",
+      "trajectory_sha256": "5392e0a847749c226892af1bb5f19876659b212598981a846b71c8eda13d2c15",
+      "question": "Use the known paper \"Event Outcome Prediction using Sentiment Analysis and Crowd Wisdom in Microblog Feeds\" (doc_id: \"qasper_1912_05066\") to answer: What is the interannotator agreement of the crowd sourced users?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4",
+      "trajectory_sha256": "648d609d31309e4c3bbd7fa4f61e6d7f8c5b664ef8289189fb1eb5323749b13e",
+      "question": "Use the known paper \"Schema-Guided Dialogue State Tracking Task at DSTC8\" (doc_id: \"qasper_2002_01359\") to answer: Do all teams use neural networks for their models?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4",
+      "trajectory_sha256": "fc7cbf3fda9eddab63a2e9b8cfd7a49dff5270810d9d1b6cc374bb42950ea7c3",
+      "question": "Use the known paper \"A Density Ratio Approach to Language Model Fusion in End-to-End Automatic Speech Recognition\" (doc_id: \"qasper_2002_11268\") to answer: What language(s) is the model trained/tested on?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047",
+      "trajectory_sha256": "7130104710c5f4123eb3fcb2747a3671f9ee5eb1c127a74242de998923d32878",
+      "question": "Use the known paper \"Transformer Transducer: A Streamable Speech Recognition Model with Transformer Encoders and RNN-T Loss\" (doc_id: \"qasper_2002_02562\") to answer: What was previous state of the art accuracy on LibriSpeech benchmark?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7",
+      "trajectory_sha256": "65d561a51d77df193e389106dc3f919916f396dee1ad82a28d1a06a544f4fe1a",
+      "question": "Use the known paper \"The Effect of Context on Metaphor Paraphrase Aptness Judgments\" (doc_id: \"qasper_1809_01060\") to answer: Do they report results only on English data?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43",
+      "trajectory_sha256": "013e3fde6dabe68ac60b1b9698b7a71ebb589d04790dcd101398af540df2eac3",
+      "question": "Use the known paper \"A Resource for Studying Chatino Verbal Morphology\" (doc_id: \"qasper_2004_02083\") to answer: How was the data collected?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    },
+    {
+      "question_id": "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51",
+      "trajectory_sha256": "3e6c12be78ea23d12bb23944576d9c813a9a1d00d3afb122ffeb9f2a3e03e542",
+      "question": "Use the known paper \"Evaluation of basic modules for isolated spelling error correction in Polish texts\" (doc_id: \"qasper_1905_10810\") to answer: What solutions are proposed for error detection and context awareness?",
+      "reference_answer": "Unanswerable",
+      "grader_notes": [
+        "QASPER-derived reference; check the cited paper directly if evidence is thin."
+      ],
+      "verdict": null,
+      "evidence_checked": false,
+      "stopping_checked": false,
+      "replay_verified": false,
+      "notes": ""
+    }
+  ]
+}

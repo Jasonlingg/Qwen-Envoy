@@ -1,0 +1,128 @@
+{
+  "status": "reviewed_export",
+  "sources": [
+    {
+      "path": "out/research/qasper-sft-v4/curated-all.json",
+      "sha256": "c73fa9d9944626c965b392b5645a3741a10c72f6e1b3dd2a75827e5a4f1df163"
+    }
+  ],
+  "benchmark": {
+    "path": "out/research/qasper-sft-v4/combined-benchmark.json",
+    "sha256": "b50c9b231acc6afb3b202086d4743741f1367ada37789b2e3674b5d302976a86"
+  },
+  "exclusions": [
+    {
+      "path": "out/research/qasper-code-dev-v2/benchmark.json",
+      "sha256": "499dfc1a9d6ea1a5e1b6d719e1dcc6dac583f934dac2f3e8953d4477ca73745e"
+    },
+    {
+      "path": "out/research/qasper-test-abstention-v1/benchmark.json",
+      "sha256": "dd58fdab0a6d6a038f6b03ba4072e0ecddf6718f47d1b8d14e05a5b96904f411"
+    },
+    {
+      "path": "out/research/qasper-validation-eval-v1/questions.json",
+      "sha256": "9f63dcad5d5dcf01504f5f32582e66475a222bbc33a4689a3f987429c713e11a"
+    }
+  ],
+  "review": {
+    "path": "out/research/qasper-sft-v4/review.json",
+    "sha256": "189cd1b1a2102c32d30652fa48930969df2ad3623e185ee3bda0a29338d0d13a"
+  },
+  "corpus_hash": "2647fb92032a2ac812adc6840fe8e27d9fb05cba0a7670263c144ac2ef6821a0",
+  "seed": 42,
+  "max_actions": 6,
+  "val_fraction": 0.2,
+  "max_chars": 32000,
+  "system_prompt_sha256": "7b5ae820827750b2dd93f5a2d1c67bacf2c1d13c3def62b17aec6d0e433ddc8a",
+  "candidate_count": 22,
+  "reviewed_pass_count": 21,
+  "candidate_answerability": {
+    "sufficient": 11,
+    "insufficient": 11
+  },
+  "rejected": [
+    {
+      "question_id": "qasper_train_d43e868cae91b3dc393c05c55da0754b0fb3a46a",
+      "reasons": [
+        "over_action_budget"
+      ]
+    },
+    {
+      "question_id": "qasper_train_7dce1b64c0040500951c864fce93d1ad7a1809bc",
+      "reasons": [
+        "over_action_budget"
+      ]
+    }
+  ],
+  "rejection_counts": {
+    "over_action_budget": 2
+  },
+  "splits": {
+    "train": {
+      "path": "data/sft/qasper-v4/train.jsonl",
+      "sha256": "5e18b6ff6a0b81bd7432554276df01cbc0e5a28e265a0855f22241854bce2142",
+      "question_ids": [
+        "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+        "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+        "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+        "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+        "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+        "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+        "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+        "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+        "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+        "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+        "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+        "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+        "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+        "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+        "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+        "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+        "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149"
+      ],
+      "doc_ids": [
+        "qasper_1701_04653",
+        "qasper_1804_05868",
+        "qasper_1804_08094",
+        "qasper_1808_09920",
+        "qasper_1810_00663",
+        "qasper_1812_10860",
+        "qasper_1907_01413",
+        "qasper_1908_06151",
+        "qasper_1909_00542",
+        "qasper_1909_02635",
+        "qasper_1910_02789",
+        "qasper_1910_05608",
+        "qasper_1911_00069",
+        "qasper_1911_08370",
+        "qasper_1912_00819",
+        "qasper_2001_05467",
+        "qasper_2003_09971"
+      ],
+      "answerability": {
+        "sufficient": 9,
+        "insufficient": 8
+      }
+    },
+    "val": {
+      "path": "data/sft/qasper-v4/val.jsonl",
+      "sha256": "6a0b4b8ddc4682e4cf81aae25f290574a2d9f7dfc8f022954c11e28067e2a68c",
+      "question_ids": [
+        "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+        "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+        "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+        "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72"
+      ],
+      "doc_ids": [
+        "qasper_1809_04686",
+        "qasper_1809_10644",
+        "qasper_1910_11949",
+        "qasper_2001_11899"
+      ],
+      "answerability": {
+        "insufficient": 2,
+        "sufficient": 2
+      }
+    }
+  }
+}

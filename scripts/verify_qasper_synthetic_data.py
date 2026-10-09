@@ -15,13 +15,13 @@ from __future__ import annotations
 
 import argparse
 import ast
-from collections import Counter
 import copy
 import hashlib
 import json
-from pathlib import Path
 import re
 import sys
+from collections import Counter
+from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -30,8 +30,9 @@ from src.env.corpus import Corpus
 from src.env.document_env import DocumentExplorationEnv
 from src.eval.artifacts import content_hash
 from src.eval.harness import run_single
+from src.eval.hashing import known_doc_id
 from src.eval.qasper_reward import answer_f1, normalize, parse_strict
-
+from src.eval.sft_quality import trajectory_hash
 
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9_-]*")
 ERROR_RE = re.compile(
@@ -65,18 +66,6 @@ class FixedActions:
 
 def tokens(text: str) -> set[str]:
     return set(TOKEN_RE.findall(text.lower()))
-
-
-def known_doc_id(question: str) -> str:
-    match = re.search(r'doc_id:\s*"([^"\s]+)"', question)
-    if match is None:
-        raise ValueError("Known-paper question has no doc_id")
-    return match.group(1)
-
-
-def trajectory_hash(row: dict) -> str:
-    payload = {key: row[key] for key in ("question_id", "question", "trajectory")}
-    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
 def search_queries(action: str) -> list[str]:
@@ -351,21 +340,42 @@ def mutation_suite(row: dict, question: dict, documents: dict[str, dict]) -> dic
     return result
 
 
+def conversation_signature(messages: list[dict]) -> tuple[str, tuple[str, ...]]:
+    """Identify an exported conversation without assuming question text is unique."""
+    if len(messages) < 2 or messages[1].get("role") != "user":
+        raise ValueError("Conversation has no initial user observation")
+    return (
+        messages[1]["content"],
+        tuple(item["content"] for item in messages if item.get("role") == "assistant"),
+    )
+
+
+def candidate_signature(row: dict) -> tuple[str, tuple[str, ...]]:
+    return (
+        row["initial_observation"],
+        tuple(step["action"] for step in row["trajectory"]),
+    )
+
+
 def conversation_membership(
-    path: Path, questions_by_text: dict[str, dict]
+    path: Path, candidates_by_signature: dict[tuple[str, tuple[str, ...]], dict]
 ) -> tuple[set[str], set[str], list[str]]:
     question_ids, papers, unknown = set(), set(), []
     for line in path.read_text().splitlines():
         if not line.strip():
             continue
         messages = json.loads(line)["messages"]
-        question_text = messages[1]["content"].removeprefix("Question: ").strip()
-        question = questions_by_text.get(question_text)
-        if question is None:
-            unknown.append(question_text)
+        try:
+            signature = conversation_signature(messages)
+        except ValueError:
+            unknown.append("invalid_conversation")
             continue
-        question_ids.add(question["id"])
-        papers.add(known_doc_id(question["question"]))
+        candidate = candidates_by_signature.get(signature)
+        if candidate is None:
+            unknown.append(signature[0])
+            continue
+        question_ids.add(candidate["question_id"])
+        papers.add(known_doc_id(candidate["question"]))
     return question_ids, papers, unknown
 
 
@@ -388,7 +398,6 @@ def main() -> None:
     if actual_corpus_hash != benchmark.get("corpus_hash"):
         raise ValueError("Frozen corpus hash does not match the benchmark")
     questions = {item["id"]: item for item in benchmark["questions"]}
-    questions_by_text = {item["question"].strip(): item for item in benchmark["questions"]}
     rows = [
         json.loads(line)
         for line in args.candidates.read_text().splitlines()
@@ -453,11 +462,14 @@ def main() -> None:
         )
         print(f"[{index}/{len(rows)}] {row['question_id']}: {len(issues)} issue(s)")
 
+    candidates_by_signature = {candidate_signature(row): row for row in rows}
     train_ids, train_papers, train_unknown = conversation_membership(
-        args.train, questions_by_text
+        args.train,
+        candidates_by_signature,
     )
     val_ids, val_papers, val_unknown = conversation_membership(
-        args.validation, questions_by_text
+        args.validation,
+        candidates_by_signature,
     )
     candidate_ids = {row.get("question_id") for row in rows}
     candidate_papers = {item["doc_id"] for item in reports if item.get("doc_id")}

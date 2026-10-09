@@ -10,23 +10,12 @@ required to open the scaling gate.
 from __future__ import annotations
 
 import argparse
-from collections import Counter
-import hashlib
 import json
+from collections import Counter
 from pathlib import Path
-import re
 from typing import Any
 
-
-def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def known_doc_id(question: str) -> str:
-    match = re.search(r'doc_id:\s*"([^"\s]+)"', question)
-    if match is None:
-        raise ValueError("Known-paper question has no doc_id")
-    return match.group(1)
+from src.eval.hashing import known_doc_id, sha256
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:

@@ -4,22 +4,40 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import random
+import re
+from pathlib import Path
 
 from src.eval.qasper_reward import parse_strict
+from src.eval.research_review import load_corpus
+
+_LENIENT = re.compile(r"SUBMIT:\s*(.*?)\s+CITATIONS:\s*(\[.*?\])", re.S | re.I)
+
+
+def _lenient_parse(raw: str) -> tuple[str, list[str]]:
+    """Best-effort answer/citations when the strict EVIDENCE-clause format fails.
+
+    Without this, a submission missing only the EVIDENCE: field showed up as a
+    blank answer in the review packet — a reviewer would see nothing to judge,
+    even though the model wrote a real, readable answer. This is display-only:
+    it never contributes to the automated reward, which still requires the
+    full strict format via parse_strict.
+    """
+    match = _LENIENT.match(raw.strip())
+    if match:
+        try:
+            citations = json.loads(match.group(2))
+            if isinstance(citations, list) and all(isinstance(c, str) for c in citations):
+                return match.group(1).strip(), citations
+        except (ValueError, TypeError):
+            pass
+    # No CITATIONS field either, or it didn't parse: show everything after SUBMIT:.
+    fallback = re.match(r"SUBMIT:\s*(.*)", raw.strip(), re.S | re.I)
+    return (fallback.group(1).strip() if fallback else raw.strip()), []
 
 
 def load_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
-
-
-def load_corpus(path: Path) -> dict[str, dict]:
-    documents = {}
-    for item in path.glob("*.json"):
-        document = json.loads(item.read_text())
-        documents[document["doc_id"]] = document
-    return documents
 
 
 def materialize(spans: list[dict], documents: dict[str, dict]) -> list[dict]:
@@ -49,7 +67,8 @@ def candidate(row: dict, documents: dict[str, dict]) -> dict:
     raw = str(submissions[-1]) if submissions else ""
     parsed = parse_strict(raw)
     if parsed is None:
-        answer, citations, evidence = "", [], []
+        answer, citations = _lenient_parse(raw) if raw else ("", [])
+        evidence = []
     else:
         answer, citations, evidence = parsed
     return {
@@ -57,6 +76,7 @@ def candidate(row: dict, documents: dict[str, dict]) -> dict:
         "citations": citations,
         "evidence": materialize(evidence, documents),
         "raw_submission": raw if parsed is None else None,
+        "strict_format_failed": parsed is None,
         "finish": row.get("finish"),
     }
 

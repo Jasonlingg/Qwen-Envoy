@@ -1,0 +1,190 @@
+{
+  "schema_version": "learning-loop-sweep-results-v1",
+  "question_count": 8,
+  "ranked_systems": [
+    {
+      "rank": 1,
+      "system": "sonnet5",
+      "pass": 3,
+      "partial": 3,
+      "fail": 2,
+      "supported_answer_rate": 0.375,
+      "mean_review_score_0_to_2": 1.125,
+      "submission_rate": 0.75,
+      "execution_error_step_rate": 0.0938,
+      "average_steps": 8.0,
+      "average_duration_seconds": 47.86
+    },
+    {
+      "rank": 2,
+      "system": "v5_3",
+      "pass": 0,
+      "partial": 5,
+      "fail": 3,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.625,
+      "submission_rate": 1.0,
+      "execution_error_step_rate": 0.0,
+      "average_steps": 3.38,
+      "average_duration_seconds": 15.58
+    },
+    {
+      "rank": 3,
+      "system": "base3",
+      "pass": 0,
+      "partial": 4,
+      "fail": 4,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.5,
+      "submission_rate": 0.625,
+      "execution_error_step_rate": 0.0538,
+      "average_steps": 11.62,
+      "average_duration_seconds": 21.76
+    },
+    {
+      "rank": 4,
+      "system": "targeted3",
+      "pass": 0,
+      "partial": 2,
+      "fail": 6,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.25,
+      "submission_rate": 0.875,
+      "execution_error_step_rate": 0.3415,
+      "average_steps": 5.12,
+      "average_duration_seconds": 94.23
+    },
+    {
+      "rank": 5,
+      "system": "aligned3",
+      "pass": 0,
+      "partial": 1,
+      "fail": 7,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.125,
+      "submission_rate": 0.125,
+      "execution_error_step_rate": 0.0654,
+      "average_steps": 13.38,
+      "average_duration_seconds": 71.37
+    },
+    {
+      "rank": 6,
+      "system": "early3",
+      "pass": 0,
+      "partial": 0,
+      "fail": 8,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.0,
+      "submission_rate": 0.0,
+      "execution_error_step_rate": 0.0,
+      "average_steps": 5.0,
+      "average_duration_seconds": 38.86
+    },
+    {
+      "rank": 7,
+      "system": "base25",
+      "pass": 0,
+      "partial": 0,
+      "fail": 8,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.0,
+      "submission_rate": 0.0,
+      "execution_error_step_rate": 0.28,
+      "average_steps": 6.25,
+      "average_duration_seconds": 28.13
+    },
+    {
+      "rank": 8,
+      "system": "grpo25_50",
+      "pass": 0,
+      "partial": 0,
+      "fail": 8,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.0,
+      "submission_rate": 0.0,
+      "execution_error_step_rate": 0.28,
+      "average_steps": 6.25,
+      "average_duration_seconds": 39.09
+    },
+    {
+      "rank": 9,
+      "system": "grpo25",
+      "pass": 0,
+      "partial": 0,
+      "fail": 8,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.0,
+      "submission_rate": 0.0,
+      "execution_error_step_rate": 0.28,
+      "average_steps": 6.25,
+      "average_duration_seconds": 39.12
+    },
+    {
+      "rank": 10,
+      "system": "sft25",
+      "pass": 0,
+      "partial": 0,
+      "fail": 8,
+      "supported_answer_rate": 0.0,
+      "mean_review_score_0_to_2": 0.0,
+      "submission_rate": 0.0,
+      "execution_error_step_rate": 0.28,
+      "average_steps": 6.25,
+      "average_duration_seconds": 43.68
+    }
+  ],
+  "matched_pairs": {
+    "v5_3": {
+      "wins": 2,
+      "losses": 1,
+      "ties": 5
+    },
+    "targeted3": {
+      "wins": 1,
+      "losses": 3,
+      "ties": 4
+    },
+    "aligned3": {
+      "wins": 1,
+      "losses": 4,
+      "ties": 3
+    },
+    "early3": {
+      "wins": 0,
+      "losses": 4,
+      "ties": 4
+    },
+    "sft25": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 8
+    },
+    "grpo25": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 8
+    },
+    "grpo25_50": {
+      "wins": 0,
+      "losses": 0,
+      "ties": 8
+    }
+  },
+  "sonnet5_vs_v5_3": {
+    "wins": 5,
+    "losses": 1,
+    "ties": 2
+  },
+  "sonnet5_final_api_cost_usd": 1.120368,
+  "reviewer_provenance": "blind-review/reviewer-provenance.json",
+  "protocol_validation": "validation.json",
+  "limits": [
+    "agent-authored and consumed development questions",
+    "Codex self-review, no independent human judgment",
+    "six historical papers, not personal Obsidian vault",
+    "one run per arm, no uncertainty interval",
+    "Sonnet provider-default sampling and hardware differ from deterministic local Qwen"
+  ],
+  "runpod_pod_id": "l9pxr8ptq4krop",
+  "runpod_desired_status_at_report": "EXITED"
+}

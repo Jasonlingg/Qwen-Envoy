@@ -1,0 +1,158 @@
+{
+  "schema_version": "research-benchmark-v1",
+  "benchmark_id": "ai-learning-loop-code-pilot-v1",
+  "status": "Agent source-checked development pilot; human review and model outputs pending. Not a held-out product test.",
+  "domain": "Learning from research on retrieval and tool-using AI agents",
+  "corpus_hash": "ca28990a801741357e84438b36685c8f521817d941b203bbbd8735aba884d2aa",
+  "reserved_doc_ids": [
+    "arxiv_2005_11401v4",
+    "arxiv_2210_03629v3",
+    "arxiv_2310_11511v1",
+    "arxiv_2401_15884v3",
+    "arxiv_2403_14403v2",
+    "arxiv_2503_09516v5"
+  ],
+  "training_exclusion": "Do not train on these questions, answers, grader notes, or source anchors. The six-paper corpus was already used in an earlier development pilot.",
+  "task_protocol": "Qwen writes Python with search(), read(), and extract() to answer a learner's question from the frozen corpus. Human blind review scores correctness, support, explanation, and uncertainty; MuSiQue reward is diagnostic only.",
+  "questions": [
+    {
+      "id": "learn_01_react_loop",
+      "split": "pilot_evaluation",
+      "learning_skill": "explain_mechanism",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": ["arxiv_2210_03629v3"],
+      "question": "Teach me the ReAct loop in plain language. Describe how reasoning, an action, and the resulting observation feed the next step. Give a tiny illustrative example, and distinguish the paper's prompting setup from training a model's weights. Cite one result the paper actually reports.",
+      "answer": "ReAct prompts a model to alternate reasoning traces with task actions, inspect each action's observation, and update its plan. For example, it might reason that it needs a fact, search for it, read the result, then decide what to do next. The reported ALFWorld and WebShop improvements used one or two in-context examples; those findings do not establish that this project's Qwen weights were improved by the same method.",
+      "grader_notes": [
+        "Pass requires an accurate action-observation feedback loop and a clear separation between prompting and weight training.",
+        "The illustrative example must be labeled as an illustration, not a paper experiment.",
+        "A reported result needs a supporting source, with the evaluated task named."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2210_03629v3", "needle": "generate both reasoning traces and task-specific actions in an interleaved manner"},
+        {"doc_id": "arxiv_2210_03629v3", "needle": "prompted with only one or two in-context examples"}
+      ]
+    },
+    {
+      "id": "learn_02_rag_selfrag_delta",
+      "split": "pilot_evaluation",
+      "learning_skill": "compare_prior_work",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2005_11401v4", "arxiv_2310_11511v1"],
+      "question": "I know original RAG uses an external document index. What does Self-RAG add to that idea? Explain when retrieval happens, what it critiques, and one practical question we should ask before assuming Self-RAG will improve my private research library.",
+      "answer": "Original RAG combines a generator with an external, replaceable document index. Self-RAG trains a model to retrieve on demand and emit reflection tokens about passage relevance, answer support, and utility. A private-library implementation still needs a matched test of evidence support, abstention, latency, and cost; neither paper establishes the result for this vault.",
+      "grader_notes": [
+        "Pass requires a correct delta between external-memory RAG and learned retrieval/critique in Self-RAG.",
+        "The proposed private-library check must be labeled as a local test, not an established paper result."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2005_11401v4", "needle": "the non-parametric memory is a dense vector index of Wikipedia"},
+        {"doc_id": "arxiv_2310_11511v1", "needle": "generates and reflects on retrieved passages and its own generations using special tokens"}
+      ]
+    },
+    {
+      "id": "learn_03_routing_vs_correction",
+      "split": "pilot_evaluation",
+      "learning_skill": "compare_prior_work",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2401_15884v3", "arxiv_2403_14403v2"],
+      "question": "Explain Adaptive-RAG and Corrective RAG as two different places to intervene in retrieval. Which one chooses retrieval depth, which one assesses retrieved material, and what would need to change if searches must remain inside a private vault?",
+      "answer": "Adaptive-RAG uses predicted question complexity to select among no retrieval, one step, and iterative retrieval. Corrective RAG evaluates retrieved material and reacts differently to correct, incorrect, or ambiguous evidence, including a web-search extension. A private-vault adaptation would need a permitted local fallback or calibrated abstention instead of assuming public web search is available.",
+      "grader_notes": [
+        "Pass requires the before/after retrieval distinction and the three Adaptive-RAG depths.",
+        "Mention that Corrective RAG's external web-search path does not automatically fit a private-only vault.",
+        "A local fallback is our adaptation, not a finding reported by either paper."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2403_14403v2", "needle": "iterative and single-step retrieval-augmented LLMs, as well as the no-retrieval methods"},
+        {"doc_id": "arxiv_2401_15884v3", "needle": "knowledge retrieval actions of {Correct, Incorrect, Ambiguous}"}
+      ]
+    },
+    {
+      "id": "learn_04_search_r1_masking",
+      "split": "pilot_evaluation",
+      "learning_skill": "explain_evidence",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": ["arxiv_2503_09516v5"],
+      "question": "Explain to an engineer why Search-R1 masks retrieved tokens in its policy loss. What comparison in the paper supports this choice? Separate that paper result from whether the same choice improves our Qwen research assistant.",
+      "answer": "Retrieved passages come from the environment rather than the policy's generated actions, so Search-R1 excludes those tokens from the policy loss to avoid undesirable updates. Its masking ablation compares variants with and without retrieved-token loss masking and reports better training behavior/performance with masking. Whether the same intervention improves this assistant requires a local controlled test.",
+      "grader_notes": [
+        "Pass requires the origin of retrieved tokens, the comparison with an unmasked variant, and the local-transfer limit.",
+        "Do not present the paper's QA results as measured research-synthesis quality."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2503_09516v5", "needle": "loss masking strategy for retrieved tokens to mitigate undesirable optimization behaviors"},
+        {"doc_id": "arxiv_2503_09516v5", "needle": "retrieved token loss masking consistently outperforms the variant without masking"}
+      ]
+    },
+    {
+      "id": "learn_05_citation_support",
+      "split": "pilot_evaluation",
+      "learning_skill": "critique_evidence",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": ["arxiv_2310_11511v1"],
+      "question": "A paper note cites a real Self-RAG passage. Does that alone prove that every claim in the note is supported? Explain the difference between a valid citation and semantic support, and say what Self-RAG itself observes about unsupported cited claims.",
+      "answer": "No. A valid citation establishes that a passage exists and can be inspected; support requires checking that the passage actually entails the claim. Self-RAG's own discussion notes that longer, more fluent generations may include claims not fully supported by citations. Citation validity and claim support therefore need separate checks.",
+      "grader_notes": [
+        "Pass requires the provenance-versus-entailment distinction.",
+        "The Self-RAG observation must be attributed to its evaluated setting, not turned into a universal failure rate."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2310_11511v1", "needle": "claims that are not fully supported by citations"}
+      ]
+    },
+    {
+      "id": "learn_06_personal_vault_transfer",
+      "split": "pilot_evaluation",
+      "learning_skill": "calibrated_uncertainty",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "question": "Do these six papers prove that fine-tuning Qwen will improve supported answers in my personal Obsidian vault? Tell me what the papers establish, what they cannot establish, and the smallest fair local comparison.",
+      "answer": "No. These papers evaluate their own methods on their own models and datasets, not base versus trained Qwen on this vault. The smallest local test freezes the vault, questions, prompt, tools, decoding, and review rubric; runs base and trained Qwen on the same questions; and blindly checks answer support, failures, latency, and cost.",
+      "grader_notes": [
+        "Pass requires an explicit refusal to claim personal-vault improvement from external papers.",
+        "A proposed local experiment must keep both models on the same task and separate quality from cost."
+      ],
+      "source_anchors": []
+    },
+    {
+      "id": "learn_07_freshness_limit",
+      "split": "pilot_evaluation",
+      "learning_skill": "calibrated_uncertainty",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "question": "From this frozen six-paper collection alone, which approach is the best current one for research agents as of September 2026? If that cannot be established, explain why and what evidence a current comparison would require.",
+      "answer": "The collection cannot establish a best current approach. It is a selected historical set, not a comprehensive September 2026 search, and its papers use different tasks, models, corpora, and metrics. A dated discovery process followed by a matched evaluation would be needed.",
+      "grader_notes": [
+        "Pass requires abstaining from a current-best ranking and identifying both coverage and comparability limits.",
+        "The answer may mention historical paper results but must not present them as a September 2026 leaderboard."
+      ],
+      "source_anchors": []
+    },
+    {
+      "id": "learn_08_local_experiment",
+      "split": "pilot_evaluation",
+      "learning_skill": "apply_with_control",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2005_11401v4", "arxiv_2210_03629v3"],
+      "question": "Suppose I want to see whether a ReAct-style multi-step worker helps my paper library more than one-pass RAG. In a short teaching note, explain what each paper contributes, then propose one small matched experiment and a stop condition. Keep published findings separate from the proposed local test.",
+      "answer": "Original RAG combines generation with an external retrieved document index; ReAct prompts interleaved reasoning and actions. Neither paper shows that our multi-step paper worker beats our one-pass RAG. Freeze the same papers and questions, compare both approaches under the same answer-support rubric and recorded budget, and stop favoring the multi-step approach if supported-answer quality does not improve enough to justify extra steps and cost.",
+      "grader_notes": [
+        "Pass requires accurate paper-specific summaries, a same-task baseline, and an explicit decision condition.",
+        "The experiment and stop condition must be labeled as proposals, not as results of either paper."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2005_11401v4", "needle": "the non-parametric memory is a dense vector index of Wikipedia"},
+        {"doc_id": "arxiv_2210_03629v3", "needle": "generate both reasoning traces and task-specific actions in an interleaved manner"}
+      ]
+    }
+  ]
+}
