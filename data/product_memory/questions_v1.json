@@ -1,0 +1,167 @@
+{
+  "schema_version": "research-benchmark-v1",
+  "benchmark_id": "personal-memory-synthetic-development-v1",
+  "status": "Agent-authored, source-checked synthetic development questions. No independent human reference review. Not a held-out personal-vault benchmark.",
+  "domain": "Dated learning memory across life, homework, and AI research",
+  "corpus_hash": "a5470628a40fe6114271f3b2923ba025967bdc2552157543d2a7224440e43c47",
+  "reserved_doc_ids": [
+    "vault_190b8d6d4f2b2fccc85477b3",
+    "vault_ef747a79566d08eed9c25a22",
+    "vault_813932b3ee11b5f68596f76d",
+    "vault_9fa940b9d39455292a1dd3f4",
+    "vault_cb5eaf85fa1c8e73b632a46c",
+    "vault_6a43480bce8a5f2930966bdd",
+    "vault_0ad28c4f51afd7cc20d72bab",
+    "vault_dd06efcaa770476162834296",
+    "vault_5ec14fa6f072a7954299daec"
+  ],
+  "training_exclusion": "Do not train on these ten questions, reference answers, source anchors, or the nine fixture notes if using this as a frozen development comparison.",
+  "task_protocol": "Qwen writes Python with search(), read(), passage(), and extract() over the frozen sample. Judge the cited evidence packet and any proposed answer separately. MuSiQue reward is diagnostic only.",
+  "questions": [
+    {
+      "id": "pm01_life_revision",
+      "split": "pilot_evaluation",
+      "learning_skill": "temporal_revision",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 3,
+      "required_doc_ids": ["vault_9fa940b9d39455292a1dd3f4", "vault_cb5eaf85fa1c8e73b632a46c", "vault_6a43480bce8a5f2930966bdd"],
+      "question": "How did my focus idea change from June to July, and what did I decide to test next? Keep attempts, informal observations, and uncompleted plans separate.",
+      "answer": "In June I thought putting the phone away might solve most interruptions, but had only three sessions and no comparable productivity measure. In July, four informal sessions suggested unclear next actions might matter more, without establishing causation. The July 18 decision was to write a first action, silence notifications, and log time-to-start for two weeks; those results are not in this snapshot.",
+      "grader_notes": ["Pass requires the June idea, July correction, and July 18 planned experiment in date order.", "Do not present informal sessions or the planned two-week log as proven improvement."],
+      "source_anchors": [
+        {"doc_id": "vault_9fa940b9d39455292a1dd3f4", "needle": "I thought putting my phone in a drawer would solve most of my study interruptions."},
+        {"doc_id": "vault_cb5eaf85fa1c8e73b632a46c", "needle": "an unclear first task may have mattered more than access to the phone"},
+        {"doc_id": "vault_6a43480bce8a5f2930966bdd", "needle": "I will write the first concrete action on a card before each morning work block"}
+      ]
+    },
+    {
+      "id": "pm02_life_causality",
+      "split": "pilot_evaluation",
+      "learning_skill": "conflict_and_uncertainty",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["vault_9fa940b9d39455292a1dd3f4", "vault_cb5eaf85fa1c8e73b632a46c"],
+      "question": "Did I prove the phone was the main cause of lost study time? Explain the conflicting observations and the limit of the evidence.",
+      "answer": "No. June recorded fewer checks with the phone in a drawer but did not measure comparable work. In July, hiding the phone still left some slow starts, while writing a next action was associated with earlier starts in other sessions. The conditions changed, so neither observation establishes a causal explanation.",
+      "grader_notes": ["Pass requires an explicit no to proof of a main cause and both June and July observations.", "Do not turn a small informal comparison into a causal result."],
+      "source_anchors": [
+        {"doc_id": "vault_9fa940b9d39455292a1dd3f4", "needle": "I wrote down fewer phone checks in those sessions, but I did not measure total work completed"},
+        {"doc_id": "vault_cb5eaf85fa1c8e73b632a46c", "needle": "These are informal observations with several changing conditions; they do not prove"}
+      ]
+    },
+    {
+      "id": "pm03_life_missing_outcome",
+      "split": "pilot_evaluation",
+      "learning_skill": "absent_outcome",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "question": "After the July 18 focus experiment finished, how many minutes faster did I start work on average? Give the measured difference if the vault records it.",
+      "answer": "The selected snapshot records the July 18 two-week measurement plan but no completed logs or average difference. A measured improvement cannot be given from this vault.",
+      "grader_notes": ["Pass requires explicit abstention from a numeric improvement and identification of the missing completed logs.", "Citing the plan is acceptable only if it is clearly labeled a plan, not a measured result."],
+      "source_anchors": []
+    },
+    {
+      "id": "pm04_homework_correction",
+      "split": "pilot_evaluation",
+      "learning_skill": "temporal_revision",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["vault_190b8d6d4f2b2fccc85477b3", "vault_ef747a79566d08eed9c25a22"],
+      "question": "What exactly was wrong with my first rectangle optimization answer, and what is the corrected maximum area for perimeter 40?",
+      "answer": "The first attempt differentiated A(x)=x(20-x) as 20-4x and got x=5, area 75. After expanding A(x)=20x-x², the derivative is 20-2x, giving x=10 and a 10 by 10 rectangle with maximum area 100 square units.",
+      "grader_notes": ["Pass requires the mistaken derivative, corrected derivative, and corrected 100-square-unit result.", "Label x=5 and area 75 as the superseded attempt, not an alternative optimum."],
+      "source_anchors": [
+        {"doc_id": "vault_190b8d6d4f2b2fccc85477b3", "needle": "mistakenly used the derivative 20 - 4x, leading me to x = 5"},
+        {"doc_id": "vault_ef747a79566d08eed9c25a22", "needle": "Its derivative is 20 - 2x, not 20 - 4x. Setting 20 - 2x to zero gives x = 10"}
+      ]
+    },
+    {
+      "id": "pm05_homework_plan_status",
+      "split": "pilot_evaluation",
+      "learning_skill": "plan_versus_outcome",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["vault_ef747a79566d08eed9c25a22", "vault_813932b3ee11b5f68596f76d"],
+      "question": "What lesson did I take from the rectangle correction, and how did I plan to check whether I learned it? Has that practice been completed here?",
+      "answer": "The lesson was to expand and differentiate carefully and substitute the result back. The September 5 plan was to solve three new problems without looking at the solution, checking the constraint, derivative, endpoints, and units. This selected snapshot does not record completed practice attempts or scores.",
+      "grader_notes": ["Pass requires the corrected lesson and the three-problem plan.", "State clearly that the planned practice is not a recorded outcome."],
+      "source_anchors": [
+        {"doc_id": "vault_ef747a79566d08eed9c25a22", "needle": "expand the product carefully, check the derivative term by term"},
+        {"doc_id": "vault_813932b3ee11b5f68596f76d", "needle": "This vault does not contain completed practice attempts, grades, or a later test score."}
+      ]
+    },
+    {
+      "id": "pm06_homework_missing_score",
+      "split": "pilot_evaluation",
+      "learning_skill": "absent_outcome",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "question": "What grade did I earn on the next calculus test after the September 5 practice plan?",
+      "answer": "No later calculus-test grade is recorded in the selected snapshot. The practice plan does not establish a score or an improvement.",
+      "grader_notes": ["Pass requires saying the grade is absent and not inventing a score or completion of the plan."],
+      "source_anchors": []
+    },
+    {
+      "id": "pm07_research_revision",
+      "split": "pilot_evaluation",
+      "learning_skill": "temporal_revision",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 3,
+      "required_doc_ids": ["vault_0ad28c4f51afd7cc20d72bab", "vault_dd06efcaa770476162834296", "vault_5ec14fa6f072a7954299daec"],
+      "question": "How did my plan for using a multi-step Qwen research worker change between August and September, and why? Distinguish the pilot observation from the new architecture decision.",
+      "answer": "In August I hypothesized that a multi-step worker would probably beat one-pass BM25. A small September development pilot led me to correct that expectation because one-pass retrieval yielded more complete supported responses there, though it was not a general result. The later architecture decision was to begin with lexical candidate search and invoke Qwen selectively for multi-note, date, or uncertainty cases, with a main assistant explaining its evidence packet.",
+      "grader_notes": ["Pass requires the original hypothesis, the limited pilot correction, and the selective-worker decision in order.", "Do not invent pilot counts or claim a general winner."],
+      "source_anchors": [
+        {"doc_id": "vault_0ad28c4f51afd7cc20d72bab", "needle": "a multi-step Qwen worker would probably beat a single BM25 lookup"},
+        {"doc_id": "vault_dd06efcaa770476162834296", "needle": "one-pass retrieval gave more complete supported responses on the reviewed questions"},
+        {"doc_id": "vault_5ec14fa6f072a7954299daec", "needle": "use lexical search to select source candidates and ask Qwen to investigate only questions"}
+      ]
+    },
+    {
+      "id": "pm08_research_missing_rate",
+      "split": "pilot_evaluation",
+      "learning_skill": "absent_number",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 0,
+      "required_doc_ids": [],
+      "question": "By exactly how many percentage points did one-pass retrieval beat the Qwen worker in the September development pilot?",
+      "answer": "The selected snapshot says one-pass retrieval gave more complete supported responses, but does not preserve the exact counts or review sheet. The percentage-point difference cannot be calculated here.",
+      "grader_notes": ["Pass requires abstaining from an exact percentage-point difference and noting that counts are missing."],
+      "source_anchors": []
+    },
+    {
+      "id": "pm09_research_worker_boundary",
+      "split": "pilot_evaluation",
+      "learning_skill": "evidence_worker_boundary",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["vault_dd06efcaa770476162834296", "vault_5ec14fa6f072a7954299daec"],
+      "question": "What is Qwen supposed to hand to the main assistant, and what should it never do to my lasting memory without approval? What would justify its added cost?",
+      "answer": "Qwen should return a compact packet of exact evidence for the main assistant to explain, and it should not write lasting personal memory without approval. Its extra cost is justified only if a paired held-out comparison shows added source coverage or better supported answers without unacceptable latency and inference cost.",
+      "grader_notes": ["Pass requires the evidence packet, main-assistant boundary, user approval, and a measured quality-versus-cost condition.", "Do not claim that the condition has already been met."],
+      "source_anchors": [
+        {"doc_id": "vault_5ec14fa6f072a7954299daec", "needle": "Qwen's job is to return a small, exact evidence packet; the main assistant explains it to me."},
+        {"doc_id": "vault_5ec14fa6f072a7954299daec", "needle": "The worker should not write a lasting personal memory without my approval."},
+        {"doc_id": "vault_dd06efcaa770476162834296", "needle": "a paired test on held-out questions with the same snapshot and source-support rubric"}
+      ]
+    },
+    {
+      "id": "pm10_cross_domain_plan_outcome",
+      "split": "pilot_evaluation",
+      "learning_skill": "cross_domain_synthesis",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 3,
+      "required_doc_ids": ["vault_6a43480bce8a5f2930966bdd", "vault_813932b3ee11b5f68596f76d", "vault_5ec14fa6f072a7954299daec"],
+      "question": "Across my focus, math-practice, and Qwen-worker notes, which next steps were decisions rather than demonstrated outcomes? Give one example from each area.",
+      "answer": "The focus note planned two weeks of time-to-start logs but recorded no results. The math note planned three new optimization problems but recorded no completed attempts or grade. The research note decided to use lexical search first and Qwen selectively, but recorded no held-out comparison showing that this architecture improved outcomes.",
+      "grader_notes": ["Pass requires one dated plan or decision from each of the three domains and no invented result.", "Each material example needs a source passage from its own note."],
+      "source_anchors": [
+        {"doc_id": "vault_6a43480bce8a5f2930966bdd", "needle": "This is a decision and a measurement plan, not a completed experiment."},
+        {"doc_id": "vault_813932b3ee11b5f68596f76d", "needle": "This is a practice plan. This vault does not contain completed practice attempts"},
+        {"doc_id": "vault_5ec14fa6f072a7954299daec", "needle": "This is an architectural decision, not evidence that Qwen already beats lexical search."}
+      ]
+    }
+  ]
+}

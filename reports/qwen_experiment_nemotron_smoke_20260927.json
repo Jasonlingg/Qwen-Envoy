@@ -1,0 +1,201 @@
+{
+  "schema_version": "qwen-experiment-nemotron-smoke-v1",
+  "tested_at": "2026-09-28T03:59:53.211555+00:00",
+  "question": "Why were the Qwen QASPER scale-SFT continuation checkpoints rejected, and what did the result not establish?",
+  "source_report": "reports/qasper-scale-sft-2026-09-25.json",
+  "source_report_sha256": "1d9a9511950d2f78c8ed1d844775b738698b48198fa0d993c20b18a453c98cc4",
+  "corpus_hash": "4cbd564b8664dfd06d69a181eef13830c2edcc1d0472598df370e28232c64466",
+  "answer_status": "answered",
+  "answer": "The reported decision states that epoch 1 and epoch 2 were both rejected because they failed the semantic, paired-win, pass-count, and automatic-reward gates, and neither continuation checkpoint was promoted [E1]. The measured result shows that semantic passes dropped from 15/40 at the starting SFT checkpoint to 10/40 after epoch 1 and 4/40 after epoch 2, with a corresponding decline in insufficient-evidence passes from 10 to 2 to 0 [E2]. The retrospective reconstruction of the continuation strategy lists the promotion rule (semantic mean exceeding starting SFT, at least two more paired wins than losses, at least 28 of 40 semantic passes) but notes that this rule is an inference from the reported decision, not a preregistered plan [E3].",
+  "claims": [
+    {
+      "text": "The reported decision rejected epoch 1 and epoch 2 because they failed the semantic, paired-win, pass-count, and automatic-reward gates, and neither checkpoint was promoted.",
+      "evidence_ids": [
+        "E1"
+      ]
+    },
+    {
+      "text": "Semantic passes declined from 15/40 at the starting SFT checkpoint to 10/40 after epoch 1 and 4/40 after epoch 2, with insufficient-evidence passes declining from 10 to 2 to 0.",
+      "evidence_ids": [
+        "E2"
+      ]
+    },
+    {
+      "text": "The continuation strategy promotion rule (semantic mean exceeding starting SFT, at least two more paired wins than losses, at least 28 of 40 semantic passes) is a retrospective reconstruction, not a preregistered plan.",
+      "evidence_ids": [
+        "E3"
+      ]
+    }
+  ],
+  "limitations": [
+    "The evidence does not establish why the tradeoff between sufficient- and insufficient-evidence passes changed across epochs.",
+    "The continuation strategy rule is an inference from the reported decision, not a verified pre-registration or user-approved correction.",
+    "No later user-approved note or test record is supplied to confirm whether subsequent SFT epochs improved the checkpoint or whether the reported rule was ever applied in practice."
+  ],
+  "checks": {
+    "claim_count": 3,
+    "claims_with_valid_evidence": 3,
+    "claims": [
+      {
+        "text": "The reported decision rejected epoch 1 and epoch 2 because they failed the semantic, paired-win, pass-count, and automatic-reward gates, and neither checkpoint was promoted.",
+        "evidence": [
+          {
+            "evidence_id": "E1",
+            "quote": "# Qwen QASPER continuation: decision reported in source\n\nThe public report records `epoch_1: reject` and `epoch_2: reject`. Its stated reason is: both failed semantic, paired-win, pass-count, and automatic-reward gates. Neither continuation checkpoint was promoted according to the report. See the measured result [[02-2026-09-25-qwen-measured-result]] and the retrospectively reconstructed continuation strategy and rule [[01-2026-09-25-qwen-continuation-strategy]].\n\nThis is a **source-derived report of a decision**, not a new user-approved Obsidian correction or a claim that the personal-vault Qwen worker improved. A later user conclusion should be written as a separate reviewed note, with links to the relevant evidence.\n\n**Source:** `reports/qasper-scale-sft-2026-09-25.json`; SHA-256 `1d9a9511950d2f78c8ed1d844775b738698b48198fa0d993c20b18a453c98cc4`. Review method: identity-blind model-assisted review; not independent human review.\n",
+            "doc_id": "vault_9a3562bab39851d2c11a9beb",
+            "title": "03-2026-09-25-qwen-reported-decision",
+            "source_kind": "personal_note",
+            "source_path": "03-2026-09-25-qwen-reported-decision.md",
+            "record": {
+              "kind": "source",
+              "effective_date": "2026-09-25",
+              "status": "reported_decision_not_user_approved",
+              "review_status": "source_derived_unreviewed"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "Semantic passes declined from 15/40 at the starting SFT checkpoint to 10/40 after epoch 1 and 4/40 after epoch 2, with insufficient-evidence passes declining from 10 to 2 to 0.",
+        "evidence": [
+          {
+            "evidence_id": "E2",
+            "quote": "# Qwen QASPER continuation measured result\n\nThe public report's identity-blind, model-assisted semantic review found **15/40** passes for the starting SFT checkpoint, **10/40** after epoch 1, and **4/40** after epoch 2 on the same reported question IDs. This result is linked to the reconstructed continuation strategy [[01-2026-09-25-qwen-continuation-strategy]]; the link identifies what to inspect, not a proven causal relationship.\n\n**Answerability tradeoff (reported semantic pass counts):** on sufficient-evidence items, starting SFT / epoch 1 / epoch 2 passed 5 / 8 / 4; on insufficient-evidence items they passed 10 / 2 / 0. The public report supplies pass counts by subgroup but not subgroup denominators. More answerable passes at epoch 1 coincided with fewer insufficient-evidence passes; this does not by itself establish the cause of the tradeoff.\n\n**Review:** identity-blind model-assisted review; not independent human review; reviewer model `claude-sonnet-5`. The review covered 40 questions and 120 candidate responses.\n\n**Scope:** This is not a personal-vault product evaluation or a base-Qwen comparison. The starting SFT checkpoint is not base Qwen, and this QASPER result is not ",
+            "doc_id": "vault_dd2ed7f0c25af4578f433cdc",
+            "title": "02-2026-09-25-qwen-measured-result",
+            "source_kind": "personal_note",
+            "source_path": "02-2026-09-25-qwen-measured-result.md",
+            "record": {
+              "kind": "result",
+              "effective_date": "2026-09-25",
+              "status": "reported_measurement",
+              "review_status": "source_derived_unreviewed"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "The continuation strategy promotion rule (semantic mean exceeding starting SFT, at least two more paired wins than losses, at least 28 of 40 semantic passes) is a retrospective reconstruction, not a preregistered plan.",
+        "evidence": [
+          {
+            "evidence_id": "E3",
+            "quote": "# Qwen QASPER continuation strategy (retrospective reconstruction)\n\nThis note reconstructs the next-step strategy and reported promotion rule from the public evaluation report after the run. It is **not** a contemporaneous preregistration, a user-approved memory revision, or proof that thresholds were fixed before results. The effective date here is the report date; the source does not supply an independent timestamp for the rule.\n\n**Inferred next-step strategy and experiment question:** Test one or two further SFT epochs on QASPER paper QA through persistent executable Python tools and ask whether those epochs improve the starting SFT checkpoint. The report compares `epoch_1` and `epoch_2` to `starting_sft` on the same 40 `validation` questions. The report-recorded gates include: semantic mean exceeds starting_sft; at least two more paired wins than losses; at least 28 of 40 semantic passes. This strategy and question are retrospective inferences from the run and reported rule, not a quoted original plan.\n\n**Promotion rule recorded in the report:**\n- semantic mean exceeds starting_sft\n- at least two more paired wins than losses\n- at least 28 of 40 semantic passes\n- automatic mean ",
+            "doc_id": "vault_71fcbffdc3064cd279fa8758",
+            "title": "01-2026-09-25-qwen-continuation-strategy",
+            "source_kind": "personal_note",
+            "source_path": "01-2026-09-25-qwen-continuation-strategy.md",
+            "record": {
+              "kind": "decision",
+              "effective_date": "2026-09-25",
+              "status": "retrospective_reconstruction",
+              "review_status": "source_derived_unreviewed"
+            }
+          }
+        ],
+        "supports_claim": null
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "note": "Reference integrity only; human review must assess every claim and the answer."
+  },
+  "route": {
+    "investigate": true,
+    "query": "Qwen QASPER scale-SFT continuation checkpoints rejection reasons and limitations",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_9a3562bab39851d2c11a9beb",
+      "title": "03-2026-09-25-qwen-reported-decision",
+      "start": 353,
+      "end": 1298,
+      "quote": "# Qwen QASPER continuation: decision reported in source\n\nThe public report records `epoch_1: reject` and `epoch_2: reject`. Its stated reason is: both failed semantic, paired-win, pass-count, and automatic-reward gates. Neither continuation checkpoint was promoted according to the report. See the measured result [[02-2026-09-25-qwen-measured-result]] and the retrospectively reconstructed continuation strategy and rule [[01-2026-09-25-qwen-continuation-strategy]].\n\nThis is a **source-derived report of a decision**, not a new user-approved Obsidian correction or a claim that the personal-vault Qwen worker improved. A later user conclusion should be written as a separate reviewed note, with links to the relevant evidence.\n\n**Source:** `reports/qasper-scale-sft-2026-09-25.json`; SHA-256 `1d9a9511950d2f78c8ed1d844775b738698b48198fa0d993c20b18a453c98cc4`. Review method: identity-blind model-assisted review; not independent human review.\n",
+      "source_path": "03-2026-09-25-qwen-reported-decision.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "qwen-qasper-rejection-report-2026-09-25",
+        "kind": "source",
+        "effective_date": "2026-09-25",
+        "status": "reported_decision_not_user_approved",
+        "review_status": "source_derived_unreviewed"
+      },
+      "truncated_for_model": false
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_dd2ed7f0c25af4578f433cdc",
+      "title": "02-2026-09-25-qwen-measured-result",
+      "start": 344,
+      "end": 1544,
+      "quote": "# Qwen QASPER continuation measured result\n\nThe public report's identity-blind, model-assisted semantic review found **15/40** passes for the starting SFT checkpoint, **10/40** after epoch 1, and **4/40** after epoch 2 on the same reported question IDs. This result is linked to the reconstructed continuation strategy [[01-2026-09-25-qwen-continuation-strategy]]; the link identifies what to inspect, not a proven causal relationship.\n\n**Answerability tradeoff (reported semantic pass counts):** on sufficient-evidence items, starting SFT / epoch 1 / epoch 2 passed 5 / 8 / 4; on insufficient-evidence items they passed 10 / 2 / 0. The public report supplies pass counts by subgroup but not subgroup denominators. More answerable passes at epoch 1 coincided with fewer insufficient-evidence passes; this does not by itself establish the cause of the tradeoff.\n\n**Review:** identity-blind model-assisted review; not independent human review; reviewer model `claude-sonnet-5`. The review covered 40 questions and 120 candidate responses.\n\n**Scope:** This is not a personal-vault product evaluation or a base-Qwen comparison. The starting SFT checkpoint is not base Qwen, and this QASPER result is not ",
+      "source_path": "02-2026-09-25-qwen-measured-result.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "qwen-qasper-measured-result-report-2026-09-25",
+        "kind": "result",
+        "effective_date": "2026-09-25",
+        "status": "reported_measurement",
+        "review_status": "source_derived_unreviewed"
+      },
+      "truncated_for_model": true
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_71fcbffdc3064cd279fa8758",
+      "title": "01-2026-09-25-qwen-continuation-strategy",
+      "start": 360,
+      "end": 1560,
+      "quote": "# Qwen QASPER continuation strategy (retrospective reconstruction)\n\nThis note reconstructs the next-step strategy and reported promotion rule from the public evaluation report after the run. It is **not** a contemporaneous preregistration, a user-approved memory revision, or proof that thresholds were fixed before results. The effective date here is the report date; the source does not supply an independent timestamp for the rule.\n\n**Inferred next-step strategy and experiment question:** Test one or two further SFT epochs on QASPER paper QA through persistent executable Python tools and ask whether those epochs improve the starting SFT checkpoint. The report compares `epoch_1` and `epoch_2` to `starting_sft` on the same 40 `validation` questions. The report-recorded gates include: semantic mean exceeds starting_sft; at least two more paired wins than losses; at least 28 of 40 semantic passes. This strategy and question are retrospective inferences from the run and reported rule, not a quoted original plan.\n\n**Promotion rule recorded in the report:**\n- semantic mean exceeds starting_sft\n- at least two more paired wins than losses\n- at least 28 of 40 semantic passes\n- automatic mean ",
+      "source_path": "01-2026-09-25-qwen-continuation-strategy.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "qwen-qasper-continuation-strategy-report-2026-09-25",
+        "kind": "decision",
+        "effective_date": "2026-09-25",
+        "status": "retrospective_reconstruction",
+        "review_status": "source_derived_unreviewed"
+      },
+      "truncated_for_model": true
+    }
+  ],
+  "answer_model": "nvidia/Nemotron-3_5-Lightning",
+  "answer_served_model": "nvidia/Nemotron-3_5-Lightning",
+  "answer_usage": {
+    "completion_tokens": 478,
+    "prompt_tokens": 1826,
+    "total_tokens": 2304,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": null,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1826
+  },
+  "model_requests_attempted": 2,
+  "evaluation_note": "One live integration smoke over public report-derived notes; semantic support reviewed separately, not a model benchmark.",
+  "semantic_review": {
+    "method": "Codex source-by-source review against the public evaluation report; not independent human review",
+    "verdict": "partial",
+    "supported": [
+      "Both continuation checkpoints were rejected for failing the listed gates.",
+      "15/40, 10/40, and 4/40 semantic passes and 10/2/0 insufficient-evidence passes are reported."
+    ],
+    "issues": [
+      "The answer calls the promotion rule an inference from the reported decision; the report records the rule, while only the earlier strategy note is retrospectively reconstructed.",
+      "A limitation says the supplied evidence does not show whether the reported rule was applied, but the report includes gate outcomes and the reject decision."
+    ],
+    "decision": "Do not present this answer as a fully supported demo answer; clarify source-note wording and recheck once."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "kind": "linked_synthetic_live_nemotron_smoke_after_navigation_filter",
+  "timestamp_utc": "2026-09-27T16:40:33.092004+00:00",
+  "question": "How did my focus plan change from June to July, and what did I decide to measure next?",
+  "corpus_hash": "92186559398144adf01851599b0057a616b0b044df93c8fde4c7fb7bb8180a41",
+  "provider_calls": [
+    {
+      "requested_model": "nvidia/Nemotron-3_5-Lightning",
+      "max_tokens": 1024,
+      "served_model": "nvidia/Nemotron-3_5-Lightning",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 188,
+        "total_tokens": 211,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 188
+      }
+    },
+    {
+      "requested_model": "nvidia/Nemotron-3_5-Lightning",
+      "max_tokens": 4096,
+      "served_model": "nvidia/Nemotron-3_5-Lightning",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 419,
+        "prompt_tokens": 2028,
+        "total_tokens": 2447,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2028
+      }
+    }
+  ],
+  "answer_status": "evidence_only",
+  "answer_model": null,
+  "answer_served_model": null,
+  "route": {
+    "investigate": true,
+    "query": "focus plan changes June to July and next measurement decision",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_6a43480bce8a5f2930966bdd",
+      "source_path": "Learning/Life/2026-07-18-focus-decision.md",
+      "start": 153,
+      "end": 866,
+      "quote": "# Next focus experiment, July 18\n\nFor the next two weeks, I will write the first concrete action on a card before each morning work block, silence notifications for 30 minutes, and log the minutes from sitting down to starting that action. I will compare those logs with my previous sessions, while treating the comparison as informal because task difficulty and location may differ.\n\nThis is a decision and a measurement plan, not a completed experiment. I have not recorded the two-week results here. If the logs show little change or the routine is too annoying to keep, I will stop recommending it as my default. This decision draws on the July 4 correction, which superseded my June phone-only explanation.\n\n"
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_37f0d10f187a6a77ab0242a2",
+      "source_path": "Learning/Concepts/Plans Are Not Outcomes.md",
+      "start": 159,
+      "end": 732,
+      "quote": "# Plans are not outcomes\n\nAcross these example threads, an intended next step is different from a measured result. The focus log, calculus practice, and selective Qwen-worker comparison are all plans in this snapshot. The linked notes do not yet show that any of those plans succeeded. This is a navigation and learning prompt, not a new observed result.\n\n- [[Learning/Life/2026-07-18-focus-decision|Focus measurement plan]]\n- [[Learning/Homework/2026-09-05-practice-plan|Calculus practice plan]]\n- [[Learning/Research/2026-09-12-worker-decision|Research-worker decision]]\n"
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+      "source_path": "Learning/Life/2026-06-10-focus-plan.md",
+      "start": 104,
+      "end": 938,
+      "quote": "# Focus plan, June 10\n\nI thought putting my phone in a drawer would solve most of my study interruptions. My initial plan was to do a 25-minute work block with the phone out of reach, then take a five-minute break. I tried this for three morning sessions. I wrote down fewer phone checks in those sessions, but I did not measure total work completed or compare the sessions with a similar week. This note records an attempt and an early interpretation, not evidence that the phone was the main cause of lost time.\n\nThe biggest unresolved question was what happened when I sat down without a clear next action. I sometimes spent the first ten minutes deciding which problem to start. I planned to test that separately. A later note, `life-focus-correction-2026-07-04`, revises my explanation; the drawer plan remains here as history.\n\n"
+    },
+    {
+      "evidence_id": "E4",
+      "doc_id": "vault_5ec14fa6f072a7954299daec",
+      "source_path": "Learning/Research/2026-09-12-worker-decision.md",
+      "start": 166,
+      "end": 971,
+      "quote": "# Worker decision, September 12\n\nFor the next prototype, I will use lexical search to select source candidates and ask Qwen to investigate only questions that need multiple notes, dates, or uncertainty handling. Qwen's job is to return a small, exact evidence packet; the main assistant explains it to me. The worker should not write a lasting personal memory without my approval.\n\nThis is an architectural decision, not evidence that Qwen already beats lexical search. The September 2 correction is why I changed the default from “always use a multi-step worker” to “use one when it earns its extra cost.” I will revisit the decision if a held-out comparison shows that Qwen fails to add source coverage or introduces unsupported claims. This sample vault contains no later outcome for that comparison.\n\n"
+    },
+    {
+      "evidence_id": "E5",
+      "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+      "source_path": "Learning/Life/2026-07-04-focus-correction.md",
+      "start": 150,
+      "end": 1055,
+      "quote": "# Correction: starting friction, July 4\n\nI revisited the June phone-drawer idea after four library sessions. On two days I hid the phone but still lost time deciding what to do. On the other two days I wrote a single next action before the session, such as “solve question 3 without notes,” and began sooner even though the phone stayed on the desk. These are informal observations with several changing conditions; they do not prove that next-action planning caused the improvement.\n\nMy corrected working belief is that an unclear first task may have mattered more than access to the phone in this small set of sessions. I no longer describe the drawer as the complete solution. I want to combine a written next action with reduced notifications, then compare several sessions using the same start-time measure. The older note is superseded as advice but should remain readable as the original attempt.\n\n"
+    }
+  ],
+  "related_notes": [
+    {
+      "record_id": "math-practice-plan-2026-09-05",
+      "source_path": "Learning/Homework/2026-09-05-practice-plan.md"
+    },
+    {
+      "record_id": "research-retrieval-correction-2026-09-02",
+      "source_path": "Learning/Research/2026-09-02-retrieval-correction.md"
+    }
+  ],
+  "answer": null,
+  "claims": [],
+  "limitations": [
+    "Nemotron answer unavailable (ValueError); source passages are available for review."
+  ],
+  "checks": null,
+  "semantic_support": "pending independent human review"
+}

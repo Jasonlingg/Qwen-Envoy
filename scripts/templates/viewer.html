@@ -172,7 +172,7 @@
 </head>
 <body>
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('live')">Live Agent</div>
+    <div class="tab active" onclick="switchTab('live')">Agent &amp; Replays</div>
     <div class="tab" onclick="switchTab('history')">History</div>
   </div>
 
@@ -193,6 +193,8 @@
         <label>Anthropic key:</label>
         <input id="apiKey" type="password" placeholder="Only needed for Claude" style="min-width:190px">
         <button class="btn btn-primary" id="btnStart" onclick="startRace()">Run Agent</button>
+        <label for="replaySelect">Recorded trace:</label>
+        <select id="replaySelect" aria-label="Recorded trace"></select>
         <button class="btn" id="btnReplay" onclick="playReplay()" style="background:var(--purple);color:#fff">Watch Replay</button>
       </div>
       <div class="live-question" id="liveQuestionText">Choose a policy and question, then run the agent</div>
@@ -226,6 +228,7 @@ function switchTab(name) {
 /* ===== LIVE RACE ===== */
 let ws = null;
 let policies = [];
+let replayPolicyLabels = {};
 let policyCatalog = [];
 let questionData = [];
 
@@ -265,7 +268,7 @@ async function loadQuestionList() {
 function renderLanes(names) {
   document.getElementById('raceGrid').innerHTML = names.map(p => {
     const meta = policyCatalog.find(item => item.name === p);
-    const label = meta?.label || p;
+    const label = replayPolicyLabels[p] || meta?.label || p;
     return `<div class="race-lane" id="lane-${p}">
       <div class="lane-header"><span class="lane-name">${escapeHtml(label)}</span>
       <span class="lane-status waiting">waiting</span></div>
@@ -300,6 +303,7 @@ async function startRace() {
   const apiKey = document.getElementById('apiKey').value.trim() || null;
   if (!q || !corpus || !selectedPolicy) return;
   policies = [selectedPolicy];
+  replayPolicyLabels = {};
 
   document.getElementById('liveQuestionText').textContent = customQuestion
     ? `${q.question} · custom question (unscored)`
@@ -363,7 +367,7 @@ function handleStep(ev) {
   div.innerHTML = `
     <div class="mini-step-head">
       <span style="color:${tagColor}">${tagLabel}</span>
-      <span>${ev.elapsed?.toFixed(1) || '?'}s</span>
+      <span>${ev.elapsed == null ? 'recorded' : `${ev.elapsed.toFixed(1)}s`}</span>
     </div>
     <div class="mini-step-code">${escapeHtml(ev.action?.slice(0, 500) || '')}</div>
     ${ev.observation ? `<div class="mini-step-obs">${escapeHtml(ev.observation.slice(0, 400))}</div>` : ''}`;
@@ -385,14 +389,17 @@ function handleStep(ev) {
     const citations = ev.predicted_citations?.length
       ? `<div class="lane-result-citations">Evidence: ${escapeHtml(ev.predicted_citations.join(', '))}</div>`
       : '';
+    const review = ev.semantic_verdict
+      ? `<div class="lane-result-citations">Blinded model review: ${escapeHtml(ev.semantic_verdict)}${ev.semantic_notes ? ` — ${escapeHtml(ev.semantic_notes)}` : ''}</div>`
+      : '';
     resultEl.innerHTML = `<div class="lane-result-title">Final answer</div>
-      <div class="lane-result-answer">${escapeHtml(answer)}</div>${citations}`;
+      <div class="lane-result-answer">${escapeHtml(answer)}</div>${citations}${review}`;
     resultEl.hidden = false;
 
     const status = document.querySelector(`#lane-${ev.policy} .lane-status`);
     const succeeded = ev.scored === false || r > 0.3;
-    status.textContent = succeeded ? 'done' : 'failed';
-    status.className = `lane-status ${succeeded ? 'done' : 'failed'}`;
+    status.textContent = ev.semantic_verdict ? `${ev.semantic_verdict} · model review` : succeeded ? 'done' : 'failed';
+    status.className = `lane-status ${ev.semantic_verdict === 'pass' ? 'done' : ev.semantic_verdict === 'fail' ? 'failed' : ev.semantic_verdict === 'partial' ? 'waiting' : succeeded ? 'done' : 'waiting'}`;
   }
 }
 
@@ -408,18 +415,35 @@ function raceComplete() {
 }
 
 /* ===== REPLAY PLAYBACK ===== */
-async function playReplay() {
-  const res = await fetch('/api/replays');
-  const replays = await res.json();
-  if (!replays.length) { alert('No replays available yet.'); return; }
+async function loadReplays() {
+  const replays = await (await fetch('/api/replays')).json();
+  const select = document.getElementById('replaySelect');
+  select.replaceChildren();
+  replays.forEach(replay => {
+    const option = document.createElement('option');
+    option.value = replay.name;
+    option.textContent = replay.label;
+    select.appendChild(option);
+  });
+  if (replays.some(replay => replay.name === 'qwen_answerable_tradeoff')) {
+    select.value = 'qwen_answerable_tradeoff';
+  }
+  document.getElementById('btnReplay').disabled = !replays.length;
+}
 
-  const name = replays[0].name;
+async function playReplay() {
+  const name = document.getElementById('replaySelect').value;
+  if (!name) { alert('No replays available yet.'); return; }
   const dataRes = await fetch(`/api/replays/${name}`);
   const data = await dataRes.json();
   const events = data.events || [];
   if (!events.length) { alert('Replay has no events.'); return; }
 
   policies = [...new Set(events.map(event => event.policy))];
+  replayPolicyLabels = {
+    starting_sft: 'Starting SFT', epoch_1: 'Continued SFT · epoch 1',
+    epoch_2: 'Continued SFT · epoch 2',
+  };
   const replayQuestion = data.meta?.question || 'Replay';
   const replayLabel = data.meta?.label ? ` · ${data.meta.label}` : '';
   document.getElementById('liveQuestionText').textContent = `${replayQuestion}${replayLabel}`;
@@ -550,6 +574,7 @@ function escapeHtml(s) { const d = document.createElement('div'); d.textContent 
 loadRuns();
 loadPolicyList();
 loadCorpusList();
+loadReplays();
 </script>
 </body>
 </html>

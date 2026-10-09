@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Envoy · Learning Memory</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #203128;
+      background: #f7f8f4;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .48; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 3px solid #8dccaa; outline-offset: 2px;
+    }
+    .app { min-height: 100dvh; display: grid; grid-template-columns: 268px minmax(0, 1fr); }
+    .sidebar {
+      background: #eaf0e8; border-right: 1px solid #d8e1d7; padding: 28px 20px 20px;
+      display: flex; flex-direction: column; gap: 30px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; color: #173f33; text-decoration: none; }
+    .brand-mark {
+      width: 33px; height: 33px; border-radius: 10px; background: #20523f;
+      color: #f6f8ef; display: grid; place-items: center; font-family: Georgia, serif;
+      font-size: 23px; line-height: 1;
+    }
+    .brand-name { font-family: Georgia, serif; font-size: 26px; letter-spacing: -.06em; }
+    .brand-sub { color: #66766c; font-size: 11px; letter-spacing: .09em; text-transform: uppercase; font-weight: 750; }
+    .side-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #718176; font-weight: 800; margin-bottom: 11px; }
+    .prompt-list { display: grid; gap: 5px; }
+    .prompt {
+      border: 0; background: transparent; color: #344e3f; text-align: left; border-radius: 11px;
+      padding: 10px 11px; font-size: 13px; line-height: 1.4;
+    }
+    .prompt:hover { background: #dae7d9; }
+    .prompt::before { content: "↗"; color: #588871; margin-right: 9px; }
+    .vault-card { border-top: 1px solid #d4dfd2; padding-top: 20px; }
+    .vault-count { font-family: Georgia, serif; font-size: 28px; line-height: 1; }
+    .vault-note { color: #65776a; font-size: 12px; line-height: 1.5; margin-top: 5px; }
+    .vault-hash { display: block; margin-top: 10px; color: #77867b; font-size: 11px; overflow-wrap: anywhere; }
+    .sidebar-foot { margin-top: auto; border-top: 1px solid #d4dfd2; padding-top: 17px; color: #6d7b70; font-size: 11px; line-height: 1.5; }
+    .workspace { min-width: 0; min-height: 100dvh; display: flex; flex-direction: column; }
+    .topbar {
+      min-height: 74px; border-bottom: 1px solid #e4e9e1; padding: 14px clamp(20px, 4vw, 58px);
+      background: #fffefa; display: flex; gap: 18px; justify-content: space-between; align-items: center;
+    }
+    .topbar-title { font-size: 14px; font-weight: 800; color: #263c2f; }
+    .topbar-sub { font-size: 12px; color: #728074; margin-top: 3px; }
+    .topbar-actions { display: flex; align-items: center; gap: 12px; }
+    .mode-pill {
+      display: inline-flex; align-items: center; gap: 7px; border: 1px solid #d7e4d7; border-radius: 99px;
+      background: #f3f8f1; color: #315d43; padding: 7px 10px; font-size: 11px; font-weight: 750;
+      white-space: nowrap;
+    }
+    .mode-pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #5da77a; }
+    .button {
+      border: 1px solid #275d46; border-radius: 9px; background: #275d46; color: #fff;
+      font-size: 13px; font-weight: 750; padding: 10px 14px;
+    }
+    .button:hover:not(:disabled) { background: #1b4936; }
+    .button.secondary { border-color: #d5e1d3; background: #f5f8f1; color: #28513c; }
+    .button.secondary:hover:not(:disabled) { background: #e8f0e6; }
+    .button.quiet { border: 0; background: transparent; color: #315b42; padding: 8px 10px; }
+    .button.quiet:hover:not(:disabled) { background: #edf3eb; }
+    .conversation-wrap { width: min(820px, 100%); margin: 0 auto; padding: 28px 26px 120px; }
+    .mode-banner {
+      display: flex; gap: 12px; border: 1px solid #dce5dc; border-radius: 12px;
+      background: #f0f5ef; color: #2d4c39; padding: 12px 15px; margin-bottom: 28px;
+      font-size: 12px; line-height: 1.45;
+    }
+    .mode-banner-symbol { font-family: Georgia, serif; font-size: 20px; line-height: 1; color: #5d9470; }
+    .mode-banner strong { display: block; font-size: 12px; margin-bottom: 2px; }
+    .mode-banner p { margin: 0; color: #627466; }
+    .recent-results { border: 1px solid #e0e8dc; border-radius: 12px; background: #fffefa; padding: 14px 15px; margin: -12px 0 26px; }
+    .recent-results[hidden] { display: none; }
+    .recent-results-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 9px; }
+    .recent-results h2 { margin: 0; color: #31533d; font-size: 12px; font-weight: 800; }
+    .recent-results-head span { color: #7b8b7e; font-size: 11px; }
+    .recent-results-list { display: grid; gap: 5px; }
+    .recent-result {
+      width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      border: 0; border-radius: 8px; padding: 8px 9px; text-align: left; background: #f5f8f2; color: #304c38;
+    }
+    .recent-result:hover:not(:disabled) { background: #e9f1e7; }
+    .recent-result-title { display: block; font-size: 12px; font-weight: 750; line-height: 1.35; overflow-wrap: anywhere; }
+    .recent-result-meta { display: block; margin-top: 2px; color: #778879; font-size: 11px; }
+    .recent-result-action { flex: none; color: #4d7959; font-size: 11px; font-weight: 750; }
+    .intro { padding: 42px 0 26px; max-width: 620px; }
+    .intro-kicker { color: #6b9677; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 850; }
+    .intro h1 { font-family: Georgia, serif; font-weight: 400; font-size: clamp(38px, 5vw, 56px); line-height: 1.06; letter-spacing: -.045em; margin: 14px 0 18px; }
+    .intro p { color: #66766a; font-size: 15px; line-height: 1.65; max-width: 540px; margin: 0; }
+    .suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 25px; }
+    .suggestion { border: 1px solid #dbe5da; border-radius: 99px; background: #fffefa; color: #325943; padding: 9px 13px; font-size: 12px; }
+    .suggestion:hover { background: #eaf2e8; }
+    .conversation { display: grid; gap: 26px; }
+    .message { min-width: 0; }
+    .message.user { margin-left: auto; max-width: min(610px, 89%); background: #e7efe6; border: 1px solid #d6e3d4; border-radius: 17px 17px 5px 17px; padding: 13px 17px; line-height: 1.55; white-space: pre-wrap; }
+    .message.assistant { padding-bottom: 27px; border-bottom: 1px solid #e2e8df; }
+    .assistant-head { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 13px; }
+    .assistant-avatar { width: 27px; height: 27px; border-radius: 8px; display: grid; place-items: center; background: #295b45; color: white; font-family: Georgia, serif; font-size: 17px; }
+    .assistant-name { font-weight: 800; font-size: 13px; }
+    .trace-badge { display: inline-block; border-radius: 99px; background: #eef3ed; color: #5c7462; padding: 5px 9px; font-size: 10px; font-weight: 750; }
+    .answer { white-space: pre-wrap; line-height: 1.7; color: #26372c; font-size: 15px; }
+    .evidence-only { color: #455d4b; }
+    .limits { display: grid; gap: 5px; color: #68786d; font-size: 12px; line-height: 1.5; margin-top: 11px; }
+    .limits p { margin: 0; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 23px 0 10px; }
+    .section-head h2 { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin: 0; color: #55725e; }
+    .section-head span { font-size: 11px; color: #849186; }
+    .source-list, .related-list { display: grid; gap: 9px; }
+    .source-card, .related-card { border: 1px solid #e0e6dc; border-radius: 12px; background: #fffefa; padding: 13px 15px; }
+    .source-title, .related-title { font-size: 13px; font-weight: 800; overflow-wrap: anywhere; }
+    .source-id { color: #5b9a6d; margin-right: 7px; }
+    .source-meta { color: #829084; font-size: 11px; margin-top: 5px; overflow-wrap: anywhere; }
+    .source-card blockquote {
+      border-left: 2px solid #bad9bf; margin: 12px 0 11px; padding-left: 12px;
+      color: #526558; font-size: 12px; line-height: 1.6; white-space: pre-wrap; max-height: 130px; overflow: auto;
+    }
+    .source-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+    .source-actions .button, .related-card .button { font-size: 11px; padding: 6px 8px; }
+    .related-card { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    .related-kind { color: #7b8d7e; font-size: 11px; margin-top: 3px; }
+    .review-actions { margin-top: 17px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .review-hint { color: #7a887c; font-size: 11px; }
+    .event { color: #617263; border-left: 2px solid #bfd2bd; padding: 4px 0 4px 13px; font-size: 12px; line-height: 1.5; }
+    .event.error { border-color: #cf8e80; color: #9b493e; }
+    .impact-card { border: 1px solid #d8e3d4; border-radius: 14px; background: #fffefa; padding: 19px 20px; }
+    .impact-kicker { color: #61866a; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; }
+    .impact-card h2 { font-family: Georgia, serif; font-size: 25px; font-weight: 400; line-height: 1.2; margin: 6px 0 9px; }
+    .impact-card p { color: #607164; font-size: 13px; line-height: 1.55; margin: 0 0 13px; }
+    .impact-card .impact-caution { font-size: 12px; color: #806a3d; background: #faf5e8; border-radius: 8px; padding: 9px 11px; }
+    .impact-timeline { display: grid; gap: 12px; margin: 19px 0; }
+    .timeline-item { border-left: 3px solid #d3dfd0; padding: 1px 0 3px 13px; min-width: 0; }
+    .timeline-item.source { border-color: #9cc6a4; }
+    .timeline-item.proposed { border-color: #d5bf8a; }
+    .timeline-item.approved { border-color: #4d9b67; }
+    .timeline-label { color: #718676; font-size: 10px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .timeline-title { color: #253d2d; font-size: 14px; font-weight: 800; margin-top: 4px; overflow-wrap: anywhere; }
+    .timeline-meta { color: #819084; font-size: 11px; margin-top: 3px; }
+    .timeline-summary { color: #536657; font-size: 12px; line-height: 1.5; margin-top: 8px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 125px; overflow: auto; }
+    .timeline-item .button { font-size: 11px; padding: 6px 8px; margin-top: 9px; }
+    .impact-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+    .impact-actions .review-hint { max-width: 360px; }
+    .composer-shell {
+      position: sticky; bottom: 0; margin-top: auto; padding: 13px 22px 16px;
+      background: linear-gradient(#f7f8f400, #f7f8f4 18%, #f7f8f4 100%);
+    }
+    .composer { width: min(820px, 100%); margin: auto; }
+    .chat-form { display: flex; align-items: end; gap: 10px; background: #fffefa; border: 1px solid #cddbcf; border-radius: 16px; padding: 9px 9px 9px 16px; box-shadow: 0 9px 30px #233c2510; }
+    .chat-form textarea { flex: 1; resize: none; border: 0; outline: 0; background: transparent; min-height: 32px; max-height: 140px; padding: 7px 0; color: #25372a; line-height: 1.45; }
+    .chat-form textarea:focus-visible { outline: 0; }
+    .chat-form button { min-width: 71px; }
+    .composer-note { text-align: center; color: #829087; font-size: 11px; margin-top: 9px; }
+    dialog { width: min(620px, calc(100vw - 30px)); max-height: min(84dvh, 850px); overflow: auto; border: 1px solid #d5e0d1; border-radius: 16px; padding: 0; box-shadow: 0 20px 70px #1d372b44; color: #25372a; }
+    dialog::backdrop { background: #172b24aa; }
+    .dialog-body { padding: 25px; }
+    .dialog-head { display: flex; justify-content: space-between; align-items: start; gap: 18px; margin-bottom: 18px; }
+    .dialog-head h2 { font-family: Georgia, serif; font-size: 26px; font-weight: 400; line-height: 1.15; margin: 0 0 7px; }
+    .dialog-head p { color: #748376; font-size: 12px; line-height: 1.5; margin: 0; }
+    .close { border: 0; background: #eef3ec; color: #315340; border-radius: 8px; padding: 5px 9px; font-size: 20px; line-height: 1; }
+    .field { display: grid; gap: 6px; margin: 13px 0; }
+    .field label, .field-legend { font-size: 12px; font-weight: 800; }
+    .field input, .field textarea, .field select { width: 100%; border: 1px solid #cfdccf; border-radius: 9px; background: #fff; color: #25372a; padding: 10px 11px; }
+    .field textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .review-source-list { display: grid; gap: 7px; margin-top: 8px; }
+    .review-source { display: flex; gap: 9px; align-items: start; border: 1px solid #e0e8dd; border-radius: 9px; padding: 9px 10px; font-size: 12px; line-height: 1.4; }
+    .review-source label { display: flex; align-items: start; gap: 9px; flex: 1; min-width: 0; }
+    .review-source input { margin: 2px 0 0; }
+    .review-source .button { font-size: 11px; padding: 5px 7px; flex: none; }
+    .check-label { display: flex; align-items: start; gap: 9px; font-size: 12px; line-height: 1.5; color: #445a49; margin: 16px 0; }
+    .check-label input { margin-top: 2px; }
+    .dialog-actions { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 17px; }
+    .dialog-status { color: #678072; font-size: 12px; margin-top: 11px; min-height: 1em; }
+    .dialog-status.error { color: #a44d43; }
+    .source-document { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; font-size: 13px; max-height: 55dvh; overflow: auto; background: #f7f8f3; border: 1px solid #e3e9df; border-radius: 10px; padding: 14px; }
+    @media (max-width: 850px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { padding: 14px 20px; gap: 0; border-right: 0; border-bottom: 1px solid #d8e1d7; }
+      .sidebar .side-section, .sidebar-foot { display: none; }
+      .brand-sub { display: none; }
+      .workspace { min-height: calc(100dvh - 62px); }
+      .topbar { min-height: 64px; }
+    }
+    @media (max-width: 560px) {
+      .topbar { padding: 11px 16px; }
+      .topbar-sub, .mode-pill { display: none; }
+      .conversation-wrap { padding: 16px 16px 105px; }
+      .intro { padding: 23px 0 20px; }
+      .intro h1 { font-size: 40px; }
+      .composer-shell { padding: 10px 12px 13px; }
+      .composer-note { font-size: 10px; }
+      .field-row { grid-template-columns: 1fr; gap: 0; }
+      .dialog-body { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Workspace">
+      <a class="brand" href="/lab" aria-label="Envoy learning questions">
+        <span class="brand-mark" aria-hidden="true">e</span>
+        <span><span class="brand-name">envoy</span><br><span class="brand-sub">Learning memory</span></span>
+      </a>
+      <section class="side-section" aria-label="Example questions">
+        <div class="side-label">Ask about your history</div>
+        <div class="prompt-list">
+          <button class="prompt" type="button" data-question="How did my phone-drawer focus plan change?">How did my focus plan change?</button>
+          <button class="prompt" type="button" data-question="What did I try when starting to study felt hard?">What helped me start studying?</button>
+          <button class="prompt" type="button" data-question="What evidence challenges my first phone-drawer idea?">What challenged my first idea?</button>
+        </div>
+      </section>
+      <section class="side-section vault-card" aria-label="Selected vault">
+        <div class="side-label">Selected vault</div>
+        <div class="vault-count" id="document-count">—</div>
+        <div class="vault-note">notes in this local snapshot</div>
+        <code class="vault-hash" id="snapshot-hash"></code>
+      </section>
+      <div class="sidebar-foot">Sources stay inspectable. Chat cannot silently rewrite your memory; only a reviewed approval creates a new note.</div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div><div class="topbar-title">Your learning history</div><div class="topbar-sub">Ask, inspect sources, then decide what to remember.</div></div>
+        <div class="topbar-actions">
+          <span class="mode-pill" id="mode-pill">Checking mode</span>
+          <a class="button secondary" href="/lab">Research lab</a>
+          <button class="button secondary" id="capture-open" type="button">+ Capture</button>
+        </div>
+      </header>
+      <main class="conversation-wrap">
+        <div class="mode-banner" role="status">
+          <div class="mode-banner-symbol" aria-hidden="true">◈</div>
+          <div><strong id="mode-title">Checking the selected vault</strong>
+            <p id="mode-detail">Offline mode makes no Qwen or Nemotron calls. Search passages are leads to inspect, not proof that a claim is true.</p>
+          </div>
+        </div>
+        <section id="recent-results" class="recent-results" aria-labelledby="recent-results-heading" hidden>
+          <div class="recent-results-head"><h2 id="recent-results-heading">Recent result notes</h2><span>Check for impact locally</span></div>
+          <div id="recent-results-list" class="recent-results-list"></div>
+        </section>
+        <div id="intro" class="intro">
+          <div class="intro-kicker">A second brain for learning</div>
+          <h1>What changed<br>your mind?</h1>
+          <p>Ask about something you read, tried, or revised. Envoy traces the notes behind it so you can inspect what happened and save a better lesson.</p>
+          <div class="suggestions">
+            <button class="suggestion" type="button" data-question="How did my phone-drawer focus plan change?">How did my focus plan change?</button>
+            <button class="suggestion" type="button" data-question="What did I try when starting to study felt hard?">What did I try next?</button>
+          </div>
+        </div>
+        <div id="conversation" class="conversation" aria-live="polite" aria-relevant="additions"></div>
+      </main>
+      <div class="composer-shell">
+        <div class="composer">
+          <form id="chat-form" class="chat-form">
+            <label for="question" class="sr-only" style="position:absolute;left:-10000px">Ask your learning memory</label>
+            <textarea id="question" rows="1" maxlength="4000" required placeholder="Ask about what you learned or tried…"></textarea>
+            <button class="button" id="send" type="submit">Ask ↗</button>
+          </form>
+          <div class="composer-note">Enter to send · Shift+Enter for a new line · A chat answer never saves a memory.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="source-dialog" aria-labelledby="source-title">
+    <div class="dialog-body">
+      <div class="dialog-head"><div><h2 id="source-title">Source note</h2><p id="source-path"></p></div><button class="close" id="source-close" type="button" aria-label="Close source">×</button></div>
+      <pre id="source-text" class="source-document"></pre>
+    </div>
+  </dialog>
+  <dialog id="capture-dialog" aria-labelledby="capture-heading">
+    <div class="dialog-body">
+      <div class="dialog-head"><div><h2 id="capture-heading">Capture an observation</h2><p>Add a source, attempt, or lesson to the selected vault. This creates a new Markdown note.</p></div><button class="close" id="capture-close" type="button" aria-label="Close capture">×</button></div>
+      <form id="capture-form">
+        <div class="field"><label for="capture-title">Title</label><input id="capture-title" required maxlength="200" placeholder="A study attempt I want to remember"></div>
+        <div class="field-row">
+          <div class="field"><label for="capture-kind">Type</label><select id="capture-kind"><option>attempt</option><option>result</option><option>source</option><option>lesson</option><option>decision</option><option>correction</option></select></div>
+          <div class="field"><label for="capture-date">Effective date</label><input id="capture-date" type="date"></div>
+        </div>
+        <div class="field"><label for="capture-text">What happened?</label><textarea id="capture-text" required maxlength="20000" placeholder="I tried… The result was… I am still uncertain about…"></textarea></div>
+        <div class="dialog-actions"><button class="button" type="submit">Capture note</button><button class="button quiet" id="capture-cancel" type="button">Cancel</button></div>
+        <div class="dialog-status" id="capture-status" role="status"></div>
+      </form>
+    </div>
+  </dialog>
+  <dialog id="revision-dialog" aria-labelledby="revision-heading">
+    <div class="dialog-body">
+      <div class="dialog-head"><div><h2 id="revision-heading">Save a reviewed lesson</h2><p id="revision-description">Inspect and select the passages you trust. Earlier notes remain readable.</p></div><button class="close" id="revision-close" type="button" aria-label="Close revision">×</button></div>
+      <form id="revision-form">
+        <div class="field-legend">Evidence for this revision</div>
+        <div id="revision-source-list" class="review-source-list"></div>
+        <div class="field"><label for="revision-title">New note title</label><input id="revision-title" required maxlength="200" placeholder="What I learned about starting friction"></div>
+        <div class="field-row">
+          <div class="field"><label for="revision-kind">Type</label><select id="revision-kind"><option>lesson</option><option>correction</option><option>decision</option></select></div>
+          <div class="field"><label for="revision-date">Effective date</label><input id="revision-date" type="date"></div>
+        </div>
+        <div class="field"><label for="revision-text">Your revised lesson</label><textarea id="revision-text" required maxlength="20000" placeholder="My old idea was incomplete because… The new evidence suggests… I still need to check…"></textarea></div>
+        <div class="field"><label for="revision-supersedes">Earlier record ID to supersede (required for a correction)</label><input id="revision-supersedes" placeholder="Choose ‘Correct this note’ on a source"></div>
+        <label class="check-label"><input id="revision-confirm" type="checkbox"> I inspected the selected sources and approve writing this new note to my vault.</label>
+        <div class="dialog-actions"><button class="button" id="revision-save" type="submit">Approve and save</button><button class="button quiet" id="revision-cancel" type="button">Cancel</button></div>
+        <div class="dialog-status" id="revision-status" role="status"></div>
+      </form>
+    </div>
+  </dialog>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let sessionId = null;
+    let activeRevision = null;
+    let activeImpactCard = null;
+    let latestStatus = null;
+    let pending = false;
+
+    async function request(url, options) {
+      const response = await fetch(url, options);
+      const value = await response.json();
+      if (!response.ok) throw new Error(value.detail || "Request failed (" + response.status + ")");
+      return value;
+    }
+    function jsonPost(url, body) {
+      return request(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    }
+    function element(tag, className, content) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (content !== undefined) node.textContent = content;
+      return node;
+    }
+    function eventLine(content, error) {
+      const line = element("div", error ? "event error" : "event", content);
+      $("conversation").append(line);
+      line.scrollIntoView({block: "end", behavior: "smooth"});
+    }
+    function updateMode(status) {
+      latestStatus = status;
+      $("document-count").textContent = String(status.documents);
+      $("snapshot-hash").textContent = "snapshot " + status.corpus_hash.slice(0, 12) + "…";
+      if (status.nemotron_configured) {
+        $("mode-pill").textContent = status.qwen_configured ? "Nemotron · Qwen configured" : "Nemotron · lexical";
+        $("mode-title").textContent = "Remote model mode is enabled";
+        $("mode-detail").textContent = "Selected vault passages may be sent to Nebius for Nemotron. " +
+          (status.qwen_configured ? "Qwen is configured as the read-only investigator." :
+            "Retrieval uses the labeled lexical baseline.") +
+          " Citations show provenance, not independently verified meaning.";
+      } else {
+        $("mode-pill").textContent = "Evidence-only · local";
+        $("mode-title").textContent = "Local evidence-only mode";
+        $("mode-detail").textContent = "Offline mode makes no Qwen or Nemotron calls. " +
+          "Search passages are leads to inspect, not proof that a claim is true.";
+      }
+      renderRecentResults(status.recent_results);
+    }
+    function renderRecentResults(results) {
+      const list = $("recent-results-list");
+      list.replaceChildren();
+      const recent = Array.isArray(results) ? results.filter((item) => item && item.source_path).slice(0, 5) : [];
+      for (const item of recent) {
+        const title = item.title || item.source_path;
+        const button = element("button", "recent-result");
+        button.type = "button";
+        button.setAttribute("aria-label", "Check impact of " + title);
+        const summary = element("span", "");
+        summary.append(element("span", "recent-result-title", title));
+        const meta = [item.effective_date, item.review_status].filter(Boolean).join(" · ");
+        if (meta) summary.append(element("span", "recent-result-meta", meta));
+        button.append(summary, element("span", "recent-result-action", "Check impact ↗"));
+        button.onclick = async () => {
+          button.disabled = true;
+          $("intro").hidden = true;
+          const card = impactCard();
+          try { await checkImpact(item.source_path, card); }
+          finally { button.disabled = false; }
+        };
+        list.append(button);
+      }
+      $("recent-results").hidden = recent.length === 0;
+    }
+    async function refreshStatus() { updateMode(await request("/api/status")); }
+    function markPriorReviewsStale() {
+      document.querySelectorAll(".review-button, .impact-draft-button").forEach((button) => {
+        button.disabled = true;
+        button.title = "The vault changed. Ask again to review the latest snapshot.";
+      });
+    }
+    async function openSource(turn, docId) {
+      try {
+        const source = await request("/api/source/" + encodeURIComponent(turn.review_id) + "/" + encodeURIComponent(docId));
+        $("source-title").textContent = source.title;
+        $("source-path").textContent = source.source_path || "";
+        $("source-text").textContent = source.text;
+        $("source-dialog").showModal();
+      } catch (error) {
+        if ($("revision-dialog").open) {
+          $("revision-status").textContent = error.message;
+          $("revision-status").className = "dialog-status error";
+        } else eventLine(error.message, true);
+      }
+    }
+    function openRevision(turn, supersedes, proposal = null, impactCard = null) {
+      activeRevision = turn;
+      activeImpactCard = impactCard;
+      $("revision-form").reset();
+      $("revision-status").textContent = "";
+      $("revision-heading").textContent = proposal ? "Review a possible revision" : "Save a reviewed lesson";
+      $("revision-description").textContent = proposal?.origin === "nemotron_draft_for_user_review"
+        ? "Nemotron drafted this wording from the shown passages. Inspect the sources, edit as needed, and decide whether it is supported."
+        : proposal
+          ? "This local scaffold is a prompt for your own conclusion. Inspect the sources and replace the draft before approving."
+          : "Inspect and select the passages you trust. Earlier notes remain readable.";
+      $("revision-kind").value = proposal?.kind || (supersedes ? "correction" : "lesson");
+      $("revision-supersedes").required = $("revision-kind").value === "correction";
+      $("revision-supersedes").value = proposal?.supersedes || supersedes || "";
+      if (proposal) {
+        $("revision-title").value = proposal.title || "";
+        $("revision-text").value = proposal.text || "";
+        $("revision-date").value = proposal.effective_date || "";
+      }
+      const list = $("revision-source-list");
+      list.replaceChildren();
+      for (const hit of turn.evidence || []) {
+        const row = element("div", "review-source");
+        const label = element("label", "");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox"; checkbox.value = hit.evidence_id; checkbox.className = "revision-evidence";
+        checkbox.checked = Boolean(proposal?.evidence_ids?.includes(hit.evidence_id));
+        label.append(checkbox, element("span", "", hit.evidence_id + " · " + hit.title + " — " + hit.quote.slice(0, 120)));
+        const inspect = element("button", "button secondary", "Inspect");
+        inspect.type = "button";
+        inspect.onclick = () => openSource(turn, hit.doc_id);
+        row.append(label, inspect);
+        list.append(row);
+      }
+      $("revision-dialog").showModal();
+      $("revision-title").focus();
+    }
+    function timelineItem(item, review) {
+      const role = item.role || "source";
+      const labels = {prior: "Earlier view", source: "Evidence note", proposed: "Proposed revision · not saved", approved: "Approved revision"};
+      const node = element("div", "timeline-item " + role);
+      node.append(element("div", "timeline-label", item.label || labels[role] || role));
+      node.append(element("div", "timeline-title", item.title || "Untitled note"));
+      const details = [item.effective_date || item.date || item.captured_at, item.kind,
+        role === "approved" ? item.source_path : null].filter(Boolean).join(" · ");
+      if (details) node.append(element("div", "timeline-meta", details));
+      const summary = item.summary || item.quote || item.text;
+      if (summary) node.append(element("div", "timeline-summary", summary));
+      if (item.doc_id && review.review_id) {
+        const inspect = element("button", "button secondary", "Inspect full note");
+        inspect.type = "button";
+        inspect.onclick = () => openSource(review, item.doc_id);
+        node.append(inspect);
+      }
+      return node;
+    }
+    function impactCard() {
+      const card = element("section", "impact-card");
+      card.setAttribute("aria-label", "Impact review for saved note");
+      card.append(element("div", "impact-kicker", "Saved note · local check"),
+        element("h2", "", "Checking earlier decisions…"),
+        element("p", "", "Checking whether this note may relate to an earlier decision."));
+      $("conversation").append(card);
+      card.scrollIntoView({block: "end", behavior: "smooth"});
+      return card;
+    }
+    function renderImpact(impact, card) {
+      card.replaceChildren();
+      const possible = impact.status === "possible_impact";
+      card.append(element("div", "impact-kicker", "Saved note · local candidate check"),
+        element("h2", "", possible ? "Possible impact on an earlier decision" : "No earlier decision surfaced"),
+        element("p", "", impact.reason || (possible
+          ? "This new note may relate to an earlier decision. Review both before drawing a conclusion."
+          : "The local check found no candidate in this snapshot. You can still investigate it in chat.")));
+      if (possible) card.append(element("p", "impact-caution",
+        "A local match suggests a relationship. Inspect both notes before deciding whether to revise. Only your approval saves a revision."));
+      const nemotronDraft = impact.proposal?.origin === "nemotron_draft_for_user_review";
+      const timeline = element("div", "impact-timeline");
+      const rawItems = impact.timeline?.length ? impact.timeline :
+        [impact.prior && {...impact.prior, role: "prior"}, impact.source && {...impact.source, role: "source"}].filter(Boolean);
+      const items = rawItems.map((item) => {
+        const note = item.role === "prior" ? impact.prior : item.role === "source" ? impact.source : null;
+        return {...item, captured_at: item.captured_at || note?.record?.captured_at};
+      });
+      for (const item of items) timeline.append(timelineItem(item, impact));
+      if (impact.proposal && !items.some((item) => item.role === "proposed")) timeline.append(timelineItem({
+        role: "proposed", title: impact.proposal.title, kind: impact.proposal.kind,
+        effective_date: impact.proposal.effective_date, summary: impact.proposal.text,
+        label: nemotronDraft ? "Nemotron draft · not saved" : "Local review scaffold · not saved",
+      }, impact));
+      if (timeline.childElementCount) card.append(timeline);
+      const actions = element("div", "impact-actions");
+      if (impact.proposal && possible) {
+        const review = element("button", "button review-button", "Review proposed revision");
+        review.type = "button";
+        review.onclick = () => openRevision(impact, impact.proposal.supersedes, impact.proposal, card);
+        actions.append(review);
+        if (latestStatus?.nemotron_configured && !nemotronDraft) {
+          const draft = element("button", "button secondary impact-draft-button", "Draft with Nemotron");
+          draft.type = "button";
+          draft.onclick = async () => {
+            draft.disabled = true;
+            draft.textContent = "Drafting with Nemotron…";
+            try {
+              const updated = await jsonPost("/api/impact", {
+                source_path: impact.source.source_path, draft_with_model: true,
+              });
+              renderImpact(updated, card);
+            } catch (error) {
+              draft.textContent = "Draft with Nemotron";
+              actions.append(element("span", "dialog-status error", error.message));
+            } finally { draft.disabled = false; }
+          };
+          actions.append(draft);
+        }
+      } else if (possible) {
+        actions.append(element("span", "review-hint",
+          "This is a possible link. Record a result or correction after checking it to draft a revision."));
+      }
+      if (possible && impact.prior && impact.source) {
+        const investigate = element("button", "button secondary", "Investigate in chat");
+        investigate.type = "button";
+        investigate.onclick = () => {
+          const sourceTitle = (impact.source.title || "new note").slice(0, 160);
+          const priorTitle = (impact.prior.title || "earlier decision").slice(0, 160);
+          ask("How does my new note ‘" + sourceTitle + "’ bear on my earlier decision ‘" + priorTitle + "’? Inspect dated sources, distinguish what I observed from what a source claims, and explain what remains uncertain.");
+        };
+        actions.append(investigate, element("span", "review-hint", "Uses the chat mode shown above."));
+      }
+      if (actions.childElementCount) card.append(actions);
+      if (impact.draft_error) card.append(element("p", "dialog-status error", impact.draft_error));
+      card.scrollIntoView({block: "end", behavior: "smooth"});
+    }
+    function renderImpactError(card, sourcePath, message) {
+      card.replaceChildren();
+      card.append(element("div", "impact-kicker", "Saved note · local check"),
+        element("h2", "", "Impact check unavailable"),
+        element("p", "", "The note was saved as " + sourcePath + ". " + message));
+      const retry = element("button", "button secondary", "Retry impact check");
+      retry.type = "button";
+      retry.onclick = () => checkImpact(sourcePath, card);
+      card.append(retry);
+    }
+    async function checkImpact(sourcePath, card) {
+      card.replaceChildren(element("div", "impact-kicker", "Saved note · local check"),
+        element("h2", "", "Checking earlier decisions…"),
+        element("p", "", "Checking whether this note may relate to an earlier decision."));
+      try { renderImpact(await jsonPost("/api/impact", {source_path: sourcePath}), card); }
+      catch (error) { renderImpactError(card, sourcePath, error.message); }
+    }
+    function addSourceCard(turn, hit) {
+      const card = element("article", "source-card");
+      const title = element("div", "source-title");
+      title.append(element("span", "source-id", hit.evidence_id), document.createTextNode(hit.title));
+      card.append(title);
+      const record = hit.record || {};
+      card.append(element("div", "source-meta",
+        [record.kind, record.effective_date || record.captured_at, record.status || record.review_status,
+          hit.source_path].filter(Boolean).join(" · ")));
+      card.append(element("blockquote", "", hit.quote));
+      const actions = element("div", "source-actions");
+      const open = element("button", "button secondary", "Open full source");
+      open.type = "button"; open.onclick = () => openSource(turn, hit.doc_id);
+      actions.append(open);
+      const correct = element("button", "button quiet", "Correct this note");
+      correct.type = "button"; correct.onclick = () => openRevision(turn, record.record_id || hit.doc_id);
+      actions.append(correct);
+      card.append(actions);
+      return card;
+    }
+    function addRelatedCard(turn, note) {
+      const card = element("article", "related-card");
+      const info = element("div", "");
+      info.append(element("div", "related-title", note.title));
+      const relationships = (note.connections || []).map((edge) => edge.direction + " " + edge.type).join(" · ");
+      info.append(element("div", "related-kind",
+        [note.kind, note.effective_date, relationships].filter(Boolean).join(" · ")));
+      const open = element("button", "button secondary", "Open note");
+      open.type = "button"; open.onclick = () => openSource(turn, note.doc_id);
+      card.append(info, open);
+      return card;
+    }
+    function renderTurn(turn) {
+      if (turn.history_reset) eventLine("The vault changed. This answer uses a fresh snapshot and conversation context.", false);
+      const message = element("article", "message assistant");
+      const head = element("div", "assistant-head");
+      head.append(element("span", "assistant-avatar", "e"),
+        element("span", "assistant-name", turn.answer_status === "answered" ? "Envoy" : "Evidence review"));
+      const retrieval = turn.retrieval || {};
+      const trace = turn.answer_status === "answered"
+        ? (turn.answer_model || "Nemotron") + " · " + (retrieval.mode || "retrieval")
+        : "No model answer · " + (retrieval.mode || "retrieval");
+      head.append(element("span", "trace-badge", trace.replaceAll("_", " ")));
+      message.append(head);
+      message.append(element("div", turn.answer ? "answer" : "answer evidence-only",
+        turn.answer || (turn.evidence.length
+          ? "I found passages to inspect. There is no generated answer in this mode."
+          : "I found no matching passages in this selected snapshot.")));
+      if (turn.limitations && turn.limitations.length) {
+        const limits = element("div", "limits");
+        for (const item of turn.limitations) limits.append(element("p", "", item));
+        message.append(limits);
+      }
+      if (turn.evidence && turn.evidence.length) {
+        const section = element("div", "section-head");
+        section.append(element("h2", "", "Source passages"), element("span", "", turn.evidence.length + " exact span(s)"));
+        message.append(section);
+        const sources = element("div", "source-list");
+        for (const hit of turn.evidence) sources.append(addSourceCard(turn, hit));
+        message.append(sources);
+      }
+      if (turn.related_notes && turn.related_notes.length) {
+        const section = element("div", "section-head");
+        section.append(element("h2", "", "Linked notes"), element("span", "", "From vault links and revisions"));
+        message.append(section);
+        const related = element("div", "related-list");
+        for (const note of turn.related_notes) related.append(addRelatedCard(turn, note));
+        message.append(related);
+      }
+      if (turn.evidence && turn.evidence.length) {
+        const actions = element("div", "review-actions");
+        const save = element("button", "button secondary review-button", "Review & save a revision");
+        save.type = "button"; save.disabled = Boolean(turn.snapshot_stale);
+        save.onclick = () => openRevision(turn, "");
+        actions.append(save, element("span", "review-hint",
+          turn.snapshot_stale ? "The vault changed while this answer was prepared; ask again first." :
+            "Nothing is saved until you inspect evidence and approve."));
+        message.append(actions);
+      }
+      $("conversation").append(message);
+      message.scrollIntoView({block: "end", behavior: "smooth"});
+    }
+    async function ask(question) {
+      const trimmed = question.trim();
+      if (!trimmed || pending) return;
+      pending = true;
+      $("send").disabled = true;
+      $("intro").hidden = true;
+      $("conversation").append(element("div", "message user", trimmed));
+      $("question").value = "";
+      const waiting = element("div", "event", "Looking through the selected vault…");
+      $("conversation").append(waiting);
+      waiting.scrollIntoView({block: "end", behavior: "smooth"});
+      try {
+        const payload = {question: trimmed};
+        if (sessionId) payload.session_id = sessionId;
+        const turn = await jsonPost("/api/chat", payload);
+        sessionId = turn.session_id;
+        waiting.remove();
+        renderTurn(turn);
+        await refreshStatus().catch((error) => eventLine("Vault status unavailable: " + error.message, true));
+      } catch (error) {
+        waiting.textContent = "Could not complete this turn: " + error.message;
+        waiting.className = "event error";
+      } finally {
+        pending = false;
+        $("send").disabled = false;
+        $("question").focus();
+      }
+    }
+    $("chat-form").onsubmit = (event) => { event.preventDefault(); ask($("question").value); };
+    $("question").onkeydown = (event) => {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+        event.preventDefault(); $("chat-form").requestSubmit();
+      }
+    };
+    document.querySelectorAll("[data-question]").forEach((button) => {
+      button.onclick = () => { $("question").value = button.dataset.question; ask(button.dataset.question); };
+    });
+    $("capture-open").onclick = () => { $("capture-status").textContent = ""; $("capture-dialog").showModal(); };
+    $("capture-close").onclick = $("capture-cancel").onclick = () => $("capture-dialog").close();
+    $("revision-close").onclick = $("revision-cancel").onclick = () => $("revision-dialog").close();
+    $("revision-kind").onchange = () => {
+      $("revision-supersedes").required = $("revision-kind").value === "correction";
+    };
+    $("source-close").onclick = () => $("source-dialog").close();
+    $("capture-form").onsubmit = async (event) => {
+      event.preventDefault();
+      const status = $("capture-status"); status.textContent = "Saving…"; status.className = "dialog-status";
+      const submit = $("capture-form").querySelector('button[type="submit"]');
+      submit.disabled = true;
+      const capturedTitle = $("capture-title").value.trim();
+      let value;
+      try {
+        value = await jsonPost("/api/capture", {
+          title: $("capture-title").value, text: $("capture-text").value,
+          kind: $("capture-kind").value, effective_date: $("capture-date").value || null
+        });
+      } catch (error) {
+        status.textContent = error.message; status.className = "dialog-status error";
+        return;
+      } finally { submit.disabled = false; }
+      $("capture-dialog").close(); $("capture-form").reset();
+      markPriorReviewsStale();
+      $("intro").hidden = true;
+      eventLine("Captured “" + capturedTitle + "” in your vault.", false);
+      const card = impactCard();
+      await refreshStatus().catch((error) => eventLine("Vault status unavailable: " + error.message, true));
+      await checkImpact(value.saved, card);
+    };
+    $("revision-form").onsubmit = async (event) => {
+      event.preventDefault();
+      const status = $("revision-status"); status.className = "dialog-status";
+      const evidence_ids = [...document.querySelectorAll(".revision-evidence:checked")].map((item) => item.value);
+      if (!activeRevision || !evidence_ids.length) {
+        status.textContent = "Select at least one passage you inspected."; status.className = "dialog-status error"; return;
+      }
+      if (!$("revision-confirm").checked) {
+        status.textContent = "Confirm that you inspected the selected sources."; status.className = "dialog-status error"; return;
+      }
+      if (activeRevision.proposal?.requires_edit &&
+          $("revision-text").value.trim() === activeRevision.proposal.text.trim()) {
+        status.textContent = "Replace the local scaffold with your own conclusion before approving.";
+        status.className = "dialog-status error";
+        return;
+      }
+      status.textContent = "Saving reviewed memory…";
+      const submit = $("revision-save");
+      submit.disabled = true;
+      try {
+        const approved = {
+          review_id: activeRevision.review_id, title: $("revision-title").value,
+          text: $("revision-text").value, kind: $("revision-kind").value,
+          effective_date: $("revision-date").value || null,
+          supersedes: $("revision-supersedes").value || null,
+          evidence_ids: evidence_ids, confirm: true
+        };
+        const value = await jsonPost("/api/approve", approved);
+        const impact = activeImpactCard;
+        $("revision-dialog").close(); $("revision-form").reset();
+        activeRevision = null; activeImpactCard = null;
+        markPriorReviewsStale();
+        if (impact) {
+          impact.querySelector(".timeline-item.proposed")?.remove();
+          impact.querySelector(".review-button")?.remove();
+          impact.querySelector(".impact-draft-button")?.remove();
+          impact.querySelector(".impact-timeline")?.append(timelineItem({
+            role: "approved", title: approved.title, text: approved.text, kind: approved.kind,
+            effective_date: approved.effective_date, source_path: value.saved,
+          }, {}));
+          impact.append(element("p", "impact-caution",
+            "Approved revision saved. The earlier decision and source remain in the vault."));
+        }
+        eventLine("Saved " + value.saved + ". Ask again to include the approved note in a fresh answer.", false);
+        await refreshStatus().catch((error) => eventLine("Vault status unavailable: " + error.message, true));
+      } catch (error) { status.textContent = error.message; status.className = "dialog-status error"; }
+      finally { submit.disabled = false; }
+    };
+    refreshStatus().catch((error) => {
+      $("mode-title").textContent = "Vault status unavailable";
+      $("mode-detail").textContent = error.message;
+    });
+  </script>
+</body>
+</html>

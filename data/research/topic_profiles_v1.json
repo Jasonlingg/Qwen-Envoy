@@ -1,0 +1,23 @@
+{
+  "schema_version": "weekly-radar-topics-v1",
+  "topics": [
+    {
+      "id": "tool-using-agents",
+      "name": "Tool-using AI agents",
+      "query": "all:\"tool use\" OR all:\"search agent\"",
+      "positive_examples": ["Agents that search or inspect external evidence in multiple steps"],
+      "exclusions": ["Robotics-only tool-use papers without information retrieval"],
+      "keywords": ["agent", "tool use", "retrieval", "search"],
+      "project_context": "Evidence-backed Qwen code-execution worker for an Obsidian learning library"
+    },
+    {
+      "id": "small-model-training",
+      "name": "Small-model training and evaluation",
+      "query": "all:\"small language model\" OR all:\"language model distillation\"",
+      "positive_examples": ["Measured improvements to compact model tool use or evidence quality"],
+      "exclusions": ["Architecture-only papers with no comparable task evaluation"],
+      "keywords": ["small language model", "distillation", "tool use", "evaluation"],
+      "project_context": "Compare trained and base Qwen on the same held-out evidence task"
+    }
+  ]
+}

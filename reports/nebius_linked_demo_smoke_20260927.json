@@ -1,0 +1,220 @@
+{
+  "kind": "linked_synthetic_live_nemotron_smoke",
+  "timestamp_utc": "2026-09-27T16:38:00.370937+00:00",
+  "question": "How did my focus plan change from June to July, and what did I decide to measure next?",
+  "corpus_hash": "92186559398144adf01851599b0057a616b0b044df93c8fde4c7fb7bb8180a41",
+  "provider_calls": [
+    {
+      "requested_model": "nvidia/Nemotron-3_5-Lightning",
+      "max_tokens": 1024,
+      "served_model": "nvidia/Nemotron-3_5-Lightning",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 188,
+        "total_tokens": 205,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 188
+      }
+    },
+    {
+      "requested_model": "nvidia/Nemotron-3_5-Lightning",
+      "max_tokens": 4096,
+      "served_model": "nvidia/Nemotron-3_5-Lightning",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 373,
+        "prompt_tokens": 1571,
+        "total_tokens": 1944,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1571
+      }
+    }
+  ],
+  "answer_status": "answered",
+  "answer_model": "nvidia/Nemotron-3_5-Lightning",
+  "answer_served_model": "nvidia/Nemotron-3_5-Lightning",
+  "route": {
+    "investigate": true,
+    "query": "focus plan changes June July measurements",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_37f0d10f187a6a77ab0242a2",
+      "source_path": "Learning/Concepts/Plans Are Not Outcomes.md",
+      "start": 159,
+      "end": 732
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_6a43480bce8a5f2930966bdd",
+      "source_path": "Learning/Life/2026-07-18-focus-decision.md",
+      "start": 153,
+      "end": 866
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+      "source_path": "Learning/Life/2026-06-10-focus-plan.md",
+      "start": 104,
+      "end": 938
+    },
+    {
+      "evidence_id": "E4",
+      "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+      "source_path": "Learning/Life/2026-07-04-focus-correction.md",
+      "start": 1055,
+      "end": 1194
+    }
+  ],
+  "related_notes": [
+    {
+      "record_id": "research-worker-decision-2026-09-12",
+      "source_path": "Learning/Research/2026-09-12-worker-decision.md"
+    },
+    {
+      "record_id": "math-practice-plan-2026-09-05",
+      "source_path": "Learning/Homework/2026-09-05-practice-plan.md"
+    }
+  ],
+  "answer": "In June, the user attempted a phone-drawer plan for 25-minute work blocks, noting fewer phone checks but not measuring work output; by July 4, a correction superseded that explanation, and on July 18 a new experiment was launched to log minutes from sitting down to starting a concrete action, comparing logs informally. The user decided to measure the time between sitting down and beginning the next action as the next focus metric. [E3] [E4] [E2]",
+  "claims": [
+    {
+      "text": "In June, the user attempted a phone-drawer plan for 25-minute work blocks, noting fewer phone checks but not measuring work output.",
+      "evidence_ids": [
+        "E3"
+      ]
+    },
+    {
+      "text": "By July 4, a correction superseded the June phone-only explanation.",
+      "evidence_ids": [
+        "E4"
+      ]
+    },
+    {
+      "text": "On July 18, a new experiment was launched to log minutes from sitting down to starting a concrete action, comparing logs informally.",
+      "evidence_ids": [
+        "E2"
+      ]
+    },
+    {
+      "text": "The user decided to measure the time between sitting down and beginning the next action as the next focus metric.",
+      "evidence_ids": [
+        "E2"
+      ]
+    }
+  ],
+  "limitations": [
+    "The June note records an attempt and early interpretation, not evidence that the phone was the main cause of lost time.",
+    "The July 18 plan states it is a decision and measurement plan, not a completed experiment; no results are recorded.",
+    "The correction on July 4 supersedes the June plan but does not itself provide measured outcomes for the July experiment."
+  ],
+  "checks": {
+    "claim_count": 4,
+    "claims_with_valid_evidence": 4,
+    "claims": [
+      {
+        "text": "In June, the user attempted a phone-drawer plan for 25-minute work blocks, noting fewer phone checks but not measuring work output.",
+        "evidence": [
+          {
+            "evidence_id": "E3",
+            "quote": "# Focus plan, June 10\n\nI thought putting my phone in a drawer would solve most of my study interruptions. My initial plan was to do a 25-minute work block with the phone out of reach, then take a five-minute break. I tried this for three morning sessions. I wrote down fewer phone checks in those sessions, but I did not measure total work completed or compare the sessions with a similar week. This note records an attempt and an early interpretation, not evidence that the phone was the main cause of lost time.\n\nThe biggest unresolved question was what happened when I sat down without a clear next action. I sometimes spent the first ten minutes deciding which problem to start. I planned to test that separately. A later note, `life-focus-correction-2026-07-04`, revises my explanation; the drawer plan remains here as history.\n\n",
+            "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+            "title": "2026-06-10-focus-plan",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-06-10-focus-plan.md",
+            "record": {
+              "kind": "attempt",
+              "captured_at": "2026-06-10",
+              "status": "superseded"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "By July 4, a correction superseded the June phone-only explanation.",
+        "evidence": [
+          {
+            "evidence_id": "E4",
+            "quote": "## Linked history\n\n- [[Learning/Life/2026-06-10-focus-plan|Earlier attempt]]\n- [[Learning/Life/2026-07-18-focus-decision|Next experiment]]\n",
+            "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+            "title": "2026-07-04-focus-correction",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-07-04-focus-correction.md",
+            "record": {
+              "kind": "correction",
+              "captured_at": "2026-07-04",
+              "status": "reviewed",
+              "supersedes": "life-focus-plan-2026-06-10"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "On July 18, a new experiment was launched to log minutes from sitting down to starting a concrete action, comparing logs informally.",
+        "evidence": [
+          {
+            "evidence_id": "E2",
+            "quote": "# Next focus experiment, July 18\n\nFor the next two weeks, I will write the first concrete action on a card before each morning work block, silence notifications for 30 minutes, and log the minutes from sitting down to starting that action. I will compare those logs with my previous sessions, while treating the comparison as informal because task difficulty and location may differ.\n\nThis is a decision and a measurement plan, not a completed experiment. I have not recorded the two-week results here. If the logs show little change or the routine is too annoying to keep, I will stop recommending it as my default. This decision draws on the July 4 correction, which superseded my June phone-only explanation.\n\n",
+            "doc_id": "vault_6a43480bce8a5f2930966bdd",
+            "title": "2026-07-18-focus-decision",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-07-18-focus-decision.md",
+            "record": {
+              "kind": "decision",
+              "captured_at": "2026-07-18",
+              "status": "planned"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "The user decided to measure the time between sitting down and beginning the next action as the next focus metric.",
+        "evidence": [
+          {
+            "evidence_id": "E2",
+            "quote": "# Next focus experiment, July 18\n\nFor the next two weeks, I will write the first concrete action on a card before each morning work block, silence notifications for 30 minutes, and log the minutes from sitting down to starting that action. I will compare those logs with my previous sessions, while treating the comparison as informal because task difficulty and location may differ.\n\nThis is a decision and a measurement plan, not a completed experiment. I have not recorded the two-week results here. If the logs show little change or the routine is too annoying to keep, I will stop recommending it as my default. This decision draws on the July 4 correction, which superseded my June phone-only explanation.\n\n",
+            "doc_id": "vault_6a43480bce8a5f2930966bdd",
+            "title": "2026-07-18-focus-decision",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-07-18-focus-decision.md",
+            "record": {
+              "kind": "decision",
+              "captured_at": "2026-07-18",
+              "status": "planned"
+            }
+          }
+        ],
+        "supports_claim": null
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "note": "Reference integrity only; human review must assess every claim and the answer."
+  },
+  "semantic_support": "pending independent human review"
+}

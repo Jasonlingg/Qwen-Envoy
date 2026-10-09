@@ -1,0 +1,114 @@
+{
+  "schema_version": "research-benchmark-v1",
+  "benchmark_id": "research-library-transfer-development-v1",
+  "status": "PROVISIONAL agent-authored development questions and reference answers; source anchors mechanically checked, human reference review and model runs pending. Not held-out evidence.",
+  "domain": "Code-execution investigation of a frozen public AI-paper research library",
+  "corpus_hash": "9a9c1d750daf5647898eb18681a5f75775ba76047713316dcc5583f6ed201598",
+  "reserved_doc_ids": [
+    "arxiv_2112_09332v3",
+    "arxiv_2210_08726v3",
+    "arxiv_2302_04761v1",
+    "arxiv_2305_11738v4",
+    "arxiv_2305_14251v2",
+    "arxiv_2305_14627v2",
+    "arxiv_2305_15294v2",
+    "arxiv_2307_16789v2",
+    "arxiv_2307_16883v1",
+    "arxiv_2308_03688v3",
+    "arxiv_2310_03214v2",
+    "arxiv_2311_12983v1",
+    "arxiv_2402_11651v2",
+    "arxiv_2402_14207v2",
+    "arxiv_2403_12881v1",
+    "arxiv_2501_05366v1",
+    "arxiv_2503_07826v1",
+    "arxiv_2504_03160v4",
+    "arxiv_2504_12516v1",
+    "arxiv_2506_01716v1"
+  ],
+  "training_exclusion": "Keep these 20 source families and these questions, reference answers, grader notes, and source anchors out of candidate-training trajectories. The questions are development material, not a held-out score; candidate training uses source-disjoint papers.",
+  "task_protocol": "Qwen writes Python against search(), read(), and extract() in the frozen public-paper snapshot. The host checks exact evidence spans; human blind review must judge claim support and uncertainty. This file supplies provisional development references only.",
+  "questions": [
+    {
+      "id": "D01",
+      "split": "pilot_evaluation",
+      "learning_skill": "explain_one_paper_mechanism",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 1,
+      "required_doc_ids": ["arxiv_2302_04761v1"],
+      "question": "In Toolformer, how are candidate API calls selected for fine-tuning, and what does its selection objective actually measure? Explain why that objective alone would not certify that a cited claim in our research library is supported.",
+      "answer": "Toolformer first has a language model propose API calls in text. It retains calls when adding the call and its response reduces weighted future-token prediction loss relative to the better of making no call or making the call without its response, then fine-tunes on retained calls. That measures usefulness for the paper's language-modeling objective, not whether a particular research claim is entailed by a cited passage. Claim-to-passage support would need a separate check in this library.",
+      "grader_notes": [
+        "Pass requires the propose/filter/fine-tune sequence and a weighted future-token loss comparison against no call or a call without its response.",
+        "Do not equate Toolformer's reported downstream gains or its filtering loss with semantic citation support in this project.",
+        "The local support check is a project inference, not a Toolformer result."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2302_04761v1", "needle": "We then use a self-supervised loss to determine which of these API calls actually help the model in predicting future tokens."},
+        {"doc_id": "arxiv_2302_04761v1", "needle": "Finally, we finetune the LM itself on the API calls that it considers useful."},
+        {"doc_id": "arxiv_2302_04761v1", "needle": "the latter is the minimum of the losses obtained from (i) doing no API call at all and (ii) doing an API call, but not providing the response."}
+      ]
+    },
+    {
+      "id": "D02",
+      "split": "pilot_evaluation",
+      "learning_skill": "compare_prior_work",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2210_08726v3", "arxiv_2305_11738v4"],
+      "question": "A generated research note contains an unsupported claim. Compare the roles of external evidence in RARR's research-and-revision workflow and CRITIC's tool-interactive correction loop. What would remain to test before saying either improves our paper-note drafts?",
+      "answer": "RARR researches an existing passage by generating queries, retrieving evidence, and revising unsupported portions while trying to preserve the original text. CRITIC starts from an initial output, uses external tools to critique aspects of it, and revises from the feedback; its verification and correction can repeat. Both use evidence or tool feedback after a draft, but their reported evaluations do not establish performance on this research library. A local comparison would hold draft notes and the source corpus fixed, then review corrected claim support, unnecessary edits, failures, and cost.",
+      "grader_notes": [
+        "Pass requires both papers and distinguishes RARR's preservation of original text while improving attribution from CRITIC's tool-feedback correction loop.",
+        "Do not claim that either paper evaluated Envoy, this frozen library, or our exact note-writing workflow.",
+        "Treat the matched local comparison as a proposed experiment, not a published result."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2210_08726v3", "needle": "post-edits the output to fix unsupported content while preserving the original output as much as possible"},
+        {"doc_id": "arxiv_2305_11738v4", "needle": "starting with an initial output, CRITIC interacts with appropriate tools to evaluate certain aspects of the text, and then revises the output based on the feedback obtained during this validation process"}
+      ]
+    },
+    {
+      "id": "D03",
+      "split": "pilot_evaluation",
+      "learning_skill": "critique_evidence_support",
+      "expected_answerability": "sufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2305_14251v2", "arxiv_2305_14627v2"],
+      "question": "A teammate says a research answer is trustworthy because every sentence has a real citation ID. Using ALCE and FActScore, explain why that check is incomplete and what a reviewer would inspect instead. Keep the papers' evaluation settings distinct from our proposed review.",
+      "answer": "A real citation ID only shows that a source can be located. ALCE evaluates whether cited passages actually support the output and whether citations are irrelevant, alongside fluency and correctness. FActScore decomposes long-form text into atomic facts and measures the proportion supported by a reliable knowledge source; its reported evaluations include people biographies, not our paper answers. For this library, a reviewer would inspect each answer claim against its exact cited passage and separately record missing or irrelevant evidence. That is a proposed adaptation, not a score established for our system by either paper.",
+      "grader_notes": [
+        "Pass requires the provenance-versus-semantic-support distinction and accurately describes ALCE citation recall/precision.",
+        "Pass requires FActScore's atomic-fact support idea without treating its biography results as our research-answer results.",
+        "Exact source spans still require semantic review; do not claim that mechanical validity proves entailment."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2305_14627v2", "needle": "citation recall, which determines if the output is entirely supported by cited passages, and (2) citation precision, which identifies any irrelevant citations"},
+        {"doc_id": "arxiv_2305_14251v2", "needle": "breaks a generation into a series of atomic facts and computes the percentage of atomic facts supported by a reliable knowledge source"}
+      ]
+    },
+    {
+      "id": "D04",
+      "split": "pilot_evaluation",
+      "learning_skill": "calibrated_insufficiency",
+      "expected_answerability": "insufficient",
+      "minimum_distinct_sources": 2,
+      "required_doc_ids": ["arxiv_2403_12881v1", "arxiv_2503_07826v1"],
+      "question": "Inspect Agent-FLAN and Magnet in this frozen collection. What did each train and evaluate, and do those results establish that a base-Qwen3-8B LoRA trained on our search/read/extract trajectories will gain at least three fully supported answers on twelve new held-out research-library questions while keeping the GPU bill below $15? Explain the missing evidence and the smallest fair local test.",
+      "answer": "No. Agent-FLAN redesigns agent-tuning data for Llama2-7B and reports results on agent tasks and a separate Agent-H hallucination benchmark. Magnet synthesizes multi-turn function-calling trajectories, fine-tunes a Qwen2.5-Coder 14B model with supervised and preference training, and reports results on BFCL-v3 and ToolQuery. Those are relevant precedents for agent-data design, but neither evaluates our base versus LoRA Qwen on exact-passage-supported research answers or measures the GPU bill for this run. A fair local test would freeze paper and question IDs, keep prompts, tools, decoding, and hardware class matched, blindly review answer support, and record failures, latency, and total cost. That test and budget gate are proposals for Envoy, not findings from either paper.",
+      "grader_notes": [
+        "Pass requires correctly identifying Agent-FLAN's Llama2-7B agent-tuning and Agent-H evaluation, plus Magnet's Qwen2.5-Coder 14B SFT/preference training and function-calling evaluation, each supported by its own paper.",
+        "Pass requires an explicit refusal to infer this exact Qwen supported-answer gain or $15 cost from the different published settings.",
+        "The proposed test must compare trained Qwen with base on the same new held-out questions and measure support and cost separately.",
+        "The anchors support what the papers studied; they do not provide the absent local result."
+      ],
+      "source_anchors": [
+        {"doc_id": "arxiv_2403_12881v1", "needle": "Agent-FLAN enables Llama2-7B to outperform prior best works by 3.5% across various agent evaluation datasets"},
+        {"doc_id": "arxiv_2403_12881v1", "needle": "we construct the Agent-H benchmark, which assesses the hallucination issues of LLMs from various aspects."},
+        {"doc_id": "arxiv_2503_07826v1", "needle": "training with the positive trajectories with supervised fine-tuning and preference optimization against negative trajectories"},
+        {"doc_id": "arxiv_2503_07826v1", "needle": "By SFT Qwen2.5-Coder models on 34K trajectories and on 4,556 trajectory pairs with multi-turn direct preference optimization (mDPO)"},
+        {"doc_id": "arxiv_2503_07826v1", "needle": "obtains 68.01 on BFCL-v3 and 73.30 on ToolQuery"}
+      ]
+    }
+  ]
+}

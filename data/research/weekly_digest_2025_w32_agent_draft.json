@@ -1,0 +1,117 @@
+{
+  "schema_version": "envoy-weekly-selection-v1",
+  "week": "2025-W32",
+  "topic": "Historical replay (2026-09-12 snapshot): search and adaptive retrieval",
+  "corpus_hash": "ca28990a801741357e84438b36685c8f521817d941b203bbbd8735aba884d2aa",
+  "review_status": "agent_authored_draft",
+  "papers": [
+    {
+      "doc_id": "arxiv_2503_09516v5",
+      "arxiv_id": "2503.09516v5",
+      "source_url": "https://arxiv.org/abs/2503.09516v5",
+      "role": "new_or_revised",
+      "why_it_matters": "The pinned August revision studies a model that learns multi-turn search during reasoning. Its retrieval-token masking and outcome reward are concrete design variables to investigate for the Envoy worker; they are not proof of transfer to a personal vault.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2503_09516v5",
+          "start": 603,
+          "end": 685,
+          "quote": "Search-R1 optimizes LLM reasoning trajectories with multi-turn search interactions"
+        },
+        {
+          "doc_id": "arxiv_2503_09516v5",
+          "start": 687,
+          "end": 787,
+          "quote": "leveraging retrieved token masking for stable RL training and a simple outcome-based reward function"
+        }
+      ],
+      "limitations": [
+        "The reported results use seven question-answering datasets, not this Obsidian corpus or our exact-span support metric.",
+        "A historical August 2025 replay does not establish this is newly relevant in September 2026.",
+        "This extract does not compare v4 with v5, so it does not establish what changed in the revision or whether the change was substantive."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-09-02-retrieval-correction.md",
+          "reason": "Retrospective comparison with the later local pilot that questioned whether an iterative worker earns its extra cost; the pilot was not caused by this paper."
+        }
+      ]
+    },
+    {
+      "doc_id": "arxiv_2210_03629v3",
+      "arxiv_id": "2210.03629v3",
+      "source_url": "https://arxiv.org/abs/2210.03629v3",
+      "role": "context",
+      "context_reason": "An older reference for interleaving reasoning with external actions, useful for contrasting prompted tool use with the later Search-R1 training setup.",
+      "why_it_matters": "ReAct gives a baseline pattern for alternating model reasoning and information-gathering actions, relevant to the existing search/read/extract harness.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2210_03629v3",
+          "start": 347,
+          "end": 428,
+          "quote": "generate both reasoning traces and task-specific actions in an interleaved manner"
+        },
+        {
+          "doc_id": "arxiv_2210_03629v3",
+          "start": 583,
+          "end": 634,
+          "quote": "actions allow it to interface with external sources"
+        },
+        {
+          "doc_id": "arxiv_2210_03629v3",
+          "start": 680,
+          "end": 709,
+          "quote": "gather additional information"
+        }
+      ],
+      "limitations": [
+        "It does not demonstrate that the current Qwen checkpoint improves personal-vault answer support."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-08-20-retrieval-hypothesis.md",
+          "reason": "Retrospective link to the later idea of testing repeated search against a one-pass baseline; the note does not claim to cite ReAct."
+        }
+      ]
+    },
+    {
+      "doc_id": "arxiv_2403_14403v2",
+      "arxiv_id": "2403.14403v2",
+      "source_url": "https://arxiv.org/abs/2403.14403v2",
+      "role": "context",
+      "context_reason": "An older reference for selecting among no retrieval, single-step retrieval, and iterative retrieval by question complexity.",
+      "why_it_matters": "Adaptive-RAG motivates measuring whether a cheaper routing decision can avoid multi-step retrieval on straightforward questions.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2403_14403v2",
+          "start": 374,
+          "end": 428,
+          "quote": "simple queries with unnecessary computational overhead"
+        },
+        {
+          "doc_id": "arxiv_2403_14403v2",
+          "start": 761,
+          "end": 790,
+          "quote": "based on the query complexity"
+        },
+        {
+          "doc_id": "arxiv_2403_14403v2",
+          "start": 1133,
+          "end": 1232,
+          "quote": "between the iterative and single-step retrieval-augmented LLMs, as well as the no-retrieval methods"
+        }
+      ],
+      "limitations": [
+        "Its complexity labels and benchmark mix do not establish a suitable router for this personal-vault workload."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-09-12-worker-decision.md",
+          "reason": "Retrospective comparison with the later plan to use cheap lexical retrieval by default and Qwen only for questions that need more investigation."
+        }
+      ]
+    }
+  ],
+  "next_measurement": "On the same future held-out personal-vault question IDs and frozen snapshot, compare BM25 as a retrieval/evidence baseline. Compare base Qwen3-8B and v5 under identical tool access, decoding, and answer budget. Human-review their supported answers and record execution failures, latency, tokens, and GPU cost. Stop if v5 adds no supported coverage.",
+  "analysis_note": "This retrospective selection was drafted from abstracts and selected passages; the full HTML papers and version-to-version changes were not reviewed end to end."
+}

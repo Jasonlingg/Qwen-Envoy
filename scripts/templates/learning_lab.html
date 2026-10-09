@@ -1,0 +1,1058 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Envoy · Learning Lab</title>
+  <style>
+    :root {
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #25382d;
+      background: #f7f8f4;
+      color-scheme: light;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .5; }
+    button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid #8acaa5; outline-offset: 3px;
+    }
+    [hidden] { display: none !important; }
+    .app { min-height: 100dvh; display: grid; grid-template-columns: 282px minmax(0, 1fr); }
+    .sidebar { background: #eaf0e8; border-right: 1px solid #d9e3d8; padding: 24px 18px; display: flex; flex-direction: column; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #204334; }
+    .brand-mark { width: 35px; height: 35px; border-radius: 11px; display: grid; place-items: center; background: #24543d; color: #fff; font: 23px Georgia, serif; }
+    .brand-name { font: 26px Georgia, serif; letter-spacing: -.055em; }
+    .brand-sub { font-size: 10px; text-transform: uppercase; font-weight: 800; letter-spacing: .12em; color: #668271; }
+    .sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .eyebrow { font-size: 11px; font-weight: 850; text-transform: uppercase; letter-spacing: .12em; color: #708575; }
+    .thread-list { display: grid; gap: 7px; }
+    .thread-item { width: 100%; border: 1px solid transparent; background: transparent; color: #385443; text-align: left; border-radius: 11px; padding: 11px 12px; line-height: 1.38; }
+    .thread-item:hover { background: #dfebdd; }
+    .thread-item.active { border-color: #c3d8c4; background: #fffefa; box-shadow: 0 3px 10px #2347300b; }
+    .thread-item strong { display: block; font-size: 13px; font-weight: 750; overflow-wrap: anywhere; }
+    .thread-item small { display: block; font-size: 11px; color: #78907c; margin-top: 5px; }
+    .sidebar-empty { color: #708172; font-size: 12px; line-height: 1.5; padding: 10px 6px; }
+    .sidebar-note { margin-top: auto; border-top: 1px solid #d5e1d5; padding-top: 18px; color: #677a6b; font-size: 11px; line-height: 1.55; }
+    .main { min-width: 0; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 75px; padding: 14px clamp(20px, 4vw, 62px); border-bottom: 1px solid #e2e9e0; background: #fffefa; }
+    .topbar-title { font-size: 14px; font-weight: 800; }
+    .topbar-sub { color: #748278; font-size: 12px; margin-top: 3px; }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .link { color: #2e6c4b; text-decoration: none; font-size: 12px; font-weight: 750; }
+    .link:hover { text-decoration: underline; }
+    .button { border: 1px solid #275b43; background: #275b43; color: #fff; border-radius: 9px; padding: 10px 13px; font-size: 12px; font-weight: 750; }
+    .button:hover:not(:disabled) { background: #1d4835; }
+    .button.secondary { border-color: #d1dfd2; background: #f5f8f2; color: #28533c; }
+    .button.secondary:hover:not(:disabled) { background: #e8f0e6; }
+    .button.quiet { border-color: transparent; background: transparent; color: #3d6c4b; }
+    .button.quiet:hover:not(:disabled) { background: #eaf2e8; }
+    .content { width: min(1180px, 100%); margin: auto; padding: 38px clamp(20px, 4vw, 58px) 90px; }
+    .hero { border-bottom: 1px solid #e0e8de; padding-bottom: 26px; margin-bottom: 30px; }
+    .hero h1 { font: 400 clamp(34px, 4.6vw, 52px)/1.1 Georgia, serif; letter-spacing: -.045em; margin: 9px 0 12px; max-width: 760px; overflow-wrap: anywhere; }
+    .hero p { max-width: 700px; color: #607366; line-height: 1.6; margin: 0; font-size: 14px; }
+    .status { min-height: 22px; margin: 0 0 15px; font-size: 12px; color: #3d7350; line-height: 1.5; }
+    .status.error { color: #a6443e; }
+    .empty { max-width: 700px; padding: 52px 0; }
+    .empty h1 { font: 400 clamp(37px, 5vw, 55px)/1.08 Georgia, serif; letter-spacing: -.045em; margin: 13px 0 18px; }
+    .empty p { color: #607366; line-height: 1.65; max-width: 580px; }
+    .badge { display: inline-flex; align-items: center; border-radius: 99px; background: #eaf3e9; color: #3e7754; padding: 5px 9px; font-size: 10px; font-weight: 800; letter-spacing: .03em; }
+    .badge.amber { background: #faf2dd; color: #886b28; }
+    .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(290px, .82fr); gap: 24px; align-items: start; }
+    .section { margin-top: 34px; }
+    .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 15px; }
+    .section-head h2 { font: 400 26px Georgia, serif; margin: 0; letter-spacing: -.025em; }
+    .section-head span { color: #839287; font-size: 11px; }
+    .card { background: #fffefa; border: 1px solid #dfe8dd; border-radius: 14px; padding: 20px; box-shadow: 0 4px 18px #264a2907; min-width: 0; }
+    .card + .card { margin-top: 11px; }
+    .card-label { color: #64816b; font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+    .card h3 { font-size: 14px; line-height: 1.4; margin: 7px 0 9px; overflow-wrap: anywhere; }
+    .card p { color: #53685a; font-size: 13px; line-height: 1.58; margin: 8px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .current-view { font: 19px/1.48 Georgia, serif; color: #2f4635; white-space: pre-wrap; overflow-wrap: anywhere; margin: 14px 0; }
+    .meta { color: #859487; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+    .timeline { display: grid; gap: 14px; }
+    .timeline-entry { padding: 2px 0 3px 15px; border-left: 3px solid #b7d8bc; }
+    .timeline-entry:first-child { border-color: #4f9a68; }
+    .timeline-entry strong { display: block; margin: 5px 0; font-size: 13px; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .timeline-entry p { margin: 4px 0; color: #6d806f; font-size: 11px; line-height: 1.5; }
+    .timeline-entry details, .proposal-card details, #accept-summary details { margin-top: 9px; }
+    .timeline-entry summary, .proposal-card summary, #accept-summary summary { color: #407451; cursor: pointer; font-size: 11px; font-weight: 750; }
+    .receipt-list { display: grid; gap: 8px; margin-top: 9px; }
+    .receipt { border: 1px solid #dfe9dd; border-radius: 9px; background: #f8faf5; padding: 10px; min-width: 0; }
+    .receipt .receipt-title { display: block; margin: 0 0 4px; font-size: 11px; }
+    .receipt blockquote { margin: 8px 0 0; padding-left: 9px; border-left: 2px solid #b6d5bd; color: #43594a; font-size: 11px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 180px; overflow: auto; }
+    .form { display: grid; gap: 13px; }
+    .field { display: grid; gap: 6px; }
+    .field label { font-size: 12px; font-weight: 750; }
+    .field input, .field textarea { width: 100%; border: 1px solid #cfdccf; border-radius: 9px; background: #fff; color: #263a2b; padding: 10px 11px; font-size: 13px; line-height: 1.45; }
+    .field textarea { min-height: 92px; resize: vertical; }
+    .field small { color: #849287; font-size: 11px; line-height: 1.45; }
+    .search-row { display: flex; gap: 8px; align-items: stretch; }
+    .search-row input { flex: 1; min-width: 0; }
+    .observation-list { display: grid; gap: 8px; margin-top: 5px; }
+    .observation-list .passage { margin: 0; }
+    .observation-list .meta { display: block; }
+    .form-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .help { color: #6e8072; font-size: 12px; line-height: 1.55; margin: 0; }
+    .source-list, .proposal-list { display: grid; gap: 12px; }
+    .source-top { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+    .source-url { display: block; margin-top: 3px; font-size: 11px; color: #52816a; overflow-wrap: anywhere; }
+    .source-url:hover { text-decoration: underline; }
+    .source-method { border-top: 1px solid #e0e8de; padding-top: 16px; margin-top: 3px; }
+    .source-method h4 { font-size: 12px; margin: 0 0 8px; }
+    .passages { display: grid; gap: 8px; margin-top: 14px; }
+    .passage { display: flex; gap: 11px; align-items: start; border: 1px solid #e0e9df; border-radius: 9px; padding: 11px; background: #f8faf5; }
+    .passage:has(input:checked) { border-color: #8cb99a; background: #f0f7ef; }
+    .passage input { flex: none; margin-top: 3px; }
+    .passage-body { flex: 1; min-width: 0; }
+    .passage-quote { display: block; cursor: pointer; }
+    .passage blockquote { border-left: 2px solid #b6d5bd; padding-left: 11px; margin: 7px 0 0; max-height: 160px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: #455c4c; font-size: 12px; line-height: 1.55; }
+    .assessment { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 9px; color: #607366; font-size: 11px; font-weight: 700; }
+    .assessment select { border: 1px solid #cfdccf; border-radius: 7px; background: #fff; color: #2e4735; padding: 5px 7px; font-size: 11px; }
+    .assessment select:focus-visible { outline: 3px solid #8acaa5; outline-offset: 2px; }
+    .note { border: 1px solid #e9dcb3; background: #fbf6e9; border-radius: 11px; padding: 12px 14px; color: #765d31; font-size: 12px; line-height: 1.55; }
+    .note strong { color: #654c20; }
+    .proposal-card { border-left: 3px solid #d4bb76; }
+    .proposal-card .button { margin-top: 10px; }
+    dialog { width: min(590px, calc(100vw - 24px)); max-height: 88dvh; overflow: auto; border: 1px solid #d8e2d5; border-radius: 16px; padding: 0; box-shadow: 0 25px 80px #1c332a55; color: #25382d; }
+    dialog::backdrop { background: #182c23a8; }
+    .dialog-body { padding: 24px; }
+    .dialog-head { display: flex; justify-content: space-between; align-items: start; gap: 18px; }
+    .dialog-head h2 { font: 400 29px Georgia, serif; margin: 0 0 8px; }
+    .dialog-head p { color: #657768; font-size: 12px; line-height: 1.5; margin: 0; }
+    .close { border: 0; background: #eef4ed; border-radius: 8px; color: #365b43; padding: 4px 9px; font-size: 20px; line-height: 1; }
+    .check { display: flex; gap: 10px; align-items: start; font-size: 12px; line-height: 1.5; margin: 18px 0; }
+    .check input { margin-top: 2px; }
+    @media (max-width: 850px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { border-right: 0; border-bottom: 1px solid #d9e3d8; padding: 17px 20px; gap: 15px; }
+      .thread-list { display: flex; overflow-x: auto; }
+      .thread-item { min-width: 180px; max-width: 230px; }
+      .sidebar-note { display: none; }
+      .grid { grid-template-columns: 1fr; }
+      .topbar { padding: 14px 20px; }
+      .search-row { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Learning threads">
+      <a class="brand" href="/" aria-label="Envoy home"><span class="brand-mark">e</span><span><span class="brand-name">envoy</span><br><span class="brand-sub">Learning Lab</span></span></a>
+      <div>
+        <div class="sidebar-head"><span class="eyebrow">Your questions</span><button class="button quiet" id="new-thread" type="button">+ New</button></div>
+        <nav class="thread-list" id="thread-list" aria-label="Saved research questions"></nav>
+      </div>
+      <p class="sidebar-note">Follow one question over time. Collected source drafts live in Obsidian’s <code>_inbox</code> until you inspect and manually promote them.</p>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="topbar-title">Your evidence and decisions</div><div class="topbar-sub">Follow a question from sources to a considered view</div></div>
+        <div class="topbar-actions"><a class="link" href="/lab/map">Try systems map ↗</a><a class="link" href="/chat">Ask across your notes in chat ↗</a><button class="button secondary" id="refresh-vault" type="button">Refresh Obsidian view</button></div>
+      </header>
+      <div class="content">
+        <p id="global-status" class="status" role="status" aria-live="polite"></p>
+        <section id="empty-state" class="empty">
+          <span class="badge">Question workspace</span>
+          <h1>Keep the question. Let the answer evolve.</h1>
+          <p>Start with a question and your current view. Collect pages or files, inspect the passages that matter, and decide whether the evidence changes your view.</p>
+          <button class="button" id="empty-new-thread" type="button">Start a question</button>
+          <p><a class="link" href="/lab/map">Explore the interactive systems-map prototype ↗</a></p>
+        </section>
+        <div id="thread-workspace" hidden>
+          <section class="hero">
+            <span class="badge">Working question</span>
+            <h1 id="thread-question"></h1>
+            <p>Keep the source trail and your decisions together. Each accepted view stays dated, with the earlier view and selected passages available to inspect.</p>
+          </section>
+          <div class="grid">
+            <section aria-labelledby="current-heading">
+              <div class="section-head"><h2 id="current-heading">What I think now</h2><span>Current working view</span></div>
+              <div class="card"><span class="card-label" id="current-date"></span><div class="current-view" id="current-view"></div><div class="meta" id="current-reason"></div></div>
+            </section>
+            <section aria-labelledby="timeline-heading">
+              <div class="section-head"><h2 id="timeline-heading">Decision history</h2><span id="timeline-count"></span></div>
+              <div class="card timeline" id="timeline"></div>
+            </section>
+          </div>
+          <section class="section" aria-labelledby="sources-heading">
+            <div class="section-head"><h2 id="sources-heading">Evidence to inspect</h2><span id="source-count"></span></div>
+            <div class="grid">
+              <div><div id="source-list" class="source-list"></div></div>
+              <div class="card">
+                <span class="card-label">Add evidence</span>
+                <h3>Bring a source into this question</h3>
+                <p>Pages and files become source drafts. Inspect the original and extracted passages before using them to revise your view. Each passage relationship is your assessment.</p>
+                <form class="form" id="source-form">
+                  <div class="field"><label for="source-url">Public HTML URL</label><input id="source-url" name="url" type="url" required maxlength="2000" placeholder="https://arxiv.org/abs/2503.01234v2" autocomplete="url"><small>Public HTTP(S) HTML pages are supported. For research papers, prefer a versioned URL.</small></div>
+                  <div class="form-actions"><button class="button secondary" type="submit">Add page</button></div>
+                </form>
+                <p class="status" id="source-status" role="status" aria-live="polite"></p>
+                <div class="source-method">
+                  <h4>Or attach a file</h4>
+                  <form class="form" id="file-form">
+                    <div class="field"><label for="source-file">Markdown, text, or PDF</label><input id="source-file" name="file" type="file" accept=".md,.txt,.pdf" required><small>One file at a time, up to 5 MB. Keep the original available for review.</small></div>
+                    <div class="form-actions"><button class="button" type="submit">Attach file</button></div>
+                  </form>
+                  <p class="status" id="file-status" role="status" aria-live="polite"></p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section" aria-labelledby="proposal-heading">
+            <div class="section-head"><h2 id="proposal-heading">Decide what changed</h2><span>Selected quotes become review pointers</span></div>
+            <div class="grid">
+              <div class="card">
+                <form class="form" id="proposal-form">
+                  <div class="field"><label for="revised-view">What do you think now?</label><textarea id="revised-view" required maxlength="4000" placeholder="My revised, narrower view is…"></textarea></div>
+                  <div class="field"><label for="proposal-reason">Why revisit the earlier view?</label><textarea id="proposal-reason" required maxlength="4000" placeholder="This source changes my view because… What remains uncertain is…"></textarea></div>
+                  <div class="field"><label for="proposal-date">Effective date</label><input id="proposal-date" type="date" required></div>
+                  <div class="field"><label for="observation-query">Find a reviewed note (optional)</label><div class="search-row"><input id="observation-query" type="search" maxlength="500" placeholder="Search a topic, claim, project, or result"><button class="button secondary" id="observation-search" type="button">Search reviewed notes</button></div><small>Select an exact passage from your reviewed Obsidian snapshot. Search matches show where the words occur; they do not establish that your interpretation is correct.</small></div>
+                  <div class="form-actions" id="qwen-actions" hidden><button class="button secondary" id="qwen-investigate" type="button">Investigate reviewed notes with Qwen</button><span class="help">Optional model call; Qwen returns note passages for your review. A revision still needs a collected source excerpt.</span></div>
+                  <p class="status" id="observation-status" role="status" aria-live="polite"></p>
+                  <p class="meta" id="qwen-run" hidden></p>
+                  <p class="help" id="observation-warning" hidden></p>
+                  <div class="observation-list" id="observation-list" aria-label="Matching reviewed note passages"></div>
+                  <div class="form-actions"><button class="button" type="submit">Stage revision draft</button><button class="button secondary" id="suggest-button" type="button" hidden>Suggest with Nemotron</button><span class="meta" id="selected-count">No source passages selected</span></div>
+                </form>
+                <p class="help" id="suggest-help" hidden>Optional: sends the selected source and reviewed-note excerpts to Nemotron and uses model credits. Review its wording against the original sources and notes before staging anything.</p>
+                <p class="help" id="suggestion-key" hidden></p>
+                <p class="status" id="proposal-status" role="status" aria-live="polite"></p>
+              </div>
+              <div>
+                <div class="note"><strong>Review boundary.</strong> A staged draft is not accepted memory. Inspect each selected quote and the original source, then use “Accept as current view” only if the revised view is yours. Obsidian promotion remains a separate manual step.</div>
+                <div class="section-head" style="margin-top: 23px"><h2>Pending revisions</h2></div>
+                <div id="proposal-list" class="proposal-list"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="create-dialog" aria-labelledby="create-heading">
+    <div class="dialog-body">
+      <div class="dialog-head"><div><h2 id="create-heading">Start with a question</h2><p>Record your current view in a dated working thread. You can revise it after reviewing sources.</p></div><button class="close" id="create-close" type="button" aria-label="Close">×</button></div>
+      <form class="form" id="create-form">
+        <div class="field"><label for="new-question">Question you want to keep exploring</label><input id="new-question" required maxlength="500" placeholder="When does multi-step search actually help my project?"></div>
+        <div class="field"><label for="new-view">What you currently think</label><textarea id="new-view" required maxlength="4000" placeholder="My current working view is…"></textarea></div>
+        <div class="field"><label for="new-date">Effective date</label><input id="new-date" type="date" required></div>
+        <div class="form-actions"><button class="button" type="submit">Create question thread</button><button class="button quiet" id="create-cancel" type="button">Cancel</button></div>
+      </form>
+      <p class="status" id="create-status" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <dialog id="accept-dialog" aria-labelledby="accept-heading">
+    <div class="dialog-body">
+      <div class="dialog-head"><div><h2 id="accept-heading">Accept this revised view?</h2><p>This updates the current view for this question. It does not promote any draft in Obsidian.</p></div><button class="close" id="accept-close" type="button" aria-label="Close">×</button></div>
+      <div class="card" id="accept-summary"></div>
+      <label class="check"><input id="accept-confirm" type="checkbox"><span>I inspected the selected evidence and want this view to replace my current working view.</span></label>
+      <div class="form-actions"><button class="button" id="accept-submit" type="button" disabled>Accept as current view</button><button class="button quiet" id="accept-cancel" type="button">Cancel</button></div>
+      <p class="status" id="accept-status" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <script>
+    (() => {
+      "use strict";
+      const byId = (id) => document.getElementById(id);
+      const state = {threadId: null, thread: null, selectedEvidence: new Map(), selectedObservations: new Map(),
+        observationSearchVersion: 0, observationCorpusHash: null, acceptProposalId: null,
+        suggestedView: null, suggestedReason: null, suggestedEvidenceKeys: null};
+      const relations = [
+        ["unclear", "Unclear"], ["supports", "Supports"],
+        ["challenges", "Challenges"], ["context", "Context"],
+      ];
+
+      function node(tag, className, value) {
+        const item = document.createElement(tag);
+        if (className) item.className = className;
+        if (value !== undefined && value !== null) item.textContent = String(value);
+        return item;
+      }
+
+      function assessmentField(value) {
+        const label = node("label", "assessment");
+        label.append(node("span", "", "Your assessment"));
+        const select = document.createElement("select");
+        for (const [relation, title] of relations) {
+          const option = node("option", "", title);
+          option.value = relation;
+          select.append(option);
+        }
+        select.value = relations.some(([relation]) => relation === value) ? value : "unclear";
+        label.append(select);
+        return {label, select};
+      }
+
+      function pageLabel(pages) {
+        if (!Array.isArray(pages)) return "";
+        const numbers = [...new Set(pages.filter((page) => Number.isInteger(page) && page > 0))].sort((a, b) => a - b);
+        return numbers.length ? `${numbers.length === 1 ? "Page" : "Pages"} ${numbers.join(", ")}` : "";
+      }
+
+      function today() {
+        const date = new Date();
+        const two = (number) => String(number).padStart(2, "0");
+        return `${date.getFullYear()}-${two(date.getMonth() + 1)}-${two(date.getDate())}`;
+      }
+
+      function status(id, message, error = false) {
+        const target = byId(id);
+        target.textContent = message;
+        target.classList.toggle("error", error);
+      }
+
+      async function request(path, options = {}) {
+        const response = await fetch(path, {credentials: "same-origin", ...options});
+        let value;
+        try { value = await response.json(); }
+        catch { throw new Error(`Server returned ${response.status} without JSON.`); }
+        if (!response.ok) {
+          const detail = value?.detail;
+          throw new Error(typeof detail === "string" ? detail : JSON.stringify(detail || value));
+        }
+        return value;
+      }
+
+      function post(path, body) {
+        return request(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+      }
+
+      function shortDate(value) {
+        return typeof value === "string" && value.length >= 10 ? value.slice(0, 10) : "Date not recorded";
+      }
+
+      function viewText(view) {
+        return typeof view === "string" ? view : (view && typeof view.view === "string" ? view.view : "");
+      }
+
+      function safeLink(url) {
+        try {
+          const parsed = new URL(url);
+          if (!["https:", "http:"].includes(parsed.protocol)) return null;
+          return parsed.href;
+        } catch { return null; }
+      }
+
+      function safeDownloadUrl(url) {
+        if (typeof url !== "string" || !url.startsWith("/api/lab/threads/")) return null;
+        try {
+          const parsed = new URL(url, window.location.origin);
+          return parsed.origin === window.location.origin ? parsed.pathname : null;
+        } catch { return null; }
+      }
+
+      function setBusy(form, busy) {
+        form.querySelectorAll("button, input, textarea").forEach((item) => { item.disabled = busy; });
+      }
+
+      function renderThreads(threads) {
+        const list = byId("thread-list");
+        list.replaceChildren();
+        if (!threads.length) {
+          list.append(node("p", "sidebar-empty", "No questions yet. Start one to build a learning thread."));
+          return;
+        }
+        for (const thread of threads) {
+          if (!thread || typeof thread.thread_id !== "string") continue;
+          const item = node("button", "thread-item");
+          item.type = "button";
+          item.classList.toggle("active", thread.thread_id === state.threadId);
+          item.append(node("strong", "", thread.question || "Untitled question"));
+          const current = viewText(thread.current_approved_view);
+          item.append(node("small", "", current.length > 85 ? current.slice(0, 82) + "…" : current));
+          item.addEventListener("click", () => loadThread(thread.thread_id));
+          list.append(item);
+        }
+      }
+
+      async function refreshThreads() {
+        const result = await request("/api/lab/threads");
+        renderThreads(Array.isArray(result.threads) ? result.threads : []);
+        return result.threads || [];
+      }
+
+      function renderReceipt(receipt) {
+        const item = node("div", "receipt");
+        item.append(node("strong", "receipt-title", receipt.title || "Saved source unavailable"));
+        const sourceUrl = safeLink(receipt.source_url);
+        if (sourceUrl) {
+          const link = node("a", "source-url", receipt.source_url);
+          link.href = sourceUrl;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          item.append(link);
+        } else if (receipt.kind === "attached_file" && receipt.filename) {
+          item.append(node("span", "meta", `Attached file: ${receipt.filename}`));
+        } else if (receipt.source_path) {
+          item.append(node("span", "meta", receipt.source_path));
+        }
+        const relation = relations.find(([value]) => value === receipt.relation);
+        if (relation) item.append(node("div", "meta", `Your assessment: ${relation[1]} (interpretation)`));
+        const pages = pageLabel(receipt.pages);
+        if (pages) item.append(node("div", "meta", pages));
+        if (typeof receipt.quote === "string") item.append(node("blockquote", "", receipt.quote));
+        else item.append(node("span", "meta", "The saved span could not be verified in the local frozen snapshot."));
+        return item;
+      }
+
+      function savedReceipts(record) {
+        return [
+          ...(Array.isArray(record.evidence_receipts) ? record.evidence_receipts : []),
+          ...(Array.isArray(record.observation_receipts) ? record.observation_receipts : []),
+        ].filter((receipt) => receipt && typeof receipt === "object");
+      }
+
+      function receiptDisclosure(record, expanded = false) {
+        const saved = savedReceipts(record);
+        if (!saved.length) return null;
+        const details = node("details");
+        details.open = expanded;
+        details.append(node("summary", "", `Review ${saved.length} saved passage${saved.length === 1 ? "" : "s"}`));
+        const receiptList = node("div", "receipt-list");
+        saved.forEach((receipt) => receiptList.append(renderReceipt(receipt)));
+        details.append(receiptList);
+        return details;
+      }
+
+      function renderTimeline(thread) {
+        const timeline = byId("timeline");
+        timeline.replaceChildren();
+        const revisions = Array.isArray(thread.timeline) ? [...thread.timeline].reverse() : [];
+        byId("timeline-count").textContent = `${revisions.length} accepted view${revisions.length === 1 ? "" : "s"}`;
+        if (!revisions.length) {
+          timeline.append(node("p", "help", "No dated revisions yet."));
+          return;
+        }
+        for (const revision of revisions) {
+          const entry = node("div", "timeline-entry");
+          entry.append(node("span", "card-label", shortDate(revision.effective_date)));
+          entry.append(node("strong", "", viewText(revision)));
+          entry.append(node("p", "", revision.reason || ""));
+          const counts = `${(revision.evidence_refs || []).length} source reference(s) · ${(revision.observation_refs || []).length} observation reference(s)`;
+          entry.append(node("p", "", counts));
+          const receipts = receiptDisclosure(revision);
+          if (receipts) entry.append(receipts);
+          timeline.append(entry);
+        }
+      }
+
+      function evidenceKey(sourceId, start, end) {
+        return JSON.stringify([sourceId, start, end]);
+      }
+
+      function observationKey(docId, start, end) {
+        return JSON.stringify([docId, start, end]);
+      }
+
+      function selectedCount() {
+        return state.selectedEvidence.size + state.selectedObservations.size;
+      }
+
+      function selectedKeys() {
+        // The backend assigns E2+ to collected source passages, then vault observations.
+        return JSON.stringify([
+          [...state.selectedEvidence].map(([key, item]) => [key, item.relation]),
+          [...state.selectedObservations].map(([key, item]) => [key, item.relation]),
+        ]);
+      }
+
+      function selectionChanged(statusId = null) {
+        if (state.suggestedView !== null) clearSuggestion("Evidence selection or assessment changed, so the Nemotron wording and its [E#] citations were cleared. Ask again or write your own revision.");
+        else status("proposal-status", "");
+        if (statusId) status(statusId, "");
+        renderSelectedCount();
+      }
+
+      function clearSuggestion(message = "") {
+        if (state.suggestedView !== null) {
+          byId("revised-view").value = "";
+          byId("proposal-reason").value = "";
+        }
+        state.suggestedView = null;
+        state.suggestedReason = null;
+        state.suggestedEvidenceKeys = null;
+        byId("suggestion-key").hidden = true;
+        byId("suggestion-key").textContent = "";
+        if (message) status("proposal-status", message, true);
+      }
+
+      function resetObservationResults() {
+        state.observationSearchVersion += 1;
+        state.selectedObservations.clear();
+        state.observationCorpusHash = null;
+        byId("observation-list").replaceChildren();
+        byId("qwen-run").hidden = true;
+        byId("qwen-run").textContent = "";
+        byId("observation-warning").hidden = true;
+        byId("observation-warning").textContent = "";
+        renderSelectedCount();
+        return state.observationSearchVersion;
+      }
+
+      function clearObservationSearch() {
+        resetObservationResults();
+        byId("observation-query").value = "";
+        status("observation-status", "");
+      }
+
+      function showObservationWarning(value) {
+        const warning = byId("observation-warning");
+        warning.textContent = typeof value === "string" ? value : "";
+        warning.hidden = !warning.textContent;
+      }
+
+      function renderObservations(result) {
+        const list = byId("observation-list");
+        list.replaceChildren();
+        const hits = Array.isArray(result.evidence) ? result.evidence : [];
+        let displayed = 0;
+        for (const hit of hits) {
+          if (typeof hit.doc_id !== "string" || !Number.isInteger(hit.start) || !Number.isInteger(hit.end) || hit.start >= hit.end || typeof hit.quote !== "string" || !hit.quote.trim()) continue;
+          const corpusHash = typeof hit.corpus_hash === "string" ? hit.corpus_hash : state.observationCorpusHash;
+          if (typeof corpusHash !== "string" || !/^[0-9a-f]{64}$/.test(corpusHash)) continue;
+          const key = observationKey(hit.doc_id, hit.start, hit.end);
+          const choice = node("div", "passage");
+          const check = document.createElement("input");
+          check.type = "checkbox";
+          check.id = `observation-passage-${displayed}`;
+          check.checked = state.selectedObservations.has(key);
+          check.setAttribute("aria-label", `Select note excerpt ${hit.start} to ${hit.end} from ${hit.title || "reviewed note"}`);
+          const {label: assessment, select} = assessmentField(state.selectedObservations.get(key)?.relation);
+          const selectPassage = () => {
+            state.selectedObservations.set(key, {doc_id: hit.doc_id, start: hit.start, end: hit.end,
+              corpus_hash: corpusHash, relation: select.value});
+            selectionChanged("observation-status");
+          };
+          check.addEventListener("change", () => {
+            if (check.checked && selectedCount() >= 5) {
+              check.checked = false;
+              status("observation-status", "Select at most five passages total across sources and notes.", true);
+              return;
+            }
+            if (check.checked) selectPassage();
+            else {
+              state.selectedObservations.delete(key);
+              selectionChanged("observation-status");
+            }
+          });
+          select.addEventListener("change", () => {
+            if (!check.checked && selectedCount() >= 5) {
+              select.value = "unclear";
+              status("observation-status", "Select at most five passages total across sources and notes.", true);
+              return;
+            }
+            check.checked = true;
+            selectPassage();
+          });
+          const quote = node("label", "passage-quote");
+          quote.htmlFor = check.id;
+          quote.append(node("strong", "", hit.title || "Untitled note"));
+          const pages = pageLabel(hit.pages);
+          quote.append(node("span", "meta", `${hit.source_path || "Reviewed Obsidian note"} · characters ${hit.start}–${hit.end}${pages ? ` · ${pages}` : ""}`));
+          quote.append(node("blockquote", "", hit.quote));
+          const text = node("div", "passage-body");
+          text.append(quote, assessment);
+          choice.append(check, text);
+          list.append(choice);
+          displayed += 1;
+        }
+        if (!displayed) list.append(node("p", "help", "No verifiable passage was returned from the current reviewed snapshot. Try another query or inspect the note in Obsidian."));
+        return displayed;
+      }
+
+      function renderSources(thread) {
+        const list = byId("source-list");
+        list.replaceChildren();
+        const sources = Array.isArray(thread.sources) ? thread.sources : [];
+        byId("source-count").textContent = `${sources.length} collected`;
+        const available = new Set();
+        let passageNumber = 0;
+        if (!sources.length) {
+          list.append(node("p", "help", "No sources collected yet. Add a page or attach a file, then inspect the original and select exact excerpts."));
+        }
+        for (const source of sources) {
+          if (!source || typeof source.source_id !== "string") continue;
+          const isFile = source.source_kind === "uploaded_file";
+          const card = node("article", "card");
+          const top = node("div", "source-top");
+          const heading = node("div");
+          heading.append(node("span", "card-label", isFile ? "Attached file" : "Collected web page"));
+          heading.append(node("h3", "", source.title || "Untitled source"));
+          if (isFile) {
+            if (source.filename) heading.append(node("span", "meta", source.filename));
+            const downloadUrl = safeDownloadUrl(source.download_url);
+            if (downloadUrl) {
+              const link = node("a", "source-url", "Download original");
+              link.href = downloadUrl;
+              link.download = source.filename || "";
+              heading.append(link);
+            }
+          } else {
+            const linkUrl = safeLink(source.source_url);
+            const link = node(linkUrl ? "a" : "span", "source-url", source.source_url || "Original page unavailable");
+            if (linkUrl) {
+              link.href = linkUrl;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+            }
+            heading.append(link);
+          }
+          top.append(heading, node("span", "badge amber", source.coverage || "Coverage unknown"));
+          card.append(top, node("div", "meta", `${isFile ? "Uploaded" : "Fetched"} ${shortDate(source.fetched_at)} · ${source.source_id}`));
+          const passages = Array.isArray(source.passages) ? source.passages : [];
+          const passageList = node("div", "passages");
+          if (!passages.length) passageList.append(node("p", "help", "No selectable excerpts were returned. Inspect the original source before proposing a change."));
+          for (const passage of passages) {
+            if (!Number.isInteger(passage.start) || !Number.isInteger(passage.end) || typeof passage.quote !== "string") continue;
+            const key = evidenceKey(source.source_id, passage.start, passage.end);
+            available.add(key);
+            const choice = node("div", "passage");
+            const check = document.createElement("input");
+            check.type = "checkbox";
+            check.id = `source-passage-${passageNumber++}`;
+            check.checked = state.selectedEvidence.has(key);
+            check.setAttribute("aria-label", `Select excerpt ${passage.start} to ${passage.end} from ${source.title || "source"}`);
+            const {label: assessment, select} = assessmentField(state.selectedEvidence.get(key)?.relation);
+            const selectPassage = () => {
+              state.selectedEvidence.set(key, {source_id: source.source_id, start: passage.start, end: passage.end,
+                relation: select.value});
+              selectionChanged();
+            };
+            check.addEventListener("change", () => {
+              if (check.checked && selectedCount() >= 5) {
+                check.checked = false;
+                status("proposal-status", "Select at most five passages total across sources and notes.", true);
+                return;
+              }
+              if (check.checked) selectPassage();
+              else {
+                state.selectedEvidence.delete(key);
+                selectionChanged();
+              }
+            });
+            select.addEventListener("change", () => {
+              if (!check.checked && selectedCount() >= 5) {
+                select.value = "unclear";
+                status("proposal-status", "Select at most five passages total across sources and notes.", true);
+                return;
+              }
+              check.checked = true;
+              selectPassage();
+            });
+            const quote = node("label", "passage-quote");
+            quote.htmlFor = check.id;
+            const pages = pageLabel(passage.pages);
+            quote.append(node("span", "meta", `Characters ${passage.start}–${passage.end}${pages ? ` · ${pages}` : ""}`));
+            quote.append(node("blockquote", "", passage.quote));
+            const text = node("div", "passage-body");
+            text.append(quote, assessment);
+            choice.append(check, text);
+            passageList.append(choice);
+          }
+          card.append(passageList);
+          list.append(card);
+        }
+        let removed = false;
+        for (const key of state.selectedEvidence.keys()) if (!available.has(key)) {
+          state.selectedEvidence.delete(key);
+          removed = true;
+        }
+        if (removed && state.suggestedView !== null) clearSuggestion("A selected source passage is no longer available. The Nemotron wording was cleared.");
+        renderSelectedCount();
+      }
+
+      function renderSelectedCount() {
+        const sources = state.selectedEvidence.size;
+        const notes = state.selectedObservations.size;
+        byId("selected-count").textContent = sources || notes ? `${sources} source passage${sources === 1 ? "" : "s"} · ${notes} note passage${notes === 1 ? "" : "s"} selected (5 total max)` : "No passages selected";
+      }
+
+      function renderProposals(thread) {
+        const list = byId("proposal-list");
+        list.replaceChildren();
+        const proposals = Array.isArray(thread.pending_proposals) ? thread.pending_proposals : [];
+        if (!proposals.length) {
+          list.append(node("p", "help", "No pending revisions. Drafting does not change your accepted view."));
+          return;
+        }
+        for (const proposal of proposals) {
+          const card = node("article", "card proposal-card");
+          card.append(node("span", "card-label", `Draft · ${shortDate(proposal.effective_date)}`));
+          card.append(node("h3", "", proposal.revised_view || "Untitled revision"));
+          card.append(node("p", "", proposal.reason || ""));
+          card.append(node("div", "meta", `${(proposal.evidence_refs || []).length} source reference(s) · ${(proposal.observation_refs || []).length} observation reference(s)`));
+          const receipts = receiptDisclosure(proposal);
+          if (receipts) card.append(receipts);
+          const button = node("button", "button secondary", "Review and accept");
+          button.type = "button";
+          button.addEventListener("click", () => openAccept(proposal));
+          card.append(button);
+          list.append(card);
+        }
+      }
+
+      function renderThread(thread) {
+        state.thread = thread;
+        byId("empty-state").hidden = true;
+        byId("thread-workspace").hidden = false;
+        byId("thread-question").textContent = thread.question || "Untitled question";
+        const current = thread.current_approved_view || {};
+        byId("current-view").textContent = viewText(current);
+        byId("current-date").textContent = `Effective ${shortDate(current.effective_date)}`;
+        byId("current-reason").textContent = current.reason || "User-stated working view.";
+        renderTimeline(thread);
+        renderSources(thread);
+        renderProposals(thread);
+      }
+
+      async function loadThread(threadId) {
+        status("global-status", "Opening question…");
+        try {
+          const changed = state.threadId !== threadId;
+          const thread = await request(`/api/lab/threads/${encodeURIComponent(threadId)}`);
+          state.threadId = threadId;
+          if (changed) {
+            state.selectedEvidence.clear();
+            clearSuggestion();
+            byId("proposal-form").reset();
+            clearObservationSearch();
+            byId("proposal-date").value = today();
+            status("source-status", "");
+            status("file-status", "");
+            status("proposal-status", "");
+          }
+          renderThread(thread);
+          await refreshThreads();
+          status("global-status", "");
+        } catch (error) {
+          status("global-status", error.message, true);
+        }
+      }
+
+      function openCreate() {
+        byId("create-form").reset();
+        byId("new-date").value = today();
+        status("create-status", "");
+        byId("create-dialog").showModal();
+        byId("new-question").focus();
+      }
+
+      function openAccept(proposal) {
+        state.acceptProposalId = proposal.proposal_id;
+        const summary = byId("accept-summary");
+        summary.replaceChildren(
+          node("span", "card-label", "Current view"), node("p", "", viewText(state.thread?.current_approved_view)),
+          node("span", "card-label", "Proposed view"), node("p", "", proposal.revised_view || ""),
+          node("span", "card-label", "Reason"), node("p", "", proposal.reason || ""),
+        );
+        const receipts = receiptDisclosure(proposal, true);
+        if (receipts) summary.append(receipts);
+        byId("accept-confirm").checked = false;
+        byId("accept-submit").disabled = true;
+        status("accept-status", "");
+        byId("accept-dialog").showModal();
+      }
+
+      byId("new-thread").addEventListener("click", openCreate);
+      byId("empty-new-thread").addEventListener("click", openCreate);
+      byId("create-close").addEventListener("click", () => byId("create-dialog").close());
+      byId("create-cancel").addEventListener("click", () => byId("create-dialog").close());
+      byId("accept-close").addEventListener("click", () => byId("accept-dialog").close());
+      byId("accept-cancel").addEventListener("click", () => byId("accept-dialog").close());
+      byId("accept-confirm").addEventListener("change", (event) => { byId("accept-submit").disabled = !event.target.checked; });
+      byId("proposal-date").value = today();
+
+      byId("observation-query").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          byId("observation-search").click();
+        }
+      });
+
+      byId("observation-search").addEventListener("click", async (event) => {
+        if (!state.threadId) return;
+        const query = byId("observation-query").value.trim();
+        if (!query) {
+          status("observation-status", "Enter a term from your experiment or note to search.", true);
+          return;
+        }
+        const threadId = state.threadId;
+        const clearedSelections = state.selectedObservations.size;
+        const searchVersion = resetObservationResults();
+        const button = event.currentTarget;
+        button.disabled = true;
+        if (state.suggestedView !== null) clearSuggestion("The note search changed, so the Nemotron wording and its [E#] citations were cleared.");
+        status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}Searching reviewed Obsidian notes…`);
+        try {
+          const result = await request(`/api/lab/threads/${encodeURIComponent(threadId)}/observations?query=${encodeURIComponent(query)}`);
+          if (threadId !== state.threadId || searchVersion !== state.observationSearchVersion) return;
+          state.observationCorpusHash = typeof result.corpus_hash === "string" ? result.corpus_hash : null;
+          const found = renderObservations(result);
+          showObservationWarning(result.warning);
+          status("observation-status", found ? `${clearedSelections ? "Previous note selections cleared. " : ""}${found} exact passage${found === 1 ? "" : "s"} found in the reviewed snapshot. Select one to connect a prior note to this question.` : `${clearedSelections ? "Previous note selections cleared. " : ""}No verifiable matching passage in the reviewed snapshot.`);
+        } catch (error) {
+          if (threadId === state.threadId && searchVersion === state.observationSearchVersion) status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}${error.message}`, true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      byId("qwen-investigate").addEventListener("click", async (event) => {
+        if (!state.threadId) return;
+        const threadId = state.threadId;
+        const clearedSelections = state.selectedObservations.size;
+        const searchVersion = resetObservationResults();
+        const button = event.currentTarget;
+        button.disabled = true;
+        if (state.suggestedView !== null) clearSuggestion("The note investigation changed, so the Nemotron wording and its [E#] citations were cleared.");
+        status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen is exploring the reviewed Obsidian snapshot…`);
+        try {
+          const result = await post(`/api/lab/threads/${encodeURIComponent(threadId)}/investigate-vault`, {});
+          if (threadId !== state.threadId || searchVersion !== state.observationSearchVersion) return;
+          showObservationWarning(result.warning);
+          const identity = typeof result.model_identity === "string" ? result.model_identity
+            : result.model_identity && typeof result.model_identity === "object" ? JSON.stringify(result.model_identity) : "";
+          const runDetails = [
+            typeof result.run_id === "string" ? `Run ${result.run_id}` : "",
+            identity ? `Model ${identity}` : "",
+            Number.isInteger(result.model_requests_attempted) ? `${result.model_requests_attempted} model request${result.model_requests_attempted === 1 ? "" : "s"} attempted` : "",
+          ].filter(Boolean);
+          byId("qwen-run").textContent = runDetails.join(" · ");
+          byId("qwen-run").hidden = !runDetails.length;
+          if (result.status === "evidence_found") {
+            const found = renderObservations(result);
+            status("observation-status", found ? `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen found ${found} verifiable note passage${found === 1 ? "" : "s"}. Inspect and select any that help you assess this question.` : `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen returned no verifiable note passages.`, !found);
+          } else if (result.status === "no_evidence") {
+            status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen found no verifiable note passage for this question in the reviewed snapshot.`);
+          } else if (["unavailable", "incomplete", "error"].includes(result.status)) {
+            const detail = typeof result.error === "string" && result.error.trim() ? ` ${result.error.trim()}` : "";
+            status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen investigation ${result.status}.${detail}`, true);
+          } else {
+            status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}Qwen returned an unexpected investigation status.`, true);
+          }
+        } catch (error) {
+          if (threadId === state.threadId && searchVersion === state.observationSearchVersion) status("observation-status", `${clearedSelections ? "Previous note selections cleared. " : ""}${error.message}`, true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      byId("suggest-button").addEventListener("click", async (event) => {
+        if (!state.threadId) return;
+        if (!state.selectedEvidence.size) {
+          status("proposal-status", "Select at least one exact source passage before requesting a suggestion.", true);
+          return;
+        }
+        if (selectedCount() > 4) {
+          status("proposal-status", "Nemotron can review up to four selected passages total; deselect one or draft manually with five.", true);
+          return;
+        }
+        const button = event.currentTarget;
+        button.disabled = true;
+        status("proposal-status", "Asking Nemotron to suggest a view from the selected source and note excerpts…");
+        try {
+          const requestedThreadId = state.threadId;
+          const requestedKeys = selectedKeys();
+          const result = await post(`/api/lab/threads/${encodeURIComponent(state.threadId)}/suggest`, {
+            evidence: [...state.selectedEvidence.values()],
+            observations: [...state.selectedObservations.values()],
+          });
+          if (requestedThreadId !== state.threadId || requestedKeys !== selectedKeys()) throw new Error("Evidence selection changed while Nemotron was drafting. Ask again with the current passages.");
+          if (typeof result.suggested_view !== "string" || !result.suggested_view.trim()) {
+            throw new Error("Nemotron returned no suggested view.");
+          }
+          const limitations = Array.isArray(result.limitations) ? result.limitations.filter((item) => typeof item === "string" && item.trim()) : [];
+          const scaffold = typeof result.reason === "string" && result.reason.trim() ? result.reason.trim() : "Review the cited passages and edit this suggestion before staging.";
+          const reason = `${scaffold} ${limitations.length ? `Limits: ${limitations.join("; ").slice(0, 1000)}. ` : ""}My assessment: [replace this with my own assessment of the selected sources].`;
+          byId("revised-view").value = result.suggested_view;
+          byId("proposal-reason").value = reason;
+          state.suggestedView = result.suggested_view;
+          state.suggestedReason = reason;
+          state.suggestedEvidenceKeys = requestedKeys;
+          const key = result.citation_key;
+          if (key && typeof key === "object" && !Array.isArray(key)) {
+            const aliases = Object.entries(key).filter(([alias, reference]) => /^E[1-5]$/.test(alias) && typeof reference === "string");
+            byId("suggestion-key").textContent = `Citation key for this suggestion: ${aliases.map(([alias, reference]) => `${alias} = ${reference}`).join("; ")}`;
+            byId("suggestion-key").hidden = aliases.length === 0;
+          }
+          status("proposal-status", `Suggestion from ${result.model || "Nemotron"} filled the draft. Replace the reason with your own evidence review before staging.`);
+          byId("revised-view").focus();
+        } catch (error) {
+          status("proposal-status", error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      byId("create-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        setBusy(form, true);
+        status("create-status", "Creating thread…");
+        try {
+          const thread = await post("/api/lab/threads", {
+            question: byId("new-question").value.trim(),
+            current_view: byId("new-view").value.trim(),
+            effective_date: byId("new-date").value,
+          });
+          byId("create-dialog").close();
+          await loadThread(thread.thread_id);
+        } catch (error) {
+          status("create-status", error.message, true);
+        } finally {
+          setBusy(form, false);
+        }
+      });
+
+      byId("source-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!state.threadId) return;
+        const form = event.currentTarget;
+        setBusy(form, true);
+        status("source-status", "Fetching and staging source…");
+        try {
+          const result = await post(`/api/lab/threads/${encodeURIComponent(state.threadId)}/sources`, {url: byId("source-url").value.trim()});
+          byId("source-url").value = "";
+          await loadThread(state.threadId);
+          status("source-status", `Imported source draft${result.staged_path ? ` at ${result.staged_path}` : ""}. Inspect and manually promote it in Obsidian when ready.`);
+        } catch (error) {
+          status("source-status", error.message, true);
+        } finally {
+          setBusy(form, false);
+        }
+      });
+
+      byId("file-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!state.threadId) return;
+        const form = event.currentTarget;
+        const file = byId("source-file").files?.[0];
+        if (!file) {
+          status("file-status", "Choose a file to attach.", true);
+          return;
+        }
+        if (!/\.(md|txt|pdf)$/i.test(file.name)) {
+          status("file-status", "Choose a Markdown (.md), text (.txt), or PDF (.pdf) file.", true);
+          return;
+        }
+        if (file.size > 5_000_000) {
+          status("file-status", "The file must be 5 MB or smaller.", true);
+          return;
+        }
+        const threadId = state.threadId;
+        setBusy(form, true);
+        status("file-status", "Attaching and extracting file…");
+        try {
+          const result = await request(`/api/lab/threads/${encodeURIComponent(threadId)}/files?filename=${encodeURIComponent(file.name)}`, {
+            method: "POST", body: file,
+          });
+          form.reset();
+          await loadThread(threadId);
+          status("file-status", `File attached${result.staged_path ? `; source draft staged at ${result.staged_path}` : ""}. Inspect the original and extracted passages before using them.`);
+        } catch (error) {
+          status("file-status", error.message, true);
+        } finally {
+          setBusy(form, false);
+        }
+      });
+
+      byId("proposal-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!state.threadId) return;
+        if (!state.selectedEvidence.size) {
+          status("proposal-status", "Select at least one exact source passage before staging a revision.", true);
+          return;
+        }
+        const form = event.currentTarget;
+        setBusy(form, true);
+        status("proposal-status", "Staging revision draft…");
+        try {
+          if (state.suggestedReason && byId("proposal-reason").value.trim() === state.suggestedReason.trim()) {
+            throw new Error("Replace Nemotron's reason scaffold with your own assessment before staging.");
+          }
+          if (state.suggestedEvidenceKeys !== null && state.suggestedEvidenceKeys !== selectedKeys()) {
+            throw new Error("Selected passages changed after the Nemotron suggestion. Run it again or write your own revised view.");
+          }
+          if (selectedCount() > 5) throw new Error("Select at most five passages total across sources and notes.");
+          const result = await post(`/api/lab/threads/${encodeURIComponent(state.threadId)}/proposals`, {
+            revised_view: byId("revised-view").value.trim(),
+            reason: byId("proposal-reason").value.trim(),
+            effective_date: byId("proposal-date").value,
+            evidence: [...state.selectedEvidence.values()],
+            observations: [...state.selectedObservations.values()],
+          });
+          form.reset();
+          byId("proposal-date").value = today();
+          state.selectedEvidence.clear();
+          clearSuggestion();
+          clearObservationSearch();
+          await loadThread(state.threadId);
+          status("proposal-status", `Revision draft staged${result.staged_path ? ` at ${result.staged_path}` : ""}. Your current view has not changed; review the draft before accepting it. Obsidian promotion is separate.`);
+        } catch (error) {
+          status("proposal-status", error.message, true);
+        } finally {
+          setBusy(form, false);
+        }
+      });
+
+      byId("accept-submit").addEventListener("click", async () => {
+        if (!state.threadId || !state.acceptProposalId || !byId("accept-confirm").checked) return;
+        const button = byId("accept-submit");
+        button.disabled = true;
+        status("accept-status", "Updating the current view…");
+        try {
+          await post(`/api/lab/threads/${encodeURIComponent(state.threadId)}/proposals/${encodeURIComponent(state.acceptProposalId)}/accept`, {confirmed: true});
+          byId("accept-dialog").close();
+          state.acceptProposalId = null;
+          await loadThread(state.threadId);
+          status("global-status", "Revised view accepted for this question. Any Obsidian draft still needs separate manual review and promotion.");
+        } catch (error) {
+          status("accept-status", error.message, true);
+          button.disabled = false;
+        }
+      });
+
+      byId("refresh-vault").addEventListener("click", async (event) => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        status("global-status", "Refreshing the reviewed Obsidian view…");
+        try {
+          const result = await post("/api/lab/refresh-vault", {});
+          if (state.selectedObservations.size && state.suggestedView !== null) clearSuggestion("The reviewed vault snapshot changed, so the Nemotron wording and its [E#] citations were cleared.");
+          clearObservationSearch();
+          status("global-status", `Obsidian view refreshed${Number.isInteger(result.documents) ? ` · ${result.documents} documents` : ""}. Only manually promoted notes can enter the reviewed library.`);
+        } catch (error) {
+          status("global-status", error.message, true);
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      (async () => {
+        try {
+          try {
+            const appStatus = await request("/api/status");
+            const configured = appStatus.nemotron_configured === true;
+            byId("suggest-button").hidden = !configured;
+            byId("suggest-help").hidden = !configured;
+            byId("qwen-actions").hidden = appStatus.qwen_configured !== true;
+          } catch {
+            // Keep manual drafting available if optional model status is unavailable.
+          }
+          const threads = await refreshThreads();
+          if (threads.length) await loadThread(threads[0].thread_id);
+          else status("global-status", "");
+        } catch (error) {
+          status("global-status", error.message, true);
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>

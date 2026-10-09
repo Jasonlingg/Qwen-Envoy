@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Envoy · Systems Lab</title>
+  <style>
+    :root { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #20302b; background: #f4f5f0; color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid #a4ca75; outline-offset: 2px; }
+    [hidden] { display: none !important; }
+    a { color: inherit; }
+    .shell { height: 100dvh; min-height: 0; overflow: hidden; display: grid; grid-template-rows: 70px minmax(0, 1fr); }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 10px 24px; color: #f5f5eb; background: #192b27; border-bottom: 1px solid #324842; }
+    .identity { display: flex; align-items: center; gap: 12px; min-width: 0; text-decoration: none; }
+    .mark { flex: none; width: 35px; height: 35px; display: grid; place-items: center; border-radius: 11px; background: #d9edaa; color: #192b27; font: 25px Georgia, serif; }
+    .brand { font: 24px Georgia, serif; letter-spacing: -.055em; line-height: 1; }
+    .brand small { display: block; color: #a7c3b3; font: 700 10px ui-sans-serif, sans-serif; letter-spacing: .14em; text-transform: uppercase; margin-top: 5px; }
+    .topbar-center { min-width: 0; flex: 1; text-align: center; }
+    .topbar-center strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+    .topbar-center span { display: block; margin-top: 3px; color: #b7c8bc; font-size: 11px; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; white-space: nowrap; }
+    .topbar a.textlink { color: #c8dfbb; font-size: 12px; font-weight: 700; text-decoration: none; }
+    .topbar a.textlink:hover { text-decoration: underline; }
+    .workspace { min-height: 0; display: grid; grid-template-columns: 260px minmax(420px, 1fr) 322px; }
+    .left, .right { min-width: 0; overflow: auto; background: #fbfcf7; }
+    .left { border-right: 1px solid #dce3d9; padding: 22px 15px; }
+    .right { border-left: 1px solid #dce3d9; padding: 22px 19px; }
+    .side-title { color: #627667; font-size: 10px; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; margin: 0 0 12px; }
+    .side-title-row { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
+    .side-title-row a { color: #336b4b; font-size: 11px; font-weight: 750; text-decoration: none; }
+    .side-title-row a:hover { text-decoration: underline; }
+    .map-list { display: grid; gap: 6px; margin-bottom: 28px; }
+    .map-choice { width: 100%; border: 1px solid transparent; border-radius: 11px; background: transparent; color: #34473b; text-align: left; padding: 11px 10px; }
+    .map-choice:hover { background: #eef3e9; }
+    .map-choice.active { border-color: #c6d9c3; background: #e9f2e3; box-shadow: inset 3px 0 #598b61; }
+    .map-choice strong { display: block; font-size: 12px; line-height: 1.4; }
+    .map-choice small { display: block; margin-top: 3px; font-size: 10px; color: #758778; line-height: 1.4; }
+    .hint { color: #758577; font-size: 11px; line-height: 1.55; }
+    .source-card { border: 1px solid #e1e8dc; background: #fff; border-radius: 10px; padding: 11px; margin: 0 0 9px; overflow-wrap: anywhere; }
+    .source-card strong { display: block; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+    .source-card small { display: block; margin: 4px 0; color: #778579; font-size: 10px; line-height: 1.45; }
+    .source-card a { color: #336b4b; font-size: 10px; font-weight: 750; overflow-wrap: anywhere; }
+    .source-card blockquote { margin: 9px 0; padding-left: 8px; border-left: 2px solid #bad2ad; color: #526457; font-size: 10px; line-height: 1.5; max-height: 80px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .source-card .passage { margin-top: 9px; padding-top: 9px; border-top: 1px solid #e7ede4; }
+    .source-card .passage:first-child { border: 0; }
+    .upload { border: 1px dashed #b8cdb4; border-radius: 10px; padding: 12px; margin: 13px 0 26px; background: #f5f9f1; }
+    .upload label { display: block; font-size: 11px; font-weight: 750; }
+    .upload input { display: block; max-width: 100%; margin: 10px 0; font-size: 10px; }
+    .upload small { display: block; color: #708173; font-size: 10px; line-height: 1.4; }
+    .center { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-width: 0; min-height: 0; background: #f1f3ec; }
+    .stage { display: flex; flex-direction: column; min-height: 0; }
+    .stage-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 19px 12px; }
+    .stage-head h1 { margin: 0; font: 400 27px Georgia, serif; letter-spacing: -.035em; }
+    .stage-head p { margin: 3px 0 0; color: #6e8170; font-size: 11px; line-height: 1.4; }
+    .tools { display: flex; gap: 6px; flex-wrap: wrap; justify-content: end; }
+    .btn { border: 1px solid #ccd9c9; background: #fff; color: #335642; border-radius: 8px; padding: 8px 10px; font-size: 11px; font-weight: 750; line-height: 1.2; }
+    .btn:hover:not(:disabled) { background: #eef5e9; }
+    .btn.primary { border-color: #28563e; background: #28563e; color: #fff; }
+    .btn.primary:hover:not(:disabled) { background: #1d4732; }
+    .btn.active { border-color: #458463; background: #e4f2e1; }
+    .btn.icon { font-size: 16px; line-height: 1; min-width: 31px; padding: 6px; }
+    .btn.danger { color: #a04c46; border-color: #e5c9c3; }
+    .modebar { min-height: 24px; padding: 0 19px 9px; color: #647967; font-size: 11px; }
+    .modebar strong { color: #2e6948; }
+    .canvas-frame { position: relative; flex: 1; min-height: 470px; margin: 0 16px 13px; overflow: hidden; border: 1px solid #d9e2d3; border-radius: 15px; background-color: #fbfcf7; background-image: radial-gradient(#dfe7d9 1px, transparent 1px); background-size: 20px 20px; touch-action: none; cursor: grab; }
+    .canvas-frame.panning { cursor: grabbing; }
+    .world { position: absolute; width: 1100px; height: 760px; transform-origin: 0 0; }
+    .edge-layer { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+    .edge-group { pointer-events: auto; cursor: pointer; }
+    .edge-visible { fill: none; stroke: #659074; stroke-width: 2.4; }
+    .edge-group.hypothesis .edge-visible { stroke: #cc9160; stroke-dasharray: 8 6; }
+    .edge-group.next-test .edge-visible { stroke: #5981a4; stroke-dasharray: 3 5; }
+    .edge-group.selected .edge-visible { stroke-width: 4; stroke: #2c6d49; }
+    .edge-group.selected.hypothesis .edge-visible { stroke: #bb6f39; }
+    .edge-group.selected.next-test .edge-visible { stroke: #356c99; }
+    .edge-hit { fill: none; stroke: transparent; stroke-width: 23; }
+    .edge-label { fill: #fffefa; stroke: #dce6d8; stroke-width: 1; }
+    .edge-label-text { fill: #506c56; font-size: 10px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+    .edge-group.hypothesis .edge-label-text { fill: #a76939; }
+    .edge-group.next-test .edge-label-text { fill: #356c99; }
+    .node-layer { position: absolute; inset: 0; pointer-events: none; }
+    .map-node { position: absolute; width: 194px; min-height: 107px; padding: 12px 13px 11px; border: 1px solid #cbdcce; border-top: 4px solid #74a77d; border-radius: 12px; background: #fffefa; box-shadow: 0 5px 18px #284b2b14; pointer-events: auto; cursor: grab; user-select: none; touch-action: none; }
+    .map-node:active { cursor: grabbing; }
+    .map-node.selected { outline: 3px solid #96bd8b; outline-offset: 2px; box-shadow: 0 10px 30px #2e633330; }
+    .map-node.assumption { border-top-color: #cc9263; }
+    .map-node.outcome { border-top-color: #6c94b4; }
+    .map-node.stock { border-top-color: #9d80ba; }
+    .map-node.next-test { border-top-color: #5981a4; background: #f6faff; }
+    .map-node .node-kind { display: block; margin-bottom: 6px; color: #739079; font-size: 9px; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .map-node.assumption .node-kind { color: #b67a4a; }
+    .map-node.next-test .node-kind { color: #356c99; }
+    .map-node strong { display: block; color: #233c2c; font-size: 13px; line-height: 1.3; overflow-wrap: anywhere; }
+    .map-node p { margin: 6px 0 0; color: #697b6b; font-size: 10px; line-height: 1.35; overflow-wrap: anywhere; }
+    .map-node .node-dot { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #95b79a; top: calc(50% - 3px); right: -4px; }
+    .canvas-controls { position: absolute; bottom: 12px; right: 12px; display: flex; gap: 4px; padding: 4px; border: 1px solid #dce6d7; border-radius: 10px; background: #fffefaeb; box-shadow: 0 2px 12px #314e2918; }
+    .canvas-controls .btn { border: 0; background: transparent; }
+    .canvas-controls .btn:hover { background: #edf3e8; }
+    .canvas-legend { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 12px; flex-wrap: wrap; color: #667b68; font-size: 10px; background: #fffefaec; border: 1px solid #e2e9de; border-radius: 8px; padding: 8px 10px; }
+    .line-key::before { content: ""; display: inline-block; width: 19px; margin-right: 5px; border-top: 2px solid #659074; vertical-align: middle; }
+    .line-key.hyp::before { border-top: 2px dashed #cc9160; }
+    .line-key.test::before { border-top: 2px dotted #5981a4; }
+    .revisions { border-top: 1px solid #dce4d8; background: #f9fbf5; min-height: 99px; padding: 13px 19px; }
+    .revision-head { display: flex; gap: 10px; justify-content: space-between; align-items: center; }
+    .revision-head strong { font-size: 11px; }
+    .revision-head span { color: #758677; font-size: 10px; }
+    .revision-list { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 2px; }
+    .revision { flex: 0 0 185px; min-height: 42px; border: 1px solid #d7e1d2; border-radius: 8px; background: #fff; color: #405344; padding: 8px 9px; text-align: left; }
+    .revision.active { border-color: #6b9b71; background: #eff6ea; }
+    .revision strong { display: block; font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .revision small { display: block; color: #849286; font-size: 9px; margin-top: 3px; }
+    .inspector-intro { margin: 0 0 22px; color: #748374; font-size: 11px; line-height: 1.5; }
+    .inspect-title { font: 400 24px Georgia, serif; letter-spacing: -.03em; margin: 0 0 5px; overflow-wrap: anywhere; }
+    .inspect-kicker { color: #769078; font-size: 10px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; margin: 0 0 11px; }
+    .inspect-note { border: 1px solid #edd9ba; background: #fff8ec; border-radius: 9px; color: #876943; font-size: 11px; line-height: 1.5; padding: 10px 11px; margin: 10px 0 17px; }
+    .inspect-note.green { border-color: #d5e6cd; background: #f3f8ed; color: #55755a; }
+    .inspect-note.blue { border-color: #cfdfec; background: #f1f7fb; color: #416d8d; }
+    .proposal-panel { border: 1px solid #b8d1ba; background: #f0f7ed; border-radius: 12px; padding: 13px; margin: 0 0 18px; box-shadow: 0 5px 20px #284b2b12; }
+    .proposal-panel h3 { margin: 6px 0; font: 400 20px Georgia, serif; line-height: 1.2; }
+    .proposal-panel p { color: #4f6955; font-size: 11px; line-height: 1.5; margin: 8px 0; }
+    .proposal-label { display: inline-block; color: #246047; background: #deedda; border-radius: 5px; padding: 4px 6px; font-size: 9px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+    .proposal-changes { display: grid; gap: 6px; margin: 9px 0; max-height: 180px; overflow: auto; padding-right: 3px; }
+    .proposal-change { border: 1px solid #d6e5d0; border-radius: 7px; background: #fff; padding: 8px; }
+    .proposal-change strong { display: block; font-size: 10px; line-height: 1.4; }
+    .proposal-change small { display: block; margin-top: 3px; color: #6d806c; font-size: 10px; line-height: 1.4; }
+    .proposal-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .proposal-details { margin: 10px 0; }
+    .proposal-details summary { color: #476653; font-size: 10px; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+    .tension { border: 1px solid #e0e4d5; background: #fafbf6; border-radius: 10px; padding: 12px; margin: 12px 0; }
+    .tension-title { display: block; color: #576d5d; font-size: 10px; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+    .tension-counts { display: flex; gap: 7px; margin: 9px 0; }
+    .tension-count { flex: 1; border-radius: 7px; padding: 9px 7px; text-align: center; font-size: 10px; font-weight: 750; }
+    .tension-count strong { display: block; font-size: 21px; line-height: 1; margin-bottom: 4px; }
+    .tension-count.supports { background: #e4f1df; color: #346747; }
+    .tension-count.challenges { background: #fae9e2; color: #9b513d; }
+    .tension p { margin: 0; color: #687b69; font-size: 10px; line-height: 1.45; }
+    .receipt.supports { border-left: 3px solid #6b9b71; }
+    .receipt.challenges { border-left: 3px solid #c88368; }
+    .receipt.context, .receipt.unclear { border-left: 3px solid #a9b8a8; }
+    .form { display: grid; gap: 11px; }
+    .field { display: grid; gap: 5px; }
+    .field label { color: #526856; font-size: 10px; font-weight: 800; }
+    .field input, .field select, .field textarea { width: 100%; border: 1px solid #cbd9c9; border-radius: 8px; background: #fff; color: #20302b; padding: 8px 9px; font-size: 11px; line-height: 1.4; }
+    .field textarea { min-height: 82px; resize: vertical; }
+    .field small { color: #7c897c; font-size: 10px; line-height: 1.4; }
+    .separator { height: 1px; background: #e0e8dc; margin: 18px 0; }
+    .receipt { margin: 9px 0; border: 1px solid #dfebda; background: #f7faf4; border-radius: 9px; padding: 10px; }
+    .receipt strong { display: block; font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; }
+    .receipt-relation { display: inline-block; margin: 5px 0 1px; padding: 3px 6px; border-radius: 4px; background: #edf2e9; color: #526858; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+    .receipt.challenges .receipt-relation { background: #fae9e2; color: #9b513d; }
+    .receipt.supports .receipt-relation { background: #e4f1df; color: #346747; }
+    .receipt blockquote { margin: 7px 0; padding-left: 8px; border-left: 2px solid #bbd4b2; color: #546b56; font-size: 10px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 110px; overflow: auto; }
+    .receipt small { color: #788779; font-size: 10px; }
+    .receipt a { display: inline-block; margin: 7px 0; color: #336b4b; font-size: 10px; font-weight: 750; }
+    .status { min-height: 18px; margin: 8px 0; font-size: 11px; line-height: 1.4; color: #356f4a; }
+    .status.error { color: #a14e41; }
+    dialog { border: 1px solid #d7e1d4; border-radius: 15px; padding: 0; width: min(460px, calc(100vw - 25px)); box-shadow: 0 30px 90px #17271d66; color: #20302b; }
+    dialog::backdrop { background: #172a22aa; }
+    .dialog-body { padding: 22px; }
+    .dialog-body h2 { margin: 0 0 8px; font: 400 26px Georgia, serif; }
+    .dialog-body p { color: #667769; font-size: 12px; line-height: 1.5; }
+    .dialog-actions { display: flex; gap: 8px; justify-content: end; margin-top: 16px; }
+    @media (max-width: 1100px) { .workspace { grid-template-columns: 215px minmax(400px, 1fr) 275px; } .left, .right { padding-left: 12px; padding-right: 12px; } .stage-head { align-items: start; } }
+    @media (max-width: 900px) { .shell { display: block; height: auto; min-height: 100dvh; overflow: visible; } .topbar { min-height: 70px; flex-wrap: wrap; } .topbar-center { order: 3; flex-basis: 100%; text-align: left; } .workspace { display: grid; grid-template-columns: minmax(0, 1fr); } .left { border-right: 0; border-bottom: 1px solid #dce3d9; overflow: visible; padding: 15px; } .map-list { display: flex; overflow-x: auto; margin: 0 0 14px; } .map-choice { min-width: 190px; max-width: 230px; } .left .shelf { max-height: 220px; overflow: auto; border-top: 1px solid #dce3d9; padding-top: 14px; } .center { min-height: 690px; } .canvas-frame { min-height: 495px; } .right { border-left: 0; border-top: 1px solid #dce3d9; overflow: visible; min-height: 210px; } }
+    @media (max-width: 590px) { .topbar { padding: 11px 15px; } .topbar-actions { margin-left: auto; } .stage-head { display: block; padding: 17px 15px 8px; } .stage-head h1 { font-size: 24px; } .tools { margin-top: 13px; justify-content: start; } .canvas-frame { margin: 0 8px 12px; min-height: 465px; } .canvas-legend { bottom: 55px; } .revisions { padding: 12px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <a class="identity" href="/lab/map" aria-label="Envoy Systems Lab"><span class="mark">e</span><span class="brand">envoy<small>Systems lab · prototype</small></span></a>
+      <div class="topbar-center"><strong id="top-question">A map of the system behind an answer</strong><span id="top-subtitle">Illustrative map · manually authored · no model run</span></div>
+      <div class="topbar-actions"><a class="textlink" href="/lab">Question desk ↗</a><button class="btn primary" id="save-map" type="button">Save sample locally</button></div>
+    </header>
+    <div class="workspace">
+      <aside class="left" aria-label="Maps and sources">
+        <div class="side-title-row"><h2 class="side-title">Maps</h2><a href="/lab">+ New question</a></div>
+        <nav class="map-list" id="map-list" aria-label="Available maps"></nav>
+        <div class="shelf">
+          <h2 class="side-title">Source shelf</h2>
+          <div id="source-shelf"></div>
+          <p class="hint" id="shelf-help"></p>
+          <form id="upload-form" class="upload" hidden>
+            <label for="upload-file">Attach a file to this question</label>
+            <input id="upload-file" type="file" accept=".md,.txt,.pdf" required>
+            <button class="btn" type="submit">Attach file</button>
+            <small>Markdown, text, or text-extractable PDF, up to 5 MB. Originals remain available for review.</small>
+          </form>
+        </div>
+      </aside>
+      <main class="center">
+        <section class="stage" aria-label="System map canvas">
+          <div class="stage-head"><div><h1 id="stage-title">The research evidence system</h1><p id="stage-subtitle">Move a block. Click an arrow to inspect what it means.</p></div>
+            <div class="tools"><button class="btn" id="add-node" type="button">+ Block</button><button class="btn" id="connect" type="button">↗ Connect</button><button class="btn" id="fit-map" type="button">Fit map</button></div>
+          </div>
+          <div class="modebar" id="modebar" role="status" aria-live="polite">Select an arrow to see its meaning and evidence. Drag a block to change the map.</div>
+          <div class="canvas-frame" id="canvas-frame" tabindex="0" aria-label="Editable system map. Drag blocks to move them; click an arrow to inspect it.">
+            <div class="world" id="world"><svg class="edge-layer" id="edge-layer" width="1100" height="760" aria-label="Connections"></svg><div class="node-layer" id="node-layer"></div></div>
+            <div class="canvas-legend"><span class="line-key">Designed or evidenced link</span><span class="line-key hyp">Hypothesis</span><span class="line-key test">Next test</span></div>
+            <div class="canvas-controls"><button class="btn icon" id="zoom-out" type="button" aria-label="Zoom out">−</button><button class="btn icon" id="zoom-in" type="button" aria-label="Zoom in">+</button></div>
+          </div>
+        </section>
+        <section class="revisions" aria-label="Dated map revisions"><div class="revision-head"><strong>Map history</strong><span id="history-hint">Changes are local to this illustrative example</span></div><div class="revision-list" id="revision-list"></div></section>
+      </main>
+      <aside class="right" aria-label="Selected block or connection inspector">
+        <div id="proposal-slot"></div>
+        <h2 class="side-title">Inspector</h2><p class="inspector-intro" id="inspector-intro">Select a block or arrow to inspect its meaning. A source quote verifies its words, not the causal claim you draw from them.</p>
+        <div id="inspector"></div>
+        <div class="separator"></div><p class="status" id="status" role="status" aria-live="polite"></p>
+        <p class="hint">This is a visual workflow prototype. The sample is hand-authored and is not evidence that Qwen can generate maps. Saved question maps are your editable interpretations.</p>
+      </aside>
+    </div>
+  </div>
+  <dialog id="save-dialog"><form class="dialog-body" id="save-form"><h2>Save this map revision</h2><p>What changed in your understanding? The earlier map remains in history.</p><div class="field"><label for="save-summary">Revision note</label><textarea id="save-summary" maxlength="1000" required placeholder="I separated the designed handoff from the training hypothesis…"></textarea></div><div class="dialog-actions"><button class="btn" id="cancel-save" type="button">Cancel</button><button class="btn primary" type="submit">Save revision</button></div></form></dialog>
+  <script>
+    (() => {
+      "use strict";
+      const $ = (id) => document.getElementById(id);
+      const svgNS = "http://www.w3.org/2000/svg";
+      const NODE_W = 194, NODE_H = 107, WORLD_W = 1100, WORLD_H = 760;
+      const NODE_TYPES = ["component", "process", "assumption", "outcome", "stock", "flow"];
+      const EDGE_TYPES = ["flows_to", "depends_on", "may_affect", "tests"];
+      const BASES = ["hypothesis", "documented", "measured"];
+      const RELATIONS = ["supports", "challenges", "context", "unclear"];
+      const DEMO_KEY = "envoy-system-map-illustrative-v1";
+      const sample = {
+        nodes: [
+          {id:"n_store",type:"component",label:"Paper store",description:"Frozen passages to inspect",x:70,y:70},
+          {id:"n_qwen",type:"process",label:"Qwen investigator",description:"Searches, reads, extracts",x:325,y:70},
+          {id:"n_verify",type:"process",label:"Evidence verifier",description:"Checks exact source spans",x:580,y:70},
+          {id:"n_nemotron",type:"process",label:"Nemotron composer",description:"Drafts from a checked bundle",x:580,y:285},
+          {id:"n_obsidian",type:"outcome",label:"Obsidian inbox",description:"A draft for human review",x:325,y:285},
+          {id:"n_sft",type:"assumption",label:"More SFT data",description:"A proposed intervention",x:70,y:500},
+          {id:"n_quality",type:"outcome",label:"Supported-answer quality",description:"The outcome we need to measure",x:325,y:500},
+        ],
+        edges: [
+          {id:"e_store",source:"n_store",target:"n_qwen",type:"flows_to",label:"source",explanation:"The designed workflow gives Qwen access to a frozen source store. This illustrative diagram is not a live execution trace.",basis:"documented",evidence:[]},
+          {id:"e_qwen",source:"n_qwen",target:"n_verify",type:"flows_to",label:"quotes",explanation:"Qwen is intended to submit candidate passages; the verifier checks their exact offsets.",basis:"documented",evidence:[]},
+          {id:"e_verify",source:"n_verify",target:"n_nemotron",type:"flows_to",label:"checked",explanation:"Only a checked evidence bundle should reach the composer in the proposed architecture.",basis:"documented",evidence:[]},
+          {id:"e_draft",source:"n_nemotron",target:"n_obsidian",type:"flows_to",label:"draft only",explanation:"The harness stages an unreviewed draft in the inbox. A person decides what enters the library.",basis:"documented",evidence:[]},
+          {id:"e_sft",source:"n_sft",target:"n_quality",type:"may_affect",label:"challenged",explanation:"The assumption that adding SFT data improves supported answers was challenged when v5 underperformed base Qwen on a related synthetic vault screen. That was not a systems-map evaluation or proof of a general causal effect.",basis:"hypothesis",evidence:[]},
+        ]
+      };
+      const state = {threadId:null,thread:null,threads:[],map:structuredClone(sample),history:[],revision:null,latestId:null,historical:false,selected:{kind:"edge",id:"e_sft"},connectFrom:null,dirty:false,scale:1,panX:0,panY:0,drag:null,loading:false,proposal:null,proposalPreview:false,previewOriginalMap:null};
+
+      function el(tag, className, value) { const e=document.createElement(tag); if(className)e.className=className; if(value!==undefined)e.textContent=String(value); return e; }
+      function svg(tag, attrs={}) { const e=document.createElementNS(svgNS,tag); for(const [key,value] of Object.entries(attrs)) e.setAttribute(key,String(value)); return e; }
+      function status(message,error=false) { const e=$("status"); e.textContent=message; e.classList.toggle("error",error); }
+      function uid(prefix) { return prefix+"_"+(crypto.randomUUID ? crypto.randomUUID().slice(0,12) : Math.random().toString(36).slice(2,14)); }
+      function choice(parent,values,current) { for(const value of values){const opt=el("option","",value.replaceAll("_"," "));opt.value=value;parent.append(opt);} parent.value=current; }
+      function field(label,tag,value,handler,opts={}) { const wrap=el("div","field"),lab=el("label","",label),input=el(tag); input.value=value??""; if(opts.maxLength)input.maxLength=opts.maxLength; if(opts.rows)input.rows=opts.rows; if(opts.options)choice(input,opts.options,value); input.addEventListener(tag==="select"?"change":"input",()=>handler(input.value)); wrap.append(lab,input); if(opts.help)wrap.append(el("small","",opts.help)); return wrap; }
+      async function api(url,options={}) { const response=await fetch(url,{cache:"no-store",...options}); const data=await response.json().catch(()=>({})); if(!response.ok) throw new Error(typeof data.detail==="string"?data.detail:`Request failed (${response.status})`); return data; }
+      function displayDate(value) { if(!value)return "Today"; const date=new Date(value); return Number.isNaN(date.getTime())?String(value).slice(0,10):date.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"}); }
+      function currentRevision() { return state.revision || {id:null,nodes:state.map.nodes,edges:state.map.edges}; }
+      function safeSourceHref(source) { if(source.download_url && /^\/api\/lab\/threads\/[A-Za-z0-9_-]+\/sources\/[A-Za-z0-9_-]+\/raw$/.test(source.download_url))return source.download_url; try { const u=new URL(source.source_url); return ["http:","https:"].includes(u.protocol)?u.href:null; }catch{return null;} }
+      function assessmentCounts(edge) {const counts={supports:0,challenges:0,context:0,unclear:0};for(const item of edge.evidence||[])counts[item.relation]!==undefined?counts[item.relation]++:counts.unclear++;return counts;}
+      function assessmentText(edge) {const counts=assessmentCounts(edge);return `${counts.supports} supporting · ${counts.challenges} challenging${counts.context?` · ${counts.context} context`:""}${counts.unclear?` · ${counts.unclear} unassessed`:""}`;}
+      function nextTestNode(node) {return state.map.edges.some(edge=>edge.type==="tests"&&edge.source===node.id);}
+      function proposalChanges() {
+        const proposed=state.proposal?.proposed_map,base=state.previewOriginalMap||state.map;
+        if(!proposed)return [];
+        const rows=[],beforeNodes=new Map(base.nodes.map(node=>[node.id,node])),beforeEdges=new Map(base.edges.map(edge=>[edge.id,edge]));
+        const names=new Map(proposed.nodes.map(node=>[node.id,node.label]));
+        for(const node of proposed.nodes){const before=beforeNodes.get(node.id);if(!before)rows.push({title:`Add block · ${node.label}`,detail:node.description||node.type});else if(before.label!==node.label||before.description!==node.description||before.type!==node.type)rows.push({title:`Revise block · ${node.label}`,detail:`${before.description||before.label} → ${node.description||node.label}`});}
+        for(const edge of proposed.edges){const before=beforeEdges.get(edge.id);const changed=!before||JSON.stringify([edge.source,edge.target,edge.type,edge.label,edge.explanation,edge.basis,edge.evidence])!==JSON.stringify([before.source,before.target,before.type,before.label,before.explanation,before.basis,before.evidence]);if(changed)rows.push({title:`${before?"Revise":"Add"} link · ${names.get(edge.source)||"?"} → ${names.get(edge.target)||"?"}`,detail:`${edge.label||edge.type.replaceAll("_"," ")} · ${edge.basis}. ${edge.explanation} ${edge.evidence?.length?assessmentText(edge)+".":"No linked passages."}`});}
+        for(const edge of base.edges)if(!proposed.edges.some(item=>item.id===edge.id))rows.push({title:`Remove link · ${edge.label||edge.type.replaceAll("_"," ")}`,detail:edge.explanation});
+        for(const node of base.nodes)if(!proposed.nodes.some(item=>item.id===node.id))rows.push({title:`Remove block · ${node.label}`,detail:node.description});
+        return rows;
+      }
+      function renderProposal() {
+        const slot=$("proposal-slot");slot.replaceChildren();if(!state.proposal||state.threadId===null||state.historical)return;
+        const proposal=state.proposal,panel=el("section","proposal-panel");panel.setAttribute("aria-label","Curated map change for review");
+        panel.append(el("span","proposal-label","Curated demo · written by a person"),el("h3","",proposal.title||"Review a proposed map change"),el("p","",proposal.rationale||"Compare the proposed map with the current revision before accepting it."));
+        const changeRows=proposalChanges(),details=el("details","proposal-details"),changes=el("div","proposal-changes");details.append(el("summary","",`${changeRows.length} changes to review`));for(const row of changeRows){const card=el("div","proposal-change");card.append(el("strong","",row.title),el("small","",row.detail));changes.append(card);}if(!changes.childElementCount)changes.append(el("p","hint","No differences from the current map."));details.append(changes);panel.append(details);
+        const actions=el("div","proposal-actions"),preview=el("button","btn",state.proposalPreview?"Return to current map":"Preview on map"),accept=el("button","btn primary","Accept as new revision"),dismiss=el("button","btn","Dismiss");for(const button of [preview,accept,dismiss])button.type="button";preview.disabled=state.dirty;accept.disabled=state.dirty||!changeRows.length;preview.addEventListener("click",toggleProposalPreview);accept.addEventListener("click",acceptProposal);dismiss.addEventListener("click",dismissProposal);actions.append(preview,accept,dismiss);panel.append(actions);
+        if(state.dirty)panel.append(el("p","hint","Save or discard your current edits before reviewing this proposal."));
+        panel.append(el("p","hint","This change was authored for the demo. It is not Qwen output. Accepting it creates a dated map revision; the earlier version stays in history."));slot.append(panel);
+      }
+      function toggleProposalPreview() {
+        if(!state.proposal||state.dirty)return;
+        if(state.proposalPreview){state.map=state.previewOriginalMap;state.previewOriginalMap=null;state.proposalPreview=false;}
+        else{state.previewOriginalMap=structuredClone(state.map);state.map=structuredClone(state.proposal.proposed_map);state.proposalPreview=true;}
+        state.selected={kind:"edge",id:state.map.edges.find(edge=>{const count=assessmentCounts(edge);return count.supports&&count.challenges;})?.id||state.map.edges.find(edge=>edge.evidence?.length)?.id||state.map.edges[0]?.id};renderAll();requestAnimationFrame(fitMap);
+      }
+      function dismissProposal() {if(!state.proposal)return;if(state.proposalPreview)toggleProposalPreview();try{sessionStorage.setItem(`envoy-map-proposal-dismissed-${state.threadId}-${state.proposal.base_revision_id||"initial"}`,"1");}catch{}state.proposal=null;renderProposal();status("Curated proposal dismissed in this browser session.");}
+      async function acceptProposal() {
+        if(!state.proposal||state.dirty||state.historical)return;
+        if((state.revision?.id||null)!==(state.proposal.base_revision_id||null)){status("The map changed since this proposal was prepared. Open the latest revision to review it again.",true);return;}
+        const proposal=state.proposal,proposed=proposal.proposed_map;
+        try{const data=await api(`/api/lab/threads/${encodeURIComponent(state.threadId)}/map`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({summary:proposal.summary||"Accepted curated map review proposal",nodes:proposed.nodes.map(({id,type,label,description,x,y})=>({id,type,label,description,x,y})),edges:proposed.edges.map(({id,source,target,type,label,explanation,basis,evidence})=>({id,source,target,type,label,explanation,basis,evidence:(evidence||[]).map(({source_id,start,end,relation})=>({source_id,start,end,relation}))}))})});state.proposal=null;setFromEnvelope(data);state.selected={kind:"edge",id:state.map.edges.find(edge=>{const count=assessmentCounts(edge);return count.supports&&count.challenges;})?.id||state.map.edges[0]?.id};renderCanvas();renderInspector();status("Curated change accepted as a dated map revision. The previous version remains in history.");}catch(error){status(`Could not accept proposal: ${error.message}`,true);}
+      }
+      async function loadProposal(id) {
+        try{const response=await fetch(`/api/lab/threads/${encodeURIComponent(id)}/map/proposal`,{cache:"no-store"});if(response.status===404)return;if(!response.ok)throw new Error(`Request failed (${response.status})`);const proposal=await response.json();if(state.threadId!==id)return;if(proposal?.authorship!=="curated_demo"||!Array.isArray(proposal.proposed_map?.nodes)||!Array.isArray(proposal.proposed_map?.edges))throw new Error("Invalid proposal data");try{if(sessionStorage.getItem(`envoy-map-proposal-dismissed-${id}-${proposal.base_revision_id||"initial"}`))return;}catch{}state.proposal=proposal;state.selected={kind:"edge",id:state.map.edges.find(edge=>edge.evidence?.length)?.id||state.map.edges[0]?.id};renderAll();requestAnimationFrame(fitMap);}catch(error){if(state.threadId===id)status(`Could not load map proposal: ${error.message}`,true);}
+      }
+
+      function renderMapList() {
+        const list=$("map-list"); list.replaceChildren();
+        const demo=el("button","map-choice"+(state.threadId===null?" active":""));demo.type="button";demo.append(el("strong","","Illustrative research system"),el("small","","Hand-authored example · edit locally"));demo.addEventListener("click",()=>openDemo());list.append(demo);
+        for(const thread of state.threads) { if(!thread || typeof thread.thread_id!=="string")continue; const b=el("button","map-choice"+(state.threadId===thread.thread_id?" active":""));b.type="button";b.append(el("strong","",thread.question||"Untitled question"),el("small","","Saved question map"));b.addEventListener("click",()=>openThread(thread.thread_id));list.append(b); }
+        if(!state.threads.length)list.append(el("p","hint","No saved questions yet. Explore the sample or start one in the question desk."));
+      }
+      function renderShelf() {
+        const shelf=$("source-shelf");shelf.replaceChildren();$("upload-form").hidden=state.threadId===null||state.proposalPreview;
+        if(state.threadId===null) { const card=el("div","source-card");card.append(el("strong","","Why the dashed arrow?"),el("small","","Illustrative prompt for investigation"),el("p","hint","v5 underperformed base Qwen on a related synthetic vault screen. This is not a map-generation result. See the v5 readiness report in the repo for that screen."));shelf.append(card);$("shelf-help").textContent="This sample has no attached receipts. To link exact passages to arrows, open a saved question and attach a source.";return; }
+        const sources=Array.isArray(state.thread?.sources)?[...state.thread.sources]:[];
+        const selectedEdge=state.selected?.kind==="edge"?state.map.edges.find(edge=>edge.id===state.selected.id):null;
+        const linkedSources=new Set((selectedEdge?.evidence||[]).map(item=>item.source_id));
+        sources.sort((a,b)=>Number(linkedSources.has(b.source_id))-Number(linkedSources.has(a.source_id)));
+        if(!sources.length)shelf.append(el("p","hint","No sources attached. Add a file below or collect a page in the question desk."));
+        for(const source of sources) { const card=el("div","source-card");card.append(el("strong","",source.title||source.filename||"Unavailable source"),el("small","",source.filename||source.coverage||source.source_kind||"Source"));const href=safeSourceHref(source);if(href){const a=el("a","",source.filename?"Open frozen original ↗":"Open source ↗");a.href=href;a.target="_blank";a.rel="noopener noreferrer";card.append(a);}const passages=Array.isArray(source.passages)?source.passages:[];for(const p of passages){const item=el("div","passage");if(Array.isArray(p.pages)&&p.pages.length)item.append(el("small","",`Page ${p.pages.join(", ")}`));item.append(el("blockquote","",p.quote||""));const b=el("button","btn","Link to selected arrow");b.type="button";b.disabled=state.historical||state.proposalPreview||state.selected?.kind!=="edge"||source.source_kind==="unavailable";b.addEventListener("click",()=>linkEvidence(source,p));item.append(b);card.append(item);}shelf.append(card); }
+        $("shelf-help").textContent="Select an arrow, then link an exact passage. A real quote does not establish that the arrow is causally correct.";
+      }
+      function renderHeader() {
+        const demo=state.threadId===null;
+        $("top-question").textContent=demo?"A map of the system behind an answer":state.thread?.question||"Untitled question";
+        $("top-subtitle").textContent=demo?"Illustrative map · manually authored · no model run":state.proposalPreview?"Curated demo proposal · preview only · no model run":state.historical?"Viewing an earlier map revision · read only":"Your editable map · interpretations require review";
+        $("stage-title").textContent=demo?"The research evidence system":"Map your question";
+        $("stage-subtitle").textContent=demo?"A designed pipeline and one challenged training hypothesis":state.proposalPreview?"Inspect the proposed changes and their source passages, then decide whether to accept them":"What connects, what is measured, and what is still a hypothesis?";
+        $("save-map").textContent=demo?"Save sample locally":state.proposalPreview?"Return to current":state.historical?"View latest to edit":"Save revision";
+        $("save-map").disabled=!demo&&!state.proposalPreview&&!state.historical&&!state.dirty;
+        $("add-node").disabled=state.historical||state.proposalPreview||state.map.nodes.length>=30;
+        $("connect").disabled=state.historical||state.proposalPreview||state.map.edges.length>=50||state.map.nodes.length<2;
+        $("connect").classList.toggle("active",state.connectFrom!==null);
+        $("modebar").textContent=state.proposalPreview?"Curated proposal preview: read only. Inspect passages and the next test, then accept or return to the current map.":state.historical?"Earlier revision: read only. Choose the latest revision to continue editing.":state.connectFrom?"Now click the destination block. Press Escape to cancel.":state.dirty?"Unsaved map edits. Save a dated revision when ready.":"Select an arrow to see its meaning and evidence. Drag a block to change the map.";
+        $("history-hint").textContent=demo?"Changes are local to this illustrative example":state.proposalPreview?"Preview only · accept to create a revision":state.historical?"Earlier revision · read only":"Each save creates a dated revision";
+      }
+      function renderHistory() {
+        const list=$("revision-list");list.replaceChildren();
+        if(state.threadId===null) {const b=el("button","revision active");b.type="button";b.append(el("strong","","Current local sample"),el("small","","Illustrative; no model run"));b.addEventListener("click",()=>openDemo());list.append(b);return;}
+        if(!state.history.length){list.append(el("p","hint","This question has no saved map revisions yet. Add blocks and save your first map."));return;}
+        for(const entry of state.history) { const b=el("button","revision"+(entry.id===state.revision?.id?" active":""));b.type="button";b.append(el("strong","",entry.summary||"Map revision"),el("small","",displayDate(entry.created_at)));b.addEventListener("click",()=>openRevision(entry.id));list.append(b); }
+      }
+      function nodeById(id) { return state.map.nodes.find(n=>n.id===id); }
+      function markDirty() {state.dirty=true;renderHeader();renderProposal();}
+      function transform() {$("world").style.transform=`translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;}
+      function fitMap() {const frame=$("canvas-frame");const nodes=state.map.nodes;if(!nodes.length){state.scale=1;state.panX=(frame.clientWidth-WORLD_W)/2;state.panY=(frame.clientHeight-WORLD_H)/2;transform();return;}const minX=Math.min(...nodes.map(n=>n.x)),maxX=Math.max(...nodes.map(n=>n.x+NODE_W)),minY=Math.min(...nodes.map(n=>n.y)),maxY=Math.max(...nodes.map(n=>n.y+NODE_H));const width=maxX-minX+80,height=maxY-minY+80;state.scale=Math.max(.45,Math.min(1.12,(frame.clientWidth-30)/width,(frame.clientHeight-30)/height));state.panX=(frame.clientWidth-(minX+maxX)*state.scale)/2;state.panY=(frame.clientHeight-(minY+maxY)*state.scale)/2;transform();}
+      function zoom(factor) {const frame=$("canvas-frame"),cx=frame.clientWidth/2,cy=frame.clientHeight/2,next=Math.max(.4,Math.min(1.8,state.scale*factor));state.panX=cx-(cx-state.panX)*(next/state.scale);state.panY=cy-(cy-state.panY)*(next/state.scale);state.scale=next;transform();}
+      function edgePoints(a,b) { const ax=a.x+NODE_W/2,ay=a.y+NODE_H/2,bx=b.x+NODE_W/2,by=b.y+NODE_H/2,dx=bx-ax,dy=by-ay; const horizontal=Math.abs(dx)>Math.abs(dy); let sx,sy,tx,ty;if(horizontal){sx=ax+Math.sign(dx)*NODE_W/2;sy=ay;tx=bx-Math.sign(dx)*NODE_W/2;ty=by;}else{sx=ax;sy=ay+Math.sign(dy)*NODE_H/2;tx=bx;ty=by-Math.sign(dy)*NODE_H/2;}return {sx,sy,tx,ty,horizontal}; }
+      function renderCanvas(drawNodes=true) {
+        const edges=$("edge-layer"),nodes=$("node-layer");edges.replaceChildren();if(drawNodes)nodes.replaceChildren();
+        const defs=svg("defs");for(const [name,color] of [["arrow-solid","#659074"],["arrow-hyp","#cc9160"],["arrow-selected","#2c6d49"],["arrow-test","#5981a4"],["arrow-test-selected","#356c99"]]){const marker=svg("marker",{id:name,markerWidth:9,markerHeight:9,refX:8,refY:4.5,orient:"auto",markerUnits:"userSpaceOnUse"});marker.append(svg("path",{d:"M 0 0 L 9 4.5 L 0 9 Z",fill:color}));defs.append(marker);}edges.append(defs);
+        for(const edge of state.map.edges) {const a=nodeById(edge.source),b=nodeById(edge.target);if(!a||!b)continue;const p=edgePoints(a,b),selected=state.selected?.kind==="edge"&&state.selected.id===edge.id,hyp=edge.basis==="hypothesis",test=edge.type==="tests";let d;if(p.horizontal){const bend=(p.tx-p.sx)*.48;d=`M ${p.sx} ${p.sy} C ${p.sx+bend} ${p.sy}, ${p.tx-bend} ${p.ty}, ${p.tx} ${p.ty}`;}else{const bend=(p.ty-p.sy)*.48;d=`M ${p.sx} ${p.sy} C ${p.sx} ${p.sy+bend}, ${p.tx} ${p.ty-bend}, ${p.tx} ${p.ty}`;}const g=svg("g",{class:`edge-group${hyp?" hypothesis":""}${test?" next-test":""}${selected?" selected":""}`,role:"button",tabindex:0,"aria-label":`${test?"Next test: ":""}${edge.label||edge.type}: ${a.label} to ${b.label}`});const marker=test?(selected?"arrow-test-selected":"arrow-test"):(selected?"arrow-selected":hyp?"arrow-hyp":"arrow-solid");const path=svg("path",{d,class:"edge-visible","marker-end":`url(#${marker})`});g.append(path,svg("path",{d,class:"edge-hit"}));const midX=(p.sx+p.tx)/2,midY=(p.sy+p.ty)/2,text=(edge.label||edge.type.replaceAll("_"," ")).slice(0,31),width=Math.max(65,text.length*6+17);g.append(svg("rect",{class:"edge-label",x:midX-width/2,y:midY-10,width,height:20,rx:8}));const caption=svg("text",{class:"edge-label-text",x:midX,y:midY+3});caption.textContent=text;g.append(caption);g.addEventListener("click",(event)=>{event.stopPropagation();select("edge",edge.id);});g.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();select("edge",edge.id);}});edges.append(g);}
+        if(drawNodes)for(const n of state.map.nodes) {const test=nextTestNode(n),card=el("div",`map-node ${n.type}${test?" next-test":""}${state.selected?.kind==="node"&&state.selected.id===n.id?" selected":""}`);card.style.left=`${n.x}px`;card.style.top=`${n.y}px`;card.dataset.nodeId=n.id;card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label",`${test?"next test":""}${test?", ":""}${n.type} block: ${n.label}`);card.append(el("span","node-kind",test?"Next test":n.type),el("strong","",n.label||"Untitled block"),el("p","",n.description||"Click to describe this block"),el("span","node-dot"));card.addEventListener("pointerdown",event=>startNodeDrag(event,n,card));card.addEventListener("click",event=>{event.stopPropagation();onNodeClick(n.id);});card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();onNodeClick(n.id);}});nodes.append(card);}
+      }
+      function onNodeClick(id) {if(state.connectFrom){if(state.connectFrom!==id){addEdge(state.connectFrom,id);}state.connectFrom=null;renderHeader();renderCanvas();return;}select("node",id);}
+      function select(kind,id) {state.selected={kind,id};renderCanvas();renderInspector();renderShelf();}
+      function editable() {return !state.historical&&!state.proposalPreview;}
+      function startNodeDrag(event,node,card) {if(event.button!==0)return;event.stopPropagation();if(state.connectFrom)return;state.selected={kind:"node",id:node.id};$("node-layer").querySelectorAll(".map-node").forEach(item=>item.classList.toggle("selected",item.dataset.nodeId===node.id));renderEdgesOnly();renderInspector();renderShelf();if(!editable())return;const start={x:event.clientX,y:event.clientY,nodeX:node.x,nodeY:node.y,moved:false};state.drag={kind:"node",id:node.id,...start};card.setPointerCapture(event.pointerId);card.addEventListener("pointermove",moveNode);card.addEventListener("pointerup",endNodeDrag,{once:true});card.addEventListener("pointercancel",endNodeDrag,{once:true});}
+      function moveNode(event) {if(state.drag?.kind!=="node")return;const n=nodeById(state.drag.id);if(!n)return;const dx=(event.clientX-state.drag.x)/state.scale,dy=(event.clientY-state.drag.y)/state.scale;if(Math.abs(dx)+Math.abs(dy)>2)state.drag.moved=true;n.x=Math.round(Math.max(0,Math.min(WORLD_W-NODE_W,state.drag.nodeX+dx)));n.y=Math.round(Math.max(0,Math.min(WORLD_H-NODE_H,state.drag.nodeY+dy)));event.currentTarget.style.left=`${n.x}px`;event.currentTarget.style.top=`${n.y}px`;renderEdgesOnly();}
+      function endNodeDrag(event) {const card=event.currentTarget;card.removeEventListener("pointermove",moveNode);if(state.drag?.moved)markDirty();state.drag=null;renderCanvas();renderInspector();}
+      function renderEdgesOnly() {renderCanvas(false);}
+      function addNode() {if(!editable()||state.map.nodes.length>=30)return;const frame=$("canvas-frame"),wx=(frame.clientWidth/2-state.panX)/state.scale,wy=(frame.clientHeight/2-state.panY)/state.scale,baseX=Math.round(wx-NODE_W/2),baseY=Math.round(wy-NODE_H/2);let x=Math.max(0,Math.min(WORLD_W-NODE_W,baseX)),y=Math.max(0,Math.min(WORLD_H-NODE_H,baseY));const offsets=[[0,0],[260,0],[-260,0],[0,170],[0,-170],[260,170],[-260,170],[260,-170],[-260,-170],[520,0],[-520,0],[0,340],[0,-340],[520,170],[-520,170],[520,-170],[-520,-170]];for(const [dx,dy] of offsets){const candidateX=baseX+dx,candidateY=baseY+dy;if(candidateX<0||candidateX>WORLD_W-NODE_W||candidateY<0||candidateY>WORLD_H-NODE_H)continue;if(state.map.nodes.every(n=>Math.abs(n.x-candidateX)>=NODE_W+18||Math.abs(n.y-candidateY)>=NODE_H+18)){x=candidateX;y=candidateY;break;}}const n={id:uid("n"),type:"component",label:"New block",description:"What does this part of the system do?",x,y};state.map.nodes.push(n);markDirty();select("node",n.id);}
+      function addEdge(source,target) {if(!editable()||state.map.edges.length>=50||source===target)return;const edge={id:uid("e"),source,target,type:"may_affect",label:"May affect",explanation:"Describe why you think these are connected, and what would test it.",basis:"hypothesis",evidence:[]};state.map.edges.push(edge);markDirty();select("edge",edge.id);}
+      function removeSelected() {if(!editable()||!state.selected)return;const {kind,id}=state.selected;if(kind==="node"){state.map.nodes=state.map.nodes.filter(n=>n.id!==id);state.map.edges=state.map.edges.filter(e=>e.source!==id&&e.target!==id);}else state.map.edges=state.map.edges.filter(e=>e.id!==id);state.selected=null;markDirty();renderAll();}
+      function linkEvidence(source,passage) {if(!editable()||state.selected?.kind!=="edge")return;const edge=state.map.edges.find(e=>e.id===state.selected.id);if(!edge)return;if(edge.evidence.length>=5){status("An arrow can link at most five passages.",true);return;}const entry={source_id:source.source_id,start:passage.start,end:passage.end,relation:"unclear"};if(edge.evidence.some(e=>e.source_id===entry.source_id&&e.start===entry.start&&e.end===entry.end)){status("This passage is already linked to that arrow.");return;}edge.evidence.push(entry);markDirty();renderInspector();renderShelf();status("Exact passage linked. Set your assessment in the inspector, then save a map revision.");}
+      function renderInspector() {
+        const box=$("inspector");box.replaceChildren();$("inspector-intro").hidden=Boolean(state.selected);
+        if(!state.selected){box.append(el("h3","inspect-title","Think in relationships"),el("p","hint","A useful map separates designed flows from uncertain causal claims. Add blocks, connect them, and inspect each arrow."));return;}
+        const readOnly=!editable();
+        if(state.selected.kind==="node") {const n=nodeById(state.selected.id);if(!n){state.selected=null;renderInspector();return;}const test=nextTestNode(n);box.append(el("p","inspect-kicker",test?"Next test · proposed":n.type+" block"),el("h3","inspect-title",n.label));if(test)box.append(el("div","inspect-note blue","This block is a planned test. Its arrow points to the claim it could probe; results have not been recorded here."));const form=el("div","form");form.append(field("Block name","input",n.label,value=>{n.label=value.slice(0,120);markDirty();renderCanvas();}, {maxLength:120}));form.append(field("Kind","select",n.type,value=>{n.type=value;markDirty();renderCanvas();},{options:NODE_TYPES}));form.append(field("What is it?","textarea",n.description,value=>{n.description=value.slice(0,1000);markDirty();renderCanvas();},{maxLength:1000}));form.querySelectorAll("input,textarea,select").forEach(x=>x.disabled=readOnly);box.append(form,el("p","hint",`Position ${n.x}, ${n.y} · Drag this block on the canvas.`));if(!readOnly){const del=el("button","btn danger","Remove block and its arrows");del.type="button";del.addEventListener("click",removeSelected);box.append(del);}return;}
+        const edge=state.map.edges.find(e=>e.id===state.selected.id);if(!edge){state.selected=null;renderInspector();return;}const src=nodeById(edge.source),dst=nodeById(edge.target);box.append(el("p","inspect-kicker",edge.type==="tests"?"Next test · proposed":edge.basis==="hypothesis"?"Hypothesis · inspect before accepting":"Connection · inspect evidence"),el("h3","inspect-title",`${src?.label||"?"} → ${dst?.label||"?"}`));
+        const note=el("div","inspect-note"+(edge.type==="tests"?" blue":edge.basis==="hypothesis"?"":" green"),edge.type==="tests"?"Next test: this link shows what the proposed test would probe. Its outcome remains unknown.":edge.basis==="hypothesis"?"Dashed arrow = a proposed relationship. Even an exact quote cannot prove causation.":state.threadId===null?"Solid arrow = part of an illustrative designed workflow, not a verified live trace.":"Solid arrow = documented or measured relationship. Inspect the linked source; support is still your judgment.");box.append(note);
+        const counts=assessmentCounts(edge),tension=el("div","tension"),numbers=el("div","tension-counts"),support=el("div","tension-count supports"),challenge=el("div","tension-count challenges");support.append(el("strong","",counts.supports),document.createTextNode("supporting"));challenge.append(el("strong","",counts.challenges),document.createTextNode("challenging"));numbers.append(support,challenge);tension.append(el("span","tension-title","Your source assessments"),numbers,el("p","",`Across ${edge.evidence?.length||0} linked passages${counts.context?`, ${counts.context} context`:""}${counts.unclear?`, ${counts.unclear} unassessed`:""}. These labels record your interpretation; exact quotes alone do not establish the claim.`));box.append(tension);
+        const form=el("div","form");form.append(field("Arrow label","input",edge.label,value=>{edge.label=value.slice(0,120);markDirty();renderCanvas();},{maxLength:120}));form.append(field("Relationship","select",edge.type,value=>{edge.type=value;markDirty();renderCanvas();},{options:EDGE_TYPES}));form.append(field("Basis","select",edge.basis,value=>{edge.basis=value;markDirty();renderCanvas();renderInspector();},{options:BASES,help:"Documented and measured arrows in saved questions need an exact frozen-source passage."}));form.append(field("What does this arrow mean?","textarea",edge.explanation,value=>{edge.explanation=value.slice(0,1000);markDirty();},{maxLength:1000}));form.querySelectorAll("input,textarea,select").forEach(x=>x.disabled=readOnly);box.append(form);
+        box.append(el("div","separator"),el("p","inspect-kicker","Evidence linked to this arrow"));
+        if(!edge.evidence?.length)box.append(el("p","hint",state.threadId===null?"The illustrative sample has no source receipts. Use a saved question to link exact passages.":"No passage linked. Select one in the source shelf. Hypotheses can remain unlinked; documented and measured arrows cannot."));
+        for(let i=0;i<(edge.evidence||[]).length;i++){const evidence=edge.evidence[i],receipt=(edge.receipts||edge.evidence_receipts||[])[i],relationName=RELATIONS.includes(evidence.relation)?evidence.relation:"unclear",card=el("div",`receipt ${relationName}`);card.append(el("strong","",receipt?.title||`Source ${evidence.source_id}`),el("span","receipt-relation",relationName));if(receipt?.quote)card.append(el("blockquote","",receipt.quote));const verified=receipt?.status==="exact_span_verified"?"Exact words verified; meaning not verified":receipt?.status==="source_unavailable_or_changed"?"Source unavailable or changed":state.proposalPreview?"Proposed link; inspect the source before accepting":"Link pending save";card.append(el("small","",`${verified}${Array.isArray(receipt?.pages)&&receipt.pages.length?` · page ${receipt.pages.join(", ")}`:""}`));const source=state.thread?.sources?.find(item=>item.source_id===evidence.source_id),href=safeSourceHref(source||{download_url:receipt?.filename&&state.threadId?`/api/lab/threads/${state.threadId}/sources/${evidence.source_id}/raw`:null,source_url:receipt?.source_url});if(href){const link=el("a","",receipt?.filename||source?.filename?"Open frozen original ↗":"Open source page ↗");link.href=href;link.target="_blank";link.rel="noopener noreferrer";card.append(link);}const relation=field("Your assessment","select",relationName,value=>{evidence.relation=value;markDirty();renderInspector();},{options:RELATIONS});relation.querySelector("select").disabled=readOnly;card.append(relation);if(!readOnly){const remove=el("button","btn danger","Unlink passage");remove.type="button";remove.addEventListener("click",()=>{edge.evidence.splice(i,1);markDirty();renderInspector();renderShelf();});card.append(remove);}box.append(card);}
+        if(!readOnly){const del=el("button","btn danger","Remove arrow");del.type="button";del.addEventListener("click",removeSelected);box.append(del);}
+      }
+      function renderAll() {renderHeader();renderMapList();renderShelf();renderCanvas();renderInspector();renderHistory();renderProposal();}
+      function confirmDiscard() {return !state.dirty||window.confirm("Discard unsaved map edits?");}
+      function setFromEnvelope(data) {state.revision=data.revision||null;state.map={nodes:structuredClone(data.revision?.nodes||[]),edges:structuredClone(data.revision?.edges||[])};state.history=Array.isArray(data.history)?data.history:[];state.latestId=state.history.length?state.history[0].id:null;state.historical=Boolean(data.revision?.id&&state.latestId&&data.revision.id!==state.latestId);state.dirty=false;state.selected=null;state.connectFrom=null;state.proposalPreview=false;state.previewOriginalMap=null;renderAll();requestAnimationFrame(fitMap);}
+      async function loadThreads() {try{const data=await api("/api/lab/threads");state.threads=Array.isArray(data.threads)?data.threads:[];renderMapList();}catch(error){status(`Could not list saved questions: ${error.message}`,true);}}
+      async function openThread(id) {if(!confirmDiscard())return;status("Opening saved question…");try{const [thread,map]=await Promise.all([api(`/api/lab/threads/${encodeURIComponent(id)}`),api(`/api/lab/threads/${encodeURIComponent(id)}/map`)]);state.threadId=id;state.thread=thread;state.proposal=null;setFromEnvelope(map);const url=new URL(location.href);url.searchParams.set("thread",id);history.replaceState(null,"",url);status("");await loadProposal(id);}catch(error){status(`Could not open map: ${error.message}`,true);}}
+      async function openRevision(id) {if(state.threadId===null||!id)return;if(!confirmDiscard())return;try{const map=await api(`/api/lab/threads/${encodeURIComponent(state.threadId)}/map/revisions/${encodeURIComponent(id)}`);setFromEnvelope(map);status(state.historical?"Viewing an earlier map revision. Choose the newest card to edit.":"");}catch(error){status(`Could not open revision: ${error.message}`,true);}}
+      function openDemo(force=false) {if(!force&&!confirmDiscard())return;state.threadId=null;state.thread=null;state.history=[];state.latestId=null;state.revision=null;state.historical=false;state.connectFrom=null;state.dirty=false;state.proposal=null;state.proposalPreview=false;state.previewOriginalMap=null;try{const saved=JSON.parse(localStorage.getItem(DEMO_KEY)||"null");state.map=saved&&Array.isArray(saved.nodes)&&Array.isArray(saved.edges)?saved:structuredClone(sample);}catch{state.map=structuredClone(sample);}state.selected={kind:"edge",id:state.map.edges.some(e=>e.id==="e_sft")?"e_sft":state.map.edges[0]?.id};if(!force){const url=new URL(location.href);url.searchParams.delete("thread");history.replaceState(null,"",url);}renderAll();requestAnimationFrame(fitMap);status("");}
+      function validateMap() {if(state.map.nodes.length>30||state.map.edges.length>50)throw new Error("This prototype supports at most 30 blocks and 50 arrows.");for(const edge of state.map.edges){if(!edge.label.trim())throw new Error("Every arrow needs a label.");if(!edge.explanation.trim())throw new Error(`Describe what “${edge.label}” means before saving.`);if(edge.basis!=="hypothesis"&&!edge.evidence.length)throw new Error(`“${edge.label}” is ${edge.basis}; link an exact source passage or mark it as a hypothesis.`);}for(const node of state.map.nodes)if(!node.label.trim())throw new Error("Every block needs a name.");}
+      function openSave() {if(state.threadId===null){localStorage.setItem(DEMO_KEY,JSON.stringify(state.map));state.dirty=false;renderHeader();status("Illustrative map saved in this browser only. It is not a Qwen result or a vault record.");return;}if(state.proposalPreview){toggleProposalPreview();return;}if(state.historical){openThread(state.threadId);return;}try{validateMap();$("save-summary").value="";$("save-dialog").showModal();$("save-summary").focus();}catch(error){status(error.message,true);}}
+      async function saveRevision(event) {event.preventDefault();if(state.threadId===null)return;try{validateMap();const summary=$("save-summary").value.trim();if(!summary)throw new Error("Add a revision note.");const data=await api(`/api/lab/threads/${encodeURIComponent(state.threadId)}/map`,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({nodes:state.map.nodes.map(({id,type,label,description,x,y})=>({id,type,label,description,x,y})),edges:state.map.edges.map(({id,source,target,type,label,explanation,basis,evidence})=>({id,source,target,type,label,explanation,basis,evidence:(evidence||[]).map(({source_id,start,end,relation})=>({source_id,start,end,relation}))})),summary})});$("save-dialog").close();state.proposal=null;setFromEnvelope(data);status("Map revision saved with its source links. Review the dated history below.");}catch(error){status(`Could not save map: ${error.message}`,true);}}
+      async function uploadFile(event) {event.preventDefault();if(!state.threadId||!editable())return;const file=$("upload-file").files?.[0];if(!file)return;if(file.size>5_000_000){status("File is over the 5 MB limit.",true);return;}const button=$("upload-form").querySelector("button");button.disabled=true;status(`Attaching ${file.name}…`);try{await api(`/api/lab/threads/${encodeURIComponent(state.threadId)}/files?filename=${encodeURIComponent(file.name)}`,{method:"POST",headers:{"Content-Type":"application/octet-stream"},body:file});state.thread=await api(`/api/lab/threads/${encodeURIComponent(state.threadId)}`);$("upload-form").reset();renderShelf();status("File attached. Select an arrow and link an exact passage from the source shelf.");}catch(error){status(`Attachment failed: ${error.message}`,true);}finally{button.disabled=false;}}
+      $("add-node").addEventListener("click",addNode);$("connect").addEventListener("click",()=>{if(!editable())return;state.connectFrom=state.connectFrom?null:"pending";renderHeader();status(state.connectFrom?"Click a source block, then a destination block.":"");});
+      const originalOnNodeClick=onNodeClick;
+      // In connect mode, the first clicked block selects the origin; the second creates the arrow.
+      onNodeClick=function(id){if(state.connectFrom==="pending"){state.connectFrom=id;renderHeader();renderCanvas();return;}originalOnNodeClick(id);};
+      $("fit-map").addEventListener("click",fitMap);$("zoom-in").addEventListener("click",()=>zoom(1.18));$("zoom-out").addEventListener("click",()=>zoom(1/1.18));$("save-map").addEventListener("click",openSave);$("cancel-save").addEventListener("click",()=>$("save-dialog").close());$("save-form").addEventListener("submit",saveRevision);$("upload-form").addEventListener("submit",uploadFile);
+      $("canvas-frame").addEventListener("pointerdown",event=>{if(event.target!==$("canvas-frame")&&event.target!==$("world")&&event.target!==$("node-layer")&&event.target!==$("edge-layer"))return;state.drag={kind:"pan",x:event.clientX,y:event.clientY,panX:state.panX,panY:state.panY};$("canvas-frame").setPointerCapture(event.pointerId);$("canvas-frame").classList.add("panning");});
+      $("canvas-frame").addEventListener("pointermove",event=>{if(state.drag?.kind!=="pan")return;state.panX=state.drag.panX+event.clientX-state.drag.x;state.panY=state.drag.panY+event.clientY-state.drag.y;transform();});
+      $("canvas-frame").addEventListener("pointerup",()=>{if(state.drag?.kind==="pan")state.drag=null;$("canvas-frame").classList.remove("panning");});
+      $("canvas-frame").addEventListener("pointercancel",()=>{if(state.drag?.kind==="pan")state.drag=null;$("canvas-frame").classList.remove("panning");});
+      document.addEventListener("keydown",event=>{if(event.key==="Escape"&&state.connectFrom){state.connectFrom=null;renderHeader();renderCanvas();status("");}});
+      window.addEventListener("resize",()=>{if(!state.drag)fitMap();});
+      const requestedThread=new URLSearchParams(location.search).get("thread");openDemo(true);loadThreads();if(requestedThread&&/^[A-Za-z0-9_-]+$/.test(requestedThread))openThread(requestedThread);
+    })();
+  </script>
+</body>
+</html>

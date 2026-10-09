@@ -1,0 +1,113 @@
+{
+  "schema_version": "envoy-weekly-selection-v1",
+  "week": "2026-W39",
+  "topic": "Current-week agent draft: retrieval actions and small search workers",
+  "corpus_hash": "5a2c8ecc598fbc40b5bb0f9bae02b8ffc9f395f23810ce16dc5d2c46c588d536",
+  "review_status": "agent_authored_draft",
+  "next_measurement": "On future human-reviewed personal-vault question IDs and one frozen snapshot, compare BM25 as an evidence baseline; compare base Qwen3-8B and v5 under matched tool, decoding, and answer settings. Review supported-answer quality and record execution failures, latency, and GPU cost before choosing another SFT or RL experiment.",
+  "papers": [
+    {
+      "doc_id": "arxiv_2609_28653v1",
+      "arxiv_id": "2609.28653v1",
+      "source_url": "https://arxiv.org/abs/2609.28653v1",
+      "why_it_matters": "A close methodological analogue to a small worker choosing search and extraction actions. It motivates testing action-level trajectory supervision for Envoy, while leaving personal-vault supported-answer gains unproven.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2609_28653v1",
+          "start": 203,
+          "end": 293,
+          "quote": "trajectory fine-tuning can improve small language models (SLMs) as next-action controllers"
+        },
+        {
+          "doc_id": "arxiv_2609_28653v1",
+          "start": 1307,
+          "end": 1369,
+          "quote": "controller-only final-answer gains are not statistically clear"
+        }
+      ],
+      "limitations": [
+        "The reported action-controller experiments use different models and public question-answering trajectories, not Envoy’s personal-vault task.",
+        "The abstract does not establish a statistically clear final-answer gain from changing only the controller."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-09-12-worker-decision.md",
+          "reason": "The existing synthetic decision asks Qwen to investigate only when extra tool work earns its cost; this paper is a new candidate method, not an observed outcome for that decision."
+        }
+      ]
+    },
+    {
+      "doc_id": "arxiv_2609_28765v1",
+      "arxiv_id": "2609.28765v1",
+      "source_url": "https://arxiv.org/abs/2609.28765v1",
+      "why_it_matters": "A small-Qwen search-training study that makes reward shape a concrete variable to test if Envoy later revisits RL. Its MuSiQue results do not substitute for a personal-vault baseline.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2609_28765v1",
+          "start": 536,
+          "end": 656,
+          "quote": "We train Qwen3.5-0.8B with Group Relative Policy Optimization (GRPO) and an interleaved Wikipedia-search tool on MuSiQue"
+        },
+        {
+          "doc_id": "arxiv_2609_28765v1",
+          "start": 977,
+          "end": 1006,
+          "quote": "The reward shape also matters"
+        }
+      ],
+      "limitations": [
+        "The study uses Qwen3.5-0.8B, Wikipedia search, and public QA metrics; those differ from Envoy’s Qwen3-8B code-execution worker and supported-answer goal.",
+        "Its abstract compares reward shapes on MuSiQue but does not test Obsidian memory questions."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-09-02-retrieval-correction.md",
+          "reason": "The prior synthetic pilot favored cheap retrieval on its selected questions; this new reward study is a hypothesis for future training, not evidence that the pilot conclusion changed."
+        }
+      ]
+    },
+    {
+      "doc_id": "arxiv_2609_25991v1",
+      "arxiv_id": "2609.25991v1",
+      "source_url": "https://arxiv.org/abs/2609.25991v1",
+      "why_it_matters": "Its discoverable knowledge-base structure suggests a way to expose Obsidian sources and provenance to an agent through navigable indexes and frontmatter. This is a design candidate for the MCP library, not an established improvement here.",
+      "evidence": [
+        {
+          "doc_id": "arxiv_2609_25991v1",
+          "start": 725,
+          "end": 761,
+          "quote": "discovery layer centered on SKILL.md"
+        },
+        {
+          "doc_id": "arxiv_2609_25991v1",
+          "start": 787,
+          "end": 813,
+          "quote": "one index.md per directory"
+        },
+        {
+          "doc_id": "arxiv_2609_25991v1",
+          "start": 863,
+          "end": 922,
+          "quote": "YAML frontmatter for topic, type, provenance, and lifecycle"
+        },
+        {
+          "doc_id": "arxiv_2609_25991v1",
+          "start": 1577,
+          "end": 1608,
+          "quote": "directional cross-work evidence"
+        }
+      ],
+      "limitations": [
+        "The paper’s abstract calls its benchmark comparison directional rather than controlled.",
+        "No result in this paper establishes that this structure improves Envoy’s linked sample vault or query support."
+      ],
+      "related_notes": [
+        {
+          "path": "Learning/Research/2026-09-12-worker-decision.md",
+          "reason": "The synthetic architecture note needs compact, source-backed packets; this paper offers a possible library layout to investigate, not an implementation already adopted."
+        }
+      ]
+    }
+  ],
+  "analysis_note": "The agent selected these papers from abstracts and metadata; full HTML was frozen for provenance but was not reviewed end to end."
+}

@@ -42,7 +42,10 @@ def _markdown(raw: bytes) -> tuple[str, list[dict]]:
         match = re.match(r"\A---\n(.*?)\n---(?:\n|$)", text, re.S)
         if match:
             metadata = yaml.safe_load(match[1]) or {}
-            if isinstance(metadata, dict) and metadata.get("generated_by") == GENERATED_BY:
+            if isinstance(metadata, dict) and (
+                metadata.get("generated_by") == GENERATED_BY
+                or metadata.get("review_status") == "agent_authored_draft"
+            ):
                 return "", []
     # Offsets refer to the exact normalized snapshot text, including any frontmatter.
     sections = []

@@ -1,0 +1,212 @@
+{
+  "kind": "live_synthetic_smoke_after_retrieval_and_citation_fix",
+  "timestamp_utc": "2026-09-27T15:28:46.377739+00:00",
+  "question_id": "synthetic_focus_01",
+  "question": "How did my phone-drawer focus plan change?",
+  "corpus_hash": "40216acac7fa336cd88594096f5108d72e1fdb901ecb9bd82282979f72398b77",
+  "chat_version": "envoy-chat-v1",
+  "model_requested": "nvidia/Nemotron-3_5-Lightning",
+  "temperature": 0.0,
+  "provider_calls": [
+    {
+      "request_max_tokens": 1024,
+      "thinking_enabled": false,
+      "finish_reason": "stop",
+      "content_length": 57,
+      "usage": {
+        "completion_tokens": 18,
+        "prompt_tokens": 178,
+        "total_tokens": 196,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 178
+      },
+      "served_model": "nvidia/Nemotron-3_5-Lightning"
+    },
+    {
+      "request_max_tokens": 4096,
+      "thinking_enabled": false,
+      "finish_reason": "stop",
+      "content_length": 1392,
+      "usage": {
+        "completion_tokens": 329,
+        "prompt_tokens": 1406,
+        "total_tokens": 1735,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1406
+      },
+      "served_model": "nvidia/Nemotron-3_5-Lightning"
+    }
+  ],
+  "answer_status": "answered",
+  "answer_model": "nvidia/Nemotron-3_5-Lightning",
+  "answer_served_model": "nvidia/Nemotron-3_5-Lightning",
+  "answer_usage_only": {
+    "completion_tokens": 329,
+    "prompt_tokens": 1406,
+    "total_tokens": 1735,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": null,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1406
+  },
+  "model_requests_attempted": 2,
+  "route": {
+    "investigate": true,
+    "query": "phone-drawer focus plan",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+      "title": "2026-06-10-focus-plan",
+      "quote": "# Focus plan, June 10\n\nI thought putting my phone in a drawer would solve most of my study interruptions. My initial plan was to do a 25-minute work block with the phone out of reach, then take a five-minute break. I tried this for three morning sessions. I wrote down fewer phone checks in those sessions, but I did not measure total work completed or compare the sessions with a similar week. This note records an attempt and an early interpretation, not evidence that the phone was the main cause of lost time.\n\nThe biggest unresolved question was what happened when I sat down without a clear next action. I sometimes spent the first ten minutes deciding which problem to start. I planned to test that separately. A later note, `life-focus-correction-2026-07-04`, revises my explanation; the drawer plan remains here as history.\n"
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+      "title": "2026-07-04-focus-correction",
+      "quote": "# Correction: starting friction, July 4\n\nI revisited the June phone-drawer idea after four library sessions. On two days I hid the phone but still lost time deciding what to do. On the other two days I wrote a single next action before the session, such as “solve question 3 without notes,” and began sooner even though the phone stayed on the desk. These are informal observations with several changing conditions; they do not prove that next-action planning caused the improvement.\n\nMy corrected working belief is that an unclear first task may have mattered more than access to the phone in this small set of sessions. I no longer describe the drawer as the complete solution. I want to combine a written next action with reduced notifications, then compare several sessions using the same start-time measure. The older note is superseded as advice but should remain readable as the original attempt.\n"
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_6a43480bce8a5f2930966bdd",
+      "title": "2026-07-18-focus-decision",
+      "quote": "# Next focus experiment, July 18\n\nFor the next two weeks, I will write the first concrete action on a card before each morning work block, silence notifications for 30 minutes, and log the minutes from sitting down to starting that action. I will compare those logs with my previous sessions, while treating the comparison as informal because task difficulty and location may differ.\n\nThis is a decision and a measurement plan, not a completed experiment. I have not recorded the two-week results here. If the logs show little change or the routine is too annoying to keep, I will stop recommending it as my default. This decision draws on the July 4 correction, which superseded my June phone-only explanation.\n"
+    }
+  ],
+  "answer": "On June 10, the user tried a phone-drawer plan to reduce study interruptions, noting fewer checks but no measurement of work output [E1]. By July 4, they revised their working belief, noting that unclear first tasks caused delays even when the phone was hidden, so the drawer alone was not the complete solution [E2]. On July 18, they planned a new experiment combining a written next action with silenced notifications, treating the comparison to earlier sessions as informal [E3].",
+  "claims": [
+    {
+      "text": "The June 10 note records an attempt to reduce interruptions with a phone drawer, observing fewer checks but no work-output comparison [E1].",
+      "evidence_ids": [
+        "E1"
+      ]
+    },
+    {
+      "text": "The July 4 correction revises the working belief that an unclear first task may have mattered more than phone access in the small session set [E2].",
+      "evidence_ids": [
+        "E2"
+      ]
+    },
+    {
+      "text": "The July 18 note plans a new experiment combining a written next action with silenced notifications, comparing logs informally to prior sessions [E3].",
+      "evidence_ids": [
+        "E3"
+      ]
+    }
+  ],
+  "limitations": [
+    "No evidence establishes that the phone drawer caused measurable changes in work completed.",
+    "The July 4 and July 18 notes involve multiple changing conditions, so no single factor is proven causal.",
+    "The July 18 experiment has not been run; results are not yet available."
+  ],
+  "checks": {
+    "claim_count": 3,
+    "claims_with_valid_evidence": 3,
+    "claims": [
+      {
+        "text": "The June 10 note records an attempt to reduce interruptions with a phone drawer, observing fewer checks but no work-output comparison [E1].",
+        "evidence": [
+          {
+            "evidence_id": "E1",
+            "quote": "# Focus plan, June 10\n\nI thought putting my phone in a drawer would solve most of my study interruptions. My initial plan was to do a 25-minute work block with the phone out of reach, then take a five-minute break. I tried this for three morning sessions. I wrote down fewer phone checks in those sessions, but I did not measure total work completed or compare the sessions with a similar week. This note records an attempt and an early interpretation, not evidence that the phone was the main cause of lost time.\n\nThe biggest unresolved question was what happened when I sat down without a clear next action. I sometimes spent the first ten minutes deciding which problem to start. I planned to test that separately. A later note, `life-focus-correction-2026-07-04`, revises my explanation; the drawer plan remains here as history.\n",
+            "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+            "title": "2026-06-10-focus-plan",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-06-10-focus-plan.md",
+            "record": {
+              "kind": "attempt",
+              "captured_at": "2026-06-10",
+              "status": "superseded"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "The July 4 correction revises the working belief that an unclear first task may have mattered more than phone access in the small session set [E2].",
+        "evidence": [
+          {
+            "evidence_id": "E2",
+            "quote": "# Correction: starting friction, July 4\n\nI revisited the June phone-drawer idea after four library sessions. On two days I hid the phone but still lost time deciding what to do. On the other two days I wrote a single next action before the session, such as “solve question 3 without notes,” and began sooner even though the phone stayed on the desk. These are informal observations with several changing conditions; they do not prove that next-action planning caused the improvement.\n\nMy corrected working belief is that an unclear first task may have mattered more than access to the phone in this small set of sessions. I no longer describe the drawer as the complete solution. I want to combine a written next action with reduced notifications, then compare several sessions using the same start-time measure. The older note is superseded as advice but should remain readable as the original attempt.\n",
+            "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+            "title": "2026-07-04-focus-correction",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-07-04-focus-correction.md",
+            "record": {
+              "kind": "correction",
+              "captured_at": "2026-07-04",
+              "status": "reviewed",
+              "supersedes": "life-focus-plan-2026-06-10"
+            }
+          }
+        ],
+        "supports_claim": null
+      },
+      {
+        "text": "The July 18 note plans a new experiment combining a written next action with silenced notifications, comparing logs informally to prior sessions [E3].",
+        "evidence": [
+          {
+            "evidence_id": "E3",
+            "quote": "# Next focus experiment, July 18\n\nFor the next two weeks, I will write the first concrete action on a card before each morning work block, silence notifications for 30 minutes, and log the minutes from sitting down to starting that action. I will compare those logs with my previous sessions, while treating the comparison as informal because task difficulty and location may differ.\n\nThis is a decision and a measurement plan, not a completed experiment. I have not recorded the two-week results here. If the logs show little change or the routine is too annoying to keep, I will stop recommending it as my default. This decision draws on the July 4 correction, which superseded my June phone-only explanation.\n",
+            "doc_id": "vault_6a43480bce8a5f2930966bdd",
+            "title": "2026-07-18-focus-decision",
+            "source_kind": "personal_note",
+            "source_path": "Learning/Life/2026-07-18-focus-decision.md",
+            "record": {
+              "kind": "decision",
+              "captured_at": "2026-07-18",
+              "status": "planned"
+            }
+          }
+        ],
+        "supports_claim": null
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "note": "Reference integrity only; human review must assess every claim and the answer."
+  },
+  "source_checks": [
+    {
+      "evidence_id": "E1",
+      "http_status": 200,
+      "quote_in_source": true
+    },
+    {
+      "evidence_id": "E2",
+      "http_status": 200,
+      "quote_in_source": true
+    },
+    {
+      "evidence_id": "E3",
+      "http_status": 200,
+      "quote_in_source": true
+    }
+  ]
+}

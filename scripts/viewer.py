@@ -285,6 +285,7 @@ def list_replays() -> JSONResponse:
                 "name": r.stem,
                 "question": meta.get("question", r.stem),
                 "question_id": meta.get("question_id", ""),
+                "label": meta.get("label", r.stem),
             }
         )
     return JSONResponse(result)

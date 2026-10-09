@@ -1,0 +1,103 @@
+{
+  "question": "What measured improvement did the September 12 Qwen worker decision achieve?",
+  "corpus_hash": "92186559398144adf01851599b0057a616b0b044df93c8fde4c7fb7bb8180a41",
+  "answer": null,
+  "answer_status": "evidence_only",
+  "answer_model": null,
+  "answer_served_model": null,
+  "answer_usage": {},
+  "claims": [],
+  "limitations": [
+    "Nemotron answer unavailable (ValueError); source passages are available for review."
+  ],
+  "route": {
+    "investigate": true,
+    "query": "September 12 Qwen worker decision measured improvement",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "model_requests_attempted": 2,
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_5ec14fa6f072a7954299daec",
+      "title": "2026-09-12-worker-decision",
+      "start": 166,
+      "end": 971,
+      "quote": "# Worker decision, September 12\n\nFor the next prototype, I will use lexical search to select source candidates and ask Qwen to investigate only questions that need multiple notes, dates, or uncertainty handling. Qwen's job is to return a small, exact evidence packet; the main assistant explains it to me. The worker should not write a lasting personal memory without my approval.\n\nThis is an architectural decision, not evidence that Qwen already beats lexical search. The September 2 correction is why I changed the default from “always use a multi-step worker” to “use one when it earns its extra cost.” I will revisit the decision if a held-out comparison shows that Qwen fails to add source coverage or introduces unsupported claims. This sample vault contains no later outcome for that comparison.\n\n",
+      "source_path": "Learning/Research/2026-09-12-worker-decision.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "research-worker-decision-2026-09-12",
+        "kind": "decision",
+        "captured_at": "2026-09-12",
+        "status": "planned",
+        "derived_from": "research-retrieval-correction-2026-09-02"
+      },
+      "truncated_for_model": false
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_37f0d10f187a6a77ab0242a2",
+      "title": "Plans Are Not Outcomes",
+      "start": 159,
+      "end": 732,
+      "quote": "# Plans are not outcomes\n\nAcross these example threads, an intended next step is different from a measured result. The focus log, calculus practice, and selective Qwen-worker comparison are all plans in this snapshot. The linked notes do not yet show that any of those plans succeeded. This is a navigation and learning prompt, not a new observed result.\n\n- [[Learning/Life/2026-07-18-focus-decision|Focus measurement plan]]\n- [[Learning/Homework/2026-09-05-practice-plan|Calculus practice plan]]\n- [[Learning/Research/2026-09-12-worker-decision|Research-worker decision]]\n",
+      "source_path": "Learning/Concepts/Plans Are Not Outcomes.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "concept-plans-are-not-outcomes-2026-09-12",
+        "kind": "concept",
+        "captured_at": "2026-09-12",
+        "status": "working_synthesis"
+      },
+      "truncated_for_model": false
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_0ad28c4f51afd7cc20d72bab",
+      "title": "2026-08-20-retrieval-hypothesis",
+      "start": 121,
+      "end": 946,
+      "quote": "# Retrieval worker hypothesis, August 20\n\nFor a sample research library, I proposed that a multi-step Qwen worker would probably beat a single BM25 lookup because it could search again after reading a promising passage. That was a hypothesis about a local workflow, not a published finding or a measured result. I had not compared the two systems on the same questions, source snapshot, or review rubric when I wrote it.\n\nThe useful part of the idea was the proposed test: freeze the documents and questions, hold the answer budget fixed, inspect exact quoted spans, and compare source-supported answers along with extra time and cost. I did not want to count a real quotation as proof that the answer claim was supported. The September 2 correction supersedes my expectation that the iterative worker would win by default.\n\n",
+      "source_path": "Learning/Research/2026-08-20-retrieval-hypothesis.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "research-retrieval-hypothesis-2026-08-20",
+        "kind": "hypothesis",
+        "captured_at": "2026-08-20",
+        "status": "superseded"
+      },
+      "truncated_for_model": false
+    },
+    {
+      "evidence_id": "E4",
+      "doc_id": "vault_dd06efcaa770476162834296",
+      "title": "2026-09-02-retrieval-correction",
+      "start": 172,
+      "end": 1094,
+      "quote": "# Retrieval worker correction, September 2\n\nI reviewed a small local pilot after writing the August hypothesis. In that pilot, one-pass retrieval gave more complete supported responses on the reviewed questions than the iterative worker. The pilot used a selected sample of research notes and few questions, so it is a development signal, not a general result about all libraries or all Qwen checkpoints. The exact counts and full human review sheet are not preserved in this sample vault; I should not invent a win rate from this note.\n\nI now prefer to start with the cheap retrieval baseline and call the iterative worker only where it adds evidence that the baseline missed or resolves a conflict. This corrects the earlier default-win expectation. To justify paying for a worker, I need a paired test on held-out questions with the same snapshot and source-support rubric, while recording latency and inference cost.\n\n",
+      "source_path": "Learning/Research/2026-09-02-retrieval-correction.md",
+      "source_kind": "personal_note",
+      "record": {
+        "record_id": "research-retrieval-correction-2026-09-02",
+        "kind": "correction",
+        "captured_at": "2026-09-02",
+        "status": "reviewed",
+        "supersedes": "research-retrieval-hypothesis-2026-08-20"
+      },
+      "truncated_for_model": false
+    }
+  ],
+  "citation_placement_check": {
+    "sentence_count": 1,
+    "sentences_with_citation": 0,
+    "heuristic": "split on sentence punctuation before capitalized next sentence"
+  },
+  "semantic_support": "pending independent human review"
+}

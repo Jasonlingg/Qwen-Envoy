@@ -1,0 +1,102 @@
+{
+  "kind": "live_synthetic_smoke_retry",
+  "timestamp_utc": "2026-09-27T15:20:38.755075+00:00",
+  "question_id": "synthetic_focus_01",
+  "question": "How did my phone-drawer focus plan change?",
+  "corpus_hash": "40216acac7fa336cd88594096f5108d72e1fdb901ecb9bd82282979f72398b77",
+  "chat_version": "envoy-chat-v1",
+  "model_requested": "nvidia/Nemotron-3_5-Lightning",
+  "temperature": 0.0,
+  "provider_calls": [
+    {
+      "request_max_tokens": 1024,
+      "finish_reason": "stop",
+      "content_length": 62,
+      "reasoning_content_length": 2969,
+      "usage": {
+        "completion_tokens": 707,
+        "prompt_tokens": 178,
+        "total_tokens": 885,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 689,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 178
+      },
+      "served_model": "nvidia/Nemotron-3_5-Lightning"
+    },
+    {
+      "request_max_tokens": 4096,
+      "finish_reason": "length",
+      "content_length": 18775,
+      "reasoning_content_length": null,
+      "usage": {
+        "completion_tokens": 4096,
+        "prompt_tokens": 1532,
+        "total_tokens": 5628,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 4096,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": null,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 1532
+      },
+      "served_model": "nvidia/Nemotron-3_5-Lightning"
+    }
+  ],
+  "answer_status": "evidence_only",
+  "answer_model": null,
+  "answer_served_model": null,
+  "answer_usage_only": {},
+  "model_requests_attempted": 2,
+  "route": {
+    "investigate": true,
+    "query": "phone-drawer focus plan changes",
+    "source": "nemotron"
+  },
+  "retrieval": {
+    "mode": "lexical_paragraph_baseline",
+    "worker_status": "not_configured",
+    "model_identity": null,
+    "warning": "Exact quotations prove provenance, not semantic support."
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "vault_9fa940b9d39455292a1dd3f4",
+      "title": "2026-06-10-focus-plan",
+      "quote": "# Focus plan, June 10\n\nI thought putting my phone in a drawer would solve most of my study interruptions. My initial plan was to do a 25-minute work block with the phone out of reach, then take a five-minute break. I tried this for three morning sessions. I wrote down fewer phone checks in those sessions, but I did not measure total work completed or compare the sessions with a similar week. This note records an attempt and an early interpretation, not evidence that the phone was the main cause of lost time.\n\nThe biggest unresolved question was what happened when I sat down without a clear next action. I sometimes spent the first ten minutes deciding which problem to start. I planned to test that separately. A later note, `life-focus-correction-2026-07-04`, revises my explanation; the drawer plan remains here as history.\n"
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "vault_cb5eaf85fa1c8e73b632a46c",
+      "title": "2026-07-04-focus-correction",
+      "quote": "# Correction: starting friction, July 4\n\nI revisited the June phone-drawer idea after four library sessions. On two days I hid the phone but still lost time deciding what to do. On the other two days I wrote a single next action before the session, such as “solve question 3 without notes,” and began sooner even though the phone stayed on the desk. These are informal observations with several changing conditions; they do not prove that next-action planning caused the improvement.\n\nMy corrected working belief is that an unclear first task may have mattered more than access to the phone in this small set of sessions. I no longer describe the drawer as the complete solution. I want to combine a written next action with reduced notifications, then compare several sessions using the same start-time measure. The older note is superseded as advice but should remain readable as the original attempt.\n"
+    },
+    {
+      "evidence_id": "E3",
+      "doc_id": "vault_6a43480bce8a5f2930966bdd",
+      "title": "2026-07-18-focus-decision",
+      "quote": "---\nrecord_id: life-focus-decision-2026-07-18\nkind: decision\ncaptured_at: 2026-07-18\nderived_from: life-focus-correction-2026-07-04\nstatus: planned\n---\n\n"
+    },
+    {
+      "evidence_id": "E4",
+      "doc_id": "vault_813932b3ee11b5f68596f76d",
+      "title": "2026-09-05-practice-plan",
+      "quote": "# Practice plan, September 5\n\nTo check whether I learned the rectangle correction, I will solve three new perimeter-and-area problems without looking at the worked solution. For each one I will write the constraint, expand the area formula, differentiate it, check the critical point and endpoints, and verify the units. I will ask for feedback on any step I cannot explain.\n\nThis is a practice plan. This vault does not contain completed practice attempts, grades, or a later test score. The September 3 note explains the corrected math, while this note records what I decided to try next. A future memory should add the outcome instead of quietly treating this plan as success.\n"
+    }
+  ],
+  "answer": null,
+  "claims": [],
+  "limitations": [
+    "Nemotron answer unavailable (RuntimeError); source passages are available for review."
+  ],
+  "checks": null
+}
