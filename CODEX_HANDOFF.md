@@ -1,5 +1,45 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 9: QASPER attribution and official scoring added.** The visible name
+> is **QASPER Agent Studio — a Qwen Envoy case study**, with Ai2/Dasigi et al.
+> attribution and no claim that the questions are original. Existing repository,
+> package, model and artifact identifiers are unchanged. Read
+> `docs/QASPER_AGENT_STUDY.md` and `release/qasper-agent-study/README.md`.
+>
+> Official Answer F1, scored offline with the pinned unmodified evaluator and
+> all 86 original annotations, is **19.9154 base / 30.6873 v5** on the selected
+> 40 questions. The fixed answerable group worsens **29.8307 → 21.3746**;
+> the unanswerable group rises **10 → 40**. Missing predictions remain zero,
+> literal refusal paraphrases are not rewritten, and original inference/review
+> JSON is unchanged. This is not the full QASPER leaderboard or independent
+> support review. The report documents the short-target construction and
+> 38/40 three-action v5 episodes as a hypothesis, not a causal training finding.
+>
+> One authorized NVIDIA/Nebius reference attempt stopped at its conservative
+> $2 estimated-cost guard: **$1.947862**, 366 API requests, 38 completed episodes,
+> the 39th interrupted, and the 40th unattempted. Preserve
+> `release/qasper-agent-study/nebius-run/results.partial.json`, manifest and
+> usage budget. The run is explicitly incomplete; there is no full-run F1 or
+> completed-run Studio row. An asynchronous request to allow up to $3 total
+> was sent but no approval was received before this update. Do not infer approval
+> from elapsed time. API calls have stopped; no Runpod pod was launched.
+>
+> Source/scoring changes are in `e99b165`; Studio changes are in `815ea5f`.
+> Every recorded implementation hash from the hosted attempt matches `e99b165`
+> (the run started from a dirty tree over `e82e33b`; see EXPERIMENT.md).
+> The viewer adds official F1 alongside the existing provisional support scores.
+> It supports separately labeled complete supplemental runs without merging
+> their reviews. The original four run rows remain, and logprob smokes stay
+> unscored. The packaged export includes all 562 original turns.
+>
+> Validation: **784 tests passed** after the feature changes; 14 focused viewer
+> tests passed again after the fairness-label follow-up. Official Qwen scores
+> reproduce byte-identically with isolated standard-library Python. Local Studio
+> was restarted on port 8765 after verifying there were no active paper runs;
+> opening saved runs makes no model calls. Hackathon live judge access, public
+> video, sponsor feedback and actual submission remain outside this completed
+> case-study packaging work.
+
 > **October 9: public technical case study shipped.** The user chose to finish
 > Qwen-Envoy as an inspectable training/evaluation project. The saved Studio is
 > live at <https://jasonlingg.github.io/Qwen-Envoy/>. Commit `b53d70b` publishes

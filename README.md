@@ -1,31 +1,37 @@
-# Qwen Envoy — training and inspecting a code-executing research agent
+# QASPER Agent Studio — a Qwen Envoy case study
 
-Qwen Envoy is a small-model training and evaluation case study. Qwen writes
-Python to search, read, and cite a frozen paper collection; a bounded execution
-environment returns tool observations and errors. EnvoyBench records the
-comparison, and Studio lets you inspect **Runs → Questions → Trace**.
+Train and inspect a small model that answers research-paper questions through
+Python tools. Qwen Envoy searches, reads, and cites frozen paper text; Studio
+exposes its answers, source spans, and complete **Runs → Questions → Trace**.
+The engineering contribution is the executable environment, supervised
+trajectories, evaluation, and failure analysis.
 
-**Main finding:** in the recorded base-versus-v5 comparison, error-affected
-episodes fell from 22/40 to 1/40, while provisional supported-answer passes on
-answerable questions stayed at 3/20 for both models. The higher aggregate score
-comes from correct abstention. This is a useful failure analysis, not evidence
-that fine-tuning produced a better general research assistant.
+The questions and paper annotations come from **QASPER, by Dasigi et al.
+(2021), licensed CC BY 4.0**. This project adapts QASPER to a bounded code-tool
+workflow; it does not introduce an original question benchmark and is not
+affiliated with or endorsed by QASPER or AllenAI. See the
+[data provenance](benchmarks/envoybench/data/README.md). Existing `envoybench`
+package names and repository/demo URLs remain unchanged.
 
-**Start here:** [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
+**Main finding:** on the same 40 saved questions, official QASPER Answer F1 is
+**19.92% for base Qwen3-8B and 30.69% for v5 SFT**. On the fixed 20 answerable
+questions, however, F1 falls from **29.83% to 21.37%**; the overall increase
+comes from the unanswerable group. Error-affected episodes fell from 22/40 to
+1/40, while provisional supported-answer passes stayed at **3/20 for both**.
+Better protocol execution and more refusals did not establish better substantive
+paper answers.
+
+**Start here:** [short findings report](docs/QASPER_AGENT_STUDY.md) ·
 [public demo](https://jasonlingg.github.io/Qwen-Envoy/) ·
+[technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
 [training evidence](release/qwen-v5-training/README.md) ·
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
-**Current scope, October 9, 2026:** publish the text-only technical case study
-and inspectable v0.1 evaluation candidate. Recommendations, new memory products,
-graph-aware model training and partial-paper reasoning tests are outside this
-release. Earlier Obsidian and systems-map prototypes remain as historical work.
-
-EnvoyBench builds on **QASPER's existing paper questions**, with a bounded
-code-tool protocol and inspectable failure diagnostics. It is a candidate
-evaluation protocol, not an independently validated leaderboard or a new
-collection of original questions. See the [benchmark guide](benchmarks/envoybench/README.md)
-and [data provenance](benchmarks/envoybench/data/README.md).
+**Scope:** a text-only QASPER agent study with reproducible saved results.
+The current 40 questions have been inspected and are development evidence for
+future work, not a fresh holdout. Earlier Obsidian and systems-map prototypes
+remain historical work. The [study release](release/qasper-agent-study/README.md)
+separates original QASPER answer scoring from provisional support judgments.
 
 ## Open the demo
 
@@ -45,6 +51,18 @@ This checks the release hashes, binds the saved blind reviews to the runs,
 and recomputes the table below from the recorded artifacts. Add `--json` for
 machine-readable output. It reaggregates existing provisional judgments; it
 does not independently grade answers or reconstruct the paper corpus.
+
+To recompute Answer F1 against all original QASPER annotations for these
+questions, also without inference or downloads:
+
+```bash
+python -m benchmarks.envoybench.qasper_official score \
+  --run-dir release/envoybench-v0.1/run
+```
+
+The [saved F1 report](release/qasper-agent-study/qwen-official-score.json) uses
+the unchanged official evaluator on this selected subset, not the full QASPER
+test split or an official leaderboard submission.
 
 **Local Studio:** with Python 3.10+, run from a checkout:
 
@@ -68,7 +86,7 @@ For a dependency-free local demo server, run
 and open <http://127.0.0.1:8765/studio.html>. This serves the saved snapshot only;
 the full local Studio above adds source review and optional paper investigations.
 
-## Latest recorded comparison
+## September 30 base/v5 comparison
 
 The September 30 run compared base Qwen3-8B with the v5 SFT adapter on the same
 40 QASPER-derived candidate questions. Each question names its paper, so this
@@ -76,6 +94,9 @@ tests known-paper answering and evidence selection, not discovery of papers.
 
 | Measure | Base Qwen3-8B | v5 SFT |
 | --- | ---: | ---: |
+| Official QASPER Answer F1, selected 40 questions | 19.92% | 30.69% |
+| Answer F1, fixed 20 answerable questions | 29.83% | 21.37% |
+| Answer F1, fixed 20 unanswerable questions | 10.00% | 40.00% |
 | Provisional passes, all questions | 5/40 | 15/40 |
 | Supported-answer passes on answerable questions | 3/20 | 3/20 |
 | Correct abstentions on unanswerable questions | 2/20 | 12/20 |
@@ -89,10 +110,36 @@ answerable subset did not improve. An always-refuse policy would be expected
 to pass 20/40 under these labels, illustrating why the aggregate score alone
 is misleading. That is an analytical baseline, not another recorded run.
 
+Answer F1 uses the literal submitted answer and the best match among all
+original annotations: 86 references across these 40 questions. Missing answers
+score zero, including the eleven failed base episodes. It measures normalized
+token overlap, not semantic support; it does not replace the separate judgments.
+The two subgroup F1 means each retain all 20 questions, including missing
+predictions. They differ from the upstream answer-type breakdown, whose
+denominators exclude missing answers.
+
 All 11 missing base submissions hit the shared 8,192-token serving cap.
 Historical timing and usage are incomplete, so no full cost or latency win is
 claimed. See the [case-study report](benchmarks/envoybench/COMPARISON_2026_09_30.md)
 for protocol details, source bindings, and limitations.
+
+V5 submitted at step three on **38/40** questions and at step four on two.
+That is consistent with short training demonstrations: **27/35** training
+episodes end by step three, and **30/35** were assistant-repaired. For those
+30, mean length fell from **5.033 original actions to 3.067 repaired actions**.
+This suggests a stopping bias worth investigating; it does not prove that
+repairs caused the behavior or that a short investigation found enough evidence.
+The [short report](docs/QASPER_AGENT_STUDY.md) records the provenance and limits.
+
+An October 9 **Nemotron Ultra/Nebius reference run is incomplete**: the $2
+local cost guard stopped it after 38 terminal episodes, during question 39;
+question 40 was not attempted. The recorded catalog-rate estimate is
+**$1.947862 for 366 requests**, not an invoice. The
+[partial results](release/qasper-agent-study/nebius-run/results.partial.json)
+preserve 27 submissions, 11 episodes without submission, and the interrupted
+episode. There is **no comparable 40-question Nemotron F1 score**. See the
+[reference-run record](release/qasper-agent-study/README.md#bounded-hosted-reference)
+for the frozen protocol, usage, and comparison limits.
 
 The separate October 3 two-question token diagnostic is **unscored**. Its
 generated-token logprobs are likelihoods of emitted tokens, not probabilities
@@ -127,9 +174,9 @@ completion with a correct answer but incomplete citations. This verifies a
 local integration, not reliable semantic support or a Qwen improvement.
 
 The [v5 model card](benchmarks/envoybench/MODEL_CARD.md) records the checkpoint,
-QLoRA recipe, and data. The release is not a completed hackathon submission;
-public hosting, video, sponsor feedback, and submission remain pending in the
-[release checklist and draft](release/envoybench-v0.1/DEVPOST_DRAFT.md).
+QLoRA recipe, and data. The public technical release is separate from a
+hackathon submission; the historical [submission draft](release/envoybench-v0.1/DEVPOST_DRAFT.md)
+does not constitute a completed entry.
 
 ## What the agent does
 
@@ -178,13 +225,14 @@ SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","st
 | --- | --- |
 | Recorded Studio | Runs, questions, full transcripts, provisional scores; standalone HTML available |
 | September 30 base/v5 comparison | Inference complete; model-assisted review only; no validated promotion |
+| October 9 Nemotron/Nebius reference | Budget-stopped: 38/40 terminal episodes; partial traces preserved; no comparable full-run score |
 | Source and anonymous answer review | Local review interfaces available; independent review remains incomplete |
 | Paper reader | Frozen text snapshots, optional endpoint inference, saved evidence and traces |
 | Token logprobs | Recorded in a separate small diagnostic; no calibrated correctness score |
 | Qwen v5 training recipe | Pinned adapter and observed QLoRA settings documented in the model card |
 | Retrieval, thinking, and prefix-cache comparisons | Prepared protocols; no completed comparative result claimed |
 | Historical training and Obsidian/map demos | Retained for reproducibility; outside the current release scope |
-| Hackathon submission | Local artifacts and draft ready; public hosting, video, feedback, and submission pending |
+| Hackathon submission | Separate historical draft; not a completed submission |
 
 ## Historical training experiments
 

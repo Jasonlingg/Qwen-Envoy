@@ -1,4 +1,13 @@
-# Qwen Envoy: what changed after supervised fine-tuning?
+# QASPER Agent Studio — a Qwen Envoy case study
+
+This study adapts QASPER's existing questions and paper annotations (Dasigi et
+al., 2021; CC BY 4.0) to executable Python investigation. It is an independent
+project, not an original question benchmark or an official QASPER/AllenAI
+product. [Data provenance](../benchmarks/envoybench/data/README.md) records the
+source revision and adaptations; the [short findings report](QASPER_AGENT_STUDY.md)
+summarizes the final comparison and stopping diagnosis.
+
+## What changed after supervised fine-tuning?
 
 **The saved comparison shows more reliable tool use and more refusals, while
 supported answers on answerable questions remain unchanged.** On September 30,
@@ -8,6 +17,15 @@ models passed **3/20 answerable questions**. Correct refusals on the remaining
 20 questions account for the entire aggregate gain. Independent review of the
 references and answers is pending; this is a technical case study, not a
 validated model-improvement result.
+
+A separate re-score of these unchanged outputs uses the official QASPER
+evaluator and all original annotations for the same questions: **Answer F1 is
+19.92% for base and 30.69% for v5**. On the fixed 20 answerable questions,
+including missing answers as zero, F1 instead falls from **29.83% to 21.37%**.
+The unanswerable group's mean rises from 10% to 40%. This selected-subset token-overlap metric
+does not validate evidence support or replace the provisional pass judgments.
+The [short report](QASPER_AGENT_STUDY.md#original-qasper-answer-scoring) explains
+the distinction and links the exact scoring artifacts.
 
 The public deliverable is an inspectable experiment: training data and recipe,
 pinned checkpoint identities, a frozen evaluation protocol, complete saved
@@ -179,6 +197,52 @@ not support a complete latency or cost advantage. Likewise, error accounting
 was corrected to count structured tool-error returns as well as exceptions;
 v5 had one recovered tool error and should not be described as error-free.
 
+## Why does v5 usually stop at step three?
+
+The saved v5 run submits at **step three on 38/40 questions**, and step four on
+the other two. This is an observed action count, not proof that three actions
+were sufficient. In the training split, **27/35 conversations (77.1%)** also
+end by step three. Thirty of the 35 training demonstrations were rewritten by
+the editing assistant; comparing those same questions before and after repair
+gives mean lengths of **5.033 versus 3.067 actions**, including submission.
+These original-length counts come from the archived source trajectories;
+the public [v4 review](../data/research/qasper_sft_v4_review.json) and
+[v5 review](../data/research/qasper_sft_v5_review.json) preserve parent hashes,
+repair decisions, and authored replacement actions.
+
+The preparation process deliberately selected
+[2–6-action demonstrations](QWEN3_SFT_DATA_ITERATION.md#changes-in-the-preparation-pipeline)
+and removed redundant searches. It did not preserve a neutral sample of the
+teacher's natural behavior. Across all 44 train/validation examples, 37 were
+repaired and seven were unchanged. The editing assistant could see references
+and inspect sources; the initial Sonnet pilot also supplied training-only gold
+answers/passages for answerable questions, then disabled that guidance after
+leakage failures. A separate legacy source batch did not record the Claude
+model identity. Describing all final examples as Sonnet independently finding
+answers in three steps would therefore be inaccurate.
+
+The exact three-action sequence varies: the training split has eight
+`search_within → search_within → SUBMIT` examples, six with `read` as the middle
+action, three with `extract`, and one with `passage`. Sixteen of 35 training
+questions have insufficient-evidence targets, but those targets explain a
+specific evidence gap rather than simply saying `Unanswerable`. None of the
+44 final training/validation targets includes an `EVIDENCE` span field.
+
+The data distribution makes learned short stopping plausible. The saved
+comparison does not isolate its cause from prompt, protocol, checkpoint
+selection, or other data changes. No controlled repair-versus-original training
+ablation was run, and the current questions cannot serve as an untouched test
+for a later intervention. See the [short report](QASPER_AGENT_STUDY.md).
+
+There is also a runtime caveat. A pre-run source archive contains an environment
+file whose hash matches the September 30 manifest, alongside a check for
+refusals before two successful document actions. That check issued bounded
+feedback, not an absolute minimum: the run allowed one feedback event and no
+mandatory escalation. None of the 80 saved trajectories contains a warning
+about a premature refusal. The evidence-state module itself was not hash-pinned in that
+manifest, so the archive does not fully attest its run-time version. This is
+not evidence that the runtime forced v5 to stop at step three.
+
 ## Three traces worth inspecting
 
 All actions and observations below are in the packaged
@@ -222,6 +286,22 @@ and successful submission do not guarantee a better answer.
 
 ## Negative results and unresolved questions
 
+The October 9 hosted reference run also remains incomplete. Under its
+[predeclared protocol](../release/qasper-agent-study/EXPERIMENT.md),
+`nvidia/Nemotron-3-Ultra-550b-a55b` through Nebius attempted the same frozen
+questions with a 15-action budget and requested thinking off. The $2 local
+cost guard stopped it after 38 terminal episodes, during question 39 at
+11 saved actions; question 40 was not attempted. The
+[partial results](../release/qasper-agent-study/nebius-run/results.partial.json)
+contain 27 submissions, 11 episodes without submission, and the interrupted
+episode. The [usage record](../release/qasper-agent-study/nebius-run/usage-budget.json)
+reports 366 requests and a **$1.947862 catalog-rate estimate**, not an invoice.
+No comparable 40-question Nemotron Answer F1 is reported. Its larger serving
+context, provider-managed model, and newer runner would also prevent a causal
+training comparison even if all questions had completed. The
+[reference release](../release/qasper-agent-study/README.md#bounded-hosted-reference)
+preserves the failure and configuration separately from the Qwen comparison.
+
 An earlier, separate continuation experiment assembled 995 QASPER-derived
 conversations: 796 for training and 199 for paper-disjoint validation. Its
 [September 25 report](../reports/qasper-scale-sft-2026-09-25.json)
@@ -246,8 +326,9 @@ The release stays text-only. Extracted paper text, including flattened table
 content, is the available evidence; figures, visual layouts, and equation
 rendering are not reliably interpreted. A useful weekly Obsidian digest and
 queryable evidence library remain broader product gates, not consequences of
-this known-paper result. This finishing pass adds no new model training, paid
-inference, review judgments, or benchmark tasks.
+this known-paper result. No new Qwen training is required to reproduce the saved
+analysis; new reference-model inference is recorded separately from these
+September 30 outputs and grades.
 
 ## Reproduce the saved analysis and inspect the implementation
 
@@ -256,11 +337,14 @@ From the repository root, use the standard-library-only checker:
 ```bash
 python scripts/reproduce_case_study.py
 python scripts/reproduce_case_study.py --json
+python -m benchmarks.envoybench.qasper_official score \
+  --run-dir release/envoybench-v0.1/run
 ```
 
-It verifies packaged checksums and recomputes the September 30 counts from
-saved results and review assignments. It does not download the corpus, execute
-Qwen, regrade answers, or validate spans against full paper text. Open
+The first two commands verify packaged checksums and recompute September 30 counts from
+saved results and review assignments. They do not download the corpus, execute
+Qwen, regrade answers, or validate spans against full paper text. The third
+computes official Answer F1 from the saved answers and original annotations. Open
 [studio.html](../release/envoybench-v0.1/studio.html) directly for the saved
 **Runs → Questions → Trace** walkthrough, including all 562 September 30 turns.
 

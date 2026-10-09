@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'release/envoybench-v0.1/**'
+      - 'release/qasper-agent-study/**'
       - 'scripts/reproduce_case_study.py'
       - '.github/workflows/studio-pages.yml'
   workflow_dispatch:
@@ -27,6 +28,9 @@ jobs:
           python-version: '3.11'
       - name: Verify the frozen comparison before publishing
         run: python -I -S scripts/reproduce_case_study.py
+      - name: Verify the QASPER extension
+        working-directory: release/qasper-agent-study
+        run: sha256sum --check SHA256SUMS
       - uses: actions/configure-pages@v5
       - name: Stage only the read-only viewer
         run: |

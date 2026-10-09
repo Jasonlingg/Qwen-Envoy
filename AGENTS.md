@@ -6,7 +6,13 @@ The user chose to finish Qwen-Envoy as a public technical case study: the traine
 code-execution worker, its environment, reproducible saved evaluation, and the
 Studio trace inspector. Read `docs/TECHNICAL_CASE_STUDY.md` and `CODEX_HANDOFF.md`.
 Paper recommenders, method finders, new memory products, new benchmark tasks, and
-additional paid training/inference are outside this finishing pass.
+additional training are outside this finishing pass. The user subsequently
+authorized explicit QASPER attribution, official scoring of saved answers, and
+one bounded NVIDIA/Nebius reference run on the same 40 questions. That run is
+documented in `release/qasper-agent-study/EXPERIMENT.md`; no other paid runs or
+Runpod launch are included. Display the project as QASPER Agent Studio, a Qwen
+Envoy case study. It adapts QASPER; it is not an original question dataset or an
+official full-test QASPER leaderboard result.
 
 The weekly-digest/Obsidian plans and their success gates below are historical
 product goals, not blockers for publishing this narrower case study. Publishing

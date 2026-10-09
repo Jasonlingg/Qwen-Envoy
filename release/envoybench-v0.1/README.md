@@ -1,4 +1,11 @@
-# EnvoyBench v0.1 candidate release
+# QASPER Agent Studio — original Qwen release
+
+The display name is now **QASPER Agent Studio — a Qwen Envoy case study**.
+These questions are adapted from **QASPER (Dasigi et al., 2021; CC BY 4.0)**;
+they are not newly authored questions or an official full-test QASPER result.
+The [QASPER extension](../qasper-agent-study/README.md) adds official Answer F1
+scoring and a separately recorded NVIDIA/Nebius reference configuration. The
+original inference and model-assisted review JSON in this directory is unchanged.
 
 EnvoyBench evaluates paper-reading agents that write bounded Python programs to
 search, read, and cite passages. This release contains the frozen split recipe,
