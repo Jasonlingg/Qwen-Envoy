@@ -1,0 +1,658 @@
+{
+  "analysis_code_sha256": "6de249e85836c53f5dd2a9c5a0fdb909fef579d4e55c8c54ea363f04bd93b42c",
+  "caveats": [
+    "Logprobs are for emitted action tokens, not answer correctness or evidence support.",
+    "Step means pool different action lengths and positions; errors are observational, not randomized.",
+    "No task answerability labels or model-assisted quality grades are used.",
+    "Episode-level endpoint errors have no aligned generated-action logprob.",
+    "Raw prompts, actions, observations, answers, token strings, and endpoints are omitted."
+  ],
+  "decision_rule": "Compare within each model only if at least 80% of code turns have usable logprobs and both error and clean groups are nonempty; otherwise report coverage. Any comparison is descriptive, never a correctness/confidence threshold.",
+  "dev_full": {
+    "declared_question_count": 40,
+    "model_summary": {
+      "qwen_base": {
+        "clean_step_mean_logprob": {
+          "median": -0.011481,
+          "n": 317,
+          "q25": -0.026386,
+          "q75": -0.001642
+        },
+        "code_turn_immediate_error_class_counts": {
+          "no_detected_execution_error": 317,
+          "returned_tool_error": 2,
+          "runtime_or_harness_error": 13
+        },
+        "code_turn_logprob_coverage": 1.0,
+        "code_turns": 332,
+        "code_turns_with_immediate_error": 15,
+        "comparison_status": "descriptive_only",
+        "context_limit_error_rows": 4,
+        "endpoint_error_rows": 4,
+        "generated_turns": 368,
+        "immediate_error_step_mean_logprob": {
+          "median": -0.008964,
+          "n": 15,
+          "q25": -0.012431,
+          "q75": -0.003173
+        },
+        "median_error_minus_clean": 0.002517,
+        "other_harness_error_rows": 0,
+        "reported_tokens": 11521,
+        "rows": 40,
+        "status_error": 4,
+        "status_submitted": 36,
+        "usable_code_turns": 332,
+        "usable_generated_turns": 368,
+        "valid_token_logprobs": 11521
+      },
+      "qwen_v5": {
+        "clean_step_mean_logprob": {
+          "median": -0.085225,
+          "n": 23,
+          "q25": -0.107233,
+          "q75": -0.075153
+        },
+        "code_turn_immediate_error_class_counts": {
+          "no_detected_execution_error": 23,
+          "returned_tool_error": 1
+        },
+        "code_turn_logprob_coverage": 1.0,
+        "code_turns": 24,
+        "code_turns_with_immediate_error": 1,
+        "comparison_status": "descriptive_only",
+        "context_limit_error_rows": 0,
+        "endpoint_error_rows": 28,
+        "generated_turns": 36,
+        "immediate_error_step_mean_logprob": {
+          "median": -0.10266,
+          "n": 1,
+          "q25": -0.10266,
+          "q75": -0.10266
+        },
+        "median_error_minus_clean": -0.017435,
+        "other_harness_error_rows": 1,
+        "reported_tokens": 1575,
+        "rows": 40,
+        "status_error": 29,
+        "status_submitted": 11,
+        "usable_code_turns": 24,
+        "usable_generated_turns": 36,
+        "valid_token_logprobs": 1575
+      }
+    },
+    "paired_submission_question_count": 10,
+    "provenance": {
+      "benchmark_file_sha256": "60e6649aa2e22ffa88b96f10618493892ce15f3a42a34b4f9bd5813f6dd10fa4",
+      "benchmark_hash": "fc7e76b11392f0bffdb6986ff75e68f794019e8985817ad2fc5c6b49cce94918",
+      "comparison_id": "7d179a54b17faa408b8ccfdca2704f3bbfc5bcddf6657d8e8b0859dc3e21f827",
+      "completed_at_utc": "2026-10-03T22:22:07.499493+00:00",
+      "corpus_hash": "6abb65821917c11d9cda4fa82415c31623a8566e1ad3b9bd74a09dd6df1743b2",
+      "created_at_utc": "2026-10-03T21:18:59.574099+00:00",
+      "dataset_index_sha256": "da3a7b1a5ed80ee38ddcffdc4593d79c98ede3e2a718013977aa70f175999e0f",
+      "full_split": true,
+      "git_commit": "33f2ad684265a7d5e9733576fcaa94257408bb67",
+      "implementation_sha256": {
+        "benchmarks/envoybench/run.py": "0b63c50dfeac356a8010aee9bb05381ed8f4b78c209c16159d1c664f1c5186b2",
+        "src/env/document_env.py": "fa017c0a73adcf212361171bfedc7d8264db9fc17127ce0c7d70a5fae4acfbc4",
+        "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+        "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+        "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+        "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+        "src/eval/harness.py": "e213a3902d6ca942d229bb8702e7014b0caed0f84c813fa91c99291750d7a0e9",
+        "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+        "src/policies/openai_compatible.py": "9f533d3468d261b5fa7b4e57615346c85db1477d3533d5cfc3a48c8913a04473"
+      },
+      "legacy_reward_version": "outcome-v1",
+      "manifest_sha256": "10d0312a5634ca78e13f2ac027b0d4d19433bbcec69f6e41312267ce643c9bf6",
+      "max_steps": 15,
+      "models": [
+        {
+          "decoding": {
+            "max_tokens": 1024,
+            "temperature": 0.0,
+            "top_p": 1.0
+          },
+          "key": "qwen_base",
+          "logprobs_requested": true,
+          "model_id": "Qwen/Qwen3-8B",
+          "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+          "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+          "thinking_enabled": false,
+          "top_logprobs_requested": 0
+        },
+        {
+          "decoding": {
+            "max_tokens": 1024,
+            "temperature": 0.0,
+            "top_p": 1.0
+          },
+          "key": "qwen_v5",
+          "logprobs_requested": true,
+          "model_id": "envoy",
+          "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+          "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+          "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+          "thinking_enabled": false,
+          "top_logprobs_requested": 0
+        }
+      ],
+      "question_ids": [
+        "qasper_validation_003d6f9722ddc2ee13e879fefafc315fb8e87cb9",
+        "qasper_validation_04bde1d2b445f971e97bb46ade2d0290981c7a32",
+        "qasper_validation_0767ca8ff1424f7a811222ca108a33b6411aaa8a",
+        "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d",
+        "qasper_validation_1d197cbcac7b3f4015416f0152a6692e881ada6c",
+        "qasper_validation_1f085b9bb7bfd0d6c8cba1a9d73f08fcf2da7590",
+        "qasper_validation_206739417251064b910ae9e5ff096e867ee10fb8",
+        "qasper_validation_26e2d4d0e482e6963a76760323b8e1c26b6eee91",
+        "qasper_validation_2ccc26e11df4eb26fcccdd1f446dc749aff5d572",
+        "qasper_validation_31735ec3d83c40b79d11df5c34154849aeb3fb47",
+        "qasper_validation_477d9d3376af4d938bb01280fe48d9ae7c9cf7f7",
+        "qasper_validation_4907096cf16d506937e592c50ae63b642da49052",
+        "qasper_validation_568fb7989a133564d84911e7cb58e4d8748243ef",
+        "qasper_validation_596aede2b311deb8cb0a82d2e7de314ef6e83e4e",
+        "qasper_validation_612c3675b6c55b60ae6d24265ed8e20f62cb117e",
+        "qasper_validation_63c3550c6fb42f41a0c93133e9fca12ac00df9b3",
+        "qasper_validation_6415f38a06c2f99e8627e8ba6251aa4b364ade2d",
+        "qasper_validation_67ec8ef85844e01746c13627090dc2706bb2a4f3",
+        "qasper_validation_6f024d4c952fbb53b6f8cf27020659aa4d9a6590",
+        "qasper_validation_71e4ba4e87e6596aeca187127c0d088df6570c57",
+        "qasper_validation_7438b6b146e41c08cf8f4c5e1d130c3b4cfc6d93",
+        "qasper_validation_7d483077ed7f2f504d59f4fc2f162741fa5ac23b",
+        "qasper_validation_88ab7811662157680144ed3fdd00939e36552672",
+        "qasper_validation_89497e93980ab6d8c34a6d95ebf8c1e1d98ba43f",
+        "qasper_validation_899ed05c460bf2aa0aa65101cad1986d4f622652",
+        "qasper_validation_8e12b5c459fa963b3e549deadb864c244879fe82",
+        "qasper_validation_968b7c3553a668ba88da105eff067d57f393c63f",
+        "qasper_validation_a253749e3b4c4f340778235f640ce694642a4555",
+        "qasper_validation_a66a275a817f980c36e0b67d2e00bd823f63abf8",
+        "qasper_validation_b4f881331b975e6e4cab1868267211ed729d782d",
+        "qasper_validation_bfbd6040cb95b179118557352e8e3899ef25c525",
+        "qasper_validation_c262d3d1c5a8b6fef6b594d5eee86bc2b09e3baf",
+        "qasper_validation_c34e80fbbfda0f1786d3b00e06cef5ada78a3f3c",
+        "qasper_validation_c9b8d3858c112859eabee54248b874331c48f71b",
+        "qasper_validation_cb196725edc9cdb2c54b72364f3bbf7c76471490",
+        "qasper_validation_dd09db5eb321083dba16c2550676e60682f9a0cd",
+        "qasper_validation_ddf5e1f600b9ce2e8f63213982ef4209bab01fd8",
+        "qasper_validation_df6d327e176740da9edcc111a06374c54c8e809c",
+        "qasper_validation_ee2ad0ab64579cffb60853db6a8c0f971d7cf0ff",
+        "qasper_validation_ff338921e34c15baf1eae0074938bf79ee65fdd2"
+      ],
+      "results_sha256": "f0c31414dc335a87cc4d310a9794211ed60fe2c7b2aa53272e6454c044f0f782",
+      "run_id": "88a399dd76b64e4e8dff182cbf4f4773",
+      "runner_hardware": {
+        "gpu": null,
+        "platform": "macOS-26.2-arm64-arm-64bit",
+        "python": "3.11.9"
+      },
+      "sandbox_image": {
+        "image_id": "sha256:d5e2270cb03248badda05cc7d1fa819c370a195feac5721ce07bf250927eb8f3",
+        "repo_digests": []
+      },
+      "seed": 42,
+      "seed_note": "Local runner seed only; remote determinism requires endpoint support and is not guaranteed.",
+      "split": "dev",
+      "split_status": "previously_used_development_not_held_out",
+      "subset_smoke": false,
+      "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+      "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71"
+    }
+  },
+  "hypothesis": "Generated-action token logprobs may be lower on code turns with immediate tool or runtime errors than on code turns with clean observations.",
+  "schema_version": "envoybench-logprob-analysis-v1",
+  "scope": "saved_development_run_execution_diagnostic_only",
+  "smoke": {
+    "cases": [
+      {
+        "question_id": "qasper_validation_003d6f9722ddc2ee13e879fefafc315fb8e87cb9",
+        "systems": {
+          "qwen_base": {
+            "generated_turn_count": 11,
+            "status": "submitted",
+            "steps": [
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.022832,
+                "prefix_truncated": false,
+                "reported_token_count": 21,
+                "step": 1,
+                "sum_logprob": -0.479481,
+                "usable": true,
+                "valid_logprob_count": 21
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.000333,
+                "prefix_truncated": false,
+                "reported_token_count": 17,
+                "step": 2,
+                "sum_logprob": -0.005659,
+                "usable": true,
+                "valid_logprob_count": 17
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.023328,
+                "prefix_truncated": false,
+                "reported_token_count": 25,
+                "step": 3,
+                "sum_logprob": -0.583206,
+                "usable": true,
+                "valid_logprob_count": 25
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.001926,
+                "prefix_truncated": false,
+                "reported_token_count": 31,
+                "step": 4,
+                "sum_logprob": -0.059704,
+                "usable": true,
+                "valid_logprob_count": 31
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.066321,
+                "prefix_truncated": false,
+                "reported_token_count": 22,
+                "step": 5,
+                "sum_logprob": -1.459059,
+                "usable": true,
+                "valid_logprob_count": 22
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.019525,
+                "prefix_truncated": false,
+                "reported_token_count": 25,
+                "step": 6,
+                "sum_logprob": -0.488135,
+                "usable": true,
+                "valid_logprob_count": 25
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.056841,
+                "prefix_truncated": false,
+                "reported_token_count": 22,
+                "step": 7,
+                "sum_logprob": -1.250496,
+                "usable": true,
+                "valid_logprob_count": 22
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.018443,
+                "prefix_truncated": false,
+                "reported_token_count": 22,
+                "step": 8,
+                "sum_logprob": -0.405736,
+                "usable": true,
+                "valid_logprob_count": 22
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.054266,
+                "prefix_truncated": false,
+                "reported_token_count": 24,
+                "step": 9,
+                "sum_logprob": -1.302383,
+                "usable": true,
+                "valid_logprob_count": 24
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.008134,
+                "prefix_truncated": false,
+                "reported_token_count": 31,
+                "step": 10,
+                "sum_logprob": -0.252157,
+                "usable": true,
+                "valid_logprob_count": 31
+              },
+              {
+                "immediate_error_class": "not_applicable",
+                "kind": "submission",
+                "mean_logprob": -0.03191,
+                "prefix_truncated": true,
+                "reported_token_count": 107,
+                "step": 11,
+                "sum_logprob": -3.414383,
+                "usable": true,
+                "valid_logprob_count": 107
+              }
+            ]
+          },
+          "qwen_v5": {
+            "generated_turn_count": 3,
+            "status": "submitted",
+            "steps": [
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.167109,
+                "prefix_truncated": false,
+                "reported_token_count": 25,
+                "step": 1,
+                "sum_logprob": -4.177725,
+                "usable": true,
+                "valid_logprob_count": 25
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.075536,
+                "prefix_truncated": false,
+                "reported_token_count": 32,
+                "step": 2,
+                "sum_logprob": -2.417148,
+                "usable": true,
+                "valid_logprob_count": 32
+              },
+              {
+                "immediate_error_class": "not_applicable",
+                "kind": "submission",
+                "mean_logprob": -0.070188,
+                "prefix_truncated": true,
+                "reported_token_count": 70,
+                "step": 3,
+                "sum_logprob": -4.913129,
+                "usable": true,
+                "valid_logprob_count": 70
+              }
+            ]
+          }
+        }
+      },
+      {
+        "question_id": "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d",
+        "systems": {
+          "qwen_base": {
+            "generated_turn_count": 7,
+            "status": "submitted",
+            "steps": [
+              {
+                "immediate_error_class": "runtime_or_harness_error",
+                "kind": "code",
+                "mean_logprob": -0.010142,
+                "prefix_truncated": false,
+                "reported_token_count": 30,
+                "step": 1,
+                "sum_logprob": -0.304246,
+                "usable": true,
+                "valid_logprob_count": 30
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.007329,
+                "prefix_truncated": false,
+                "reported_token_count": 22,
+                "step": 2,
+                "sum_logprob": -0.161236,
+                "usable": true,
+                "valid_logprob_count": 22
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.000175,
+                "prefix_truncated": false,
+                "reported_token_count": 17,
+                "step": 3,
+                "sum_logprob": -0.002968,
+                "usable": true,
+                "valid_logprob_count": 17
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.020016,
+                "prefix_truncated": false,
+                "reported_token_count": 24,
+                "step": 4,
+                "sum_logprob": -0.480391,
+                "usable": true,
+                "valid_logprob_count": 24
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.00627,
+                "prefix_truncated": false,
+                "reported_token_count": 30,
+                "step": 5,
+                "sum_logprob": -0.188114,
+                "usable": true,
+                "valid_logprob_count": 30
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.037788,
+                "prefix_truncated": false,
+                "reported_token_count": 25,
+                "step": 6,
+                "sum_logprob": -0.944695,
+                "usable": true,
+                "valid_logprob_count": 25
+              },
+              {
+                "immediate_error_class": "not_applicable",
+                "kind": "submission",
+                "mean_logprob": -0.003708,
+                "prefix_truncated": true,
+                "reported_token_count": 71,
+                "step": 7,
+                "sum_logprob": -0.263268,
+                "usable": true,
+                "valid_logprob_count": 71
+              }
+            ]
+          },
+          "qwen_v5": {
+            "generated_turn_count": 3,
+            "status": "submitted",
+            "steps": [
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.098989,
+                "prefix_truncated": false,
+                "reported_token_count": 28,
+                "step": 1,
+                "sum_logprob": -2.771701,
+                "usable": true,
+                "valid_logprob_count": 28
+              },
+              {
+                "immediate_error_class": "no_detected_execution_error",
+                "kind": "code",
+                "mean_logprob": -0.069281,
+                "prefix_truncated": false,
+                "reported_token_count": 30,
+                "step": 2,
+                "sum_logprob": -2.078441,
+                "usable": true,
+                "valid_logprob_count": 30
+              },
+              {
+                "immediate_error_class": "not_applicable",
+                "kind": "submission",
+                "mean_logprob": -0.114963,
+                "prefix_truncated": true,
+                "reported_token_count": 74,
+                "step": 3,
+                "sum_logprob": -8.507239,
+                "usable": true,
+                "valid_logprob_count": 74
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "declared_question_count": 2,
+    "model_summary": {
+      "qwen_base": {
+        "clean_step_mean_logprob": {
+          "median": -0.019525,
+          "n": 15,
+          "q25": -0.030558,
+          "q75": -0.006799
+        },
+        "code_turn_immediate_error_class_counts": {
+          "no_detected_execution_error": 15,
+          "runtime_or_harness_error": 1
+        },
+        "code_turn_logprob_coverage": 1.0,
+        "code_turns": 16,
+        "code_turns_with_immediate_error": 1,
+        "comparison_status": "descriptive_only",
+        "context_limit_error_rows": 0,
+        "endpoint_error_rows": 0,
+        "generated_turns": 18,
+        "immediate_error_step_mean_logprob": {
+          "median": -0.010142,
+          "n": 1,
+          "q25": -0.010142,
+          "q75": -0.010142
+        },
+        "median_error_minus_clean": 0.009383,
+        "other_harness_error_rows": 0,
+        "reported_tokens": 566,
+        "rows": 2,
+        "status_error": 0,
+        "status_submitted": 2,
+        "usable_code_turns": 16,
+        "usable_generated_turns": 18,
+        "valid_token_logprobs": 566
+      },
+      "qwen_v5": {
+        "clean_step_mean_logprob": {
+          "median": -0.087262,
+          "n": 4,
+          "q25": -0.116019,
+          "q75": -0.073972
+        },
+        "code_turn_immediate_error_class_counts": {
+          "no_detected_execution_error": 4
+        },
+        "code_turn_logprob_coverage": 1.0,
+        "code_turns": 4,
+        "code_turns_with_immediate_error": 0,
+        "comparison_status": "coverage_only",
+        "context_limit_error_rows": 0,
+        "endpoint_error_rows": 0,
+        "generated_turns": 6,
+        "immediate_error_step_mean_logprob": {
+          "median": null,
+          "n": 0,
+          "q25": null,
+          "q75": null
+        },
+        "median_error_minus_clean": null,
+        "other_harness_error_rows": 0,
+        "reported_tokens": 259,
+        "rows": 2,
+        "status_error": 0,
+        "status_submitted": 2,
+        "usable_code_turns": 4,
+        "usable_generated_turns": 6,
+        "valid_token_logprobs": 259
+      }
+    },
+    "paired_submission_question_count": 2,
+    "provenance": {
+      "benchmark_file_sha256": "60e6649aa2e22ffa88b96f10618493892ce15f3a42a34b4f9bd5813f6dd10fa4",
+      "benchmark_hash": "fc7e76b11392f0bffdb6986ff75e68f794019e8985817ad2fc5c6b49cce94918",
+      "comparison_id": "e24ee041e3d7dec367a9538da7e82b386cd0fcb3bf0615930fb1de32f6a2d0a8",
+      "completed_at_utc": "2026-10-03T21:18:28.558807+00:00",
+      "corpus_hash": "6abb65821917c11d9cda4fa82415c31623a8566e1ad3b9bd74a09dd6df1743b2",
+      "created_at_utc": "2026-10-03T21:17:45.272811+00:00",
+      "dataset_index_sha256": "da3a7b1a5ed80ee38ddcffdc4593d79c98ede3e2a718013977aa70f175999e0f",
+      "full_split": false,
+      "git_commit": "33f2ad684265a7d5e9733576fcaa94257408bb67",
+      "implementation_sha256": {
+        "benchmarks/envoybench/run.py": "0b63c50dfeac356a8010aee9bb05381ed8f4b78c209c16159d1c664f1c5186b2",
+        "src/env/document_env.py": "fa017c0a73adcf212361171bfedc7d8264db9fc17127ce0c7d70a5fae4acfbc4",
+        "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+        "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+        "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+        "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+        "src/eval/harness.py": "e213a3902d6ca942d229bb8702e7014b0caed0f84c813fa91c99291750d7a0e9",
+        "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+        "src/policies/openai_compatible.py": "9f533d3468d261b5fa7b4e57615346c85db1477d3533d5cfc3a48c8913a04473"
+      },
+      "legacy_reward_version": "outcome-v1",
+      "manifest_sha256": "1af65b5ad303b560115f0539d155ee1ffa346eab6f4b4087833efc810d2e0c2a",
+      "max_steps": 15,
+      "models": [
+        {
+          "decoding": {
+            "max_tokens": 1024,
+            "temperature": 0.0,
+            "top_p": 1.0
+          },
+          "key": "qwen_base",
+          "logprobs_requested": true,
+          "model_id": "Qwen/Qwen3-8B",
+          "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+          "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+          "thinking_enabled": false,
+          "top_logprobs_requested": 0
+        },
+        {
+          "decoding": {
+            "max_tokens": 1024,
+            "temperature": 0.0,
+            "top_p": 1.0
+          },
+          "key": "qwen_v5",
+          "logprobs_requested": true,
+          "model_id": "envoy",
+          "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+          "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+          "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+          "thinking_enabled": false,
+          "top_logprobs_requested": 0
+        }
+      ],
+      "question_ids": [
+        "qasper_validation_003d6f9722ddc2ee13e879fefafc315fb8e87cb9",
+        "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d"
+      ],
+      "results_sha256": "14289699d3075c4f5a93b239f54076319678fc920deff0dfe6ee76b4777f25df",
+      "run_id": "5bd39c5b314b4d42bb2613f415549094",
+      "runner_hardware": {
+        "gpu": null,
+        "platform": "macOS-26.2-arm64-arm-64bit",
+        "python": "3.11.9"
+      },
+      "sandbox_image": {
+        "image_id": "sha256:d5e2270cb03248badda05cc7d1fa819c370a195feac5721ce07bf250927eb8f3",
+        "repo_digests": []
+      },
+      "seed": 42,
+      "seed_note": "Local runner seed only; remote determinism requires endpoint support and is not guaranteed.",
+      "split": "dev",
+      "split_status": "previously_used_development_not_held_out",
+      "subset_smoke": true,
+      "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+      "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71"
+    }
+  }
+}

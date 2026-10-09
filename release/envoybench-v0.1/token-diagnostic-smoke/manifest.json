@@ -1,0 +1,123 @@
+{
+  "schema_version": "envoybench-run-v1",
+  "run_id": "5bd39c5b314b4d42bb2613f415549094",
+  "created_at_utc": "2026-10-03T21:17:45.272811+00:00",
+  "status": "complete",
+  "benchmark_id": "envoybench-dev-v1",
+  "benchmark_hash": "fc7e76b11392f0bffdb6986ff75e68f794019e8985817ad2fc5c6b49cce94918",
+  "corpus_hash": "6abb65821917c11d9cda4fa82415c31623a8566e1ad3b9bd74a09dd6df1743b2",
+  "question_ids": [
+    "qasper_validation_003d6f9722ddc2ee13e879fefafc315fb8e87cb9",
+    "qasper_validation_0d34c0812f1e69ea33f76ca8c24c23b0415ebc8d"
+  ],
+  "split": "dev",
+  "max_steps": 15,
+  "seed": 42,
+  "seed_note": "Local runner seed only; remote determinism requires endpoint support and is not guaranteed.",
+  "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+  "system_prompt_name": "QASPER_SYSTEM_PROMPT",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "require_evidence": true,
+  "evidence_verifier": true,
+  "verifier_feedback_budget": 1,
+  "escalate_after_verifier_failure": false,
+  "docker_sandbox": "org.envoybench.sandbox=v1",
+  "comparison_id": "e24ee041e3d7dec367a9538da7e82b386cd0fcb3bf0615930fb1de32f6a2d0a8",
+  "split_question_count": 40,
+  "full_split": false,
+  "subset_smoke": true,
+  "split_status": "previously_used_development_not_held_out",
+  "benchmark_file_sha256": "60e6649aa2e22ffa88b96f10618493892ce15f3a42a34b4f9bd5813f6dd10fa4",
+  "dataset_index_sha256": "da3a7b1a5ed80ee38ddcffdc4593d79c98ede3e2a718013977aa70f175999e0f",
+  "model_config_sha256": "87dc825fe54d34abae0959c5650a213b3162bf5841598b111e6a1b8a245a942d",
+  "models": [
+    {
+      "key": "qwen_base",
+      "model_id": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "endpoint_sha256": "87459d11adee7bce23cb37e9d210800e77403ecd52229858300b9215af0ed0fd",
+      "endpoint_kind": "local",
+      "api_key_env": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 120,
+      "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+      "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+      "serving_hourly_usd": 0.49,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "logprobs": true,
+        "top_logprobs": 0
+      },
+      "serving_context_window_tokens": 8192
+    },
+    {
+      "key": "qwen_v5",
+      "model_id": "envoy",
+      "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "endpoint_sha256": "87459d11adee7bce23cb37e9d210800e77403ecd52229858300b9215af0ed0fd",
+      "endpoint_kind": "local",
+      "api_key_env": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 120,
+      "serving_hardware": "Runpod Secure Cloud NVIDIA A40 48GB CA-MTL-1 pod hvlssbkhwovar8",
+      "serving_runtime": "vLLM 0.30.0; PyTorch 2.13.0+cu130; logprobs_mode=raw_logprobs",
+      "serving_hourly_usd": 0.49,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "logprobs": true,
+        "top_logprobs": 0
+      },
+      "serving_context_window_tokens": 8192
+    }
+  ],
+  "model_identity_note": "Model/revision IDs are operator declarations; the endpoint does not attest weights.",
+  "legacy_reward_version": "outcome-v1",
+  "legacy_reward_is_benchmark_score": false,
+  "sandbox_image": {
+    "image_id": "sha256:d5e2270cb03248badda05cc7d1fa819c370a195feac5721ce07bf250927eb8f3",
+    "repo_digests": []
+  },
+  "implementation_sha256": {
+    "src/env/document_env.py": "fa017c0a73adcf212361171bfedc7d8264db9fc17127ce0c7d70a5fae4acfbc4",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+    "src/eval/harness.py": "e213a3902d6ca942d229bb8702e7014b0caed0f84c813fa91c99291750d7a0e9",
+    "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+    "src/policies/openai_compatible.py": "9f533d3468d261b5fa7b4e57615346c85db1477d3533d5cfc3a48c8913a04473",
+    "benchmarks/envoybench/run.py": "0b63c50dfeac356a8010aee9bb05381ed8f4b78c209c16159d1c664f1c5186b2"
+  },
+  "git_commit": "33f2ad684265a7d5e9733576fcaa94257408bb67",
+  "runner_hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "python": "3.11.9",
+    "gpu": null
+  },
+  "completed_at_utc": "2026-10-03T21:18:28.558807+00:00",
+  "elapsed_seconds": 43.318488666031044
+}

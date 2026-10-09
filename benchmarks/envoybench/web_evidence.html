@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Web evidence pilot · EnvoyBench Studio</title>
+  <style>
+    :root { color-scheme:light; --ink:#17372d; --muted:#63786b; --line:#d9e3d7; --cream:#f5f5ed; --card:#fffefa; --green:#2f7251; --amber:#9b682b; --red:#a3443b; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--cream); color:var(--ink); font:14px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    a { color:inherit; text-underline-offset:3px; } a:focus-visible,summary:focus-visible,button:focus-visible { outline:3px solid #cb9b57; outline-offset:3px; }
+    .shell { width:min(1160px,calc(100% - 48px)); margin:auto; }
+    header { background:#153a2e; color:#f5f6ec; }
+    .bar { min-height:72px; display:flex; justify-content:space-between; align-items:center; gap:20px; }
+    .brand { font:24px Georgia,serif; letter-spacing:-.04em; text-decoration:none; white-space:nowrap; }.brand span { font:700 10px system-ui,sans-serif; text-transform:uppercase; letter-spacing:.13em; opacity:.7; margin-left:7px; }
+    nav { display:flex; flex-wrap:wrap; gap:20px; font-size:12px; font-weight:650; } nav a { text-decoration:none; opacity:.83; } nav a:hover,nav a[aria-current] { opacity:1; text-decoration:underline; }
+    main { padding:43px 0 80px; }
+    .eyebrow { color:#8c6c3e; font-size:10px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    h1 { font:normal clamp(35px,5vw,57px)/1.05 Georgia,serif; letter-spacing:-.045em; margin:9px 0 14px; }
+    .lead { max-width:730px; color:var(--muted); font-size:14px; margin:0 0 24px; }
+    .caveat { padding:14px 18px; border-left:3px solid #bb8b45; background:#fcf4e4; color:#654d2b; border-radius:0 8px 8px 0; font-size:12px; line-height:1.65; }
+    .caveat strong { display:block; color:#6d4922; margin-bottom:2px; }
+    .metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:25px 0 29px; }
+    .metric { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; min-width:0; }
+    .metric .label { display:block; color:var(--muted); font-size:11px; font-weight:700; }
+    .metric strong { display:block; font:normal 34px Georgia,serif; letter-spacing:-.04em; margin:6px 0 0; }
+    .metric small { display:block; color:var(--muted); font-size:11px; overflow-wrap:anywhere; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin:34px 0 13px; }
+    h2 { font:normal 29px Georgia,serif; letter-spacing:-.025em; margin:0; }
+    .section-head p { margin:0; color:var(--muted); font-size:11px; }
+    .case-list { display:grid; gap:13px; }
+    .case { border:1px solid var(--line); background:var(--card); border-radius:13px; overflow:hidden; }
+    .case-head { padding:18px 21px; display:flex; justify-content:space-between; gap:12px; align-items:start; }
+    .case h3 { font:normal 20px Georgia,serif; letter-spacing:-.02em; margin:2px 0 5px; overflow-wrap:anywhere; }
+    .source-link { display:block; color:#46745a; font-size:11px; overflow-wrap:anywhere; max-width:750px; }
+    .meta { color:var(--muted); font:10px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+    .pill { display:inline-block; border:1px solid #c7d8c5; color:var(--green); background:#edf5eb; border-radius:99px; padding:4px 9px; font-size:10px; font-weight:750; white-space:nowrap; }
+    .pill.warn { border-color:#edd9aa; color:var(--amber); background:#fff8e8; }
+    .pill.fail { border-color:#e4beb8; color:var(--red); background:#fff0eb; }
+    .case-summary { border-top:1px solid #ebeee7; padding:11px 21px; display:flex; flex-wrap:wrap; gap:6px 20px; color:var(--muted); font-size:11px; }
+    .title-diagnostic { border-top:1px solid #eee3ca; background:#fffaf0; padding:10px 21px; color:#6b552e; font-size:11px; overflow-wrap:anywhere; }
+    .title-diagnostic strong { display:block; margin-bottom:3px; }
+    .facts { border-top:1px solid var(--line); padding:4px 21px 9px; }
+    .fact { padding:15px 0; border-bottom:1px solid #ebeee7; }.fact:last-child { border:0; }
+    .fact-top { display:flex; align-items:start; justify-content:space-between; gap:12px; }.fact h4 { font-size:12px; margin:0 0 7px; font-weight:750; }
+    .fact p { font-size:12px; margin:5px 0; color:#4b6253; }
+    .quote { border-left:3px solid #a7c8a9; background:#f2f7ee; padding:10px 12px; margin:9px 0; white-space:pre-wrap; overflow-wrap:anywhere; font:12px/1.55 Georgia,serif; }
+    .span-label { color:var(--muted); font:10px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .reason { color:#8b4f36!important; }
+    details { margin:12px 0 3px; } summary { cursor:pointer; color:#3e6f50; font-size:11px; font-weight:750; }
+    .hits { display:grid; gap:8px; margin-top:9px; }.hit { padding:10px 12px; border:1px solid #e3eae0; border-radius:7px; background:#f8faf4; }
+    .hit.is-hit { border-color:#a7c8a9; background:#f0f8ec; }
+    .hit p { margin:5px 0 0; white-space:pre-wrap; overflow-wrap:anywhere; font:12px/1.55 Georgia,serif; }
+    .empty { color:var(--muted); font-size:12px; padding:13px 0; }
+    .method { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:19px 22px; margin-top:26px; color:#4d6456; font-size:12px; }
+    .method summary { color:var(--ink); font-size:13px; }.method dl { display:grid; grid-template-columns:150px minmax(0,1fr); gap:9px 20px; margin:15px 0 0; }
+    .method dt { color:var(--muted); }.method dd { margin:0; overflow-wrap:anywhere; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10px; }
+    .error { color:var(--red); } [hidden] { display:none!important; }
+    @media(max-width:780px) { .bar { padding:18px 0; flex-direction:column; align-items:start; gap:13px; }.metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }.case-head { flex-direction:column; }.section-head { align-items:start; flex-direction:column; gap:4px; } }
+    @media(max-width:500px) { .shell { width:min(100% - 30px,1160px); }.metrics { gap:8px; }.metric { padding:13px; }.metric strong { font-size:28px; }.facts,.case-head,.case-summary { padding-left:15px; padding-right:15px; }.method dl { grid-template-columns:1fr; gap:3px; }.method dd { margin-bottom:9px; } }
+  </style>
+</head>
+<body>
+  <header><div class="shell bar"><a class="brand" href="/">envoybench <span>studio</span></a><nav aria-label="Studio"><a href="/">Compare models</a><a href="/papers">Read a paper</a><a href="/web-evidence" aria-current="page">Web evidence pilot</a><a href="/model">Training recipe</a></nav></div></header>
+  <main class="shell">
+    <div class="eyebrow">Frozen-source retrieval diagnostic</div>
+    <h1>From a web page to evidence.</h1>
+    <p class="lead">A small pilot shows whether a fact survives extraction from a web source, then whether a deterministic search finds its exact span among the top three results.</p>
+    <div class="caveat"><strong>How to read this pilot</strong><span id="scope">These cases are assistant-checked development examples, not independent human-reviewed gold. Literal span matching does not judge whether an answer is supported.</span></div>
+    <p id="error" class="error" role="alert" hidden></p>
+    <div id="loaded" hidden>
+      <section class="metrics" aria-label="Pilot metrics">
+        <div class="metric"><span class="label">Facts retained after parsing</span><strong id="retentionRate">—</strong><small id="retentionCount">—</small></div>
+        <div class="metric"><span class="label">Evidence found in top 3</span><strong id="hitRate">—</strong><small id="hitCount">—</small></div>
+        <div class="metric"><span class="label">End-to-end passes</span><strong id="endRate">—</strong><small id="endCount">—</small></div>
+        <div class="metric"><span class="label">Sources scored</span><strong id="sourceCount">—</strong><small id="sourceDetail">—</small></div>
+      </section>
+      <div class="section-head"><h2>Inspect each source</h2><p>Click a fact’s top-three spans to see the retrieval evidence.</p></div>
+      <div id="cases" class="case-list"></div>
+      <details class="method"><summary>Methods, timing, and cost limits</summary><dl id="method"></dl></details>
+    </div>
+  </main>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const add = (parent, tag, value, className) => { const element = document.createElement(tag); if (value !== undefined && value !== null) element.textContent = String(value); if (className) element.className = className; parent.appendChild(element); return element; };
+    const rate = value => typeof value === 'number' && Number.isFinite(value) ? `${(value * 100).toFixed(0)}%` : '—';
+    const count = value => Number.isFinite(value) ? String(value) : '—';
+    const seconds = value => typeof value === 'number' && Number.isFinite(value) ? `${value.toFixed(2)} s` : 'unmeasured';
+    const statusLabel = { parsed:'Parsed', fetch_error:'Fetch failed', parse_error:'Parse failed', pass:'Found in top 3', fact_missing:'Fact missing after parsing', retrieval_miss:'Top-3 miss' };
+    const pillClass = status => status === 'pass' || status === 'parsed' ? 'pill' : status === 'retrieval_miss' || status === 'fact_missing' ? 'pill warn' : 'pill fail';
+    const spanText = span => `${count(span.start)}–${count(span.end)}`;
+    function sourceLink(parent, url) {
+      if (typeof url !== 'string') return;
+      try { const parsed = new URL(url); if (parsed.protocol !== 'https:') return; }
+      catch (_) { return; }
+      const link = add(parent, 'a', url, 'source-link'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+    }
+    function factView(parent, fact) {
+      const section = add(parent, 'section', null, 'fact');
+      const head = add(section, 'div', null, 'fact-top');
+      const name = add(head, 'div'); add(name, 'h4', fact.id || 'Fact');
+      add(head, 'span', statusLabel[fact.status] || fact.status || 'Unknown', pillClass(fact.status));
+      if (fact.query) add(section, 'p', `Search query: ${fact.query}`);
+      add(section, 'div', 'Expected literal span', 'span-label');
+      add(section, 'blockquote', fact.expected_text || 'No expected text recorded.', 'quote');
+      const expected = Array.isArray(fact.expected_spans) ? fact.expected_spans : [];
+      if (expected.length) add(section, 'div', `Frozen extracted-text offsets: ${expected.map(spanText).join(', ')}`, 'span-label');
+      if (fact.status === 'fact_missing') add(section, 'p', 'The expected literal text was absent from the extracted source.', 'reason');
+      if (fact.status === 'retrieval_miss') add(section, 'p', 'The literal text survived parsing but no top-three result contained it.', 'reason');
+      if (fact.status === 'fetch_error' || fact.status === 'parse_error') add(section, 'p', 'No retrieval check was possible for this source.', 'reason');
+      const detail = add(section, 'details');
+      add(detail, 'summary', 'Top-three retrieved spans');
+      const hits = add(detail, 'div', null, 'hits');
+      const results = Array.isArray(fact.search_results) ? fact.search_results.slice(0, 3) : [];
+      if (!results.length) add(hits, 'div', 'No spans returned.', 'empty');
+      results.forEach((hit, index) => {
+        const item = add(hits, 'div', null, hit.contains_expected ? 'hit is-hit' : 'hit');
+        const label = `#${index + 1} · ${spanText(hit)}${hit.section ? ` · ${hit.section}` : ''}${hit.contains_expected ? ' · literal hit' : ''}`;
+        add(item, 'div', label, 'span-label');
+        add(item, 'p', hit.quote || 'No span text recorded.');
+      });
+    }
+    function caseView(parent, item) {
+      const section = add(parent, 'article', null, 'case');
+      const head = add(section, 'div', null, 'case-head');
+      const left = add(head, 'div');
+      const stratum = typeof item.stratum === 'string' ? ` · ${item.stratum.replaceAll('_', ' ')}` : '';
+      add(left, 'div', `${item.id || 'Source'} · ${(item.format || 'unknown').toUpperCase()}${stratum}`, 'meta');
+      add(left, 'h3', item.title || item.id || 'Untitled source');
+      sourceLink(left, item.final_url || item.requested_url);
+      add(head, 'span', statusLabel[item.status] || item.status || 'Unknown', pillClass(item.status));
+      const summary = add(section, 'div', null, 'case-summary');
+      const facts = Array.isArray(item.facts) ? item.facts : [];
+      add(summary, 'span', `${facts.filter(f => f.status === 'pass').length}/${facts.length} facts found in top 3`);
+      add(summary, 'span', `Fetch ${seconds(item.fetch_seconds)} · Parse ${seconds(item.parse_seconds)} · Search ${seconds(item.search_seconds)}`);
+      if (item.raw_sha256) add(summary, 'span', `Snapshot SHA-256 ${item.raw_sha256.slice(0, 12)}…`, 'meta');
+      const titleCheck = item.title_diagnostic;
+      if (titleCheck && typeof titleCheck === 'object') {
+        const titleStatus = titleCheck.match === true ? 'match' : titleCheck.match === false ? 'mismatch' : 'unscored';
+        add(summary, 'span', `HTML title: ${titleStatus}`, titleCheck.match === false ? 'reason' : '');
+        if (titleCheck.match === false) {
+          const detail = add(section, 'div', null, 'title-diagnostic');
+          add(detail, 'strong', 'Title extraction mismatch');
+          add(detail, 'div', `Expected: ${titleCheck.expected_title || 'not recorded'}`);
+          add(detail, 'div', `Extracted: ${titleCheck.extracted_title || 'none'}`);
+        }
+      }
+      if (item.error) add(section, 'div', item.error, 'case-summary error');
+      const list = add(section, 'div', null, 'facts');
+      if (!facts.length) add(list, 'div', 'No facts recorded for this source.', 'empty');
+      facts.forEach(fact => factView(list, fact));
+    }
+    function methodRow(list, label, value) { add(list, 'dt', label); add(list, 'dd', value == null ? 'unmeasured' : value); }
+    function render(report) {
+      const aggregate = report.aggregate || {};
+      $('scope').textContent = `Assistant-checked development pilot; not independently human validated. ${report.scope_note || ''} Literal matching is a parser and retrieval diagnostic, not a semantic support judgment or a Qwen model comparison.`;
+      $('retentionRate').textContent = rate(aggregate.retention_rate_on_parsed);
+      $('retentionCount').textContent = `${count(aggregate.retained_fact_count)} of ${count(aggregate.parsed_fact_denominator)} facts in parsed sources`;
+      $('hitRate').textContent = rate(aggregate.retrieval_hit_rate_on_retained);
+      $('hitCount').textContent = `${count(aggregate.retrieval_hit_count)} of ${count(aggregate.retrieval_hit_denominator)} retained facts`;
+      $('endRate').textContent = rate(aggregate.end_to_end_pass_rate);
+      $('endCount').textContent = `${count((aggregate.fact_status_counts || {}).pass)} of ${count(aggregate.facts_total)} total facts`;
+      $('sourceCount').textContent = count(aggregate.cases_total);
+      const statuses = aggregate.case_status_counts || {};
+      $('sourceDetail').textContent = `${count(statuses.parsed || 0)} parsed · ${count((statuses.fetch_error || 0) + (statuses.parse_error || 0))} failed`;
+      const cases = Array.isArray(report.cases) ? report.cases : [];
+      if (!cases.length) add($('cases'), 'p', 'This report has no source cases.', 'empty');
+      cases.forEach(item => caseView($('cases'), item));
+      const provenance = report.provenance || {};
+      const retriever = provenance.retriever || {};
+      const method = $('method');
+      methodRow(method, 'Pilot status', 'Complete, assistant-checked');
+      methodRow(method, 'Network at scoring', provenance.network_during_scoring === false ? 'No; scored frozen captures' : 'Not confirmed');
+      methodRow(method, 'Retriever', [retriever.kind, retriever.version, retriever.top_k != null ? `top ${retriever.top_k}` : null].filter(Boolean).join(' · ') || 'not recorded');
+      methodRow(method, 'Parsers', `HTML ${provenance.html_parser_version || 'not recorded'} · PDF ${provenance.pdf_parser_version || 'not recorded'}`);
+      methodRow(method, 'Capture manifest', provenance.capture_manifest_sha256 || 'not recorded');
+      methodRow(method, 'Case manifest', provenance.case_manifest_sha256 || 'not recorded');
+      methodRow(method, 'Model checkpoint', provenance.model_checkpoint || 'None; no model evaluated in this pilot');
+      if (Number.isFinite(aggregate.html_title_denominator)) methodRow(method, 'HTML title checks', `${count(aggregate.html_title_match_count)} of ${count(aggregate.html_title_denominator)} matched expected titles`);
+      methodRow(method, 'Total timing', `fetch ${seconds(aggregate.fetch_seconds_total)} · parse ${seconds(aggregate.parse_seconds_total)} · search ${seconds(aggregate.search_seconds_total)}`);
+      methodRow(method, 'Fetch latency', `median ${seconds(aggregate.fetch_seconds_median)} · p95 ${seconds(aggregate.fetch_seconds_p95)} · n=${count(aggregate.fetch_latency_denominator)}`);
+      methodRow(method, 'Search latency', `median ${seconds(aggregate.search_seconds_median)} · p95 ${seconds(aggregate.search_seconds_p95)} · n=${count(aggregate.search_latency_denominator)}`);
+      methodRow(method, 'Latency method', provenance.latency_percentile_method || aggregate.latency_percentile_method || 'not recorded');
+      methodRow(method, 'Model API cost', typeof aggregate.model_api_cost_usd === 'number' ? `$${aggregate.model_api_cost_usd.toFixed(2)}` : 'unmeasured');
+      methodRow(method, 'Infrastructure cost', typeof aggregate.infrastructure_cost_usd === 'number' ? `$${aggregate.infrastructure_cost_usd.toFixed(2)}` : 'unmeasured');
+      $('loaded').hidden = false;
+    }
+    fetch('/api/web-evidence', { headers:{ Accept:'application/json' } })
+      .then(async response => { if (!response.ok) throw new Error(response.status === 404 ? 'No completed pilot report is loaded. Restart Studio with --web-evidence-report PATH.' : `Report unavailable (${response.status}).`); return response.json(); })
+      .then(render)
+      .catch(error => { $('error').textContent = error.message; $('error').hidden = false; });
+  </script>
+</body>
+</html>

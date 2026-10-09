@@ -1,0 +1,365 @@
+{
+  "active": {
+    "kind": "recorded_trace_demo",
+    "title": "Research agent: Qwen3-8B versus SFT v5",
+    "subtitle": "Two recorded QASPER development cases from September 19, 2026",
+    "score_status": "Provisional model-assisted review; identity known to reviewer",
+    "question_denominator": 40,
+    "models": [
+      {
+        "key": "base",
+        "label": "Base Qwen3-8B",
+        "metrics": {
+          "pass": 9,
+          "partial": 4,
+          "fail": 27,
+          "supported_answer_rate": 0.225,
+          "mean_review_score_0_to_2": 0.55
+        }
+      },
+      {
+        "key": "v5",
+        "label": "Qwen3-8B SFT v5 (checkpoint 50)",
+        "metrics": {
+          "pass": 19,
+          "partial": 5,
+          "fail": 16,
+          "supported_answer_rate": 0.475,
+          "mean_review_score_0_to_2": 1.075
+        }
+      }
+    ],
+    "cases": [
+      {
+        "id": "qasper_validation_f651cd144b7749e82aa1374779700812f64c8799",
+        "question": "Use the known paper \"Improving Neural Text Simplification Model with Simplified Corpora\" (doc_id: \"qasper_1810_04428\") to answer: what evaluation metrics did they use?",
+        "answerability": "sufficient",
+        "reference_answer": "BLEU , FKGL , SARI ",
+        "focus": "Finding BLEU, FKGL, and SARI in the named paper",
+        "systems": {
+          "base": {
+            "policy": "qwen_base_policy",
+            "run_id": "20260919_161917_df1d10d7d78b",
+            "checkpoint_id": null,
+            "status": "completed",
+            "error": null,
+            "steps": 6,
+            "duration_seconds": 8.616811513900757,
+            "answer": "ROUGE, Sera, and Pyramid scores",
+            "citations": [
+              "qasper_1810_04428"
+            ],
+            "evidence": [],
+            "verdict": "fail",
+            "notes": "Assistant semantic review against the QASPER reference and saved trajectory. Not independent or blind; pass on an insufficient item means a clear evidence-gap refusal.",
+            "review_id": "R073",
+            "trajectory": [
+              {
+                "step": 1,
+                "action": "search(\"evaluation metrics\", doc_id=\"qasper_1810_04428\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 1/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 2,
+                "action": "search(\"evaluation metrics\", doc_id=\"qasper_1810_04428\", top_k=5)",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 2/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 3,
+                "action": "search(\"evaluation metrics\", top_k=5)",
+                "observation": "[{'doc_id': 'qasper_1604_00400', 'title': 'Revisiting Summarization Evaluation for Scientific Articles', 'chunk': 'Revisiting Summarization Evaluation for Scientific Articles\\n\\nEvaluation of text summarization approaches have been mostly based on metrics that measure similarities of system generated summaries with a set of human written gold-standard summaries. The most widely used metric in summarization evaluation has been the ROUGE family. ROUGE solely relies on lexical overlaps between the terms and phrases in the sentences; therefore, in cases of terminology variations and paraphrasing, ROUGE is not as e', 'score': 121.16}, {'doc_id': 'qasper_1906_01081', 'title': 'Handling Divergent Reference Texts when Evaluating Table-to-Text Generation', 'chunk': 'Handling Divergent Reference Texts when Evaluating Table-to-Text Generation\\n\\nAutomatically constructed datasets for generating text from semi-structured data (tables), such as WikiBio, often contain reference texts that diverge from the information in the corresponding semi-structured data. We show that metrics which rely solely on the reference texts, such as BLEU and ROUGE, show poor correlation with human judgments when tho",
+                "observation_truncated": true,
+                "observation_original_chars": 3261,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 4,
+                "action": "search(\"evaluation metrics\", doc_id=\"qasper_1810_04428\", method=\"chunk\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 4/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 5,
+                "action": "search(\"evaluation metrics\", method=\"chunk\")",
+                "observation": "[{'doc_id': 'qasper_1604_00400', 'title': 'Revisiting Summarization Evaluation for Scientific Articles', 'chunk': 'EF13 . We do not report the Rouge, Sera or pyramid scores of individual systems as it is not the focus of this study. Our aim is to analyze the effectiveness of the evaluation metrics, not the summarization approaches. Therefore, we consider the correlations of the automatic evaluation metrics with the manual Pyramid scores to evaluate their effectiveness; the metrics that show higher correlations with manual judgments are more effective.\\n\\nTable TABREF23 shows the Pearson, Spearman and Kendall c', 'score': 10.25, 'offset': 22400}, {'doc_id': 'qasper_1912_08960', 'title': 'Going Beneath the Surface: Evaluating Image Captioning for Grammaticality, Truthfulness and Diversity', 'chunk': ' mirror the variability of training captions.\\n\\nPractical evaluation of GTD is currently only possible on synthetic data. We construct a range of datasets designed for image captioning evaluation. We call this diagnostic evaluation benchmark ShapeWorldICE (ShapeWorld for Image Captioning Evaluation). We illustrate the evaluation of specific image captioning models on ShapeWorldICE. We e",
+                "observation_truncated": true,
+                "observation_original_chars": 3441,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 6,
+                "action": "SUBMIT: ROUGE, Sera, and Pyramid scores CITATIONS: [\"qasper_1810_04428\"]",
+                "observation": "Submitted. Reward: 0.200",
+                "observation_truncated": false,
+                "observation_original_chars": 24,
+                "reward": 0.2,
+                "done": true
+              }
+            ]
+          },
+          "v5": {
+            "policy": "qwen_sft_policy",
+            "run_id": "20260919_162336_32bc89807363",
+            "checkpoint_id": "/workspace/qwen3-qasper-v5-hf/artifacts/full/checkpoint-50",
+            "status": "completed",
+            "error": null,
+            "steps": 2,
+            "duration_seconds": 4.06291127204895,
+            "answer": "The paper reports BLEU, FKGL, and SARI as evaluation metrics.",
+            "citations": [
+              "qasper_1810_04428"
+            ],
+            "evidence": [],
+            "verdict": "pass",
+            "notes": "Assistant semantic review against the QASPER reference and saved trajectory. Not independent or blind; pass on an insufficient item means a clear evidence-gap refusal.",
+            "review_id": "R074",
+            "trajectory": [
+              {
+                "step": 1,
+                "action": "print(search_within(\"qasper_1810_04428\", \"evaluation metrics\"))",
+                "observation": "Metrics. Three metrics in text simplification are chosen in this paper. BLEU BIBRE', 'offset': 10600, 'score': 2}, {'text': 'rom Wikipedia corpus whose training set contains 296,402 sentence pairs BIBREF19 , BIBREF20 . WikiLarge includes 8 (reference) simplifications for 2,359 sentences split into 2,000 for development and 359 for testing.\\n\\nMetrics. Three metrics in text simplification are chosen in this paper. BLEU BIBREF5 is one traditional machine translation metric to assess the degree to which translated simplifications differed from reference simplifications. FKGL measures the readability of the output BIBREF23 ', 'offset': 10800, 'score': 2}, {'text': '359 for testing.\\n\\nMetrics. Three metrics in text simplification are chosen in this paper. BLEU BIBREF5 is one traditional machine translation metric to assess the degree to which translated simplifications differed from reference simplifications. FKGL measures the readability of the output BIBREF23 . A small FKGL represents simpler output. SARI is a recent text-simplification metric by comparing the output against the source and reference simplifications BIBREF20 .\\n\\nWe evaluate the output of all', 'offset': 11000, 'score",
+                "observation_truncated": true,
+                "observation_original_chars": 1654,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 2,
+                "action": "SUBMIT: The paper reports BLEU, FKGL, and SARI as evaluation metrics. CITATIONS: [\"qasper_1810_04428\"]",
+                "observation": "Submitted. Reward: 0.569",
+                "observation_truncated": false,
+                "observation_original_chars": 24,
+                "reward": 0.5692307692307692,
+                "done": true
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "qasper_validation_0101ebfbaba75fd47868ad0c796ac44ebc19c566",
+        "question": "Use the known paper \"Query-based Attention CNN for Text Similarity Map\" (doc_id: \"qasper_1709_05036\") to answer: How do they split text to obtain sentence levels?",
+        "answerability": "insufficient",
+        "reference_answer": "Unanswerable",
+        "focus": "Recognizing when the paper does not provide the requested method",
+        "systems": {
+          "base": {
+            "policy": "qwen_base_policy",
+            "run_id": "20260919_161917_df1d10d7d78b",
+            "checkpoint_id": null,
+            "status": "completed",
+            "error": null,
+            "steps": 10,
+            "duration_seconds": 16.089977264404297,
+            "answer": "The paper \"Query-based Attention CNN for Text Similarity Map\" splits text into sentences using a sentence segmentation method, which is not explicitly detailed in the provided search results.",
+            "citations": [
+              "qasper_1709_05036"
+            ],
+            "evidence": [],
+            "verdict": "pass",
+            "notes": "Assistant semantic review against the QASPER reference and saved trajectory. Not independent or blind; pass on an insufficient item means a clear evidence-gap refusal.",
+            "review_id": "R004",
+            "trajectory": [
+              {
+                "step": 1,
+                "action": "search(\"split text to obtain sentence levels\", doc_id=\"qasper_1709_05036\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 1/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 2,
+                "action": "search(\"split text to obtain sentence levels\", method=\"chunk\", doc_id=\"qasper_1709_05036\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 2/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 3,
+                "action": "search(\"split text to obtain sentence levels\", method=\"chunk\")",
+                "observation": "[{'doc_id': 'qasper_1809_02286', 'title': 'Dynamic Compositionality in Recursive Neural Networks with Structure-aware Tag Representations', 'chunk': '$$   (Eq. 37) \\n\\n$$p(y|w_{1:n}) = \\\\text{softmax}(\\\\mathbf {W}_\\\\text{c}\\\\mathbf {s} + \\\\mathbf {b}_\\\\text{c})$$   (Eq. 38) \\n\\nwhere $\\\\textbf {s} \\\\in \\\\mathbb {R}^{d_\\\\text{s}}$ is the computed task-specific sentence representation for the classifier, and $\\\\textbf {W}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_\\\\text{s} \\\\times d_h}$ , $\\\\textbf {W}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_\\\\text{c} \\\\times d_s}$ , $\\\\textbf {b}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_s}$ , $\\\\textbf {b}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_c}$ are trainable parameters. As an ', 'score': 20.49, 'offset': 22800}, {'doc_id': 'qasper_1706_00139', 'title': 'Natural Language Generation for Spoken Dialogue System using RNN Encoder-Decoder Networks', 'chunk': 'ted by the attention mechanism. The alignment model $a$ is computed by: \\n\\n$$a(\\\\textbf {e}_{i}, \\\\textbf {h}_{t-1}) = \\\\textbf {v}_{a}^{\\\\top }\\\\tanh (\\\\textbf {W}_{a}\\\\textbf {e}_{i} + \\\\textbf {U}_{a}\\\\textbf {h}_{t-1})$$   (Eq. 16) \\n\\nwhere $\\\\textbf {v}_{a}, \\\\textbf {W}_{a}, \\\\textbf {U}_{a}$ are the weight matrices to learn.",
+                "observation_truncated": true,
+                "observation_original_chars": 3443,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 4,
+                "action": "search(\"split text to obtain sentence levels\", doc_id=\"qasper_1709_05036\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 4/10/10]",
+                "observation_truncated": false,
+                "observation_original_chars": 307,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 5,
+                "action": "search(\"split text to obtain sentence levels\", method=\"chunk\", top_k=5)",
+                "observation": "[{'doc_id': 'qasper_1809_02286', 'title': 'Dynamic Compositionality in Recursive Neural Networks with Structure-aware Tag Representations', 'chunk': '$$   (Eq. 37) \\n\\n$$p(y|w_{1:n}) = \\\\text{softmax}(\\\\mathbf {W}_\\\\text{c}\\\\mathbf {s} + \\\\mathbf {b}_\\\\text{c})$$   (Eq. 38) \\n\\nwhere $\\\\textbf {s} \\\\in \\\\mathbb {R}^{d_\\\\text{s}}$ is the computed task-specific sentence representation for the classifier, and $\\\\textbf {W}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_\\\\text{s} \\\\times d_h}$ , $\\\\textbf {W}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_\\\\text{c} \\\\times d_s}$ , $\\\\textbf {b}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_s}$ , $\\\\textbf {b}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_c}$ are trainable parameters. As an ', 'score': 20.49, 'offset': 22800}, {'doc_id': 'qasper_1706_00139', 'title': 'Natural Language Generation for Spoken Dialogue System using RNN Encoder-Decoder Networks', 'chunk': 'ted by the attention mechanism. The alignment model $a$ is computed by: \\n\\n$$a(\\\\textbf {e}_{i}, \\\\textbf {h}_{t-1}) = \\\\textbf {v}_{a}^{\\\\top }\\\\tanh (\\\\textbf {W}_{a}\\\\textbf {e}_{i} + \\\\textbf {U}_{a}\\\\textbf {h}_{t-1})$$   (Eq. 16) \\n\\nwhere $\\\\textbf {v}_{a}, \\\\textbf {W}_{a}, \\\\textbf {U}_{a}$ are the weight matrices to learn.",
+                "observation_truncated": true,
+                "observation_original_chars": 3528,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 6,
+                "action": "The provided search results do not include the document \"qasper_1709_05036\" or any information about how the paper \"Query-based Attention CNN for Text Similarity Map\" splits text to obtain sentence levels. Therefore, I cannot answer the question based on the current information.",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<agent-action>\", line 1\n    The provided search results do not include the document \"qasper_1709_05036\" or any information about how the paper \"Query-based Attention CNN for Text Similarity Map\" splits text to obtain sentence levels. Therefore, I cannot answer the question based on the current information.\n        ^^^^^^^^\nSyntaxError: invalid syntax\n\n\nHINT: Your response had a syntax error. Respond with ONLY Python code, no English text. Example:\nresults = search(\"your query\")\nfor r in results:\n    print(r[\"doc_id\"], r[\"title\"])\n\n[Step 6/10 — 4 steps left. Run sufficiency check: can you answer now? If yes → SUBMIT immediately.]",
+                "observation_truncated": false,
+                "observation_original_chars": 875,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 7,
+                "action": "search(\"split text to obtain sentence levels\", method=\"chunk\", top_k=5)",
+                "observation": "[{'doc_id': 'qasper_1809_02286', 'title': 'Dynamic Compositionality in Recursive Neural Networks with Structure-aware Tag Representations', 'chunk': '$$   (Eq. 37) \\n\\n$$p(y|w_{1:n}) = \\\\text{softmax}(\\\\mathbf {W}_\\\\text{c}\\\\mathbf {s} + \\\\mathbf {b}_\\\\text{c})$$   (Eq. 38) \\n\\nwhere $\\\\textbf {s} \\\\in \\\\mathbb {R}^{d_\\\\text{s}}$ is the computed task-specific sentence representation for the classifier, and $\\\\textbf {W}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_\\\\text{s} \\\\times d_h}$ , $\\\\textbf {W}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_\\\\text{c} \\\\times d_s}$ , $\\\\textbf {b}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_s}$ , $\\\\textbf {b}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_c}$ are trainable parameters. As an ', 'score': 20.49, 'offset': 22800}, {'doc_id': 'qasper_1706_00139', 'title': 'Natural Language Generation for Spoken Dialogue System using RNN Encoder-Decoder Networks', 'chunk': 'ted by the attention mechanism. The alignment model $a$ is computed by: \\n\\n$$a(\\\\textbf {e}_{i}, \\\\textbf {h}_{t-1}) = \\\\textbf {v}_{a}^{\\\\top }\\\\tanh (\\\\textbf {W}_{a}\\\\textbf {e}_{i} + \\\\textbf {U}_{a}\\\\textbf {h}_{t-1})$$   (Eq. 16) \\n\\nwhere $\\\\textbf {v}_{a}, \\\\textbf {W}_{a}, \\\\textbf {U}_{a}$ are the weight matrices to learn.",
+                "observation_truncated": true,
+                "observation_original_chars": 3528,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 8,
+                "action": "search(\"split text to obtain sentence levels\", doc_id=\"qasper_1709_05036\")",
+                "observation": "\nSTDERR:\nTraceback (most recent call last):\n  File \"/workspace/envoy-sft-v5/src/env/repl_worker.py\", line 35, in execute\n    exec(compile(code, \"<agent-action>\", \"exec\"), namespace)\n  File \"<agent-action>\", line 1, in <module>\nTypeError: search() got an unexpected keyword argument 'doc_id'\n\n\n[Step 8/10 — 2 steps left. Run sufficiency check: can you answer now? If yes → SUBMIT immediately.]",
+                "observation_truncated": false,
+                "observation_original_chars": 392,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 9,
+                "action": "search(\"split text to obtain sentence levels\", method=\"chunk\")",
+                "observation": "[{'doc_id': 'qasper_1809_02286', 'title': 'Dynamic Compositionality in Recursive Neural Networks with Structure-aware Tag Representations', 'chunk': '$$   (Eq. 37) \\n\\n$$p(y|w_{1:n}) = \\\\text{softmax}(\\\\mathbf {W}_\\\\text{c}\\\\mathbf {s} + \\\\mathbf {b}_\\\\text{c})$$   (Eq. 38) \\n\\nwhere $\\\\textbf {s} \\\\in \\\\mathbb {R}^{d_\\\\text{s}}$ is the computed task-specific sentence representation for the classifier, and $\\\\textbf {W}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_\\\\text{s} \\\\times d_h}$ , $\\\\textbf {W}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_\\\\text{c} \\\\times d_s}$ , $\\\\textbf {b}_\\\\text{s} \\\\in \\\\mathbb {R}^{d_s}$ , $\\\\textbf {b}_\\\\text{c} \\\\in \\\\mathbb {R}^{d_c}$ are trainable parameters. As an ', 'score': 20.49, 'offset': 22800}, {'doc_id': 'qasper_1706_00139', 'title': 'Natural Language Generation for Spoken Dialogue System using RNN Encoder-Decoder Networks', 'chunk': 'ted by the attention mechanism. The alignment model $a$ is computed by: \\n\\n$$a(\\\\textbf {e}_{i}, \\\\textbf {h}_{t-1}) = \\\\textbf {v}_{a}^{\\\\top }\\\\tanh (\\\\textbf {W}_{a}\\\\textbf {e}_{i} + \\\\textbf {U}_{a}\\\\textbf {h}_{t-1})$$   (Eq. 16) \\n\\nwhere $\\\\textbf {v}_{a}, \\\\textbf {W}_{a}, \\\\textbf {U}_{a}$ are the weight matrices to learn.",
+                "observation_truncated": true,
+                "observation_original_chars": 3506,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 10,
+                "action": "SUBMIT: The paper \"Query-based Attention CNN for Text Similarity Map\" splits text into sentences using a sentence segmentation method, which is not explicitly detailed in the provided search results. CITATIONS: [\"qasper_1709_05036\"]",
+                "observation": "Submitted. Reward: 0.100",
+                "observation_truncated": false,
+                "observation_original_chars": 24,
+                "reward": 0.1,
+                "done": true
+              }
+            ]
+          },
+          "v5": {
+            "policy": "qwen_sft_policy",
+            "run_id": "20260919_162336_32bc89807363",
+            "checkpoint_id": "/workspace/qwen3-qasper-v5-hf/artifacts/full/checkpoint-50",
+            "status": "completed",
+            "error": null,
+            "steps": 3,
+            "duration_seconds": 6.203527450561523,
+            "answer": "They split text into sentences and then extract the sentence with the largest attention value as the target sentence.",
+            "citations": [
+              "qasper_1709_05036"
+            ],
+            "evidence": [],
+            "verdict": "fail",
+            "notes": "Assistant semantic review against the QASPER reference and saved trajectory. Not independent or blind; pass on an insufficient item means a clear evidence-gap refusal.",
+            "review_id": "R003",
+            "trajectory": [
+              {
+                "step": 1,
+                "action": "print(search_within(\"qasper_1709_05036\", \"split text sentence levels\"))",
+                "observation": "[{'text': 'upper half of Figure. FIGREF31 is the attention map at sentence level. We picked the sentence with the largest attention value as target sentence and examine it. Thus, we could get the lower half of Figure. FIGREF31 , which shows the attention map at word level on the target sentence. We used a question from movie, Harry Potter, as an example. The result shows that the sentence with the largest attention value is exactly where the correct answer comes from. It turns out that sentence-level atten', 'offset': 15200, 'score': 6}, {'text': 'ntion); And original QACNN which contains both word-level and sentence-level attention does the best job among all. Thus, not only word-level attention but also sentence-level attention can contribute to the performance of QACNN. However, sentence-level attention seems to play a more important role.\\n\\nFigure. FIGREF31 is the visualization of two attention maps and their corresponding question. The upper half of Figure. FIGREF31 is the attention map at sentence level. We picked the sentence with t', 'offset': 14800, 'score': 5}, {'text': ' to the performance of QACNN. However, sentence-level attention seems to play a more important role.\\",
+                "observation_truncated": true,
+                "observation_original_chars": 1650,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 2,
+                "action": "print(search_within(\"qasper_1709_05036\", \"sentence-level attention\"))",
+                "observation": "[{'text': '36 . We can see that QACNN(with only word-level attention) performs better than QACNN(without attention); QACNN(with only sentence-level attention) performs better than QACNN(with only word-level attention); And original QACNN which contains both word-level and sentence-level attention does the best job among all. Thus, not only word-level attention but also sentence-level attention can contribute to the performance of QACNN. However, sentence-level attention seems to play a more important role.', 'offset': 14600, 'score': 12}, {'text': 'er and kept word-level attention in the model. 3) For the last one, instead of removing sentence-level attention, we removed word-level attention from QACNN Layer.\\n\\nThe result is shown in Table TABREF36 . We can see that QACNN(with only word-level attention) performs better than QACNN(without attention); QACNN(with only sentence-level attention) performs better than QACNN(with only word-level attention); And original QACNN which contains both word-level and sentence-level attention does the best', 'offset': 14400, 'score': 11}, {'text': 'ntion); And original QACNN which contains both word-level and sentence-level attention does the bes",
+                "observation_truncated": true,
+                "observation_original_chars": 1652,
+                "reward": 0.0,
+                "done": false
+              },
+              {
+                "step": 3,
+                "action": "SUBMIT: They split text into sentences and then extract the sentence with the largest attention value as the target sentence. CITATIONS: [\"qasper_1709_05036\"]",
+                "observation": "Submitted. Reward: 0.100",
+                "observation_truncated": false,
+                "observation_original_chars": 24,
+                "reward": 0.1,
+                "done": true
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "provenance": {
+      "evaluation_date": "2026-09-19",
+      "evaluation_role": "Historical QASPER development evaluation; NOT an EnvoyBench v0.1 test or held-out benchmark result.",
+      "review_type": "model-assisted",
+      "review_independence": "identity-known/non-independent",
+      "review_disclosure": "Completed by the coding assistant after seeing aggregate results and model identities. Use as a provisional semantic audit, not independent human evaluation.",
+      "review_schema_version": "code-exec-blind-review-v1",
+      "score_schema_version": "code-exec-human-score-v1",
+      "observation_cap_chars": 1200,
+      "run_conditions": {
+        "base_model": "Qwen3-8B",
+        "base_model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "trained_checkpoint": "SFT v5 checkpoint-50",
+        "corpus": "227-paper frozen QASPER development corpus",
+        "decoding": "greedy, 1024-token action budget",
+        "episode_step_budget": 10,
+        "seed": 42,
+        "hardware": "one NVIDIA A40",
+        "metadata_source": "out/research/qwen3-qasper-v5-sft-20260919/eval40/EVAL40_REPORT.md"
+      },
+      "source_files": [
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/base.json",
+          "sha256": "1fd2fcd82993fbff3613b8e489d2556e7d277c701095c7ae2e095a29cb1f14a0"
+        },
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/sft.json",
+          "sha256": "35d3ace70e1c8f26b67c2bde4b93913c57142f345a631454ac348c5e989351a5"
+        },
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/blind-review/review.json",
+          "sha256": "6235babc07a85d72aa22ecab23c6a2d829a1dc4c322eb810592f1c2bc871c857"
+        },
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/blind-review/blind-key.json",
+          "sha256": "e20f966b6ca5445ef7570bc38f33be4fa48dcb3c01d10013d77c83333488f55e"
+        },
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/semantic-score.json",
+          "sha256": "8bf16d8b029813420c4d85ca9879779fdf5e474747c3939d8767146cce595b89"
+        },
+        {
+          "path": "out/research/qwen3-qasper-v5-sft-20260919/eval40/EVAL40_REPORT.md",
+          "sha256": "1672c66cda99ca6e42ae4f19f8387176a22e7e7c0e7d5452cd575e3dfe28ca9e"
+        }
+      ]
+    }
+  }
+}

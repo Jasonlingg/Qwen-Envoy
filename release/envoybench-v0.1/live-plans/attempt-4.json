@@ -1,0 +1,29 @@
+{
+  "created_at_utc": "2026-10-07T03:51:10.173005+00:00",
+  "hypothesis": "A stronger hosted Nemotron model can complete the same bounded paper tool protocol and submit source-checked evidence.",
+  "expected_signal": "One completed answer reporting six layers in each stack with actual source spans.",
+  "decision_rule": "Run one episode. Accept as a functional integration smoke only if source-checked submission completes; preserve failure otherwise and end live testing. No reliability or model-comparison claim from this selected question.",
+  "source": "https://arxiv.org/abs/1706.03762",
+  "question": "How many layers are in each encoder and decoder stack in the Transformer base model described in this paper?",
+  "model_key": "nemotron_ultra_nebius",
+  "model_id": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "limits": {
+    "episodes": 1,
+    "max_steps": 12,
+    "max_output_tokens_per_request": 1024,
+    "run_timeout_seconds": 300
+  },
+  "seed": 42,
+  "send_seed": false,
+  "temperature": 0,
+  "top_p": 1,
+  "scope": "product integration smoke; no benchmark labels or scores changed",
+  "extra_body": {
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "prior_run": "run_1eea3f52a1ff45afb1436fe6f68998b2",
+  "reason": "Lightning failed to submit within the unchanged twelve-round bound. This is a post-hoc model-selection integration check, not a benchmark comparison.",
+  "config_sha256": "2c11f5adcddf8373eb2e79d858f284c7df3fcc87ec841a99102026f9b9e718a2"
+}

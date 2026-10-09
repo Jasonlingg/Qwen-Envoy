@@ -1,0 +1,28 @@
+{
+  "created_at_utc": "2026-10-07T03:43:45.254534+00:00",
+  "hypothesis": "Disabling model thinking explicitly makes the visible executable-action protocol more reliable for this product smoke; strict parser is preserved.",
+  "expected_signal": "Fetch public paper, execute search/read/extract in Docker, submit six encoder and six decoder layers with exact supporting spans.",
+  "decision_rule": "Accept integration only if status completed, outcome evidence_found, inspected tools executed, exact span checks pass, and answer agrees with quoted paper. This single preselected smoke is not an accuracy estimate or comparison.",
+  "source": "https://arxiv.org/abs/1706.03762",
+  "question": "How many layers are in each encoder and decoder stack in the Transformer base model described in this paper?",
+  "model_key": "nemotron_lightning_nebius",
+  "model_id": "nvidia/Nemotron-3_5-Lightning",
+  "limits": {
+    "episodes": 1,
+    "max_steps": 12,
+    "max_output_tokens_per_request": 1024,
+    "run_timeout_seconds": 300
+  },
+  "seed": 42,
+  "send_seed": false,
+  "temperature": 0,
+  "top_p": 1,
+  "scope": "product integration smoke; no benchmark labels or scores changed",
+  "extra_body": {
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "prior_run": "run_26fdc0aa7efa4ae1914e6cc66030cef3",
+  "reason": "First smoke failed response validation on its seventh response; exact error was not saved. Added safe error diagnostics and explicit non-thinking decoding. NVIDIA docs recommend this mode for concise structured actions."
+}

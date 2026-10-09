@@ -1,0 +1,55 @@
+{
+  "schema_version": "envoybench-data-manifest-v1",
+  "source_dataset": "allenai/qasper",
+  "source_config": "qasper",
+  "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+  "source_url": "https://huggingface.co/datasets/allenai/qasper",
+  "source_license": "CC BY 4.0",
+  "source_citation": "Dasigi et al., QASPER: A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers (2021)",
+  "frozen_splits_sha256": "9552f96833cb7a63fe952b9cf8ae30dfbbabe44c2da6bf24ecaa6d2ecf979a0c",
+  "training_source": {
+    "source_split": "train",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "source_rows_sha256": "2cf2919a965a6e124ac1644060e646a8f28fc89c6570883cc0a03d5e526a1ac9",
+    "source_arrow_sha256": "e392335ce65f5e4da0772220b4ce2c1038d7c07b97194429d21ed1f60a8c0115",
+    "paper_count": 888,
+    "paper_ids_sha256": "8a5c15d2f210bd60d54caa4c79bbbc72863a341d71c820b03457bbf863455fde"
+  },
+  "independent_human_review": "pending; benchmark scores must not be claimed yet",
+  "splits": {
+    "dev": {
+      "benchmark": "dev/benchmark.json",
+      "corpus": "dev/corpus",
+      "manifest": "dev/manifest.json",
+      "benchmark_sha256": "60e6649aa2e22ffa88b96f10618493892ce15f3a42a34b4f9bd5813f6dd10fa4",
+      "corpus_hash": "6abb65821917c11d9cda4fa82415c31623a8566e1ad3b9bd74a09dd6df1743b2",
+      "source_rows_sha256": "73e5f3dc2cd80a3310614ba00ae3e1ba75adb788a2eeae982d6d1386d39d27e0",
+      "question_count": 40,
+      "target_paper_count": 39,
+      "corpus_paper_count": 244,
+      "answerability": {
+        "sufficient": 20,
+        "insufficient": 20
+      },
+      "status": "previously_used_development_not_held_out",
+      "human_review_status": "pending"
+    },
+    "test_candidate": {
+      "benchmark": "test_candidate/benchmark.json",
+      "corpus": "test_candidate/corpus",
+      "manifest": "test_candidate/manifest.json",
+      "benchmark_sha256": "b7b66f1481c8b651497eec006543687620f660ba39f7e15ffe3945a46f841b6d",
+      "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+      "source_rows_sha256": "5854e52c9b84a7a4d26f795dc9d4bc03668201350d4ad00c7d2eb2be9c959c65",
+      "question_count": 40,
+      "target_paper_count": 40,
+      "corpus_paper_count": 363,
+      "answerability": {
+        "sufficient": 20,
+        "insufficient": 20
+      },
+      "status": "unreviewed_candidate_not_scored",
+      "human_review_status": "pending"
+    }
+  }
+}

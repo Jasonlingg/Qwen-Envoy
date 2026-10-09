@@ -1,0 +1,69 @@
+{
+  "schema_version": "envoybench-reviewed-score-v1",
+  "benchmark_id": "envoybench-test-candidate-v1",
+  "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+  "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+  "results_hash": "90020e2247ca02da00aa6138e11647fb72ce2d33e4932981e6a2ccd16b3dabae",
+  "reference_review_hash": null,
+  "source_reference_status": "unreviewed_qasper",
+  "result_bindings_verified": true,
+  "review_provenance": {
+    "kind": "model_assisted",
+    "reviewer_id": "codex-session:two-fresh-context-reviewers"
+  },
+  "reviewed_at": "2026-09-30",
+  "rubric_version": "envoybench-review-rubric-v1",
+  "excluded_questions": [],
+  "human": null,
+  "provisional_model_assisted": {
+    "schema_version": "envoybench-provisional-model-assisted-score-v1",
+    "systems": {
+      "qwen_base": {
+        "pass": 5,
+        "partial": 2,
+        "fail": 33,
+        "supported_answer_rate": 0.125,
+        "mean_review_score_0_to_2": 0.3
+      },
+      "qwen_v5": {
+        "pass": 15,
+        "partial": 3,
+        "fail": 22,
+        "supported_answer_rate": 0.375,
+        "mean_review_score_0_to_2": 0.825
+      }
+    },
+    "pairwise": {
+      "qwen_base": {
+        "qwen_v5": {
+          "wins": 4,
+          "losses": 14,
+          "ties": 22
+        }
+      },
+      "qwen_v5": {
+        "qwen_base": {
+          "wins": 14,
+          "losses": 4,
+          "ties": 22
+        }
+      }
+    },
+    "decision_note": "These are provisional model-graded verdicts against unverified source references unless separately validated. They cannot satisfy the human-reviewed model-promotion gate.",
+    "paired_wins": {
+      "qwen_base": 4,
+      "qwen_v5": 14
+    },
+    "paired_ties": 22,
+    "paired_pass_tests": {
+      "qwen_base_vs_qwen_v5": {
+        "left_only_pass": 2,
+        "right_only_pass": 12,
+        "pass_rate_difference_right_minus_left": 0.25,
+        "exact_mcnemar_two_sided_p": 0.012939,
+        "scorable_question_count": 40
+      }
+    }
+  },
+  "note": "Human supported-answer pass rates require validated source references and source-checked human verdicts. A model-assisted score is provisional and cannot pass that gate."
+}

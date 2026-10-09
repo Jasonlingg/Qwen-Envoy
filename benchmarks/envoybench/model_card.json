@@ -1,0 +1,114 @@
+{
+  "schema_version": "envoybench-model-card-v1",
+  "title": "Qwen Envoy \u00b7 v5",
+  "summary": "A small adapter trained to investigate papers through Python tools and submit cited answers.",
+  "identity": {
+    "base_model_id": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+  },
+  "training": {
+    "Method": "QLoRA SFT \u00b7 4-bit base + LoRA adapter",
+    "Objective": "Predict the next Python action or final submission; prior context is masked",
+    "LoRA rank / alpha": "4 / 8",
+    "LoRA dropout": 0.05,
+    "Targets": "q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj",
+    "Learning rate": 0.0002,
+    "Microbatch / accumulation": "1 / 4",
+    "Sequence limit": "8,192 tokens",
+    "Seed": 42,
+    "Completed run": "4 epochs \u00b7 108 optimizer steps",
+    "Displayed checkpoint": "checkpoint-50",
+    "Hardware": "NVIDIA A40",
+    "Recorded training time": "579.49 seconds (full 108-step run; excludes setup)"
+  },
+  "dataset": {
+    "Source": "QASPER official training split; paper-disjoint train/validation",
+    "Training": "35 conversations \u00b7 106 action targets",
+    "Supervised training tokens": 4812,
+    "Validation": "9 conversations \u00b7 26 action targets",
+    "Preparation": "Recorded teacher trajectories plus reviewed, re-executed repairs",
+    "Review": "Assistant-reviewed with references visible; not independent human review",
+    "Exposure": "Own data split recorded; upstream Qwen training-paper membership unknown"
+  },
+  "findings": [
+    {
+      "label": "Episodes with recorded errors",
+      "base": "22 / 40",
+      "v5": "1 / 40",
+      "status": "Mechanical diagnostics \u00b7 current harness"
+    },
+    {
+      "label": "Supported answers on answerable questions",
+      "base": "3 / 20",
+      "v5": "3 / 20",
+      "status": "Provisional model-assisted review"
+    },
+    {
+      "label": "Correct refusals on unanswerable questions",
+      "base": "2 / 20",
+      "v5": "12 / 20",
+      "status": "Provisional model-assisted review"
+    }
+  ],
+  "conclusion": "Better execution reliability in this run; no demonstrated improvement in substantive paper answering.",
+  "limitations": [
+    "The September 30 comparison uses 40 QASPER-derived questions. References and semantic grades are not independently validated. No model promotion is claimed.",
+    "The shared 8,192-token serving cap contributed to 11 base context failures. This is a model-plus-harness observation, not a general reasoning claim.",
+    "Checkpoint-50 was selected near the epoch-two validation-loss minimum and checked on development questions; it is not the final 108-step checkpoint.",
+    "The training manifest records a script hash but no git commit. The current training script differs; the recorded recipe is not a bit-for-bit reproducibility guarantee.",
+    "A user-uploaded paper run uses the public-paper product prompt and discovery checks. It is a separate unreviewed workload, not another score in the frozen benchmark.",
+    "The prefix-cache experiment is prepared, not measured. No speedup or complete historical base/v5 cost comparison is claimed."
+  ],
+  "provenance": {
+    "adapter_subfolder": "artifacts/full/checkpoint-50",
+    "train_sha256": "a29fa1583198f4dee7bb44fe607ba5efe2b1a000bbaa57324648d8dfce40a598",
+    "validation_sha256": "cef58ecbad93c3ef72233bc4be8e0318df30cdd7920d8b4c10bfa29e498da4bc",
+    "training_script_sha256_recorded": "61ef9ae0ad7078a2ec638fd11e9a6af43af9624e7e057387bdb5fa0fecfbafbd",
+    "current_training_script_matches": false,
+    "training_git_commit": null,
+    "runtime_recorded": {
+      "python": "3.12.3",
+      "torch": "2.8.0+cu128",
+      "gpu": "NVIDIA A40"
+    }
+  },
+  "reproduce": [
+    {
+      "label": "Inspect the saved comparison \u00b7 no inference",
+      "command": "python -m benchmarks.envoybench.demo --port 8766 --run-dir out/envoybench/provisional-full-20260930 --review-dir out/envoybench/provisional-review-20260930 --judged-review out/envoybench/codex-reviewed-20260930/review.json --provisional"
+    },
+    {
+      "label": "Start the reader \u00b7 no model configured",
+      "command": "python -m benchmarks.envoybench.demo --port 8766"
+    },
+    {
+      "label": "Enable live paper runs \u00b7 needs your served checkpoint",
+      "command": "python -m benchmarks.envoybench.demo --port 8766 --paper-models benchmarks/envoybench/paper-models.example.json"
+    }
+  ],
+  "references": [
+    {
+      "label": "Dataset card",
+      "path": "data/sft/qasper-v5/README.md"
+    },
+    {
+      "label": "Training manifest (local artifact)",
+      "path": "out/research/qwen3-qasper-v5-sft-20260919/artifacts/full/run-manifest.json"
+    },
+    {
+      "label": "Recorded launch recipe (local artifact)",
+      "path": "out/research/qwen3-qasper-v5-sft-20260919/run-sft-v5.sh"
+    },
+    {
+      "label": "September 30 comparison",
+      "path": "benchmarks/envoybench/COMPARISON_2026_09_30.md"
+    },
+    {
+      "label": "Reader setup",
+      "path": "benchmarks/envoybench/PAPER_READER.md"
+    }
+  ]
+}

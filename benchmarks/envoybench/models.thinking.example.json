@@ -1,0 +1,43 @@
+{
+  "schema_version": "envoybench-models-v1",
+  "models": [
+    {
+      "key": "qwen_v5_thinking_off",
+      "model_id": "envoy",
+      "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "serving_hardware": "unreported",
+      "serving_runtime": "vllm-0.30.0",
+      "serving_context_window_tokens": 8192,
+      "serving_hourly_usd": null,
+      "send_seed": true,
+      "request_timeout_seconds": 300,
+      "decoding": {"max_tokens": 4096, "temperature": 0.6, "top_p": 0.95},
+      "extra_body": {"top_k": 20, "min_p": 0, "chat_template_kwargs": {"enable_thinking": false}}
+    },
+    {
+      "key": "qwen_v5_thinking_on",
+      "model_id": "envoy",
+      "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "serving_hardware": "unreported",
+      "serving_runtime": "vllm-0.30.0",
+      "serving_context_window_tokens": 8192,
+      "serving_hourly_usd": null,
+      "send_seed": true,
+      "request_timeout_seconds": 300,
+      "decoding": {"max_tokens": 4096, "temperature": 0.6, "top_p": 0.95},
+      "extra_body": {"top_k": 20, "min_p": 0, "chat_template_kwargs": {"enable_thinking": true}}
+    }
+  ]
+}

@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Read a paper · EnvoyBench Studio</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-synthesis: none; --bg: #0b1220; --surface: #111b2b; --raised: #152235; --line: #2b3b51; --text: #e2e8f0; --muted: #94a3b8; --fail: #fb7185; color: var(--text); background: var(--bg); }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-size: 12px; }
+    button, input, select, textarea { font: inherit; }
+    button, select, summary { cursor: pointer; }
+    button:disabled, select:disabled { cursor: not-allowed; opacity: .5; }
+    a { color: inherit; text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--muted); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+    .shell { width: min(1560px, calc(100% - 40px)); margin: 0 auto; }
+    .top { background: var(--surface); color: var(--text); border-bottom: 1px solid var(--line); }
+    .topbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: inline-flex; align-items: center; text-decoration: none; flex: none; }
+    .brand-mark, .paper-symbol { display: none; }
+    .brand-name { font-size: 14px; font-weight: 650; letter-spacing: -.02em; }
+    .brand-name b { font-size: 11px; font-weight: 500; margin-left: 6px; color: var(--muted); }
+    .topnav { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .topnav a { text-decoration: none; font-size: 11px; font-weight: 550; color: var(--muted); padding: 8px 0; }
+    .topnav a:hover { color: var(--text); }
+    .topnav a[aria-current="page"] { color: var(--text); box-shadow: 0 1px var(--muted); }
+    main { padding: 18px 0 28px; }
+    .heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
+    h1 { font-size: 19px; font-weight: 650; line-height: 1.3; letter-spacing: -.02em; margin: 0 0 4px; }
+    .intro, .muted { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .intro { margin: 0; }
+    .connection { display: flex; gap: 8px; align-items: center; flex: none; }
+    .status, .status.ready { display: inline-flex; align-items: center; color: var(--muted); font-size: 11px; }
+    .button { border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; background: var(--raised); color: var(--text); font-size: 11px; font-weight: 600; }
+    .button:hover:not(:disabled) { border-color: var(--muted); }
+    .button.secondary { background: var(--surface); color: var(--text); }
+    .button.secondary:hover:not(:disabled) { background: var(--raised); }
+    .text-button { border: 0; background: transparent; color: var(--muted); padding: 4px; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+    .toolbar { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); margin-bottom: 12px; }
+    .web-form, .source-options { display: flex; align-items: end; gap: 10px; min-width: 0; }
+    .web-form .field { flex: 1; }
+    .web-form input { width: 100%; min-width: 0; color: var(--text); border: 1px solid var(--line); border-radius: 4px; background: var(--bg); padding: 7px 9px; font-size: 12px; }
+    .web-form .button { flex: none; }
+    .field { display: grid; gap: 5px; min-width: 0; }
+    .field-label { color: var(--muted); font-size: 10px; font-weight: 550; }
+    .paper-field { flex: 1; }
+    select, textarea { width: 100%; color: var(--text); border: 1px solid var(--line); border-radius: 4px; background: var(--bg); padding: 7px 9px; font-size: 12px; }
+    select { text-overflow: ellipsis; min-width: 0; }
+    .file-input { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    .upload-label { display: inline-block; cursor: pointer; white-space: nowrap; }
+    .upload-label:has(+ input:focus-visible) { outline: 2px solid var(--muted); outline-offset: 2px; }
+    .upload-label[aria-disabled="true"] { opacity: .5; cursor: progress; }
+    .upload-meta { font-size: 10px; color: var(--muted); white-space: nowrap; padding-bottom: 8px; }
+    .notice { margin: 0 0 12px; font-size: 12px; line-height: 1.5; color: var(--muted); overflow-wrap: anywhere; }
+    .notice.error { color: var(--fail); }
+    .workspace { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(360px, 1fr); gap: 12px; align-items: start; }
+    .card { min-width: 0; border: 1px solid var(--line); background: var(--surface); border-radius: 4px; overflow: hidden; }
+    .reader-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding: 12px; border-bottom: 1px solid var(--line); }
+    .reader-title { margin: 0 0 5px; font-size: 14px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+    .reader-meta, .reader-head a { font-size: 10px; color: var(--muted); line-height: 1.5; overflow-wrap: anywhere; }
+    .reader-controls { display: flex; gap: 8px; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--line); }
+    .reader-controls select { border: 0; padding: 4px 0; background: transparent; font-size: 11px; }
+    .reader-controls button { flex: none; }
+    .reader { height: min(68vh, 780px); min-height: 350px; overflow: auto; padding: 16px; scrollbar-width: thin; scroll-padding: 16px; overscroll-behavior: contain; }
+    .paper-text { margin: 0; color: var(--text); font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; }
+    mark { color: var(--text); background: var(--line); border-bottom: 1px solid var(--muted); padding: 1px 0; }
+    .empty-reader { min-height: 160px; padding: 4px 0; }
+    .empty-reader h2 { font-size: 13px; font-weight: 600; margin: 0 0 7px; }
+    .empty-reader p { margin: 0; font-size: 11px; line-height: 1.6; color: var(--muted); }
+    .reader-foot { border-top: 1px solid var(--line); padding: 8px 12px; color: var(--muted); font-size: 10px; }
+    .ask { padding: 12px; }
+    .ask h2 { font-size: 14px; font-weight: 600; margin: 0 0 10px; }
+    textarea { min-height: 86px; resize: vertical; line-height: 1.5; margin-top: 5px; }
+    textarea::placeholder, input::placeholder { color: var(--muted); }
+    .run-controls { display: flex; gap: 10px; align-items: end; margin-top: 10px; }
+    .model-field { flex: 1; }
+    .run-controls .button { min-height: 32px; white-space: nowrap; }
+    .endpoint-note { font-size: 10px; color: var(--muted); line-height: 1.5; margin: 8px 0 0; overflow-wrap: anywhere; }
+    .result { border-top: 1px solid var(--line); padding: 12px; }
+    .result-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+    .result-top h3 { margin: 0; font-size: 13px; font-weight: 600; }
+    .result-state { font-size: 10px; color: var(--muted); }
+    .result-question { color: var(--muted); margin: 0 0 10px; font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+    .answer { font-size: 12px; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+    .citation { display: inline; border: 1px solid var(--line); border-radius: 3px; padding: 1px 4px; background: var(--raised); color: var(--text); font-size: 11px; font-weight: 550; vertical-align: baseline; }
+    .run-meta { display: flex; flex-wrap: wrap; gap: 5px 12px; color: var(--muted); font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; margin-top: 10px; overflow-wrap: anywhere; }
+    .evidence-title { margin: 14px 0 7px; color: var(--muted); font-size: 10px; font-weight: 600; }
+    .evidence-list { display: grid; gap: 6px; }
+    .evidence { width: 100%; text-align: left; border: 1px solid var(--line); border-radius: 3px; padding: 8px; background: var(--bg); color: var(--text); }
+    .evidence:hover, .evidence[aria-pressed="true"] { background: var(--raised); border-color: var(--muted); }
+    .evidence strong { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; }
+    .evidence span { display: block; font-size: 12px; line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .review-note { color: var(--muted); font-size: 10px; margin: 8px 0 0; line-height: 1.5; }
+    .details { border-top: 1px solid var(--line); padding: 9px 12px; font-size: 11px; }
+    summary { color: var(--muted); line-height: 1.5; }
+    .trace-list { display: grid; gap: 10px; margin-top: 10px; }
+    .trace-step h4 { font-size: 10px; color: var(--muted); margin: 0 0 5px; }
+    .trace-step pre { max-height: 300px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0 0 5px; padding: 8px; border: 1px solid var(--line); border-radius: 3px; font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .trace-action { color: var(--text); background: var(--bg); }
+    .trace-observation { color: var(--text); background: var(--raised); }
+    .history { display: flex; align-items: end; gap: 10px; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--surface); }
+    .history .field { flex: 1; }
+    .export { white-space: nowrap; padding-bottom: 8px; color: var(--muted); font-size: 11px; text-underline-offset: 3px; }
+    .exposure { color: var(--muted); font-size: 10px; line-height: 1.6; margin: 12px 0 0; }
+    .exposure p { margin: 6px 0 0; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    @media (max-width: 960px) { .workspace { grid-template-columns: minmax(0, 1fr) minmax(320px, 1fr); gap: 10px; } .upload-meta { display: none; } .topnav { gap: 16px; } }
+    @media (max-width: 720px) { .shell { width: calc(100% - 24px); } .topbar { padding: 10px 0; align-items: start; flex-direction: column; gap: 7px; } .topnav { gap: 18px; } .topnav a { padding: 3px 0; } main { padding-top: 14px; } .heading { align-items: start; flex-direction: column; gap: 8px; } .workspace { grid-template-columns: 1fr; } .toolbar { padding: 10px; } .web-form, .source-options { flex-wrap: wrap; } .web-form .field { flex-basis: 100%; } .paper-field { flex-basis: calc(100% - 110px); } .reader { height: 46vh; min-height: 240px; } .run-controls { flex-wrap: wrap; } .model-field { min-width: 150px; } .export { font-size: 10px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="shell topbar">
+      <a class="brand" href="/" aria-label="EnvoyBench Studio home"><span class="brand-mark" aria-hidden="true">e</span><span class="brand-name">EnvoyBench <b>Studio</b></span></a>
+      <nav class="topnav" aria-label="Main navigation"><a href="/">Runs</a><a href="/papers" aria-current="page">Read a paper</a><a href="/web-evidence">Web evidence pilot</a><a href="/model">Training recipe</a></nav>
+    </div>
+  </header>
+  <main class="shell">
+    <div class="heading">
+      <div><h1>Read a paper.</h1><p class="intro">Paste a paper link. Ask a model. Follow the evidence.</p></div>
+      <div class="connection"><span class="status" id="connectionStatus">Checking endpoint…</span><button class="text-button" id="refreshConfig" type="button">Refresh</button></div>
+    </div>
+    <div class="toolbar">
+      <form class="web-form" id="linkForm"><label class="field" for="paperUrl"><span class="field-label">Paper link · arXiv or direct PDF</span><input id="paperUrl" type="url" required maxlength="2048" placeholder="https://arxiv.org/abs/2105.03011" autocomplete="url"></label><button class="button" id="linkButton" type="submit">Get paper ↗</button></form>
+      <div class="source-options"><label class="field paper-field"><span class="field-label">Saved papers</span><select id="paperSelect" aria-label="Choose a paper"><option value="">Paste a paper link to begin</option></select></label>
+      <div><label class="button secondary upload-label" id="uploadLabel" for="paperFile">Upload file</label><input class="file-input" id="paperFile" type="file" accept=".pdf,.md,.txt,application/pdf,text/plain,text/markdown"></div>
+      <span class="upload-meta" id="uploadMeta">PDF · Markdown · TXT</span></div>
+    </div>
+    <p class="notice" id="notice" role="status" hidden></p>
+    <div class="workspace">
+      <section class="card" aria-label="Paper reader">
+        <div class="reader-head"><div><h2 class="reader-title" id="paperTitle">Your source, in view</h2><div class="reader-meta" id="paperMeta">Extracted text</div><a id="originalPdf" href="#" target="_blank" rel="noopener noreferrer" hidden>Original PDF ↗</a> <a id="sourceLink" href="#" target="_blank" rel="noopener noreferrer" hidden>Web source ↗</a><p class="review-note" id="extractionNote" hidden></p></div></div>
+        <div class="reader-controls" id="readerControls" hidden><label class="sr-only" for="sectionSelect">Jump to section</label><select id="sectionSelect"><option value="">Jump to a section</option></select><button type="button" class="text-button" id="clearHighlight" hidden>Clear highlight</button></div>
+        <div class="reader" id="reader" tabindex="0" aria-label="Scrollable paper text">
+          <div class="empty-reader" id="emptyReader"><div class="paper-symbol" aria-hidden="true"><span></span><span></span><span></span></div><h2>A closer look starts here.</h2><p>Paste an arXiv or direct PDF link above.<br>You can also upload a PDF, Markdown, or text file.</p></div>
+          <div class="paper-text" id="paperText" hidden></div>
+        </div>
+        <div class="reader-foot" id="readerFoot">Select evidence in an answer to find it in the paper.</div>
+      </section>
+      <div>
+        <section class="card" aria-label="Ask a model about this paper">
+          <form class="ask" id="askForm">
+            <h2>Ask the paper</h2>
+            <label class="field-label" for="question">Your question</label>
+            <textarea id="question" name="question" maxlength="4000" placeholder="What is the main finding, and what evidence supports it?" required></textarea>
+            <div class="run-controls"><label class="field model-field"><span class="field-label">Model</span><select id="modelSelect" disabled><option value="">No model connected</option></select></label><button class="button" id="runButton" type="submit" disabled>Run model ↗</button></div>
+            <p class="endpoint-note" id="endpointNote">Checking the model endpoint. You can get and read a paper now.</p>
+          </form>
+          <section class="result" id="result" aria-label="Model answer">
+            <div class="result-top"><h3>Answer</h3><span class="result-state" id="runStatus" role="status">No run yet</span></div>
+            <p class="result-question" id="resultQuestion" hidden></p>
+            <div class="answer muted" id="answer">Ask a question to begin a live run.</div>
+            <div class="run-meta" id="runMeta" hidden></div>
+            <div id="evidenceSection" hidden><h4 class="evidence-title">Evidence · select to inspect</h4><div class="evidence-list" id="evidenceList"></div><p class="review-note">Source support is unreviewed.</p></div>
+          </section>
+          <details class="details" id="traceDetails" hidden><summary id="traceSummary">Progress &amp; tool trace</summary><div class="trace-list" id="traceList"></div></details>
+          <div class="history"><label class="field"><span class="field-label">Saved runs</span><select id="runSelect"><option value="">No saved runs yet</option></select></label><a class="export" id="exportRun" href="#" download hidden>Export JSON ↗</a></div>
+        </section>
+        <details class="exposure"><summary>About this source &amp; model</summary><p>Upstream training exposure unknown. Fine-tuning not audited.</p><p id="modelIdentity">Model identity is recorded with each run.</p><p>Quotation matches are available for inspection; they do not establish that an answer is supported.</p></details>
+      </div>
+    </div>
+    <div class="sr-only" id="readerAnnouncement" role="status"></div>
+  </main>
+  <script>
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const state = { config: null, papers: [], runs: [], paper: null, codepoints: [], desiredPaperId: '', viewVersion: 0, questionVersion: 0, configVersion: 0, historyVersion: 0, activeRunId: null, currentRun: null, submittedRunId: null, submitting: false, uploading: false, fetching: false, loadingPaper: false, pollers: new Map() };
+    const pending = (run) => run && ['queued', 'running'].includes(run.status);
+    const printable = (value) => typeof value === 'string' ? value : JSON.stringify(value, null, 2) || '';
+    const humanStatus = (status) => ({queued: 'Queued', running: 'Exploring the paper…', completed: 'Complete · unreviewed', failed: 'Run failed', interrupted: 'Run interrupted'}[status] || status || 'No run yet');
+    const node = (tag, text, className) => { const el = document.createElement(tag); if (text != null) el.textContent = String(text); if (className) el.className = className; return el; };
+
+    async function api(path, options = {}) {
+      const response = await fetch(path, { ...options, headers: { Accept: 'application/json', ...options.headers } });
+      let data;
+      try { data = await response.json(); } catch (_) { throw new Error(response.ok ? 'The server returned an unreadable response.' : `Request failed (${response.status}).`); }
+      if (!response.ok) { const error = new Error(typeof data.error === 'string' ? data.error : data.error?.message || (typeof data.detail === 'string' ? data.detail : null) || `Request failed (${response.status}).`); error.status = response.status; throw error; }
+      return data;
+    }
+    function notice(message = '', error = false) { $('notice').textContent = message; $('notice').hidden = !message; $('notice').classList.toggle('error', error); }
+    function updateControls() {
+      const busy = state.submitting || Boolean(state.submittedRunId);
+      $('runButton').disabled = busy || state.loadingPaper || !state.paper || !state.config?.ready || !$('modelSelect').value || !$('question').value.trim();
+      $('runButton').textContent = busy ? 'Running…' : 'Run model ↗';
+      $('runButton').setAttribute('aria-busy', String(busy));
+      $('paperFile').disabled = state.uploading;
+      $('uploadLabel').setAttribute('aria-disabled', String(state.uploading));
+      $('uploadLabel').textContent = state.uploading ? 'Uploading…' : 'Upload file';
+      $('linkButton').disabled = state.fetching || !$('paperUrl').value.trim();
+      $('linkButton').textContent = state.fetching ? 'Getting paper…' : 'Get paper ↗';
+    }
+    async function loadConfig() {
+      const version = ++state.configVersion;
+      $('refreshConfig').disabled = true;
+      try {
+        const config = await api('/api/papers/config');
+        if (version !== state.configVersion) return;
+        state.config = config;
+        if (Number.isInteger(config.max_question_chars) && config.max_question_chars > 0) $('question').maxLength = config.max_question_chars;
+        const selected = $('modelSelect').value;
+        $('modelSelect').replaceChildren();
+        for (const model of config.models || []) { const option = node('option', model.key); option.value = model.key; option.title = [model.model_id, model.revision].filter(Boolean).join(' · '); $('modelSelect').append(option); }
+        if (!$('modelSelect').options.length) { const option = node('option', 'No model connected'); option.value = ''; $('modelSelect').append(option); }
+        if ([...$('modelSelect').options].some(option => option.value === selected)) $('modelSelect').value = selected;
+        $('modelSelect').disabled = !config.ready;
+        $('connectionStatus').textContent = config.ready ? 'Ready to run' : config.models?.length ? 'Setup needed' : 'Endpoint not connected';
+        $('connectionStatus').classList.toggle('ready', Boolean(config.ready));
+        $('endpointNote').textContent = config.ready ? '' : `${config.reason || 'Configure a model endpoint to run a question.'} You can still get and read papers.`;
+        $('endpointNote').hidden = Boolean(config.ready);
+        if (config.max_file_bytes) $('uploadMeta').textContent = `PDF · Markdown · TXT · ${config.max_file_bytes / 1000000} MB max`;
+      } catch (error) {
+        if (version !== state.configVersion) return;
+        state.config = null;
+        $('connectionStatus').textContent = 'Endpoint not connected';
+        $('connectionStatus').classList.remove('ready');
+        $('modelSelect').disabled = true;
+        $('endpointNote').textContent = `${error.message} You can still get and read papers.`;
+        $('endpointNote').hidden = false;
+      } finally { if (version === state.configVersion) { $('refreshConfig').disabled = false; updateControls(); } }
+    }
+    function renderPaperOptions() {
+      const placeholder = node('option', state.papers.length ? 'Choose a paper' : 'Paste a paper link to begin'); placeholder.value = '';
+      $('paperSelect').replaceChildren(placeholder);
+      for (const paper of state.papers) { const option = node('option', paper.title || paper.filename); option.value = paper.id; $('paperSelect').append(option); }
+      $('paperSelect').value = state.desiredPaperId;
+    }
+    async function loadPapers() { const data = await api('/api/papers'); state.papers = data.papers || []; renderPaperOptions(); }
+    function clearResult() {
+      state.activeRunId = null; state.currentRun = null;
+      $('runSelect').value = ''; $('runStatus').textContent = 'No run yet';
+      $('answer').textContent = 'Ask a question to begin a live run.'; $('answer').classList.add('muted');
+      for (const id of ['resultQuestion', 'runMeta', 'evidenceSection', 'traceDetails', 'exportRun']) $(id).hidden = true;
+    }
+    function renderReader(start = null, end = null, label = '') {
+      $('paperText').replaceChildren();
+      let mark = null;
+      if (Number.isInteger(start) && Number.isInteger(end) && start >= 0 && end > start && end <= state.codepoints.length) {
+        $('paperText').append(document.createTextNode(state.codepoints.slice(0, start).join('')));
+        mark = node('mark', state.codepoints.slice(start, end).join('')); mark.tabIndex = -1;
+        $('paperText').append(mark, document.createTextNode(state.codepoints.slice(end).join('')));
+      } else { $('paperText').textContent = state.paper?.text || ''; }
+      $('clearHighlight').hidden = !mark;
+      $('readerFoot').textContent = mark ? label : 'Select evidence in an answer to find it in the paper.';
+      if (mark) {
+        const reader = $('reader');
+        reader.scrollTop += mark.getBoundingClientRect().top - reader.getBoundingClientRect().top - reader.clientHeight / 3;
+        mark.focus({ preventScroll: true });
+        const bounds = reader.getBoundingClientRect();
+        if (bounds.bottom <= 0 || bounds.top >= window.innerHeight || window.matchMedia('(max-width: 720px)').matches) reader.scrollIntoView({ block: 'center' });
+        $('readerAnnouncement').textContent = label;
+      }
+      return Boolean(mark);
+    }
+    function showPaper(paper) {
+      state.paper = paper; state.codepoints = Array.from(paper.text || ''); state.desiredPaperId = paper.id;
+      $('paperSelect').value = paper.id;
+      $('paperTitle').textContent = paper.title || paper.filename;
+      const pages = paper.metadata?.page_count || paper.metadata?.pages;
+      $('paperMeta').textContent = [paper.filename, typeof pages === 'number' ? `${pages} pages` : '', `${state.codepoints.length.toLocaleString()} characters`].filter(Boolean).join(' · ');
+      $('originalPdf').hidden = paper.metadata?.content_type !== 'application/pdf';
+      if (!$('originalPdf').hidden) $('originalPdf').href = `/api/papers/${encodeURIComponent(paper.id)}/raw`;
+      const link = paper.metadata?.source_url;
+      $('sourceLink').hidden = !(paper.metadata?.source_kind === 'fetched_pdf' && typeof link === 'string' && link.startsWith('https://'));
+      if (!$('sourceLink').hidden) $('sourceLink').href = link;
+      const pdf = paper.metadata?.coverage === 'pdf_text_no_ocr';
+      $('extractionNote').hidden = !pdf;
+      $('extractionNote').textContent = pdf ? `Text extraction only; figures, tables, and equations may be incomplete. No OCR.${paper.metadata?.empty_pages?.length ? ' Pages without text: ' + paper.metadata.empty_pages.join(', ') + '.' : ''}` : '';
+      $('emptyReader').hidden = true; $('paperText').hidden = false; $('readerControls').hidden = false;
+      const placeholder = node('option', 'Jump to a section'); placeholder.value = '';
+      $('sectionSelect').replaceChildren(placeholder);
+      (paper.sections || []).forEach((section, i) => { const option = node('option', section.page ? `Page ${section.page} · ${section.section || 'Text'}` : section.section || `Section ${i + 1}`); option.value = String(i); $('sectionSelect').append(option); });
+      $('sectionSelect').disabled = !(paper.sections || []).length;
+      renderReader(); $('reader').scrollTop = 0;
+    }
+    async function selectPaper(id) {
+      const version = ++state.viewVersion;
+      state.desiredPaperId = id; state.loadingPaper = Boolean(id); clearResult(); notice(); updateControls();
+      if (!id) { state.paper = null; state.codepoints = []; $('paperTitle').textContent = 'Your source, in view'; $('paperMeta').textContent = 'Extracted text'; $('sourceLink').hidden = true; $('originalPdf').hidden = true; $('extractionNote').hidden = true; $('emptyReader').hidden = false; $('paperText').hidden = true; $('readerControls').hidden = true; updateControls(); return; }
+      try { const paper = await api(`/api/papers/${encodeURIComponent(id)}`); if (version === state.viewVersion) showPaper(paper); }
+      catch (error) { if (version === state.viewVersion) { state.desiredPaperId = state.paper?.id || ''; $('paperSelect').value = state.desiredPaperId; notice(error.message, true); } }
+      finally { if (version === state.viewVersion) { state.loadingPaper = false; updateControls(); } }
+    }
+    async function uploadPaper() {
+      const file = $('paperFile').files[0]; if (!file) return;
+      if (state.config?.max_file_bytes && file.size > state.config.max_file_bytes) { notice('This file exceeds the upload limit. Choose a smaller paper.', true); $('paperFile').value = ''; return; }
+      const version = state.viewVersion;
+      state.uploading = true; notice('Extracting your paper…'); updateControls();
+      try {
+        const uploaded = await api(`/api/papers?filename=${encodeURIComponent(file.name)}`, { method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: file });
+        await loadPapers();
+        if (version === state.viewVersion) { await selectPaper(uploaded.id || uploaded.paper?.id); notice('Paper ready.'); }
+      } catch (error) { notice(error.message, true); }
+      finally { state.uploading = false; $('paperFile').value = ''; updateControls(); }
+    }
+    async function fetchPaper(event) {
+      event.preventDefault();
+      const url = $('paperUrl').value.trim(); if (!url || state.fetching) return;
+      const version = state.viewVersion;
+      state.fetching = true; notice('Fetching and extracting the PDF…'); updateControls();
+      try {
+        const paper = await api('/api/papers/from-url', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
+        await loadPapers();
+        if (version === state.viewVersion) { await selectPaper(paper.id); notice('Paper ready.'); }
+      } catch (error) { notice(error.message, true); }
+      finally { state.fetching = false; updateControls(); }
+    }
+    function highlightEvidence(evidence) {
+      if (!state.paper || state.currentRun?.paper_id !== state.paper.id || (evidence.doc_id && state.paper.doc_id && evidence.doc_id !== state.paper.doc_id)) { notice('Open the paper for this run to inspect its evidence.', true); return; }
+      const {start, end} = evidence;
+      if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > state.codepoints.length || (evidence.quote && state.codepoints.slice(start, end).join('') !== evidence.quote)) { notice('This evidence could not be matched to a passage in the paper.', true); return; }
+      notice();
+      const pages = (evidence.pages || []).length ? ` · page ${(evidence.pages || []).join(', ')}` : '';
+      renderReader(start, end, `${evidence.id}${pages} · highlighted in the source`);
+      for (const button of $('evidenceList').children) button.setAttribute('aria-pressed', String(button.dataset.evidenceId === evidence.id));
+    }
+    function renderAnswer(answer, evidence) {
+      $('answer').replaceChildren();
+      const byId = new Map(evidence.map(item => [item.id, item]));
+      const pattern = /\[(E\d+)\]/g;
+      let cursor = 0;
+      for (const match of answer.matchAll(pattern)) {
+        const item = byId.get(match[1]); if (!item) continue;
+        $('answer').append(document.createTextNode(answer.slice(cursor, match.index)));
+        const button = node('button', match[0], 'citation'); button.type = 'button'; button.setAttribute('aria-label', `Show evidence ${item.id} in source`); button.addEventListener('click', () => highlightEvidence(item)); $('answer').append(button); cursor = match.index + match[0].length;
+      }
+      $('answer').append(document.createTextNode(answer.slice(cursor)));
+    }
+    function tokenCount(usage) {
+      if (!usage || typeof usage !== 'object') return null;
+      if (Number.isFinite(usage.total_tokens)) return usage.total_tokens;
+      const input = usage.prompt_tokens ?? usage.input_tokens;
+      const output = usage.completion_tokens ?? usage.output_tokens;
+      return Number.isFinite(input) && Number.isFinite(output) ? input + output : null;
+    }
+    function renderRun(run) {
+      state.currentRun = run;
+      $('runStatus').textContent = humanStatus(run.status);
+      $('resultQuestion').textContent = run.question || ''; $('resultQuestion').hidden = !run.question;
+      const evidence = Array.isArray(run.evidence) ? run.evidence : [];
+      const answer = typeof run.answer === 'string' ? run.answer : '';
+      const fallback = pending(run) ? 'The model is exploring the source. Open the trace to follow its steps.' : run.error ? printable(run.error) : 'This run returned no answer.';
+      renderAnswer(answer || fallback, evidence); $('answer').classList.toggle('muted', !answer);
+      $('runMeta').replaceChildren();
+      const seconds = run.duration_seconds;
+      if (Number.isFinite(seconds)) $('runMeta').append(node('span', `${seconds.toFixed(1)}s`));
+      const tokens = tokenCount(run.usage);
+      if (tokens !== null) $('runMeta').append(node('span', `${tokens.toLocaleString()} tokens`));
+      if (run.model_key) $('runMeta').append(node('span', run.model_key));
+      $('runMeta').hidden = !$('runMeta').childNodes.length;
+      $('evidenceList').replaceChildren();
+      for (const item of evidence) {
+        const button = node('button', null, 'evidence'); button.type = 'button'; button.dataset.evidenceId = item.id; button.setAttribute('aria-pressed', 'false');
+        const pageLabel = item.pages?.length ? ` · page ${item.pages.join(', ')}` : '';
+        button.append(node('strong', `${item.id}${pageLabel} ↗`));
+        const quote = String(item.quote || 'Show passage'); button.append(node('span', quote.length > 440 ? `${quote.slice(0, 440)}…` : quote));
+        button.addEventListener('click', () => highlightEvidence(item)); $('evidenceList').append(button);
+      }
+      $('evidenceSection').hidden = pending(run) && !evidence.length;
+      if (!evidence.length && !pending(run)) $('evidenceList').append(node('p', 'No source passages were returned.', 'muted'));
+      const trajectory = Array.isArray(run.trajectory) ? run.trajectory : [];
+      $('traceDetails').hidden = false; $('traceSummary').textContent = `Progress & tool trace${trajectory.length ? ` · ${trajectory.length} ${trajectory.length === 1 ? 'step' : 'steps'}` : ''}`;
+      $('traceList').replaceChildren();
+      if (!trajectory.length) $('traceList').append(node('p', pending(run) ? 'Waiting for the first model step…' : 'No tool steps were recorded.', 'muted'));
+      for (const [i, step] of trajectory.entries()) {
+        const item = node('div', null, 'trace-step'); item.append(node('h4', `Step ${step.step ?? i + 1}`));
+        if (step.action != null) item.append(node('pre', printable(step.action), 'trace-action'));
+        if (step.observation != null) item.append(node('pre', printable(step.observation), 'trace-observation'));
+        if (step.model_error_category) {
+          item.append(node('pre', `Model request failed: ${step.model_error_category}${step.response_metadata ? `\n${printable(step.response_metadata)}` : ''}`, 'trace-observation'));
+        }
+        if (step.rejected_model_content_unexecuted != null) {
+          item.append(node('p', 'Rejected model text · unexecuted', 'muted'));
+          item.append(node('pre', `${printable(step.rejected_model_content_unexecuted)}${step.rejected_content_truncated ? '\n[truncated]' : ''}`, 'trace-observation'));
+        }
+        if (step.protocol_reminder) {
+          const detail = node('details'); detail.append(node('summary', 'Protocol reminder sent before this step'));
+          detail.append(node('pre', printable(step.protocol_reminder), 'trace-observation'));
+          item.append(detail);
+        }
+        if (step.provider_reasoning) {
+          const detail = node('details'); detail.append(node('summary', 'Provider-reported reasoning'));
+          detail.append(node('pre', `${step.provider_reasoning}${step.provider_reasoning_truncated ? '\n[truncated]' : ''}`, 'trace-observation'));
+          item.append(detail);
+        }
+        if (step.sampled_logprobs) {
+          const detail = node('details'); detail.append(node('summary', 'Sampled token logprobs · not answer confidence'));
+          detail.append(node('pre', printable(step.sampled_logprobs), 'trace-observation'));
+          item.append(detail);
+        }
+        $('traceList').append(item);
+      }
+      $('exportRun').href = `/api/paper-runs/${encodeURIComponent(run.id)}/export`; $('exportRun').hidden = pending(run);
+      $('runSelect').value = run.id;
+      const identity = run.model_identity;
+      $('modelIdentity').textContent = identity ? `Run model: ${typeof identity === 'string' ? identity : [identity.model_id || identity.model || run.model_key, identity.revision].filter(Boolean).join(' · ') || printable(identity)}` : 'Model identity is recorded with each run.';
+    }
+    function renderRunOptions() {
+      const placeholder = node('option', state.runs.length ? 'Open a saved run' : 'No saved runs yet'); placeholder.value = '';
+      $('runSelect').replaceChildren(placeholder);
+      for (const run of state.runs) { const option = node('option', `${run.question || run.id} · ${humanStatus(run.status)}`); option.value = run.id; $('runSelect').append(option); }
+      $('runSelect').value = state.activeRunId || '';
+    }
+    async function loadRuns() {
+      const version = ++state.historyVersion;
+      const data = await api('/api/paper-runs');
+      if (version !== state.historyVersion) return;
+      state.runs = data.runs || []; renderRunOptions();
+    }
+    function rememberRun(run) { const i = state.runs.findIndex(item => item.id === run.id); if (i >= 0) state.runs[i] = run; else state.runs.unshift(run); renderRunOptions(); }
+    function watchRun(id) {
+      if (state.pollers.has(id)) return;
+      const watcher = { timer: null };
+      state.pollers.set(id, watcher);
+      const poll = async () => {
+        let again = true;
+        try {
+          const run = await api(`/api/paper-runs/${encodeURIComponent(id)}`);
+          rememberRun(run);
+          if (state.activeRunId === id && state.paper?.id === run.paper_id) renderRun(run);
+          again = pending(run);
+          if (!again && state.submittedRunId === id) { state.submittedRunId = null; updateControls(); }
+        } catch (error) {
+          if ([404, 409, 422].includes(error.status)) {
+            again = false;
+            if (state.submittedRunId === id) state.submittedRunId = null;
+            if (state.activeRunId === id) { $('runStatus').textContent = 'Run unavailable'; notice(error.message, true); }
+            updateControls();
+          } else if (state.activeRunId === id) $('runStatus').textContent = 'Connection lost · retrying…';
+        }
+        if (again) watcher.timer = setTimeout(poll, 1000); else state.pollers.delete(id);
+      };
+      watcher.timer = setTimeout(poll, 1000);
+    }
+    async function startRun(event) {
+      event.preventDefault();
+      if ($('runButton').disabled) return;
+      const paperId = state.paper.id, question = $('question').value.trim(), modelKey = $('modelSelect').value;
+      const version = ++state.viewVersion;
+      state.submitting = true; clearResult(); notice(); updateControls();
+      $('runStatus').textContent = 'Starting…';
+      try {
+        const created = await api('/api/paper-runs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ paper_id: paperId, question, model_key: modelKey }) });
+        state.submittedRunId = created.id;
+        const run = { ...created, paper_id: paperId, question, model_key: modelKey };
+        rememberRun(run);
+        if (version === state.viewVersion && state.paper?.id === paperId) { state.activeRunId = created.id; renderRun(run); }
+        watchRun(created.id);
+      } catch (error) { if (version === state.viewVersion) { $('runStatus').textContent = 'Could not start'; notice(error.message, true); } }
+      finally { state.submitting = false; updateControls(); }
+    }
+    async function openRun(id) {
+      if (!id) { ++state.viewVersion; state.loadingPaper = false; clearResult(); updateControls(); return; }
+      const version = ++state.viewVersion, questionVersion = state.questionVersion;
+      state.loadingPaper = true; updateControls(); notice();
+      try {
+        const run = await api(`/api/paper-runs/${encodeURIComponent(id)}`);
+        if (version !== state.viewVersion) return;
+        const paper = state.paper?.id === run.paper_id ? state.paper : await api(`/api/papers/${encodeURIComponent(run.paper_id)}`);
+        if (version !== state.viewVersion) return;
+        if (state.paper?.id !== paper.id) showPaper(paper);
+        state.activeRunId = run.id; rememberRun(run); renderRun(run);
+        if (questionVersion === state.questionVersion) $('question').value = run.question || '';
+        if ([...$('modelSelect').options].some(option => option.value === run.model_key)) $('modelSelect').value = run.model_key;
+        if (pending(run)) watchRun(run.id);
+      } catch (error) { if (version === state.viewVersion) { $('runSelect').value = state.activeRunId || ''; notice(error.message, true); } }
+      finally { if (version === state.viewVersion) { state.loadingPaper = false; updateControls(); } }
+    }
+    $('question').addEventListener('input', () => { ++state.questionVersion; updateControls(); });
+    $('modelSelect').addEventListener('change', updateControls);
+    $('paperSelect').addEventListener('change', () => selectPaper($('paperSelect').value));
+    $('paperFile').addEventListener('change', uploadPaper);
+    $('paperUrl').addEventListener('input', updateControls);
+    $('linkForm').addEventListener('submit', fetchPaper);
+    $('askForm').addEventListener('submit', startRun);
+    $('runSelect').addEventListener('change', () => openRun($('runSelect').value));
+    $('refreshConfig').addEventListener('click', loadConfig);
+    $('clearHighlight').addEventListener('click', () => { renderReader(); $('sectionSelect').value = ''; for (const button of $('evidenceList').children) button.setAttribute('aria-pressed', 'false'); });
+    $('sectionSelect').addEventListener('change', () => { const value = $('sectionSelect').value; if (value === '') return; const section = state.paper?.sections?.[Number(value)]; if (section) renderReader(section.start, Math.min(section.end, section.start + 160), section.page ? `Page ${section.page}` : section.section || 'Selected section'); });
+    window.addEventListener('pagehide', () => { for (const watcher of state.pollers.values()) clearTimeout(watcher.timer); state.pollers.clear(); });
+    Promise.allSettled([loadConfig(), loadPapers(), loadRuns()]).then(results => { const errors = results.filter(result => result.status === 'rejected'); if (errors.length) notice(errors.map(result => result.reason.message).join(' '), true); });
+  </script>
+</body>
+</html>

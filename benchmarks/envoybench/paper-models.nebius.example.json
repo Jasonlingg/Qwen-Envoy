@@ -1,0 +1,62 @@
+{
+  "schema_version": "envoybench-models-v1",
+  "models": [
+    {
+      "key": "nemotron_ultra_nebius",
+      "model_id": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "revision": "provider-managed-unpinned-2026-10-06",
+      "endpoint": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "serving_hardware": "Nebius Token Factory; provider managed",
+      "serving_runtime": "provider-managed-unreported",
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "key": "nemotron_lightning_nebius",
+      "model_id": "nvidia/Nemotron-3_5-Lightning",
+      "revision": "provider-managed-unpinned-2026-10-06",
+      "endpoint": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "serving_hardware": "Nebius Token Factory; provider managed",
+      "serving_runtime": "provider-managed-unreported",
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "key": "nemotron_nano_nebius",
+      "model_id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+      "revision": "provider-managed-unpinned-2026-10-06",
+      "endpoint": "https://api.tokenfactory.nebius.com/v1",
+      "api_key_env": "NEBIUS_API_KEY",
+      "serving_hardware": "Nebius Token Factory; provider managed",
+      "serving_runtime": "provider-managed-unreported",
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": "web-evidence-cases-v1",
+  "dataset_id": "web-evidence-dev-v1",
+  "review": {
+    "status": "assistant_checked",
+    "checked_at": "2026-10-01",
+    "method": "Short facts were cross-checked against the primary publisher pages or PDFs through a separate web reader before this development batch was frozen.",
+    "limitations": "These are assistant-checked development labels, not independent human gold. Exact phrase retention and retrieval do not judge whether a generated answer is true or supported."
+  },
+  "cases": [
+    {
+      "id": "iana",
+      "stratum": "short_reference_html",
+      "url": "https://www.iana.org/help/example-domains",
+      "format": "html",
+      "expected_title": "Example Domains",
+      "facts": [
+        {
+          "id": "purpose",
+          "query": "Why are example.com and example.org maintained?",
+          "expected_text": "maintained for documentation purposes"
+        },
+        {
+          "id": "registration",
+          "query": "Can the example domains be registered or transferred?",
+          "expected_text": "not available for registration or transfer"
+        }
+      ]
+    },
+    {
+      "id": "pep257",
+      "stratum": "technical_guidance_html",
+      "url": "https://peps.python.org/pep-0257/",
+      "format": "html",
+      "expected_title": "PEP 257 – Docstring Conventions",
+      "facts": [
+        {
+          "id": "placement",
+          "query": "Where does PEP 257 say a docstring occurs?",
+          "expected_text": "first statement in a module, function, class, or method definition"
+        },
+        {
+          "id": "attribute",
+          "query": "Which special attribute does a Python docstring become?",
+          "expected_text": "__doc__ special attribute of that object"
+        }
+      ]
+    },
+    {
+      "id": "rfc9110",
+      "stratum": "long_standard_html",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.html",
+      "format": "html",
+      "expected_title": "RFC 9110: HTTP Semantics",
+      "facts": [
+        {
+          "id": "safe_meaning",
+          "query": "What does RFC 9110 mean by a safe HTTP method?",
+          "expected_text": "defined semantics are essentially read-only"
+        },
+        {
+          "id": "safe_methods",
+          "query": "Which methods does RFC 9110 define as safe?",
+          "expected_text": "GET, HEAD, OPTIONS, and TRACE"
+        }
+      ]
+    },
+    {
+      "id": "rfc3986",
+      "stratum": "legacy_preformatted_standard_html",
+      "url": "https://www.rfc-editor.org/rfc/rfc3986.html",
+      "format": "html",
+      "expected_title": "Uniform Resource Identifier (URI): Generic Syntax",
+      "facts": [
+        {
+          "id": "identifies",
+          "query": "What kinds of resource can a URI identify?",
+          "expected_text": "identifies an abstract or physical resource"
+        },
+        {
+          "id": "syntax",
+          "query": "How does RFC 3986 describe the URI grammar?",
+          "expected_text": "grammar that is a superset of all"
+        }
+      ]
+    },
+    {
+      "id": "wcag22",
+      "stratum": "long_accessibility_standard_html",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "format": "html",
+      "expected_title": "Web Content Accessibility Guidelines (WCAG) 2.2",
+      "facts": [
+        {
+          "id": "normal_contrast",
+          "query": "What minimum contrast ratio does WCAG 2.2 require for normal text at level AA?",
+          "expected_text": "contrast ratio of at least 4.5:1"
+        },
+        {
+          "id": "large_contrast",
+          "query": "What contrast ratio exception applies to large-scale text?",
+          "expected_text": "Large-scale text and images of large-scale text have a contrast ratio of at least 3:1"
+        }
+      ]
+    },
+    {
+      "id": "nasa_webb",
+      "stratum": "cms_mission_html",
+      "url": "https://science.nasa.gov/mission/webb/",
+      "format": "html",
+      "expected_title": "James Webb Space Telescope - NASA Science",
+      "facts": [
+        {
+          "id": "distance",
+          "query": "How far from Earth does Webb orbit the Sun?",
+          "expected_text": "orbits the Sun 1.5 million kilometers"
+        },
+        {
+          "id": "location",
+          "query": "What Lagrange point is Webb located near?",
+          "expected_text": "second Lagrange point or L2"
+        }
+      ]
+    },
+    {
+      "id": "numpy_any",
+      "stratum": "api_reference_html",
+      "url": "https://numpy.org/doc/stable/reference/generated/numpy.any.html",
+      "format": "html",
+      "expected_title": "numpy.any — NumPy v2.5 Manual",
+      "facts": [
+        {
+          "id": "operation",
+          "query": "What does numpy.any test along an axis?",
+          "expected_text": "Test whether any array element along a given axis evaluates to True."
+        },
+        {
+          "id": "default_axis",
+          "query": "What happens when axis is None in numpy.any?",
+          "expected_text": "logical OR over all the dimensions"
+        }
+      ]
+    },
+    {
+      "id": "transformer_pdf",
+      "stratum": "academic_pdf",
+      "url": "https://arxiv.org/pdf/1706.03762v7",
+      "format": "pdf",
+      "facts": [
+        {
+          "id": "mechanism",
+          "query": "What mechanism is the Transformer architecture based on?",
+          "expected_text": "based solely on attention mechanisms"
+        },
+        {
+          "id": "bleu",
+          "query": "What BLEU score did the Transformer reach on WMT 2014 English-to-German?",
+          "expected_text": "28.4 BLEU"
+        }
+      ]
+    },
+    {
+      "id": "lora_pdf",
+      "stratum": "academic_pdf",
+      "url": "https://arxiv.org/pdf/2106.09685v2",
+      "format": "pdf",
+      "facts": [
+        {
+          "id": "method",
+          "query": "What trainable matrices does LoRA inject?",
+          "expected_text": "injects trainable rank decomposition matrices"
+        },
+        {
+          "id": "latency",
+          "query": "What inference latency does LoRA add compared with adapters?",
+          "expected_text": "no additional inference latency"
+        }
+      ]
+    }
+  ]
+}

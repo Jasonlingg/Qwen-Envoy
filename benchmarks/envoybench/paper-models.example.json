@@ -1,0 +1,30 @@
+{
+  "schema_version": "envoybench-models-v1",
+  "models": [
+    {
+      "key": "qwen_v5",
+      "model_id": "envoy",
+      "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "serving_hardware": "unreported",
+      "serving_runtime": "unreported",
+      "serving_context_window_tokens": 8192,
+      "serving_hourly_usd": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    }
+  ]
+}

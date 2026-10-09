@@ -1,0 +1,188 @@
+{
+  "schema_version": "envoybench-case-study-v1",
+  "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+  "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+  "results_hash": "90020e2247ca02da00aa6138e11647fb72ce2d33e4932981e6a2ccd16b3dabae",
+  "reviewer_kind": "model_assisted_unblinded",
+  "reviewer_id": "codex-session-coordinator",
+  "selection": "Post-hoc illustrative cases selected to show distinct failure mechanisms, not an unbiased sample.",
+  "featured_cases": [
+    {
+      "question_id": "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "label": "A useful refusal",
+      "reason": "V5 finishes with a refusal matching the frozen label while base exhausts context. Inspect the reliability gain and its limited scope."
+    },
+    {
+      "question_id": "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "label": "Right answer, wrong citation",
+      "reason": "Both name the right dataset but cite an unrelated passage. End-to-end failure does not by itself prove a comprehension failure."
+    },
+    {
+      "question_id": "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "label": "An answer that misses the question",
+      "reason": "V5 misses the architectural simplification; base describes it but supplies an inadequate citation. The two failure modes need different fixes."
+    }
+  ],
+  "rows": [
+    {
+      "question_id": "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "model_key": "qwen_base",
+      "result_hash": "b238d3efd051eb86e27c442ce42cedf0e3a965c6b356b41a1ef4659abed9b59c",
+      "components": {
+        "answer_correctness": {
+          "status": "not_applicable",
+          "reason": "No substantive factual answer was submitted; refusal correctness depends on the unreviewed QASPER unanswerable label."
+        },
+        "evidence_support": {
+          "status": "not_applicable",
+          "reason": "An honest refusal does not require a supporting quotation under this rubric."
+        },
+        "answer_behavior": {
+          "status": "no_submission",
+          "reason": "Base ends in a context-limit error with an empty answer."
+        }
+      },
+      "source_checks": []
+    },
+    {
+      "question_id": "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "model_key": "qwen_v5",
+      "result_hash": "412c79e6a6f105732d885c61989e29c5a46889b4b21596ff87b2e4449f5fbb92",
+      "components": {
+        "answer_correctness": {
+          "status": "not_applicable",
+          "reason": "No substantive factual answer was submitted; refusal correctness depends on the unreviewed QASPER unanswerable label."
+        },
+        "evidence_support": {
+          "status": "not_applicable",
+          "reason": "An honest refusal does not require a supporting quotation under this rubric."
+        },
+        "answer_behavior": {
+          "status": "abstention",
+          "reason": "V5 submits Unanswerable, matching the frozen label. This does not independently establish absence from the paper."
+        }
+      },
+      "source_checks": []
+    },
+    {
+      "question_id": "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "model_key": "qwen_base",
+      "result_hash": "c4c3ff80de51e9eca7e898d014d52e7de851e364f5a4e7b82282921ed5710c89",
+      "components": {
+        "answer_correctness": {
+          "status": "correct",
+          "reason": "The dataset name agrees with the paper sentence reproduced in source_checks."
+        },
+        "evidence_support": {
+          "status": "unsupported",
+          "reason": "The submitted 15600–16000 span describes belief propagation, not the dataset. A valid character span can still be irrelevant."
+        },
+        "answer_behavior": {
+          "status": "substantive",
+          "reason": "The model names a dataset rather than abstaining."
+        }
+      },
+      "source_checks": [
+        {
+          "doc_id": "qasper_1610_09722",
+          "start": 16027,
+          "end": 16174,
+          "quote": "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles."
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "model_key": "qwen_v5",
+      "result_hash": "7157ec8b4fb010c640a89deb09d6803935ba2a4c82effc52fa83f33416b76100",
+      "components": {
+        "answer_correctness": {
+          "status": "correct",
+          "reason": "The dataset name agrees with the paper sentence reproduced in source_checks."
+        },
+        "evidence_support": {
+          "status": "unsupported",
+          "reason": "The submitted 15600–16000 span describes belief propagation, not the dataset. A valid character span can still be irrelevant."
+        },
+        "answer_behavior": {
+          "status": "substantive",
+          "reason": "The model names a dataset rather than abstaining."
+        }
+      },
+      "source_checks": [
+        {
+          "doc_id": "qasper_1610_09722",
+          "start": 16027,
+          "end": 16174,
+          "quote": "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles."
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "model_key": "qwen_base",
+      "result_hash": "f19fe7c501fc2d3ec1bce984097cd6eb79453b87c584a57d0aabd1995c2d676d",
+      "components": {
+        "answer_correctness": {
+          "status": "correct",
+          "reason": "Base identifies the pruner removal, under-sampling, and simple pooling described by the paper."
+        },
+        "evidence_support": {
+          "status": "unsupported",
+          "reason": "The submitted span does not substantiate the material details of the requested simplification."
+        },
+        "answer_behavior": {
+          "status": "substantive",
+          "reason": "The model attempts to describe the architectural simplification."
+        }
+      },
+      "source_checks": [
+        {
+          "doc_id": "qasper_1911_03353",
+          "start": 3253,
+          "end": 3387,
+          "quote": "To balance the positive and negative samples and reduce the search space, we remove the pruner and modify the model by under-sampling."
+        },
+        {
+          "doc_id": "qasper_1911_03353",
+          "start": 3587,
+          "end": 3692,
+          "quote": "So we simplify the origin network architecture and extract span representation by a simple pooling layer."
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "model_key": "qwen_v5",
+      "result_hash": "3dddc4e5bb00cde2e692427684e2001b446a85af30d3e031fb2c1643300d6cd3",
+      "components": {
+        "answer_correctness": {
+          "status": "incorrect",
+          "reason": "Combining a span extractor with BERT does not identify the requested simplification: pruner removal, under-sampling, and simple pooling."
+        },
+        "evidence_support": {
+          "status": "unsupported",
+          "reason": "The submitted span does not substantiate the material details of the requested simplification."
+        },
+        "answer_behavior": {
+          "status": "substantive",
+          "reason": "The model attempts to describe the architectural simplification."
+        }
+      },
+      "source_checks": [
+        {
+          "doc_id": "qasper_1911_03353",
+          "start": 3253,
+          "end": 3387,
+          "quote": "To balance the positive and negative samples and reduce the search space, we remove the pruner and modify the model by under-sampling."
+        },
+        {
+          "doc_id": "qasper_1911_03353",
+          "start": 3587,
+          "end": 3692,
+          "quote": "So we simplify the origin network architecture and extract span representation by a simple pooling layer."
+        }
+      ]
+    }
+  ]
+}

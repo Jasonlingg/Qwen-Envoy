@@ -1,0 +1,1452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>EnvoyBench Studio · Research agent benchmark</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1220; --surface: #111b2b; --raised: #152235;
+      --hover: #1c2b40; --selected: #233247; --border: #2b3b51;
+      --text: #e2e8f0; --muted: #94a3b8; --subtle: #64748b;
+      --pass: #34d399; --pass-bg: #063c30;
+      --partial: #fbbf24; --partial-bg: #422e0d;
+      --fail: #fb7185; --fail-bg: #431928;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font: 12px/1.5 Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text); background: var(--bg); font-synthesis: none;
+      font-variant-numeric: tabular-nums;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    [hidden] { display: none !important; }
+    a { color: inherit; text-underline-offset: 3px; }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    :focus-visible { outline: 2px solid #cbd5e1; outline-offset: 2px; }
+    ::selection { background: #475569; color: #fff; }
+    .shell { width: calc(100% - 32px); max-width: 1800px; margin: 0 auto; }
+    .top { background: var(--surface); border-bottom: 1px solid var(--border); }
+    .topbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { text-decoration: none; white-space: nowrap; }
+    .brand-name { font-size: 14px; font-weight: 700; letter-spacing: -.02em; }
+    .brand-name b { font-weight: 700; }
+    .brand-name small { margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); color: var(--muted); font-size: 11px; font-weight: 450; letter-spacing: 0; }
+    .topnav { display: flex; gap: 18px; flex-wrap: wrap; }
+    .topnav a { font-size: 11px; color: var(--muted); text-decoration: none; padding: 14px 0; }
+    .topnav a:hover { color: var(--text); }
+    main { min-height: calc(100vh - 100px); padding-bottom: 16px; }
+    .section { margin-top: 12px; scroll-margin-top: 12px; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .section-head > div { display: flex; align-items: center; gap: 12px; }
+    .section-head h2 { margin: 0; font-size: 14px; font-weight: 650; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 11px; max-width: 640px; }
+    .kicker, .archive-subtitle { display: none; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; min-width: 0; }
+    .review-button, .step-button, .filter-button, .error-box button {
+      background: var(--raised); color: var(--text); border: 1px solid var(--border);
+      border-radius: 3px; padding: 5px 9px; font-size: 11px; font-weight: 550;
+    }
+    .review-button:hover:not(:disabled), .step-button:hover:not(:disabled), .filter-button:hover { background: var(--hover); border-color: #64748b; }
+    .review-button.secondary { background: var(--surface); }
+    .archive-note { margin: 0 0 8px; padding: 6px 9px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 11px; }
+    .archive-note strong { color: var(--text); font-weight: 550; }
+    .run-table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 3px; }
+    .run-table, .question-table, .token-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .run-table { background: var(--surface); white-space: nowrap; }
+    .run-table th, .run-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    .run-table th, .question-table th, .token-table th { background: var(--raised); color: var(--muted); font-size: 10px; font-weight: 550; text-transform: uppercase; letter-spacing: .04em; }
+    .run-table td:not(:first-child) { font: 11px var(--mono); }
+    .run-table tbody tr, .question-table tbody tr { cursor: pointer; }
+    .run-table tbody tr:hover, .question-table tbody tr:hover { background: var(--hover); }
+    .run-table tbody tr:last-child td, .question-table tbody tr:last-child td { border-bottom: 0; }
+    .run-table tbody tr:focus-within { background: var(--hover); }
+    .run-select, .question-select { display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--text); text-align: left; font-size: 12px; font-weight: 550; }
+    .run-kind { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); }
+    .metric-pass { color: var(--pass); }
+    .metric-error { color: var(--fail); }
+    .disclosure > summary, .token-panel > summary, .full-paper > summary, .generated-reasoning > summary { cursor: pointer; padding: 7px 0; font-size: 11px; font-weight: 550; }
+    .secondary-details { margin-top: 4px; }
+    .secondary-details > summary { color: var(--muted); }
+    .metrics-note, .case-focus, .token-note, .review-note, .case-review-note { color: var(--muted); font-size: 11px; line-height: 1.55; margin: 6px 0; }
+    .takeaway, .task-card { padding: 6px 9px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); font-size: 11px; }
+    .task-card strong { color: var(--text); font-weight: 550; }
+    #cases { display: grid; grid-template-columns: minmax(330px, 30%) minmax(0, 1fr); grid-template-rows: auto auto auto auto 1fr; gap: 8px; align-items: start; }
+    #cases > .section-head, #cases > .task-card { grid-column: 1 / -1; margin: 0; }
+    .case-grid { display: contents; }
+    #case-list { grid-column: 1; grid-row: 3 / 6; min-width: 0; border: 1px solid var(--border); border-radius: 3px; background: var(--surface); }
+    .question-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px; border-bottom: 1px solid var(--border); }
+    .question-filters { display: flex; gap: 4px; width: 100%; flex-wrap: wrap; }
+    .filter-button { padding: 3px 7px; font-size: 10px; }
+    .filter-button[aria-pressed="true"] { border-color: #94a3b8; background: var(--selected); color: #f8fafc; }
+    .question-search, .review-input { background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 5px 8px; color: var(--text); }
+    .question-search { flex: 1; min-width: 120px; font-size: 11px; }
+    input::placeholder, textarea::placeholder { color: var(--muted); }
+    .question-count { font: 10px var(--mono); color: var(--muted); }
+    .question-table-scroll { overflow: auto; max-height: calc(100vh - 220px); min-height: 140px; scrollbar-color: #475569 var(--surface); }
+    .question-table { table-layout: fixed; font-size: 11px; }
+    .question-table th { position: sticky; top: 0; z-index: 1; padding: 6px; border-bottom: 1px solid var(--border); }
+    .question-table th:first-child { width: 30px; }
+    .question-table th:nth-child(3) { width: 90px; }
+    .question-table th:nth-child(4) { width: 71px; }
+    .question-table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .question-table tr.selected { background: var(--selected); box-shadow: inset 2px 0 #cbd5e1; }
+    .question-number { font: 10px var(--mono); color: var(--muted); }
+    .question-select { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; font-size: 11px; font-weight: 450; line-height: 1.45; }
+    .question-type { color: var(--muted); font-size: 10px; white-space: nowrap; }
+    .error-flag { display: block; margin-top: 3px; color: var(--fail); font-size: 9px; }
+    #case-main { grid-column: 2; grid-row: 3; padding: 9px 11px; }
+    .question-navigation { display: flex; align-items: center; gap: 8px; font-size: 10px; color: var(--muted); }
+    .question-navigation strong { color: var(--text); font: 11px var(--mono); }
+    .question-navigation-controls { margin-left: auto; display: flex; gap: 4px; }
+    .question-navigation .step-button { padding: 3px 7px; font-size: 10px; }
+    .case-main h3 { margin: 7px 0 2px; font-size: 14px; line-height: 1.45; font-weight: 600; }
+    .question-details > summary { padding: 4px 0; color: var(--muted); font-size: 10px; }
+    .case-id { display: block; margin-top: 8px; color: var(--muted); font: 10px/1.5 var(--mono); overflow-wrap: anywhere; }
+    #answer-lanes { grid-column: 2; grid-row: 4; }
+    #trace-inspector { grid-column: 2; grid-row: 5; }
+    .lanes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
+    .lane { overflow: hidden; }
+    .lane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--border); background: var(--raised); }
+    .lane-head h4 { margin: 0; font-size: 11px; font-weight: 600; }
+    .lane-head small { color: var(--muted); font-size: 10px; }
+    .verdict, .status-chip, .pill, .run-status, .turn-submit, .turn-terminal { display: inline-block; border-radius: 3px; padding: 2px 5px; font: 10px/1.5 var(--mono); color: var(--muted); background: var(--selected); white-space: nowrap; }
+    .verdict { text-transform: uppercase; font-weight: 600; }
+    .verdict.pass { color: var(--pass); background: var(--pass-bg); }
+    .verdict.partial { color: var(--partial); background: var(--partial-bg); }
+    .verdict.fail { color: var(--fail); background: var(--fail-bg); }
+    .lane-result { padding: 8px 10px; }
+    .answer { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.55 var(--mono); margin: 0; max-height: 150px; overflow: auto; }
+    .answer.empty, .none, .empty-step { color: var(--muted); }
+    .none, .empty-step { margin: 0; padding: 12px 8px; font-size: 11px; }
+    .answer-details { margin-top: 6px; border-top: 1px solid var(--border); }
+    .answer-details > summary { color: var(--muted); padding-bottom: 0; }
+    .trace-wrap { border: 1px solid var(--border); border-radius: 3px; padding: 0 9px 9px; background: var(--surface); min-width: 0; }
+    .trace-wrap > summary { font-size: 11px; padding: 8px 0; }
+    .trace-head, .transcript-lanes .lane-head { display: none; }
+    .trace-source { font-size: 10px; color: var(--muted); }
+    .lane > .trace-source { margin: 0; padding: 5px 9px; }
+    .lane > .run-status { margin: 0 9px 5px; }
+    .run-status.error, .review-message.error, .run-error, .error-box { color: var(--fail); background: var(--fail-bg); }
+    .run-error, .error-box { padding: 8px 10px; border: 1px solid #7e3049; border-radius: 3px; font-size: 11px; }
+    .run-error p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 180px; overflow: auto; }
+    .error-box { margin: 12px 0; }
+    .transcript { max-height: calc(100vh - 360px); min-height: 240px; overflow: auto; border-top: 1px solid var(--border); scrollbar-color: #475569 var(--surface); }
+    .turn-entry { padding: 8px 9px; border-bottom: 1px solid var(--border); }
+    .turn-entry:last-child { border-bottom: 0; }
+    .turn-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; font: 10px var(--mono); margin-bottom: 6px; }
+    .turn-signal { color: var(--partial); background: var(--partial-bg); border-radius: 3px; padding: 2px 5px; font-size: 10px; }
+    .io-label { font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 6px 0 3px; }
+    .code, .observation, .generated-reasoning pre, .full-paper pre, .provenance-list pre { font: 11px/1.5 var(--mono); overflow: auto; tab-size: 4; }
+    .code, .observation { margin: 0; padding: 8px; max-height: 300px; background: var(--bg); color: #dbe4f0; border: 1px solid var(--border); border-radius: 2px; white-space: pre; }
+    .observation { background: var(--surface); color: #cbd5e1; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .code.submission { background: var(--bg); color: var(--text); }
+    .excerpt-note, .reasoning-excerpt-note { font-size: 10px; color: var(--partial); margin: 4px 0; }
+    .generated-reasoning { border: 1px solid var(--border); border-radius: 3px; padding: 0 8px; margin: 5px 0; }
+    .generated-reasoning > summary { color: var(--muted); }
+    .generated-reasoning pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; margin: 0 0 8px; }
+    .token-panel { margin-top: 7px; border-top: 1px solid var(--border); }
+    .token-panel > summary { color: var(--muted); }
+    .token-table-scroll { max-height: 230px; overflow: auto; }
+    .token-table { font: 10px/1.45 var(--mono); }
+    .token-table th, .token-table td { padding: 4px 7px; border-bottom: 1px solid var(--border); }
+    .token-table th { position: sticky; top: 0; }
+    .token-table td:first-child { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .token-table td:not(:first-child) { white-space: nowrap; }
+    .evidence-title { margin: 10px 0 5px; font-size: 10px; font-weight: 650; }
+    .evidence-list { display: grid; gap: 5px; }
+    .evidence-item, .review-source { border-left: 2px solid #64748b; padding: 6px 9px; background: var(--bg); color: #cbd5e1; white-space: pre-wrap; overflow-wrap: anywhere; font: 11px/1.55 var(--mono); }
+    .diagnostic-grid { display: grid; gap: 8px; margin: 10px 0; }
+    .diagnostic { padding: 8px; border: 1px solid var(--border); }
+    .diagnostic h6 { margin: 0 0 4px; font-size: 10px; color: var(--muted); }
+    .diagnostic strong { font-size: 11px; font-weight: 550; }
+    .diagnostic p, .diagnostic small { font-size: 10px; color: var(--muted); margin: 4px 0 0; }
+    .benchmark-details { border-top: 1px solid var(--border); padding-top: 3px; }
+    .benchmark-details > summary { color: var(--muted); }
+    .benchmark-details > summary span { font-weight: 400; margin-left: 12px; color: var(--subtle); }
+    .candidate { display: grid; grid-template-columns: 260px 1fr; }
+    .candidate-score, .candidate-facts { padding: 12px; }
+    .candidate-score h3 { font-size: 13px; margin: 0 0 8px; }
+    .candidate-score-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .score-none { font: 28px var(--mono); margin: 8px 0; }
+    .score-caption, .score-label, .fact-sub, .candidate-foot { color: var(--muted); font-size: 11px; }
+    .candidate-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .fact-label { color: var(--muted); font-size: 10px; }
+    .fact-value { font: 20px var(--mono); margin: 6px 0; overflow-wrap: anywhere; }
+    .candidate-foot { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 8px; }
+    .protocol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .protocol-card, .provenance-card, .baseline-card { padding: 12px; }
+    .protocol-card h3, .provenance-card h3, .baseline-card h3 { margin: 0 0 8px; font-size: 12px; }
+    .protocol-list { list-style: none; padding: 0; margin: 0; }
+    .protocol-list li { display: grid; grid-template-columns: 24px 1fr; padding: 7px 0; border-top: 1px solid var(--border); }
+    .protocol-number { font: 11px var(--mono); color: var(--muted); }
+    .protocol-list p, .baseline-card p { font-size: 11px; color: var(--muted); margin: 3px 0; }
+    .provenance-list { margin: 0; }
+    .provenance-list > div { padding: 7px 0; border-top: 1px solid var(--border); }
+    .provenance-list dt { color: var(--muted); font-size: 10px; }
+    .provenance-list dd { margin: 3px 0 0; font: 10px/1.5 var(--mono); overflow-wrap: anywhere; white-space: pre-wrap; }
+    .provenance-list summary { cursor: pointer; }
+    .provenance-list pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    .baseline-stats, .metric-rows > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+    .metric-rows { font-size: 11px; }
+    .metric-rows > div { padding: 4px 0; border-bottom: 1px solid var(--border); }
+    .metric-rows dt { color: var(--muted); }
+    .metric-rows dd { margin: 0; font-family: var(--mono); }
+    .bar { display: flex; height: 5px; background: var(--selected); }
+    .bar-pass { background: var(--pass); } .bar-partial { background: var(--partial); } .bar-fail { background: var(--fail); }
+    .art-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 8px; }
+    .art-card { padding: 10px; }
+    .art-card p { color: var(--muted); font-size: 11px; }
+    .optional-workspace > summary { cursor: pointer; padding: 8px; border: 1px solid var(--border); background: var(--surface); }
+    .review-progress { display: flex; justify-content: space-between; align-items: center; padding: 10px; margin: 8px 0; }
+    .review-progress p { color: var(--muted); font-size: 11px; margin: 3px 0; }
+    .review-count { font: 18px var(--mono); }
+    .review-meter { height: 4px; background: var(--selected); margin-top: 6px; }
+    .review-meter span { display: block; height: 100%; background: #94a3b8; }
+    .review-grid { display: grid; grid-template-columns: 290px 1fr; gap: 8px; margin: 8px 0; }
+    .review-list { max-height: 740px; overflow: auto; padding: 4px; }
+    .review-choice { display: block; text-align: left; width: 100%; border: 1px solid transparent; border-radius: 2px; background: transparent; color: var(--text); padding: 8px; }
+    .review-choice:hover { background: var(--hover); }
+    .review-choice[aria-current="true"] { background: var(--selected); border-color: #94a3b8; }
+    .review-choice small, .review-choice-status { display: block; color: var(--muted); font-size: 10px; }
+    .review-choice strong { font-size: 11px; font-weight: 500; }
+    .review-choice-status.valid { color: var(--pass); }
+    .review-choice-status.partial, .review-choice-status.unscorable { color: var(--partial); }
+    .review-choice-status.fail { color: var(--fail); }
+    .review-editor { padding: 12px; }
+    .review-editor h3 { font-size: 16px; margin: 8px 0; }
+    .review-meta { color: var(--muted); font: 10px/1.5 var(--mono); overflow-wrap: anywhere; }
+    .review-annotation { border-top: 1px solid var(--border); padding: 8px 0; }
+    .review-annotation h4, .review-decision h4 { font-size: 12px; margin: 4px 0; }
+    .review-annotation p { white-space: pre-wrap; font-size: 12px; }
+    .review-annotation small, .review-message { color: var(--muted); font-size: 11px; }
+    .full-paper pre { padding: 10px; background: var(--bg); border: 1px solid var(--border); max-height: 480px; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .review-options, .review-actions, .review-finalize { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .review-options label { border: 1px solid var(--border); padding: 5px 7px; border-radius: 3px; cursor: pointer; }
+    .review-options label:has(input:checked) { background: var(--selected); border-color: #94a3b8; }
+    input[type="radio"] { accent-color: #94a3b8; }
+    .review-field { display: block; color: var(--muted); font-size: 10px; margin: 8px 0 4px; }
+    .review-input { width: 100%; }
+    textarea.review-input { min-height: 70px; resize: vertical; }
+    .review-actions { margin-top: 10px; }
+    .review-finalize { padding: 10px; }
+    .review-finalize label { flex: 1; }
+    .review-unavailable { padding: 10px; color: var(--muted); font-size: 11px; }
+    .blind-rubric { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding: 10px; margin-top: 8px; color: var(--muted); font-size: 11px; }
+    .blind-rubric strong { display: block; color: var(--text); }
+    .blind-answer { padding: 10px; background: var(--bg); border: 1px solid var(--border); white-space: pre-wrap; overflow-wrap: anywhere; }
+    .blind-evidence { display: grid; gap: 6px; }
+    .footer { border-top: 1px solid var(--border); padding: 9px 0 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 10px; color: var(--subtle); }
+    @media (max-width: 1050px) {
+      #cases { grid-template-columns: 330px minmax(0,1fr); }
+      .topnav { gap: 12px; }
+      .question-navigation-type { display: none; }
+    }
+    @media (max-width: 780px) {
+      .shell { width: calc(100% - 20px); }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 5px; padding: 10px 0; }
+      .topnav { gap: 12px; }
+      .topnav a { padding: 3px 0; }
+      #cases { display: flex; flex-direction: column; }
+      #cases > *, #case-main, #case-list { width: 100%; }
+      .question-table-scroll { max-height: 260px; }
+      .question-navigation-type { display: inline; }
+      .transcript { max-height: 600px; }
+      .protocol-grid, .review-grid, .blind-rubric, .candidate { grid-template-columns: 1fr; }
+      .review-list { max-height: 240px; }
+      .section-head p { display: none; }
+      .candidate-facts { gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="top" id="top">
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="EnvoyBench Studio home"><span class="brand-name">Envoy<b>Bench</b><small>Evaluation playground</small></span></a>
+        <nav class="topnav" aria-label="Page sections">
+          <a href="#archive" id="runs-nav" data-blind-hidden hidden>Runs</a>
+          <a href="/papers" data-blind-hidden data-live-only hidden>Read a paper</a>
+          <a href="/web-evidence" data-blind-hidden data-live-only hidden>Web evidence pilot</a>
+          <a href="/model" data-blind-hidden data-live-only hidden>Training recipe</a>
+          <a href="#benchmark-details">About the benchmark</a>
+          <a href="#reference-review" data-human-review-nav>Source review</a>
+          <a href="#blind-review" data-human-review-nav>Blind review</a>
+        </nav>
+      </header>
+      <div hidden aria-hidden="true"><span id="hero-title"></span><span id="hero-copy"></span><span id="release-copy"></span></div>
+    </div>
+  </div>
+
+  <main class="shell">
+    <div id="load-error" class="error-box" role="alert" hidden></div>
+    <section class="section" id="archive" aria-labelledby="archive-heading" hidden>
+      <div class="section-head"><div><span id="active-title" class="kicker">Saved comparison</span><h2 id="archive-heading">Benchmark results</h2></div><button id="download-report" class="review-button secondary" type="button">Export results ↓</button></div>
+      <div class="archive-note"><div><strong id="archive-note-heading">Historical development evidence.</strong> <span id="archive-note-body">These verdicts came from model-assisted review and were used during development. They are provisional, not independent human judgments or a new held-out EnvoyBench score.</span></div></div>
+
+      <p id="active-subtitle" class="archive-subtitle"></p>
+      <div id="model-cards" class="metric-grid" aria-live="polite"></div>
+      <div id="slice-note" class="takeaway" role="note" hidden></div>
+      <details class="disclosure secondary-details"><summary>Baselines & release decision</summary><div id="analytical-baselines" hidden></div>
+      <div id="retrieval-baseline" class="review-unavailable card" style="margin-top: 15px" hidden></div>
+      <div id="promotion-card" class="card" style="padding: 20px 24px; margin-top: 15px" hidden>
+        <strong id="promotion-status" style="font-size: 14px"></strong>
+        <p id="promotion-intro" class="metrics-note"></p>
+        <ul id="promotion-reasons" style="font-size: 12px; line-height: 1.6; color: var(--muted)"></ul>
+      </div>
+      </details>
+      <details class="disclosure secondary-details"><summary>What these scores mean</summary><p class="metrics-note">A valid quoted span means the text appears in the frozen source; it does not establish that the answer follows from it. A failed supported-answer verdict does not necessarily mean the answer itself was factually wrong. Model-graded verdicts remain provisional. An em dash means that diagnostic was not reported. Episode time includes the recorded execution setup.</p></details>
+    </section>
+
+    <section class="section" id="cases" aria-labelledby="cases-heading" hidden>
+      <div class="section-head"><div><button id="back-to-runs" class="review-button secondary" type="button">← Runs</button><h2 id="cases-heading">Questions</h2></div></div>
+      <div class="task-card" role="note"><strong id="task-card-label">Same frozen paper and tools.</strong> <span id="task-card-copy">Reasoning text not recorded.</span></div>
+      <div class="case-grid"><div id="case-list" class="case-list" role="group" aria-label="Choose a recorded question"></div><article id="case-main" class="case-main card" aria-live="polite"></article></div>
+      <div id="answer-lanes" class="lanes answer-lanes"></div>
+      <details id="trace-inspector" class="disclosure trace-wrap" open>
+        <summary>Trace · code, tools & tokens</summary>
+        <div class="trace-head"><span class="trace-source">Each turn shows generated code and its tool results. The source label below identifies full traces or excerpts.</span></div>
+        <div id="lanes" class="lanes transcript-lanes"></div>
+      </details>
+    </section>
+
+    <details id="benchmark-details" class="disclosure section benchmark-details">
+      <summary>About the benchmark <span>Dataset, method & sources</span></summary>
+    <section class="section" id="overview" aria-labelledby="overview-title">
+      <div class="section-head"><div><span class="kicker">Dataset</span><h2 id="overview-title">Questions & review status</h2></div><p>Frozen QASPER questions and source papers.</p></div>
+      <div class="candidate card">
+        <div class="candidate-score"><div class="candidate-score-top"><h3>Test candidate</h3><span id="candidate-status" class="status-chip">Loading</span></div><div id="candidate-score-symbol" class="score-none" aria-label="No independently validated score">—</div><div id="candidate-score-label" class="score-label">No independently validated score yet</div><p id="candidate-score-caption" class="score-caption">An automated result, if available, is provisional. Human review is needed to claim independently validated answer quality.</p></div>
+        <div class="candidate-facts">
+          <div class="fact"><div class="fact-label">Questions</div><div id="candidate-questions" class="fact-value">—</div><div class="fact-sub">frozen candidate set</div></div>
+          <div class="fact"><div class="fact-label">Search corpus</div><div id="candidate-papers" class="fact-value">—</div><div class="fact-sub">papers in the snapshot</div></div>
+          <div class="fact"><div class="fact-label">Reference review</div><div id="candidate-review" class="fact-value" style="font-size: 20px; line-height: 1.3">—</div><div class="fact-sub">optional human audit</div></div>
+          <div class="candidate-foot">Corpus hash: <span id="candidate-hash">—</span>. The candidate deliberately balances answerable and insufficient-evidence questions, so its eventual pass rate will measure this stress test rather than natural QASPER prevalence.</div>
+        </div>
+      </div>
+      <div id="review-boundary-note" class="review-unavailable card" role="note" style="margin-top: 15px" hidden><strong>Independent human review happens separately.</strong> This provisional view exposes checkpoint names and answers. For a blind human evaluation, use a separate Studio session and a reviewer who has not seen these outputs.</div>
+    </section>
+    <section class="section" id="protocol" aria-labelledby="protocol-heading">
+      <div class="section-head"><div><span class="kicker">Method</span><h2 id="protocol-heading">How it works</h2></div><p>Search → read → extract → answer with evidence.</p></div>
+      <div id="protocol-grid" class="protocol-grid"><div class="protocol-card"><h3>Evaluation sequence</h3><ol class="protocol-list"><li><span class="protocol-number">01</span><div><strong>Freeze questions and source text</strong><p>Record question IDs, paper exclusions, corpus revision, and source hashes before running the candidate models.</p></div></li><li><span class="protocol-number">02</span><div><strong>Run the same bounded investigation</strong><p>Each model writes Python against the same search, read, passage, and extraction tools. Actions and observations are recorded.</p></div></li><li><span class="protocol-number">03</span><div><strong>Produce a provisional comparison</strong><p>Use deterministic checks for execution and exact spans. A model grader can assess answers against existing QASPER references, but its verdicts are not independent human judgments.</p></div></li><li><span class="protocol-number">04</span><div><strong>Inspect failures; optionally validate with people</strong><p>Show paired answers and trajectories. If a human-reviewed result is needed, validate source references first, then judge anonymous answers before revealing model identities.</p></div></li></ol></div><div id="provenance-card" class="provenance-card" hidden><h3 id="provenance-heading">Archive provenance</h3><dl id="provenance-list" class="provenance-list"></dl></div></div>
+    </section>
+    <section class="section" id="prior-art" aria-labelledby="prior-heading" hidden><div class="section-head"><div><span class="kicker">Sources</span><h2 id="prior-heading">Related work</h2></div><p>The questions build on existing research. These related benchmarks clarify what EnvoyBench shares with them and what its tool-mediated protocol adds.</p></div><div id="prior-art-list" class="art-grid"></div></section>
+    </details>
+    <section class="section" id="reference-review" aria-labelledby="reference-review-heading">
+      <div class="section-head"><div><span class="kicker">02 / Optional source review</span><h2 id="reference-review-heading">Check the questions before the models.</h2></div><p>For independent validation, read the original annotations and full frozen paper, then decide if each question has a clear scoring interpretation. This is optional for a provisional automated comparison. To preserve blinding, finish this step before opening named candidate outputs.</p></div>
+      <details id="reference-optional" class="optional-workspace"><summary>Open human source-review workspace</summary>
+      <div id="reference-progress" class="review-progress card" hidden><div><strong id="reference-status">Loading source review…</strong><p>Decisions are saved locally. This step reviews the reference material, not model answers.</p><div class="review-meter" role="progressbar" aria-label="Source review progress" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><span id="reference-meter-fill"></span></div></div><div id="reference-count" class="review-count">—</div></div>
+      <div id="reference-unavailable" class="review-unavailable card" role="status">Loading the source-review workspace…</div>
+      <div id="reference-workspace" hidden><div class="review-grid"><nav id="reference-list" class="review-list card" aria-label="Source-review questions"></nav><article id="reference-editor" class="review-editor card"></article></div><div class="review-finalize card"><label><span class="review-field">Reviewer name or ID</span><input id="reference-reviewer" class="review-input" type="text" autocomplete="name" placeholder="Your name or reviewer ID"></label><button id="reference-finalize" class="review-button secondary" type="button" disabled>Finalize reference review</button><span id="reference-finalize-message" class="review-message" role="status">Complete all 40 decisions before finalizing.</span></div></div>
+      </details>
+    </section>
+    <section class="section" id="blind-review" aria-labelledby="blind-review-heading">
+      <div class="section-head"><div><span class="kicker">03 / Optional blind answer review</span><h2 id="blind-review-heading">Judge the answer, not the checkpoint.</h2></div><p>This independent validation step anonymizes each answer. A human reviewer checks the question, answer, evidence, and full paper. Model names and the blind assignment key stay hidden until verdicts are locked. It is not required for a provisional automated comparison.</p></div>
+      <details id="blind-optional" class="optional-workspace"><summary>Open human blind-review workspace</summary>
+      <div id="blind-progress" class="review-progress card" hidden><div><strong id="blind-status">Loading blind review…</strong><p>Pass, partial, and fail are source-support judgments recorded by a reviewer.</p><div class="review-meter" role="progressbar" aria-label="Blind answer review progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><span id="blind-meter-fill"></span></div></div><div id="blind-count" class="review-count">—</div></div>
+      <div id="blind-unavailable" class="review-unavailable card" role="status">Checking for a prepared blind review bundle…</div>
+      <div id="blind-workspace" hidden><div class="blind-rubric card"><div><strong>Pass</strong>Important parts are correct and material claims are supported by the paper.</div><div><strong>Partial</strong>A useful supported answer misses a requested detail, with no material false claim.</div><div><strong>Fail</strong>The answer is wrong, unsupported, misleadingly cited, falsely refuses, or gives no useful answer.</div></div><div class="review-grid"><nav id="blind-list" class="review-list card" aria-label="Anonymized answer-review items"></nav><article id="blind-editor" class="review-editor card"></article></div><div class="review-finalize card"><label><span class="review-field">Reviewer name or ID</span><input id="blind-reviewer" class="review-input" type="text" autocomplete="name" placeholder="Your name or reviewer ID"></label><button id="blind-finalize" class="review-button secondary" type="button" disabled>Finalize blind review</button><span id="blind-finalize-message" class="review-message" role="status">Load and review every anonymous answer before finalizing.</span></div></div>
+      </details>
+    </section>
+  </main>
+
+  <footer class="footer shell"><span>Built on <a href="https://huggingface.co/datasets/allenai/qasper" target="_blank" rel="noopener noreferrer">AllenAI QASPER</a> (Dasigi et al., 2021; CC BY 4.0).</span><span>Saved runs · no live model calls</span></footer>
+  <script>
+    (() => {
+      "use strict";
+      const byId = (id) => document.getElementById(id);
+      const state = { data: null, caseIndex: -1, selectedRun: null, caseFilter: "all", caseQuery: "", traceCache: new Map(), traceAllowed: false, review: null, reviewIndex: 0, reviewBusy: false, reviewDirty: false, sourceCache: new Map(), blindReview: null, blindIndex: 0, blindBusy: false, blindDirty: false, blindSourceCache: new Map(), blindActive: false, snapshot: Boolean(document.getElementById("envoybench-data")) };
+
+      function node(tag, className, value) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (value !== undefined && value !== null) element.textContent = String(value);
+        return element;
+      }
+      function add(parent, tag, className, value) {
+        const element = node(tag, className, value);
+        parent.append(element);
+        return element;
+      }
+      function clear(element) { element.replaceChildren(); }
+      function list(value) { return Array.isArray(value) ? value : []; }
+      function record(value) { return value && typeof value === "object" && !Array.isArray(value) ? value : {}; }
+      function words(value) { return String(value ?? "").replace(/[_-]+/g, " ").trim(); }
+      function printable(value) {
+        if (value === null || value === undefined || value === "") return "—";
+        if (typeof value === "string") return value;
+        if (typeof value === "number" || typeof value === "boolean") return String(value);
+        return JSON.stringify(value, null, 2);
+      }
+      function count(value) { return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)) ? Number(value) : null; }
+      function integer(value) { const n = count(value); return n === null ? "—" : n.toLocaleString(); }
+      function rate(value) { const n = count(value); return n === null ? "—" : `${(n * 100).toFixed(n === 0 || n === 1 ? 0 : 1).replace(/\.0$/, "")}%`; }
+      function seconds(value) { const n = count(value); return n === null ? "—" : `${n.toFixed(1)} s`; }
+      function observedSeconds(value) { const n = count(value); return n === null || n <= 0 ? "Timing unavailable" : seconds(n); }
+      function titleCase(value) { const s = words(value); return s ? s.replace(/\b\w/g, (c) => c.toUpperCase()) : "—"; }
+      function safeHref(value) {
+        try { const url = new URL(String(value), location.href); return ["http:", "https:"].includes(url.protocol) ? url.href : null; }
+        catch { return null; }
+      }
+      function formatItem(value) {
+        if (typeof value !== "object" || value === null) return printable(value);
+        if (Array.isArray(value)) return value.map(formatItem).join("\n");
+        return Object.entries(value).map(([key, item]) => `${titleCase(key)}: ${printable(item)}`).join("\n");
+      }
+
+      function renderTokenLikelihood(parent, event) {
+        const diagnostic = record(event.logprob_diagnostics);
+        if (diagnostic.schema_version !== "sampled-content-logprobs-v1") return;
+        const details = add(parent, "details", "token-panel");
+        const prefix = list(diagnostic.prefix);
+        add(details, "summary", "", `Token likelihood · ${integer(diagnostic.reported_token_count)} generated tokens`);
+        add(details, "p", "token-note", "Likelihood of emitted tokens, not answer correctness. Provider token stream; not aligned to the cleaned Python action.");
+        const mean = count(diagnostic.mean_logprob);
+        add(details, "p", "token-note", `${integer(diagnostic.valid_logprob_count)} / ${integer(diagnostic.reported_token_count)} finite values · mean logprob ${mean === null ? "unavailable" : mean.toFixed(4)} across all finite returned values.`);
+        add(details, "p", "token-note", diagnostic.prefix_truncated
+          ? `Showing the first ${prefix.length} saved tokens. Later individual token values were not retained.`
+          : `All ${prefix.length} saved token records are shown. Quotes make whitespace visible.`);
+        const scroll = add(details, "div", "token-table-scroll");
+        const table = add(scroll, "table", "token-table");
+        const headings = add(add(table, "thead"), "tr");
+        ["Emitted token", "Logprob", "P(token), rounded"].forEach((title) => add(headings, "th", "", title));
+        const body = add(table, "tbody");
+        prefix.forEach((item) => {
+          const row = add(body, "tr");
+          const logprob = count(item.logprob);
+          const available = logprob !== null && logprob <= 0;
+          add(row, "td", "", typeof item.token === "string" ? JSON.stringify(item.token) : "Unavailable");
+          add(row, "td", "", available ? logprob.toFixed(4) : "Unavailable");
+          const percentage = available ? Math.exp(logprob) * 100 : null;
+          add(row, "td", "", !available ? "Unavailable" : logprob < 0 && percentage > 99.99
+            ? ">99.99%" : `${percentage.toPrecision(4)}%`);
+        });
+        if (!prefix.length) add(details, "p", "token-note", "Individual token values were not retained.");
+        if (!prefix.some((item) => list(item.top_logprobs).length)) {
+          add(details, "p", "token-note", "Alternative-token probabilities were not recorded.");
+        }
+      }
+
+      function reviewQuestions() { return list(record(state.review).questions); }
+      function selectedReviewQuestion() { return reviewQuestions()[state.reviewIndex] || null; }
+      function reviewDecisionLabel(value) {
+        return value === "reference_valid" ? "Valid reference" : value === "unscorable" ? "Unscorable" : "Pending";
+      }
+      function reviewMessage(value, error = false) {
+        const element = byId("reference-finalize-message");
+        element.textContent = value;
+        element.classList.toggle("error", error);
+      }
+      function updateReviewProgress() {
+        const sheet = record(state.review);
+        const questions = reviewQuestions();
+        const total = questions.length;
+        const decided = questions.filter((item) => ["reference_valid", "unscorable"].includes(item.decision)).length;
+        byId("reference-progress").hidden = false;
+        byId("reference-count").textContent = `${decided} / ${total}`;
+        byId("reference-status").textContent = sheet.status === "complete" ? "Source review finalized" : "Source review in progress";
+        const meter = byId("reference-progress").querySelector(".review-meter");
+        meter.setAttribute("aria-valuemax", String(total));
+        meter.setAttribute("aria-valuenow", String(decided));
+        byId("reference-meter-fill").style.width = total ? `${decided / total * 100}%` : "0%";
+        byId("reference-finalize").disabled = sheet.status === "complete" || state.reviewBusy || total === 0 || decided !== total;
+        byId("reference-reviewer").disabled = sheet.status === "complete" || state.reviewBusy;
+        if (sheet.reviewer_id && !byId("reference-reviewer").value) byId("reference-reviewer").value = sheet.reviewer_id;
+        if (sheet.status === "complete") {
+          reviewMessage(`Finalized ${printable(sheet.reviewed_at)} by ${printable(sheet.reviewer_id)}. The reference sheet is locked.`);
+          byId("candidate-review").textContent = `${decided} / ${total} reviewed`;
+          if (!state.blindActive) byId("release-copy").textContent = "Source-reference review is finalized. Check the paired-run and blinded answer-review provenance below before treating any result as held-out evidence.";
+        }
+        else if (decided !== total) reviewMessage(`${total - decided} source decisions remain. Candidate model outputs stay hidden through source and blind answer review.`);
+        else reviewMessage("All decisions saved. Enter a reviewer ID and finalize to lock this source review.");
+      }
+      function renderReviewList() {
+        const container = byId("reference-list"); clear(container);
+        reviewQuestions().forEach((item, index) => {
+          const button = add(container, "button", "review-choice");
+          button.type = "button";
+          button.setAttribute("aria-current", String(index === state.reviewIndex));
+          add(button, "small", "", `Question ${String(index + 1).padStart(2, "0")} · ${printable(item.source_paper_id)}`);
+          add(button, "strong", "", printable(item.question));
+          const status = add(button, "span", `review-choice-status ${item.decision === "reference_valid" ? "valid" : item.decision === "unscorable" ? "unscorable" : ""}`, reviewDecisionLabel(item.decision));
+          status.setAttribute("aria-label", `Review decision: ${reviewDecisionLabel(item.decision)}`);
+          button.addEventListener("click", () => {
+            if (state.reviewBusy || index === state.reviewIndex) return;
+            if (state.reviewDirty && !window.confirm("Discard the unsaved decision for this question?")) return;
+            state.reviewIndex = index;
+            state.reviewDirty = false;
+            renderReviewEditor();
+          });
+        });
+      }
+      function appendEvidence(parent, items) {
+        if (!list(items).length) { add(parent, "p", "none", "No evidence span in this annotation. Check the full frozen paper before judging answerability."); return; }
+        list(items).forEach((span) => {
+          const source = add(parent, "div", "review-source");
+          add(source, "small", "", `${printable(span.doc_id)} · ${printable(span.section)} · offsets ${printable(span.start)}–${printable(span.end)}`);
+          add(source, "div", "", printable(span.text));
+        });
+      }
+      function markPaperMatch(pre, paperText, query, from) {
+        const term = query.trim();
+        const index = term ? paperText.toLowerCase().indexOf(term.toLowerCase(), from) : -1;
+        if (index < 0) { pre.textContent = paperText; return -1; }
+        pre.replaceChildren(document.createTextNode(paperText.slice(0, index)));
+        const match = add(pre, "mark", "", paperText.slice(index, index + term.length));
+        pre.append(document.createTextNode(paperText.slice(index + term.length)));
+        match.scrollIntoView({ block: "center" });
+        return index;
+      }
+      async function renderFullPaper(container, item) {
+        const details = add(container, "details", "full-paper");
+        details.open = true;
+        add(details, "summary", "", "Full frozen paper · read before deciding");
+        const searchRow = add(details, "div", "review-actions");
+        const search = add(searchRow, "input", "review-input");
+        search.type = "search";
+        search.placeholder = "Find in paper";
+        search.setAttribute("aria-label", "Find text in frozen paper");
+        search.style.maxWidth = "260px";
+        const find = add(searchRow, "button", "review-button secondary", "Find next");
+        find.type = "button";
+        const findStatus = add(searchRow, "span", "review-message");
+        const pre = add(details, "pre", "", "Loading frozen paper…");
+        let source = state.sourceCache.get(item.question_id);
+        if (!source) {
+          try {
+            const response = await fetch(`/api/reference-review/${encodeURIComponent(item.question_id)}/source`, { headers: { Accept: "application/json" } });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            source = await response.json();
+            if (typeof source.text !== "string") throw new Error("Source text is missing");
+            state.sourceCache.set(item.question_id, source);
+          } catch (failure) {
+            if (selectedReviewQuestion()?.question_id === item.question_id) {
+              pre.textContent = `The frozen paper could not be loaded (${failure.message}). Do not decide this reference until its full source is available.`;
+              find.disabled = true;
+              byId("review-save")?.setAttribute("disabled", "");
+            }
+            return;
+          }
+        }
+        if (selectedReviewQuestion()?.question_id !== item.question_id) return;
+        const paperText = source.text;
+        pre.textContent = paperText;
+        const save = byId("review-save");
+        if (save && record(state.review).status !== "complete") { save.disabled = false; save.textContent = "Save decision"; }
+        let cursor = 0;
+        find.addEventListener("click", () => {
+          const index = markPaperMatch(pre, paperText, search.value, cursor);
+          findStatus.textContent = index < 0 ? "No further match." : `Match at character ${index.toLocaleString()}.`;
+          cursor = index < 0 ? 0 : index + Math.max(1, search.value.trim().length);
+        });
+        search.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); find.click(); } });
+        search.addEventListener("input", () => { cursor = 0; findStatus.textContent = ""; pre.textContent = paperText; });
+      }
+      function renderReviewEditor() {
+        renderReviewList();
+        const editor = byId("reference-editor"); clear(editor);
+        const item = selectedReviewQuestion();
+        if (!item) { add(editor, "p", "none", "No source questions are available."); return; }
+        const complete = record(state.review).status === "complete";
+        add(editor, "span", "kicker", `Source question ${state.reviewIndex + 1} / ${reviewQuestions().length}`);
+        add(editor, "h3", "", printable(item.question));
+        add(editor, "div", "review-meta", `Question ${printable(item.question_id)} · Paper ${printable(item.source_paper_id)}`);
+        const summary = add(editor, "div", "review-annotation");
+        add(summary, "h4", "", "Selected reference answer");
+        add(summary, "p", "", printable(item.reference_answer));
+        list(item.reference_answers).forEach((annotation, index) => {
+          const block = add(editor, "div", "review-annotation");
+          add(block, "h4", "", `Original annotation ${index + 1} · ${titleCase(annotation.answer_type)}`);
+          add(block, "p", "", printable(annotation.answer_text));
+          appendEvidence(block, annotation.evidence);
+        });
+        const paperContainer = add(editor, "div");
+        const decision = add(editor, "div", "review-decision");
+        add(decision, "h4", "", "Can the frozen source support a clear scoring interpretation?");
+        const options = add(decision, "div", "review-options");
+        [["reference_valid", "Valid reference"], ["unscorable", "Unscorable"]].forEach(([value, label]) => {
+          const wrapper = add(options, "label");
+          const input = add(wrapper, "input");
+          input.type = "radio"; input.name = "reference-decision"; input.value = value;
+          input.checked = item.decision === value; input.disabled = complete;
+          input.addEventListener("change", () => { state.reviewDirty = true; });
+          wrapper.append(document.createTextNode(label));
+        });
+        add(decision, "label", "review-field", "Reason (required for unscorable)").htmlFor = "reference-reason";
+        const reason = add(decision, "textarea", "review-input");
+        reason.id = "reference-reason"; reason.value = item.reason || "";
+        reason.disabled = complete;
+        reason.placeholder = "Explain why the source cannot support reliable scoring, or note a concern about a valid item.";
+        reason.addEventListener("input", () => { state.reviewDirty = true; });
+        const actions = add(decision, "div", "review-actions");
+        const save = add(actions, "button", "review-button", complete ? "Review locked" : "Loading paper…");
+        save.id = "review-save"; save.type = "button"; save.disabled = true;
+        const next = add(actions, "button", "review-button secondary", "Next question →");
+        next.type = "button"; next.disabled = state.reviewIndex >= reviewQuestions().length - 1;
+        const message = add(actions, "span", "review-message");
+        save.addEventListener("click", async () => {
+          const choice = editor.querySelector('input[name="reference-decision"]:checked')?.value;
+          const reviewerId = byId("reference-reviewer").value.trim();
+          if (!reviewerId) { message.textContent = "Enter your reviewer ID below before saving."; message.classList.add("error"); byId("reference-reviewer").focus(); return; }
+          if (!choice) { message.textContent = "Choose a decision first."; message.classList.add("error"); return; }
+          if (choice === "unscorable" && !reason.value.trim()) { message.textContent = "Explain why this item is unscorable."; message.classList.add("error"); reason.focus(); return; }
+          state.reviewBusy = true; save.disabled = true; message.classList.remove("error"); message.textContent = "Saving…";
+          try {
+            const response = await fetch(`/api/reference-review/${encodeURIComponent(item.question_id)}`, {
+              method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+              body: JSON.stringify({ decision: choice, reason: reason.value.trim(), reviewer_id: reviewerId, expected_sha256: state.review.revision }),
+            });
+            if (!response.ok) throw new Error((await response.text()).slice(0, 240) || `HTTP ${response.status}`);
+            state.review = await response.json(); state.reviewDirty = false;
+            updateReviewProgress(); renderReviewEditor();
+            byId("reference-editor").querySelector(".review-decision .review-message").textContent = "Saved locally.";
+          } catch (failure) {
+            message.textContent = `Could not save: ${failure.message}`; message.classList.add("error");
+            save.disabled = false;
+          } finally { state.reviewBusy = false; updateReviewProgress(); }
+        });
+        next.addEventListener("click", () => {
+          if (state.reviewDirty && !window.confirm("Discard the unsaved decision for this question?")) return;
+          state.reviewIndex += 1; state.reviewDirty = false; renderReviewEditor();
+        });
+        renderFullPaper(paperContainer, item);
+      }
+      async function loadReferenceReview() {
+        if (provisionalMode() || state.snapshot) return;
+        const unavailable = byId("reference-unavailable");
+        try {
+          const response = await fetch("/api/reference-review", { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const sheet = await response.json();
+          if (!sheet || !Array.isArray(sheet.questions) || !sheet.revision) throw new Error("Incomplete source-review response");
+          state.review = sheet;
+          state.reviewIndex = Math.max(0, sheet.questions.findIndex((item) => !item.decision));
+          unavailable.hidden = true; byId("reference-workspace").hidden = false;
+          updateReviewProgress(); renderReviewEditor();
+        } catch (failure) {
+          unavailable.textContent = `Source review is unavailable (${failure.message}). The recorded development archive below remains inspectable.`;
+        }
+      }
+      async function finalizeReferenceReview() {
+        const button = byId("reference-finalize");
+        const reviewerId = byId("reference-reviewer").value.trim();
+        if (!reviewerId) { reviewMessage("Enter your reviewer ID before finalizing.", true); byId("reference-reviewer").focus(); return; }
+        if (state.reviewDirty) { reviewMessage("Save or discard your current unsaved decision first.", true); return; }
+        state.reviewBusy = true; button.disabled = true; reviewMessage("Finalizing source review…");
+        let failureMessage = null;
+        try {
+          const response = await fetch("/api/reference-review/finalize", {
+            method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ reviewer_id: reviewerId, expected_sha256: state.review.revision }),
+          });
+          if (!response.ok) throw new Error((await response.text()).slice(0, 240) || `HTTP ${response.status}`);
+          state.review = await response.json(); state.reviewDirty = false;
+          renderReviewEditor();
+        } catch (failure) { failureMessage = `Could not finalize: ${failure.message}`; }
+        finally { state.reviewBusy = false; updateReviewProgress(); if (failureMessage) reviewMessage(failureMessage, true); }
+      }
+
+      function assessmentLevel(active) {
+        const kind = words(record(active.provenance).review_kind).toLowerCase();
+        const status = words(active.score_status).toLowerCase();
+        if (["model assisted", "model graded"].includes(kind)) return "model";
+        if (kind === "human") return "human";
+        if (/model (assisted|graded)/.test(status)) return "model";
+        if (status.includes("human reviewed") && !status.includes("not human reviewed")) return "human";
+        return "automatic";
+      }
+      function provisionalMode() { return record(record(state.data).active).comparison_mode === "provisional"; }
+      function setReviewAvailability() {
+        const provisional = provisionalMode();
+        const unavailable = provisional || state.snapshot;
+        ["reference-review", "blind-review"].forEach((id) => {
+          const section = byId(id);
+          section.hidden = unavailable;
+          section.inert = unavailable;
+        });
+        document.querySelectorAll("[data-human-review-nav]").forEach((link) => { link.hidden = unavailable; });
+        byId("review-boundary-note").hidden = !unavailable;
+        if (state.snapshot) byId("review-boundary-note").textContent = "Recorded snapshot · no live model or review service. All results retain the review status shown below. Source and blind answer review must happen in a separate Studio session with an independent reviewer.";
+        return provisional;
+      }
+      function isCandidateRun(candidate, active) {
+        if (active.kind !== "envoybench_run") return false;
+        const provenance = record(active.provenance);
+        return active.split === "test_candidate" || provenance.split_status === candidate.status || /test candidate/i.test(String(active.title || ""));
+      }
+      function releaseCopy() {
+        return state.blindActive ? "Blind review · model names hidden" : "Saved results · no live inference";
+      }
+
+      function setBlindMode(active) {
+        state.blindActive = active;
+        state.traceAllowed = !active && !state.snapshot;
+        if (active) state.traceCache.clear();
+        byId("hero-title").textContent = active ? "Blind answer review" : "Base vs. fine-tuned Qwen";
+        ["prior-art", "provenance-card"].forEach((id) => { byId(id).hidden = active; });
+        byId("archive").hidden = active || Boolean(state.selectedRun);
+        byId("cases").hidden = active || !state.selectedRun;
+        document.querySelectorAll("[data-blind-hidden]").forEach((element) => { element.hidden = active; });
+        document.querySelectorAll("[data-live-only]").forEach((element) => { element.hidden = active || state.snapshot; });
+        byId("protocol-grid").classList.toggle("blind-active", active);
+        byId("hero-copy").textContent = active
+          ? "Review anonymous answers against the source paper."
+          : "Same questions. Same tools. Compare the answers and see what changed.";
+        byId("release-copy").textContent = releaseCopy();
+        if (state.traceAllowed && state.data) loadFullTrajectories(currentCase(), selectedModels(currentActive()));
+      }
+      function blindRows() { return list(record(state.blindReview).rows); }
+      function selectedBlindRow() { return blindRows()[state.blindIndex] || null; }
+      function blindMessage(value, error = false) {
+        const element = byId("blind-finalize-message");
+        element.textContent = value; element.classList.toggle("error", error);
+      }
+      function updateBlindProgress() {
+        const sheet = record(state.blindReview);
+        const rows = blindRows();
+        const decided = rows.filter((row) => ["pass", "partial", "fail"].includes(row.verdict)).length;
+        const total = rows.length;
+        byId("blind-progress").hidden = false;
+        byId("blind-count").textContent = `${decided} / ${total}`;
+        byId("blind-status").textContent = sheet.status === "complete" ? "Blind answer review finalized" : "Blind answer review in progress";
+        const meter = byId("blind-progress").querySelector(".review-meter");
+        meter.setAttribute("aria-valuemax", String(total));
+        meter.setAttribute("aria-valuenow", String(decided));
+        byId("blind-meter-fill").style.width = total ? `${decided / total * 100}%` : "0%";
+        byId("blind-finalize").disabled = sheet.status === "complete" || state.blindBusy || total === 0 || decided !== total;
+        byId("blind-reviewer").disabled = sheet.status === "complete" || state.blindBusy;
+        if (sheet.reviewer_id && !byId("blind-reviewer").value) byId("blind-reviewer").value = sheet.reviewer_id;
+        if (sheet.status === "complete") blindMessage(`Finalized ${printable(sheet.reviewed_at)} by ${printable(sheet.reviewer_id)}. Verdicts are locked.`);
+        else if (decided !== total) blindMessage(`${total - decided} anonymous answers remain. Keep the assignment key closed.`);
+        else blindMessage("All verdicts saved. Enter your reviewer ID and finalize before unblinding.");
+      }
+      function renderBlindList() {
+        const container = byId("blind-list"); clear(container);
+        blindRows().forEach((row, index) => {
+          const button = add(container, "button", "review-choice");
+          button.type = "button";
+          button.setAttribute("aria-current", String(index === state.blindIndex));
+          add(button, "small", "", `Anonymous answer ${printable(row.blind_id)} · ${titleCase(row.expected_answerability)}`);
+          add(button, "strong", "", printable(row.question));
+          add(button, "span", `review-choice-status ${row.verdict === "pass" ? "valid" : row.verdict === "partial" ? "partial" : row.verdict === "fail" ? "fail" : ""}`, titleCase(row.verdict || "pending"));
+          button.addEventListener("click", () => {
+            if (state.blindBusy || index === state.blindIndex) return;
+            if (state.blindDirty && !window.confirm("Discard the unsaved verdict for this answer?")) return;
+            state.blindIndex = index; state.blindDirty = false; renderBlindEditor();
+          });
+        });
+      }
+      async function renderBlindPaper(container, row) {
+        const details = add(container, "details", "full-paper");
+        details.open = true;
+        add(details, "summary", "", "Full frozen paper · verify the answer against source text");
+        const searchRow = add(details, "div", "review-actions");
+        const search = add(searchRow, "input", "review-input");
+        search.type = "search"; search.placeholder = "Find in paper"; search.style.maxWidth = "260px";
+        search.setAttribute("aria-label", "Find text in frozen paper for this blind answer");
+        const find = add(searchRow, "button", "review-button secondary", "Find next"); find.type = "button";
+        const status = add(searchRow, "span", "review-message");
+        const pre = add(details, "pre", "", "Loading frozen paper…");
+        let source = state.blindSourceCache.get(row.blind_id);
+        if (!source) {
+          try {
+            const response = await fetch(`/api/blind-review/${encodeURIComponent(row.blind_id)}/source`, { headers: { Accept: "application/json" } });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            source = await response.json();
+            if (typeof source.text !== "string") throw new Error("Source text is missing");
+            state.blindSourceCache.set(row.blind_id, source);
+          } catch (failure) {
+            if (selectedBlindRow()?.blind_id === row.blind_id) {
+              pre.textContent = `The frozen paper could not be loaded (${failure.message}). Do not judge this answer until its source is available.`;
+              find.disabled = true;
+            }
+            return;
+          }
+        }
+        if (selectedBlindRow()?.blind_id !== row.blind_id) return;
+        const paperText = source.text;
+        pre.textContent = paperText;
+        const save = byId("blind-save");
+        if (save && record(state.blindReview).status !== "complete") { save.disabled = false; save.textContent = "Save verdict"; }
+        let cursor = 0;
+        find.addEventListener("click", () => {
+          const index = markPaperMatch(pre, paperText, search.value, cursor);
+          status.textContent = index < 0 ? "No further match." : `Match at character ${index.toLocaleString()}.`;
+          cursor = index < 0 ? 0 : index + Math.max(1, search.value.trim().length);
+        });
+        search.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); find.click(); } });
+        search.addEventListener("input", () => { cursor = 0; status.textContent = ""; pre.textContent = paperText; });
+      }
+      function renderBlindEditor() {
+        renderBlindList();
+        const editor = byId("blind-editor"); clear(editor);
+        const row = selectedBlindRow();
+        if (!row) { add(editor, "p", "none", "No anonymous answers are in this bundle."); return; }
+        const complete = record(state.blindReview).status === "complete";
+        add(editor, "span", "kicker", `Anonymous answer ${printable(row.blind_id)} · ${state.blindIndex + 1} / ${blindRows().length}`);
+        add(editor, "h3", "", printable(row.question));
+        add(editor, "div", "review-meta", `Question ${printable(row.question_id)} · Expected answerability: ${titleCase(row.expected_answerability)} · Submission: ${titleCase(row.status)}`);
+        const reference = add(editor, "div", "review-annotation");
+        add(reference, "h4", "", "Validated reference answer");
+        add(reference, "p", "", printable(row.reference_answer));
+        if (list(row.grader_notes).length) add(reference, "small", "", `Rubric notes: ${list(row.grader_notes).map(printable).join(" · ")}`);
+        add(editor, "div", "review-field", "Submitted answer");
+        add(editor, "div", "blind-answer", row.answer || "No answer submitted.");
+        const evidence = add(editor, "div", "review-annotation");
+        add(evidence, "h4", "", "Submitted citations and evidence");
+        add(evidence, "p", "", `Cited paper IDs: ${list(row.citations).length ? list(row.citations).join(", ") : "None"}`);
+        const evidenceList = add(evidence, "div", "blind-evidence");
+        if (!list(row.evidence).length) add(evidenceList, "p", "none", "No evidence span submitted.");
+        else list(row.evidence).forEach((item) => add(evidenceList, "div", "review-source", formatItem(item)));
+        add(evidence, "small", "", "An exact valid span confirms source text, not semantic support for the answer.");
+        const paperContainer = add(editor, "div");
+        const decision = add(editor, "div", "review-decision");
+        add(decision, "h4", "", "Source-supported answer verdict");
+        const options = add(decision, "div", "review-options");
+        [["pass", "Pass"], ["partial", "Partial"], ["fail", "Fail"]].forEach(([value, label]) => {
+          const wrapper = add(options, "label");
+          const input = add(wrapper, "input");
+          input.type = "radio"; input.name = "blind-verdict"; input.value = value;
+          input.checked = row.verdict === value; input.disabled = complete;
+          input.addEventListener("change", () => { state.blindDirty = true; });
+          wrapper.append(document.createTextNode(label));
+        });
+        add(decision, "label", "review-field", "Reason (required for partial or fail)").htmlFor = "blind-notes";
+        const notes = add(decision, "textarea", "review-input");
+        notes.id = "blind-notes"; notes.value = row.notes || ""; notes.disabled = complete;
+        notes.placeholder = "Explain the missing detail, unsupported claim, or why the answer passes.";
+        notes.addEventListener("input", () => { state.blindDirty = true; });
+        add(decision, "label", "review-field", "Relevant source passage or absence note (required for partial or fail)").htmlFor = "blind-passage";
+        const passage = add(decision, "textarea", "review-input");
+        passage.id = "blind-passage"; passage.value = row.relevant_source_passage || ""; passage.disabled = complete;
+        passage.placeholder = "Quote the frozen paper, or explain why no passage supports the claim.";
+        passage.addEventListener("input", () => { state.blindDirty = true; });
+        const actions = add(decision, "div", "review-actions");
+        const save = add(actions, "button", "review-button", complete ? "Verdicts locked" : "Loading paper…");
+        save.id = "blind-save"; save.type = "button"; save.disabled = true;
+        const next = add(actions, "button", "review-button secondary", "Next anonymous answer →");
+        next.type = "button"; next.disabled = state.blindIndex >= blindRows().length - 1;
+        const message = add(actions, "span", "review-message");
+        save.addEventListener("click", async () => {
+          const verdict = editor.querySelector('input[name="blind-verdict"]:checked')?.value;
+          const reviewerId = byId("blind-reviewer").value.trim();
+          if (!reviewerId) { message.textContent = "Enter your reviewer ID below before saving."; message.classList.add("error"); byId("blind-reviewer").focus(); return; }
+          if (!verdict) { message.textContent = "Choose a verdict first."; message.classList.add("error"); return; }
+          if (["partial", "fail"].includes(verdict) && (!notes.value.trim() || !passage.value.trim())) { message.textContent = "Partial and fail require a reason and source passage or absence note."; message.classList.add("error"); return; }
+          state.blindBusy = true; save.disabled = true; message.classList.remove("error"); message.textContent = "Saving…";
+          try {
+            const response = await fetch(`/api/blind-review/${encodeURIComponent(row.blind_id)}`, {
+              method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+              body: JSON.stringify({ verdict, notes: notes.value.trim(), relevant_passage: passage.value.trim(), reviewer_id: reviewerId, expected_sha256: state.blindReview.revision }),
+            });
+            if (!response.ok) throw new Error((await response.text()).slice(0, 240) || `HTTP ${response.status}`);
+            state.blindReview = await response.json(); state.blindDirty = false;
+            updateBlindProgress(); renderBlindEditor();
+            byId("blind-editor").querySelector(".review-decision .review-message").textContent = "Saved locally.";
+          } catch (failure) {
+            message.textContent = `Could not save: ${failure.message}`; message.classList.add("error"); save.disabled = false;
+          } finally { state.blindBusy = false; updateBlindProgress(); }
+        });
+        next.addEventListener("click", () => {
+          if (state.blindDirty && !window.confirm("Discard the unsaved verdict for this answer?")) return;
+          state.blindIndex += 1; state.blindDirty = false; renderBlindEditor();
+        });
+        renderBlindPaper(paperContainer, row);
+      }
+      async function loadBlindReview() {
+        if (provisionalMode() || state.snapshot) return;
+        const unavailable = byId("blind-unavailable");
+        try {
+          const response = await fetch("/api/blind-review", { headers: { Accept: "application/json" } });
+          if (response.status === 404) {
+            unavailable.textContent = "No prepared blind review bundle is loaded. Run the paired evaluation and prepare an anonymized answer bundle to review here.";
+            setBlindMode(false);
+            return;
+          }
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const sheet = await response.json();
+          if (!sheet || !Array.isArray(sheet.rows) || !sheet.revision) throw new Error("Incomplete blind-review response");
+          state.blindReview = sheet;
+          state.blindIndex = Math.max(0, sheet.rows.findIndex((row) => !row.verdict));
+          unavailable.hidden = true; byId("blind-workspace").hidden = false;
+          byId("blind-optional").open = true;
+          setBlindMode(sheet.status !== "complete");
+          updateBlindProgress(); renderBlindEditor();
+        } catch (failure) {
+          unavailable.textContent = `Blind review could not be loaded (${failure.message}). Comparison content remains hidden until its review status is known.`;
+          byId("blind-optional").open = true;
+          setBlindMode(true);
+        }
+      }
+      async function finalizeBlindReview() {
+        const button = byId("blind-finalize");
+        const reviewerId = byId("blind-reviewer").value.trim();
+        if (!reviewerId) { blindMessage("Enter your reviewer ID before finalizing.", true); byId("blind-reviewer").focus(); return; }
+        if (state.blindDirty) { blindMessage("Save or discard your current unsaved verdict first.", true); return; }
+        state.blindBusy = true; button.disabled = true; blindMessage("Finalizing anonymous verdicts…");
+        let failureMessage = null;
+        try {
+          const response = await fetch("/api/blind-review/finalize", {
+            method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ reviewer_id: reviewerId, expected_sha256: state.blindReview.revision }),
+          });
+          if (!response.ok) throw new Error((await response.text()).slice(0, 240) || `HTTP ${response.status}`);
+          state.blindReview = await response.json(); state.blindDirty = false;
+          renderBlindEditor(); setBlindMode(false);
+        } catch (failure) { failureMessage = `Could not finalize: ${failure.message}`; }
+        finally { state.blindBusy = false; updateBlindProgress(); if (failureMessage) blindMessage(failureMessage, true); }
+      }
+
+      function renderCandidate(candidate, active) {
+        const candidateRun = isCandidateRun(candidate, active);
+        const level = assessmentLevel(active);
+        const status = candidateRun ? (level === "human" ? "Human reviewed" : level === "model" ? "Provisional" : "Diagnostics") : "Unscored";
+        byId("candidate-status").textContent = status;
+        byId("candidate-status").title = candidateRun ? printable(active.score_status) : titleCase(candidate.status || "unscored");
+        byId("candidate-score-symbol").setAttribute("aria-label", candidateRun && level === "human" ? "See human-reviewed paired results below" : "No independently validated score");
+        byId("candidate-score-label").textContent = candidateRun && level === "human" ? "Human-reviewed comparison below" : "No independently validated score yet";
+        byId("candidate-score-caption").textContent = candidateRun && level === "model"
+          ? "A model-graded comparison is available below. It is provisional, has no human-reviewed promotion verdict, and should be checked against its recorded answers and sources."
+          : candidateRun && level === "automatic"
+            ? "Only deterministic execution and exact-span checks are available below. They do not establish answer quality."
+            : candidateRun && level === "human"
+              ? "See the paired quality, reliability, and cost results below; this card does not compress them into one score."
+              : "An automated result, if available, is provisional. Human review is needed to claim independently validated answer quality.";
+        byId("candidate-questions").textContent = integer(candidate.question_count);
+        byId("candidate-papers").textContent = integer(candidate.corpus_paper_count);
+        byId("candidate-review").textContent = titleCase(candidate.reference_review_status || "pending");
+        byId("candidate-hash").textContent = printable(candidate.corpus_hash);
+      }
+
+      function barPart(bar, className, value, denominator) {
+        const span = add(bar, "span", className);
+        const n = count(value);
+        span.style.width = `${n === null || denominator <= 0 ? 0 : Math.max(0, Math.min(100, n / denominator * 100))}%`;
+      }
+      function metricRow(parent, label, value) {
+        const row = add(parent, "div");
+        add(row, "dt", "", label);
+        add(row, "dd", "", value);
+      }
+      function renderBaselines(active) {
+        const container = byId("analytical-baselines"); clear(container);
+        const baselines = list(active.analytical_baselines);
+        container.hidden = baselines.length === 0;
+        baselines.forEach((baseline) => {
+          const card = add(container, "article", "baseline-card card");
+          add(card, "span", "kicker", "Analytical sanity check · not a measured model run");
+          add(card, "h3", "", printable(baseline.label));
+          const stats = add(card, "div", "baseline-stats");
+          const passes = add(stats, "div");
+          add(passes, "strong", "", `${integer(baseline.expected_pass)} / ${integer(baseline.total)}`);
+          passes.append(document.createTextNode("expected passes under the answerability labels"));
+          const useful = add(stats, "div");
+          add(useful, "strong", "", integer(baseline.expected_useful_answers));
+          useful.append(document.createTextNode("useful answers"));
+          add(card, "p", "", printable(baseline.reason));
+        });
+        const retrieval = record(active.retrieval_baseline);
+        const retrievalCard = byId("retrieval-baseline"); clear(retrievalCard);
+        retrievalCard.hidden = !retrieval.status;
+        if (retrieval.status) {
+          add(retrievalCard, "strong", "", retrieval.status === "prepared_not_run"
+            ? "Single-answer retrieval baseline · prepared, not run"
+            : `Single-answer retrieval baseline · ${words(retrieval.status)}`);
+          add(retrievalCard, "p", "", printable(retrieval.description));
+          if (retrieval.status === "prepared_not_run") {
+            add(retrievalCard, "p", "", `${integer(retrieval.prepared_question_count)} questions prepared · ${integer(retrieval.planned_request_count)} model requests planned. No quality or efficiency result is available.`);
+          }
+        }
+      }
+      function renderBehavior(card, metrics, fullCount) {
+        const reviewed = count(metrics.behavior_reviewed_count);
+        if (reviewed === null) return;
+        const heading = metrics.behavior_review_kind === "model_assisted" ? "AI-classified response behavior" : "Response behavior";
+        add(card, "h4", "behavior-heading", `${heading} · ${integer(reviewed)} / ${integer(fullCount)} classified`);
+        const rows = add(card, "dl", "metric-rows");
+        [["Substantive responses", "substantive_response_count"], ["Abstentions", "abstention_count"], ["False refusals", "false_refusal_count"], ["Mixed answer / abstention", "mixed_response_count"], ["No submission", "no_submission_count"]].forEach(([label, key]) => {
+          metricRow(rows, label, integer(metrics[key]));
+        });
+        add(card, "p", "metrics-note", "This classifies what the response does, not whether it is correct. False refusals are a subset of abstentions on questions labeled answerable in the frozen set; they are not a new correctness grade.");
+      }
+      function runEntries(data) {
+        const active = record(data.active);
+        const entries = list(active.models).map((model) => ({
+          id: `benchmark:${model.key}`, model, active, diagnostic: false,
+        }));
+        const diagnostic = record(data.token_diagnostic);
+        if (list(diagnostic.cases).length) {
+          const smoke = {
+            kind: "token_diagnostic", question_denominator: diagnostic.question_count,
+            score_status: "Unscored development smoke", models: diagnostic.models,
+            cases: diagnostic.cases,
+            provenance: {run_id: diagnostic.run_id, comparison_id: diagnostic.comparison_id,
+              created_at_utc: diagnostic.created_at_utc, source_sha256: diagnostic.source_sha256,
+              model_identities: diagnostic.models, scope: diagnostic.scope},
+          };
+          entries.push(...list(diagnostic.models).map((model) => ({
+            id: `diagnostic:${model.key}`, model, active: smoke, diagnostic: true,
+          })));
+        }
+        return entries;
+      }
+      function currentActive() { return state.selectedRun?.active || record(state.data.active); }
+      function selectedModels(active) {
+        return state.selectedRun ? list(active.models).filter((model) => model.key === state.selectedRun.model.key) : [];
+      }
+      function openRun(entry) {
+        state.selectedRun = entry;
+        state.caseIndex = -1; state.caseFilter = "all"; state.caseQuery = "";
+        state.traceCache.clear();
+        byId("archive").hidden = true;
+        byId("cases").hidden = false;
+        byId("cases-heading").textContent = printable(entry.model.label || titleCase(entry.model.key));
+        byId("task-card-label").textContent = entry.diagnostic ? "Development smoke · unscored." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
+        byId("task-card-copy").textContent = entry.diagnostic
+          ? "Separate saved run. Token likelihood is available inside each turn."
+          : "Select a question to inspect its answer, code and tool results.";
+        renderCaseAndTrajectory();
+        renderProvenance(record(entry.active.provenance));
+        byId("cases").scrollIntoView({block: "start"});
+        byId("back-to-runs").focus({preventScroll: true});
+      }
+      function showRuns() {
+        const selectedId = state.selectedRun?.id;
+        state.selectedRun = null; state.caseIndex = -1; state.traceCache.clear();
+        byId("archive").hidden = false; byId("cases").hidden = true;
+        byId("archive").scrollIntoView({block: "start"});
+        const buttons = [...document.querySelectorAll(".run-select")];
+        (buttons.find((button) => button.dataset.runId === selectedId) || buttons[0])?.focus({preventScroll: true});
+      }
+      function renderModels(active) {
+        const level = assessmentLevel(active);
+        byId("archive-heading").textContent = "Runs";
+        byId("provenance-heading").textContent = "Run details";
+        byId("archive-note-heading").textContent = level === "model" ? "AI-graded · provisional." : level === "human" ? "Human-reviewed." : "Saved runs.";
+        byId("archive-note-body").textContent = "Passes include correct refusals. Dev smoke runs have no quality score.";
+        const container = byId("model-cards"); clear(container);
+        const scroll = add(container, "div", "run-table-scroll");
+        const table = add(scroll, "table", "run-table");
+        const headings = add(add(table, "thead"), "tr");
+        ["Run", "Date", "Samples", "Passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
+        const body = add(table, "tbody");
+        runEntries(state.data).forEach((entry) => {
+          const metrics = record(entry.model.metrics);
+          const total = count(entry.active.question_denominator);
+          const row = add(body, "tr");
+          const name = add(row, "td");
+          const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
+          button.dataset.runId = entry.id;
+          button.type = "button"; button.addEventListener("click", () => openRun(entry));
+          add(name, "small", "run-kind", entry.diagnostic ? "Dev smoke · unscored" : "Paper-agent evaluation");
+          add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
+          add(row, "td", "", integer(total));
+          add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
+          add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
+          add(row, "td", "", count(metrics.unanswerable_pass) === null ? "—" : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
+          add(row, "td", count(metrics.execution_error_episode_rate) > 0 ? "metric-error" : "", rate(metrics.execution_error_episode_rate));
+          row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
+        });
+        renderBaselines(active);
+        byId("slice-note").hidden = true;
+        byId("promotion-card").hidden = true;
+      }
+
+      function currentCase() { return list(currentActive().cases)[state.caseIndex] || null; }
+      function questionText(item) {
+        const text = printable(item.question);
+        const marker = " to answer:";
+        return text.startsWith("Use the known paper ") && text.includes(marker)
+          ? text.slice(text.indexOf(marker) + marker.length).trim() : text;
+      }
+      function answerabilityLabel(value) {
+        return value === "sufficient" ? "Answerable" : value === "insufficient" ? "Unanswerable" : titleCase(value);
+      }
+      function systemFor(item, model) { return record(record(item.systems)[model.key]); }
+      function traceKey(item, model) { return `${state.selectedRun?.id || "benchmark"}\u0000${item.id}\u0000${model.key}`; }
+      function traceCacheEntry(item, model) { return state.traceCache.get(traceKey(item, model)); }
+      function trajectoryFor(item, model) {
+        const cached = traceCacheEntry(item, model);
+        return cached?.kind === "full" ? list(cached.data.trajectory) : list(systemFor(item, model).trajectory);
+      }
+      function traceSource(item, model) {
+        const kind = traceCacheEntry(item, model)?.kind;
+        if (kind === "full" || state.selectedRun?.diagnostic) return "Full saved trajectory · no replay or live inference";
+        if (state.snapshot && currentActive().trace_scope === "full_saved_trajectories") return "Full exported trajectory · no replay or live inference";
+        if (state.snapshot) return "Static export · saved excerpts; long responses clipped at 1,800 characters";
+        if (kind === "loading") return "Saved excerpts shown while the full trajectory loads";
+        return "Saved excerpts · full trajectory unavailable in this view";
+      }
+      function hasRecordedStderr(event) { return typeof event.observation === "string" && event.observation.includes("STDERR:"); }
+      function isFinalSubmission(event) { return typeof event.action === "string" && event.action.trimStart().startsWith("SUBMIT:"); }
+      function loadFullTrajectories(item, models) {
+        if (!item || !state.traceAllowed || state.snapshot || state.blindActive || state.selectedRun?.diagnostic) return;
+        models.forEach(async (model) => {
+          const key = traceKey(item, model);
+          if (state.traceCache.has(key)) return;
+          state.traceCache.set(key, { kind: "loading" });
+          if (currentCase()?.id === item.id) renderTrajectory(item, selectedModels(currentActive()));
+          try {
+            const query = new URLSearchParams({ question_id: item.id, model: model.key });
+            const response = await fetch(`/api/demo/trace?${query}`, { headers: { Accept: "application/json" } });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            if (data.question_id !== item.id || data.model_key !== model.key || !Array.isArray(data.trajectory)) throw new Error("Mismatched trace response");
+            if (!state.traceAllowed || state.blindActive || traceKey(item, model) !== key) return;
+            state.traceCache.set(key, { kind: "full", data });
+          } catch {
+            if (!state.traceAllowed || state.blindActive || traceKey(item, model) !== key) return;
+            state.traceCache.set(key, { kind: "unavailable" });
+          }
+          if (currentCase()?.id === item.id) {
+            renderTrajectory(item, selectedModels(currentActive()));
+          }
+        });
+      }
+      function outcomeFor(item, model) {
+        const system = systemFor(item, model);
+        const diagnostics = record(system.mechanical_diagnostics);
+        const verdict = words(system.verdict).toLowerCase();
+        const failed = Boolean(system.error) || String(system.status || "").toLowerCase() === "error";
+        const error = failed || list(system.trajectory).some(hasRecordedStderr) || diagnostics.execution_error_episode === true || count(system.returned_tool_error_count) > 0 || count(system.runtime_error_count) > 0 || count(system.context_error_count) > 0;
+        return { verdict: ["pass", "partial", "fail"].includes(verdict) ? verdict : "other", error, failed };
+      }
+      function filteredCases(active) {
+        const cases = list(active.cases);
+        const models = selectedModels(active);
+        const query = state.caseQuery.toLowerCase();
+        return cases.map((item, index) => ({ item, index })).filter(({ item }) => {
+          const outcomes = models.map((model) => outcomeFor(item, model));
+          const matchesFilter = state.caseFilter === "all"
+            || (state.caseFilter === "different" && outcomes.length === 2 && (outcomes[0].verdict !== outcomes[1].verdict || outcomes[0].error !== outcomes[1].error))
+            || (state.caseFilter === "errors" && outcomes.some((outcome) => outcome.error))
+            || (state.caseFilter === "answerable" && item.answerability === "sufficient")
+            || (state.caseFilter === "unanswerable" && item.answerability === "insufficient");
+          return matchesFilter && (!query || `${item.id} ${questionText(item)}`.toLowerCase().includes(query));
+        });
+      }
+      function keepSelectionInFilter(active) {
+        const matches = filteredCases(active);
+        if (state.caseIndex >= 0 && matches.length && !matches.some(({ index }) => index === state.caseIndex)) state.caseIndex = matches[0].index;
+      }
+      function renderCaseChoices(active) {
+        const container = byId("case-list");
+        const oldScroll = container.querySelector(".question-table-scroll")?.scrollTop || 0;
+        clear(container);
+        const toolbar = add(container, "div", "question-toolbar");
+        const filters = add(toolbar, "div", "question-filters");
+        [["all", "All"], ["errors", "Errors"], ["answerable", "Answerable"], ["unanswerable", "Unanswerable"]].forEach(([key, label]) => {
+          const button = add(filters, "button", "filter-button", label);
+          button.type = "button";
+          button.setAttribute("aria-pressed", String(state.caseFilter === key));
+          button.addEventListener("click", () => {
+            state.caseFilter = key; keepSelectionInFilter(active); renderCaseAndTrajectory();
+            container.querySelector('.filter-button[aria-pressed="true"]')?.focus({preventScroll: true});
+          });
+        });
+        const search = add(toolbar, "input", "question-search");
+        search.type = "search"; search.placeholder = "Find question or ID"; search.setAttribute("aria-label", "Find question or ID"); search.value = state.caseQuery;
+        search.addEventListener("input", () => {
+          state.caseQuery = search.value;
+          const cursor = search.selectionStart;
+          keepSelectionInFilter(active);
+          renderCaseAndTrajectory();
+          const replacement = container.querySelector(".question-search");
+          replacement?.focus();
+          if (cursor !== null) replacement?.setSelectionRange(cursor, cursor);
+        });
+        const matches = filteredCases(active);
+        add(toolbar, "span", "question-count", `${matches.length}/${list(active.cases).length}`);
+        const scroller = add(container, "div", "question-table-scroll");
+        const table = add(scroller, "table", "question-table");
+        const header = add(table, "thead");
+        const headings = add(header, "tr");
+        ["#", "Question", "Label", "Grade"].forEach((label) => add(headings, "th", "", label));
+        const body = add(table, "tbody");
+        matches.forEach(({ item, index }) => {
+          const row = add(body, "tr", index === state.caseIndex ? "selected" : "");
+          add(row, "td", "question-number", String(index + 1).padStart(2, "0"));
+          const text = add(row, "td", "question-cell");
+          const button = add(text, "button", "question-select", !String(active.kind).startsWith("recorded_trace") ? questionText(item) : printable(item.focus || item.question));
+          button.type = "button"; button.setAttribute("aria-current", String(index === state.caseIndex));
+          button.addEventListener("click", () => { state.caseIndex = index; renderCaseAndTrajectory(); container.querySelector('.question-select[aria-current="true"]')?.focus(); });
+          add(row, "td", "question-type", answerabilityLabel(item.answerability));
+          selectedModels(active).forEach((model) => {
+            const outcome = outcomeFor(item, model);
+            const cell = add(row, "td", "outcome-cell");
+            add(cell, "span", `verdict ${outcome.verdict}`, titleCase(systemFor(item, model).verdict || "unreviewed"));
+            if (outcome.error) add(cell, "span", "error-flag", outcome.failed ? "run error" : "tool error");
+          });
+          row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
+        });
+        if (!matches.length) add(scroller, "p", "none", "No matching questions.");
+        scroller.scrollTop = oldScroll;
+        const selected = body.querySelector("tr.selected");
+        if (selected) {
+          const selectedBox = selected.getBoundingClientRect();
+          const scrollBox = scroller.getBoundingClientRect();
+          const headerHeight = header.getBoundingClientRect().height;
+          if (selectedBox.top < scrollBox.top + headerHeight) scroller.scrollTop -= scrollBox.top + headerHeight - selectedBox.top;
+          else if (selectedBox.bottom > scrollBox.bottom) scroller.scrollTop += selectedBox.bottom - scrollBox.bottom;
+        }
+      }
+      function renderCaseAndTrajectory() {
+        const active = currentActive();
+        const item = filteredCases(active).some(({ index }) => index === state.caseIndex) ? currentCase() : null;
+        renderCaseChoices(active);
+        byId("trace-inspector").hidden = !item;
+        byId("answer-lanes").hidden = !item;
+        const main = byId("case-main"); clear(main);
+        if (!item) {
+          add(main, "p", "none", list(active.cases).length ? "Select a question to open its transcript." : "No recorded questions are available.");
+          clear(byId("lanes")); clear(byId("answer-lanes"));
+          return;
+        }
+        const navigation = add(main, "div", "question-navigation");
+        add(navigation, "strong", "", `Q${String(state.caseIndex + 1).padStart(2, "0")} / ${integer(list(active.cases).length)}`);
+        add(navigation, "span", "question-navigation-type", answerabilityLabel(item.answerability)).title = "Dataset label; not independently validated here";
+        const controls = add(navigation, "div", "question-navigation-controls");
+        const matches = filteredCases(active);
+        const position = matches.findIndex(({ index }) => index === state.caseIndex);
+        const previous = add(controls, "button", "step-button", "← Previous"); previous.type = "button"; previous.disabled = position <= 0;
+        previous.dataset.questionNav = "previous";
+        function navigateQuestion(index, direction) {
+          state.caseIndex = index; renderCaseAndTrajectory();
+          const target = main.querySelector(`[data-question-nav="${direction}"]`);
+          (target && !target.disabled ? target : main.querySelector('.step-button:not([disabled])'))?.focus({preventScroll: true});
+        }
+        previous.addEventListener("click", () => navigateQuestion(matches[position - 1].index, "previous"));
+        const next = add(controls, "button", "step-button", "Next →"); next.type = "button"; next.disabled = position >= matches.length - 1;
+        next.dataset.questionNav = "next";
+        next.addEventListener("click", () => navigateQuestion(matches[position + 1].index, "next"));
+        add(main, "h3", "", questionText(item));
+        const details = add(main, "details", "disclosure question-details");
+        add(details, "summary", "", "Reference & question details");
+        if (questionText(item) !== printable(item.question)) add(details, "p", "case-focus", printable(item.question));
+        if (item.focus) add(details, "p", "case-focus", printable(item.focus));
+        if (item.reference_answer) add(details, "p", "case-focus", `QASPER reference (not independently validated): ${printable(item.reference_answer)}`);
+        add(details, "span", "case-id", `Question ID: ${printable(item.id)}`);
+        const answers = byId("answer-lanes"); clear(answers);
+        const models = selectedModels(active);
+        models.forEach((model) => renderLane(answers, item, model));
+        byId("trace-inspector").open = true;
+        renderTrajectory(item, models);
+        loadFullTrajectories(item, models);
+      }
+      function addEvidence(parent, title, values) {
+        const heading = add(parent, "h5", "evidence-title", title);
+        const body = add(parent, "div", "evidence-list");
+        if (!list(values).length) { add(body, "p", "none", "None recorded."); return; }
+        list(values).forEach((item) => add(body, "div", "evidence-item", formatItem(item)));
+      }
+      function renderLane(container, item, model, traceOnly = false) {
+        const system = systemFor(item, model);
+        const trajectory = trajectoryFor(item, model);
+        const level = assessmentLevel(currentActive());
+        const lane = add(container, "article", "lane card");
+        const head = add(lane, "div", "lane-head");
+        const name = add(head, "div");
+        add(name, "h4", "", printable(system.label || model.label || titleCase(model.key)));
+        const outcome = outcomeFor(item, model);
+        add(name, "small", "", `${trajectory.length} Python turns · ${observedSeconds(system.duration_seconds)}${outcome.error ? outcome.failed ? " · run error" : " · execution error" : ""}`);
+        const verdict = words(system.verdict).toLowerCase();
+        const badge = add(head, "span", `verdict ${["pass", "partial", "fail"].includes(verdict) ? verdict : "other"}`, titleCase(system.verdict || "unreviewed"));
+        badge.title = level === "model" ? "Provisional AI-graded verdict" : level === "human" ? "Recorded human review verdict" : "Answer quality unreviewed";
+        if (traceOnly) {
+          const full = record(traceCacheEntry(item, model)?.data);
+          add(lane, "p", "trace-source", traceSource(item, model));
+          const status = words(full.status || system.status || "not recorded");
+          add(lane, "span", `run-status${outcome.error ? " error" : ""}`, outcome.error && !outcome.failed ? `${status} · execution error` : status);
+          const transcript = add(lane, "div", "transcript");
+          trajectory.forEach((event, index) => {
+            const box = add(transcript, "section", "turn-entry");
+            const heading = add(box, "div", "turn-heading");
+            add(heading, "strong", "", `Turn ${index + 1}`);
+            if (isFinalSubmission(event)) add(heading, "span", "turn-submit", "submit");
+            if (hasRecordedStderr(event)) add(heading, "span", "turn-signal", "stderr");
+            if (event.done && !isFinalSubmission(event)) add(heading, "span", "turn-terminal", "ended");
+            if (typeof event.reasoning === "string" && event.reasoning.trim()) {
+              const generated = add(box, "details", "generated-reasoning");
+              add(generated, "summary", "", "Generated reasoning");
+              add(generated, "pre", "", event.reasoning);
+              if (event.reasoning_truncated) add(generated, "p", "reasoning-excerpt-note", `Excerpt of ${integer(event.reasoning_original_chars)} recorded characters.`);
+            }
+            add(box, "div", "io-label", isFinalSubmission(event) ? "Final submission" : "Generated Python");
+            add(box, "pre", `code${isFinalSubmission(event) ? " submission" : ""}`, printable(event.action));
+            add(box, "div", "io-label", "Environment response");
+            add(box, "pre", "observation", printable(event.observation));
+            if (event.observation_truncated) add(box, "p", "excerpt-note", `${integer(event.observation_original_chars)} characters recorded; showing excerpt in this export.`);
+            renderTokenLikelihood(box, event);
+          });
+          if (!trajectory.length) add(transcript, "p", "empty-step", "No Python turns recorded.");
+          if (full.error || system.error) {
+            const error = add(lane, "details", "disclosure run-error");
+            add(error, "summary", "", "Recorded run error");
+            add(error, "p", "", printable(full.error || system.error));
+          }
+          return;
+        }
+        const result = add(lane, "div", "lane-result");
+        add(result, "p", `answer${system.answer ? "" : " empty"}`, system.answer || "No answer submitted.");
+        if (system.error) {
+          const error = add(result, "details", "disclosure");
+          add(error, "summary", "", system.error_category ? `Run error: ${words(system.error_category)}` : "Run error");
+          add(error, "p", "run-error", printable(system.error));
+        }
+        const evidence = add(result, "details", "disclosure answer-details");
+        add(evidence, "summary", "", "Sources & review");
+        addEvidence(evidence, "Citations", system.citations);
+        addEvidence(evidence, "Submitted evidence", system.evidence);
+        renderAnswerDiagnostics(evidence, system);
+        if (system.notes) {
+          const note = add(evidence, "p", "review-note");
+          add(note, "strong", "", level === "model" ? "AI review: " : "Review: ");
+          note.append(document.createTextNode(printable(system.notes)));
+        }
+      }
+
+      function renderAnswerDiagnostics(parent, system) {
+        const grid = add(parent, "div", "diagnostic-grid");
+        const diagnostics = record(system.diagnostics);
+        [["answer_correctness", "Answer correctness"], ["evidence_support", "Submitted evidence supports the answer"]].forEach(([key, label]) => {
+          const item = record(diagnostics[key]);
+          const status = words(item.status).toLowerCase();
+          const unknown = !status || ["unknown", "unreviewed", "not assessed"].includes(status);
+          const box = add(grid, "div", "diagnostic");
+          add(box, "h6", "", label);
+          add(box, "strong", "", unknown ? "Not separately assessed" : titleCase(item.status));
+          add(box, "p", "", item.reason || (key === "answer_correctness"
+            ? "The overall pass/fail verdict combines correctness and evidence. It cannot tell us which component failed."
+            : "Exact span validity checks whether text exists in the source. It does not judge whether that text supports the answer."));
+          if (item.assessment_level) add(box, "small", "", titleCase(item.assessment_level));
+        });
+        if (list(diagnostics.source_checks).length) {
+          addEvidence(parent, "Source passage used for this diagnosis", diagnostics.source_checks);
+          add(parent, "p", "metrics-note", "This passage was checked during the diagnosis. It is separate from the model's submitted evidence below.");
+        }
+      }
+      function renderTrajectory(item, models) {
+        const lanes = byId("lanes"); clear(lanes);
+        models.forEach((model) => renderLane(lanes, item, model, true));
+      }
+
+      function renderProvenance(provenance) {
+        const container = byId("provenance-list"); clear(container);
+        const source = record(provenance);
+        const judge = record(source.judge);
+        if (Object.keys(judge).length) {
+          const grader = add(container, "div");
+          add(grader, "dt", "", "Model-assisted grader · provisional");
+          add(grader, "dd", "", `Requested: ${printable(judge.requested_model)} · API reported: ${list(judge.reported_models).length ? list(judge.reported_models).map(printable).join(", ") : "—"}`);
+          const usage = add(container, "div");
+          add(usage, "dt", "", "Grader token usage");
+          add(usage, "dd", "", `${integer(judge.input_tokens)} input · ${integer(judge.output_tokens)} output`);
+          const prompt = add(container, "div");
+          add(prompt, "dt", "", "Grader system prompt SHA-256");
+          add(prompt, "dd", "", printable(judge.system_prompt_sha256));
+          const report = add(container, "div");
+          add(report, "dt", "", "Judge report hash");
+          add(report, "dd", "", printable(judge.report_hash));
+          if (judge.limitations) {
+            const limits = add(container, "div");
+            add(limits, "dt", "", "Grader limitations");
+            add(limits, "dd", "", printable(judge.limitations));
+          }
+        }
+        const entries = Object.entries(source).filter(([key]) => key !== "judge");
+        if (!entries.length && !Object.keys(judge).length) { add(container, "p", "none", "No run provenance is available."); return; }
+        entries.forEach(([key, value]) => {
+          const row = add(container, "div");
+          add(row, "dt", "", titleCase(key));
+          const detail = add(row, "dd");
+          if (value && typeof value === "object") {
+            const disclosure = add(detail, "details");
+            add(disclosure, "summary", "", Array.isArray(value) ? `Show ${value.length} records` : "Show details");
+            add(disclosure, "pre", "", JSON.stringify(value, null, 2));
+          } else detail.textContent = printable(value);
+        });
+      }
+      function renderPriorArt(items) {
+        const container = byId("prior-art-list"); clear(container);
+        if (!list(items).length) { add(container, "p", "none", "No related benchmarks are listed."); return; }
+        list(items).forEach((item) => {
+          const card = add(container, "article", "art-card card");
+          const url = safeHref(item.url);
+          if (url) { const link = add(card, "a", "", `${printable(item.name)} ↗`); link.href = url; link.target = "_blank"; link.rel = "noopener noreferrer"; }
+          else add(card, "strong", "", printable(item.name));
+          const overlap = add(card, "p"); add(overlap, "strong", "", "Overlap. "); overlap.append(document.createTextNode(printable(item.overlap)));
+          const difference = add(card, "p"); add(difference, "strong", "", "Difference. "); difference.append(document.createTextNode(printable(item.difference)));
+        });
+      }
+      function reasoningStatus(active) {
+        const hasReasoning = list(active.cases).some((item) => list(active.models).some((model) =>
+          trajectoryFor(item, model).some((event) => typeof event.reasoning === "string" && event.reasoning.trim())));
+        if (hasReasoning) return "Generated reasoning is available within saved turns.";
+        const identities = list(record(active.provenance).model_identities);
+        const models = list(active.models);
+        const disabled = models.length > 0 && models.every((model) => {
+          const identity = identities.find((item) => item.key === model.key);
+          return record(record(record(identity).extra_body).chat_template_kwargs).enable_thinking === false;
+        });
+        return disabled ? "Qwen thinking mode was off for both models; no generated reasoning trace exists for this run." : "Reasoning text was not recorded for this run.";
+      }
+      function render(data) {
+        state.data = data;
+        state.traceAllowed = false;
+        state.traceCache.clear();
+        const active = record(data.active);
+        const assessment = assessmentLevel(active);
+        byId("task-card-label").textContent = assessment === "human" ? "Same frozen paper and tools · human-reviewed." : assessment === "model" ? "Same frozen paper and tools · provisional AI grades." : "Same frozen paper and tools · answer quality ungraded.";
+        byId("task-card-copy").textContent = reasoningStatus(active);
+        const provisional = setReviewAvailability();
+        renderCandidate(record(data.candidate), record(data.active));
+        renderModels(record(data.active));
+        renderProvenance(record(record(data.active).provenance));
+        renderPriorArt(data.prior_art);
+        if (provisional || state.snapshot) setBlindMode(false);
+        byId("release-copy").textContent = `${state.snapshot ? "Recorded snapshot. " : ""}${releaseCopy()}`;
+        return provisional;
+      }
+      async function load() {
+        const error = byId("load-error"); error.hidden = true; clear(error);
+        try {
+          let data;
+          if (state.snapshot) data = JSON.parse(byId("envoybench-data").textContent);
+          else {
+            const response = await fetch("/api/demo", { headers: { Accept: "application/json" } });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            data = await response.json();
+          }
+          if (!data || typeof data !== "object" || !data.candidate || !data.active) throw new Error("Incomplete demo response");
+          const provisional = render(data);
+          if (!provisional && !state.snapshot) { loadReferenceReview(); loadBlindReview(); }
+        } catch (failure) {
+          error.hidden = false;
+          add(error, "strong", "", "The demo data could not be loaded.");
+          add(error, "div", "", state.snapshot ? `The embedded snapshot could not be read (${failure.message}).` : `Check the local demo server and try again (${failure.message}).`);
+          const retry = add(error, "button", "", "Retry"); retry.type = "button"; retry.addEventListener("click", load);
+        }
+      }
+      function downloadReport() {
+        if (!state.data || state.blindActive) return;
+        const blob = new Blob([JSON.stringify(state.data, null, 2) + "\n"], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url; link.download = "envoybench-recorded-comparison.json";
+        document.body.append(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+      byId("reference-finalize").addEventListener("click", finalizeReferenceReview);
+      byId("blind-finalize").addEventListener("click", finalizeBlindReview);
+      byId("download-report").addEventListener("click", downloadReport);
+      byId("back-to-runs").addEventListener("click", showRuns);
+      byId("runs-nav").addEventListener("click", showRuns);
+      document.querySelector('a[href="#benchmark-details"]').addEventListener("click", () => { byId("benchmark-details").open = true; });
+      if (location.hash === "#benchmark-details") byId("benchmark-details").open = true;
+      load();
+    })();
+  </script>
+</body>
+</html>
