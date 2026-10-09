@@ -514,7 +514,9 @@ def run(
                     escalate_after_verifier_failure=False,
                 )
                 if [item.question_id for item in result_set] != [question["id"]]:
-                    raise RuntimeError(f"{key}: incomplete question matrix; refusing complete artifact")
+                    raise RuntimeError(
+                        f"{key}: incomplete question matrix; refusing complete artifact"
+                    )
                 rows.extend(_result_row(item, key, manifest, secrets) for item in result_set)
                 _write_json(output / "results.partial.json", rows)
                 if budget is not None:

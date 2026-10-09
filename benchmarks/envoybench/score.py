@@ -163,7 +163,8 @@ def _review_content(row: dict) -> dict:
 
 
 def _verify_artifacts(benchmark: dict, run_manifest: dict, results: list[dict],
-                      corpus_dir: Path) -> tuple[dict[str, dict], list[str]]:
+                      corpus_dir: Path, *,
+                      require_paired: bool = True) -> tuple[dict[str, dict], list[str]]:
     validate_benchmark(benchmark)
     if not isinstance(run_manifest, dict) or not isinstance(results, list):
         raise ValueError("run manifest and results must be JSON objects/list")
@@ -236,8 +237,10 @@ def _verify_artifacts(benchmark: dict, run_manifest: dict, results: list[dict],
     if len(result_keys) != len(set(result_keys)):
         raise ValueError("results contain duplicate model/question pairs")
     models = sorted({model for model, _ in result_keys})
-    if len(models) < 2:
+    if require_paired and len(models) < 2:
         raise ValueError("paired review needs at least two models")
+    if not models:
+        raise ValueError("saved run needs at least one model")
     if set(result_keys) != {(model, question) for model in models for question in question_set}:
         raise ValueError("results are not a complete paired model/question matrix")
     if set(run_manifest.get("question_ids", [])) != question_set:

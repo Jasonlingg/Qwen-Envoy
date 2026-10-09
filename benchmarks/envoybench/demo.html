@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>EnvoyBench Studio · Research agent benchmark</title>
+  <title>QASPER Agent Studio · Qwen Envoy</title>
   <style>
     :root {
       color-scheme: dark;
@@ -92,6 +92,7 @@
     .question-table th:first-child { width: 30px; }
     .question-table th:nth-child(3) { width: 90px; }
     .question-table th:nth-child(4) { width: 71px; }
+    .question-table th:nth-child(5) { width: 52px; }
     .question-table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
     .question-table tr.selected { background: var(--selected); box-shadow: inset 2px 0 #cbd5e1; }
     .question-number { font: 10px var(--mono); color: var(--muted); }
@@ -248,6 +249,8 @@
     @media (max-width: 780px) {
       .shell { width: calc(100% - 20px); }
       .topbar { align-items: flex-start; flex-direction: column; gap: 5px; padding: 10px 0; }
+      .brand { white-space: normal; }
+      .brand-name small { display: block; margin: 4px 0 0; padding: 0; border: 0; }
       .topnav { gap: 12px; }
       .topnav a { padding: 3px 0; }
       #cases { display: flex; flex-direction: column; }
@@ -266,7 +269,7 @@
   <div class="top" id="top">
     <div class="shell">
       <header class="topbar">
-        <a class="brand" href="#top" aria-label="EnvoyBench Studio home"><span class="brand-name">Envoy<b>Bench</b><small>Evaluation playground</small></span></a>
+        <a class="brand" href="#top" aria-label="QASPER Agent Studio home"><span class="brand-name">QASPER Agent Studio<small>by Qwen Envoy · adapted from Ai2 QASPER</small></span></a>
         <nav class="topnav" aria-label="Page sections">
           <a href="#archive" id="runs-nav" data-blind-hidden hidden>Runs</a>
           <a href="/papers" data-blind-hidden data-live-only hidden>Read a paper</a>
@@ -285,7 +288,7 @@
     <div id="load-error" class="error-box" role="alert" hidden></div>
     <section class="section" id="archive" aria-labelledby="archive-heading" hidden>
       <div class="section-head"><div><span id="active-title" class="kicker">Saved comparison</span><h2 id="archive-heading">Benchmark results</h2></div><button id="download-report" class="review-button secondary" type="button">Export results ↓</button></div>
-      <div class="archive-note"><div><strong id="archive-note-heading">Historical development evidence.</strong> <span id="archive-note-body">These verdicts came from model-assisted review and were used during development. They are provisional, not independent human judgments or a new held-out EnvoyBench score.</span></div></div>
+      <div class="archive-note"><div><strong id="archive-note-heading">Historical development evidence.</strong> <span id="archive-note-body">These verdicts came from model-assisted review and were used during development. They are provisional, not independent human judgments or a new held-out QASPER agent score.</span></div></div>
 
       <p id="active-subtitle" class="archive-subtitle"></p>
       <div id="model-cards" class="metric-grid" aria-live="polite"></div>
@@ -298,7 +301,7 @@
         <ul id="promotion-reasons" style="font-size: 12px; line-height: 1.6; color: var(--muted)"></ul>
       </div>
       </details>
-      <details class="disclosure secondary-details"><summary>What these scores mean</summary><p class="metrics-note">A valid quoted span means the text appears in the frozen source; it does not establish that the answer follows from it. A failed supported-answer verdict does not necessarily mean the answer itself was factually wrong. Model-graded verdicts remain provisional. An em dash means that diagnostic was not reported. Episode time includes the recorded execution setup.</p></details>
+      <details class="disclosure secondary-details"><summary>What these scores mean</summary><p class="metrics-note">Official QASPER Answer F1 (0–100) measures token overlap with the source answer annotations, using the official evaluator on this selected subset. It is separate from provisional AI support reviews and is not a full QASPER leaderboard result. A valid quoted span does not establish that the answer follows from it. Passes include correct refusals. Dev smoke runs have no quality score; an em dash means a metric was not reported. Episode time includes the recorded execution setup.</p></details>
     </section>
 
     <section class="section" id="cases" aria-labelledby="cases-heading" hidden>
@@ -330,9 +333,9 @@
     </section>
     <section class="section" id="protocol" aria-labelledby="protocol-heading">
       <div class="section-head"><div><span class="kicker">Method</span><h2 id="protocol-heading">How it works</h2></div><p>Search → read → extract → answer with evidence.</p></div>
-      <div id="protocol-grid" class="protocol-grid"><div class="protocol-card"><h3>Evaluation sequence</h3><ol class="protocol-list"><li><span class="protocol-number">01</span><div><strong>Freeze questions and source text</strong><p>Record question IDs, paper exclusions, corpus revision, and source hashes before running the candidate models.</p></div></li><li><span class="protocol-number">02</span><div><strong>Run the same bounded investigation</strong><p>Each model writes Python against the same search, read, passage, and extraction tools. Actions and observations are recorded.</p></div></li><li><span class="protocol-number">03</span><div><strong>Produce a provisional comparison</strong><p>Use deterministic checks for execution and exact spans. A model grader can assess answers against existing QASPER references, but its verdicts are not independent human judgments.</p></div></li><li><span class="protocol-number">04</span><div><strong>Inspect failures; optionally validate with people</strong><p>Show paired answers and trajectories. If a human-reviewed result is needed, validate source references first, then judge anonymous answers before revealing model identities.</p></div></li></ol></div><div id="provenance-card" class="provenance-card" hidden><h3 id="provenance-heading">Archive provenance</h3><dl id="provenance-list" class="provenance-list"></dl></div></div>
+      <div id="protocol-grid" class="protocol-grid"><div class="protocol-card"><h3>Evaluation sequence</h3><ol class="protocol-list"><li><span class="protocol-number">01</span><div><strong>Freeze questions and source text</strong><p>Record question IDs, paper exclusions, corpus revision, and source hashes before running the candidate models.</p></div></li><li><span class="protocol-number">02</span><div><strong>Pair the Qwen base and v5 investigations</strong><p>The paired Qwen models use the same paper tools and serving setup. Supplementary models share the questions and tools but differ in provider, context and runtime. Actions and observations are recorded.</p></div></li><li><span class="protocol-number">03</span><div><strong>Produce a provisional comparison</strong><p>Use deterministic checks for execution and exact spans. A model grader can assess answers against existing QASPER references, but its verdicts are not independent human judgments.</p></div></li><li><span class="protocol-number">04</span><div><strong>Inspect failures; optionally validate with people</strong><p>Show paired answers and trajectories. If a human-reviewed result is needed, validate source references first, then judge anonymous answers before revealing model identities.</p></div></li></ol></div><div id="provenance-card" class="provenance-card" hidden><h3 id="provenance-heading">Archive provenance</h3><dl id="provenance-list" class="provenance-list"></dl></div></div>
     </section>
-    <section class="section" id="prior-art" aria-labelledby="prior-heading" hidden><div class="section-head"><div><span class="kicker">Sources</span><h2 id="prior-heading">Related work</h2></div><p>The questions build on existing research. These related benchmarks clarify what EnvoyBench shares with them and what its tool-mediated protocol adds.</p></div><div id="prior-art-list" class="art-grid"></div></section>
+    <section class="section" id="prior-art" aria-labelledby="prior-heading" hidden><div class="section-head"><div><span class="kicker">Sources</span><h2 id="prior-heading">Related work</h2></div><p>The questions build on existing research. These related benchmarks clarify what this QASPER agent study shares with them and what its tool-mediated protocol adds.</p></div><div id="prior-art-list" class="art-grid"></div></section>
     </details>
     <section class="section" id="reference-review" aria-labelledby="reference-review-heading">
       <div class="section-head"><div><span class="kicker">02 / Optional source review</span><h2 id="reference-review-heading">Check the questions before the models.</h2></div><p>For independent validation, read the original annotations and full frozen paper, then decide if each question has a clear scoring interpretation. This is optional for a provisional automated comparison. To preserve blinding, finish this step before opening named candidate outputs.</p></div>
@@ -352,7 +355,7 @@
     </section>
   </main>
 
-  <footer class="footer shell"><span>Built on <a href="https://huggingface.co/datasets/allenai/qasper" target="_blank" rel="noopener noreferrer">AllenAI QASPER</a> (Dasigi et al., 2021; CC BY 4.0).</span><span>Saved runs · no live model calls</span></footer>
+  <footer class="footer shell"><span>40-question agent study adapted from <a href="https://huggingface.co/datasets/allenai/qasper" target="_blank" rel="noopener noreferrer">Ai2 QASPER</a> (Dasigi et al., 2021; CC BY 4.0). Independent project; no Ai2 affiliation.</span><span>Saved runs · no live model calls</span></footer>
   <script>
     (() => {
       "use strict";
@@ -976,6 +979,12 @@
         const entries = list(active.models).map((model) => ({
           id: `benchmark:${model.key}`, model, active, diagnostic: false,
         }));
+        list(data.supplementary_runs).forEach((run) => {
+          entries.push(...list(run.models).map((model) => ({
+            id: `supplementary:${record(run.provenance).run_id}:${model.key}`,
+            model, active: run, diagnostic: false, supplementary: true,
+          })));
+        });
         const diagnostic = record(data.token_diagnostic);
         if (list(diagnostic.cases).length) {
           const smoke = {
@@ -1003,9 +1012,11 @@
         byId("archive").hidden = true;
         byId("cases").hidden = false;
         byId("cases-heading").textContent = printable(entry.model.label || titleCase(entry.model.key));
-        byId("task-card-label").textContent = entry.diagnostic ? "Development smoke · unscored." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
+        byId("task-card-label").textContent = entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
         byId("task-card-copy").textContent = entry.diagnostic
           ? "Separate saved run. Token likelihood is available inside each turn."
+          : entry.supplementary
+            ? "Same frozen questions and paper tools; provider, serving context and runtime differ. This is not a controlled Qwen–Nemotron comparison."
           : "Select a question to inspect its answer, code and tool results.";
         renderCaseAndTrajectory();
         renderProvenance(record(entry.active.provenance));
@@ -1025,12 +1036,12 @@
         byId("archive-heading").textContent = "Runs";
         byId("provenance-heading").textContent = "Run details";
         byId("archive-note-heading").textContent = level === "model" ? "AI-graded · provisional." : level === "human" ? "Human-reviewed." : "Saved runs.";
-        byId("archive-note-body").textContent = "Passes include correct refusals. Dev smoke runs have no quality score.";
+        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; supplementary runs are separate. Dev smoke runs have no quality score.";
         const container = byId("model-cards"); clear(container);
         const scroll = add(container, "div", "run-table-scroll");
         const table = add(scroll, "table", "run-table");
         const headings = add(add(table, "thead"), "tr");
-        ["Run", "Date", "Samples", "Passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
+        ["Run", "Date", "Samples", "Official QASPER Answer F1 (0–100)", level === "human" ? "Human passes" : "AI passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
         const body = add(table, "tbody");
         runEntries(state.data).forEach((entry) => {
           const metrics = record(entry.model.metrics);
@@ -1040,9 +1051,10 @@
           const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
           button.dataset.runId = entry.id;
           button.type = "button"; button.addEventListener("click", () => openRun(entry));
-          add(name, "small", "run-kind", entry.diagnostic ? "Dev smoke · unscored" : "Paper-agent evaluation");
+          add(name, "small", "run-kind", entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
           add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
           add(row, "td", "", integer(total));
+          add(row, "td", "", answerF1(metrics.qasper_answer_f1));
           add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
           add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
           add(row, "td", "", count(metrics.unanswerable_pass) === null ? "—" : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
@@ -1065,6 +1077,7 @@
         return value === "sufficient" ? "Answerable" : value === "insufficient" ? "Unanswerable" : titleCase(value);
       }
       function systemFor(item, model) { return record(record(item.systems)[model.key]); }
+      function answerF1(value) { return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1 ? (value * 100).toFixed(1) : "—"; }
       function traceKey(item, model) { return `${state.selectedRun?.id || "benchmark"}\u0000${item.id}\u0000${model.key}`; }
       function traceCacheEntry(item, model) { return state.traceCache.get(traceKey(item, model)); }
       function trajectoryFor(item, model) {
@@ -1090,6 +1103,7 @@
           if (currentCase()?.id === item.id) renderTrajectory(item, selectedModels(currentActive()));
           try {
             const query = new URLSearchParams({ question_id: item.id, model: model.key });
+            if (state.selectedRun?.supplementary) query.set("run_id", currentActive().provenance.run_id);
             const response = await fetch(`/api/demo/trace?${query}`, { headers: { Accept: "application/json" } });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             const data = await response.json();
@@ -1163,7 +1177,8 @@
         const table = add(scroller, "table", "question-table");
         const header = add(table, "thead");
         const headings = add(header, "tr");
-        ["#", "Question", "Label", "Grade"].forEach((label) => add(headings, "th", "", label));
+        ["#", "Question", "Label", "Support review"].forEach((label) => add(headings, "th", "", label));
+        if (active.qasper_score) add(headings, "th", "", "F1 /100").title = "Official QASPER Answer F1 (0–100)";
         const body = add(table, "tbody");
         matches.forEach(({ item, index }) => {
           const row = add(body, "tr", index === state.caseIndex ? "selected" : "");
@@ -1178,6 +1193,7 @@
             const cell = add(row, "td", "outcome-cell");
             add(cell, "span", `verdict ${outcome.verdict}`, titleCase(systemFor(item, model).verdict || "unreviewed"));
             if (outcome.error) add(cell, "span", "error-flag", outcome.failed ? "run error" : "tool error");
+            if (active.qasper_score) add(row, "td", "", answerF1(systemFor(item, model).qasper_answer_f1));
           });
           row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
         });
@@ -1254,6 +1270,7 @@
         const verdict = words(system.verdict).toLowerCase();
         const badge = add(head, "span", `verdict ${["pass", "partial", "fail"].includes(verdict) ? verdict : "other"}`, titleCase(system.verdict || "unreviewed"));
         badge.title = level === "model" ? "Provisional AI-graded verdict" : level === "human" ? "Recorded human review verdict" : "Answer quality unreviewed";
+        if (!traceOnly && currentActive().qasper_score) add(lane, "p", "metrics-note", `Official QASPER Answer F1: ${answerF1(system.qasper_answer_f1)} / 100 · token overlap, separate from support review`);
         if (traceOnly) {
           const full = record(traceCacheEntry(item, model)?.data);
           add(lane, "p", "trace-source", traceSource(item, model));

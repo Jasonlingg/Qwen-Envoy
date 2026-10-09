@@ -1,4 +1,4 @@
-"""Local EnvoyBench Studio: source review and inspectable saved traces.
+"""Local QASPER Agent Studio: source review and inspectable saved traces.
 
 By default this shows a *historical development* Qwen comparison, not an
 EnvoyBench test result. Pass --run-dir after a complete EnvoyBench evaluation to
@@ -292,7 +292,8 @@ def _run_payload(
     run_dir: Path, dataset: Path, review_dir: Path | None,
     reference_review_path: Path | None, *, provisional: bool = False,
     judged_review_path: Path | None = None,
-    verified_trace_store: dict[tuple[str, str], dict] | None = None,
+    verified_trace_store: dict[tuple[str, ...], dict] | None = None,
+    supplementary: bool = False,
 ) -> dict:
     manifest = _read_json(run_dir / "manifest.json")
     results = _read_json(run_dir / "results.json")
@@ -302,7 +303,9 @@ def _run_payload(
     if split not in {"dev", "test_candidate"}:
         raise ValueError("Run split must be dev or test_candidate")
     benchmark, _, _, corpus_path, _ = load_split(dataset, split)
-    documents, model_keys = _verify_artifacts(benchmark, manifest, results, corpus_path)
+    documents, model_keys = _verify_artifacts(
+        benchmark, manifest, results, corpus_path, require_paired=not supplementary,
+    )
     automatic = _automatic_score(benchmark, results, documents, model_keys)
     components, featured, component_provenance = case_diagnostics(
         benchmark, results, documents
@@ -363,6 +366,10 @@ def _run_payload(
             _read_json(reference_review_path),
         )
     reviewed = (scored or {}).get("human") or (scored or {}).get("provisional_model_assisted")
+    model_labels = {
+        item["key"]: item.get("label") or item["key"].replace("_", " ").title()
+        for item in manifest["models"]
+    }
     models = []
     for item in manifest["models"]:
         key = item["key"]
@@ -382,7 +389,7 @@ def _run_payload(
             ]
         models.append({
             "key": key,
-            "label": key.replace("_", " ").title(),
+            "label": model_labels[key],
             "metrics": {
                 "pass": semantic.get("pass"),
                 "partial": semantic.get("partial"),
@@ -447,7 +454,7 @@ def _run_payload(
                     **semantic_diagnostics, "answer_behavior": behavior[(question_id, key)],
                 }
             systems[key] = {
-                "label": key.replace("_", " ").title(),
+                "label": model_labels[key],
                 "verdict": annotation.get("verdict"),
                 "notes": annotation.get("notes", ""),
                 "answer": row["predicted_answer"],
@@ -470,7 +477,7 @@ def _run_payload(
             "id": question_id,
             "question": question["question"],
             "answerability": question["expected_answerability"],
-            "focus": "Complete paired run; inspect the code, source spans, and verdicts.",
+            "focus": "Saved paper-agent run; inspect the code, source spans, and review status.",
             "systems": systems,
         })
     if scored and scored.get("human"):
@@ -483,8 +490,9 @@ def _run_payload(
         score_status = "unreviewed; automatic diagnostics only"
     payload = {
         "kind": "envoybench_run",
-        "title": f"EnvoyBench · {split.replace('_', ' ').title()}",
-        "subtitle": "Complete paired run from local saved artifacts; no inference in this viewer.",
+        "title": f"QASPER Agent Studio · {split.replace('_', ' ').title()}",
+        "subtitle": "Saved paper-agent evaluation; no inference in this viewer.",
+        "supplementary": supplementary,
         "score_status": score_status,
         "comparison_mode": (
             "provisional" if provisional and split == "test_candidate" else "reviewed"
@@ -508,6 +516,9 @@ def _run_payload(
         "promotion": promotion,
         "provenance": {
             "run_id": manifest["run_id"],
+            "benchmark_id": manifest["benchmark_id"],
+            "results_hash": configuration_hash({"results": results}),
+            "results_sha256": _file_sha256(run_dir / "results.json"),
             "comparison_id": manifest["comparison_id"],
             "benchmark_hash": manifest["benchmark_hash"],
             "corpus_hash": manifest["corpus_hash"],
@@ -529,7 +540,8 @@ def _run_payload(
         # Keep the verified rows in memory. The lazy route must never re-read a
         # mutable results.json after the artifact and review checks above pass.
         verified_trace_store.update({
-            (row["question_id"], row["model_key"]): {
+            ((manifest["run_id"], row["question_id"], row["model_key"]) if supplementary
+             else (row["question_id"], row["model_key"])): {
                 "question_id": row["question_id"],
                 "model_key": row["model_key"],
                 "status": row["status"],
@@ -543,14 +555,90 @@ def _run_payload(
     return payload
 
 
+def _attach_qasper_score(path: Path, runs: list[dict]) -> None:
+    """Attach a saved official metric only to its exact verified run artifacts."""
+    if path.stat().st_size > 10 * 1024 * 1024:
+        raise ValueError("QASPER score exceeds the 10 MiB display limit")
+    report = _read_json(path)
+    if (not isinstance(report, dict)
+            or report.get("schema_version") != "qasper-agent-study-score-v1"):
+        raise ValueError("Unsupported QASPER score schema")
+    matches = [run for run in runs
+               if run.get("provenance", {}).get("run_id") == report.get("run_id")]
+    if len(matches) != 1:
+        raise ValueError("QASPER score must identify exactly one loaded saved run")
+    run = matches[0]
+    if "qasper_score" in run:
+        raise ValueError("QASPER score already loaded for this run")
+    for field in (
+        "benchmark_id", "benchmark_hash", "corpus_hash", "results_hash", "results_sha256",
+    ):
+        if not report.get(field) or report[field] != run["provenance"].get(field):
+            raise ValueError(f"QASPER score {field} differs from the saved run")
+    ids = [case["id"] for case in run["cases"]]
+    if (not isinstance(report.get("question_ids"), list)
+            or sorted(report["question_ids"]) != sorted(ids)):
+        raise ValueError("QASPER score question IDs differ from the saved run")
+    summaries, rows = report.get("models"), report.get("rows")
+    keys = {model["key"] for model in run["models"]}
+    if not isinstance(summaries, dict) or set(summaries) != keys or not isinstance(rows, list):
+        raise ValueError("QASPER score needs the saved run's model summaries and rows")
+
+    def valid_f1(value: object) -> bool:
+        return type(value) in {int, float} and math.isfinite(value) and 0 <= value <= 1
+
+    by_pair = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError("Invalid QASPER score row")
+        pair = (row.get("question_id"), row.get("model_key"))
+        if (pair in by_pair or pair[0] not in ids or pair[1] not in keys
+                or not valid_f1(row.get("answer_f1"))):
+            raise ValueError("QASPER score has invalid or duplicate question/model scores")
+        by_pair[pair] = row
+    if set(by_pair) != {(question_id, key) for question_id in ids for key in keys}:
+        raise ValueError("QASPER score is missing question/model scores")
+    for model in run["models"]:
+        summary = summaries[model["key"]]
+        if (not isinstance(summary, dict) or not valid_f1(summary.get("answer_f1"))
+                or summary.get("question_count") != len(ids)):
+            raise ValueError("Invalid QASPER model score or denominator")
+        average = sum(by_pair[(qid, model["key"])]["answer_f1"] for qid in ids) / len(ids)
+        if not math.isclose(summary["answer_f1"], average, rel_tol=1e-9, abs_tol=1e-9):
+            raise ValueError("QASPER model score differs from its question scores")
+        model["metrics"]["qasper_answer_f1"] = summary["answer_f1"]
+    for case in run["cases"]:
+        for key, system in case["systems"].items():
+            row = by_pair[(case["id"], key)]
+            missing = system["status"] != "submitted"
+            expected_answer = None if missing else system["answer"]
+            if (row.get("predicted_answer") != expected_answer
+                    or row.get("status") != system["status"]
+                    or row.get("prediction_missing") is not missing
+                    or (missing and row["answer_f1"] != 0)):
+                raise ValueError("QASPER scored prediction differs from the saved answer")
+            system["qasper_answer_f1"] = row["answer_f1"]
+    run["qasper_score"] = {
+        "schema_version": report["schema_version"],
+        "title": "Official QASPER Answer F1",
+        "scope": (f"Official metric on {len(ids)} selected QASPER questions; "
+                  "not the full benchmark or a support review."),
+        "source_sha256": _file_sha256(path),
+        "provenance": report.get("provenance", {}),
+    }
+    run["provenance"]["qasper_official_score"] = run["qasper_score"]
+
+
 def build_demo_payload(
     *, run_dir: Path | None = None, review_dir: Path | None = None,
     dataset: Path = DEFAULT_DATASET,
     reference_review_path: Path | None = None,
     provisional: bool = False,
     judged_review_path: Path | None = None,
-    verified_trace_store: dict[tuple[str, str], dict] | None = None,
+    verified_trace_store: dict[tuple[str, ...], dict] | None = None,
     token_diagnostic_run: Path | None = None,
+    supplementary_runs: list[Path] | None = None,
+    qasper_scores: list[Path] | None = None,
 ) -> dict:
     """Build a transparent dashboard payload without executing model actions."""
     if review_dir is not None and run_dir is None:
@@ -584,10 +672,21 @@ def build_demo_payload(
         )
         if run_dir is not None else fixture["active"]
     )
+    supplements = [
+        _run_payload(path, dataset, None, None, provisional=True, supplementary=True,
+                     verified_trace_store=verified_trace_store)
+        for path in supplementary_runs or []
+    ]
+    run_ids = [run.get("provenance", {}).get("run_id") for run in [active, *supplements]]
+    if len(run_ids) != len(set(run_ids)):
+        raise ValueError("Loaded saved runs must have distinct run IDs")
+    for path in qasper_scores or []:
+        _attach_qasper_score(path, [active, *supplements])
     return {
         "schema_version": "envoybench-demo-v1",
         "candidate": _candidate_summary(dataset),
         "active": active,
+        "supplementary_runs": supplements,
         "prior_art": PRIOR_ART,
         "token_diagnostic": (
             _token_diagnostic_payload(token_diagnostic_run, dataset)
@@ -607,19 +706,24 @@ def create_app(
     paper_models_path: Path | None = None,
     web_evidence_report_path: Path | None = None,
     token_diagnostic_run: Path | None = None,
+    supplementary_runs: list[Path] | None = None,
+    qasper_scores: list[Path] | None = None,
 ) -> FastAPI:
     if provisional and blind_review_dir is not None:
         raise ValueError("provisional named outputs cannot share a blind human review session")
     if token_diagnostic_run is not None and blind_review_dir is not None:
         raise ValueError("named token diagnostics cannot share a blind human review session")
-    app = FastAPI(title="EnvoyBench Studio")
-    verified_trace_store: dict[tuple[str, str], dict] = {}
+    if (supplementary_runs or qasper_scores) and blind_review_dir is not None:
+        raise ValueError("named saved runs and scores cannot share a blind human review session")
+    app = FastAPI(title="QASPER Agent Studio")
+    verified_trace_store: dict[tuple[str, ...], dict] = {}
     app.state.payload = build_demo_payload(
         run_dir=run_dir, review_dir=review_dir, dataset=dataset,
         reference_review_path=reference_review_path, provisional=provisional,
         judged_review_path=judged_review_path,
         verified_trace_store=(verified_trace_store if blind_review_dir is None else None),
         token_diagnostic_run=token_diagnostic_run,
+        supplementary_runs=supplementary_runs, qasper_scores=qasper_scores,
     )
     app.state.verified_trace_store = verified_trace_store
     app.state.web_evidence_report = (
@@ -655,17 +759,23 @@ def create_app(
             return JSONResponse(app.state.web_evidence_report)
 
         @app.get("/api/demo/trace", response_class=JSONResponse)
-        def full_saved_trace(question_id: str, model: str) -> JSONResponse:
+        def full_saved_trace(
+            question_id: str, model: str, run_id: str | None = None,
+        ) -> JSONResponse:
             """One verified saved Python-turn trajectory; no inference or file lookup."""
             active = app.state.payload["active"]
-            if run_dir is None or active.get("kind") != "envoybench_run":
+            if run_id is not None:
+                active = next((run for run in app.state.payload["supplementary_runs"]
+                               if run["provenance"]["run_id"] == run_id), {})
+            if active.get("kind") != "envoybench_run":
                 raise HTTPException(status_code=404, detail="No saved run loaded")
             case = next(
                 (item for item in active["cases"] if item["id"] == question_id), None
             )
             if case is None or model not in case["systems"]:
                 raise HTTPException(status_code=404, detail="Unknown question or model")
-            result = app.state.verified_trace_store.get((question_id, model))
+            trace_key = (run_id, question_id, model) if run_id is not None else (question_id, model)
+            result = app.state.verified_trace_store.get(trace_key)
             if result is None:
                 raise HTTPException(status_code=404, detail="No verified trace for selection")
             return JSONResponse(result)
@@ -870,6 +980,10 @@ def main() -> int:
         "--token-diagnostic-run", type=Path,
         help="complete paired dev smoke directory; separate from benchmark quality scores",
     )
+    parser.add_argument("--supplementary-run", type=Path, action="append", default=[],
+                        help="additional saved run, kept separate from the paired comparison")
+    parser.add_argument("--qasper-score", type=Path, action="append", default=[],
+                        help="saved official QASPER Answer F1 report bound to a loaded run")
     args = parser.parse_args()
     app = create_app(
         run_dir=args.run_dir, review_dir=args.review_dir, dataset=args.dataset,
@@ -881,8 +995,10 @@ def main() -> int:
         paper_models_path=args.paper_models,
         web_evidence_report_path=args.web_evidence_report,
         token_diagnostic_run=args.token_diagnostic_run,
+        supplementary_runs=args.supplementary_run,
+        qasper_scores=args.qasper_score,
     )
-    print(f"EnvoyBench Studio: http://127.0.0.1:{args.port}", flush=True)
+    print(f"QASPER Agent Studio: http://127.0.0.1:{args.port}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=args.port)
     return 0
 
