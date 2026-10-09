@@ -23,6 +23,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from uuid import uuid4
 
+from benchmarks.envoybench.budget import InferenceBudget
 from src.env.corpus import Corpus
 from src.env.reward import REWARD_VERSION
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
@@ -324,12 +325,12 @@ def _implementation_hashes() -> dict[str, str]:
         "src/env/document_env.py", "src/env/repl.py", "src/env/repl_worker.py",
         "src/env/tools.py", "src/env/reward.py", "src/eval/harness.py",
         "src/policies/code_execution.py", "src/policies/openai_compatible.py",
-        "benchmarks/envoybench/run.py",
+        "benchmarks/envoybench/run.py", "benchmarks/envoybench/budget.py",
     ]
     return {name: _file_sha256(ROOT / name) for name in paths}
 
 
-def _model_factory(model: dict, seed: int):
+def _model_factory(model: dict, seed: int, transport=None):
     spec = model["safe"]
     extra_body = {**spec["extra_body"], "top_p": spec["decoding"]["top_p"]}
     if spec.get("send_seed"):
@@ -342,6 +343,7 @@ def _model_factory(model: dict, seed: int):
             temperature=spec["decoding"]["temperature"],
             timeout=spec["request_timeout_seconds"],
             extra_body=extra_body, system_prompt=QASPER_SYSTEM_PROMPT,
+            **({"transport": transport} if transport is not None else {}),
         )
 
     return factory
@@ -409,6 +411,7 @@ def run(
     dataset: Path, split: str, models_path: Path, output: Path, *,
     model_keys: list[str] | None = None, question_ids: list[str] | None = None,
     seed: int = 42, max_steps: int = 15, validate_only: bool = False,
+    budget: InferenceBudget | None = None,
 ) -> dict:
     """Run a frozen split once per endpoint model, saving a complete trace matrix.
 
@@ -490,6 +493,8 @@ def run(
         "implementation_sha256": _implementation_hashes(),
         "git_commit": _git_commit(), "runner_hardware": _hardware(),
     }
+    if budget is not None:
+        manifest["inference_budget"] = budget.config
     output.mkdir(parents=True, exist_ok=False)
     _write_json(output / "manifest.json", manifest)
     rows: list[dict] = []
@@ -497,20 +502,29 @@ def run(
     try:
         for model in models:
             key = model["safe"]["key"]
-            result_set = run_eval(
-                corpus=corpus, questions=questions,
-                policies={key: _model_factory(model, seed)},
-                max_steps=max_steps, use_docker=True,
-                corpus_path=str(corpus_path), workers=1,
-                require_evidence=True, include_preamble=True,
-                evidence_verifier=True, verifier_feedback_budget=1,
-                escalate_after_verifier_failure=False,
-            )
-            expected = [question["id"] for question in questions]
-            if sorted(item.question_id for item in result_set) != sorted(expected):
-                raise RuntimeError(f"{key}: incomplete question matrix; refusing complete artifact")
-            rows.extend(_result_row(item, key, manifest, secrets) for item in result_set)
-            _write_json(output / "results.partial.json", rows)
+            consecutive_errors = 0
+            for question in questions:
+                result_set = run_eval(
+                    corpus=corpus, questions=[question],
+                    policies={key: _model_factory(model, seed, transport=budget)},
+                    max_steps=max_steps, use_docker=True,
+                    corpus_path=str(corpus_path), workers=1,
+                    require_evidence=True, include_preamble=True,
+                    evidence_verifier=True, verifier_feedback_budget=1,
+                    escalate_after_verifier_failure=False,
+                )
+                if [item.question_id for item in result_set] != [question["id"]]:
+                    raise RuntimeError(f"{key}: incomplete question matrix; refusing complete artifact")
+                rows.extend(_result_row(item, key, manifest, secrets) for item in result_set)
+                _write_json(output / "results.partial.json", rows)
+                if budget is not None:
+                    _write_json(output / "usage-budget.json", budget.snapshot())
+                    if budget.halted_reason:
+                        raise RuntimeError(budget.halted_reason)
+                    consecutive_errors = (consecutive_errors + 1
+                                          if result_set[0].status == "error" else 0)
+                    if consecutive_errors >= 3:
+                        raise RuntimeError("three consecutive error episodes; bounded run stopped")
         manifest["status"] = "complete"
         manifest["completed_at_utc"] = datetime.now(timezone.utc).isoformat()
         manifest["elapsed_seconds"] = time.monotonic() - started
@@ -539,12 +553,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-steps", type=int, default=15)
     parser.add_argument("--validate-only", action="store_true", help="no Docker or model calls")
+    parser.add_argument("--budget", type=Path, help="local estimated-cost/request limit JSON")
     args = parser.parse_args(argv)
     try:
         result = run(
             args.dataset, args.split, args.models, args.output,
             model_keys=args.models_selected, question_ids=args.question_ids,
             seed=args.seed, max_steps=args.max_steps, validate_only=args.validate_only,
+            budget=InferenceBudget(_read_json(args.budget)) if args.budget else None,
         )
     except (ValueError, RuntimeError) as exc:
         parser.exit(2, f"EnvoyBench: {exc}\n")

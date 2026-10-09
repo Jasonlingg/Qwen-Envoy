@@ -205,7 +205,8 @@ def test_paired_run_records_full_matrix_without_endpoint_or_key(
 
     monkeypatch.setattr(runner, "run_eval", fake_eval)
     manifest = runner.run(dataset, "dev", models, output)
-    assert invocations == [("base", ["q1", "q2"]), ("v5", ["q1", "q2"])]
+    assert invocations == [("base", ["q1"]), ("base", ["q2"]),
+                           ("v5", ["q1"]), ("v5", ["q2"])]
     assert manifest["status"] == "complete"
     assert manifest["full_split"] is True
     assert manifest["sandbox_image"]["image_id"] == "sha256:sandbox"

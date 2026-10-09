@@ -1,0 +1,1684 @@
+{
+  "schema_version": "qasper-agent-study-references-v1",
+  "source": {
+    "dataset": "allenai/qasper",
+    "revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "split": "test",
+    "url": "https://huggingface.co/datasets/allenai/qasper/tree/13b496d2a5359329b110e3419628de3cf791843b",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "citation": "Dasigi et al. (2021), A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers, NAACL.",
+    "citation_url": "https://aclanthology.org/2021.naacl-main.365/",
+    "arrow_sha256": "9462ccbd216bb2e6d9fba739a4fd349dd7da1e15116b09e0c4be85302d2b6ba4",
+    "rows_sha256": "5854e52c9b84a7a4d26f795dc9d4bc03668201350d4ad00c7d2eb2be9c959c65",
+    "source_paper_count": 416,
+    "export_note": "All original answer objects and annotation IDs retained in source order for selected questions; Arrow columns restructured into records. Worker metadata and unselected questions/paper bodies omitted. No one-best answer selection, annotation repair, or new judgment."
+  },
+  "selection": {
+    "manifest_sha256": "d57e8121e234dae6fefd7dae50f40bb38e320da63e1036c3d50fcef1eea8c2d9",
+    "benchmark_id": "envoybench-test-candidate-v1",
+    "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+    "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+    "question_ids": [
+      "qasper_test_02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+      "qasper_test_04914917d01c9cd8718cd551dc253eb3827915d8",
+      "qasper_test_0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+      "qasper_test_0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+      "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "qasper_test_11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+      "qasper_test_11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+      "qasper_test_11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+      "qasper_test_246e924017c48fa1f069361c44133fdf4f0386e1",
+      "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "qasper_test_31894361833b3e329a1fb9ebf85a78841cff229f",
+      "qasper_test_3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+      "qasper_test_34b434825f0ca3225dc8914f9da865d2b4674f08",
+      "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "qasper_test_3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+      "qasper_test_3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+      "qasper_test_526dc757a686a1fe41e77f7e3848e3507940bfc4",
+      "qasper_test_538430077b1820011c609c8ae147389b960932c8",
+      "qasper_test_58df55002fbcba76b9aeb2181d78378b8c01a827",
+      "qasper_test_6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+      "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "qasper_test_7ef7a5867060f91eac8ad857c186e51b767c734b",
+      "qasper_test_87523fb927354ddc8ad1357a81f766b7ea95f53c",
+      "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "qasper_test_8cf5abf0126f19253930478b02f0839af28e4093",
+      "qasper_test_95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+      "qasper_test_98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+      "qasper_test_993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+      "qasper_test_9bf60073fbb69fbf860196513fc6fd2f466535f6",
+      "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "qasper_test_a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+      "qasper_test_b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+      "qasper_test_c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+      "qasper_test_c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+      "qasper_test_cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+      "qasper_test_d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+      "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "qasper_test_e801b6a6048175d3b1f3440852386adb220bcb36",
+      "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+      "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba"
+    ],
+    "split_status": "unreviewed_candidate_not_scored",
+    "question_count": 40,
+    "scope": "40 selected QASPER test questions; known-paper code-execution agent study; not the full official test split"
+  },
+  "questions": [
+    {
+      "question_id": "qasper_test_02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+      "source_question_id": "02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+      "source_paper_id": "1612.04118",
+      "paper_title": "Information Extraction with Character-level Neural Networks and Free Noisy Supervision",
+      "question": "what existing databases were used?",
+      "answers": [
+        {
+          "annotation_id": "05739aac3c3b891450be1e83bfe56d5a4451d314",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "database containing historical time series data"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We propose to train the neural network by referencing candidates extracted by a high-recall candidate-generating parser against a potentially noisy reference source (see Figure FIGREF12 , left panel). In our application, this reference was a database containing historical time series data, which enabled us to check how well the extracted numerical data fit into time series in the database. Concretely, we compute a consistency score INLINEFORM0 that measures the degree of consistency with the database. Depending on the application, the score may for instance be a squared relative error, an absolute error, or a more complex error function. In many applications, the score INLINEFORM1 will be noisy (see below for further discussion). We threshold INLINEFORM2 to obtain binary correctness labels INLINEFORM3 . We then use the binary correctness labels INLINEFORM4 for supervised neural network training, with binary cross-entropy loss as the loss function. This allows us to train a network that can compute a pseudo-likelihood INLINEFORM5 of a given extraction candidate to agree with the database. Thus, INLINEFORM6 estimates how likely the extraction candidate is correct."
+            ],
+            "highlighted_evidence": [
+              "In our application, this reference was a database containing historical time series data, which enabled us to check how well the extracted numerical data fit into time series in the database. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "4fe97202a908469d4a612f064addd0a541a1c1a0",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "a database containing historical time series data"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We propose to train the neural network by referencing candidates extracted by a high-recall candidate-generating parser against a potentially noisy reference source (see Figure FIGREF12 , left panel). In our application, this reference was a database containing historical time series data, which enabled us to check how well the extracted numerical data fit into time series in the database. Concretely, we compute a consistency score INLINEFORM0 that measures the degree of consistency with the database. Depending on the application, the score may for instance be a squared relative error, an absolute error, or a more complex error function. In many applications, the score INLINEFORM1 will be noisy (see below for further discussion). We threshold INLINEFORM2 to obtain binary correctness labels INLINEFORM3 . We then use the binary correctness labels INLINEFORM4 for supervised neural network training, with binary cross-entropy loss as the loss function. This allows us to train a network that can compute a pseudo-likelihood INLINEFORM5 of a given extraction candidate to agree with the database. Thus, INLINEFORM6 estimates how likely the extraction candidate is correct."
+            ],
+            "highlighted_evidence": [
+              " In our application, this reference was a database containing historical time series data, which enabled us to check how well the extracted numerical data fit into time series in the database. "
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_04914917d01c9cd8718cd551dc253eb3827915d8",
+      "source_question_id": "04914917d01c9cd8718cd551dc253eb3827915d8",
+      "source_paper_id": "1905.00472",
+      "paper_title": "A system for the 2019 Sentiment, Emotion and Cognitive State Task of DARPAs LORELEI project",
+      "question": "Did the system perform well on low-resource languages?",
+      "answers": [
+        {
+          "annotation_id": "b7fc9b2988bb88c70cf88e00b9c8bb47a7cde3b2",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "5dd3c0a5cfd596e9beba529770e17a240538e6a3",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "7204d0776bc966db479c2771ee9338a01f5ab145",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+      "source_question_id": "0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+      "source_paper_id": "1908.07721",
+      "paper_title": "Fine-tuning BERT for Joint Entity and Relation Extraction in Chinese Medical Text",
+      "question": "How do they perform the joint training?",
+      "answers": [
+        {
+          "annotation_id": "0b60ce01baa68e5b8fc911fb0e5d801bf4ab6295",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "They train a single model that integrates a BERT language model as a shared parameter layer on NER and RC tasks.",
+            "evidence": [
+              "We propose a focused attention model to jointly learn NER and RC task. The model integrates BERT language model as a shared parameter layer to achieve better generalization performance."
+            ],
+            "highlighted_evidence": [
+              "We propose a focused attention model to jointly learn NER and RC task. The model integrates BERT language model as a shared parameter layer to achieve better generalization performance."
+            ]
+          }
+        },
+        {
+          "annotation_id": "862a258b24c32fb89cd67793dfb2db8a2e4467be",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "They perform joint learning through shared parameters for NER and RC.",
+            "evidence": [
+              "The architecture of the proposed model is demonstrated in the Fig. FIGREF18. The focused attention model is essentially a joint learning model of NER and RC based on shared parameter approach. It contains layers of shared parameter, NER downstream task and RC downstream task."
+            ],
+            "highlighted_evidence": [
+              "The architecture of the proposed model is demonstrated in the Fig. FIGREF18. The focused attention model is essentially a joint learning model of NER and RC based on shared parameter approach. It contains layers of shared parameter, NER downstream task and RC downstream task."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+      "source_question_id": "0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+      "source_paper_id": "1906.06349",
+      "paper_title": "On the Computational Power of RNNs",
+      "question": "What are edge weights?",
+      "answers": [
+        {
+          "annotation_id": "1265b629ad3b305965ca12e5b0286e7151561c0a",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "132b9983a959e0db59f8c14f697e81eb23bf4760",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "source_question_id": "0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "source_paper_id": "1911.03353",
+      "paper_title": "SEPT: Improving Scientific Named Entity Recognition with Span Representation",
+      "question": "What simplification of the architecture is performed that resulted in same performance?",
+      "answers": [
+        {
+          "annotation_id": "1aede180c2016ae5ee3ce9f5e0e91b55e2c325cb",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "randomly sampling them rather than enumerate them all",
+              "simple max-pooling to extract span representation because those features are implicitly included in self-attention layers of transformers"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "In the sampling layer, we sample continuous sub-strings from the embedding layer, which is also called span. Because we know the exact label of each sample in the training phase, so we can train the model in a particular way. For those negative samples, which means each span does not belong to any entity class, we randomly sampling them rather than enumerate them all. This is a simple but effective way to improve both performance and efficiency. For those ground truth, we keep them all. In this way, we can obtain a balanced span set: $S = S_{neg} \\cup S_{pos} $. In which $S_{neg} = \\lbrace s^{\\prime }_1, s^{\\prime }_2, \\dots , s^{\\prime }_p\\rbrace $, $S_{pos} = \\lbrace s_1, s_2, \\dots , s_q\\rbrace $. Both $s$ and $s^{\\prime }$ is consist of $\\lbrace \\mathbf {e}_i ,\\dots ,\\mathbf {e}_j\\rbrace $, $i$ and $j$ are the start and end index of the span. $p$ is a hyper-parameter: the negative sample number. $q$ is the positive sample number. We further explore the effect of different $p$ in the experiment section.",
+              "Span extractor is responsible to extract a span representation from embeddings. In previous work BIBREF8, endpoint features, content attention, and span length embedding are concatenated to represent a span. We perform a simple max-pooling to extract span representation because those features are implicitly included in self-attention layers of transformers. Formally, each element in the span vector is:"
+            ],
+            "highlighted_evidence": [
+              "Because we know the exact label of each sample in the training phase, so we can train the model in a particular way. For those negative samples, which means each span does not belong to any entity class, we randomly sampling them rather than enumerate them all.",
+              "We perform a simple max-pooling to extract span representation because those features are implicitly included in self-attention layers of transformers."
+            ]
+          }
+        },
+        {
+          "annotation_id": "7bf4a969884eebe28ab31e8019699b6e9de5cce7",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              " we simplify the origin network architecture and extract span representation by a simple pooling layer"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "To balance the positive and negative samples and reduce the search space, we remove the pruner and modify the model by under-sampling. Furthermore, because there is a multi-head self-attention mechanism in transformers and they can capture interactions between tokens, we don't need more attention or LSTM network in span extractors. So we simplify the origin network architecture and extract span representation by a simple pooling layer. We call the final scientific named entity recognizer SEPT.",
+              "Experiments demonstrate that even simplified architecture achieves the same performance and SEPT achieves a new state of the art result compared to existing transformer-based systems."
+            ],
+            "highlighted_evidence": [
+              "To balance the positive and negative samples and reduce the search space, we remove the pruner and modify the model by under-sampling. Furthermore, because there is a multi-head self-attention mechanism in transformers and they can capture interactions between tokens, we don't need more attention or LSTM network in span extractors. So we simplify the origin network architecture and extract span representation by a simple pooling layer. We call the final scientific named entity recognizer SEPT.\n\nExperiments demonstrate that even simplified architecture achieves the same performance and SEPT achieves a new state of the art result compared to existing transformer-based systems."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+      "source_question_id": "11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+      "source_paper_id": "1912.11585",
+      "paper_title": "THUEE system description for NIST 2019 SRE CTS Challenge",
+      "question": "What was the baseline?",
+      "answers": [
+        {
+          "annotation_id": "1b262b70d1ce9da1635c93baa62c8b1e4a97b412",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "61a1a60e2a9fe9c3a3ae907398cc0a8764390835",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "69fb04c5566525d2cce7349d0ca570c95f0395e0",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+      "source_question_id": "11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+      "source_paper_id": "2004.02334",
+      "paper_title": "Neural Machine Translation with Imbalanced Classes",
+      "question": "What datasets do they look at?",
+      "answers": [
+        {
+          "annotation_id": "0942c3234da1393292020d8c6b58dd697c09fe14",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Europarl v9",
+              "NewsTest2013 ",
+              "NewsTest2014"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages. We use 1.8M sentences of this corpus and build models in English to German and vice versa. To segment initial words (i.e. before any subword processing) we use the Moses word tokenizer and detokenizer. We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ],
+            "highlighted_evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages. We use 1.8M sentences of this corpus and build models in English to German and vice versa. To segment initial words (i.e. before any subword processing) we use the Moses word tokenizer and detokenizer. We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ]
+          }
+        },
+        {
+          "annotation_id": "63d330bc113b597a52710e6df1b6e15402840993",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Europarl v9",
+              "NewsTest2013",
+              "NewsTest2014"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages. We use 1.8M sentences of this corpus and build models in English to German and vice versa. To segment initial words (i.e. before any subword processing) we use the Moses word tokenizer and detokenizer. We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ],
+            "highlighted_evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages.",
+              "We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ]
+          }
+        },
+        {
+          "annotation_id": "d239b45ec7170275896dfb6b2deb660c6ae727e3",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Europarl v9 parallel data set",
+              "NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages. We use 1.8M sentences of this corpus and build models in English to German and vice versa. To segment initial words (i.e. before any subword processing) we use the Moses word tokenizer and detokenizer. We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ],
+            "highlighted_evidence": [
+              "We use the publicly available Europarl v9 parallel data set for training German (De) and English (En) languages.",
+              "We evaluate with the NewsTest2013 and NewsTest2014 datasets from the WMT 2014 news translation track."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+      "source_question_id": "11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+      "source_paper_id": "1908.05731",
+      "paper_title": "Simple and Effective Noisy Channel Modeling for Neural Machine Translation",
+      "question": "How many parameters does their noisy channel model have?",
+      "answers": [
+        {
+          "annotation_id": "70ad416974b799c259fe0389bf811acf7753060d",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "7524ef95724de3a5820b2b6d9962c7159f7567f6",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "f3b2215996cdde79f708588dd27c9a7cad5f2a16",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_246e924017c48fa1f069361c44133fdf4f0386e1",
+      "source_question_id": "246e924017c48fa1f069361c44133fdf4f0386e1",
+      "source_paper_id": "1909.01720",
+      "paper_title": "Different Absorption from the Same Sharing: Sifted Multi-task Learning for Fake News Detection",
+      "question": "How is the selected sharing layer trained?",
+      "answers": [
+        {
+          "annotation_id": "348cd472744ac4df7a9f796a8989a730383cafd6",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "The selected sharing layer is trained jointly on the tasks of stance detection and fake news detection",
+            "evidence": [
+              "We propose a novel sifted multi-task learning method on the ground of shared-private model to jointly train the tasks of stance detection and fake news detection, filter original outputs of shared layer by a selected sharing layer. Our model consists of a 4-level hierarchical structure, as shown in Figure FIGREF6. Next, we will describe each level of our proposed model in detail."
+            ],
+            "highlighted_evidence": [
+              "We propose a novel sifted multi-task learning method on the ground of shared-private model to jointly train the tasks of stance detection and fake news detection, filter original outputs of shared layer by a selected sharing layer."
+            ]
+          }
+        },
+        {
+          "annotation_id": "569bc90853e3fb60a6ab6be26788be2eff3c6126",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "By jointly training the tasks of stance and fake news detection.",
+            "evidence": [
+              "We propose a novel sifted multi-task learning method on the ground of shared-private model to jointly train the tasks of stance detection and fake news detection, filter original outputs of shared layer by a selected sharing layer. Our model consists of a 4-level hierarchical structure, as shown in Figure FIGREF6. Next, we will describe each level of our proposed model in detail."
+            ],
+            "highlighted_evidence": [
+              "We propose a novel sifted multi-task learning method on the ground of shared-private model to jointly train the tasks of stance detection and fake news detection, filter original outputs of shared layer by a selected sharing layer. "
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "source_question_id": "2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "source_paper_id": "2003.12660",
+      "paper_title": "Towards Supervised and Unsupervised Neural Machine Translation Baselines for Nigerian Pidgin",
+      "question": "What tokenization methods are used?",
+      "answers": [
+        {
+          "annotation_id": "7cd526e05fc6a336c4017b8d7a06511f374ea456",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "word-level ",
+              "subword-level"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "This work is a first attempt towards using contemporary neural machine translation (NMT) techniques to perform machine translation for Nigerian Pidgin, establishing solid baselines that will ease and spur future work. We evaluate the performance of supervised and unsupervised neural machine translation models using word-level and the subword-level tokenization of BIBREF3."
+            ],
+            "highlighted_evidence": [
+              "We evaluate the performance of supervised and unsupervised neural machine translation models using word-level and the subword-level tokenization of BIBREF3."
+            ]
+          }
+        },
+        {
+          "annotation_id": "925a62d66543bfc134e72a7ee18454bf69e4dcc5",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "word-level",
+              "Byte Pair Encoding (BPE) subword-level"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "All baseline models were trained using the Transformer architecture of BIBREF7. We experiment with both word-level and Byte Pair Encoding (BPE) subword-level tokenization methods for the supervised models. We learned 4000 byte pair encoding tokens, following the findings of BIBREF5. For the unuspervised model, we experiment with only word-level tokenization."
+            ],
+            "highlighted_evidence": [
+              "We experiment with both word-level and Byte Pair Encoding (BPE) subword-level tokenization methods for the supervised models."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_31894361833b3e329a1fb9ebf85a78841cff229f",
+      "source_question_id": "31894361833b3e329a1fb9ebf85a78841cff229f",
+      "source_paper_id": "1905.08067",
+      "paper_title": "Understanding the Radical Mind: Identifying Signals to Detect Extremist Content on Twitter",
+      "question": "Which textual features are used?",
+      "answers": [
+        {
+          "annotation_id": "35b660f2968ff05c98ec97539b7460adf8fca67e",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "N-grams",
+              "word2vec"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use two methods to extract the radical language from the propaganda corpus. First we calculate tf-idf scores for each gram in the propaganda corpus. We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. We then select the top scoring grams to be used as features for the language model. N-grams and words frequency have been used in the literature to classify similar problems, such as hate-speech and extremist text and have proven successful BIBREF16 . The second method we use is word embeddings to capture semantic meanings. Research in NLP has compared the effectiveness of word embedding methods for encoding semantic meaning and found that semantic relationships between words are best captured by word vectors within word embedding models BIBREF17 . Therefore, we train word2vec model on our propaganda corpus to build the lexical semantic aspects of the text using vector space models. We learn word embeddings using skip-gram word2vec model implemented in the gensim package with vector size of 100 and window size of 5. This word embedding model is used to obtain the vector representation for each word. We aggregate the vectors for each word in the tweet, and concatenate the maximum and average for each word vector dimension, such that any given tweet is represented in 200 dimension sized vector. This approach of aggregating vectors was used successfully in previous research BIBREF18 . Moreover, since ISIS supporters typically advocate for violent behaviour and tend to use offensive curse words, we use dictionaries of violent words and curse words to record the ratio of such words in the tweet. We also count the frequency of words with all capital letters as they are traditionally used to convey yelling behaviour."
+            ],
+            "highlighted_evidence": [
+              "We use two methods to extract the radical language from the propaganda corpus. First we calculate tf-idf scores for each gram in the propaganda corpus. We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. We then select the top scoring grams to be used as features for the language model. N-grams and words frequency have been used in the literature to classify similar problems, such as hate-speech and extremist text and have proven successful BIBREF16 ",
+              "Therefore, we train word2vec model on our propaganda corpus to build the lexical semantic aspects of the text using vector space models. We learn word embeddings using skip-gram word2vec model implemented in the gensim package with vector size of 100 and window size of 5. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "759a4496feef45bd6611bc1561ece27e0372e7c1",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "uni-grams",
+              "bi-grams",
+              "tri-grams"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use two methods to extract the radical language from the propaganda corpus. First we calculate tf-idf scores for each gram in the propaganda corpus. We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. We then select the top scoring grams to be used as features for the language model. N-grams and words frequency have been used in the literature to classify similar problems, such as hate-speech and extremist text and have proven successful BIBREF16 . The second method we use is word embeddings to capture semantic meanings. Research in NLP has compared the effectiveness of word embedding methods for encoding semantic meaning and found that semantic relationships between words are best captured by word vectors within word embedding models BIBREF17 . Therefore, we train word2vec model on our propaganda corpus to build the lexical semantic aspects of the text using vector space models. We learn word embeddings using skip-gram word2vec model implemented in the gensim package with vector size of 100 and window size of 5. This word embedding model is used to obtain the vector representation for each word. We aggregate the vectors for each word in the tweet, and concatenate the maximum and average for each word vector dimension, such that any given tweet is represented in 200 dimension sized vector. This approach of aggregating vectors was used successfully in previous research BIBREF18 . Moreover, since ISIS supporters typically advocate for violent behaviour and tend to use offensive curse words, we use dictionaries of violent words and curse words to record the ratio of such words in the tweet. We also count the frequency of words with all capital letters as they are traditionally used to convey yelling behaviour."
+            ],
+            "highlighted_evidence": [
+              " We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "d08bc302b967b811bd0b30bdfffe0cc155071178",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "ratio of violent words in the tweet, ratio of curse words in the tweet, frequency of words with all capital letters, 200 dimension sized vector for the tweet calculated using word embedding, tf-idf scores for top scoring uni-grams, bi-grams and tri-grams",
+            "evidence": [
+              "We use two methods to extract the radical language from the propaganda corpus. First we calculate tf-idf scores for each gram in the propaganda corpus. We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. We then select the top scoring grams to be used as features for the language model. N-grams and words frequency have been used in the literature to classify similar problems, such as hate-speech and extremist text and have proven successful BIBREF16 . The second method we use is word embeddings to capture semantic meanings. Research in NLP has compared the effectiveness of word embedding methods for encoding semantic meaning and found that semantic relationships between words are best captured by word vectors within word embedding models BIBREF17 . Therefore, we train word2vec model on our propaganda corpus to build the lexical semantic aspects of the text using vector space models. We learn word embeddings using skip-gram word2vec model implemented in the gensim package with vector size of 100 and window size of 5. This word embedding model is used to obtain the vector representation for each word. We aggregate the vectors for each word in the tweet, and concatenate the maximum and average for each word vector dimension, such that any given tweet is represented in 200 dimension sized vector. This approach of aggregating vectors was used successfully in previous research BIBREF18 . Moreover, since ISIS supporters typically advocate for violent behaviour and tend to use offensive curse words, we use dictionaries of violent words and curse words to record the ratio of such words in the tweet. We also count the frequency of words with all capital letters as they are traditionally used to convey yelling behaviour."
+            ],
+            "highlighted_evidence": [
+              "We use two methods to extract the radical language from the propaganda corpus. First we calculate tf-idf scores for each gram in the propaganda corpus. We use uni-grams, bi-grams, and tri-grams to capture phrases and context in which words are being used. We then select the top scoring grams to be used as features for the language model.",
+              "We learn word embeddings using skip-gram word2vec model implemented in the gensim package with vector size of 100 and window size of 5. This word embedding model is used to obtain the vector representation for each word. We aggregate the vectors for each word in the tweet, and concatenate the maximum and average for each word vector dimension, such that any given tweet is represented in 200 dimension sized vector. ",
+              "Moreover, since ISIS supporters typically advocate for violent behaviour and tend to use offensive curse words, we use dictionaries of violent words and curse words to record the ratio of such words in the tweet. We also count the frequency of words with all capital letters as they are traditionally used to convey yelling behaviour."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+      "source_question_id": "3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+      "source_paper_id": "1911.03642",
+      "paper_title": "Towards Understanding Gender Bias in Relation Extraction",
+      "question": "How are the sentences in WikiGenderBias curated?",
+      "answers": [
+        {
+          "annotation_id": "35d1062bf678e46119c66d189f12498d1240709f",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Distant Supervision assumption",
+              "any sentence from an article written about one of those entities that mentions the other entity expresses the relation"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "To generate WikiGenderBias, we use a variant of the Distant Supervision assumption: for a given relation between two entities, assume that any sentence from an article written about one of those entities that mentions the other entity expresses the relation. For instance, if we know (Barack, spouse, Michelle) is a relation and we find the sentence He and Michelle were married in Barack's Wikipedia article, then we assume that sentence expresses the (Barack, spouse, Michelle) relation. This assumption is similar to that made by BIBREF20 and allows us to scalably create the dataset."
+            ],
+            "highlighted_evidence": [
+              "To generate WikiGenderBias, we use a variant of the Distant Supervision assumption: for a given relation between two entities, assume that any sentence from an article written about one of those entities that mentions the other entity expresses the relation."
+            ]
+          }
+        },
+        {
+          "annotation_id": "a3babe2de23643d46f0f6e1a3329b64630da3164",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "for a given relation between two entities, assume that any sentence from an article written about one of those entities that mentions the other entity expresses the relation"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "To generate WikiGenderBias, we use a variant of the Distant Supervision assumption: for a given relation between two entities, assume that any sentence from an article written about one of those entities that mentions the other entity expresses the relation. For instance, if we know (Barack, spouse, Michelle) is a relation and we find the sentence He and Michelle were married in Barack's Wikipedia article, then we assume that sentence expresses the (Barack, spouse, Michelle) relation. This assumption is similar to that made by BIBREF20 and allows us to scalably create the dataset."
+            ],
+            "highlighted_evidence": [
+              "To generate WikiGenderBias, we use a variant of the Distant Supervision assumption: for a given relation between two entities, assume that any sentence from an article written about one of those entities that mentions the other entity expresses the relation."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_34b434825f0ca3225dc8914f9da865d2b4674f08",
+      "source_question_id": "34b434825f0ca3225dc8914f9da865d2b4674f08",
+      "source_paper_id": "1912.08084",
+      "paper_title": "A Context-Aware Approach for Detecting Check-Worthy Claims in Political Debates",
+      "question": "Does the baseline use any contextual information?",
+      "answers": [
+        {
+          "annotation_id": "4053974ccad4f55a5538a96aba5e1155bdfb9356",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": false,
+            "free_form_answer": "",
+            "evidence": [
+              "The previous work that is most relevant to our work here is that of BIBREF9, who developed the ClaimBuster system, which assigns each sentence in a document a score, i.e., a number between 0 and 1 showing how worthy it is of fact-checking. The system is trained on their own dataset of about eight thousand debate sentences (1,673 of them check-worthy), annotated by students, university professors, and journalists. Unfortunately, this dataset is not publicly available and it contains sentences without context as about 60% of the original sentences had to be thrown away due to lack of agreement.",
+              "First, there is a random baseline, followed by an SVM classifier based on a bag-of-words representation with TF.IDF weights learned on the training data. Then come three versions of the ClaimBuster system: CB-Platform uses scores from the online demo, which we accessed on December 20, 2016, and SVM$_{CBfeat}$ and FNN$_{CBfeat}$ are our re-implementations, trained on our dataset."
+            ],
+            "highlighted_evidence": [
+              "The previous work that is most relevant to our work here is that of BIBREF9, who developed the ClaimBuster system, which assigns each sentence in a document a score, i.e., a number between 0 and 1 showing how worthy it is of fact-checking. ",
+              "Unfortunately, this dataset is not publicly available and it contains sentences without context as about 60% of the original sentences had to be thrown away due to lack of agreement.",
+              "First, there is a random baseline, followed by an SVM classifier based on a bag-of-words representation with TF.IDF weights learned on the training data. Then come three versions of the ClaimBuster system: CB-Platform uses scores from the online demo, which we accessed on December 20, 2016, and SVM$_{CBfeat}$ and FNN$_{CBfeat}$ are our re-implementations, trained on our dataset."
+            ]
+          }
+        },
+        {
+          "annotation_id": "7e6171878d689c3df00fbd39120fae5be22a87e6",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": false,
+            "free_form_answer": "",
+            "evidence": [
+              "ClaimBuster-based (1,045 S features; core): First, in order to be able to compare our model and features directly to the previous state of the art, we re-implemented, to the best of our ability, the sentence-level features of ClaimBuster as described in BIBREF9, namely TF.IDF-weighted bag of words (998 features), part-of-speech tags (25 features), named entities as recognized by Alchemy API (20 features), sentiment score from Alchemy API (1 feature), and number of tokens in the target sentence (1 feature).",
+              "Table TABREF21 shows the performance of our models when using all features described in Section SECREF4: see the SVM$_{All}$ and the FNN$_{All}$ rows. In order to put the numbers in perspective, we also show the results for five increasingly competitive baselines.",
+              "First, there is a random baseline, followed by an SVM classifier based on a bag-of-words representation with TF.IDF weights learned on the training data. Then come three versions of the ClaimBuster system: CB-Platform uses scores from the online demo, which we accessed on December 20, 2016, and SVM$_{CBfeat}$ and FNN$_{CBfeat}$ are our re-implementations, trained on our dataset.",
+              "More importantly, both the SVM and the FNN versions of our system consistently outperform all three versions of ClaimBuster on all measures. This means that the extra information coded in our model, mainly more linguistic, structural, and contextual features, has an important contribution to the overall performance."
+            ],
+            "highlighted_evidence": [
+              "ClaimBuster-based (1,045 S features; core): First, in order to be able to compare our model and features directly to the previous state of the art, we re-implemented, to the best of our ability, the sentence-level features of ClaimBuster as described in BIBREF9, namely TF.IDF-weighted bag of words (998 features), part-of-speech tags (25 features), named entities as recognized by Alchemy API (20 features), sentiment score from Alchemy API (1 feature), and number of tokens in the target sentence (1 feature).",
+              "Table TABREF21 shows the performance of our models when using all features described in Section SECREF4: see the SVM$_{All}$ and the FNN$_{All}$ rows. In order to put the numbers in perspective, we also show the results for five increasingly competitive baselines.\n\nFirst, there is a random baseline, followed by an SVM classifier based on a bag-of-words representation with TF.IDF weights learned on the training data. Then come three versions of the ClaimBuster system: CB-Platform uses scores from the online demo, which we accessed on December 20, 2016, and SVM$_{CBfeat}$ and FNN$_{CBfeat}$ are our re-implementations, trained on our dataset.",
+              "More importantly, both the SVM and the FNN versions of our system consistently outperform all three versions of ClaimBuster on all measures. This means that the extra information coded in our model, mainly more linguistic, structural, and contextual features, has an important contribution to the overall performance."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "source_question_id": "38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "source_paper_id": "1911.04873",
+      "paper_title": "Can Neural Networks Learn Symbolic Rewriting?",
+      "question": "What translation models are explored?",
+      "answers": [
+        {
+          "annotation_id": "6b4979d09acf66e9cf1d961e76a9f25fc1e78df3",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "NMT architecture BIBREF10"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ],
+            "highlighted_evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ]
+          }
+        },
+        {
+          "annotation_id": "acca577a361900c5d2d4365840c0015c2fc499cb",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ],
+            "highlighted_evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ]
+          }
+        },
+        {
+          "annotation_id": "e76ca35521ce15379473f4df4063243d3f16a7f7",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "LSTM with attention",
+            "evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ],
+            "highlighted_evidence": [
+              "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+      "source_question_id": "3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+      "source_paper_id": "1911.12559",
+      "paper_title": "KPTimes: A Large-Scale Dataset for Keyphrase Generation on News Documents",
+      "question": "How do the editors' annotations differ from those in existing datasets?",
+      "answers": [
+        {
+          "annotation_id": "7ed620ee70f694bb288277995291be873471447f",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "Existing datasets are annotated by non-experts who use a larger, less controlled indexed vocabulary lacking the domain expertise shown by the editors",
+            "evidence": [
+              "Frequently used datasets for keyphrase generation have a common characteristic that they are, by and large, made from scholarly documents (abstracts or full texts) paired with non-expert (mostly from authors) annotations. Notable examples of such datasets are SemEval-2010 BIBREF8 and KP20k BIBREF2, which respectively comprises scientific articles and paper abstracts, both about computer science and information technology. Detailed statistics are listed in Table . Only two publicly available datasets, that we are aware of, contain news documents: DUC-2001 BIBREF9 and KPCrowd BIBREF10. Originally created for the DUC evaluation campaign on text summarization BIBREF11, the former is composed of 308 news annotated by graduate students. The latter includes 500 news annotated by crowdsourcing. Both datasets are very small and contain newswire articles from various online sources labelled by non-expert annotators, in this case readers, which is not without issues.",
+              "We explored the KPTimes dataset to better understand how it stands out from the existing ones. First, we looked at how editors tag news articles. Figure illustrates the difference between the annotation behaviour of readers, authors and editors through the number of times that each unique keyphrase is used in the gold standard. We see that non-expert annotators use a larger, less controlled indexing vocabulary, in part because they lack the higher level of domain expertise that editors have. For example, we observe that frequent keyphrases in KPTimes are close to topic descriptors (e.g. “Baseball“, “Politics and Government“) while those appearing only once are very precise (e.g. “Marley's Cafe“, “Catherine E. Connelly“). Annotations in KPTimes are arguably more uniform and consistent, through the use of tag suggestions, which, as we will soon discuss in §SECREF12, makes it easier for supervised approaches to learn a good model."
+            ],
+            "highlighted_evidence": [
+              "Frequently used datasets for keyphrase generation have a common characteristic that they are, by and large, made from scholarly documents (abstracts or full texts) paired with non-expert (mostly from authors) annotations.",
+              "We see that non-expert annotators use a larger, less controlled indexing vocabulary, in part because they lack the higher level of domain expertise that editors have. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "9594760ce27c75a9fec3a9bcccc87f59b937a0dd",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              " news articles are annotated in a semi-automatic way",
+              "first the editors revise a set of tags proposed by an algorithm",
+              "provide additional tags which will be used by a taxonomy team to improve the algorithm"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use the New York Times as our primary source of data, since the content tagging policy that it applies is rigorous and well-documented. The news articles are annotated in a semi-automatic way, first the editors revise a set of tags proposed by an algorithm. They then provide additional tags which will be used by a taxonomy team to improve the algorithm."
+            ],
+            "highlighted_evidence": [
+              "We use the New York Times as our primary source of data, since the content tagging policy that it applies is rigorous and well-documented. The news articles are annotated in a semi-automatic way, first the editors revise a set of tags proposed by an algorithm. They then provide additional tags which will be used by a taxonomy team to improve the algorithm."
+            ]
+          }
+        },
+        {
+          "annotation_id": "d70d84a6ca0212ba5ca3e9a7f675547076226e35",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "Exper annotators use a smaller, more controlled indexing vocabulary.",
+            "evidence": [
+              "We explored the KPTimes dataset to better understand how it stands out from the existing ones. First, we looked at how editors tag news articles. Figure illustrates the difference between the annotation behaviour of readers, authors and editors through the number of times that each unique keyphrase is used in the gold standard. We see that non-expert annotators use a larger, less controlled indexing vocabulary, in part because they lack the higher level of domain expertise that editors have. For example, we observe that frequent keyphrases in KPTimes are close to topic descriptors (e.g. “Baseball“, “Politics and Government“) while those appearing only once are very precise (e.g. “Marley's Cafe“, “Catherine E. Connelly“). Annotations in KPTimes are arguably more uniform and consistent, through the use of tag suggestions, which, as we will soon discuss in §SECREF12, makes it easier for supervised approaches to learn a good model."
+            ],
+            "highlighted_evidence": [
+              "We see that non-expert annotators use a larger, less controlled indexing vocabulary, in part because they lack the higher level of domain expertise that editors have."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+      "source_question_id": "3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+      "source_paper_id": "1911.00202",
+      "paper_title": "Forget Me Not: Reducing Catastrophic Forgetting for Domain Adaptation in Reading Comprehension",
+      "question": "What is the training objective in the method introduced in this paper?",
+      "answers": [
+        {
+          "annotation_id": "48fe33831d2a663474d39fe4da7f4887f354020c",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "we explore strategies to reduce forgetting for comprehension systems during domain adaption. Our goal is to preserve the source domain's performance as much as possible, while keeping target domain's performance optimal and assuming no access to the source data. "
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "In this paper, we explore strategies to reduce forgetting for comprehension systems during domain adaption. Our goal is to preserve the source domain's performance as much as possible, while keeping target domain's performance optimal and assuming no access to the source data. We experiment with a number of auxiliary penalty terms to regularise the fine-tuning process for three modern RC models: QANet BIBREF10, decaNLP BIBREF11 and BERT BIBREF12. We observe that combining different auxiliary penalty terms results in the best performance, outperforming benchmark methods that require source data."
+            ],
+            "highlighted_evidence": [
+              "In this paper, we explore strategies to reduce forgetting for comprehension systems during domain adaption. Our goal is to preserve the source domain's performance as much as possible, while keeping target domain's performance optimal and assuming no access to the source data. We experiment with a number of auxiliary penalty terms to regularise the fine-tuning process for three modern RC models: QANet BIBREF10, decaNLP BIBREF11 and BERT BIBREF12. We observe that combining different auxiliary penalty terms results in the best performance, outperforming benchmark methods that require source data."
+            ]
+          }
+        },
+        {
+          "annotation_id": "65642719228c79230a32be85517b5233c9f87ea1",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "elastic weight consolidation",
+              "L2",
+              "cosine distance"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "To reduce the forgetting of source domain knowledge, we introduce auxiliary penalty terms to regularise the fine-tuning process. We favour this approach as it does not require storing data samples from the source domain. In general, there are two types of penalty: selective and non-selective. The former penalises the model when certain parameters diverge significantly from the source model, while the latter uses a pre-defined distance function to measure the change of all parameters.",
+              "For selective penalty, we use elastic weight consolidation (EWC: BIBREF8), which weighs the importance of a parameter based on its gradient when training the source model. For non-selective penalty, we explore L2 BIBREF7 and cosine distance. We detail the methods below."
+            ],
+            "highlighted_evidence": [
+              "To reduce the forgetting of source domain knowledge, we introduce auxiliary penalty terms to regularise the fine-tuning process. We favour this approach as it does not require storing data samples from the source domain. In general, there are two types of penalty: selective and non-selective. The former penalises the model when certain parameters diverge significantly from the source model, while the latter uses a pre-defined distance function to measure the change of all parameters.\n\nFor selective penalty, we use elastic weight consolidation (EWC: BIBREF8), which weighs the importance of a parameter based on its gradient when training the source model. For non-selective penalty, we explore L2 BIBREF7 and cosine distance."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_526dc757a686a1fe41e77f7e3848e3507940bfc4",
+      "source_question_id": "526dc757a686a1fe41e77f7e3848e3507940bfc4",
+      "source_paper_id": "2003.03131",
+      "paper_title": "Morfessor EM+Prune: Improved Subword Segmentation with Expectation Maximization and Pruning",
+      "question": "What is the improvement in performance brought by lexicon pruning on a simple EM algorithm?",
+      "answers": [
+        {
+          "annotation_id": "ee633dc9ebbb3d67a486fc65864a49c50ffa7578",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_538430077b1820011c609c8ae147389b960932c8",
+      "source_question_id": "538430077b1820011c609c8ae147389b960932c8",
+      "source_paper_id": "2001.11316",
+      "paper_title": "Adversarial Training for Aspect-Based Sentiment Analysis with BERT",
+      "question": "What aspects are considered?",
+      "answers": [
+        {
+          "annotation_id": "76107b2d8cc718ebcdd5eae948aec90d6551d7ad",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "df92813447243202d0a3cb4472f3102050bc188a",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_58df55002fbcba76b9aeb2181d78378b8c01a827",
+      "source_question_id": "58df55002fbcba76b9aeb2181d78378b8c01a827",
+      "source_paper_id": "1910.09942",
+      "paper_title": "Scalable Neural Dialogue State Tracking",
+      "question": "Which part of their architecture provides the most speedup in comparison to existing approaches?",
+      "answers": [
+        {
+          "annotation_id": "72a7763959e716b502a3121b9f3cdaa83a3837af",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "7c200f1862c9e9e4e63a8f56b3157a8ac9b1fcf0",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+      "source_question_id": "6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+      "source_paper_id": "2002.04745",
+      "paper_title": "On Layer Normalization in the Transformer Architecture",
+      "question": "What is mean field theory?",
+      "answers": [
+        {
+          "annotation_id": "23557323a3d64de20d95d335209c42e8a5334ffa",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "9251cd4162d80da2d7be96ac0c237549d3133868",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "source_question_id": "7ae95716977d39d96e871e552c35ca0753115229",
+      "source_paper_id": "1610.09722",
+      "paper_title": "Represent, Aggregate, and Constrain: A Novel Architecture for Machine Reading from Noisy Sources",
+      "question": "what dataset did they use?",
+      "answers": [
+        {
+          "annotation_id": "95f0fea84225b9503ac0a53228a37752959c80bc",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "Event dataset with news articles",
+            "evidence": [
+              "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles. Of these events, 40 are reserved for training, and 40 for testing, with the average cluster containing more than 2,000 mentions. Gold labels for each cluster are derived from Wikipedia infoboxes and cover up to 15 slots, of which 8 are used in evaluation (Figure TABREF54 )."
+            ],
+            "highlighted_evidence": [
+              "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "ade9bf50b934ca8f22add3955c97229e3aa61f1f",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Stanford Plane Crash Dataset BIBREF15"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles. Of these events, 40 are reserved for training, and 40 for testing, with the average cluster containing more than 2,000 mentions. Gold labels for each cluster are derived from Wikipedia infoboxes and cover up to 15 slots, of which 8 are used in evaluation (Figure TABREF54 )."
+            ],
+            "highlighted_evidence": [
+              "The Stanford Plane Crash Dataset BIBREF15 is a small data set consisting of 80 plane crash events, each paired with a set of related news articles."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_7ef7a5867060f91eac8ad857c186e51b767c734b",
+      "source_question_id": "7ef7a5867060f91eac8ad857c186e51b767c734b",
+      "source_paper_id": "1908.06259",
+      "paper_title": "Hard but Robust, Easy but Sensitive: How Encoder and Decoder Perform in Neural Machine Translation",
+      "question": "How do they generate input noise for the encoder and decoder?",
+      "answers": [
+        {
+          "annotation_id": "0b2b1323ec9dce60fdfbdd088b21a48401b86a7a",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "random dropping",
+              "random noising",
+              "random swapping"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "In this section, we compare the characteristics between the encoder and decoder by analyzing their robustness according to the input noise in the inference phase. We simulate the input noise with three typical operations BIBREF20, BIBREF21: 1) random dropping: we randomly drop the input tokens of encoder and decoder respectively with different drop rates; 2) random noising: we randomly select tokens and replace its embedding with random noise; 3) random swapping: we randomly reverse the order for the adjacent tokens. The decoder in NMT model typically generates the current token one-by-one conditioned on the previous generated tokens, which suffers from error propagation BIBREF22: if a token is incorrectly predicted by the decoder, it will affect the prediction of the following tokens. Adding input noise to the decoder will further enhance the effect of error propagation, and thus influence our analysis. To eliminate the influence of error propagation, we apply teacher forcing BIBREF23 in the inference phase by feeding the previous ground-truth target tokens instead of the previously generated target tokens, following BIBREF24. We evaluate our model on IWSLT14 De$\\leftrightarrow $En, IWSLT14 Ro$\\leftrightarrow $En and WMT17 Chinese$\\leftrightarrow $English (Zh$\\leftrightarrow $En) translation tasks. More details on experimental configurations are described in supplementary materials (Section 1.2). The results are demonstrated in Figure FIGREF10. It can be seen that as the perturbation rate increases, adding different types of noise to the decoder input consistently achieves lower translation quality than adding noise to the encoder input."
+            ],
+            "highlighted_evidence": [
+              "We simulate the input noise with three typical operations BIBREF20, BIBREF21: 1) random dropping: we randomly drop the input tokens of encoder and decoder respectively with different drop rates; 2) random noising: we randomly select tokens and replace its embedding with random noise; 3) random swapping: we randomly reverse the order for the adjacent tokens. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "db1ad4da5bebd9e74d0f61843f440e008868c0fc",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "random dropping",
+              "random noising",
+              "random swapping"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "In this section, we compare the characteristics between the encoder and decoder by analyzing their robustness according to the input noise in the inference phase. We simulate the input noise with three typical operations BIBREF20, BIBREF21: 1) random dropping: we randomly drop the input tokens of encoder and decoder respectively with different drop rates; 2) random noising: we randomly select tokens and replace its embedding with random noise; 3) random swapping: we randomly reverse the order for the adjacent tokens. The decoder in NMT model typically generates the current token one-by-one conditioned on the previous generated tokens, which suffers from error propagation BIBREF22: if a token is incorrectly predicted by the decoder, it will affect the prediction of the following tokens. Adding input noise to the decoder will further enhance the effect of error propagation, and thus influence our analysis. To eliminate the influence of error propagation, we apply teacher forcing BIBREF23 in the inference phase by feeding the previous ground-truth target tokens instead of the previously generated target tokens, following BIBREF24. We evaluate our model on IWSLT14 De$\\leftrightarrow $En, IWSLT14 Ro$\\leftrightarrow $En and WMT17 Chinese$\\leftrightarrow $English (Zh$\\leftrightarrow $En) translation tasks. More details on experimental configurations are described in supplementary materials (Section 1.2). The results are demonstrated in Figure FIGREF10. It can be seen that as the perturbation rate increases, adding different types of noise to the decoder input consistently achieves lower translation quality than adding noise to the encoder input."
+            ],
+            "highlighted_evidence": [
+              "We simulate the input noise with three typical operations BIBREF20, BIBREF21: 1) random dropping: we randomly drop the input tokens of encoder and decoder respectively with different drop rates; 2) random noising: we randomly select tokens and replace its embedding with random noise; 3) random swapping: we randomly reverse the order for the adjacent tokens."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_87523fb927354ddc8ad1357a81f766b7ea95f53c",
+      "source_question_id": "87523fb927354ddc8ad1357a81f766b7ea95f53c",
+      "source_paper_id": "1910.09387",
+      "paper_title": "Clotho: An Audio Captioning Dataset",
+      "question": "How many annotators did they have?",
+      "answers": [
+        {
+          "annotation_id": "0492dbd085d76226439a531a6fbf5249990741d3",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "72c46d6a134093c522660247f5fd021a7e1fa087",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "source_question_id": "88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "source_paper_id": "1702.02584",
+      "paper_title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+      "question": "What lexical cues are used for humor recogition?",
+      "answers": [
+        {
+          "annotation_id": "5391fea9fc674e54281de49f15dc621ff243a341",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Incongruity",
+              "Ambiguity",
+              "Interpersonal Effect",
+              "Phonetic Style"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "Humor recognition refers to the task of deciding whether a sentence/spoken-utterance expresses a certain degree of humor. In most of the previous studies BIBREF1 , BIBREF2 , BIBREF3 , humor recognition was modeled as a binary classification task. In the seminal work BIBREF1 , a corpus of INLINEFORM0 “one-liners\" was created using daily joke websites to collect humorous instances while using formal writing resources (e.g., news titles) to obtain non-humorous instances. Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers. In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building."
+            ],
+            "highlighted_evidence": [
+              "In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building."
+            ]
+          }
+        },
+        {
+          "annotation_id": "d16c48697bc81bde04859cfe9ef595ee24c057af",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "alliteration",
+              "antonymy",
+              "adult slang"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "Humor recognition refers to the task of deciding whether a sentence/spoken-utterance expresses a certain degree of humor. In most of the previous studies BIBREF1 , BIBREF2 , BIBREF3 , humor recognition was modeled as a binary classification task. In the seminal work BIBREF1 , a corpus of INLINEFORM0 “one-liners\" was created using daily joke websites to collect humorous instances while using formal writing resources (e.g., news titles) to obtain non-humorous instances. Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers. In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building."
+            ],
+            "highlighted_evidence": [
+              "Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_8cf5abf0126f19253930478b02f0839af28e4093",
+      "source_question_id": "8cf5abf0126f19253930478b02f0839af28e4093",
+      "source_paper_id": "1805.04558",
+      "paper_title": "NRC-Canada at SMM4H Shared Task: Classifying Tweets Mentioning Adverse Drug Reactions and Medication Intake",
+      "question": "what are the sentiment features used?",
+      "answers": [
+        {
+          "annotation_id": "865f996f04756927b47d976b29da771ee6102e80",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "the number of tokens with INLINEFORM0",
+              "the total score = INLINEFORM0",
+              "the maximal score = INLINEFORM0",
+              "the score of the last token in the tweet"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We generated features using the sentiment scores provided in the following lexicons: Hu and Liu Lexicon BIBREF17 , Norms of Valence, Arousal, and Dominance BIBREF18 , labMT BIBREF19 , and NRC Emoticon Lexicon BIBREF20 . The first three lexicons were created through manual annotation while the last one, NRC Emoticon Lexicon, was generated automatically from a large collection of tweets with emoticons. The following set of features were calculated separately for each tweet and each lexicon:",
+              "the number of tokens with INLINEFORM0 ;",
+              "the total score = INLINEFORM0 ;",
+              "the maximal score = INLINEFORM0 ;",
+              "the score of the last token in the tweet."
+            ],
+            "highlighted_evidence": [
+              "We generated features using the sentiment scores provided in the following lexicons: Hu and Liu Lexicon BIBREF17 , Norms of Valence, Arousal, and Dominance BIBREF18 , labMT BIBREF19 , and NRC Emoticon Lexicon BIBREF20 .",
+              "The following set of features were calculated separately for each tweet and each lexicon:\n\nthe number of tokens with INLINEFORM0 ;\n\nthe total score = INLINEFORM0 ;\n\nthe maximal score = INLINEFORM0 ;\n\nthe score of the last token in the tweet."
+            ]
+          }
+        },
+        {
+          "annotation_id": "a447935769118a165f95cd6c51433f0299bcb8d4",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "The following set of features were calculated separately for each tweet and each lexicon:\n\nthe number of tokens with INLINEFORM0 ;\n\nthe total score = INLINEFORM0 ;\n\nthe maximal score = INLINEFORM0 ;\n\nthe score of the last token in the tweet."
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We generated features using the sentiment scores provided in the following lexicons: Hu and Liu Lexicon BIBREF17 , Norms of Valence, Arousal, and Dominance BIBREF18 , labMT BIBREF19 , and NRC Emoticon Lexicon BIBREF20 . The first three lexicons were created through manual annotation while the last one, NRC Emoticon Lexicon, was generated automatically from a large collection of tweets with emoticons. The following set of features were calculated separately for each tweet and each lexicon:",
+              "the number of tokens with INLINEFORM0 ;",
+              "the total score = INLINEFORM0 ;",
+              "the maximal score = INLINEFORM0 ;",
+              "the score of the last token in the tweet."
+            ],
+            "highlighted_evidence": [
+              "We generated features using the sentiment scores provided in the following lexicons: Hu and Liu Lexicon BIBREF17 , Norms of Valence, Arousal, and Dominance BIBREF18 , labMT BIBREF19 , and NRC Emoticon Lexicon BIBREF20 . The first three lexicons were created through manual annotation while the last one, NRC Emoticon Lexicon, was generated automatically from a large collection of tweets with emoticons. The following set of features were calculated separately for each tweet and each lexicon:\n\nthe number of tokens with INLINEFORM0 ;\n\nthe total score = INLINEFORM0 ;\n\nthe maximal score = INLINEFORM0 ;\n\nthe score of the last token in the tweet."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+      "source_question_id": "95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+      "source_paper_id": "1612.03762",
+      "paper_title": "From narrative descriptions to MedDRA: automagically encoding adverse drug reactions",
+      "question": "Did they test the idea that the system reduces the time needed to encode ADR reports on real pharmacologists? ",
+      "answers": [
+        {
+          "annotation_id": "4ee9a4dfe6fbdeba295baad2c405c2ac8f676329",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": true,
+            "free_form_answer": "",
+            "evidence": [
+              "Let us now conclude this section by sketching the analysis of the computational complexity of MagiCoder.",
+              "Finally, to derive the best solutions actually requires INLINEFORM0 steps. The ordered-phrases criterium requires INLINEFORM1 ; the maximal set of voters criterium takes INLINEFORM2 time units.",
+              "Thus, we conclude that MagiCoder requires in the worst case INLINEFORM0 computational steps. We again highlight that this is a (very) worst case scenario, while in average it performs quite better. Moreover, we did not take into account that each phase works on a subset of terms of the previous phase, and the size of these subset rapidly decreases in common application.",
+              "the selection phase works only on voted terms, thus, in common applications, on a subset of the original dictionary."
+            ],
+            "highlighted_evidence": [
+              "Let us now conclude this section by sketching the analysis of the computational complexity of MagiCoder.\n\n",
+              "Finally, to derive the best solutions actually requires INLINEFORM0 steps. The ordered-phrases criterium requires INLINEFORM1 ; the maximal set of voters criterium takes INLINEFORM2 time units.\n\nThus, we conclude that MagiCoder requires in the worst case INLINEFORM0 computational steps. We again highlight that this is a (very) worst case scenario, while in average it performs quite better. Moreover, we did not take into account that each phase works on a subset of terms of the previous phase, and the size of these subset rapidly decreases in common application.\n\nthe selection phase works only on voted terms, thus, in common applications, on a subset of the original dictionary."
+            ]
+          }
+        },
+        {
+          "annotation_id": "5250a250a7bcfa33dbe9e4c4827185a257330be0",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": true,
+            "free_form_answer": "",
+            "evidence": [
+              "To evaluate MagiCoder performances, we developed a benchmark, which automatically compares MagiCoder behavior with human encoding on already manually revised and validated ADR reports."
+            ],
+            "highlighted_evidence": [
+              "To evaluate MagiCoder performances, we developed a benchmark, which automatically compares MagiCoder behavior with human encoding on already manually revised and validated ADR reports."
+            ]
+          }
+        },
+        {
+          "annotation_id": "a9553739783c00e14782ce4714c31ce07dbfce67",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": true,
+            "free_form_answer": "",
+            "evidence": [
+              "We are testing MagiCoder performances in the daily pharmacovigilance activities. Preliminary qualitative results show that MagiCoder drastically reduces the amount of work required for the revision of a report, allowing the pharmacovigilance stakeholders to provide high quality data about suspected ADRs."
+            ],
+            "highlighted_evidence": [
+              "Preliminary qualitative results show that MagiCoder drastically reduces the amount of work required for the revision of a report, allowing the pharmacovigilance stakeholders to provide high quality data about suspected ADRs."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+      "source_question_id": "98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+      "source_paper_id": "1905.08392",
+      "paper_title": "A Causality-Guided Prediction of the TED Talk Ratings from the Speech-Transcripts using Neural Networks",
+      "question": "How do the speakers' reputations bias the dataset?",
+      "answers": [
+        {
+          "annotation_id": "3dab1b35f94b5cb09bedbe9e4baf1ca24b7d8e5a",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "7fb51ed438fcb3192469cef9e267a3829413720f",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+      "source_question_id": "993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+      "source_paper_id": "1609.02075",
+      "paper_title": "The Social Dynamics of Language Change in Online Networks",
+      "question": "What older dialect markers did they explore?",
+      "answers": [
+        {
+          "annotation_id": "56b82311a9f24e6dbe6e1f903b29c6e5078b7baa",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_9bf60073fbb69fbf860196513fc6fd2f466535f6",
+      "source_question_id": "9bf60073fbb69fbf860196513fc6fd2f466535f6",
+      "source_paper_id": "1909.08357",
+      "paper_title": "Subword ELMo",
+      "question": "Does the training of ESuLMo take longer compared to ELMo?",
+      "answers": [
+        {
+          "annotation_id": "1c4c25d421e694b8a07cd68711da4fc3646fd6ed",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "7df7b9f6deefe085a3919b34a4e738d1bd568874",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "source_question_id": "a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "source_paper_id": "1611.04234",
+      "paper_title": "F-Score Driven Max Margin Neural Network for Named Entity Recognition in Chinese Social Media",
+      "question": "What dataset did they use?",
+      "answers": [
+        {
+          "annotation_id": "3efafd3d128023deca554dfa949d29e42917c2a4",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Peng and Dredze peng-dredze:2016:P16-2",
+              "Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ],
+            "highlighted_evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media.",
+              "We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ]
+          }
+        },
+        {
+          "annotation_id": "e6d48ae68a6c5d7d3d00b3440280427af7279daa",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Peng and Dredze peng-dredze:2016:P16-2"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ],
+            "highlighted_evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ]
+          }
+        },
+        {
+          "annotation_id": "e9878cb3ed3fcd7c430f7f7cd6eb53ec6744dcca",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ],
+            "highlighted_evidence": [
+              "We use a modified labelled corpus as Peng and Dredze peng-dredze:2016:P16-2 for NER in Chinese social media. Details of the data are listed in Table TABREF19 . We also use the same unlabelled text as Peng and Dredze peng-dredze:2016:P16-2 from Sina Weibo service in China and the text is word segmented by a Chinese word segmentation system Jieba as Peng and Dredze peng-dredze:2016:P16-2 so that our results are more comparable to theirs."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+      "source_question_id": "a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+      "source_paper_id": "1907.01339",
+      "paper_title": "Sequence Labeling Parsing by Learning Across Representations",
+      "question": "Which labeling scheme do they use?",
+      "answers": [
+        {
+          "annotation_id": "03104e4dbdca1bdbb241185d82ca5468d201f606",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "a49c839c5d89281ddc9ab799741c394ecf74331b",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+      "source_question_id": "b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+      "source_paper_id": "1910.12477",
+      "paper_title": "Multi-Module System for Open Domain Chinese Question Answering over Knowledge Base",
+      "question": "How does this result compare to other methods KB QA in CCKS2019?",
+      "answers": [
+        {
+          "annotation_id": "4d16aa2c4231d414f51209a4a8c999dc46f5eb31",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "cf39f2a3340002de50023ad9a6b1530d04e86079",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+      "source_question_id": "c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+      "source_paper_id": "1612.09535",
+      "paper_title": "PAMPO: using pattern matching and pos-tagging for effective Named Entities recognition in Portuguese",
+      "question": "how many rules did they use?",
+      "answers": [
+        {
+          "annotation_id": "baa8c0935f45955491713db1ade220d056da0756",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+      "source_question_id": "c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+      "source_paper_id": "1908.08788",
+      "paper_title": "Improving Few-shot Text Classification via Pretrained Language Representations.",
+      "question": "How many instances are explored in the few-shot experiments?",
+      "answers": [
+        {
+          "annotation_id": "4f84d8acffc73df5a939d904a53872a7b7cbbfd7",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "d7c2b4525f11448a02e3fb296b6dd7481bb1a3e0",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+      "source_question_id": "cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+      "source_paper_id": "1710.01789",
+      "paper_title": "Enhanced Neural Machine Translation by Learning from Draft",
+      "question": "Is the proposed model smaller or bigger than the conventional NMT system?",
+      "answers": [
+        {
+          "annotation_id": "47c0e5f6b155f5355c85f4b98558e2fc5df71916",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "cb54925d80c860897c11d57fe1c0303df7cd6784",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+      "source_question_id": "d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+      "source_paper_id": "1805.00195",
+      "paper_title": "An Annotated Corpus for Machine Reading of Instructions in Wet Lab Protocols",
+      "question": "are the protocols manually annotated?",
+      "answers": [
+        {
+          "annotation_id": "90f2a35726b939353f74bc813fe072d93703d3fe",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": true,
+            "free_form_answer": "",
+            "evidence": [
+              "Our final corpus consists of 622 protocols annotated by a team of 10 annotators. Corpus statistics are provided in Table TABREF5 and TABREF6 . In the first phase of annotation, we worked with a subset of 4 annotators including one linguist and one biologist to develop the annotation guideline for 6 iterations. For each iteration, we asked all 4 annotators to annotate the same 10 protocols and measured their inter-annotator agreement, which in turn helped in determining the validity of the refined guidelines. The average time to annotate a single protocol of 40 sentences was approximately 33 minutes, across all annotators."
+            ],
+            "highlighted_evidence": [
+              "Our final corpus consists of 622 protocols annotated by a team of 10 annotators. "
+            ]
+          }
+        },
+        {
+          "annotation_id": "c999efe2a60871c4c96dd94cb732e30c1d9a2ecd",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [],
+            "yes_no": true,
+            "free_form_answer": "",
+            "evidence": [
+              "In developing our annotation guidelines we had three primary goals: (1) We aim to produce a semantic representation that is well motivated from a biomedical and linguistic perspective; (2) The guidelines should be easily understood by annotators with or without biology background, as evaluated in Table TABREF7 ; (3) The resulting corpus should be useful for training machine learning models to automatically extract experimental actions for downstream applications, as evaluated in § SECREF6 ."
+            ],
+            "highlighted_evidence": [
+              "In developing our annotation guidelines we had three primary goals: (1) We aim to produce a semantic representation that is well motivated from a biomedical and linguistic perspective; (2) The guidelines should be easily understood by annotators with or without biology background, as evaluated in Table TABREF7 ; (3) The resulting corpus should be useful for training machine learning models to automatically extract experimental actions for downstream applications, as evaluated in § SECREF6 ."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "source_question_id": "e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "source_paper_id": "1804.03839",
+      "paper_title": "Generating Clues for Gender based Occupation De-biasing in Text",
+      "question": "Can their approach be extended to eliminate racial or ethnic biases?",
+      "answers": [
+        {
+          "annotation_id": "1f0d3d1883cc79d743362b7a3631802f9a9cb391",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "4391b9706bdde35168d5c8eccc43cf7c2f24065f",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_e801b6a6048175d3b1f3440852386adb220bcb36",
+      "source_question_id": "e801b6a6048175d3b1f3440852386adb220bcb36",
+      "source_paper_id": "1802.09233",
+      "paper_title": "EiTAKA at SemEval-2018 Task 1: An Ensemble of N-Channels ConvNet and XGboost Regressors for Emotion Analysis of Tweets",
+      "question": "How long is the dataset?",
+      "answers": [
+        {
+          "annotation_id": "050b85dd2e33c2024b9ca76a61ebe76238c9715d",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "1bdd687794c7c4498aa7848ff5b6a0bcba77a3c8",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+      "source_question_id": "f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+      "source_paper_id": "2002.09616",
+      "paper_title": "\"Wait, I'm Still Talking!\"Predicting the Dialogue Interaction Behavior Using Imagine-Then-Arbitrate Model",
+      "question": "Which models did they compare with?",
+      "answers": [
+        {
+          "annotation_id": "119eb9ce95c781358d3036ab3a37375cbeed5f3c",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Bidirectional Gated Recurrent Units (Bi-GRUs) BIBREF23, TextCNNs BIBREF12 and BERT BIBREF14"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "The hyper-parameter settings adopted in baselines and our model are the best practice settings for each training set. All models are tested with various hyper-parameter settings to get their best performance. Baseline models are Bidirectional Gated Recurrent Units (Bi-GRUs) BIBREF23, TextCNNs BIBREF12 and BERT BIBREF14."
+            ],
+            "highlighted_evidence": [
+              "Baseline models are Bidirectional Gated Recurrent Units (Bi-GRUs) BIBREF23, TextCNNs BIBREF12 and BERT BIBREF14."
+            ]
+          }
+        },
+        {
+          "annotation_id": "728956d59b4adce6000a6a812e266f0a3804d389",
+          "answer": {
+            "unanswerable": false,
+            "extractive_spans": [
+              "Bi-GRUs",
+              "TextCNNs",
+              "BERT"
+            ],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [
+              "The hyper-parameter settings adopted in baselines and our model are the best practice settings for each training set. All models are tested with various hyper-parameter settings to get their best performance. Baseline models are Bidirectional Gated Recurrent Units (Bi-GRUs) BIBREF23, TextCNNs BIBREF12 and BERT BIBREF14."
+            ],
+            "highlighted_evidence": [
+              "Baseline models are Bidirectional Gated Recurrent Units (Bi-GRUs) BIBREF23, TextCNNs BIBREF12 and BERT BIBREF14."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "source_question_id": "fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "source_paper_id": "1912.00239",
+      "paper_title": "Modeling German Verb Argument Structures: LSTMs vs. Humans",
+      "question": "What is the percentage of human judgment agreement on the set?",
+      "answers": [
+        {
+          "annotation_id": "faf09b518209f93e53ab88c6e1645457a74f53a4",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        },
+        {
+          "annotation_id": "fc0713b2869affb36672ea0d77cc1700da2e38f9",
+          "answer": {
+            "unanswerable": true,
+            "extractive_spans": [],
+            "yes_no": null,
+            "free_form_answer": "",
+            "evidence": [],
+            "highlighted_evidence": []
+          }
+        }
+      ]
+    }
+  ]
+}
