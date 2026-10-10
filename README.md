@@ -449,6 +449,10 @@ replaying successful actions and is not considered behaviorally equivalent yet.
 Core stack: Python, PyTorch, Hugging Face Transformers, TRL, PEFT/QLoRA, bitsandbytes, FAISS,
 sentence-transformers, Docker, and pytest.
 
+The saved Studio does not require FAISS or sentence-transformers. They are in
+the optional `vector` extra for indexed RAG; the `dev` extra includes them for
+the full test suite.
+
 ## Development and historical commands
 
 Use **Open the demo** above for the current release. The commands here are for
