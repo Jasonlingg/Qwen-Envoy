@@ -27,19 +27,38 @@ jobs:
           cd ../..
           python -I -S benchmarks/envoybench/qasper_official.py score --run-dir release/envoybench-v0.1/run --output "$RUNNER_TEMP/qwen-score.json"
           cmp "$RUNNER_TEMP/qwen-score.json" release/qasper-agent-study/qwen-official-score.json
+          python -I -S benchmarks/envoybench/qasper_official.py score --run-dir release/qasper-agent-study/nebius-amended-run --output "$RUNNER_TEMP/nemotron-score.json"
+          cmp "$RUNNER_TEMP/nemotron-score.json" release/qasper-agent-study/nemotron-official-score.json
           python -I -S - <<'PY'
           import json
           from pathlib import Path
-          run = Path('release/qasper-agent-study/nebius-run')
-          manifest = json.loads((run / 'manifest.json').read_text())
-          rows = json.loads((run / 'results.partial.json').read_text())
-          usage = json.loads((run / 'usage-budget.json').read_text())
-          assert manifest['status'] == 'incomplete'
-          assert not (run / 'results.json').exists()
-          assert len(rows) == 39 and len(manifest['question_ids']) == 40
-          assert rows[-1]['error'] == 'RuntimeError: estimated inference cost budget exhausted'
-          assert usage['estimated_usd'] <= usage['config']['max_estimated_usd'] == 2
-          print('Bounded hosted attempt remains explicitly incomplete; no full-run F1 claimed.')
+          root = Path('release/qasper-agent-study')
+          def load(relative):
+              return json.loads((root / relative).read_text())
+          original = load('nebius-run/manifest.json')
+          original_rows = load('nebius-run/results.partial.json')
+          original_usage = load('nebius-run/usage-budget.json')
+          continuation = load('nebius-continuation/results.json')
+          amended = load('nebius-amended-run/manifest.json')
+          amended_rows = load('nebius-amended-run/results.json')
+          amended_usage = load('nebius-amended-run/usage-budget.json')
+          assert original['status'] == 'incomplete'
+          assert not (root / 'nebius-run/results.json').exists()
+          assert len(original_rows) == 39 and len(original['question_ids']) == 40
+          assert original_rows[-1]['error'] == 'RuntimeError: estimated inference cost budget exhausted'
+          assert original_usage['estimated_usd'] <= original_usage['config']['max_estimated_usd'] == 2
+          assert amended['status'] == 'complete'
+          assert len(amended_rows) == 40 and len(continuation) == 2
+          assert [row['question_id'] for row in amended_rows] == amended['question_ids']
+          for combined, source in zip(amended_rows, original_rows[:38] + continuation):
+              assert {k: v for k, v in combined.items() if k not in ('run_id', 'comparison_id')} == {
+                  k: v for k, v in source.items() if k not in ('run_id', 'comparison_id')
+              }
+          assert amended_rows[38]['status'] == 'no_submission'
+          assert amended_rows[39]['status'] == 'submitted'
+          assert amended_usage['config']['max_estimated_usd'] == 25
+          assert amended_usage['estimated_usd'] == 2.035422
+          print('Original partial run preserved; amended 40-row lineage and score verified.')
           PY
       - name: Verify archived training records and data bindings
         run: |
