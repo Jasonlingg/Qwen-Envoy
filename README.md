@@ -425,6 +425,8 @@ is preserved as experiment history, not the current release's validation status.
 | Path | Purpose |
 | --- | --- |
 | `benchmarks/envoybench/` | Candidate data protocol, paired runner, review tools, verifier, and Studio |
+| `benchmarks/envoybench/saved_payload.py`, `demo.py` | Saved-run validation and Studio web routes, respectively |
+| `benchmarks/envoybench/frozen_dataset.py`, `runtime_support.py` | Shared frozen-data and model/sandbox utilities used by the runner and Studio |
 | `release/envoybench-v0.1/` | Saved comparison, review artifacts, standalone Studio, and release notes |
 | `scripts/launch_studio.py` | Main local demo entry point; live Nebius inference is opt-in |
 | `src/env/` | Gym-style document environment, persistent REPL, corpus, tools, and reward |
@@ -437,6 +439,9 @@ is preserved as experiment history, not the current release's validation status.
 | `scripts/run_eval.py` | Shared policy evaluation entry point |
 | `scripts/research_vault.py` | Immutable Markdown/PDF/Obsidian snapshot import and export |
 | `scripts/viewer.py` | Earlier general-purpose trajectory viewer; separate from Studio |
+
+See the [current code map](docs/REPOSITORY_LAYOUT.md) for the saved-viewer,
+live-reader, and historical-prototype boundaries.
 
 The local worker executes each action once. The optional Docker backend still rebuilds state by
 replaying successful actions and is not considered behaviorally equivalent yet.
@@ -589,7 +594,7 @@ been established by a complete cost comparison.
   and updates, not model-generated diagrams.
 - [Report-derived memory demo](docs/QWEN_EXPERIMENT_MEMORY_DEMO.md): recorded
   Qwen experiment results presented as a dated Obsidian thread.
-- [Research-library layout](docs/REPOSITORY_LAYOUT.md) and
+- [Current repository layout](docs/REPOSITORY_LAYOUT.md) and
   [harness design](docs/RESEARCH_LIBRARY_HARNESS_DESIGN.md): the earlier staging
   harness has an offline fixture replay; it is separate from the live Studio
   paper reader. The read-only MCP bridge serves snapshot passages; unattended
