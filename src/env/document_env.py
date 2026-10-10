@@ -7,6 +7,8 @@ Reward: 0 during exploration, verifiable score on submission
 
 from __future__ import annotations
 
+import ast
+
 from loguru import logger
 from pydantic import BaseModel, Field
 
@@ -74,6 +76,13 @@ TIP: Track discoveries as you go: known_facts = {}
 Respond with ONLY Python code. Use print() to see output.
 When done, respond: SUBMIT: <answer> CITATIONS: ["id1", "id2"]
 """
+
+
+def _submission_format(require_evidence: bool) -> str:
+    format_line = 'SUBMIT: <answer> CITATIONS: ["doc_id"]'
+    if require_evidence:
+        format_line += ' EVIDENCE: [{"doc_id":"doc_id","start":0,"end":100}]'
+    return format_line
 
 
 class DocumentExplorationEnv:
@@ -233,19 +242,28 @@ class DocumentExplorationEnv:
                 if self.escalate_after_verifier_failure:
                     return self._escalate(action, "duplicate_action", [duplicate])
 
-        # Execute code in REPL
-        observation = self.repl.execute(action, timeout=30)
+        # Invalid Python is a protocol mistake, so give a useful correction
+        # without starting a sandbox execution. A SUBMIT action was handled above.
+        try:
+            ast.parse(action)
+        except SyntaxError as exc:
+            observation = (
+                f"SyntaxError: {exc.msg} (line {exc.lineno}). "
+                "This action was not run."
+            )
+        else:
+            observation = self.repl.execute(action, timeout=30)
         if self._evidence_state is not None:
             self._evidence_state.observe(action, observation)
 
-        # If SyntaxError, add a hint to help the model recover
+        # Distinguish a final-answer format mistake from a need to keep searching.
         if "SyntaxError" in observation:
             observation += (
-                "\n\nHINT: Your response had a syntax error. "
-                "Respond with ONLY Python code, no English text. Example:\n"
-                "results = search(\"your query\")\n"
-                "for r in results:\n"
-                "    print(r[\"doc_id\"], r[\"title\"])"
+                "\n\nHINT: Each turn must be either executable Python or one SUBMIT line. "
+                "If the inspected evidence is sufficient, respond exactly in this format:\n"
+                f"{_submission_format(self.require_evidence)}\n"
+                "Use only document IDs and spans you inspected. If evidence is missing, "
+                'continue with Python, for example: print(search("your query"))'
             )
 
         # Add step counter so agent knows urgency
@@ -253,7 +271,7 @@ class DocumentExplorationEnv:
         if remaining <= 1:
             observation += (
                 "\n\n*** FINAL STEP — you MUST respond with: "
-                "SUBMIT: <answer> CITATIONS: [...] ***"
+                f"{_submission_format(self.require_evidence)} ***"
             )
         elif remaining <= 5:
             observation += (

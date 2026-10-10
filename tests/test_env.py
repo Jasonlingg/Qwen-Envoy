@@ -69,6 +69,34 @@ def test_step_with_code(env: DocumentExplorationEnv) -> None:
     assert done is False
 
 
+def test_invalid_prose_gets_submission_repair_without_running_python(
+    corpus: Corpus, questions: list[dict], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    env = DocumentExplorationEnv(
+        corpus=corpus, questions=questions, max_steps=3,
+        use_docker=False, require_evidence=True,
+    )
+    try:
+        env.reset(question_idx=0)
+        env.step('print("ready")')
+
+        def should_not_run(*args, **kwargs):
+            raise AssertionError("invalid prose must not reach the sandbox")
+
+        monkeypatch.setattr(env.repl, "execute", should_not_run)
+        observation, reward, done, _ = env.step(
+            "The paper says the answer is blue."
+        )
+        assert reward == 0.0 and not done
+        assert "This action was not run" in observation
+        assert 'SUBMIT: <answer> CITATIONS: ["doc_id"] EVIDENCE:' in observation
+        assert "Use only document IDs and spans you inspected" in observation
+        assert "FINAL STEP" in observation
+        assert env.get_trajectory()[-1].action == "The paper says the answer is blue."
+    finally:
+        env.close()
+
+
 def test_step_with_submit(env: DocumentExplorationEnv) -> None:
     env.reset(question_idx=0)
     obs, reward, done, info = env.step(
