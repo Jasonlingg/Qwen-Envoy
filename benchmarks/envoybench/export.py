@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 from benchmarks.envoybench.demo import HERE, build_demo_payload
-from benchmarks.envoybench.run import DEFAULT_DATASET
+from benchmarks.envoybench.frozen_dataset import DEFAULT_DATASET
 
 
 def snapshot_html(

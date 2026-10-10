@@ -21,7 +21,7 @@ from itertools import combinations
 from math import comb, isfinite
 from pathlib import Path
 
-from benchmarks.envoybench.run import load_split
+from benchmarks.envoybench.frozen_dataset import load_split
 from src.eval.artifacts import configuration_hash, content_hash
 from src.eval.research_review import (
     load_corpus,

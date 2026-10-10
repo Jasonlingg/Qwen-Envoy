@@ -94,7 +94,10 @@ def _implementation_variance(manifest: dict) -> dict | None:
     expected = manifest.get("implementation_sha256")
     _require(isinstance(expected, dict) and expected, "original implementation hashes are missing")
     actual = runner._implementation_hashes()
-    _require(set(actual) == set(expected), "implementation file set differs from original")
+    _require(
+        set(actual) == set(expected),
+        "implementation differs: file set differs from original",
+    )
     variance = None
     for name, current_hash in actual.items():
         original_hash = expected[name]

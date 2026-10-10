@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from benchmarks.envoybench.demo import build_demo_payload
-from benchmarks.envoybench.run import DEFAULT_DATASET
+from benchmarks.envoybench.frozen_dataset import DEFAULT_DATASET
 
 
 def verify_run(
