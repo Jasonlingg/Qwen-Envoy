@@ -17,6 +17,8 @@ from src.eval.artifacts import configuration_hash
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / "release/envoybench-v0.1"
 SCORE = ROOT / "release/qasper-agent-study/qwen-official-score.json"
+NEMOTRON_SCORE = ROOT / "release/qasper-agent-study/nemotron-official-score.json"
+AMENDED_RUN = ROOT / "release/qasper-agent-study/nebius-amended-run"
 
 
 def _write(path: Path, value: object) -> None:
@@ -173,3 +175,29 @@ def test_saved_nebius_budget_stop_is_visible_without_a_full_score() -> None:
     assert (run["provenance"]["run_id"], run["cases"][-1]["id"], key) not in store
     html = snapshot_html(payload, verified_trace_store=store)
     assert "not_attempted" in html and "budget stop" in html
+
+
+def test_amended_nebius_run_shows_lineage_cost_and_full_official_f1() -> None:
+    payload = build_demo_payload(
+        **_options(), supplementary_runs=[AMENDED_RUN],
+        qasper_scores=[SCORE, NEMOTRON_SCORE],
+    )
+    run = payload["supplementary_runs"][0]
+    amendment = run["amended_continuation"]
+    score = json.loads(NEMOTRON_SCORE.read_text())
+    key = "nemotron_ultra_nebius"
+    assert run["run_status"] == "complete"
+    assert len(run["cases"]) == 40
+    assert amendment["original_completed_count"] == 38
+    assert amendment["original_budget_cap_usd"] == 2.0
+    assert amendment["amended_budget_cap_usd"] == 25.0
+    assert amendment["restarted_question_id"] == run["cases"][38]["id"]
+    assert amendment["first_attempt_question_id"] == run["cases"][39]["id"]
+    assert run["cases"][0]["episode_origin"] == "Original completed episode"
+    assert "restarted" in run["cases"][38]["episode_origin"]
+    assert "first attempt" in run["cases"][39]["episode_origin"]
+    assert run["usage_budget"]["estimated_usd"] == pytest.approx(2.035422)
+    assert run["models"][0]["metrics"]["qasper_answer_f1"] == score["models"][key]["answer_f1"]
+    assert run["models"][0]["metrics"]["pass"] is None
+    assert run["provenance"]["review_kind"] is None
+    assert "Amended continuation" in snapshot_html(payload)

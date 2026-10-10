@@ -131,20 +131,23 @@ This suggests a stopping bias worth investigating; it does not prove that
 repairs caused the behavior or that a short investigation found enough evidence.
 The [short report](docs/QASPER_AGENT_STUDY.md) records the provenance and limits.
 
-An October 9 **Nemotron Ultra/Nebius reference run is incomplete**: the $2
-local cost guard stopped it after 38 terminal episodes, during question 39;
-question 40 was not attempted. The recorded catalog-rate estimate is
-**$1.947862 for 366 requests**, not an invoice. The
-[partial results](release/qasper-agent-study/nebius-run/results.partial.json)
-preserve 27 submissions, 11 episodes without submission, and the interrupted
-episode. There is **no comparable 40-question Nemotron F1 score**. See the
-[reference-run record](release/qasper-agent-study/README.md#bounded-hosted-reference)
-for the frozen protocol, usage, and comparison limits.
+The October 9 **Nemotron Ultra/Nebius reference run completed under an amended
+protocol**. A $2 local cost guard stopped the original attempt during question
+39; the user then authorized a **$25 total** cap. Question 39 restarted at step
+1 because its live state could not be restored, and question 40 received its
+first attempt. The [derived 40-question result](release/qasper-agent-study/nebius-amended-run/results.json)
+has **28 submissions and 12 missing predictions**. Its
+[official QASPER Answer F1](release/qasper-agent-study/nemotron-official-score.json)
+is **19.03%**, counting missing predictions as zero. Cumulative catalog-rate
+estimated usage is **$2.035422 for 383 requests**, not an invoice. The
+[original partial traces](release/qasper-agent-study/nebius-run/results.partial.json)
+remain preserved; see the [reference-run record](release/qasper-agent-study/README.md#bounded-hosted-reference)
+for lineage and comparison limits.
 
-In Studio, select **Nemotron Ultra Nebius** in Runs, then **Unfinished** in
-Questions to inspect the interrupted 39th trace and the unattempted 40th
-question. This fifth run row is marked **Incomplete** and has no quality score;
-the four earlier Qwen run rows and their scores are unchanged.
+Studio shows the amended Nemotron run as a fifth row. Its saved traces and
+Answer F1 can be inspected alongside the four earlier Qwen runs. The hosted
+answers have no independent support review, and differences in provider,
+model, context cap, and runner prevent a controlled Qwen–Nemotron comparison.
 
 The separate October 3 two-question token diagnostic is **unscored**. Its
 generated-token logprobs are likelihoods of emitted tokens, not probabilities
@@ -230,7 +233,7 @@ SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","st
 | --- | --- |
 | Recorded Studio | Runs, questions, full transcripts, provisional scores; standalone HTML available |
 | September 30 base/v5 comparison | Inference complete; model-assisted review only; no validated promotion |
-| October 9 Nemotron/Nebius reference | Budget-stopped: 38/40 terminal episodes; partial traces preserved; no comparable full-run score |
+| October 9 Nemotron/Nebius reference | Amended 40-question result: 19.03% official Answer F1; 28 submissions; original budget-stopped trace preserved |
 | Source and anonymous answer review | Local review interfaces available; independent review remains incomplete |
 | Paper reader | Frozen text snapshots, optional endpoint inference, saved evidence and traces |
 | Token logprobs | Recorded in a separate small diagnostic; no calibrated correctness score |

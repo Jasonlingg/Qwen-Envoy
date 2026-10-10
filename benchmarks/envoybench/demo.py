@@ -124,6 +124,54 @@ def _read_json(path: Path) -> dict | list:
     return value
 
 
+def _amended_continuation(manifest: dict) -> dict | None:
+    """Identify the derived Nebius run from its saved protocol and episode lineage."""
+    amendment = manifest.get("protocol_amendment")
+    lineage = manifest.get("lineage")
+    if amendment is None and lineage is None:
+        return None
+    if (not isinstance(amendment, dict) or not isinstance(lineage, dict)
+            or amendment.get("schema_version") != "qasper-nebius-continuation-merge-v1"
+            or lineage.get("schema_version") != amendment["schema_version"]
+            or amendment.get("kind") != "cumulative_budget_increase_and_question_39_restart"):
+        raise ValueError("Unsupported saved protocol amendment or lineage")
+    original, continuation = lineage.get("original"), lineage.get("continuation")
+    ids = manifest.get("question_ids")
+    if (not isinstance(original, dict) or not isinstance(continuation, dict)
+            or not isinstance(ids, list) or len(ids) != 40
+            or original.get("retained_question_ids") != ids[:38]
+            or continuation.get("question_ids") != ids[38:]
+            or not isinstance(original.get("interrupted_question_39"), dict)
+            or original["interrupted_question_39"].get("question_id") != ids[38]
+            or amendment.get("original_question_39_partial_trace_excluded_from_derived_result")
+            is not True
+            or amendment.get("original_no_retry_protocol_amended") is not True
+            or amendment.get("question_39_restarted_at_step") != 1
+            or amendment.get("first_38_source") != "original completed episodes"
+            or amendment.get("question_39_source") != "continuation retry"
+            or amendment.get("question_40_source") != "continuation first attempt"
+            or not isinstance(original.get("run_id"), str)
+            or not isinstance(continuation.get("run_id"), str)):
+        raise ValueError("Saved protocol amendment does not match the episode lineage")
+    old_cap = amendment.get("original_local_estimated_usd_cap")
+    new_cap = amendment.get("amended_cumulative_estimated_usd_cap")
+    if (type(old_cap) not in {int, float} or type(new_cap) not in {int, float}
+            or not math.isfinite(old_cap) or not math.isfinite(new_cap)
+            or not 0 < old_cap < new_cap):
+        raise ValueError("Saved protocol amendment has invalid cost caps")
+    return {
+        "kind": "amended_continuation",
+        "original_completed_count": len(original["retained_question_ids"]),
+        "original_budget_cap_usd": old_cap,
+        "amended_budget_cap_usd": new_cap,
+        "original_run_id": original["run_id"],
+        "continuation_run_id": continuation["run_id"],
+        "restarted_question_id": ids[38],
+        "first_attempt_question_id": ids[39],
+        "original_partial_excluded": True,
+    }
+
+
 def _token_diagnostic_payload(run_dir: Path, dataset: Path) -> dict:
     """Display a complete paired dev smoke separately from benchmark grades."""
     paths = [run_dir / "manifest.json", run_dir / "results.json"]
@@ -307,6 +355,9 @@ def _run_payload(
     results = _read_json(results_path)
     if not isinstance(manifest, dict) or not isinstance(results, list):
         raise ValueError("Run manifest/results have invalid JSON shape")
+    amended_continuation = _amended_continuation(manifest)
+    if amended_continuation is not None and (incomplete or not supplementary):
+        raise ValueError("Amended continuation requires a complete supplementary run")
     split = manifest.get("split")
     if split not in {"dev", "test_candidate"}:
         raise ValueError("Run split must be dev or test_candidate")
@@ -517,6 +568,13 @@ def _run_payload(
             "focus": "Saved paper-agent run; inspect the code, source spans, and review status.",
             "systems": systems,
         })
+        if amended_continuation is not None:
+            if question_id == amended_continuation["restarted_question_id"]:
+                cases[-1]["episode_origin"] = "Q39 · restarted after original budget stop"
+            elif question_id == amended_continuation["first_attempt_question_id"]:
+                cases[-1]["episode_origin"] = "Q40 · first attempt in continuation"
+            else:
+                cases[-1]["episode_origin"] = "Original completed episode"
     if incomplete:
         score_status = "incomplete; saved traces only, no aggregate scores"
     elif scored and scored.get("human"):
@@ -576,6 +634,13 @@ def _run_payload(
             "source": f"Local EnvoyBench manifest.json and {results_path.name}",
         },
     }
+    if amended_continuation is not None:
+        payload["amended_continuation"] = amended_continuation
+        payload["provenance"]["protocol_amendment"] = manifest["protocol_amendment"]
+        payload["provenance"]["lineage_run_ids"] = {
+            "original": amended_continuation["original_run_id"],
+            "continuation": amended_continuation["continuation_run_id"],
+        }
     if incomplete:
         interrupted = sum(row["status"] == "error" for row in results)
         payload["completion"] = {
@@ -587,9 +652,32 @@ def _run_payload(
             "Incomplete attempt. Saved episodes retain their original status and traces. "
             "Unattempted questions are display placeholders, not generated results."
         )
+    if incomplete or amended_continuation is not None:
         budget_path = run_dir / "usage-budget.json"
-        if budget_path.exists():
-            payload["usage_budget"] = _read_json(budget_path)
+        if amended_continuation is not None and not budget_path.is_file():
+            raise ValueError("Amended continuation needs its cumulative usage budget")
+        if budget_path.is_file():
+            budget = _read_json(budget_path)
+            if amended_continuation is not None:
+                original_usage = manifest["lineage"]["original"].get("usage")
+                continuation_usage = manifest["lineage"]["continuation"].get("usage_delta")
+                if (not isinstance(budget, dict)
+                        or not isinstance(original_usage, dict)
+                        or not isinstance(continuation_usage, dict)):
+                    raise ValueError("Amended continuation has invalid cumulative usage")
+                budget_config = budget.get("config")
+                if (not isinstance(budget_config, dict)
+                        or budget_config.get("max_estimated_usd")
+                        != amended_continuation["amended_budget_cap_usd"]):
+                    raise ValueError("Amended continuation budget cap differs from its manifest")
+                for field in ("requests", "estimated_usd", "prompt_tokens", "completion_tokens"):
+                    total = budget.get(field)
+                    first, second = original_usage.get(field), continuation_usage.get(field)
+                    if (type(total) not in {int, float} or type(first) not in {int, float}
+                            or type(second) not in {int, float}
+                            or not math.isclose(total, first + second, rel_tol=1e-9, abs_tol=1e-9)):
+                        raise ValueError(f"Amended cumulative usage differs for {field}")
+            payload["usage_budget"] = budget
             payload["provenance"]["usage_budget_sha256"] = _file_sha256(budget_path)
     if verified_trace_store is not None:
         # Keep the verified rows in memory. The lazy route must never re-read a

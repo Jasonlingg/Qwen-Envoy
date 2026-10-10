@@ -15,34 +15,42 @@
 > support review. The report documents the short-target construction and
 > 38/40 three-action v5 episodes as a hypothesis, not a causal training finding.
 >
-> One authorized NVIDIA/Nebius reference attempt stopped at its conservative
-> $2 estimated-cost guard: **$1.947862**, 366 API requests, 38 completed episodes,
-> the 39th interrupted, and the 40th unattempted. Preserve
-> `release/qasper-agent-study/nebius-run/results.partial.json`, manifest and
-> usage budget. The run is explicitly incomplete; there is no full-run F1 or
-> completed-run score. Studio now shows it as a fifth, **Incomplete** run row
-> with saved traces, including the interrupted 39th question and unattempted
-> 40th. Its quality columns are blank. An asynchronous request to allow up to $3 total
-> was sent but no approval was received before this update. Do not infer approval
-> from elapsed time. API calls have stopped; no Runpod pod was launched.
+> The first NVIDIA/Nebius reference attempt stopped at its $2 local
+> estimated-cost guard: **$1.947862**, 366 API requests, 38 terminal episodes,
+> question 39 interrupted after 11 actions, question 40 unattempted. The user
+> then authorized a **$25 total** cap. The continuation restarted question 39
+> at step 1 because the live REPL/conversation state could not be restored;
+> question 40 received its first attempt. The original partial result,
+> manifest, and usage record remain unchanged under
+> `release/qasper-agent-study/nebius-run/`. The amendment was recorded before
+> further inference in `release/qasper-agent-study/CONTINUATION_2026_10_09.md`.
+>
+> The derived complete 40-row result is in
+> `release/qasper-agent-study/nebius-amended-run/`: first 38 original terminal
+> rows plus two continuation rows, with lineage in its manifest. Question 39
+> used 15 steps without a submission; question 40 submitted `85%` after two
+> steps and scored zero F1. **28/40 submitted; 12/40 missing.** The pinned
+> official QASPER evaluator gives **19.02565047926817% Answer F1** in
+> `release/qasper-agent-study/nemotron-official-score.json`. Cumulative usage
+> is **383 API requests and $2.035422** estimated at catalog rates, not an
+> invoice. The $25 cap was a local request guard. No independent answer-support
+> review was performed and this is not a controlled Qwen–Nemotron comparison.
 >
 > Source/scoring changes are in `e99b165`; Studio changes are in `815ea5f`.
 > Every recorded implementation hash from the hosted attempt matches `e99b165`
 > (the run started from a dirty tree over `e82e33b`; see EXPERIMENT.md).
 > The viewer adds official F1 alongside the existing provisional support scores.
 > It supports separately labeled supplemental runs without merging their
-> reviews. The original four Qwen rows remain alongside the incomplete Nebius
-> row; logprob smokes stay unscored. The packaged export includes all 562
-> original September 30 turns and the saved Nebius partial traces.
+> reviews. The original four Qwen rows remain alongside the amended Nemotron
+> row; logprob smokes stay unscored. The original first 38 Nemotron outcomes
+> and the amended final two outcomes are traceable to their source records.
 >
-> Validation: **788 tests passed** after the incomplete-run viewer change;
-> 21 focused tests and 32 release/official-score tests also passed;
-> both release hash sets and the standard-library case-study check pass. A
-> browser check opened the interrupted and unattempted questions with no JS
-> errors. Official Qwen scores reproduce byte-identically with isolated
-> standard-library Python. Local Studio was restarted on port 8765 after
-> verifying there were no active paper runs;
-> opening saved runs makes no model calls. Hackathon live judge access, public
+> Earlier validation, before the continuation: **788 tests passed** after the
+> partial-run viewer change; 21 focused tests and 32 release/official-score
+> tests also passed. Both historical release hash sets and the standard-library
+> case-study check passed. Official Qwen scores reproduced byte-identically
+> with isolated standard-library Python. Opening saved runs makes no model
+> calls. Hackathon live judge access, public
 > video, sponsor feedback and actual submission remain outside this completed
 > case-study packaging work.
 

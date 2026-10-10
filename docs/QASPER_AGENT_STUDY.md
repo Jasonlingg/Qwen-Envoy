@@ -119,29 +119,40 @@ The environment-file hash matches the run manifest; the evidence-state module
 was not separately hash-pinned. None of the 80 saved trajectories records a
 premature-refusal rejection, so it did not visibly force the three-step pattern.
 
-## Bounded reference run: incomplete
+## Bounded reference run: amended completion
 
 A separate October 9 run used `nvidia/Nemotron-3-Ultra-550b-a55b` through
 Nebius on the same frozen question list. Its
 [predeclared protocol](../release/qasper-agent-study/EXPERIMENT.md) allowed
 15 actions and 1,024 output tokens per action, requested thinking off, and
-set a $2 local estimated-cost ceiling. The guard stopped it after **38 terminal
-episodes**, during question 39 after 11 recorded actions; question 40 was not
-attempted. The [manifest](../release/qasper-agent-study/nebius-run/manifest.json)
-is marked incomplete.
+set a $2 local estimated-cost ceiling. That guard stopped after **38 terminal
+episodes**, during question 39 after 11 actions; question 40 was not attempted.
+The [original partial traces](../release/qasper-agent-study/nebius-run/results.partial.json)
+and incomplete manifest are preserved unchanged.
 
-The [partial traces](../release/qasper-agent-study/nebius-run/results.partial.json)
-preserve **27 submissions, 11 episodes without submission, and one interrupted
-episode**. The [usage record](../release/qasper-agent-study/nebius-run/usage-budget.json)
-contains 366 provider requests, 1,819,534 prompt tokens, and 42,776 completion
-tokens. Their catalog-rate estimate is **$1.947862**, before cache discounts;
-this is not an invoice. **No comparable 40-question Nemotron Answer F1 is
-reported.** The result is a bounded integration and protocol diagnostic.
+The user then authorized a **$25 total** local estimated-cost ceiling. The
+[recorded amendment](../release/qasper-agent-study/CONTINUATION_2026_10_09.md)
+restarted question 39 at step 1 because its live state could not be restored,
+and ran question 40 for the first time. The [derived 40-row result](../release/qasper-agent-study/nebius-amended-run/results.json)
+retains the original first 38 outcomes. Question 39 used 15 steps without
+submitting; question 40 submitted `85%` after two steps, scoring zero F1.
+Across the full selected set there are **28 submissions and 12 missing
+predictions**. The [official score artifact](../release/qasper-agent-study/nemotron-official-score.json)
+reports **19.03% Answer F1**. This is normalized answer-token overlap, not an
+evidence-support grade; no independent support review was done for Nemotron.
+
+The [cumulative usage record](../release/qasper-agent-study/nebius-amended-run/usage-budget.json)
+contains **383 provider requests**, 1,903,542 prompt tokens, and 43,960
+completion tokens. Its catalog-rate estimate is **$2.035422**, before cache
+discounts; this is not an invoice. The initial $2 limit and no-retry term were
+amended only for the interrupted question, and the
+[derived manifest](../release/qasper-agent-study/nebius-amended-run/manifest.json)
+records that lineage. The $25 figure is a local guard, not a provider cap.
 
 The reference configuration also differs from September 30 in model,
 provider, serving context, and runner version. It cannot isolate the effect of
-Qwen's training. Raw failures are preserved, without changing the original
-Qwen answers or support grades.
+Qwen's training or establish a general model ranking. Raw failures are
+preserved, without changing the original Qwen answers or support grades.
 
 ## Reproduce and interpret
 

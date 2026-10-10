@@ -1008,12 +1008,24 @@
         return state.selectedRun ? list(active.models).filter((model) => model.key === state.selectedRun.model.key) : [];
       }
       function incompleteRun(active) { return active.run_status === "incomplete"; }
+      function amendedRun(active) { return record(active.amended_continuation).kind === "amended_continuation"; }
+      function estimatedCost(active) {
+        const estimated = count(record(active.usage_budget).estimated_usd);
+        return estimated === null ? "Cost unavailable" : `$${estimated.toFixed(4)}`;
+      }
       function incompleteRunDetails(entry) {
         const completion = record(entry.active.completion);
         const identity = record(list(record(entry.active.provenance).model_identities).find((item) => item.key === entry.model.key));
-        const estimated = count(record(entry.active.usage_budget).estimated_usd);
-        const cost = estimated === null ? "Cost unavailable" : `Estimated cost $${estimated.toFixed(4)}`;
+        const cost = `Estimated cost ${estimatedCost(entry.active)}`;
         return `${printable(identity.model_id || entry.model.model_id)} · ${printable(identity.serving_hardware || identity.provider)} · ${integer(completion.finished)}/${integer(completion.planned)} finished · ${integer(completion.recorded)} recorded · ${integer(completion.interrupted)} interrupted · ${integer(completion.not_attempted)} not attempted · ${cost}. Same frozen questions and tools; provider, serving context and runtime differ. No controlled Qwen–Nemotron comparison.`;
+      }
+      function amendedRunDetails(entry) {
+        const amendment = record(entry.active.amended_continuation);
+        const identity = record(list(record(entry.active.provenance).model_identities).find((item) => item.key === entry.model.key));
+        const f1 = entry.active.qasper_score
+          ? `Official Answer F1: ${answerF1(record(entry.model.metrics).qasper_answer_f1)} / 100 on ${integer(entry.active.question_denominator)} selected questions`
+          : "Official Answer F1 not loaded";
+        return `Q1–Q${integer(amendment.original_completed_count)} use original completed episodes. Q39 restarted from step 1 after the original $${Number(amendment.original_budget_cap_usd).toFixed(2)} local cost cap stopped its first attempt; that partial trace is excluded from this derived result. Q40 is its first attempt. The cumulative local cap was raised to $${Number(amendment.amended_budget_cap_usd).toFixed(2)}. Cumulative estimated cost: ${estimatedCost(entry.active)} across both runs, from usage-budget.json. ${f1}; answer support is unreviewed. ${printable(identity.model_id || entry.model.model_id)} · ${printable(identity.serving_hardware || identity.provider)}. No controlled Qwen–Nemotron comparison.`;
       }
       function openRun(entry) {
         state.selectedRun = entry;
@@ -1022,9 +1034,11 @@
         byId("archive").hidden = true;
         byId("cases").hidden = false;
         byId("cases-heading").textContent = printable(entry.model.label || titleCase(entry.model.key));
-        byId("task-card-label").textContent = incompleteRun(entry.active) ? "Incomplete · budget stop · unscored." : entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
+        byId("task-card-label").textContent = incompleteRun(entry.active) ? "Incomplete · budget stop · unscored." : amendedRun(entry.active) ? "Amended continuation · support unreviewed." : entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
         byId("task-card-copy").textContent = incompleteRun(entry.active)
           ? incompleteRunDetails(entry)
+          : amendedRun(entry.active)
+          ? amendedRunDetails(entry)
           : entry.diagnostic
           ? "Separate saved run. Token likelihood is available inside each turn."
           : entry.supplementary
@@ -1048,12 +1062,12 @@
         byId("archive-heading").textContent = "Runs";
         byId("provenance-heading").textContent = "Run details";
         byId("archive-note-heading").textContent = level === "model" ? "AI-graded · provisional." : level === "human" ? "Human-reviewed." : "Saved runs.";
-        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; supplementary runs are separate. Dev smoke runs have no quality score.";
+        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; supplementary runs are separate. Qwen and Nemotron differ in provider, serving context, and runtime, so their results are not a controlled comparison. Dev smoke runs have no quality score.";
         const container = byId("model-cards"); clear(container);
         const scroll = add(container, "div", "run-table-scroll");
         const table = add(scroll, "table", "run-table");
         const headings = add(add(table, "thead"), "tr");
-        ["Run", "Date", "Samples", "Official QASPER Answer F1 (0–100)", level === "human" ? "Human passes" : "AI passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
+        ["Run", "Date", "Samples", "Official QASPER Answer F1 (0–100)", "Estimated cost", level === "human" ? "Human passes" : "AI passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
         const body = add(table, "tbody");
         runEntries(state.data).forEach((entry) => {
           const incomplete = incompleteRun(entry.active);
@@ -1064,10 +1078,11 @@
           const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
           button.dataset.runId = entry.id;
           button.type = "button"; button.addEventListener("click", () => openRun(entry));
-          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", incomplete ? "Incomplete · budget stop" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
+          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", incomplete ? "Incomplete · budget stop" : amendedRun(entry.active) ? "Amended continuation · support unreviewed" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
           add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
           add(row, "td", "", incomplete ? `${integer(record(entry.active.completion).finished)}/${integer(record(entry.active.completion).planned)} finished` : integer(total));
           add(row, "td", "", answerF1(metrics.qasper_answer_f1));
+          add(row, "td", "", entry.supplementary && (incomplete || amendedRun(entry.active)) ? estimatedCost(entry.active) : "—");
           add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
           add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
           add(row, "td", "", count(metrics.unanswerable_pass) === null ? "—" : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
@@ -1266,6 +1281,7 @@
         add(details, "summary", "", "Reference & question details");
         if (questionText(item) !== printable(item.question)) add(details, "p", "case-focus", printable(item.question));
         if (item.focus) add(details, "p", "case-focus", printable(item.focus));
+        if (item.episode_origin) add(details, "p", "case-focus", printable(item.episode_origin));
         if (item.reference_answer) add(details, "p", "case-focus", `QASPER reference (not independently validated): ${printable(item.reference_answer)}`);
         add(details, "span", "case-id", `Question ID: ${printable(item.id)}`);
         const answers = byId("answer-lanes"); clear(answers);

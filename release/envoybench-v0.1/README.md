@@ -4,7 +4,7 @@ The display name is now **QASPER Agent Studio — a Qwen Envoy case study**.
 These questions are adapted from **QASPER (Dasigi et al., 2021; CC BY 4.0)**;
 they are not newly authored questions or an official full-test QASPER result.
 The [QASPER extension](../qasper-agent-study/README.md) adds official Answer F1
-scoring and a separately recorded NVIDIA/Nebius reference configuration. The
+scoring and a separately recorded, amended NVIDIA/Nebius reference run. The
 original inference and model-assisted review JSON in this directory is unchanged.
 
 EnvoyBench evaluates paper-reading agents that write bounded Python programs to
@@ -29,9 +29,12 @@ Questions → Trace**: choose a saved run, pick a question, then inspect that
 agent's answer, Python actions, tool observations, and submitted source spans.
 All 562 turns from the September 30 runs are embedded in full, including long
 tool responses. The October 3 runs add optional token-likelihood panels.
-An additional **Incomplete** Nemotron Ultra/Nebius row shows the 38 finished
-episodes, the interrupted 39th trace, and the unattempted 40th question. It
-has no full-run quality score; select **Unfinished** to see both exceptions.
+An additional Nemotron Ultra/Nebius row shows a complete, amended 40-question
+result with **19.03% official Answer F1**, 28 submissions, and 12 missing
+predictions. The original $2 budget-stopped trace is preserved separately;
+question 39 restarted from step 1 under the later $25 total cap. The
+[amendment record](../qasper-agent-study/CONTINUATION_2026_10_09.md) explains
+this change and links the source runs.
 The trace shows where an agent failed or abstained; an exact source span alone
 does not prove that the answer is supported.
 
@@ -110,8 +113,9 @@ python -m benchmarks.envoybench.demo \
   --review-dir release/envoybench-v0.1/review-prepared \
   --judged-review release/envoybench-v0.1/review-model-assisted/review.json \
   --token-diagnostic-run release/envoybench-v0.1/token-diagnostic-smoke \
-  --supplementary-run release/qasper-agent-study/nebius-run \
+  --supplementary-run release/qasper-agent-study/nebius-amended-run \
   --qasper-score release/qasper-agent-study/qwen-official-score.json \
+  --qasper-score release/qasper-agent-study/nemotron-official-score.json \
   --provisional --port 8765
 ```
 

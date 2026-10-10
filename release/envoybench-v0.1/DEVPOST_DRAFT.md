@@ -29,8 +29,8 @@ source IDs and spans. Studio presents saved comparisons as **Runs → Questions
 → Trace**, so a reviewer can inspect the actual actions and evidence behind a
 result. The historical release contains four saved run rows: the paired September 30
 comparison and the paired October 3 development smoke. The static export
-also shows a fifth, incomplete NVIDIA/Nebius reference row with its saved
-partial traces and blank quality scores. It includes all 562 September 30
+also shows a fifth, amended NVIDIA/Nebius reference row with 40 saved episodes
+and official Answer F1. It includes all 562 September 30
 turns in full. The release includes a
 reproducible split recipe and checks that bind saved runs and quoted spans to
 the frozen corpus.
@@ -83,13 +83,18 @@ question, corpus revision, and runtime evidence belong with the release's
 live-validation record.
 
 Qwen remains the subject of the saved September 30 paired comparison.
-A separate bounded 40-question NVIDIA/Nebius attempt stopped at its $2 local
-estimated-cost ceiling (recorded estimate $1.947862). It finished 38 episodes,
-interrupted the 39th, and did not attempt the 40th. The
-[partial traces and usage](../qasper-agent-study/README.md) are retained without
-full-run F1. Studio displays this as an **Incomplete** fifth row: select
-**Unfinished** to inspect the interrupted 39th question and the unattempted
-40th. It shares the frozen questions, papers, and tool interface, but differs
+A separate bounded 40-question NVIDIA/Nebius attempt initially stopped at its
+$2 local estimated-cost ceiling (recorded estimate $1.947862). It finished 38
+episodes, interrupted question 39, and did not attempt question 40. The user
+then authorized a $25 **total** local cap. The continuation restarted question
+39 from step 1 because its live state could not be restored, and attempted
+question 40 for the first time. The [derived full result and original partial
+trace](../qasper-agent-study/README.md) are both retained. The full run has
+**28 submissions, 12 missing predictions, and 19.03% official QASPER Answer
+F1**, with **383 requests and $2.035422** total estimated catalog-rate usage.
+Question 39 used all 15 steps without submitting; question 40 submitted `85%`
+at step 2, receiving zero F1. Studio displays the amended result as its fifth
+row. It shares the frozen questions, papers, and tool interface, but differs
 in provider, serving context, model revision policy, and runtime. Its results
 are supplementary, not a controlled extension of the base-versus-v5 comparison.
 Official Answer F1 does not supply the missing semantic support reviews.

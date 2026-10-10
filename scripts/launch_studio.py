@@ -41,7 +41,8 @@ def main() -> int:
     release = ROOT / "release/envoybench-v0.1"
     study = ROOT / "release/qasper-agent-study"
     supplementary_runs = list(dict.fromkeys(path.resolve() for path in args.supplementary_run))
-    nebius_run = study / "nebius-run"
+    amended_run = study / "nebius-amended-run"
+    nebius_run = amended_run if (amended_run / "manifest.json").is_file() else study / "nebius-run"
     nebius_manifest = nebius_run / "manifest.json"
     if nebius_manifest.is_file():
         manifest = json.loads(nebius_manifest.read_text(encoding="utf-8"))
@@ -49,7 +50,10 @@ def main() -> int:
                 and nebius_run not in supplementary_runs):
             supplementary_runs.append(nebius_run)
     qasper_scores = list(dict.fromkeys(path.resolve() for path in args.qasper_score))
-    for name in ("qwen-official-score.json", "nemotron-official-score.json"):
+    score_names = ["qwen-official-score.json"]
+    if amended_run in supplementary_runs:
+        score_names.append("nemotron-official-score.json")
+    for name in score_names:
         path = study / name
         if path.is_file() and path not in qasper_scores:
             qasper_scores.append(path)

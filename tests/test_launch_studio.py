@@ -17,6 +17,7 @@ def test_launcher_loads_completed_supplement_and_deduplicates_paths(tmp_path, mo
     (nebius / "manifest.json").write_text(json.dumps({"status": status}))
     score = study / "qwen-official-score.json"
     score.write_text("{}")
+    (study / "nemotron-official-score.json").write_text("{}")
     monkeypatch.setattr(launch_studio, "ROOT", tmp_path)
     monkeypatch.chdir(tmp_path)
     argv = [
@@ -44,3 +45,27 @@ def test_launcher_loads_completed_supplement_and_deduplicates_paths(tmp_path, mo
     assert calls[0]["qasper_scores"] == [score]
     assert calls[0]["paper_models_path"] is None
     assert server == [(app, {"host": "127.0.0.1", "port": 8765})]
+
+
+def test_launcher_prefers_amended_continuation_and_its_score(tmp_path, monkeypatch):
+    study = tmp_path / "release/qasper-agent-study"
+    partial = study / "nebius-run"
+    amended = study / "nebius-amended-run"
+    for run, status in ((partial, "incomplete"), (amended, "complete")):
+        run.mkdir(parents=True)
+        (run / "manifest.json").write_text(json.dumps({"status": status}))
+    qwen_score = study / "qwen-official-score.json"
+    nemotron_score = study / "nemotron-official-score.json"
+    qwen_score.write_text("{}")
+    nemotron_score.write_text("{}")
+    monkeypatch.setattr(launch_studio, "ROOT", tmp_path)
+    monkeypatch.setattr("sys.argv", ["launch_studio"])
+    calls = []
+    monkeypatch.setattr(
+        "benchmarks.envoybench.demo.create_app", lambda **kwargs: calls.append(kwargs)
+    )
+    monkeypatch.setattr("uvicorn.run", lambda *_args, **_kwargs: None)
+
+    assert launch_studio.main() == 0
+    assert calls[0]["supplementary_runs"] == [amended]
+    assert calls[0]["qasper_scores"] == [qwen_score, nemotron_score]
