@@ -24,6 +24,7 @@ paper answers.
 **Start here:** [short findings report](docs/QASPER_AGENT_STUDY.md) ·
 [public demo](https://jasonlingg.github.io/Qwen-Envoy/) ·
 [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
+[research-to-decision log](docs/RESEARCH_DECISION_LOG.md) ·
 [training evidence](release/qwen-v5-training/README.md) ·
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
