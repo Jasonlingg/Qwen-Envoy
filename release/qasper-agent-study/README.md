@@ -90,6 +90,54 @@ denominators differ by model and are included in the JSON. Evidence F1 is not
 reported because no conversion from character spans to official paragraphs was
 performed.
 
+## Fixed retrieval baseline
+
+The [BM25 run](retrieval-baseline/results.json) uses the same 40 questions,
+papers, and Qwen base/v5 checkpoints as the agent run. It ranks passages only
+within the named paper and gives each checkpoint one answer request. The
+[frozen packets](retrieval-baseline/packets.json), [plan](retrieval-baseline/plan.json),
+[model settings](retrieval-baseline/models.json), [observed runtime](retrieval-baseline/runtime.json),
+and [run manifest](retrieval-baseline/manifest.json) record the inputs and
+serving setup. All 80 requests submitted an answer.
+
+| System | Official QASPER Answer F1 (40) | Answerable F1 (20) | Unanswerable F1 (20) |
+| --- | ---: | ---: | ---: |
+| BM25 + Qwen base | 41.52 | 33.04 | 50.00 |
+| BM25 + Qwen v5 | 58.86 | 17.72 | 100.00 |
+| Code agent + Qwen base | 19.92 | 29.83 | 10.00 |
+| Code agent + Qwen v5 | 30.69 | 21.37 | 40.00 |
+
+The [official score](retrieval-baseline/official-score.json) shows a mixed
+result. BM25 + v5 has higher overall answer overlap, mostly because it refused
+all 20 questions labeled unanswerable. It also falsely refused 9 of 20 labeled
+answerable questions, versus 1 of 20 for the v5 agent; its answerable F1 is
+lower. At least one annotated evidence span was fully present in all nine
+false-refusal packets; eight contained every annotated span in full. That
+suggests retrieval alone does not explain the abstention, though the annotations
+have not been reviewed for sufficiency. This known, previously inspected
+40-question set is provisional, and
+the baseline answers still need independent semantic support review. Answer
+F1 alone does not establish whether an answer is grounded in its passages.
+The agent and BM25 runs used different serving runtimes, so their latency
+difference cannot be attributed to the retrieval architecture alone.
+
+The [offline retrieval diagnostic](retrieval-baseline/retrieval-diagnostic.json)
+covered at least 80% of an annotated span in 19/20 answerable questions for each of BM25,
+MiniLM dense retrieval, and fixed reciprocal-rank hybrid retrieval under the
+same passage budget. This checks annotated-span overlap, not answer quality.
+The [automatic checks](retrieval-baseline/automatic.json) likewise do not
+replace semantic review. Offline scoring and retrieval checks used no model
+API calls; inference used a paid Runpod A40 pod, which was stopped after the
+run.
+
+Recompute the baseline's official Answer F1 without a model endpoint:
+
+```bash
+python -m benchmarks.envoybench.qasper_official score \
+  --run-dir release/qasper-agent-study/retrieval-baseline \
+  --output out/envoybench/retrieval-baseline-official-score-reproduction.json
+```
+
 ## Bounded hosted reference
 
 **Status: complete under a documented protocol amendment.** The derived

@@ -1,0 +1,40 @@
+{
+  "schema_version": "qasper-agent-study-retrieval-runtime-v1",
+  "observation_status": "operator_observed_not_weight_attested",
+  "pod": {
+    "id": "ef3mj33ilxbquj",
+    "cloud": "Runpod Secure Cloud",
+    "data_center": "CA-MTL-1",
+    "gpu": "NVIDIA A40 48GB",
+    "catalog_hourly_usd": 0.59,
+    "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "state_after_run": "stopped"
+  },
+  "software": {
+    "vllm": "0.10.2",
+    "torch": "2.8.0+cu128",
+    "transformers": "4.55.2",
+    "huggingface_hub": "0.34.4"
+  },
+  "server": {
+    "max_model_len": 8192,
+    "max_num_seqs": 16,
+    "enable_lora": true,
+    "max_lora_rank": 8,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "models": {
+    "base": {
+      "id": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218"
+    },
+    "v5": {
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+    }
+  },
+  "billing_note": "Catalog hourly rate only; actual account billing had not posted when this record was created."
+}
