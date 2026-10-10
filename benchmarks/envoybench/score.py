@@ -164,7 +164,10 @@ def _review_content(row: dict) -> dict:
 
 def _verify_artifacts(benchmark: dict, run_manifest: dict, results: list[dict],
                       corpus_dir: Path, *,
-                      require_paired: bool = True) -> tuple[dict[str, dict], list[str]]:
+                      require_paired: bool = True,
+                      allow_incomplete: bool = False) -> tuple[dict[str, dict], list[str]]:
+    if allow_incomplete and require_paired:
+        raise ValueError("incomplete artifacts are for supplementary inspection only")
     validate_benchmark(benchmark)
     if not isinstance(run_manifest, dict) or not isinstance(results, list):
         raise ValueError("run manifest and results must be JSON objects/list")
@@ -183,7 +186,8 @@ def _verify_artifacts(benchmark: dict, run_manifest: dict, results: list[dict],
             raise ValueError(f"run manifest {field} differs from frozen benchmark")
     if run_manifest.get("schema_version") != "envoybench-run-v1":
         raise ValueError("unsupported EnvoyBench run manifest")
-    if run_manifest.get("status") != "complete":
+    incomplete = allow_incomplete and run_manifest.get("status") == "incomplete"
+    if run_manifest.get("status") != "complete" and not incomplete:
         raise ValueError("run manifest is incomplete")
     if (run_manifest.get("full_split") is not True
             or run_manifest.get("subset_smoke") is not False):
@@ -241,7 +245,8 @@ def _verify_artifacts(benchmark: dict, run_manifest: dict, results: list[dict],
         raise ValueError("paired review needs at least two models")
     if not models:
         raise ValueError("saved run needs at least one model")
-    if set(result_keys) != {(model, question) for model in models for question in question_set}:
+    expected_matrix = {(model, question) for model in models for question in question_set}
+    if not incomplete and set(result_keys) != expected_matrix:
         raise ValueError("results are not a complete paired model/question matrix")
     if set(run_manifest.get("question_ids", [])) != question_set:
         raise ValueError("run manifest question IDs do not match the benchmark")

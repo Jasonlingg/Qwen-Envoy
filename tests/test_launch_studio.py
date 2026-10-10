@@ -9,7 +9,7 @@ import pytest
 from scripts import launch_studio
 
 
-@pytest.mark.parametrize("status", ["running", "complete"])
+@pytest.mark.parametrize("status", ["running", "complete", "incomplete"])
 def test_launcher_loads_completed_supplement_and_deduplicates_paths(tmp_path, monkeypatch, status):
     study = tmp_path / "release/qasper-agent-study"
     nebius = study / "nebius-run"
@@ -24,7 +24,7 @@ def test_launcher_loads_completed_supplement_and_deduplicates_paths(tmp_path, mo
         "--qasper-score",
         "release/qasper-agent-study/qwen-official-score.json",
     ]
-    if status == "complete":
+    if status in {"complete", "incomplete"}:
         argv += ["--supplementary-run", "release/qasper-agent-study/nebius-run"]
     monkeypatch.setattr("sys.argv", argv)
     calls = []
@@ -38,7 +38,9 @@ def test_launcher_loads_completed_supplement_and_deduplicates_paths(tmp_path, mo
     server = []
     monkeypatch.setattr("uvicorn.run", lambda value, **kwargs: server.append((value, kwargs)))
     assert launch_studio.main() == 0
-    assert calls[0]["supplementary_runs"] == ([nebius] if status == "complete" else [])
+    assert calls[0]["supplementary_runs"] == (
+        [nebius] if status in {"complete", "incomplete"} else []
+    )
     assert calls[0]["qasper_scores"] == [score]
     assert calls[0]["paper_models_path"] is None
     assert server == [(app, {"host": "127.0.0.1", "port": 8765})]

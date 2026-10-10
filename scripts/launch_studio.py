@@ -45,7 +45,8 @@ def main() -> int:
     nebius_manifest = nebius_run / "manifest.json"
     if nebius_manifest.is_file():
         manifest = json.loads(nebius_manifest.read_text(encoding="utf-8"))
-        if manifest.get("status") == "complete" and nebius_run not in supplementary_runs:
+        if (manifest.get("status") in {"complete", "incomplete"}
+                and nebius_run not in supplementary_runs):
             supplementary_runs.append(nebius_run)
     qasper_scores = list(dict.fromkeys(path.resolve() for path in args.qasper_score))
     for name in ("qwen-official-score.json", "nemotron-official-score.json"):

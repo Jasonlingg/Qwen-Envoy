@@ -20,7 +20,9 @@
 > the 39th interrupted, and the 40th unattempted. Preserve
 > `release/qasper-agent-study/nebius-run/results.partial.json`, manifest and
 > usage budget. The run is explicitly incomplete; there is no full-run F1 or
-> completed-run Studio row. An asynchronous request to allow up to $3 total
+> completed-run score. Studio now shows it as a fifth, **Incomplete** run row
+> with saved traces, including the interrupted 39th question and unattempted
+> 40th. Its quality columns are blank. An asynchronous request to allow up to $3 total
 > was sent but no approval was received before this update. Do not infer approval
 > from elapsed time. API calls have stopped; no Runpod pod was launched.
 >
@@ -28,14 +30,18 @@
 > Every recorded implementation hash from the hosted attempt matches `e99b165`
 > (the run started from a dirty tree over `e82e33b`; see EXPERIMENT.md).
 > The viewer adds official F1 alongside the existing provisional support scores.
-> It supports separately labeled complete supplemental runs without merging
-> their reviews. The original four run rows remain, and logprob smokes stay
-> unscored. The packaged export includes all 562 original turns.
+> It supports separately labeled supplemental runs without merging their
+> reviews. The original four Qwen rows remain alongside the incomplete Nebius
+> row; logprob smokes stay unscored. The packaged export includes all 562
+> original September 30 turns and the saved Nebius partial traces.
 >
-> Validation: **784 tests passed** after the feature changes; 14 focused viewer
-> tests passed again after the fairness-label follow-up. Official Qwen scores
-> reproduce byte-identically with isolated standard-library Python. Local Studio
-> was restarted on port 8765 after verifying there were no active paper runs;
+> Validation: **788 tests passed** after the incomplete-run viewer change;
+> 21 focused tests and 32 release/official-score tests also passed;
+> both release hash sets and the standard-library case-study check pass. A
+> browser check opened the interrupted and unattempted questions with no JS
+> errors. Official Qwen scores reproduce byte-identically with isolated
+> standard-library Python. Local Studio was restarted on port 8765 after
+> verifying there were no active paper runs;
 > opening saved runs makes no model calls. Hackathon live judge access, public
 > video, sponsor feedback and actual submission remain outside this completed
 > case-study packaging work.

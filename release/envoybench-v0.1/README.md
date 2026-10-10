@@ -29,6 +29,9 @@ Questions → Trace**: choose a saved run, pick a question, then inspect that
 agent's answer, Python actions, tool observations, and submitted source spans.
 All 562 turns from the September 30 runs are embedded in full, including long
 tool responses. The October 3 runs add optional token-likelihood panels.
+An additional **Incomplete** Nemotron Ultra/Nebius row shows the 38 finished
+episodes, the interrupted 39th trace, and the unattempted 40th question. It
+has no full-run quality score; select **Unfinished** to see both exceptions.
 The trace shows where an agent failed or abstained; an exact source span alone
 does not prove that the answer is supported.
 
@@ -107,6 +110,8 @@ python -m benchmarks.envoybench.demo \
   --review-dir release/envoybench-v0.1/review-prepared \
   --judged-review release/envoybench-v0.1/review-model-assisted/review.json \
   --token-diagnostic-run release/envoybench-v0.1/token-diagnostic-smoke \
+  --supplementary-run release/qasper-agent-study/nebius-run \
+  --qasper-score release/qasper-agent-study/qwen-official-score.json \
   --provisional --port 8765
 ```
 

@@ -141,6 +141,11 @@ episode. There is **no comparable 40-question Nemotron F1 score**. See the
 [reference-run record](release/qasper-agent-study/README.md#bounded-hosted-reference)
 for the frozen protocol, usage, and comparison limits.
 
+In Studio, select **Nemotron Ultra Nebius** in Runs, then **Unfinished** in
+Questions to inspect the interrupted 39th trace and the unattempted 40th
+question. This fifth run row is marked **Incomplete** and has no quality score;
+the four earlier Qwen run rows and their scores are unchanged.
+
 The separate October 3 two-question token diagnostic is **unscored**. Its
 generated-token logprobs are likelihoods of emitted tokens, not probabilities
 that answers are correct. Neither it nor the interrupted larger diagnostic

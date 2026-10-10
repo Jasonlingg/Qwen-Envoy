@@ -148,3 +148,28 @@ def test_supplementary_run_does_not_relax_paired_or_blind_review(supplementary, 
         build_demo_payload(run_dir=run_dir, provisional=True)
     with pytest.raises(ValueError, match="blind human review"):
         create_app(supplementary_runs=[run_dir], blind_review_dir=tmp_path / "blind")
+
+
+def test_saved_nebius_budget_stop_is_visible_without_a_full_score() -> None:
+    run_dir = ROOT / "release/qasper-agent-study/nebius-run"
+    store = {}
+    payload = build_demo_payload(
+        **_options(), supplementary_runs=[run_dir], qasper_scores=[SCORE],
+        verified_trace_store=store,
+    )
+    run = payload["supplementary_runs"][0]
+    key = "nemotron_ultra_nebius"
+    assert run["run_status"] == "incomplete"
+    assert run["completion"] == {
+        "planned": 40, "recorded": 39, "finished": 38,
+        "interrupted": 1, "not_attempted": 1,
+    }
+    assert run["usage_budget"]["estimated_usd"] == 1.947862
+    assert run["models"][0]["metrics"]["pass"] is None
+    assert run["models"][0]["metrics"].get("qasper_answer_f1") is None
+    assert run["cases"][-2]["systems"][key]["status"] == "error"
+    assert run["cases"][-1]["systems"][key]["status"] == "not_attempted"
+    assert run["cases"][-1]["systems"][key]["trajectory"] == []
+    assert (run["provenance"]["run_id"], run["cases"][-1]["id"], key) not in store
+    html = snapshot_html(payload, verified_trace_store=store)
+    assert "not_attempted" in html and "budget stop" in html

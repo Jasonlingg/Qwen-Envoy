@@ -41,6 +41,7 @@ from benchmarks.envoybench.reference_review import (
 from benchmarks.envoybench.run import DEFAULT_DATASET, _file_sha256, load_split
 from benchmarks.envoybench.score import (
     _automatic_score,
+    _mechanical_row,
     _strict_evidence,
     _validated_references,
     _verify_artifacts,
@@ -296,7 +297,14 @@ def _run_payload(
     supplementary: bool = False,
 ) -> dict:
     manifest = _read_json(run_dir / "manifest.json")
-    results = _read_json(run_dir / "results.json")
+    incomplete = isinstance(manifest, dict) and manifest.get("status") == "incomplete"
+    if incomplete and (not supplementary or review_dir is not None
+                       or judged_review_path is not None or reference_review_path is not None):
+        raise ValueError("incomplete runs are supplementary trace inspection only")
+    results_path = run_dir / ("results.partial.json" if incomplete else "results.json")
+    if incomplete and (run_dir / "results.json").exists():
+        raise ValueError("incomplete run must not also claim completed results")
+    results = _read_json(results_path)
     if not isinstance(manifest, dict) or not isinstance(results, list):
         raise ValueError("Run manifest/results have invalid JSON shape")
     split = manifest.get("split")
@@ -305,12 +313,33 @@ def _run_payload(
     benchmark, _, _, corpus_path, _ = load_split(dataset, split)
     documents, model_keys = _verify_artifacts(
         benchmark, manifest, results, corpus_path, require_paired=not supplementary,
+        allow_incomplete=incomplete,
     )
-    automatic = _automatic_score(benchmark, results, documents, model_keys)
-    components, featured, component_provenance = case_diagnostics(
-        benchmark, results, documents
-    )
-    behavior, behavior_metrics, behavior_provenance = response_behavior(benchmark, results)
+    if incomplete:
+        if len(model_keys) != 1:
+            raise ValueError("incomplete supplementary inspection needs one declared model")
+        questions_by_id = {question["id"]: question for question in benchmark["questions"]}
+        automatic = {
+            "schema_version": "envoybench-incomplete-inspection-v1",
+            "scope": "Per-episode diagnostics only; aggregate scores withheld for incomplete run",
+            "systems": {key: {
+                "submission_rate": None, "valid_evidence_span_rate": None,
+                "execution_error_episode_rate": None,
+                "question_rows": [
+                    _mechanical_row(row, questions_by_id[row["question_id"]], documents)
+                    for row in results if row["model_key"] == key
+                ],
+            } for key in model_keys},
+        }
+        components, featured = {}, []
+        component_provenance = {"reviewed_question_count": 0}
+        behavior, behavior_metrics, behavior_provenance = {}, {}, None
+    else:
+        automatic = _automatic_score(benchmark, results, documents, model_keys)
+        components, featured, component_provenance = case_diagnostics(
+            benchmark, results, documents
+        )
+        behavior, behavior_metrics, behavior_provenance = response_behavior(benchmark, results)
     mechanical = {
         (row["question_id"], model): row
         for model, system in automatic["systems"].items()
@@ -425,7 +454,15 @@ def _run_payload(
         question_id = question["id"]
         systems = {}
         for key in model_keys:
-            row = by_pair[(question_id, key)]
+            row = by_pair.get((question_id, key))
+            if row is None:
+                # Display-only placeholder. Never add it to the saved inference artifacts.
+                row = {
+                    "question_id": question_id, "model_key": key, "status": "not_attempted",
+                    "error": None,
+                    "predicted_answer": "", "predicted_citations": [], "predicted_evidence": [],
+                    "trajectory": [], "steps": 0, "duration_seconds": 0,
+                }
             trajectory = []
             for step in row["trajectory"]:
                 observation, truncated = _excerpt(step.get("observation", ""))
@@ -447,7 +484,7 @@ def _run_payload(
                     turn["logprob_diagnostics"] = step["logprob_diagnostics"]
                 trajectory.append(turn)
             annotation = annotations.get((question_id, key), {})
-            diagnostic = mechanical[(question_id, key)]
+            diagnostic = mechanical.get((question_id, key), {})
             semantic_diagnostics = components.get((question_id, key), unknown_diagnostics())
             if (question_id, key) in behavior:
                 semantic_diagnostics = {
@@ -480,7 +517,9 @@ def _run_payload(
             "focus": "Saved paper-agent run; inspect the code, source spans, and review status.",
             "systems": systems,
         })
-    if scored and scored.get("human"):
+    if incomplete:
+        score_status = "incomplete; saved traces only, no aggregate scores"
+    elif scored and scored.get("human"):
         score_status = "human-reviewed"
     elif scored:
         score_status = "provisional model-graded; not human-reviewed"
@@ -493,6 +532,7 @@ def _run_payload(
         "title": f"QASPER Agent Studio · {split.replace('_', ' ').title()}",
         "subtitle": "Saved paper-agent evaluation; no inference in this viewer.",
         "supplementary": supplementary,
+        "run_status": manifest["status"],
         "score_status": score_status,
         "comparison_mode": (
             "provisional" if provisional and split == "test_candidate" else "reviewed"
@@ -500,7 +540,7 @@ def _run_payload(
         "question_denominator": len(benchmark["questions"]),
         "models": models,
         "cases": cases,
-        "analytical_baselines": [refusal_baseline(benchmark)],
+        "analytical_baselines": [] if incomplete else [refusal_baseline(benchmark)],
         "featured_cases": featured,
         "review_status": (
             f"Separate component diagnoses cover {component_provenance['reviewed_question_count']} "
@@ -518,7 +558,7 @@ def _run_payload(
             "run_id": manifest["run_id"],
             "benchmark_id": manifest["benchmark_id"],
             "results_hash": configuration_hash({"results": results}),
-            "results_sha256": _file_sha256(run_dir / "results.json"),
+            "results_sha256": _file_sha256(results_path),
             "comparison_id": manifest["comparison_id"],
             "benchmark_hash": manifest["benchmark_hash"],
             "corpus_hash": manifest["corpus_hash"],
@@ -533,9 +573,24 @@ def _run_payload(
             "component_review": component_provenance,
             "behavior_review": behavior_provenance,
             "automatic_metrics_version": automatic["schema_version"],
-            "source": "Local EnvoyBench manifest.json and results.json",
+            "source": f"Local EnvoyBench manifest.json and {results_path.name}",
         },
     }
+    if incomplete:
+        interrupted = sum(row["status"] == "error" for row in results)
+        payload["completion"] = {
+            "planned": len(benchmark["questions"]), "recorded": len(results),
+            "finished": len(results) - interrupted, "interrupted": interrupted,
+            "not_attempted": len(benchmark["questions"]) - len(results),
+        }
+        payload["review_status"] = (
+            "Incomplete attempt. Saved episodes retain their original status and traces. "
+            "Unattempted questions are display placeholders, not generated results."
+        )
+        budget_path = run_dir / "usage-budget.json"
+        if budget_path.exists():
+            payload["usage_budget"] = _read_json(budget_path)
+            payload["provenance"]["usage_budget_sha256"] = _file_sha256(budget_path)
     if verified_trace_store is not None:
         # Keep the verified rows in memory. The lazy route must never re-read a
         # mutable results.json after the artifact and review checks above pass.
@@ -568,6 +623,8 @@ def _attach_qasper_score(path: Path, runs: list[dict]) -> None:
     if len(matches) != 1:
         raise ValueError("QASPER score must identify exactly one loaded saved run")
     run = matches[0]
+    if run.get("run_status") == "incomplete":
+        raise ValueError("incomplete runs cannot display a full-run QASPER score")
     if "qasper_score" in run:
         raise ValueError("QASPER score already loaded for this run")
     for field in (

@@ -66,6 +66,7 @@
     .run-table tbody tr:focus-within { background: var(--hover); }
     .run-select, .question-select { display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--text); text-align: left; font-size: 12px; font-weight: 550; }
     .run-kind { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); }
+    .run-kind.incomplete { color: var(--partial); }
     .metric-pass { color: var(--pass); }
     .metric-error { color: var(--fail); }
     .disclosure > summary, .token-panel > summary, .full-paper > summary, .generated-reasoning > summary { cursor: pointer; padding: 7px 0; font-size: 11px; font-weight: 550; }
@@ -93,6 +94,7 @@
     .question-table th:nth-child(3) { width: 90px; }
     .question-table th:nth-child(4) { width: 71px; }
     .question-table th:nth-child(5) { width: 52px; }
+    .question-table.incomplete th:nth-child(4) { width: 106px; }
     .question-table td { padding: 7px 6px; border-bottom: 1px solid var(--border); vertical-align: top; }
     .question-table tr.selected { background: var(--selected); box-shadow: inset 2px 0 #cbd5e1; }
     .question-number { font: 10px var(--mono); color: var(--muted); }
@@ -1005,6 +1007,14 @@
       function selectedModels(active) {
         return state.selectedRun ? list(active.models).filter((model) => model.key === state.selectedRun.model.key) : [];
       }
+      function incompleteRun(active) { return active.run_status === "incomplete"; }
+      function incompleteRunDetails(entry) {
+        const completion = record(entry.active.completion);
+        const identity = record(list(record(entry.active.provenance).model_identities).find((item) => item.key === entry.model.key));
+        const estimated = count(record(entry.active.usage_budget).estimated_usd);
+        const cost = estimated === null ? "Cost unavailable" : `Estimated cost $${estimated.toFixed(4)}`;
+        return `${printable(identity.model_id || entry.model.model_id)} · ${printable(identity.serving_hardware || identity.provider)} · ${integer(completion.finished)}/${integer(completion.planned)} finished · ${integer(completion.recorded)} recorded · ${integer(completion.interrupted)} interrupted · ${integer(completion.not_attempted)} not attempted · ${cost}. Same frozen questions and tools; provider, serving context and runtime differ. No controlled Qwen–Nemotron comparison.`;
+      }
       function openRun(entry) {
         state.selectedRun = entry;
         state.caseIndex = -1; state.caseFilter = "all"; state.caseQuery = "";
@@ -1012,8 +1022,10 @@
         byId("archive").hidden = true;
         byId("cases").hidden = false;
         byId("cases-heading").textContent = printable(entry.model.label || titleCase(entry.model.key));
-        byId("task-card-label").textContent = entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
-        byId("task-card-copy").textContent = entry.diagnostic
+        byId("task-card-label").textContent = incompleteRun(entry.active) ? "Incomplete · budget stop · unscored." : entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
+        byId("task-card-copy").textContent = incompleteRun(entry.active)
+          ? incompleteRunDetails(entry)
+          : entry.diagnostic
           ? "Separate saved run. Token likelihood is available inside each turn."
           : entry.supplementary
             ? "Same frozen questions and paper tools; provider, serving context and runtime differ. This is not a controlled Qwen–Nemotron comparison."
@@ -1044,16 +1056,17 @@
         ["Run", "Date", "Samples", "Official QASPER Answer F1 (0–100)", level === "human" ? "Human passes" : "AI passes", "Supported answers", "Correct refusals", "Execution errors"].forEach((title) => add(headings, "th", "", title));
         const body = add(table, "tbody");
         runEntries(state.data).forEach((entry) => {
-          const metrics = record(entry.model.metrics);
+          const incomplete = incompleteRun(entry.active);
+          const metrics = incomplete ? {} : record(entry.model.metrics);
           const total = count(entry.active.question_denominator);
           const row = add(body, "tr");
           const name = add(row, "td");
           const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
           button.dataset.runId = entry.id;
           button.type = "button"; button.addEventListener("click", () => openRun(entry));
-          add(name, "small", "run-kind", entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
+          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", incomplete ? "Incomplete · budget stop" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
           add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
-          add(row, "td", "", integer(total));
+          add(row, "td", "", incomplete ? `${integer(record(entry.active.completion).finished)}/${integer(record(entry.active.completion).planned)} finished` : integer(total));
           add(row, "td", "", answerF1(metrics.qasper_answer_f1));
           add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
           add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
@@ -1085,6 +1098,7 @@
         return cached?.kind === "full" ? list(cached.data.trajectory) : list(systemFor(item, model).trajectory);
       }
       function traceSource(item, model) {
+        if (systemFor(item, model).status === "not_attempted") return "Question not attempted · no saved trajectory";
         const kind = traceCacheEntry(item, model)?.kind;
         if (kind === "full" || state.selectedRun?.diagnostic) return "Full saved trajectory · no replay or live inference";
         if (state.snapshot && currentActive().trace_scope === "full_saved_trajectories") return "Full exported trajectory · no replay or live inference";
@@ -1097,6 +1111,7 @@
       function loadFullTrajectories(item, models) {
         if (!item || !state.traceAllowed || state.snapshot || state.blindActive || state.selectedRun?.diagnostic) return;
         models.forEach(async (model) => {
+          if (systemFor(item, model).status === "not_attempted") return;
           const key = traceKey(item, model);
           if (state.traceCache.has(key)) return;
           state.traceCache.set(key, { kind: "loading" });
@@ -1123,9 +1138,15 @@
         const system = systemFor(item, model);
         const diagnostics = record(system.mechanical_diagnostics);
         const verdict = words(system.verdict).toLowerCase();
-        const failed = Boolean(system.error) || String(system.status || "").toLowerCase() === "error";
-        const error = failed || list(system.trajectory).some(hasRecordedStderr) || diagnostics.execution_error_episode === true || count(system.returned_tool_error_count) > 0 || count(system.runtime_error_count) > 0 || count(system.context_error_count) > 0;
-        return { verdict: ["pass", "partial", "fail"].includes(verdict) ? verdict : "other", error, failed };
+        const status = String(system.status || "").toLowerCase();
+        const notAttempted = status === "not_attempted";
+        const interrupted = incompleteRun(currentActive()) && status === "error" && /budget/i.test(`${system.error || ""} ${system.error_category || ""}`);
+        const failed = !notAttempted && (Boolean(system.error) || status === "error");
+        const error = !notAttempted && (failed || list(system.trajectory).some(hasRecordedStderr) || diagnostics.execution_error_episode === true || count(system.returned_tool_error_count) > 0 || count(system.runtime_error_count) > 0 || count(system.context_error_count) > 0);
+        return { verdict: ["pass", "partial", "fail"].includes(verdict) ? verdict : "other", error, failed, notAttempted, interrupted };
+      }
+      function outcomeLabel(system, outcome) {
+        return outcome.notAttempted ? "Not attempted" : outcome.interrupted ? "Interrupted" : titleCase(system.verdict || "unreviewed");
       }
       function filteredCases(active) {
         const cases = list(active.cases);
@@ -1136,6 +1157,7 @@
           const matchesFilter = state.caseFilter === "all"
             || (state.caseFilter === "different" && outcomes.length === 2 && (outcomes[0].verdict !== outcomes[1].verdict || outcomes[0].error !== outcomes[1].error))
             || (state.caseFilter === "errors" && outcomes.some((outcome) => outcome.error))
+            || (state.caseFilter === "unfinished" && outcomes.some((outcome) => outcome.interrupted || outcome.notAttempted))
             || (state.caseFilter === "answerable" && item.answerability === "sufficient")
             || (state.caseFilter === "unanswerable" && item.answerability === "insufficient");
           return matchesFilter && (!query || `${item.id} ${questionText(item)}`.toLowerCase().includes(query));
@@ -1151,7 +1173,9 @@
         clear(container);
         const toolbar = add(container, "div", "question-toolbar");
         const filters = add(toolbar, "div", "question-filters");
-        [["all", "All"], ["errors", "Errors"], ["answerable", "Answerable"], ["unanswerable", "Unanswerable"]].forEach(([key, label]) => {
+        const choices = [["all", "All"], ["errors", "Errors"], ["answerable", "Answerable"], ["unanswerable", "Unanswerable"]];
+        if (incompleteRun(active)) choices.splice(2, 0, ["unfinished", "Unfinished"]);
+        choices.forEach(([key, label]) => {
           const button = add(filters, "button", "filter-button", label);
           button.type = "button";
           button.setAttribute("aria-pressed", String(state.caseFilter === key));
@@ -1174,10 +1198,10 @@
         const matches = filteredCases(active);
         add(toolbar, "span", "question-count", `${matches.length}/${list(active.cases).length}`);
         const scroller = add(container, "div", "question-table-scroll");
-        const table = add(scroller, "table", "question-table");
+        const table = add(scroller, "table", `question-table${incompleteRun(active) ? " incomplete" : ""}`);
         const header = add(table, "thead");
         const headings = add(header, "tr");
-        ["#", "Question", "Label", "Support review"].forEach((label) => add(headings, "th", "", label));
+        ["#", "Question", "Label", incompleteRun(active) ? "Review / status" : "Support review"].forEach((label) => add(headings, "th", "", label));
         if (active.qasper_score) add(headings, "th", "", "F1 /100").title = "Official QASPER Answer F1 (0–100)";
         const body = add(table, "tbody");
         matches.forEach(({ item, index }) => {
@@ -1191,8 +1215,8 @@
           selectedModels(active).forEach((model) => {
             const outcome = outcomeFor(item, model);
             const cell = add(row, "td", "outcome-cell");
-            add(cell, "span", `verdict ${outcome.verdict}`, titleCase(systemFor(item, model).verdict || "unreviewed"));
-            if (outcome.error) add(cell, "span", "error-flag", outcome.failed ? "run error" : "tool error");
+            add(cell, "span", `verdict ${outcome.verdict}`, outcomeLabel(systemFor(item, model), outcome));
+            if (outcome.error) add(cell, "span", "error-flag", outcome.interrupted ? "budget stop" : outcome.failed ? "run error" : "tool error");
             if (active.qasper_score) add(row, "td", "", answerF1(systemFor(item, model).qasper_answer_f1));
           });
           row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
@@ -1266,16 +1290,16 @@
         const name = add(head, "div");
         add(name, "h4", "", printable(system.label || model.label || titleCase(model.key)));
         const outcome = outcomeFor(item, model);
-        add(name, "small", "", `${trajectory.length} Python turns · ${observedSeconds(system.duration_seconds)}${outcome.error ? outcome.failed ? " · run error" : " · execution error" : ""}`);
+        add(name, "small", "", outcome.notAttempted ? "Not attempted · no model call or Python turns" : `${trajectory.length} Python turns · ${observedSeconds(system.duration_seconds)}${outcome.interrupted ? " · interrupted by budget stop" : outcome.error ? outcome.failed ? " · run error" : " · execution error" : ""}`);
         const verdict = words(system.verdict).toLowerCase();
-        const badge = add(head, "span", `verdict ${["pass", "partial", "fail"].includes(verdict) ? verdict : "other"}`, titleCase(system.verdict || "unreviewed"));
+        const badge = add(head, "span", `verdict ${["pass", "partial", "fail"].includes(verdict) ? verdict : "other"}`, outcomeLabel(system, outcome));
         badge.title = level === "model" ? "Provisional AI-graded verdict" : level === "human" ? "Recorded human review verdict" : "Answer quality unreviewed";
         if (!traceOnly && currentActive().qasper_score) add(lane, "p", "metrics-note", `Official QASPER Answer F1: ${answerF1(system.qasper_answer_f1)} / 100 · token overlap, separate from support review`);
         if (traceOnly) {
           const full = record(traceCacheEntry(item, model)?.data);
           add(lane, "p", "trace-source", traceSource(item, model));
           const status = words(full.status || system.status || "not recorded");
-          add(lane, "span", `run-status${outcome.error ? " error" : ""}`, outcome.error && !outcome.failed ? `${status} · execution error` : status);
+          add(lane, "span", `run-status${outcome.error ? " error" : ""}`, outcome.interrupted ? "interrupted · budget stop" : outcome.error && !outcome.failed ? `${status} · execution error` : status);
           const transcript = add(lane, "div", "transcript");
           trajectory.forEach((event, index) => {
             const box = add(transcript, "section", "turn-entry");
@@ -1297,19 +1321,20 @@
             if (event.observation_truncated) add(box, "p", "excerpt-note", `${integer(event.observation_original_chars)} characters recorded; showing excerpt in this export.`);
             renderTokenLikelihood(box, event);
           });
-          if (!trajectory.length) add(transcript, "p", "empty-step", "No Python turns recorded.");
+          if (!trajectory.length) add(transcript, "p", "empty-step", outcome.notAttempted ? "Question not attempted. No Python trace exists." : outcome.interrupted ? "Budget stop interrupted this question before any Python turns were recorded." : "No Python turns recorded.");
           if (full.error || system.error) {
             const error = add(lane, "details", "disclosure run-error");
-            add(error, "summary", "", "Recorded run error");
+            add(error, "summary", "", outcome.notAttempted ? "Why this question was not attempted" : outcome.interrupted ? "Budget stop" : "Recorded run error");
             add(error, "p", "", printable(full.error || system.error));
           }
           return;
         }
         const result = add(lane, "div", "lane-result");
-        add(result, "p", `answer${system.answer ? "" : " empty"}`, system.answer || "No answer submitted.");
+        const emptyAnswer = outcome.notAttempted ? "Not attempted: the run stopped before this question began." : outcome.interrupted ? "Interrupted by the budget stop before a final answer was submitted. Saved work remains in the trace below." : outcome.failed ? "The run failed before a final answer was submitted. Inspect the recorded error and trace." : "No answer submitted.";
+        add(result, "p", `answer${system.answer ? "" : " empty"}`, system.answer || emptyAnswer);
         if (system.error) {
           const error = add(result, "details", "disclosure");
-          add(error, "summary", "", system.error_category ? `Run error: ${words(system.error_category)}` : "Run error");
+          add(error, "summary", "", outcome.notAttempted ? "Why this question was not attempted" : outcome.interrupted ? "Budget stop" : system.error_category ? `Run error: ${words(system.error_category)}` : "Run error");
           add(error, "p", "run-error", printable(system.error));
         }
         const evidence = add(result, "details", "disclosure answer-details");

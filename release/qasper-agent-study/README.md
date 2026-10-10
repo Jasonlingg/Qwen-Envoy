@@ -97,6 +97,12 @@ actions, and question 40 was not attempted. The
 [manifest](nebius-run/manifest.json) preserves the incomplete status and
 configuration. No comparable 40-question Nemotron Answer F1 is reported.
 
+The [saved Studio](../envoybench-v0.1/studio.html) displays this as a fifth,
+**Incomplete** run row, separate from the four earlier Qwen rows. Select
+**Nemotron Ultra Nebius → Unfinished** to inspect question 39's saved trace
+and see that question 40 has no attempt or trace. The quality-score columns
+are blank for this partial run; the original Qwen scores are unchanged.
+
 The [usage budget record](nebius-run/usage-budget.json) reports **366 provider
 requests, 1,819,534 prompt tokens, and 42,776 completion tokens**, with a
 **$1.947862 catalog-rate estimate**. This is not an invoice and applies no

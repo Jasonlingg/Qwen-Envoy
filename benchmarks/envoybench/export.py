@@ -21,6 +21,10 @@ def snapshot_html(
         for active in [payload["active"], *payload.get("supplementary_runs", [])]:
             for case in active["cases"]:
                 for model_key, system in case["systems"].items():
+                    if system.get("status") == "not_attempted":
+                        if system.get("trajectory"):
+                            raise ValueError("unattempted question cannot have a trajectory")
+                        continue
                     trace_key = ((active["provenance"]["run_id"], case["id"], model_key)
                                  if active.get("supplementary") else (case["id"], model_key))
                     trace = verified_trace_store.get(trace_key)
@@ -57,7 +61,7 @@ def main() -> int:
     parser.add_argument("--token-diagnostic-run", type=Path,
                         help="complete paired dev smoke, displayed separately from scored results")
     parser.add_argument("--supplementary-run", type=Path, action="append", default=[],
-                        help="additional complete saved run; repeat for multiple runs")
+                        help="additional saved run, including bounded incomplete attempts")
     parser.add_argument("--qasper-score", type=Path, action="append", default=[],
                         help="official QASPER metric artifact for a loaded run; repeat as needed")
     parser.add_argument("--output", type=Path, required=True)

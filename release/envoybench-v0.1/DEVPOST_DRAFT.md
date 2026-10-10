@@ -29,7 +29,9 @@ source IDs and spans. Studio presents saved comparisons as **Runs → Questions
 → Trace**, so a reviewer can inspect the actual actions and evidence behind a
 result. The historical release contains four saved run rows: the paired September 30
 comparison and the paired October 3 development smoke. The static export
-includes all 562 September 30 turns in full. The release includes a
+also shows a fifth, incomplete NVIDIA/Nebius reference row with its saved
+partial traces and blank quality scores. It includes all 562 September 30
+turns in full. The release includes a
 reproducible split recipe and checks that bind saved runs and quoted spans to
 the frozen corpus.
 
@@ -85,7 +87,9 @@ A separate bounded 40-question NVIDIA/Nebius attempt stopped at its $2 local
 estimated-cost ceiling (recorded estimate $1.947862). It finished 38 episodes,
 interrupted the 39th, and did not attempt the 40th. The
 [partial traces and usage](../qasper-agent-study/README.md) are retained without
-a full-run F1 or completed-run Studio row. It shares the frozen questions, papers, and tool interface, but differs
+full-run F1. Studio displays this as an **Incomplete** fifth row: select
+**Unfinished** to inspect the interrupted 39th question and the unattempted
+40th. It shares the frozen questions, papers, and tool interface, but differs
 in provider, serving context, model revision policy, and runtime. Its results
 are supplementary, not a controlled extension of the base-versus-v5 comparison.
 Official Answer F1 does not supply the missing semantic support reviews.
