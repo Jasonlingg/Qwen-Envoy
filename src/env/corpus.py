@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-import faiss
-import numpy as np
 from loguru import logger
 from pydantic import BaseModel
-from sentence_transformers import SentenceTransformer
+
+if TYPE_CHECKING:
+    import faiss
+    from sentence_transformers import SentenceTransformer
 
 
 class Chunk(BaseModel):
@@ -56,6 +58,8 @@ class Corpus:
     @property
     def embedder(self) -> SentenceTransformer:
         if self._embedder is None:
+            from sentence_transformers import SentenceTransformer
+
             logger.info(f"Loading embedding model: {self._embedding_model}")
             self._embedder = SentenceTransformer(self._embedding_model)
         return self._embedder
@@ -124,6 +128,9 @@ class Corpus:
             logger.warning("No chunks to index")
             return
 
+        import faiss
+        import numpy as np
+
         texts = [c.text for c in self._chunks]
         embeddings = self.embedder.encode(texts, normalize_embeddings=True)
         embeddings = np.array(embeddings, dtype=np.float32)
@@ -136,6 +143,8 @@ class Corpus:
         """Embed query and search FAISS index, returning top-k results."""
         if self._index is None or self._index.ntotal == 0:
             return []
+
+        import numpy as np
 
         k = top_k or self.top_k
         q_emb = self.embedder.encode([query], normalize_embeddings=True)
