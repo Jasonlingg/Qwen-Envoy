@@ -70,6 +70,16 @@ comparator, and a small blank calibration packet. These changes analyze saved
 results; they do not constitute another inference or training run. The existing
 base/v5 quality grades remain provisional and unchanged.
 
+New EnvoyBench runs use the **fail-closed-v2** verifier protocol. It gives up to one
+recovery message, then records a structurally invalid submission or duplicate
+action as an `escalated` episode with no accepted prediction or reward. The
+archived September/October runs used **legacy-v1**: after feedback was spent,
+an invalid submission could be accepted. Their saved answers and scores remain
+unchanged. Use `--verifier-protocol legacy-v1` only when deliberately reproducing
+that historical behavior; the protocol choice is bound to each new run's
+manifest and comparison ID. This structural verifier does not judge whether a
+quoted passage semantically supports the answer.
+
 **Candidate release, no independently validated leaderboard yet.** The
 historical 40-question QASPER runs in this repository were used during
 development. Their review was model-assisted, not independent human review.

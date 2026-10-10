@@ -156,7 +156,7 @@ def _run_one_question(
     include_preamble: bool = True,
     evidence_verifier: bool = False,
     verifier_feedback_budget: int = 1,
-    escalate_after_verifier_failure: bool = False,
+    escalate_after_verifier_failure: bool = True,
 ) -> EvalResult:
     """Run one question with a fresh env + policy instance (safe for parallel use)."""
     q = questions[q_idx]
@@ -224,7 +224,7 @@ def run_eval(
     include_preamble: bool = True,
     evidence_verifier: bool = False,
     verifier_feedback_budget: int = 1,
-    escalate_after_verifier_failure: bool = False,
+    escalate_after_verifier_failure: bool = True,
 ) -> list[EvalResult]:
     """Run all policies on all (or selected) questions.
 

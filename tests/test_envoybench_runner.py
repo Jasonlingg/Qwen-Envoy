@@ -98,6 +98,7 @@ def test_validate_only_hash_checks_and_never_calls_docker_or_model(
     validated = runner.run(dataset, "dev", models, output, validate_only=True)
     assert validated["question_ids"] == ["q1", "q2"]
     assert validated["split_status"] == "previously_used_development"
+    assert validated["verifier_protocol"] == "fail-closed-v2"
     assert not output.exists()
 
     doc = dataset / "dev/corpus/paper_a.json"
@@ -181,6 +182,7 @@ def test_paired_run_records_full_matrix_without_endpoint_or_key(
         assert kwargs["use_docker"] is True
         assert kwargs["require_evidence"] is True
         assert kwargs["evidence_verifier"] is True
+        assert kwargs["escalate_after_verifier_failure"] is True
         key, factory = next(iter(kwargs["policies"].items()))
         policy = factory()
         assert policy.system_prompt == runner.QASPER_SYSTEM_PROMPT
@@ -208,6 +210,8 @@ def test_paired_run_records_full_matrix_without_endpoint_or_key(
     assert invocations == [("base", ["q1"]), ("base", ["q2"]),
                            ("v5", ["q1"]), ("v5", ["q2"])]
     assert manifest["status"] == "complete"
+    assert manifest["verifier_protocol"] == "fail-closed-v2"
+    assert manifest["escalate_after_verifier_failure"] is True
     assert manifest["full_split"] is True
     assert manifest["sandbox_image"]["image_id"] == "sha256:sandbox"
     assert manifest["models"][0]["serving_hardware"] == "unreported"
@@ -230,6 +234,40 @@ def test_paired_run_records_full_matrix_without_endpoint_or_key(
     assert "http://localhost:8000/v1" not in serialized
     assert '"answer": "Blue"' not in serialized
     assert not (output / "results.partial.json").exists()
+
+
+def test_verifier_protocol_versions_are_bound_to_separate_runs(
+    frozen: tuple[Path, Path, Path], monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    dataset, models, output = frozen
+    monkeypatch.setattr(runner, "preflight_sandbox", lambda: {
+        "image_id": "sha256:sandbox", "repo_digests": [],
+    })
+    observed_escalation: list[bool] = []
+
+    def incomplete_eval(**kwargs):
+        observed_escalation.append(kwargs["escalate_after_verifier_failure"])
+        return []
+
+    monkeypatch.setattr(runner, "run_eval", incomplete_eval)
+    with pytest.raises(ValueError, match="verifier_protocol"):
+        runner.run(dataset, "dev", models, output, verifier_protocol="unknown")
+    assert not output.exists()
+
+    with pytest.raises(RuntimeError, match="incomplete question matrix"):
+        runner.run(dataset, "dev", models, output, verifier_protocol="legacy-v1")
+    legacy = json.loads((output / "manifest.json").read_text())
+    assert "verifier_protocol" not in legacy
+    assert legacy["escalate_after_verifier_failure"] is False
+
+    modern_output = output.with_name("fail-closed-run")
+    with pytest.raises(RuntimeError, match="incomplete question matrix"):
+        runner.run(dataset, "dev", models, modern_output)
+    modern = json.loads((modern_output / "manifest.json").read_text())
+    assert modern["verifier_protocol"] == "fail-closed-v2"
+    assert modern["escalate_after_verifier_failure"] is True
+    assert modern["comparison_id"] != legacy["comparison_id"]
+    assert observed_escalation == [False, True]
 
 
 def test_partial_model_run_never_writes_complete_result(

@@ -90,7 +90,7 @@ class DocumentExplorationEnv:
         include_preamble: bool = True,
         evidence_verifier: bool = False,
         verifier_feedback_budget: int = 1,
-        escalate_after_verifier_failure: bool = False,
+        escalate_after_verifier_failure: bool = True,
     ) -> None:
         self.corpus = corpus
         self.questions = questions
@@ -103,6 +103,7 @@ class DocumentExplorationEnv:
         if verifier_feedback_budget < 0:
             raise ValueError("verifier_feedback_budget must be non-negative")
         self.verifier_feedback_budget = verifier_feedback_budget
+        # Explicit False is retained only for reproducing legacy fail-open runs.
         self.escalate_after_verifier_failure = escalate_after_verifier_failure
         self.repl = PersistentREPL(
             use_docker=use_docker, corpus_path=corpus_path,

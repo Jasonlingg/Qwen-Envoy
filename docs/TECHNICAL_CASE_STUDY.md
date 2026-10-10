@@ -157,6 +157,14 @@ recall. It remains visible in saved execution observations for compatibility.
 The manifest explicitly marks it as **not the benchmark score**. Neither that
 number nor quote-integrity validation is evidence of supported research answers.
 
+The archived verifier could accept an invalid submission after its single
+feedback turn was exhausted. This occurred once in the base-Qwen run and nine
+times in the later Nemotron reference run; it did not occur in v5. New runs use
+the [fail-closed verifier protocol](../benchmarks/envoybench/README.md#current-status),
+which records those actions as escalations with no accepted answer. Historical
+answers and official Answer F1 have not been rewritten; accepted status in the
+old runs should not be read as proof of evidence integrity.
+
 The planned identity-blind Sonnet grader stopped after eight questions when
 credits ran out. A separate Codex-assisted review covered all 40 paired
 questions, once each, across two fresh-context reviewers. They saw anonymized
@@ -286,21 +294,20 @@ and successful submission do not guarantee a better answer.
 
 ## Negative results and unresolved questions
 
-The October 9 hosted reference run also remains incomplete. Under its
-[predeclared protocol](../release/qasper-agent-study/EXPERIMENT.md),
-`nvidia/Nemotron-3-Ultra-550b-a55b` through Nebius attempted the same frozen
-questions with a 15-action budget and requested thinking off. The $2 local
-cost guard stopped it after 38 terminal episodes, during question 39 at
-11 saved actions; question 40 was not attempted. The
-[partial results](../release/qasper-agent-study/nebius-run/results.partial.json)
-contain 27 submissions, 11 episodes without submission, and the interrupted
-episode. The [usage record](../release/qasper-agent-study/nebius-run/usage-budget.json)
-reports 366 requests and a **$1.947862 catalog-rate estimate**, not an invoice.
-No comparable 40-question Nemotron Answer F1 is reported. Its larger serving
-context, provider-managed model, and newer runner would also prevent a causal
-training comparison even if all questions had completed. The
-[reference release](../release/qasper-agent-study/README.md#bounded-hosted-reference)
-preserves the failure and configuration separately from the Qwen comparison.
+The October 9 hosted reference initially stopped at its $2 local cost guard
+after 38 terminal episodes, with question 39 interrupted and question 40
+unattempted. Under a [recorded amendment](../release/qasper-agent-study/CONTINUATION_2026_10_09.md),
+the user authorized a higher local limit and the last two questions were run;
+question 39 restarted because its live state could not be restored. The
+[derived 40-row result](../release/qasper-agent-study/nebius-amended-run/results.json)
+for `nvidia/Nemotron-3-Ultra-550b-a55b` has 28 submissions, 12 missing
+predictions, and **19.03% official QASPER Answer F1**. Its
+[usage record](../release/qasper-agent-study/nebius-amended-run/usage-budget.json)
+reports 383 requests and a **$2.035422 catalog-rate estimate**, not an invoice.
+The [original partial run](../release/qasper-agent-study/nebius-run/results.partial.json)
+remains unchanged. The larger serving context, different model and provider,
+and newer runner prevent a controlled comparison of Qwen training. Nemotron's
+answers have not received independent evidence-support review.
 
 An earlier, separate continuation experiment assembled 995 QASPER-derived
 conversations: 796 for training and 199 for paper-disjoint validation. Its

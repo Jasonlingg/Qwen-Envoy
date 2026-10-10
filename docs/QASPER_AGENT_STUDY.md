@@ -154,6 +154,20 @@ provider, serving context, and runner version. It cannot isolate the effect of
 Qwen's training or establish a general model ranking. Raw failures are
 preserved, without changing the original Qwen answers or support grades.
 
+## Verifier correction for future runs
+
+The saved runs used a one-feedback verifier configuration that could accept a
+structurally invalid submission once feedback was exhausted. A trace audit found
+one such accepted submission in base Qwen, none in v5, and nine in the amended
+Nemotron run. This concerns accepted-submission and evidence-integrity status;
+the reported official Answer F1 still scores the literal saved answer strings.
+It does not establish whether any cited passage supports an answer.
+
+New EnvoyBench runs default to a versioned, fail-closed verifier: an invalid
+submission after the recovery turn ends as `escalated`, with zero reward and no
+accepted prediction. The old artifacts and scores remain untouched, and the
+historical behavior is available only through an explicit `legacy-v1` run mode.
+
 ## Reproduce and interpret
 
 The [study release](../release/qasper-agent-study/README.md) documents the saved

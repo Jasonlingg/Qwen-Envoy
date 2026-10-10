@@ -265,7 +265,7 @@ def execute_continuation(
         return runner.run(
             dataset, "test_candidate", models, output,
             model_keys=[MODEL_KEY], question_ids=plan["continuation_question_ids"],
-            seed=42, max_steps=15, budget=budget,
+            seed=42, max_steps=15, budget=budget, verifier_protocol="legacy-v1",
         )
     finally:
         if output.is_dir():

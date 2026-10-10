@@ -412,6 +412,7 @@ def run(
     model_keys: list[str] | None = None, question_ids: list[str] | None = None,
     seed: int = 42, max_steps: int = 15, validate_only: bool = False,
     budget: InferenceBudget | None = None,
+    verifier_protocol: str = "fail-closed-v2",
 ) -> dict:
     """Run a frozen split once per endpoint model, saving a complete trace matrix.
 
@@ -420,6 +421,9 @@ def run(
     """
     if max_steps < 1 or max_steps > 30:
         raise ValueError("max_steps must be 1..30")
+    if verifier_protocol not in {"legacy-v1", "fail-closed-v2"}:
+        raise ValueError("verifier_protocol must be legacy-v1 or fail-closed-v2")
+    fail_closed = verifier_protocol == "fail-closed-v2"
     benchmark, snapshot, benchmark_path, corpus_path, entry = load_split(dataset, split)
     questions = benchmark["questions"]
     available_ids = [question["id"] for question in questions]
@@ -435,6 +439,7 @@ def run(
             "corpus_hash": benchmark["corpus_hash"],
             "question_ids": [question["id"] for question in questions],
             "models": [model["safe"] for model in models],
+            "verifier_protocol": verifier_protocol,
             "validation_only": True,
         }
     sandbox_image = preflight_sandbox()
@@ -467,9 +472,13 @@ def run(
         "tool_preamble_sha256": _sha256_text(TOOL_PREAMBLE),
         "tool_search_version": SEARCH_PROTOCOL_VERSION,
         "require_evidence": True, "evidence_verifier": True,
-        "verifier_feedback_budget": 1, "escalate_after_verifier_failure": False,
+        "verifier_feedback_budget": 1,
+        "escalate_after_verifier_failure": fail_closed,
         "docker_sandbox": SANDBOX_LABEL,
     }
+    if fail_closed:
+        # Keep legacy-v1's protocol hash reproducible from the archived manifest.
+        protocol["verifier_protocol"] = verifier_protocol
     manifest = {
         "schema_version": RUN_SCHEMA,
         "run_id": uuid4().hex,
@@ -511,7 +520,7 @@ def run(
                     corpus_path=str(corpus_path), workers=1,
                     require_evidence=True, include_preamble=True,
                     evidence_verifier=True, verifier_feedback_budget=1,
-                    escalate_after_verifier_failure=False,
+                    escalate_after_verifier_failure=fail_closed,
                 )
                 if [item.question_id for item in result_set] != [question["id"]]:
                     raise RuntimeError(
@@ -554,6 +563,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, required=True, help="new output directory")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-steps", type=int, default=15)
+    parser.add_argument(
+        "--verifier-protocol", choices=("fail-closed-v2", "legacy-v1"),
+        default="fail-closed-v2",
+        help="fail-closed for new runs; legacy-v1 only to reproduce archived runs",
+    )
     parser.add_argument("--validate-only", action="store_true", help="no Docker or model calls")
     parser.add_argument("--budget", type=Path, help="local estimated-cost/request limit JSON")
     args = parser.parse_args(argv)
@@ -563,6 +577,7 @@ def main(argv: list[str] | None = None) -> int:
             model_keys=args.models_selected, question_ids=args.question_ids,
             seed=args.seed, max_steps=args.max_steps, validate_only=args.validate_only,
             budget=InferenceBudget(_read_json(args.budget)) if args.budget else None,
+            verifier_protocol=args.verifier_protocol,
         )
     except (ValueError, RuntimeError) as exc:
         parser.exit(2, f"EnvoyBench: {exc}\n")

@@ -178,9 +178,10 @@ def main(
         help="Maximum verifier recovery messages per episode",
     ),
     escalate_after_verifier_failure: bool = typer.Option(
-        False,
-        "--escalate-after-verifier-failure",
-        help="Return a host-model handoff when a violation remains after recovery",
+        True,
+        "--escalate-after-verifier-failure/--legacy-fail-open",
+        help="Return a host-model handoff when a violation remains after recovery; "
+             "legacy mode can accept an invalid action",
     ),
 ) -> None:
     """Run evaluation: policies through the document exploration environment."""

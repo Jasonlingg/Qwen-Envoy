@@ -12,8 +12,15 @@ import pytest
 from scripts import continue_qasper_nebius as continuation
 
 
-@pytest.fixture(scope="module")
-def real_plan(tmp_path_factory: pytest.TempPathFactory) -> dict:
+@pytest.fixture
+def real_plan(
+    tmp_path_factory: pytest.TempPathFactory, monkeypatch: pytest.MonkeyPatch,
+) -> dict:
+    # The completed continuation is pinned to the old source hashes. Bypass only
+    # that guard here so the remaining archived-input checks stay exercised.
+    monkeypatch.setattr(continuation, "_implementation_variance", lambda _manifest: {
+        "file": "benchmarks/envoybench/run.py",
+    })
     output = tmp_path_factory.mktemp("continuation") / "extension"
     return continuation.prepare_continuation(output=output)
 
@@ -60,6 +67,11 @@ def test_real_preflight_finds_only_two_questions_and_cumulative_guard(real_plan:
     assert budget.halted_reason is None
 
 
+def test_changed_runtime_blocks_reusing_historical_continuation(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="implementation differs"):
+        continuation.prepare_continuation(output=tmp_path / "extension")
+
+
 def test_cli_defaults_to_dry_run_without_dispatch(
     real_plan: dict, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str],
 ) -> None:
@@ -88,6 +100,7 @@ def test_execute_dispatches_exact_subset_with_seeded_budget_and_writes_lineage(
         assert kwargs["model_keys"] == [continuation.MODEL_KEY]
         assert kwargs["question_ids"] == plan["continuation_question_ids"]
         assert kwargs["seed"] == 42 and kwargs["max_steps"] == 15
+        assert kwargs["verifier_protocol"] == "legacy-v1"
         assert kwargs["budget"].requests == 366
         assert kwargs["budget"].estimated_usd == 1.947862
         assert kwargs["budget"].config["max_estimated_usd"] == 25.0
@@ -135,16 +148,20 @@ def test_preflight_rejects_corrupt_original_row_even_with_updated_checksum(
         original, "results.partial.json",
         lambda rows: rows[37].update({"status": "error"}),
     )
+    monkeypatch.setattr(continuation, "_implementation_variance", lambda _manifest: None)
     with pytest.raises(ValueError, match="question 38 was not terminal"):
         continuation.prepare_continuation(original=original, output=tmp_path / "new-run")
 
 
-def test_preflight_rejects_bad_usage_even_with_updated_checksum(tmp_path: Path) -> None:
+def test_preflight_rejects_bad_usage_even_with_updated_checksum(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
     original = _copy_source(tmp_path)
     _mutate_pinned_json(
         original, "usage-budget.json",
         lambda usage: usage.update({"requests": 0}),
     )
+    monkeypatch.setattr(continuation, "_implementation_variance", lambda _manifest: None)
     with pytest.raises(ValueError, match="original usage requests differs"):
         continuation.prepare_continuation(original=original, output=tmp_path / "new-run")
 
