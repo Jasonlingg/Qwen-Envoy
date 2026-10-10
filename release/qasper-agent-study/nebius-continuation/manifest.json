@@ -1,0 +1,99 @@
+{
+  "schema_version": "envoybench-run-v1",
+  "run_id": "312dd426d9f045678e669908f98743c3",
+  "created_at_utc": "2026-10-10T03:30:48.901171+00:00",
+  "status": "complete",
+  "benchmark_id": "envoybench-test-candidate-v1",
+  "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+  "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+  "question_ids": [
+    "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+    "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba"
+  ],
+  "split": "test_candidate",
+  "max_steps": 15,
+  "seed": 42,
+  "seed_note": "Local runner seed only; remote determinism requires endpoint support and is not guaranteed.",
+  "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+  "system_prompt_name": "QASPER_SYSTEM_PROMPT",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "require_evidence": true,
+  "evidence_verifier": true,
+  "verifier_feedback_budget": 1,
+  "escalate_after_verifier_failure": false,
+  "docker_sandbox": "org.envoybench.sandbox=v1",
+  "comparison_id": "d74cee7cfa650f4fc5bb186e09a7cba7de7c840bccf67d24430c0925936dd9fb",
+  "split_question_count": 40,
+  "full_split": false,
+  "subset_smoke": true,
+  "split_status": "unreviewed_candidate_not_scored",
+  "benchmark_file_sha256": "b7b66f1481c8b651497eec006543687620f660ba39f7e15ffe3945a46f841b6d",
+  "dataset_index_sha256": "da3a7b1a5ed80ee38ddcffdc4593d79c98ede3e2a718013977aa70f175999e0f",
+  "model_config_sha256": "29482ca0a91d204bfbdd6e22c297e4bad94e53f2b28dcfa7e2ebd0f5037c47f8",
+  "models": [
+    {
+      "key": "nemotron_ultra_nebius",
+      "model_id": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "revision": "provider-managed-unpinned-2026-10-09",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "endpoint_env": null,
+      "endpoint_sha256": "3e4007c7d91be622fdb33e1f8675a470bb1f4489dadb6c82618ca9e112b40562",
+      "endpoint_kind": "remote",
+      "api_key_env": "NEBIUS_API_KEY",
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 180,
+      "serving_hardware": "Nebius Token Factory; provider managed",
+      "serving_runtime": "provider-managed-unreported",
+      "serving_hourly_usd": null,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false,
+          "force_nonempty_content": true
+        }
+      },
+      "serving_context_window_tokens": 1048576
+    }
+  ],
+  "model_identity_note": "Model/revision IDs are operator declarations; the endpoint does not attest weights.",
+  "legacy_reward_version": "outcome-v1",
+  "legacy_reward_is_benchmark_score": false,
+  "sandbox_image": {
+    "image_id": "sha256:9861aeb3d3277267a0d5047cf3c12e1dfe92226721c7db4821e9a9979fc7272a",
+    "repo_digests": []
+  },
+  "implementation_sha256": {
+    "src/env/document_env.py": "fa017c0a73adcf212361171bfedc7d8264db9fc17127ce0c7d70a5fae4acfbc4",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+    "src/eval/harness.py": "e213a3902d6ca942d229bb8702e7014b0caed0f84c813fa91c99291750d7a0e9",
+    "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+    "src/policies/openai_compatible.py": "1004b4457614ed7268e6cdd80bce3ee1aaa9a93b9985af13b17cd7497e33e51c",
+    "benchmarks/envoybench/run.py": "5169a7acc243a92c472bd380fbb42fc5f98561391bc974b3c99642e24e963bf5",
+    "benchmarks/envoybench/budget.py": "bca0689ae9fae4fbe266d91670ef5af040af09ee0099bae986ae7c1cff15ad6e"
+  },
+  "git_commit": "3071514b0c152d06daf2ba3816bafb0b5ff9dd46",
+  "runner_hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "python": "3.11.9",
+    "gpu": null
+  },
+  "inference_budget": {
+    "max_estimated_usd": 25.0,
+    "input_usd_per_million": 1.0,
+    "output_usd_per_million": 3.0,
+    "max_requests": 600,
+    "max_input_utf8_bytes": 100000,
+    "price_source": "https://tokenfactory.nebius.com/api/public/models_info",
+    "retrieved_on": "2026-10-09"
+  },
+  "completed_at_utc": "2026-10-10T03:31:28.427934+00:00",
+  "elapsed_seconds": 39.575543874991126
+}

@@ -79,3 +79,21 @@ budget error. The incomplete manifest and `results.partial.json` are preserved;
 there is no `results.json`, full-run F1, or completed-run Studio row. No
 configuration was changed during inference. Permission for a higher ceiling
 was requested asynchronously but had not been received when the guard stopped.
+
+## Subsequent authorized amendment
+
+After this original run stopped, the user authorized a **$25 cumulative local
+estimated-cost ceiling** to finish the final two questions. The
+[amendment recorded before further inference](CONTINUATION_2026_10_09.md)
+preserves this original $2/no-retry protocol as the historical record. Because
+the live state of question 39 could not be restored, its continuation restarted
+at step 1; question 40 received its first attempt. The first 38 completed rows
+were retained unchanged. The derived
+[40-row result](nebius-amended-run/results.json), [lineage manifest](nebius-amended-run/manifest.json),
+and [official score](nemotron-official-score.json) are the completed **amended**
+result, not a completion under the original no-retry protocol. Its Answer F1 is
+**19.02565047926817%** over all 40 selected questions (28 submissions, 12
+missing predictions). Total recorded usage is 383 requests and a $2.035422
+catalog-rate estimate across both phases. No independent support review was
+performed; the different provider and runtime prevent a controlled comparison
+with the September 30 Qwen runs.

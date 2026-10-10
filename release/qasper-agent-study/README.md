@@ -89,39 +89,56 @@ performed.
 
 ## Bounded hosted reference
 
-**Status: incomplete, stopped by the local cost guard.** Thirty-eight episodes
-reached a terminal outcome; question 39 was interrupted after 11 recorded
-actions, and question 40 was not attempted. The
-[partial results](nebius-run/results.partial.json) contain 27 submissions,
-11 episodes without submission, and the budget-interrupted episode. The
-[manifest](nebius-run/manifest.json) preserves the incomplete status and
-configuration. No comparable 40-question Nemotron Answer F1 is reported.
+**Status: complete under a documented protocol amendment.** The derived
+[40-question run](nebius-amended-run/results.json) combines the first 38
+terminal episodes from the original attempt with a continuation on questions
+39 and 40. It contains **28 submissions and 12 episodes without submission**.
+The [official QASPER score](nemotron-official-score.json) is **19.0257% Answer
+F1** across all 40 selected questions, counting missing predictions as zero.
+This is answer-token overlap, not an evidence-support judgment; the hosted
+answers have not received independent support review.
 
-The [saved Studio](../envoybench-v0.1/studio.html) displays this as a fifth,
-**Incomplete** run row, separate from the four earlier Qwen rows. Select
-**Nemotron Ultra Nebius → Unfinished** to inspect question 39's saved trace
-and see that question 40 has no attempt or trace. The quality-score columns
-are blank for this partial run; the original Qwen scores are unchanged.
+The original $2 guard stopped after **366 provider requests** and
+**$1.947862** estimated usage, leaving question 39 interrupted after 11
+actions and question 40 unattempted. The user then authorized a **$25 total**
+local estimated-cost cap. The runner could not restore question 39's live
+Python or conversation state, so its continuation restarted at step 1. It used
+all 15 steps without submitting; question 40 submitted `85%` at step 2 and
+scored zero F1. The original [partial results](nebius-run/results.partial.json)
+and [manifest](nebius-run/manifest.json) remain unchanged. The
+[amendment](CONTINUATION_2026_10_09.md) and [derived manifest](nebius-amended-run/manifest.json)
+record the restart and row lineage. No finished question was rerun or selected
+by answer quality.
 
-The [usage budget record](nebius-run/usage-budget.json) reports **366 provider
-requests, 1,819,534 prompt tokens, and 42,776 completion tokens**, with a
-**$1.947862 catalog-rate estimate**. This is not an invoice and applies no
-cache discounts. The guard refused the next request because its conservative
-reservation would exceed the $2 limit; the final local rejection is not an
-additional provider request.
+The [cumulative usage record](nebius-amended-run/usage-budget.json) reports
+**383 provider requests, 1,903,542 prompt tokens, and 43,960 completion
+tokens**, with a **$2.035422 catalog-rate estimate** across both phases. This
+is not an invoice and applies no cache discounts. The $25 cap was a local
+request guard, not an account billing limit.
 
-The [predeclared experiment](EXPERIMENT.md) specifies a separate
-`nvidia/Nemotron-3-Ultra-550b-a55b` run through Nebius on the same 40 questions.
-It freezes the prompt/tool task and a 15-action, 1,024-output-token budget,
-with requested thinking off, no retry selection, and a $2 local estimated-cost
-ceiling. Its larger serving context, different model and provider, and newer
-runner make it a descriptive reference configuration, not a controlled test
-of Qwen's training. This release preserves the incomplete run and its failures
-under that protocol.
+The [saved Studio](../envoybench-v0.1/studio.html) shows the amended Nemotron
+run alongside the four earlier Qwen rows. Its score comes from the same
+official evaluator used for the Qwen outputs. The original Qwen inference and
+provisional support grades are unchanged; no support grade is assigned to
+Nemotron.
+
+The [original experiment](EXPERIMENT.md) froze the prompt/tool task and a
+15-action, 1,024-output-token budget, with requested thinking off. Its initial
+no-retry and $2-cap terms are preserved as history; the continuation explicitly
+amended both for the interrupted question. The larger serving context,
+different model and provider, and newer runner make this a descriptive
+reference configuration, not a controlled test of Qwen's training.
 
 Re-running that experiment invokes a paid API; the commands in the scoring
 sections above only inspect saved data. The original Qwen outputs and support
 grades remain separate and unchanged.
+
+To reproduce the Nemotron score offline:
+
+```bash
+python -m benchmarks.envoybench.qasper_official score \
+  --run-dir release/qasper-agent-study/nebius-amended-run
+```
 
 The release contains a known-paper diagnostic, not proof of useful open-ended
 research, reliable personal recommendations, or a trained-model promotion.

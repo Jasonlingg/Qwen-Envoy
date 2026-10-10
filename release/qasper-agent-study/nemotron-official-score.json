@@ -1,0 +1,834 @@
+{
+  "schema_version": "qasper-agent-study-score-v1",
+  "metric": "Official QASPER Answer F1",
+  "scope": "40 selected QASPER test questions; known-paper code-execution agent study; not the full official test split",
+  "run_id": "2e21fd2787784d5eaa808c3d125e3e22",
+  "benchmark_id": "envoybench-test-candidate-v1",
+  "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+  "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+  "question_ids": [
+    "qasper_test_02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+    "qasper_test_04914917d01c9cd8718cd551dc253eb3827915d8",
+    "qasper_test_0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+    "qasper_test_0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+    "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+    "qasper_test_11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+    "qasper_test_11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+    "qasper_test_11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+    "qasper_test_246e924017c48fa1f069361c44133fdf4f0386e1",
+    "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+    "qasper_test_31894361833b3e329a1fb9ebf85a78841cff229f",
+    "qasper_test_3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+    "qasper_test_34b434825f0ca3225dc8914f9da865d2b4674f08",
+    "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+    "qasper_test_3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+    "qasper_test_3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+    "qasper_test_526dc757a686a1fe41e77f7e3848e3507940bfc4",
+    "qasper_test_538430077b1820011c609c8ae147389b960932c8",
+    "qasper_test_58df55002fbcba76b9aeb2181d78378b8c01a827",
+    "qasper_test_6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+    "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+    "qasper_test_7ef7a5867060f91eac8ad857c186e51b767c734b",
+    "qasper_test_87523fb927354ddc8ad1357a81f766b7ea95f53c",
+    "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+    "qasper_test_8cf5abf0126f19253930478b02f0839af28e4093",
+    "qasper_test_95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+    "qasper_test_98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+    "qasper_test_993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+    "qasper_test_9bf60073fbb69fbf860196513fc6fd2f466535f6",
+    "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+    "qasper_test_a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+    "qasper_test_b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+    "qasper_test_c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+    "qasper_test_c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+    "qasper_test_cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+    "qasper_test_d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+    "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+    "qasper_test_e801b6a6048175d3b1f3440852386adb220bcb36",
+    "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+    "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba"
+  ],
+  "results_hash": "5b0bf0cfb96f787ed6da01d1c5be58f8987edbf8336e8e2dd0530865433b3731",
+  "results_sha256": "68d3b7399662b18389f80d1e34e012c32da55217e89c457f8bfff0ee8b445617",
+  "prediction_policy": "literal_submitted_answer_v1",
+  "models": {
+    "nemotron_ultra_nebius": {
+      "answer_f1": 0.1902565047926817,
+      "answer_f1_percent": 19.02565047926817,
+      "answer_f1_by_type": {
+        "extractive": 0.261773765387789,
+        "abstractive": 0.08476543440572216,
+        "boolean": 0.0,
+        "none": 0.3333333333333333
+      },
+      "answer_f1_by_type_denominators": {
+        "extractive": 9,
+        "abstractive": 3,
+        "boolean": 1,
+        "none": 15
+      },
+      "missing_predictions": 12,
+      "submitted_predictions": 28,
+      "question_count": 40,
+      "recorded_episodes": 40
+    }
+  },
+  "rows": [
+    {
+      "question_id": "qasper_test_02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+      "source_question_id": "02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+      "predicted_answer": "Bloomberg time series extraction uses neural network supervision with consistency checks against existing Bloomberg time series databases as noisy supervision signals for training neural networks to extract time series data from financial text. The architecture combines a candidate-generating parser with deep neural networks, using potentially noisy supervision from consistency checks of extracted data against existing databases (e.g., checking extracted unemployment figures against Bloomberg's existing time series databases) or human interaction. This is specifically designed for extracting time series data (economic indicators like US Unemployment, GDP, CPI) with numerical values and timestamps from financial text at Bloomberg.",
+      "prediction_missing": false,
+      "answer_f1": 0.06,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_04914917d01c9cd8718cd551dc253eb3827915d8",
+      "source_question_id": "04914917d01c9cd8718cd551dc253eb3827915d8",
+      "predicted_answer": "Unanswerable",
+      "prediction_missing": false,
+      "answer_f1": 1.0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "none",
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+      "source_question_id": "0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+      "predicted_answer": "They perform joint training by transforming BERT into a shared task representation encoder (STR-encoder) using a dynamic range attention mechanism. The STR-encoder contains an embedding layer and N multi-head self-attention layers divided into two blocks: the first N-K layers capture context information (shared across tasks), while the last K layers use task-specific MASK matrices (MASK^ner for NER, MASK^rc for RC) to focus attention on task-relevant words. During joint training, the model takes the [CLS] token and entity markers as input to BERT, obtains the STR-encoder output H_N, then feeds H_N into separate task-specific output layers for NER (token-level classification with BIOES tagging) and RC (relation classification using [CLS] and entity marker representations). The NER and RC losses are summed (L = L_ner + L_rc) and backpropagated jointly through the shared STR-encoder, allowing the shared layers to learn joint features between entity and relation types. Ablation shows joint training improves NER F1 by 0.52% and RC F1 by 2.37% over separate training.",
+      "prediction_missing": false,
+      "answer_f1": 0.13333333333333333,
+      "matched_answer_type": "abstractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "abstractive",
+        "abstractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+      "source_question_id": "0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+      "predicted_answer": "Edge weights are the weights on the edges of the recurrent neural network's underlying directed graph, which are the entries of the weight matrices (W, U, V) that parameterize the RNN's linear transformations.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "source_question_id": "0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "predicted_answer": "The simplification is replacing the original span extractor's attention or LSTM network with a simple pooling layer (max-pooling) to extract span representations, since the multi-head self-attention in transformers already captures token interactions.",
+      "prediction_missing": false,
+      "answer_f1": 0.30188679245283023,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+      "source_question_id": "11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "none",
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+      "source_question_id": "11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "extractive",
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+      "source_question_id": "11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "none",
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_246e924017c48fa1f069361c44133fdf4f0386e1",
+      "source_question_id": "246e924017c48fa1f069361c44133fdf4f0386e1",
+      "predicted_answer": "The formula for the **gated sharing cell** (gated sharing cell) described in the provided text is:\n\n**Gate computation:**\n$$ \\mathbf{g}_{\\text{fake}} = \\sigma \\left( \\mathbf{H}_{\\text{shared}} \\mathbf{W}_{\\text{fake}} + \\mathbf{b}_{\\text{fake}} \\right) $$\nwhere $\\sigma$ is the sigmoid function.\n\n**Gated shared features (element-wise multiplication):**\n$$ \\mathbf{H}_{\\text{fake}} = \\mathbf{H}_{\\text{shared}} \\odot \\mathbf{g}_{\\text{fake}} $$\nwhere $\\odot$ denotes element-wise multiplication.\n\n**Formal definition from text (shared layer output):**\n$$ \\mathbf{H}_{\\text{shared}} \\in \\mathbb{R}^{1 \\times l(d_p+d_w)} $$\n$$ \\mathbf{W}_{\\text{fake}} \\in \\mathbb{R}^{l(d_p+d_w) \\times l(d_p+d_w)}, \\quad \\mathbf{b}_{\\text{fake}} \\in \\mathbb{R}^{1 \\times l(d_p+d_w)} $$\n$$ \\mathbf{g}_{\\text{fake}} = \\sigma \\left( \\mathbf{H}_{\\text{shared}} \\mathbf{W}_{\\text{fake}} + \\mathbf{b}_{\\text{fake}} \\right) $$\n\nThe stance detection task uses an identical gating mechanism with its own parameters $\\mathbf{W}_{\\text{stance}}$ and $\\mathbf{b}_{\\text{stance}}$ to compute $\\mathbf{g}_{\\text{stance}}$ and $\\mathbf{H}_{\\text{stance}} = \\mathbf{H}_{\\text{shared}} \\odot \\mathbf{g}_{\\text{stance}}$.\n\n**Reason for single-gate mechanism (from text):**\n1. The Transformer encoder in the shared layer efficiently captures long-range dependencies, removing the need for complex recurrent gates (LSTM/GRU).\n2. A single-gate mechanism is more convenient for training.",
+      "prediction_missing": false,
+      "answer_f1": 0.08633093525179855,
+      "matched_answer_type": "abstractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "abstractive",
+        "abstractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "source_question_id": "2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "predicted_answer": "The paper uses two tokenization methods: word-level tokenization and Byte Pair Encoding (BPE) subword-level tokenization.",
+      "prediction_missing": false,
+      "answer_f1": 0.6,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 1,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_31894361833b3e329a1fb9ebf85a78841cff229f",
+      "source_question_id": "31894361833b3e329a1fb9ebf85a78841cff229f",
+      "predicted_answer": "Based on the paper excerpts provided, the paper is **\"Radicalization Detection on Social Media: A Multifaceted Approach\"** (or similar title) by **Al-Qurashi, Al-Rubaie, et al.** (likely published at IEEE/ACM ASONAM 2019 or similar conference).\n\n**Key Details from Excerpts:**\n\n**Authors/Group:** Al-Qurashi, Al-Rubaie, et al. (references to BIBREF22, BIBREF23 for cyber-criminal network analysis).\n\n**Datasets Used:**\n1. **Pro-ISIS dataset:** ~17,000 tweets from 100+ pro-ISIS Twitter accounts (Kaggle dataset from 2015 Paris attacks period). Accounts mostly suspended by Twitter.\n2. **Random-good dataset:** ~200 tweets from ~200 random users on trending non-extremist topics (sports, music), manually verified as non-radical.\n3. **Kaggle counterpoise dataset:** Tweets about ISIS topics but non-radical, from ~1,000 users over two days.\n\n**Feature Categories (Three Categories):**\n1. **Radical Language (Textual Features):** Analysis of ISIS propaganda magazine *Dabiq* for topics, textual properties, linguistic cues.\n2. **Psychological Signals (Psychological Features):** Psychological/linguistic cues (LIWC-style features).\n3. **Behavioural Features (Network/Behavioural Features):** User network centrality measures (degree centrality, betweenness centrality, HITS-Hub) on mention graphs; user metadata.\n\n**Dataset Statistics (from placeholders):**\n- `INLINEFORM0` tweets, `INLINEFORM1` users (placeholders for random-good dataset stats).\n- `INLINEFORM0` tweets, `INLINEFORM1` users (placeholders for Kaggle dataset stats).\n- ~17,000 tweets, 100+ users (pro-ISIS dataset).\n\n**Key References Cited:** BIBREF22, BIBREF23 (cyber-criminal network analysis papers).",
+      "prediction_missing": false,
+      "answer_f1": 0.03463203463203463,
+      "matched_answer_type": "abstractive",
+      "matched_reference_index": 2,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "extractive",
+        "extractive",
+        "abstractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+      "source_question_id": "3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+      "predicted_answer": "{\"answer\": \"WikiGenderBias (WikiGenderBias) — a distantly supervised relation extraction dataset from Wikipedia with gender bias analysis. Relations: spouse (gender-biased), hypernym (male-biased), birthDate (control), birthPlace (control). Negative relations: parents, deathDate, almaMater. Data: Wikipedia articles with DBpedia distant supervision. Gender splits from WikiGenderBias dataset. Bias hypothesis: marriage words more frequent in female articles; hypernym/occupation words more frequent in male articles. Bias mitigation: gender-swapping, name anonymization, hard debiasing. Annotator agreement: Fleiss' κ=0.44, pairwise agreement 84%. Key finding: marriage words more frequent in female articles; hypernym/occupation words more frequent in male articles.\", \"citations\": [\"qasper_1911_03642\"]}",
+      "prediction_missing": false,
+      "answer_f1": 0.07407407407407407,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_34b434825f0ca3225dc8914f9da865d2b4674f08",
+      "source_question_id": "34b434825f0ca3225dc8914f9da865d2b4674f08",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "boolean",
+        "boolean"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "source_question_id": "38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "extractive",
+        "extractive",
+        "abstractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+      "source_question_id": "3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+      "predicted_answer": "The editors' annotations in KPTimes differ from existing datasets in three key ways: (1) they are written by professional editors rather than authors or crowdworkers, (2) they are created after the article is written (post-hoc) rather than before or during writing, and (3) they are constrained to be phrases that appear verbatim in the document (extractive) rather than freely generated (abstractive).",
+      "prediction_missing": false,
+      "answer_f1": 0.13793103448275862,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 1,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "abstractive",
+        "extractive",
+        "abstractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+      "source_question_id": "3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+      "predicted_answer": "The training objective is to minimize the sum of the source domain loss and the target domain loss, with an additional regularization term that penalizes the distance between the adapted model parameters and the source model parameters (L2 regularization towards the source model).",
+      "prediction_missing": false,
+      "answer_f1": 0.19718309859154928,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_526dc757a686a1fe41e77f7e3848e3507940bfc4",
+      "source_question_id": "526dc757a686a1fe41e77f7e3848e3507940bfc4",
+      "predicted_answer": "Unanswerable",
+      "prediction_missing": false,
+      "answer_f1": 1.0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 1,
+      "reference_answer_types": [
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_538430077b1820011c609c8ae147389b960932c8",
+      "source_question_id": "538430077b1820011c609c8ae147389b960932c8",
+      "predicted_answer": "The paper considers aspects in the context of Aspect-Based Sentiment Analysis (ABSA) for two domains: restaurant aspects (e.g., waiter, food, price) and laptop aspects (e.g., display, battery, keyboard). The two major tasks are Aspect Extraction (AE) - extracting aspect terms like \"waiter\", \"food\", \"price\" from review sentences - and Aspect Sentiment Classification (ASC) - classifying sentiment towards each aspect as Positive, Negative, or Neutral.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_58df55002fbcba76b9aeb2181d78378b8c01a827",
+      "source_question_id": "58df55002fbcba76b9aeb2181d78378b8c01a827",
+      "predicted_answer": "The G-SAT architecture's **single shared Global Encoder (a bidirectional LSTM)** provides the most speedup. By replacing the multiple separate encoders used in prior work (GLAD's per-slot encoders and GCE's per-input-type encoders) with one shared encoder for all slots, and moving slot-specific processing to lightweight Slot-Attentive Decoders, G-SAT achieves **over 15× speedup** (28× faster prediction vs GLAD, 17× vs GCE; 30× faster training vs GLAD, 19× vs GCE) while reducing parameters from ~14M (GLAD) and ~5M (GCE) to ~460K.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+      "source_question_id": "6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+      "predicted_answer": "Unanswerable",
+      "prediction_missing": false,
+      "answer_f1": 1.0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+      "source_question_id": "7ae95716977d39d96e871e552c35ca0753115229",
+      "predicted_answer": "The Stanford Plane Crash Dataset",
+      "prediction_missing": false,
+      "answer_f1": 0.888888888888889,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 1,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "abstractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_7ef7a5867060f91eac8ad857c186e51b767c734b",
+      "source_question_id": "7ef7a5867060f91eac8ad857c186e51b767c734b",
+      "predicted_answer": "The decoder input perturbation noise perturbation rate (qasper_1908_06259) is approximately 19.08% (0.1908) based on the 1908.06259 perturbation rate measurement from the decoder input noise perturbation experiments.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_87523fb927354ddc8ad1357a81f766b7ea95f53c",
+      "source_question_id": "87523fb927354ddc8ad1357a81f766b7ea95f53c",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "source_question_id": "88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_8cf5abf0126f19253930478b02f0839af28e4093",
+      "source_question_id": "8cf5abf0126f19253930478b02f0839af28e4093",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+      "source_question_id": "95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+      "predicted_answer": "The paper does not provide a specific quantitative measure of time saved (e.g., minutes per report, percentage reduction, or hours per pharmacologist). It only states qualitatively that MagiCoder \"reduces the time required for encoding ADR reports\" and that pharmacologists \"have simply to review and validate the MagiCoder terms proposed by the application, instead of choosing the right terms among the 70K low level terms of MedDRA.\" The paper mentions this improves \"the efficiency of pharmacologists' work\" and has \"a relevant impact also on the quality of the subsequent data analysis,\" but no concrete time-savings metric is reported.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "boolean",
+      "matched_reference_index": 0,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "boolean",
+        "boolean",
+        "boolean"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+      "source_question_id": "98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+      "predicted_answer": "The dataset is biased because speakers' reputations (fame) act as a confounding variable: famous speakers receive higher ratings regardless of talk content, and the dataset over-represents famous speakers, making it difficult to isolate the effect of speech content on ratings.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+      "source_question_id": "993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+      "predicted_answer": "The paper \"The Social Dynamics of Language Change in Online Networks\" (Twitter data) tracks **written online language innovations** spreading through Twitter's social network, specifically **phonetic spellings** (e.g., \"gonna\", \"wanna\") and **netspeak abbreviations** (e.g., \"lol\", \"omg\"). It finds **complex contagion for these written innovations** but explicitly states it does **NOT** find contagion for **older dialect markers from spoken language** (offline spoken dialects). The contagion tracked is for **written online language change**, not spoken dialect changes.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 1,
+      "reference_answer_types": [
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_9bf60073fbb69fbf860196513fc6fd2f466535f6",
+      "source_question_id": "9bf60073fbb69fbf860196513fc6fd2f466535f6",
+      "predicted_answer": "No, the training of ESuLMo does not take longer compared to ELMo; it is faster.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "source_question_id": "a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "predicted_answer": "The paper is **\"F-Score Driven Max-Margin Neural Network for Chinese Named Entity Recognition\"** (Qasper et al., 2016/2017, likely CCL/NLPCC). It introduces a **B-LSTM + Max-Margin Neural Network (MMNN)** with **F-Score Driven Training** for Chinese NER on Sina Weibo data. Key components: (1) B-LSTM baseline with Jieba word segmentation features and word2vec embeddings; (2) MMNN combining B-LSTM with CRF transition scores (max-margin objective); (3) Two F-Score driven models — Model I (F-Score driven training) and Model II (integrated F-Score driven training) — optimizing directly for F1-score; (4) Positional character embeddings with word segmentation features on Jieba-segmented Sina Weibo corpus; (5) Evaluation on Chinese social media NER dataset showing SOTA F1, outperforming B-LSTM+CRF and Peng & Dredze 2016 baselines.",
+      "prediction_missing": false,
+      "answer_f1": 0.096,
+      "matched_answer_type": "extractive",
+      "matched_reference_index": 0,
+      "reference_count": 3,
+      "reference_answer_types": [
+        "extractive",
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+      "source_question_id": "a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+      "predicted_answer": "They use the BIO labeling scheme (B for beginning, I for inside, O for outside).",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+      "source_question_id": "b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+      "predicted_answer": "Unanswerable",
+      "prediction_missing": false,
+      "answer_f1": 1.0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+      "source_question_id": "c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 1,
+      "reference_answer_types": [
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+      "source_question_id": "c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+      "predicted_answer": "16 instances per class",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+      "source_question_id": "cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+      "predicted_answer": "The proposed model is smaller than the conventional NMT system.",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+      "source_question_id": "d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "boolean",
+        "boolean"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "source_question_id": "e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "predicted_answer": "Unanswerable",
+      "prediction_missing": false,
+      "answer_f1": 1.0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    },
+    {
+      "question_id": "qasper_test_e801b6a6048175d3b1f3440852386adb220bcb36",
+      "source_question_id": "e801b6a6048175d3b1f3440852386adb220bcb36",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+      "source_question_id": "f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+      "predicted_answer": null,
+      "prediction_missing": true,
+      "answer_f1": 0.0,
+      "matched_answer_type": null,
+      "matched_reference_index": null,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "extractive",
+        "extractive"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "no_submission"
+    },
+    {
+      "question_id": "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "source_question_id": "fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "predicted_answer": "85%",
+      "prediction_missing": false,
+      "answer_f1": 0,
+      "matched_answer_type": "none",
+      "matched_reference_index": 0,
+      "reference_count": 2,
+      "reference_answer_types": [
+        "none",
+        "none"
+      ],
+      "model_key": "nemotron_ultra_nebius",
+      "status": "submitted"
+    }
+  ],
+  "provenance": {
+    "evaluator_url": "https://github.com/allenai/qasper-led-baseline/blob/e996b6c7b1b5f95d9308a74e3586416c6e780df1/scripts/evaluator.py",
+    "evaluator_commit": "e996b6c7b1b5f95d9308a74e3586416c6e780df1",
+    "evaluator_sha256": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe",
+    "evaluator_license": "Apache-2.0",
+    "scorer_sha256": "f3006b2ebf7367a1bfe33b2256a10ca6553ca4168dcafdb4d0fec49eb3411a8c",
+    "references_sha256": "e0b9c8dac3bac1e472183daadfd4ea8eebc3fe97493ed9ff1fba033e739efa63",
+    "source": {
+      "dataset": "allenai/qasper",
+      "revision": "13b496d2a5359329b110e3419628de3cf791843b",
+      "split": "test",
+      "url": "https://huggingface.co/datasets/allenai/qasper/tree/13b496d2a5359329b110e3419628de3cf791843b",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "citation": "Dasigi et al. (2021), A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers, NAACL.",
+      "citation_url": "https://aclanthology.org/2021.naacl-main.365/",
+      "arrow_sha256": "9462ccbd216bb2e6d9fba739a4fd349dd7da1e15116b09e0c4be85302d2b6ba4",
+      "rows_sha256": "5854e52c9b84a7a4d26f795dc9d4bc03668201350d4ad00c7d2eb2be9c959c65",
+      "source_paper_count": 416,
+      "export_note": "All original answer objects and annotation IDs retained in source order for selected questions; Arrow columns restructured into records. Worker metadata and unselected questions/paper bodies omitted. No one-best answer selection, annotation repair, or new judgment."
+    },
+    "selection": {
+      "manifest_sha256": "d57e8121e234dae6fefd7dae50f40bb38e320da63e1036c3d50fcef1eea8c2d9",
+      "benchmark_id": "envoybench-test-candidate-v1",
+      "benchmark_hash": "9467f27da355f45714df5be3b986a6cd88febb20b1ab47a0bfb78f514b0d17fa",
+      "corpus_hash": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+      "question_ids": [
+        "qasper_test_02a5acb484bda77ef32a13f5d93d336472cf8cd4",
+        "qasper_test_04914917d01c9cd8718cd551dc253eb3827915d8",
+        "qasper_test_0b10cfa61595b21bf3ff13b4df0fe1c17bbbf4e9",
+        "qasper_test_0b5a505c1fca92258b9e83f53bb8cfeb81cb655a",
+        "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+        "qasper_test_11360385dff0a9d7b8f4b106ba2b7fe15ca90d7c",
+        "qasper_test_11c4071d9d7efeede84f47892b1fa0c6a93667eb",
+        "qasper_test_11dd2913d1517a1d47b367acb29fe9d79a9c95d1",
+        "qasper_test_246e924017c48fa1f069361c44133fdf4f0386e1",
+        "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+        "qasper_test_31894361833b3e329a1fb9ebf85a78841cff229f",
+        "qasper_test_3435e365adf7866e45670c865dc33bb7d2a6a0c6",
+        "qasper_test_34b434825f0ca3225dc8914f9da865d2b4674f08",
+        "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+        "qasper_test_3ea82a5ca495ffbd1e30e8655aef1be4ba423efe",
+        "qasper_test_3f8a42eb0e904ce84c3fded2103f674e9cbc893d",
+        "qasper_test_526dc757a686a1fe41e77f7e3848e3507940bfc4",
+        "qasper_test_538430077b1820011c609c8ae147389b960932c8",
+        "qasper_test_58df55002fbcba76b9aeb2181d78378b8c01a827",
+        "qasper_test_6073be8b88f0378cd0c4ffcad87e1327bc98b991",
+        "qasper_test_7ae95716977d39d96e871e552c35ca0753115229",
+        "qasper_test_7ef7a5867060f91eac8ad857c186e51b767c734b",
+        "qasper_test_87523fb927354ddc8ad1357a81f766b7ea95f53c",
+        "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+        "qasper_test_8cf5abf0126f19253930478b02f0839af28e4093",
+        "qasper_test_95af7aaea3ce9dab4cf64e2229ce9b98381dd050",
+        "qasper_test_98c8ed9019e43839ffb53a714bc37fbb1c28fe2c",
+        "qasper_test_993d5bef2bf1c0cd537342ef76d4b952f0588b83",
+        "qasper_test_9bf60073fbb69fbf860196513fc6fd2f466535f6",
+        "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+        "qasper_test_a913aa14d4e05cc9d658bf6697fe5b2652589b1b",
+        "qasper_test_b0edb9023f35a5a02eb8fb968e880e36233e66b3",
+        "qasper_test_c316d7d0c80b8f720ff90a8bb84a8b879a3ef7ea",
+        "qasper_test_c8b2fb9e0d5fb9014a25b88d559d93b6dceffbc0",
+        "qasper_test_cc8f495cac0af12054c746a5b796e989ff0e5d5f",
+        "qasper_test_d206f2cbcc3d2a6bd0ccaa3b57fece396159f609",
+        "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+        "qasper_test_e801b6a6048175d3b1f3440852386adb220bcb36",
+        "qasper_test_f88f45ef563ea9e40c5767ab2eaa77f4700f95f8",
+        "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba"
+      ],
+      "split_status": "unreviewed_candidate_not_scored",
+      "question_count": 40,
+      "scope": "40 selected QASPER test questions; known-paper code-execution agent study; not the full official test split"
+    },
+    "run_manifest_sha256": "e489569a898867d6e1f5c48125d21f72b1b82cb950db16a6b255fd25afa46914",
+    "run_status": "complete",
+    "models": [
+      {
+        "key": "nemotron_ultra_nebius",
+        "model_id": "nvidia/Nemotron-3-Ultra-550b-a55b",
+        "revision": "provider-managed-unpinned-2026-10-09",
+        "identity_source": "operator_declared_not_endpoint_attested",
+        "endpoint_env": null,
+        "endpoint_sha256": "3e4007c7d91be622fdb33e1f8675a470bb1f4489dadb6c82618ca9e112b40562",
+        "endpoint_kind": "remote",
+        "api_key_env": "NEBIUS_API_KEY",
+        "decoding": {
+          "max_tokens": 1024,
+          "temperature": 0.0,
+          "top_p": 1.0
+        },
+        "send_seed": false,
+        "request_timeout_seconds": 180,
+        "serving_hardware": "Nebius Token Factory; provider managed",
+        "serving_runtime": "provider-managed-unreported",
+        "serving_hourly_usd": null,
+        "extra_body": {
+          "chat_template_kwargs": {
+            "enable_thinking": false,
+            "force_nonempty_content": true
+          }
+        },
+        "serving_context_window_tokens": 1048576
+      }
+    ]
+  },
+  "limitations": [
+    "Official token-overlap metric on 40 selected source questions, not full QASPER test; known-paper prompts and code-execution conditions differ from published full-test systems.",
+    "All original reference annotations are scored and the maximum answer F1 is used. Literal submitted strings receive only official SQuAD-style normalization; no protocol abstention paraphrase is rewritten to Unanswerable.",
+    "No-submission, error, escalated, or unrecorded episodes are missing predictions: zero in the 40-question overall mean. Empty submitted strings also score zero. Official answer-type means omit missing predictions and choose the first maximizing reference.",
+    "No Evidence F1 is reported: character spans were not converted to QASPER paragraphs. Answer F1 is not semantic support review or a validated model-improvement gate."
+  ]
+}
