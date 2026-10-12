@@ -8,6 +8,10 @@ showed. This release adapts existing
 QASPER paper questions to a bounded Python-tool agent, preserving source
 attribution and separating answer overlap from evidence support.
 
+The [current standalone Studio](studio.html) includes the completed fixed-BM25
+baseline on its first page, with saved questions and passages for both Qwen
+checkpoints. It is a read-only snapshot; opening it makes no model calls.
+
 **QASPER is by Dasigi et al. (2021), licensed CC BY 4.0.** This is an independent
 adaptation, not an original question benchmark, official QASPER leaderboard
 submission, or affiliated AllenAI product. The [data provenance](../../benchmarks/envoybench/data/README.md)
@@ -167,8 +171,8 @@ tokens**, with a **$2.035422 catalog-rate estimate** across both phases. This
 is not an invoice and applies no cache discounts. The $25 cap was a local
 request guard, not an account billing limit.
 
-The [saved Studio](../envoybench-v0.1/studio.html) shows the amended Nemotron
-run alongside the four earlier Qwen rows. Its score comes from the same
+The [saved Studio](studio.html) shows the amended Nemotron run alongside the
+earlier Qwen rows and the fixed-BM25 baseline. Its score comes from the same
 official evaluator used for the Qwen outputs. The original Qwen inference and
 provisional support grades are unchanged; no support grade is assigned to
 Nemotron.

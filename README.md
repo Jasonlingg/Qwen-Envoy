@@ -38,7 +38,7 @@ separates original QASPER answer scoring from provisional support judgments.
 
 **No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
 It includes the saved runs and makes no model calls; no GPU, Docker, login,
-or API key is needed. You can also download [the standalone HTML](release/envoybench-v0.1/studio.html)
+or API key is needed. You can also download [the standalone HTML](release/qasper-agent-study/studio.html)
 and open it offline. GitHub's file preview does not run the HTML.
 
 **Recompute the recorded numbers:** after cloning this repository, Python 3.10+
@@ -83,7 +83,7 @@ The [release guide](release/envoybench-v0.1/README.md) documents artifact
 verification and the distinction between saved and live runs.
 
 For a dependency-free local demo server, run
-`python -m http.server 8765 --bind 127.0.0.1 --directory release/envoybench-v0.1`
+`python -m http.server 8765 --bind 127.0.0.1 --directory release/qasper-agent-study`
 and open <http://127.0.0.1:8765/studio.html>. This serves the saved snapshot only;
 the full local Studio above adds source review and optional paper investigations.
 
