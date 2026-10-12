@@ -111,6 +111,13 @@ answerable subset did not improve. An always-refuse policy would be expected
 to pass 20/40 under these labels, illustrating why the aggregate score alone
 is misleading. That is an analytical baseline, not another recorded run.
 
+A separate [fixed BM25 run](release/qasper-agent-study/README.md#fixed-retrieval-baseline)
+retrieved passages from each named paper before one Qwen answer request. It
+scored **41.52%** for base and **58.86%** for v5 on the same selected questions.
+V5 falsely refused 9/20 answerable questions; the higher overall F1 does not
+establish better grounded answers. The Studio shows both saved runs and their
+retrieved passages.
+
 Answer F1 uses the literal submitted answer and the best match among all
 original annotations: 86 references across these 40 questions. Missing answers
 score zero, including the eleven failed base episodes. It measures normalized

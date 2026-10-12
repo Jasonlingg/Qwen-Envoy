@@ -71,6 +71,18 @@ timing is missing. The experiment therefore does not establish a general
 reasoning, latency, or cost advantage. The [full comparison](../benchmarks/envoybench/COMPARISON_2026_09_30.md)
 records these qualifications.
 
+## Fixed retrieval check
+
+A [completed BM25 baseline](../release/qasper-agent-study/README.md#fixed-retrieval-baseline)
+selected passages from each named paper before making one answer request to
+each Qwen checkpoint. On the same 40 questions, official Answer F1 was
+**41.52 for base** and **58.86 for v5**. V5 correctly refused all 20 questions
+labeled unanswerable, but also falsely refused **9 of 20** labeled answerable;
+its answerable-only F1 was **17.72**. The higher overall score does not show
+better grounded answering: source labels and answer support remain unreviewed,
+and the agent and BM25 runs used different serving runtimes. The Studio's
+first page links to both saved BM25 runs and their supplied passages.
+
 ## The stopping pattern
 
 V5 submits on **step three for 38/40 questions**, and step four for two. The

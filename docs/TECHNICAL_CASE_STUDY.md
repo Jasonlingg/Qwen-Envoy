@@ -321,9 +321,13 @@ selected evaluation; it does not isolate a causal explanation for the decline.
 
 For September 30, answerable quality did not improve, the grader changed, and
 independent reference/answer review remains unfinished. No model promotion is
-claimed. A [deterministic within-paper retrieval comparator](../benchmarks/envoybench/RETRIEVAL_BASELINE.md)
-has prepared packets but no inference result, so the agent loop has not shown
-that it earns its complexity over one fixed retrieval step. The eight-question
+claimed. The [completed within-paper BM25 comparator](../release/qasper-agent-study/README.md#fixed-retrieval-baseline)
+gave each checkpoint fixed passages and one answer request on the same 40
+questions. It scored **41.52** for base and **58.86** for v5 on official Answer
+F1, above the corresponding agent scores, but v5 falsely refused 9 of 20
+source-labeled answerable questions. Answer support remains unreviewed, so
+these token-overlap scores do not establish that either architecture produces
+better grounded answers. The eight-question
 independent calibration packet remains blank. The separate
 [October token diagnostic](../benchmarks/envoybench/LOGPROB_ANALYSIS.md) did not
 establish generated-token likelihood as a useful error-warning signal and does
@@ -352,8 +356,9 @@ The first two commands verify packaged checksums and recompute September 30 coun
 saved results and review assignments. They do not download the corpus, execute
 Qwen, regrade answers, or validate spans against full paper text. The third
 computes official Answer F1 from the saved answers and original annotations. Open
-[studio.html](../release/envoybench-v0.1/studio.html) directly for the saved
-**Runs → Questions → Trace** walkthrough, including all 562 September 30 turns.
+[studio.html](../release/qasper-agent-study/studio.html) directly for the saved
+**Runs → Questions → Trace** walkthrough, including the BM25 results and all
+562 September 30 agent turns.
 
 For the deeper frozen-corpus and review-binding check, the existing
 [release workflow](../release/envoybench-v0.1/README.md) is:
