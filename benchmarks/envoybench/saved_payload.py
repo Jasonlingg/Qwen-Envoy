@@ -26,6 +26,9 @@ from benchmarks.envoybench.score import (
 from src.eval.artifacts import configuration_hash
 
 HERE = Path(__file__).resolve().parent
+RELEASE_RETRIEVAL_BASELINE = (
+    HERE.parents[1] / "release/qasper-agent-study/retrieval-baseline"
+)
 
 PRIOR_ART = [
     {
@@ -748,6 +751,151 @@ def _attach_qasper_score(path: Path, runs: list[dict]) -> None:
     run["provenance"]["qasper_official_score"] = run["qasper_score"]
 
 
+def _completed_retrieval_payload(
+    source_manifest: dict, dataset: Path, baseline_dir: Path,
+    verified_trace_store: dict[tuple[str, ...], dict] | None,
+) -> tuple[dict, dict] | None:
+    """Load the released fixed-retrieval comparison for its exact source run."""
+    names = ("plan", "manifest", "packets", "results", "official-score")
+    paths = {name: baseline_dir / f"{name}.json" for name in names}
+    if not all(path.is_file() for path in paths.values()):
+        return None
+    if any(path.stat().st_size > 10 * 1024 * 1024 for path in paths.values()):
+        raise ValueError("Saved retrieval baseline exceeds the 10 MiB display limit")
+    plan = _read_json(paths["plan"])
+    if (not isinstance(plan, dict)
+            or plan.get("schema_version") != "envoybench-retrieval-prepared-v1"):
+        raise ValueError("Unsupported saved retrieval baseline plan")
+    # Other source runs retain the existing prepared/not-run fallback. In
+    # particular, this must not silently follow a changed question set.
+    if (plan.get("source_run_id") != source_manifest.get("run_id")
+            or plan.get("source_comparison_id") != source_manifest.get("comparison_id")):
+        return None
+    if (plan.get("source_manifest_hash") != configuration_hash(source_manifest)
+            or plan.get("source_models") != source_manifest.get("models")
+            or plan.get("status") != "prepared_not_run"
+            or plan.get("architecture") != "envoybench-known-paper-bm25-v1"
+            or any(plan.get(field) != source_manifest.get(field) for field in (
+                "benchmark_id", "benchmark_hash", "corpus_hash", "question_ids",
+                "split", "split_status", "seed",
+            ))):
+        raise ValueError("Saved retrieval baseline does not match its source run")
+    manifest = _read_json(paths["manifest"])
+    packets_document = _read_json(paths["packets"])
+    results = _read_json(paths["results"])
+    if (not isinstance(manifest, dict) or not isinstance(packets_document, dict)
+            or not isinstance(results, list)
+            or manifest.get("status") != "complete"
+            or manifest.get("architecture") != plan["architecture"]
+            or manifest.get("baseline_plan") != plan
+            or manifest.get("source_run_id") != source_manifest["run_id"]
+            or manifest.get("source_comparison_id") != source_manifest["comparison_id"]
+            or manifest.get("comparison_id") != configuration_hash(plan)
+            or configuration_hash(packets_document) != plan.get("packets_hash")):
+        raise ValueError("Saved retrieval baseline manifest or packets differ from its plan")
+    packets = packets_document.get("packets")
+    if (not isinstance(packets, list)
+            or not isinstance(plan.get("question_ids"), list)
+            or [packet.get("question_id") for packet in packets
+                if isinstance(packet, dict)] != plan.get("question_ids")
+            or len(packets) != len(plan["question_ids"])):
+        raise ValueError("Saved retrieval baseline packets differ from its question set")
+    packets_by_id = {packet["question_id"]: packet for packet in packets}
+    for row in results:
+        packet = packets_by_id.get(row.get("question_id")) if isinstance(row, dict) else None
+        if (packet is None or row.get("architecture") != plan["architecture"]
+                or row.get("retrieval_packet_hash") != configuration_hash(packet)
+                or row.get("retrieval_passages") != packet.get("passages")
+                or row.get("prompt_tokens_local") != packet.get("prompt_tokens_local")
+                or row.get("environment_status") != "not_applicable_no_code_execution"
+                or row.get("steps") != 1):
+            raise ValueError("Saved retrieval answer differs from its frozen BM25 packet")
+    run = _run_payload(
+        baseline_dir, dataset, None, None, provisional=True, supplementary=True,
+        verified_trace_store=verified_trace_store,
+    )
+    _attach_qasper_score(paths["official-score"], [run])
+    score = _read_json(paths["official-score"])
+    if not isinstance(score, dict):
+        raise ValueError("Saved retrieval score must be an object")
+    score_by_pair = {(row["question_id"], row["model_key"]): row
+                     for row in score["rows"]}
+    result_by_pair = {(row["question_id"], row["model_key"]): row for row in results}
+    labels = {
+        "qwen_base_retrieval": "BM25 + Qwen base",
+        "qwen_v5_retrieval": "BM25 + Qwen v5",
+    }
+    if {model["key"] for model in run["models"]} != set(labels):
+        raise ValueError("Saved retrieval baseline has unexpected model keys")
+    summary_models = []
+    for model in run["models"]:
+        key = model["key"]
+        model["label"] = labels[key]
+        groups = {"sufficient": [], "insufficient": []}
+        refusals = {"sufficient": 0, "insufficient": 0}
+        submitted = 0
+        for case in run["cases"]:
+            question_id = case["id"]
+            result = result_by_pair[(question_id, key)]
+            system = case["systems"][key]
+            system["label"] = labels[key]
+            system["retrieval_passages"] = result["retrieval_passages"]
+            system["prompt_tokens_local"] = result["prompt_tokens_local"]
+            groups[case["answerability"]].append(score_by_pair[(question_id, key)]["answer_f1"])
+            submitted += result["status"] == "submitted"
+            refusals[case["answerability"]] += (
+                result["status"] == "submitted"
+                and result["predicted_answer"].strip().casefold() == "unanswerable"
+            )
+            case["focus"] = (
+                "Fixed BM25 passages from the named paper, then one model answer request. "
+                "The model did not use search, read, code execution, or a retry."
+            )
+        if sorted(map(len, groups.values())) != [20, 20]:
+            raise ValueError("Saved retrieval baseline needs 20 questions of each answerability")
+        summary_models.append({
+            "key": key, "label": labels[key],
+            "qasper_answer_f1": model["metrics"]["qasper_answer_f1"],
+            "answerable_answer_f1": sum(groups["sufficient"]) / 20,
+            "unanswerable_answer_f1": sum(groups["insufficient"]) / 20,
+            "correct_refusals": refusals["insufficient"],
+            "false_refusals": refusals["sufficient"],
+            "abstention_count": sum(refusals.values()),
+            "submitted_count": submitted,
+        })
+    run.update({
+        "kind": "retrieval_baseline_run",
+        "architecture": plan["architecture"],
+        "title": "QASPER Agent Studio · Fixed BM25 retrieval",
+        "subtitle": "Saved within-paper passage retrieval and one answer request per question.",
+        "review_status": (
+            "Official Answer F1 is token overlap on 40 selected QASPER questions. "
+            "Answer support and source annotations have not received independent human review."
+        ),
+    })
+    card = {
+        "status": "complete",
+        "description": (
+            "BM25 selected passages from the named paper before Qwen answered once. "
+            "Qwen had no search or code-execution tool in this comparison."
+        ),
+        "run_id": manifest["run_id"],
+        "question_count": len(run["cases"]),
+        "model_request_count": sum(model["submitted_count"] for model in summary_models),
+        "models": summary_models,
+        "caveat": (
+            "Official Answer F1 measures token overlap on a known, previously inspected "
+            "40-question set. Answer support is unreviewed, and the source answerability "
+            "labels have not been independently validated. The agent and BM25 runs used "
+            "different serving runtimes, so their latency is not an architecture comparison."
+        ),
+        "artifact_dir": "release/qasper-agent-study/retrieval-baseline",
+        "results_sha256": _file_sha256(paths["results"]),
+        "official_score_sha256": _file_sha256(paths["official-score"]),
+    }
+    return card, run
+
+
 def build_demo_payload(
     *, run_dir: Path | None = None, review_dir: Path | None = None,
     dataset: Path = DEFAULT_DATASET,
@@ -764,8 +912,10 @@ def build_demo_payload(
         raise ValueError("--review-dir requires --run-dir")
     if judged_review_path is not None and review_dir is None:
         raise ValueError("--judged-review requires --review-dir")
+    source_manifest = None
     if run_dir is not None:
         run_manifest = _read_json(run_dir / "manifest.json")
+        source_manifest = run_manifest
         if (isinstance(run_manifest, dict) and run_manifest.get("split") == "test_candidate"
                 and not provisional):
             if reference_review_path is None or not reference_review_path.is_file():
@@ -796,10 +946,33 @@ def build_demo_payload(
                      verified_trace_store=verified_trace_store)
         for path in supplementary_runs or []
     ]
+    completed_baseline = None
+    if provisional and isinstance(source_manifest, dict):
+        completed_baseline = _completed_retrieval_payload(
+            source_manifest, dataset, RELEASE_RETRIEVAL_BASELINE, verified_trace_store,
+        )
+    if completed_baseline is not None:
+        card, retrieval_run = completed_baseline
+        active["retrieval_baseline"] = card
+        matching = [index for index, run in enumerate(supplements)
+                    if run.get("provenance", {}).get("run_id") == card["run_id"]]
+        if len(matching) > 1:
+            raise ValueError("Loaded saved runs must have distinct run IDs")
+        if matching:
+            explicit_path = (supplementary_runs or [])[matching[0]].resolve()
+            if explicit_path != RELEASE_RETRIEVAL_BASELINE.resolve():
+                raise ValueError("Loaded saved runs must have distinct run IDs")
+            supplements[matching[0]] = retrieval_run
+        else:
+            supplements.append(retrieval_run)
     run_ids = [run.get("provenance", {}).get("run_id") for run in [active, *supplements]]
     if len(run_ids) != len(set(run_ids)):
         raise ValueError("Loaded saved runs must have distinct run IDs")
     for path in qasper_scores or []:
+        if (completed_baseline is not None
+                and path.resolve()
+                == (RELEASE_RETRIEVAL_BASELINE / "official-score.json").resolve()):
+            continue
         _attach_qasper_score(path, [active, *supplements])
     return {
         "schema_version": "envoybench-demo-v1",

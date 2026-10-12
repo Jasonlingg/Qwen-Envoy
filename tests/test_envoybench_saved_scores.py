@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
+from benchmarks.envoybench import saved_payload
 from benchmarks.envoybench.demo import build_demo_payload, create_app
 from benchmarks.envoybench.export import snapshot_html
 from benchmarks.envoybench.run import _file_sha256
@@ -19,6 +21,7 @@ RELEASE = ROOT / "release/envoybench-v0.1"
 SCORE = ROOT / "release/qasper-agent-study/qwen-official-score.json"
 NEMOTRON_SCORE = ROOT / "release/qasper-agent-study/nemotron-official-score.json"
 AMENDED_RUN = ROOT / "release/qasper-agent-study/nebius-amended-run"
+RETRIEVAL_RUN = ROOT / "release/qasper-agent-study/retrieval-baseline"
 
 
 def _write(path: Path, value: object) -> None:
@@ -124,6 +127,82 @@ def test_official_score_attaches_only_when_explicitly_loaded() -> None:
         model["metrics"]["qasper_answer_f1"] for model in after["active"]["models"]
     ] == pytest.approx([0.1991537448471281, 0.30687301402774547])
     assert all("metrics" not in model for model in after["token_diagnostic"]["models"])
+
+
+def test_completed_bm25_baseline_is_visible_and_traceable_on_provisional_first_page() -> None:
+    store = {}
+    payload = build_demo_payload(**_options(), verified_trace_store=store)
+    card = payload["active"]["retrieval_baseline"]
+    assert card["status"] == "complete"
+    assert card["question_count"] == 40
+    assert card["model_request_count"] == 80
+    assert [model["qasper_answer_f1"] for model in card["models"]] == pytest.approx(
+        [0.4151989695911006, 0.5886030262883601]
+    )
+    assert [model["answerable_answer_f1"] for model in card["models"]] == pytest.approx(
+        [0.330397939182201, 0.17720605257672012]
+    )
+    assert [(model["correct_refusals"], model["false_refusals"])
+            for model in card["models"]] == [(10, 3), (20, 9)]
+    assert "support is unreviewed" in card["caveat"]
+    run = next(run for run in payload["supplementary_runs"]
+               if run["provenance"]["run_id"] == card["run_id"])
+    assert run["kind"] == "retrieval_baseline_run"
+    assert run["architecture"] == "envoybench-known-paper-bm25-v1"
+    assert len(run["cases"]) == 40
+    assert run["models"][1]["metrics"]["qasper_answer_f1"] == pytest.approx(
+        card["models"][1]["qasper_answer_f1"]
+    )
+    case = run["cases"][0]
+    system = case["systems"]["qwen_v5_retrieval"]
+    assert system["retrieval_passages"][0]["passage_id"].startswith("qasper_")
+    assert system["prompt_tokens_local"] > 0
+    assert system["trajectory"][0]["observation"] == (
+        "Single answer request; no tool execution."
+    )
+    assert (card["run_id"], case["id"], "qwen_v5_retrieval") in store
+
+    client = TestClient(create_app(**_options()))
+    response = client.get("/api/demo/trace", params={
+        "question_id": case["id"], "model": "qwen_v5_retrieval", "run_id": card["run_id"],
+    })
+    assert response.status_code == 200
+    assert response.json()["trajectory"][0]["observation"] == (
+        "Single answer request; no tool execution."
+    )
+
+
+def test_completed_bm25_requires_matching_provisional_source_and_keeps_prepared_fallback(
+    monkeypatch, tmp_path: Path,
+) -> None:
+    fixture = build_demo_payload()
+    assert fixture["supplementary_runs"] == []
+    assert fixture["active"].get("retrieval_baseline") is None
+
+    monkeypatch.setattr(saved_payload, "RELEASE_RETRIEVAL_BASELINE", tmp_path / "absent")
+    payload = build_demo_payload(**_options())
+    assert payload["active"]["retrieval_baseline"]["status"] == "prepared_not_run"
+    assert payload["supplementary_runs"] == []
+
+    manifest = json.loads((RELEASE / "run/manifest.json").read_text())
+    manifest["run_id"] = "different-source-run"
+    assert saved_payload._completed_retrieval_payload(
+        manifest, saved_payload.DEFAULT_DATASET, RETRIEVAL_RUN, None,
+    ) is None
+
+
+def test_completed_bm25_rejects_changed_frozen_packets(tmp_path: Path) -> None:
+    for name in ("plan", "manifest", "packets", "results", "official-score"):
+        shutil.copyfile(RETRIEVAL_RUN / f"{name}.json", tmp_path / f"{name}.json")
+    packets_path = tmp_path / "packets.json"
+    packets = json.loads(packets_path.read_text())
+    packets["packets"][0]["passages"][0]["text"] += " changed"
+    _write(packets_path, packets)
+    source = json.loads((RELEASE / "run/manifest.json").read_text())
+    with pytest.raises(ValueError, match="manifest or packets differ"):
+        saved_payload._completed_retrieval_payload(
+            source, saved_payload.DEFAULT_DATASET, tmp_path, None,
+        )
 
 
 @pytest.mark.parametrize(

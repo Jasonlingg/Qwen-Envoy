@@ -111,12 +111,12 @@ def create_app(
         def full_saved_trace(
             question_id: str, model: str, run_id: str | None = None,
         ) -> JSONResponse:
-            """One verified saved Python-turn trajectory; no inference or file lookup."""
+            """One verified saved trajectory; no inference or file lookup."""
             active = app.state.payload["active"]
             if run_id is not None:
                 active = next((run for run in app.state.payload["supplementary_runs"]
                                if run["provenance"]["run_id"] == run_id), {})
-            if active.get("kind") != "envoybench_run":
+            if active.get("kind") not in {"envoybench_run", "retrieval_baseline_run"}:
                 raise HTTPException(status_code=404, detail="No saved run loaded")
             case = next(
                 (item for item in active["cases"] if item["id"] == question_id), None

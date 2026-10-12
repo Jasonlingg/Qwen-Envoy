@@ -67,6 +67,19 @@
     .run-select, .question-select { display: block; width: 100%; padding: 0; border: 0; background: none; color: var(--text); text-align: left; font-size: 12px; font-weight: 550; }
     .run-kind { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); }
     .run-kind.incomplete { color: var(--partial); }
+    .retrieval-summary { padding: 10px 12px; margin-bottom: 8px; }
+    .retrieval-summary h3 { margin: 0 0 3px; font-size: 12px; }
+    .retrieval-summary p { margin: 4px 0; color: var(--muted); font-size: 11px; }
+    .retrieval-table-scroll { overflow-x: auto; margin: 7px 0; }
+    .retrieval-table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+    .retrieval-table th, .retrieval-table td { padding: 5px 9px; border-bottom: 1px solid var(--border); font-size: 11px; }
+    .retrieval-table th { color: var(--muted); font-size: 10px; font-weight: 550; }
+    .retrieval-table td:not(:first-child) { font-family: var(--mono); }
+    .retrieval-table th:first-child, .retrieval-table td:first-child { padding-left: 0; }
+    .retrieval-table .run-select { font-size: 11px; }
+    .retrieval-summary details > summary, .retrieval-passages > summary { cursor: pointer; color: var(--muted); font-size: 11px; }
+    .retrieval-passages { margin: 8px 0; }
+    .retrieval-passages .evidence-item { margin: 5px 0; max-height: 220px; overflow: auto; }
     .metric-pass { color: var(--pass); }
     .metric-error { color: var(--fail); }
     .disclosure > summary, .token-panel > summary, .full-paper > summary, .generated-reasoning > summary { cursor: pointer; padding: 7px 0; font-size: 11px; font-weight: 550; }
@@ -265,6 +278,15 @@
       .section-head p { display: none; }
       .candidate-facts { gap: 8px; }
     }
+    @media (max-width: 600px) {
+      .retrieval-table-scroll { overflow: visible; }
+      .retrieval-table, .retrieval-table tbody, .retrieval-table tr, .retrieval-table td { display: block; width: 100%; }
+      .retrieval-table thead { display: none; }
+      .retrieval-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--border); padding: 5px 0; }
+      .retrieval-table td { border: 0; padding: 3px 6px; }
+      .retrieval-table td:first-child { grid-column: 1 / -1; padding-left: 6px; }
+      .retrieval-table td:not(:first-child)::before { content: attr(data-label); display: block; color: var(--muted); font: 10px/1.5 Inter, ui-sans-serif, sans-serif; }
+    }
   </style>
 </head>
 <body>
@@ -293,10 +315,10 @@
       <div class="archive-note"><div><strong id="archive-note-heading">Historical development evidence.</strong> <span id="archive-note-body">These verdicts came from model-assisted review and were used during development. They are provisional, not independent human judgments or a new held-out QASPER agent score.</span></div></div>
 
       <p id="active-subtitle" class="archive-subtitle"></p>
+      <div id="retrieval-baseline" class="retrieval-summary card" role="region" aria-label="Fixed BM25 retrieval baseline" hidden></div>
       <div id="model-cards" class="metric-grid" aria-live="polite"></div>
       <div id="slice-note" class="takeaway" role="note" hidden></div>
       <details class="disclosure secondary-details"><summary>Baselines & release decision</summary><div id="analytical-baselines" hidden></div>
-      <div id="retrieval-baseline" class="review-unavailable card" style="margin-top: 15px" hidden></div>
       <div id="promotion-card" class="card" style="padding: 20px 24px; margin-top: 15px" hidden>
         <strong id="promotion-status" style="font-size: 14px"></strong>
         <p id="promotion-intro" class="metrics-note"></p>
@@ -955,15 +977,48 @@
         const retrieval = record(active.retrieval_baseline);
         const retrievalCard = byId("retrieval-baseline"); clear(retrievalCard);
         retrievalCard.hidden = !retrieval.status;
-        if (retrieval.status) {
-          add(retrievalCard, "strong", "", retrieval.status === "prepared_not_run"
-            ? "Single-answer retrieval baseline · prepared, not run"
-            : `Single-answer retrieval baseline · ${words(retrieval.status)}`);
+        if (!retrieval.status) return;
+        if (retrieval.status !== "complete" || !list(retrieval.models).length) {
+          add(retrievalCard, "h3", "", retrieval.status === "prepared_not_run"
+            ? "Fixed BM25 + one answer · prepared, not run"
+            : `Fixed BM25 + one answer · ${words(retrieval.status)}`);
           add(retrievalCard, "p", "", printable(retrieval.description));
-          if (retrieval.status === "prepared_not_run") {
-            add(retrievalCard, "p", "", `${integer(retrieval.prepared_question_count)} questions prepared · ${integer(retrieval.planned_request_count)} model requests planned. No quality or efficiency result is available.`);
-          }
+          if (retrieval.status === "prepared_not_run") add(retrievalCard, "p", "", `${integer(retrieval.prepared_question_count)} questions prepared · ${integer(retrieval.planned_request_count)} model requests planned. No quality result is available.`);
+          return;
         }
+        add(retrievalCard, "h3", "", "Fixed BM25 passages + one Qwen answer · completed");
+        add(retrievalCard, "p", "", `On the same ${integer(retrieval.question_count)} named-paper questions, BM25 selected passages before each model call. Qwen received those passages and answered once; it did not run BM25, Python, or a search tool.`);
+        const scroll = add(retrievalCard, "div", "retrieval-table-scroll");
+        const table = add(scroll, "table", "retrieval-table");
+        const headings = add(add(table, "thead"), "tr");
+        ["Qwen checkpoint", "Answer F1 /100", "Answerable F1 /100", "Correct refusals /20", "False refusals /20"].forEach((label) => add(headings, "th", "", label));
+        const body = add(table, "tbody");
+        let traceRuns = 0;
+        list(retrieval.models).forEach((model) => {
+          const row = add(body, "tr");
+          const name = add(row, "td");
+          const entry = runEntries(state.data).find((candidate) => retrievalRun(candidate.active)
+            && candidate.active.provenance?.run_id === retrieval.run_id && candidate.model.key === model.key);
+          if (entry) {
+            const button = add(name, "button", "run-select", printable(model.label || entry.model.label));
+            button.type = "button";
+            button.setAttribute("aria-label", `Open saved BM25 answers for ${printable(model.label || entry.model.label)}`);
+            button.addEventListener("click", () => openRun(entry));
+            traceRuns += 1;
+          } else add(name, "span", "", printable(model.label || titleCase(model.key)));
+          [["Answer F1 /100", answerF1(model.qasper_answer_f1, 2)],
+            ["Answerable F1 /100", answerF1(model.answerable_answer_f1, 2)],
+            ["Correct refusals /20", integer(model.correct_refusals)],
+            ["False refusals /20", integer(model.false_refusals)]].forEach(([label, value]) => {
+            add(row, "td", "", value).dataset.label = label;
+          });
+        });
+        add(retrievalCard, "p", "", "Official QASPER Answer F1 is token overlap. Refusal counts use QASPER answerability labels that have not been independently reviewed. Answer and citation support have not been independently reviewed either.");
+        const details = add(retrievalCard, "details");
+        add(details, "summary", "", traceRuns ? "Method & limits" : "Method, limits & saved-run details");
+        add(details, "p", "", printable(retrieval.description));
+        if (retrieval.caveat) add(details, "p", "", printable(retrieval.caveat));
+        if (!traceRuns) add(details, "p", "", "Question traces are not included in this view.");
       }
       function renderBehavior(card, metrics, fullCount) {
         const reviewed = count(metrics.behavior_reviewed_count);
@@ -1009,6 +1064,7 @@
       }
       function incompleteRun(active) { return active.run_status === "incomplete"; }
       function amendedRun(active) { return record(active.amended_continuation).kind === "amended_continuation"; }
+      function retrievalRun(active) { return active.kind === "retrieval_baseline_run"; }
       function estimatedCost(active) {
         const estimated = count(record(active.usage_budget).estimated_usd);
         return estimated === null ? "Cost unavailable" : `$${estimated.toFixed(4)}`;
@@ -1028,14 +1084,17 @@
         return `Q1–Q${integer(amendment.original_completed_count)} use original completed episodes. Q39 restarted from step 1 after the original $${Number(amendment.original_budget_cap_usd).toFixed(2)} local cost cap stopped its first attempt; that partial trace is excluded from this derived result. Q40 is its first attempt. The cumulative local cap was raised to $${Number(amendment.amended_budget_cap_usd).toFixed(2)}. Cumulative estimated cost: ${estimatedCost(entry.active)} across both runs, from usage-budget.json. ${f1}; answer support is unreviewed. ${printable(identity.model_id || entry.model.model_id)} · ${printable(identity.serving_hardware || identity.provider)}. No controlled Qwen–Nemotron comparison.`;
       }
       function openRun(entry) {
+        const retrieval = retrievalRun(entry.active);
         state.selectedRun = entry;
         state.caseIndex = -1; state.caseFilter = "all"; state.caseQuery = "";
         state.traceCache.clear();
         byId("archive").hidden = true;
         byId("cases").hidden = false;
         byId("cases-heading").textContent = printable(entry.model.label || titleCase(entry.model.key));
-        byId("task-card-label").textContent = incompleteRun(entry.active) ? "Incomplete · budget stop · unscored." : amendedRun(entry.active) ? "Amended continuation · support unreviewed." : entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
-        byId("task-card-copy").textContent = incompleteRun(entry.active)
+        byId("task-card-label").textContent = retrieval ? "Fixed BM25 + one answer · support unreviewed." : incompleteRun(entry.active) ? "Incomplete · budget stop · unscored." : amendedRun(entry.active) ? "Amended continuation · support unreviewed." : entry.diagnostic ? "Development smoke · unscored." : entry.supplementary ? "Supplementary run · support unreviewed." : assessmentLevel(entry.active) === "human" ? "Human-reviewed." : assessmentLevel(entry.active) === "model" ? "Provisional AI grades." : "Answer quality ungraded.";
+        byId("task-card-copy").textContent = retrieval
+          ? "BM25 selected passages from the named paper before Qwen was called. Qwen received one prompt and submitted one answer, with no search or code execution. Select a question to inspect the supplied passages and saved answer."
+          : incompleteRun(entry.active)
           ? incompleteRunDetails(entry)
           : amendedRun(entry.active)
           ? amendedRunDetails(entry)
@@ -1062,7 +1121,7 @@
         byId("archive-heading").textContent = "Runs";
         byId("provenance-heading").textContent = "Run details";
         byId("archive-note-heading").textContent = level === "model" ? "AI-graded · provisional." : level === "human" ? "Human-reviewed." : "Saved runs.";
-        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; supplementary runs are separate. Qwen and Nemotron differ in provider, serving context, and runtime, so their results are not a controlled comparison. Dev smoke runs have no quality score.";
+        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; BM25 answer support is unreviewed. Fixed BM25 + one answer is a separate architecture from the code-agent runs. Qwen and Nemotron differ in provider, serving context, and runtime, so their results are not a controlled comparison. Dev smoke runs have no quality score.";
         const container = byId("model-cards"); clear(container);
         const scroll = add(container, "div", "run-table-scroll");
         const table = add(scroll, "table", "run-table");
@@ -1078,7 +1137,7 @@
           const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
           button.dataset.runId = entry.id;
           button.type = "button"; button.addEventListener("click", () => openRun(entry));
-          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", incomplete ? "Incomplete · budget stop" : amendedRun(entry.active) ? "Amended continuation · support unreviewed" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
+          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", retrievalRun(entry.active) ? "Fixed BM25 + one answer · support unreviewed" : incomplete ? "Incomplete · budget stop" : amendedRun(entry.active) ? "Amended continuation · support unreviewed" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
           add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
           add(row, "td", "", incomplete ? `${integer(record(entry.active.completion).finished)}/${integer(record(entry.active.completion).planned)} finished` : integer(total));
           add(row, "td", "", answerF1(metrics.qasper_answer_f1));
@@ -1086,7 +1145,7 @@
           add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
           add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
           add(row, "td", "", count(metrics.unanswerable_pass) === null ? "—" : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
-          add(row, "td", count(metrics.execution_error_episode_rate) > 0 ? "metric-error" : "", rate(metrics.execution_error_episode_rate));
+          add(row, "td", !retrievalRun(entry.active) && count(metrics.execution_error_episode_rate) > 0 ? "metric-error" : "", retrievalRun(entry.active) ? "N/A" : rate(metrics.execution_error_episode_rate));
           row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
         });
         renderBaselines(active);
@@ -1105,7 +1164,7 @@
         return value === "sufficient" ? "Answerable" : value === "insufficient" ? "Unanswerable" : titleCase(value);
       }
       function systemFor(item, model) { return record(record(item.systems)[model.key]); }
-      function answerF1(value) { return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1 ? (value * 100).toFixed(1) : "—"; }
+      function answerF1(value, digits = 1) { return typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= 1 ? (value * 100).toFixed(digits) : "—"; }
       function traceKey(item, model) { return `${state.selectedRun?.id || "benchmark"}\u0000${item.id}\u0000${model.key}`; }
       function traceCacheEntry(item, model) { return state.traceCache.get(traceKey(item, model)); }
       function trajectoryFor(item, model) {
@@ -1114,6 +1173,7 @@
       }
       function traceSource(item, model) {
         if (systemFor(item, model).status === "not_attempted") return "Question not attempted · no saved trajectory";
+        if (retrievalRun(currentActive())) return "Saved BM25 passages and one answer request · no model-authored search or code";
         const kind = traceCacheEntry(item, model)?.kind;
         if (kind === "full" || state.selectedRun?.diagnostic) return "Full saved trajectory · no replay or live inference";
         if (state.snapshot && currentActive().trace_scope === "full_saved_trajectories") return "Full exported trajectory · no replay or live inference";
@@ -1288,6 +1348,9 @@
         const models = selectedModels(active);
         models.forEach((model) => renderLane(answers, item, model));
         byId("trace-inspector").open = true;
+        byId("trace-inspector").querySelector("summary").textContent = retrievalRun(active)
+          ? "Trace · BM25 passages & saved answer"
+          : "Trace · code, tools & tokens";
         renderTrajectory(item, models);
         loadFullTrajectories(item, models);
       }
@@ -1301,12 +1364,13 @@
         const system = systemFor(item, model);
         const trajectory = trajectoryFor(item, model);
         const level = assessmentLevel(currentActive());
+        const retrieval = retrievalRun(currentActive());
         const lane = add(container, "article", "lane card");
         const head = add(lane, "div", "lane-head");
         const name = add(head, "div");
         add(name, "h4", "", printable(system.label || model.label || titleCase(model.key)));
         const outcome = outcomeFor(item, model);
-        add(name, "small", "", outcome.notAttempted ? "Not attempted · no model call or Python turns" : `${trajectory.length} Python turns · ${observedSeconds(system.duration_seconds)}${outcome.interrupted ? " · interrupted by budget stop" : outcome.error ? outcome.failed ? " · run error" : " · execution error" : ""}`);
+        add(name, "small", "", outcome.notAttempted ? "Not attempted · no model call" : `${retrieval ? "One answer request" : `${trajectory.length} Python turns`} · ${observedSeconds(system.duration_seconds)}${outcome.interrupted ? " · interrupted by budget stop" : outcome.error ? outcome.failed ? " · run error" : " · execution error" : ""}`);
         const verdict = words(system.verdict).toLowerCase();
         const badge = add(head, "span", `verdict ${["pass", "partial", "fail"].includes(verdict) ? verdict : "other"}`, outcomeLabel(system, outcome));
         badge.title = level === "model" ? "Provisional AI-graded verdict" : level === "human" ? "Recorded human review verdict" : "Answer quality unreviewed";
@@ -1316,11 +1380,23 @@
           add(lane, "p", "trace-source", traceSource(item, model));
           const status = words(full.status || system.status || "not recorded");
           add(lane, "span", `run-status${outcome.error ? " error" : ""}`, outcome.interrupted ? "interrupted · budget stop" : outcome.error && !outcome.failed ? `${status} · execution error` : status);
+          if (retrieval) {
+            const passages = list(system.retrieval_passages);
+            const packet = add(lane, "details", "retrieval-passages");
+            add(packet, "summary", "", `BM25 passages supplied to Qwen · ${integer(passages.length)}`);
+            add(packet, "p", "metrics-note", "Fixed BM25 ranked these windows from the named paper before the answer request. They are prompt context, not citations chosen by Qwen.");
+            passages.forEach((passage, index) => {
+              const box = add(packet, "div", "evidence-item");
+              const score = count(passage.bm25_score);
+              add(box, "strong", "", `#${index + 1} · ${printable(passage.doc_id)} · ${integer(passage.start)}–${integer(passage.end)}${score === null ? "" : ` · BM25 ${score.toFixed(2)}`}`);
+              add(box, "div", "", printable(passage.text));
+            });
+          }
           const transcript = add(lane, "div", "transcript");
           trajectory.forEach((event, index) => {
             const box = add(transcript, "section", "turn-entry");
             const heading = add(box, "div", "turn-heading");
-            add(heading, "strong", "", `Turn ${index + 1}`);
+            add(heading, "strong", "", retrieval ? "One answer request" : `Turn ${index + 1}`);
             if (isFinalSubmission(event)) add(heading, "span", "turn-submit", "submit");
             if (hasRecordedStderr(event)) add(heading, "span", "turn-signal", "stderr");
             if (event.done && !isFinalSubmission(event)) add(heading, "span", "turn-terminal", "ended");
@@ -1330,14 +1406,14 @@
               add(generated, "pre", "", event.reasoning);
               if (event.reasoning_truncated) add(generated, "p", "reasoning-excerpt-note", `Excerpt of ${integer(event.reasoning_original_chars)} recorded characters.`);
             }
-            add(box, "div", "io-label", isFinalSubmission(event) ? "Final submission" : "Generated Python");
+            add(box, "div", "io-label", isFinalSubmission(event) ? "Final submission" : retrieval ? "Saved answer" : "Generated Python");
             add(box, "pre", `code${isFinalSubmission(event) ? " submission" : ""}`, printable(event.action));
-            add(box, "div", "io-label", "Environment response");
+            add(box, "div", "io-label", retrieval ? "Request result" : "Environment response");
             add(box, "pre", "observation", printable(event.observation));
             if (event.observation_truncated) add(box, "p", "excerpt-note", `${integer(event.observation_original_chars)} characters recorded; showing excerpt in this export.`);
             renderTokenLikelihood(box, event);
           });
-          if (!trajectory.length) add(transcript, "p", "empty-step", outcome.notAttempted ? "Question not attempted. No Python trace exists." : outcome.interrupted ? "Budget stop interrupted this question before any Python turns were recorded." : "No Python turns recorded.");
+          if (!trajectory.length) add(transcript, "p", "empty-step", retrieval ? "No saved answer request recorded." : outcome.notAttempted ? "Question not attempted. No Python trace exists." : outcome.interrupted ? "Budget stop interrupted this question before any Python turns were recorded." : "No Python turns recorded.");
           if (full.error || system.error) {
             const error = add(lane, "details", "disclosure run-error");
             add(error, "summary", "", outcome.notAttempted ? "Why this question was not attempted" : outcome.interrupted ? "Budget stop" : "Recorded run error");
@@ -1366,6 +1442,10 @@
       }
 
       function renderAnswerDiagnostics(parent, system) {
+        if (retrievalRun(currentActive())) {
+          add(parent, "p", "metrics-note", "Answer correctness and citation support have not been independently reviewed for this BM25 run.");
+          return;
+        }
         const grid = add(parent, "div", "diagnostic-grid");
         const diagnostics = record(system.diagnostics);
         [["answer_correctness", "Answer correctness"], ["evidence_support", "Submitted evidence supports the answer"]].forEach(([key, label]) => {
