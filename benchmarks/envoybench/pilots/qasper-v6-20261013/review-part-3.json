@@ -1,0 +1,218 @@
+{
+  "schema_version": "qasper-v6-blind-review-part-v1",
+  "scope": "rows[48:72]",
+  "reviewer_kind": "model_assisted",
+  "reference_status": "Original QASPER labels remain provisional; this source-visible review is not independent human adjudication.",
+  "decisions": [
+    {
+      "blind_id": "R049",
+      "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+      "verdict": "partial",
+      "notes": "Correct Transformer sequence-to-sequence family, but misses the explicit 10-layer encoder and layer configuration.",
+      "relevant_source_passage": "We use a pre-trained Xnlg with a 10-layer encoder and a 6-layer decoder. For every Transformer layer, we use 1024 hidden units, 8 attention heads, and GELU activations BIBREF26.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R050",
+      "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+      "verdict": "partial",
+      "notes": "Transformer is correct, but the encoder is specifically 10 layers (1024 hidden units and 8 attention heads per layer).",
+      "relevant_source_passage": "We use a pre-trained Xnlg with a 10-layer encoder and a 6-layer decoder. For every Transformer layer, we use 1024 hidden units, 8 attention heads, and GELU activations BIBREF26.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R051",
+      "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+      "verdict": "fail",
+      "notes": "Describes pretraining but omits architecture; attributes target-language generation to the encoder although the paper assigns generation to the decoder.",
+      "relevant_source_passage": "Given a sentence and its corresponding language tag, Xnlg encodes the input into vector representations. By conditioning on the encoding vectors and a specific language tag, the decoder generates the output sequence in the target language.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R052",
+      "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+      "verdict": "fail",
+      "notes": "The Yes is defensible only as a narrow regional hypothesis, but the cited introduction does not state that hypothesis; the evidence link is misleading. The paper does not establish a global causal explanation.",
+      "relevant_source_passage": "But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R053",
+      "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+      "verdict": "fail",
+      "notes": "The cited 11-character fragment does not support the Yes answer. The source gives only a narrower regional explanation, not the cited evidence.",
+      "relevant_source_passage": "But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R054",
+      "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+      "verdict": "fail",
+      "notes": "No misses the paper’s suggested explanation: common English and Spanish on Twitter can make some countries appear well represented by default. The cited minority-language discussion does not establish No.",
+      "relevant_source_passage": "But Twitter provides a better representation of North America and Oceania. One factor that is disguised in these figures is that many countries have only a few languages, so that a high true positive rate for a country could reflect only one or two languages. For example, both English and Spanish are very common on Twitter (c.f. Table 3), so that any country which predominantly uses these two languages will have a good representation by default.",
+      "false_refusal": false,
+      "false_refusal_notes": "Incorrect binary answer, not an explicit refusal."
+    },
+    {
+      "blind_id": "R055",
+      "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+      "verdict": "fail",
+      "notes": "Restates that a QA system was used without identifying the Rasa NLU-based pipeline or its two configurations; no useful system identity. The QASPER reference is itself unusually generic.",
+      "relevant_source_passage": "We implement our question answering system using state-of-the-art open source components. Our pipeline is based on the Rasa natural language understanding (NLU) framework BIBREF21 which offers two standard pipelines for text classification: spacy_sklearn and tensorflow_embedding.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R056",
+      "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+      "verdict": "fail",
+      "notes": "Effectively abstains because the inspected excerpts lacked a name, but the frozen paper explicitly identifies a Rasa NLU-based pipeline and its configurations.",
+      "relevant_source_passage": "We implement our question answering system using state-of-the-art open source components. Our pipeline is based on the Rasa natural language understanding (NLU) framework BIBREF21 which offers two standard pipelines for text classification: spacy_sklearn and tensorflow_embedding.",
+      "false_refusal": true,
+      "false_refusal_notes": "Says the system is not named in inspected passages even though the source provides the identifying framework and pipelines."
+    },
+    {
+      "blind_id": "R057",
+      "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+      "verdict": "fail",
+      "notes": "Qasper is not the QA system in this paper; the paper identifies a Rasa NLU-based pipeline.",
+      "relevant_source_passage": "We implement our question answering system using state-of-the-art open source components. Our pipeline is based on the Rasa natural language understanding (NLU) framework BIBREF21 which offers two standard pipelines for text classification: spacy_sklearn and tensorflow_embedding.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R058",
+      "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+      "verdict": "fail",
+      "notes": "Chinese is the language studied, not a list of dialects. The frozen paper never names dialects; this answer invents specificity to an unanswerable question.",
+      "relevant_source_passage": "In this paper, we argue that Chinese word embeddings can be substantially enriched by the morphological information hidden in characters which is reflected not only in strokes order sequentially, but also in character glyphs spatially."
+    },
+    {
+      "blind_id": "R059",
+      "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+      "verdict": "pass",
+      "notes": "Appropriate abstention: the paper discusses Chinese character strokes/glyphs and has no dialect discussion.",
+      "relevant_source_passage": "In this paper, we argue that Chinese word embeddings can be substantially enriched by the morphological information hidden in characters which is reflected not only in strokes order sequentially, but also in character glyphs spatially."
+    },
+    {
+      "blind_id": "R060",
+      "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+      "verdict": "fail",
+      "notes": "Empty escalated response supplies neither an answer nor an explanation of why dialects cannot be identified.",
+      "relevant_source_passage": "In this paper, we argue that Chinese word embeddings can be substantially enriched by the morphological information hidden in characters which is reflected not only in strokes order sequentially, but also in character glyphs spatially."
+    },
+    {
+      "blind_id": "R061",
+      "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+      "verdict": "fail",
+      "notes": "Empty escalated response despite an explicit four-baseline list in the paper.",
+      "relevant_source_passage": "Finally, in Table TABREF30 , we compare the results of our model to four baselines: DSSM BIBREF12 , Match Pyramid BIBREF18 , ARC-II BIBREF15 , and our model with frozen, randomly initialized embeddings.",
+      "false_refusal": false,
+      "false_refusal_notes": "No response after escalation, rather than an explicit refusal."
+    },
+    {
+      "blind_id": "R062",
+      "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+      "verdict": "partial",
+      "notes": "Correctly names ARC-II and Match Pyramid, but omits DSSM and the frozen randomly initialized embedding variant.",
+      "relevant_source_passage": "Finally, in Table TABREF30 , we compare the results of our model to four baselines: DSSM BIBREF12 , Match Pyramid BIBREF18 , ARC-II BIBREF15 , and our model with frozen, randomly initialized embeddings.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R063",
+      "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+      "verdict": "partial",
+      "notes": "Correctly names two baselines but omits DSSM and the frozen randomly initialized embedding variant.",
+      "relevant_source_passage": "Finally, in Table TABREF30 , we compare the results of our model to four baselines: DSSM BIBREF12 , Match Pyramid BIBREF18 , ARC-II BIBREF15 , and our model with frozen, randomly initialized embeddings.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R064",
+      "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+      "verdict": "pass",
+      "notes": "The parser explicitly connects four separately named components in a pipeline, supporting No.",
+      "relevant_source_passage": "The parser includes connective identifier, arguments identifier, sense classifier and non-explicit identifier, which connects with each other in pipeline.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R065",
+      "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+      "verdict": "pass",
+      "notes": "Correctly explains that the four subtasks are pipelined rather than jointly learned end to end.",
+      "relevant_source_passage": "The parser includes connective identifier, arguments identifier, sense classifier and non-explicit identifier, which connects with each other in pipeline.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R066",
+      "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+      "verdict": "fail",
+      "notes": "Empty escalated response despite an explicit pipeline description in the paper.",
+      "relevant_source_passage": "The parser includes connective identifier, arguments identifier, sense classifier and non-explicit identifier, which connects with each other in pipeline.",
+      "false_refusal": false,
+      "false_refusal_notes": "No response after escalation, rather than an explicit refusal."
+    },
+    {
+      "blind_id": "R067",
+      "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+      "verdict": "pass",
+      "notes": "No is supported by the described text/word-embedding method; MFCC does not occur anywhere in the frozen paper.",
+      "relevant_source_passage": "In this paper, we address the problem of session segmentation for open-domain conversations. We leverage the classic TextTiling approach, but enhance it with modern embedding-based similarity measures.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R068",
+      "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+      "verdict": "fail",
+      "notes": "Empty escalated response despite a documented text/word-embedding method and no MFCC mention in the frozen paper.",
+      "relevant_source_passage": "In this paper, we address the problem of session segmentation for open-domain conversations. We leverage the classic TextTiling approach, but enhance it with modern embedding-based similarity measures.",
+      "false_refusal": false,
+      "false_refusal_notes": "No response after escalation, rather than an explicit refusal."
+    },
+    {
+      "blind_id": "R069",
+      "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+      "verdict": "pass",
+      "notes": "No is supported by the TextTiling-like text-segmentation method; MFCC does not occur anywhere in the frozen paper.",
+      "relevant_source_passage": "In this paper, we address the problem of session segmentation for open-domain conversations. We leverage the classic TextTiling approach, but enhance it with modern embedding-based similarity measures.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R070",
+      "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+      "verdict": "fail",
+      "notes": "AYLIEN News API is the collection source, not the resulting dataset of annotated news-article/topic pairs. Its cited passage does not mention AYLIEN, so the evidence link is also misleading.",
+      "relevant_source_passage": "We collect data using the AYLIEN News API, which provides search capabilities for news articles enriched with extracted entities and other metadata.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R071",
+      "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+      "verdict": "fail",
+      "notes": "“A novel dataset” gives no useful identification of what it contains, where it came from, or its size, although those details are explicit in the paper.",
+      "relevant_source_passage": "The final dataset consists of 32,227 pairs of news articles and topics annotated with their stance.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    },
+    {
+      "blind_id": "R072",
+      "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+      "verdict": "partial",
+      "notes": "Correctly identifies a news-article stance dataset, but omits topic pairing, the 32,227 examples, and the AYLIEN collection source.",
+      "relevant_source_passage": "The final dataset consists of 32,227 pairs of news articles and topics annotated with their stance.",
+      "false_refusal": false,
+      "false_refusal_notes": "An answer was attempted."
+    }
+  ]
+}

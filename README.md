@@ -13,7 +13,17 @@ affiliated with or endorsed by QASPER or AllenAI. See the
 [data provenance](benchmarks/envoybench/data/README.md). Existing `envoybench`
 package names and repository/demo URLs remain unchanged.
 
-**Main finding:** on the same 40 saved questions, official QASPER Answer F1 is
+**October 13 follow-up:** a fresh-base v6 QLoRA pilot used replayed trajectories
+and a new, paper-disjoint 24-question QASPER test subset. Blinded,
+model-assisted review found **5/17** supported answers for v6, versus **4/17**
+for v5 and **2/17** for base. V6 passed only **2/7** insufficient-evidence
+questions versus v5's **7/7** and missed its preregistered supported-answer
+gain by one question. The decision is sensitive to one ambiguous source
+interpretation; it is not a human-validated win. See the
+[pilot report](docs/QASPER_V6_PILOT_RESULTS.md) and
+[audit bundle](benchmarks/envoybench/pilots/qasper-v6-20261013/README.md).
+
+**Earlier development finding:** on the same 40 saved questions, official QASPER Answer F1 is
 **19.92% for base Qwen3-8B and 30.69% for v5 SFT**. On the fixed 20 answerable
 questions, however, F1 falls from **29.83% to 21.37%**; the overall increase
 comes from the unanswerable group. Error-affected episodes fell from 22/40 to
@@ -29,10 +39,12 @@ paper answers.
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
 **Scope:** a text-only QASPER agent study with reproducible saved results.
-The current 40 questions have been inspected and are development evidence for
-future work, not a fresh holdout. Earlier Obsidian and systems-map prototypes
-remain historical work. The [study release](release/qasper-agent-study/README.md)
-separates original QASPER answer scoring from provisional support judgments.
+The original 40 questions have been inspected and are development evidence;
+the later 24-question pilot is paper-disjoint from training and those earlier
+sets, but still has unreviewed QASPER references and provisional answer
+judgments. Earlier Obsidian and systems-map prototypes remain historical work.
+The [study release](release/qasper-agent-study/README.md) separates original
+QASPER answer scoring from provisional support judgments.
 
 ## Open the demo
 

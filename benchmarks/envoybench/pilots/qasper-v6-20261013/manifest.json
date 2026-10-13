@@ -1,0 +1,176 @@
+{
+  "schema_version": "envoybench-run-v1",
+  "run_id": "58a4e56149b542f78b9a4cc717a4b0e3",
+  "created_at_utc": "2026-10-13T21:26:26.709726+00:00",
+  "status": "complete",
+  "benchmark_id": "envoybench-qasper-v6-holdout-v1",
+  "benchmark_hash": "0c0dc2571f5b2648973ed411e4e2fdd98337141ca0be099c8b3852a002e311e7",
+  "corpus_hash": "87e834da447884a8c0faae197dcc8d7bcdfdd99d9285f29f6e70cbd49d238561",
+  "question_ids": [
+    "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+    "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+    "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+    "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+    "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+    "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+    "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+    "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+    "qasper_test_78a0c25b83cdeaeaf0a4781f502105a514b2af0e",
+    "qasper_test_79e61134a6e29141cd19252571ffc92a0b4bc97f",
+    "qasper_test_7fba61426737394304e307cdc7537225f6253150",
+    "qasper_test_86de8de906e30bb2224a2f70f6e5cf5e5ad4be72",
+    "qasper_test_961a97149127e1123c94fbf7e2021eb1aa580ecb",
+    "qasper_test_a606bffed3bfeebd1b66125be580f908244e5d92",
+    "qasper_test_ab097db03652b8b38edddc074f23e2adf9278cba",
+    "qasper_test_acac0606aab83cae5d13047863c7af542d58e54c",
+    "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+    "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+    "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+    "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+    "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+    "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+    "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+    "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d"
+  ],
+  "split": "holdout",
+  "max_steps": 15,
+  "seed": 42,
+  "seed_note": "Local runner seed only; remote determinism requires endpoint support and is not guaranteed.",
+  "system_prompt_sha256": "1d028e1cd23ae7ab1022d6a51accd9005f264e3794abe37292e8c137b8ec46b7",
+  "system_prompt_name": "QASPER_SYSTEM_PROMPT",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "require_evidence": true,
+  "evidence_verifier": true,
+  "verifier_feedback_budget": 1,
+  "escalate_after_verifier_failure": true,
+  "docker_sandbox": "org.envoybench.sandbox=v1",
+  "verifier_protocol": "fail-closed-v2",
+  "comparison_id": "81a9b76708b192ba4cc8a749c6edecfc86ad2305c024fffe476e333692f69dba",
+  "split_question_count": 24,
+  "full_split": true,
+  "subset_smoke": false,
+  "split_status": "prospective_unreviewed_holdout",
+  "benchmark_file_sha256": "c5b81093a214b1df39d527580cea7879c433dd5db086ef9271f1bf56c7355f4c",
+  "dataset_index_sha256": "01d51280b999118eb32fc5bf1a0c3ed5f27194e3c01f7bbd18dff7d14b71cb95",
+  "model_config_sha256": "a74fff4df74d462a64bfc00141e22a9aa31e5895e30d3bd1ad9a4c06c5a22318",
+  "models": [
+    {
+      "key": "qwen_base",
+      "model_id": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "endpoint_sha256": "87459d11adee7bce23cb37e9d210800e77403ecd52229858300b9215af0ed0fd",
+      "endpoint_kind": "local",
+      "api_key_env": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 120,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128",
+      "serving_hourly_usd": 0.59,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "serving_context_window_tokens": 8192
+    },
+    {
+      "key": "qwen_v5",
+      "model_id": "envoy",
+      "revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "endpoint_sha256": "87459d11adee7bce23cb37e9d210800e77403ecd52229858300b9215af0ed0fd",
+      "endpoint_kind": "local",
+      "api_key_env": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 120,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128",
+      "serving_hourly_usd": 0.59,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "serving_context_window_tokens": 8192
+    },
+    {
+      "key": "qwen_v6",
+      "model_id": "envoy_v6",
+      "revision": "b9931f9576e0a876b82ccb386923b81d784ad584bf5ed969162e7487353c1e37",
+      "identity_source": "operator_declared_not_endpoint_attested",
+      "base_model_id": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter_id": "local:qasper-v6-fresh-base-qlora-20261013",
+      "adapter_revision": "b9931f9576e0a876b82ccb386923b81d784ad584bf5ed969162e7487353c1e37",
+      "adapter_sha256": "b9931f9576e0a876b82ccb386923b81d784ad584bf5ed969162e7487353c1e37",
+      "endpoint_env": "ENVOY_QWEN_ENDPOINT",
+      "endpoint_sha256": "87459d11adee7bce23cb37e9d210800e77403ecd52229858300b9215af0ed0fd",
+      "endpoint_kind": "local",
+      "api_key_env": null,
+      "decoding": {
+        "max_tokens": 1024,
+        "temperature": 0.0,
+        "top_p": 1.0
+      },
+      "send_seed": false,
+      "request_timeout_seconds": 120,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128",
+      "serving_hourly_usd": 0.59,
+      "extra_body": {
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "serving_context_window_tokens": 8192
+    }
+  ],
+  "model_identity_note": "Model/revision IDs are operator declarations; the endpoint does not attest weights.",
+  "legacy_reward_version": "outcome-v1",
+  "legacy_reward_is_benchmark_score": false,
+  "sandbox_image": {
+    "image_id": "sha256:9861aeb3d3277267a0d5047cf3c12e1dfe92226721c7db4821e9a9979fc7272a",
+    "repo_digests": []
+  },
+  "implementation_sha256": {
+    "src/env/document_env.py": "0a09b9963e0bf78c52aa6cf2378b12e1a27f2d4fb509b2624119f5fdf2b56a4b",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+    "src/eval/harness.py": "465d290c31e124e86d5c16f512b0b6fc708805449a8b3e59a8bc5df5c19bf099",
+    "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+    "src/policies/openai_compatible.py": "1004b4457614ed7268e6cdd80bce3ee1aaa9a93b9985af13b17cd7497e33e51c",
+    "benchmarks/envoybench/run.py": "eeebd275fd9f72e75741c046f2a25e8cdfc5112ebc24cf009dd3d2732327909a",
+    "benchmarks/envoybench/budget.py": "bca0689ae9fae4fbe266d91670ef5af040af09ee0099bae986ae7c1cff15ad6e",
+    "benchmarks/envoybench/frozen_dataset.py": "7fea1ce830b7f184167970fbe5bb73f93204e21b8df914fd290dc59e6c546cb5",
+    "benchmarks/envoybench/runtime_support.py": "86783c3ebe433d2c576efd8b6195018796a529a619c59d8ea7fbc385c2a99677"
+  },
+  "git_commit": "dc311576ddd3003a3a3e6cda9ab7dae5c686f83c",
+  "runner_hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "python": "3.11.9",
+    "gpu": null
+  },
+  "completed_at_utc": "2026-10-13T21:41:43.473980+00:00",
+  "elapsed_seconds": 916.8492533339886
+}

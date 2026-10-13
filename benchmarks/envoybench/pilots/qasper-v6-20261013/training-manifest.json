@@ -1,0 +1,65 @@
+{
+  "schema_version": "qwen-sft-run-v1",
+  "started_at": "2026-10-13T21:01:09.240983+00:00",
+  "base_model": "Qwen/Qwen3-8B",
+  "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "adapter_checkpoint": null,
+  "training_format": "per-action-prefix-aligned",
+  "data": {
+    "path": "/workspace/qasper-v6/repo/out/research/qasper-v6-runtime-replayed-20261013/train.jsonl",
+    "sha256": "f93c677e023b0a103e1410422d59744c807947828d106f48e357f2b91cf8f8b0",
+    "conversations": 108,
+    "actions": 474,
+    "input_tokens": 979683,
+    "supervised_tokens": 39868,
+    "max_tokens": 4928
+  },
+  "validation": {
+    "path": "/workspace/qasper-v6/repo/out/research/qasper-v6-runtime-replayed-20261013/val.jsonl",
+    "sha256": "20146f22696cf55764fd7541ce023699b6af37765a91f86a577ea4a3a9205afc",
+    "conversations": 29,
+    "actions": 122,
+    "input_tokens": 240551,
+    "supervised_tokens": 9394,
+    "max_tokens": 4456
+  },
+  "corpus_manifest": {
+    "path": "/workspace/qasper-v6/repo/out/research/qasper-v6-runtime-replayed-20261013/manifest.json",
+    "sha256": "59f81738ec598534f139a421faec029078d1856209ae792690083e586edd2b6c"
+  },
+  "lora": {
+    "r": 4,
+    "lora_alpha": 8,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "lora_dropout": 0.05,
+    "bias": "none",
+    "task_type": "CAUSAL_LM"
+  },
+  "training_script_sha256": "c6c9062c632a7333a26d902403d721a34b56e4830cbc13b8c591422d2ba88379",
+  "training": {
+    "epochs": 1,
+    "max_steps": -1,
+    "learning_rate": 0.0002,
+    "batch_size": 1,
+    "gradient_accumulation_steps": 4,
+    "max_sequence_length": 8192,
+    "load_in_4bit": true,
+    "activation_offloading": false,
+    "save_steps": 0,
+    "save_total_limit": 10,
+    "seed": 42
+  },
+  "git_commit": "",
+  "git_status": [],
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "gpu": "NVIDIA A40"
+}

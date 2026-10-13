@@ -1,0 +1,210 @@
+{
+  "reviewer_kind": "model_assisted",
+  "rubric_version": "envoybench-review-rubric-v1",
+  "decisions": [
+    {
+      "blind_id": "R001",
+      "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+      "verdict": "pass",
+      "notes": "Accurately says the paper reports SQuAD pretraining but no quantified no-SQuAD comparison.",
+      "relevant_source_passage": "We pre-trained the model on a large-scale open-domain QA dataset, SQuAD, and then fine-tuned the parameters on the BioASQ training set."
+    },
+    {
+      "blind_id": "R002",
+      "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+      "verdict": "fail",
+      "notes": "No answer was submitted after escalation; the paper does not quantify the requested gap.",
+      "relevant_source_passage": "We pre-trained the model on a large-scale open-domain QA dataset, SQuAD, and then fine-tuned the parameters on the BioASQ training set."
+    },
+    {
+      "blind_id": "R003",
+      "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+      "verdict": "fail",
+      "notes": "\"Competitive results\" is not a numerical gap between pretraining and no pretraining.",
+      "relevant_source_passage": "We pre-trained the model on a large-scale open-domain QA dataset, SQuAD, and then fine-tuned the parameters on the BioASQ training set."
+    },
+    {
+      "blind_id": "R004",
+      "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+      "verdict": "partial",
+      "notes": "Correctly describes complex surface forms, but omits confusability: language and NORP can share the same form.",
+      "relevant_source_passage": "Moreover, disambiguating fine-grained entity types is also a challenging task. For example, entities of language and NORP often take the same surface forms. Figure FIGREF19 shows an example containing \"Dutch\" and \"English\".",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R005",
+      "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+      "verdict": "fail",
+      "notes": "False refusal: the paper explains both hard surface forms and language/NORP confusability later.",
+      "relevant_source_passage": "Moreover, disambiguating fine-grained entity types is also a challenging task. For example, entities of language and NORP often take the same surface forms. Figure FIGREF19 shows an example containing \"Dutch\" and \"English\".",
+      "false_refusal": true,
+      "false_refusal_notes": "Answerable from source but model explicitly claimed it could not answer."
+    },
+    {
+      "blind_id": "R006",
+      "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+      "verdict": "fail",
+      "notes": "No answer was submitted after escalation despite source discussion of both terms.",
+      "relevant_source_passage": "For example, work-of-art/creative-work entities could in principle take any surface forms – unseen, the same as a person name, abbreviated, or written with unreliable capitalizations on social media. Such mentions require models to learn a deep, generalized understanding of their context to accurately identify their boundaries and disambiguate their types.",
+      "false_refusal": false,
+      "false_refusal_notes": "No final answer due to escalation, not an explicit refusal."
+    },
+    {
+      "blind_id": "R007",
+      "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+      "verdict": "partial",
+      "notes": "Supported high-level experiment aim, but omits range-test selection and Adam/SGD crossed with no-shrink versus 0.5 shrink.",
+      "relevant_source_passage": "The learning rate boundary of the CLR is selected by the range test (shown in Figure FIGREF7). The base and maximal learning rates adopted in this study are presented in Table TABREF13. Shrink strategy is applied when examining the effects of CLR in training NMT. The optimizers (Adam and SGD) are assigned with two options: 1) without shrink (as “nshrink\"); 2) with shrink at a rate of 0.5 (“yshrink\"), which means the maximal learning rate for each cycle is reduced at a decay rate of 0.5.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R008",
+      "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+      "verdict": "fail",
+      "notes": "Describes a prior decay observation, not this paper's experimental design; cited span does not support the response.",
+      "relevant_source_passage": "The learning rate boundary of the CLR is selected by the range test (shown in Figure FIGREF7). The base and maximal learning rates adopted in this study are presented in Table TABREF13. Shrink strategy is applied when examining the effects of CLR in training NMT. The optimizers (Adam and SGD) are assigned with two options: 1) without shrink (as “nshrink\"); 2) with shrink at a rate of 0.5 (“yshrink\"), which means the maximal learning rate for each cycle is reduced at a decay rate of 0.5.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R009",
+      "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+      "verdict": "fail",
+      "notes": "No answer was submitted after escalation despite an explicit experimental design.",
+      "relevant_source_passage": "The learning rate boundary of the CLR is selected by the range test (shown in Figure FIGREF7). The base and maximal learning rates adopted in this study are presented in Table TABREF13. Shrink strategy is applied when examining the effects of CLR in training NMT. The optimizers (Adam and SGD) are assigned with two options: 1) without shrink (as “nshrink\"); 2) with shrink at a rate of 0.5 (“yshrink\"), which means the maximal learning rate for each cycle is reduced at a decay rate of 0.5.",
+      "false_refusal": false,
+      "false_refusal_notes": "No final answer due to escalation, not an explicit refusal."
+    },
+    {
+      "blind_id": "R010",
+      "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+      "verdict": "fail",
+      "notes": "False refusal: the GloVe-d2v averaged-embedding plus logistic-regression baseline appears later in the paper.",
+      "relevant_source_passage": "GloVe-d2v: We use pre-trained GloVe BIBREF10 word embeddings to compute vector representation of each VPD by averaging the GloVe vectors for all words in the document. A logistic regression classifier is then trained on the vector representations thus obtained.",
+      "false_refusal": true,
+      "false_refusal_notes": "Answerable from source but model explicitly claimed it could not answer."
+    },
+    {
+      "blind_id": "R011",
+      "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+      "verdict": "fail",
+      "notes": "Explicit false refusal; the paper names and describes a baseline.",
+      "relevant_source_passage": "GloVe-d2v: We use pre-trained GloVe BIBREF10 word embeddings to compute vector representation of each VPD by averaging the GloVe vectors for all words in the document. A logistic regression classifier is then trained on the vector representations thus obtained.",
+      "false_refusal": true,
+      "false_refusal_notes": "Answerable from source but model explicitly claimed it could not answer."
+    },
+    {
+      "blind_id": "R012",
+      "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+      "verdict": "fail",
+      "notes": "Misidentifies doc2vec-like classifiers as the evaluated baseline; the paper specifies averaged GloVe embeddings plus logistic regression, and the submitted evidence is unrelated.",
+      "relevant_source_passage": "GloVe-d2v: We use pre-trained GloVe BIBREF10 word embeddings to compute vector representation of each VPD by averaging the GloVe vectors for all words in the document. A logistic regression classifier is then trained on the vector representations thus obtained.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R013",
+      "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+      "verdict": "fail",
+      "notes": "False refusal: the paper explicitly gives examples of propaganda techniques in its corpus description.",
+      "relevant_source_passage": "We retrieved 451 news articles from 48 news outlets, both propagandistic and non-propagandistic according to Media Bias/Fact Check, which professionals annotators annotated according to eighteen persuasion techniques BIBREF4, ranging from leveraging on the emotions of the audience —such as using loaded language or appeal to authority BIBREF5 and slogans BIBREF6— to using logical fallacies —such as straw men BIBREF7 (misrepresenting someone's opinion), hidden ad-hominem fallacies, and red herring BIBREF8 (presenting irrelevant data).",
+      "false_refusal": true,
+      "false_refusal_notes": "Answerable from source but model explicitly claimed it could not answer."
+    },
+    {
+      "blind_id": "R014",
+      "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+      "verdict": "pass",
+      "notes": "Gives supported examples, framed as an inclusive rather than exhaustive list of the eighteen techniques.",
+      "relevant_source_passage": "We retrieved 451 news articles from 48 news outlets, both propagandistic and non-propagandistic according to Media Bias/Fact Check, which professionals annotators annotated according to eighteen persuasion techniques BIBREF4, ranging from leveraging on the emotions of the audience —such as using loaded language or appeal to authority BIBREF5 and slogans BIBREF6— to using logical fallacies —such as straw men BIBREF7 (misrepresenting someone's opinion), hidden ad-hominem fallacies, and red herring BIBREF8 (presenting irrelevant data).",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R015",
+      "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+      "verdict": "fail",
+      "notes": "The answer is substantively correct, but its submitted evidence span is a conclusion that does not contain the listed techniques; the exact support is elsewhere in the paper.",
+      "relevant_source_passage": "We retrieved 451 news articles from 48 news outlets, both propagandistic and non-propagandistic according to Media Bias/Fact Check, which professionals annotators annotated according to eighteen persuasion techniques BIBREF4, ranging from leveraging on the emotions of the audience —such as using loaded language or appeal to authority BIBREF5 and slogans BIBREF6— to using logical fallacies —such as straw men BIBREF7 (misrepresenting someone's opinion), hidden ad-hominem fallacies, and red herring BIBREF8 (presenting irrelevant data).",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R016",
+      "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+      "verdict": "fail",
+      "notes": "No answer was submitted after escalation; the English-only restriction is explicit.",
+      "relevant_source_passage": "The listener analyses tweets in real-time by firing an asynchronous tweet analysis and storage function for each English tweet mentioning one or more candidate usernames of interest. We limit the streaming to English as our text analysis models are trained on English language corpora.",
+      "false_refusal": false,
+      "false_refusal_notes": "No final answer due to escalation, not an explicit refusal."
+    },
+    {
+      "blind_id": "R017",
+      "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+      "verdict": "pass",
+      "notes": "\"Yes\" is supported by the explicit English-only streaming restriction.",
+      "relevant_source_passage": "The listener analyses tweets in real-time by firing an asynchronous tweet analysis and storage function for each English tweet mentioning one or more candidate usernames of interest. We limit the streaming to English as our text analysis models are trained on English language corpora.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R018",
+      "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+      "verdict": "pass",
+      "notes": "\"Yes\" is supported by the explicit English-only streaming restriction.",
+      "relevant_source_passage": "The listener analyses tweets in real-time by firing an asynchronous tweet analysis and storage function for each English tweet mentioning one or more candidate usernames of interest. We limit the streaming to English as our text analysis models are trained on English language corpora.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R019",
+      "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+      "verdict": "pass",
+      "notes": "Correctly names the two experimental datasets.",
+      "relevant_source_passage": "We conduct experiments on two datasets: AliMe and Quora. The AliMe dataset is collected from the AliMe intelligent assistant system and the Quora dataset is composed of a public dataset.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R020",
+      "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+      "verdict": "pass",
+      "notes": "Correctly names the two experimental datasets.",
+      "relevant_source_passage": "We conduct experiments on two datasets: AliMe and Quora. The AliMe dataset is collected from the AliMe intelligent assistant system and the Quora dataset is composed of a public dataset.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R021",
+      "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+      "verdict": "pass",
+      "notes": "Correctly names the two experimental datasets.",
+      "relevant_source_passage": "We conduct experiments on two datasets: AliMe and Quora. The AliMe dataset is collected from the AliMe intelligent assistant system and the Quora dataset is composed of a public dataset.",
+      "false_refusal": false,
+      "false_refusal_notes": "Response was not an explicit refusal."
+    },
+    {
+      "blind_id": "R022",
+      "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+      "verdict": "pass",
+      "notes": "Defensible abstention: the paper describes two task-specific output layers on BERT but never gives a single total layer count for \"the neural network.\" The question is ambiguous if it means only the task heads.",
+      "relevant_source_passage": "As we have two tasks, we use sigmoid activation for $L_{g_1}$ and softmax activation for $L_{g_2}$."
+    },
+    {
+      "blind_id": "R023",
+      "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+      "verdict": "fail",
+      "notes": "The paper does not state a three-layer neural network; it describes two task-specific output layers on BERT. The answer \"3\" appears to confuse architectural components or the three baselines with a total layer count.",
+      "relevant_source_passage": "As we have two tasks, we use sigmoid activation for $L_{g_1}$ and softmax activation for $L_{g_2}$."
+    },
+    {
+      "blind_id": "R024",
+      "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+      "verdict": "pass",
+      "notes": "Defensible abstention: the source does not give a total layer count for \"the neural network\"; two task-specific heads are described. The question is ambiguous about which model/components to count.",
+      "relevant_source_passage": "As we have two tasks, we use sigmoid activation for $L_{g_1}$ and softmax activation for $L_{g_2}$."
+    }
+  ]
+}

@@ -1,0 +1,659 @@
+{
+  "schema_version": "qasper-v6-holdout-automatic-v1",
+  "run_manifest_sha256": "b4f503aeea65d3c1755a1a78d1215465298bb8a62a75b748051f8d5ce2bcd587",
+  "run_results_sha256": "7a9bba42897c39863ac3f09b38dc26a086fcc177a28ddaa18478f581bf8b694d",
+  "benchmark_sha256": "c5b81093a214b1df39d527580cea7879c433dd5db086ef9271f1bf56c7355f4c",
+  "holdout_lock_sha256": "e9c6fedee1a7a3a0c981d0efb358428d7c7a8433bd1ed222cf39ea473af9560b",
+  "official_evaluator_commit": "e996b6c7b1b5f95d9308a74e3586416c6e780df1",
+  "official_evaluator_sha256": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe",
+  "question_count": 24,
+  "systems": {
+    "qwen_base": {
+      "answer_f1_0_100": 19.801426952162245,
+      "literal_unanswerable_on_sufficient": 0,
+      "literal_unanswerable_on_insufficient": 2,
+      "possible_refusals_review_needed": 0,
+      "refusal_behavior_review_required": true,
+      "strata": {
+        "sufficient": {
+          "questions": 17,
+          "answer_f1_0_100": 16.19024981481729,
+          "literal_unanswerable": 0,
+          "possible_refusals_review_needed": 0
+        },
+        "insufficient": {
+          "questions": 7,
+          "answer_f1_0_100": 28.571428571428573,
+          "literal_unanswerable": 2,
+          "possible_refusals_review_needed": 0
+        }
+      },
+      "question_rows": [
+        {
+          "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+          "expected_answerability": "insufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.04444444444444444,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.5,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.8571428571428571,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 1
+        },
+        {
+          "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_78a0c25b83cdeaeaf0a4781f502105a514b2af0e",
+          "expected_answerability": "insufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_79e61134a6e29141cd19252571ffc92a0b4bc97f",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_7fba61426737394304e307cdc7537225f6253150",
+          "expected_answerability": "insufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_86de8de906e30bb2224a2f70f6e5cf5e5ad4be72",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_961a97149127e1123c94fbf7e2021eb1aa580ecb",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_a606bffed3bfeebd1b66125be580f908244e5d92",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.11764705882352941,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_ab097db03652b8b38edddc074f23e2adf9278cba",
+          "expected_answerability": "insufficient",
+          "status": "error",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_acac0606aab83cae5d13047863c7af542d58e54c",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.10810810810810811,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+          "expected_answerability": "insufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+          "expected_answerability": "sufficient",
+          "status": "escalated",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.125,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        }
+      ]
+    },
+    "qwen_v5": {
+      "answer_f1_0_100": 40.472133171670265,
+      "literal_unanswerable_on_sufficient": 0,
+      "literal_unanswerable_on_insufficient": 4,
+      "possible_refusals_review_needed": 4,
+      "refusal_behavior_review_required": true,
+      "strata": {
+        "sufficient": {
+          "questions": 17,
+          "answer_f1_0_100": 33.607717418828614,
+          "literal_unanswerable": 0,
+          "possible_refusals_review_needed": 3
+        },
+        "insufficient": {
+          "questions": 7,
+          "answer_f1_0_100": 57.142857142857146,
+          "literal_unanswerable": 4,
+          "possible_refusals_review_needed": 1
+        }
+      },
+      "question_rows": [
+        {
+          "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.12345679012345678,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.10526315789473684,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "possible_refusal_review_needed",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.10526315789473685,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.6,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 1
+        },
+        {
+          "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_78a0c25b83cdeaeaf0a4781f502105a514b2af0e",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_79e61134a6e29141cd19252571ffc92a0b4bc97f",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_7fba61426737394304e307cdc7537225f6253150",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_86de8de906e30bb2224a2f70f6e5cf5e5ad4be72",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_961a97149127e1123c94fbf7e2021eb1aa580ecb",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.07692307692307691,
+          "refusal_diagnostic": "possible_refusal_review_needed",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_a606bffed3bfeebd1b66125be580f908244e5d92",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.11764705882352941,
+          "refusal_diagnostic": "possible_refusal_review_needed",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_ab097db03652b8b38edddc074f23e2adf9278cba",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "possible_refusal_review_needed",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_acac0606aab83cae5d13047863c7af542d58e54c",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.3,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.08695652173913043,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.42857142857142855,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.15384615384615385,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.6153846153846153,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        }
+      ]
+    },
+    "qwen_v6": {
+      "answer_f1_0_100": 45.53157900029431,
+      "literal_unanswerable_on_sufficient": 1,
+      "literal_unanswerable_on_insufficient": 2,
+      "possible_refusals_review_needed": 0,
+      "refusal_behavior_review_required": true,
+      "strata": {
+        "sufficient": {
+          "questions": 17,
+          "answer_f1_0_100": 52.51517035335668,
+          "literal_unanswerable": 1,
+          "possible_refusals_review_needed": 0
+        },
+        "insufficient": {
+          "questions": 7,
+          "answer_f1_0_100": 28.571428571428573,
+          "literal_unanswerable": 2,
+          "possible_refusals_review_needed": 0
+        }
+      },
+      "question_rows": [
+        {
+          "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.9019607843137256,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.11320754716981132,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.44155844155844154,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.6666666666666666,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 1
+        },
+        {
+          "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_78a0c25b83cdeaeaf0a4781f502105a514b2af0e",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_79e61134a6e29141cd19252571ffc92a0b4bc97f",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_7fba61426737394304e307cdc7537225f6253150",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_86de8de906e30bb2224a2f70f6e5cf5e5ad4be72",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "literal_unanswerable",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_961a97149127e1123c94fbf7e2021eb1aa580ecb",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_a606bffed3bfeebd1b66125be580f908244e5d92",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.4615384615384615,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_ab097db03652b8b38edddc074f23e2adf9278cba",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_acac0606aab83cae5d13047863c7af542d58e54c",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.11764705882352941,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.5000000000000001,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+          "expected_answerability": "insufficient",
+          "status": "submitted",
+          "answer_f1": 0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.6,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        },
+        {
+          "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 1.0,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 3
+        },
+        {
+          "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+          "expected_answerability": "sufficient",
+          "status": "submitted",
+          "answer_f1": 0.125,
+          "refusal_diagnostic": "not_identified_by_literal_check",
+          "reference_count": 2
+        }
+      ]
+    }
+  },
+  "refusal_diagnostic_note": "Literal Unanswerable matches are exact-format diagnostics. Other answers with refusal wording are flagged for review; unflagged answers may also refuse. No semantic false-refusal count is inferred.",
+  "claim_boundary": "Official QASPER token-F1 function on 24 selected test questions and their original annotations. This does not measure whether answer claims are supported by cited passages and is not the full QASPER benchmark. Literal refusal screening cannot establish false-refusal counts; promotion requires blind answer-behavior review."
+}

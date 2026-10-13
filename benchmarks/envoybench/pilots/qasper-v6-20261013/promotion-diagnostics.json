@@ -1,0 +1,779 @@
+{
+  "schema_version": "qasper-v6-promotion-diagnostics-v1",
+  "benchmark_id": "envoybench-qasper-v6-holdout-v1",
+  "benchmark_hash": "0c0dc2571f5b2648973ed411e4e2fdd98337141ca0be099c8b3852a002e311e7",
+  "corpus_hash": "87e834da447884a8c0faae197dcc8d7bcdfdd99d9285f29f6e70cbd49d238561",
+  "results_hash": "0a3d9fbe75126f18a10eaacdf03d03e6576ef785d3c8cb39769b4bbd621de29a",
+  "source_reference_status": "unreviewed_qasper",
+  "review_provenance": {
+    "kind": "model_assisted",
+    "reviewer_id": "codex-blind-panel-3-20261013"
+  },
+  "question_count": 24,
+  "answerable_count": 17,
+  "insufficient_count": 7,
+  "roles": {
+    "base": "qwen_base",
+    "v5": "qwen_v5",
+    "candidate": "qwen_v6"
+  },
+  "systems": {
+    "qwen_base": {
+      "answerable_passes": 2,
+      "answerable_questions": 17,
+      "insufficient_passes": 2,
+      "insufficient_questions": 7,
+      "reviewed_false_refusals": 1,
+      "false_refusal_adjudicated": 17,
+      "missing_false_refusal_blind_ids": [],
+      "python_error_episodes": 8,
+      "mean_episode_seconds": 14.9839,
+      "estimated_mean_episode_compute_usd": 0.00245571,
+      "serving_hourly_usd": 0.59,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128"
+    },
+    "qwen_v5": {
+      "answerable_passes": 4,
+      "answerable_questions": 17,
+      "insufficient_passes": 7,
+      "insufficient_questions": 7,
+      "reviewed_false_refusals": 6,
+      "false_refusal_adjudicated": 17,
+      "missing_false_refusal_blind_ids": [],
+      "python_error_episodes": 0,
+      "mean_episode_seconds": 5.9539,
+      "estimated_mean_episode_compute_usd": 0.00097579,
+      "serving_hourly_usd": 0.59,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128"
+    },
+    "qwen_v6": {
+      "answerable_passes": 5,
+      "answerable_questions": 17,
+      "insufficient_passes": 2,
+      "insufficient_questions": 7,
+      "reviewed_false_refusals": 1,
+      "false_refusal_adjudicated": 17,
+      "missing_false_refusal_blind_ids": [],
+      "python_error_episodes": 4,
+      "mean_episode_seconds": 16.7403,
+      "estimated_mean_episode_compute_usd": 0.00274354,
+      "serving_hourly_usd": 0.59,
+      "serving_hardware": "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu",
+      "serving_runtime": "vLLM 0.10.2; PyTorch 2.8.0+cu128"
+    }
+  },
+  "paired_question_diagnostics": [
+    {
+      "question_id": "qasper_test_0f9678e11079ee9ea1a1ce693f017177dd495ee5",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 15.853215917013586
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 10.515437082969584
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 14.819057374959812
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_1dcfcfa46dbcffc2fc7be92dd57df9620258097b",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 6.970549249905162
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 6.272648499929346
+        },
+        "qwen_v6": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 16.365271375048906
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_230f127e83ac62dd65fccf6b1a4960cf0f7316c7",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 31.390733083011582
+        },
+        "qwen_v5": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 7.341331832925789
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 10.846392291015945
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_351f7b254e80348221e0654478663a5e53d3fe65",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 7.942082250025123
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 6.28403958294075
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 17.480208542081527
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_37b972a3afae04193411dc569f672d802c16ad71",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 21.61840299994219
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 5.972030500066467
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 40.768499625031836
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_3e5162e6399c7d03ecc7007efd21d06c04cf2843",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 9.272520500002429
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.6067959170322865
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 17.902176499948837
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_4afd4cfcb30433714b135b977baff346323af1e3",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 13.1309108750429
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.8827513749711215
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 14.922140874899924
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_52f5249a9a2cb7210eeb8e52cb29d18912f6c3aa",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 9.190133499912918
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 4.197055250057019
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 13.424720166949555
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_78a0c25b83cdeaeaf0a4781f502105a514b2af0e",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 6.532980125048198
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 6.310300500015728
+        },
+        "qwen_v6": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 14.077971499995328
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_79e61134a6e29141cd19252571ffc92a0b4bc97f",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 16.593802832998335
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 6.819806208019145
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 20.53016637498513
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_7fba61426737394304e307cdc7537225f6253150",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": null,
+          "python_error_episode": true,
+          "duration_seconds": 10.720784957986325
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 3.8071907919365913
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 19.292081749998033
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_86de8de906e30bb2224a2f70f6e5cf5e5ad4be72",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": true,
+          "duration_seconds": 26.7760575839784
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 4.229978041956201
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 12.135868999990635
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_961a97149127e1123c94fbf7e2021eb1aa580ecb",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 12.534147709026001
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 6.018571374937892
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 14.340773333096877
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_a606bffed3bfeebd1b66125be580f908244e5d92",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 14.508820999995805
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 6.04672737501096
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 25.238786208094098
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_ab097db03652b8b38edddc074f23e2adf9278cba",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "error",
+          "false_refusal": null,
+          "python_error_episode": true,
+          "duration_seconds": 40.627428292063996
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 5.905455625033937
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 12.258558542001992
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_acac0606aab83cae5d13047863c7af542d58e54c",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 6.724383499938995
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.677710792049766
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 13.499287000042386
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_b6aa5665c981e3b582db4760759217e2979d5626",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 10.685704458039254
+        },
+        "qwen_v5": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 6.186920333886519
+        },
+        "qwen_v6": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 13.935123833012767
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_b9686a168366aafbab1737df426e031ad74a6284",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 7.596525416010991
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.456294083036482
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 17.826788374921307
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_d418bf6595b1b51a114f28ac8a6909c278838aeb",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 18.442532334011048
+        },
+        "qwen_v5": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": true,
+          "python_error_episode": false,
+          "duration_seconds": 5.862524625030346
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 20.17450750002172
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_d427e9d181434078c78b7ee33a26b269f160f6d2",
+      "expected_answerability": "insufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 10.663774167071097
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 3.661587500013411
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": null,
+          "python_error_episode": false,
+          "duration_seconds": 12.222301666042767
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_d66c31f24f582c499309a435ec3c688dc3a41313",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 17.82600849994924
+        },
+        "qwen_v5": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.6294078750070184
+        },
+        "qwen_v6": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 17.255043250042945
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_d788076c0d19781ff3f6525bd9c05b0ef0ecd0f1",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 13.535598541959189
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 7.4808127919677645
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 17.273907291004434
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_dde29d9ea5859aa5a4bcd613dca80aec501ef03a",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "escalated",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 12.77775420807302
+        },
+        "qwen_v5": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 5.4578314169775695
+        },
+        "qwen_v6": {
+          "verdict": "pass",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 13.820906916982494
+        }
+      }
+    },
+    {
+      "question_id": "qasper_test_f15bc40960bd3f81bc791f43ab5c94c52378692d",
+      "expected_answerability": "sufficient",
+      "systems": {
+        "qwen_base": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": true,
+          "duration_seconds": 17.699890124960802
+        },
+        "qwen_v5": {
+          "verdict": "partial",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 6.269741708994843
+        },
+        "qwen_v6": {
+          "verdict": "fail",
+          "status": "submitted",
+          "false_refusal": false,
+          "python_error_episode": false,
+          "duration_seconds": 11.357703165966086
+        }
+      }
+    }
+  ],
+  "promotion": {
+    "decision": "does_not_meet_registered_rule",
+    "conditions": {
+      "supported_answer_gain_vs_base": {
+        "passed": false,
+        "observed": 3,
+        "rule": ">= 4"
+      },
+      "supported_answer_gain_vs_v5": {
+        "passed": true,
+        "observed": 1,
+        "rule": "> 0"
+      },
+      "false_refusals_no_increase_vs_base": {
+        "passed": true,
+        "observed": {
+          "base": 1,
+          "candidate": 1
+        },
+        "rule": "candidate <= base"
+      },
+      "python_errors_no_increase_vs_base": {
+        "passed": true,
+        "observed": {
+          "base": 8,
+          "candidate": 4
+        },
+        "rule": "candidate <= base"
+      },
+      "latency_within_2x_base": {
+        "passed": true,
+        "observed": 1.1172184991109266,
+        "rule": "<= 2x"
+      },
+      "estimated_compute_within_2x_base": {
+        "passed": true,
+        "observed": 1.1172184991109269,
+        "rule": "<= 2x"
+      },
+      "matched_hardware": {
+        "passed": true,
+        "observed": [
+          "Runpod NVIDIA A40 48GB pod 88hamsser2yvzu"
+        ],
+        "rule": "same reported GPU class"
+      },
+      "matched_decoding": {
+        "passed": true,
+        "observed": [
+          "{\"max_tokens\": 1024, \"temperature\": 0.0, \"top_p\": 1.0}"
+        ],
+        "rule": "same decoding settings"
+      }
+    }
+  },
+  "claim_boundary": "Selected QASPER answerability labels are not infallible gold. PASS verdicts inherit the completed review's human/model-assisted provenance. Missing false-refusal adjudications make that condition indeterminate. Python errors are detected only in saved syntax replies and structured stderr. Episode compute cost is a declared GPU-rate estimate, not an invoice. A rule pass is provisional until independent review or replication.",
+  "inputs": {
+    "automatic_sha256": "e4f8fa4784c7de0ca81e3e1241b863f51eb97daa48fcb8eac271820ea9398213",
+    "completed_review_sha256": "01899c1b947c3d00a1f8725f5e7fb7d504a487d8ae7f4ff8a61dc59441d3ca9d",
+    "blind_key_sha256": "8626b8be6e8d7ecdc65f134cdae075013984c967395bac74963d52d2dd03b367",
+    "results_sha256": "7a9bba42897c39863ac3f09b38dc26a086fcc177a28ddaa18478f581bf8b694d"
+  }
+}

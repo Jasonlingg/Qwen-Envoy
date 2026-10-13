@@ -1,0 +1,107 @@
+{
+  "schema_version": "envoybench-reviewed-score-v1",
+  "benchmark_id": "envoybench-qasper-v6-holdout-v1",
+  "benchmark_hash": "0c0dc2571f5b2648973ed411e4e2fdd98337141ca0be099c8b3852a002e311e7",
+  "corpus_hash": "87e834da447884a8c0faae197dcc8d7bcdfdd99d9285f29f6e70cbd49d238561",
+  "results_hash": "0a3d9fbe75126f18a10eaacdf03d03e6576ef785d3c8cb39769b4bbd621de29a",
+  "reference_review_hash": null,
+  "source_reference_status": "unreviewed_qasper",
+  "result_bindings_verified": true,
+  "review_provenance": {
+    "kind": "model_assisted",
+    "reviewer_id": "codex-blind-panel-3-20261013"
+  },
+  "reviewed_at": "2026-10-13",
+  "rubric_version": "envoybench-review-rubric-v1",
+  "excluded_questions": [],
+  "human": null,
+  "provisional_model_assisted": {
+    "schema_version": "envoybench-provisional-model-assisted-score-v1",
+    "systems": {
+      "qwen_base": {
+        "pass": 4,
+        "partial": 0,
+        "fail": 20,
+        "supported_answer_rate": 0.1667,
+        "mean_review_score_0_to_2": 0.3333
+      },
+      "qwen_v5": {
+        "pass": 11,
+        "partial": 4,
+        "fail": 9,
+        "supported_answer_rate": 0.4583,
+        "mean_review_score_0_to_2": 1.0833
+      },
+      "qwen_v6": {
+        "pass": 7,
+        "partial": 4,
+        "fail": 13,
+        "supported_answer_rate": 0.2917,
+        "mean_review_score_0_to_2": 0.75
+      }
+    },
+    "pairwise": {
+      "qwen_base": {
+        "qwen_v5": {
+          "wins": 1,
+          "losses": 12,
+          "ties": 11
+        },
+        "qwen_v6": {
+          "wins": 2,
+          "losses": 9,
+          "ties": 13
+        }
+      },
+      "qwen_v5": {
+        "qwen_base": {
+          "wins": 12,
+          "losses": 1,
+          "ties": 11
+        },
+        "qwen_v6": {
+          "wins": 7,
+          "losses": 2,
+          "ties": 15
+        }
+      },
+      "qwen_v6": {
+        "qwen_base": {
+          "wins": 9,
+          "losses": 2,
+          "ties": 13
+        },
+        "qwen_v5": {
+          "wins": 2,
+          "losses": 7,
+          "ties": 15
+        }
+      }
+    },
+    "decision_note": "These are provisional model-graded verdicts against unverified source references unless separately validated. They cannot satisfy the human-reviewed model-promotion gate.",
+    "paired_pass_tests": {
+      "qwen_base_vs_qwen_v5": {
+        "left_only_pass": 1,
+        "right_only_pass": 8,
+        "pass_rate_difference_right_minus_left": 0.2917,
+        "exact_mcnemar_two_sided_p": 0.039062,
+        "scorable_question_count": 24
+      },
+      "qwen_base_vs_qwen_v6": {
+        "left_only_pass": 2,
+        "right_only_pass": 5,
+        "pass_rate_difference_right_minus_left": 0.125,
+        "exact_mcnemar_two_sided_p": 0.453125,
+        "scorable_question_count": 24
+      },
+      "qwen_v5_vs_qwen_v6": {
+        "left_only_pass": 5,
+        "right_only_pass": 1,
+        "pass_rate_difference_right_minus_left": -0.1667,
+        "exact_mcnemar_two_sided_p": 0.21875,
+        "scorable_question_count": 24
+      }
+    }
+  },
+  "note": "Human supported-answer pass rates require validated source references and source-checked human verdicts. A model-assisted score is provisional and cannot pass that gate."
+}
