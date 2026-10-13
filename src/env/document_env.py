@@ -85,6 +85,27 @@ def _submission_format(require_evidence: bool) -> str:
     return format_line
 
 
+def initial_observation(
+    question: str, *, require_evidence: bool, include_preamble: bool
+) -> str:
+    """Build the first user turn shared by evaluation and SFT replay exports."""
+    preamble = SYSTEM_PREAMBLE if include_preamble else ""
+    if require_evidence and include_preamble:
+        preamble += (
+            "\nFor this research evaluation, inspect exact passages and append source spans:\n"
+            'SUBMIT: <answer> CITATIONS: ["id"] EVIDENCE: '
+            '[{"doc_id":"id","start":0,"end":100}]\n'
+            "Citations identify papers; EVIDENCE identifies the exact passages supporting "
+            "your important claims. The evaluator checks spans separately from answer "
+            "quality.\n"
+        )
+    return (
+        f"{preamble}\n\nQuestion: {question}\n"
+        if preamble
+        else f"Question: {question}\n"
+    )
+
+
 class DocumentExplorationEnv:
     """Gym-compatible RL environment for document exploration via code execution."""
 
@@ -156,21 +177,9 @@ class DocumentExplorationEnv:
         )
         self.repl.start_session()
 
-        # Build initial observation
-        preamble = SYSTEM_PREAMBLE if self.include_preamble else ""
-        if self.require_evidence and self.include_preamble:
-            preamble += (
-                "\nFor this research evaluation, inspect exact passages and append source spans:\n"
-                'SUBMIT: <answer> CITATIONS: ["id"] EVIDENCE: '
-                '[{"doc_id":"id","start":0,"end":100}]\n'
-                "Citations identify papers; EVIDENCE identifies the exact passages supporting "
-                "your important claims. The evaluator checks spans separately from answer "
-                "quality.\n"
-            )
-        observation = (
-            f"{preamble}\n\nQuestion: {q['question']}\n"
-            if preamble
-            else f"Question: {q['question']}\n"
+        observation = initial_observation(
+            q["question"], require_evidence=self.require_evidence,
+            include_preamble=self.include_preamble,
         )
         logger.info(f"Episode started: {q['id']} — {q['question'][:80]}")
         return observation

@@ -288,7 +288,9 @@ def run(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
-    parser.add_argument("--split", choices=("dev", "test_candidate"), default="dev")
+    parser.add_argument(
+        "--split", default="dev", help="Named split in the frozen dataset manifest",
+    )
     parser.add_argument("--models", type=Path, required=True, help="envoybench-models-v1 JSON file")
     parser.add_argument(
         "--model", action="append", dest="models_selected", help="model key; repeatable"
