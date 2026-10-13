@@ -40,6 +40,10 @@ def score(dataset: Path, run_dir: Path, *, holdout_lock_path: Path = DEFAULT_LOC
     lock = json.loads(holdout_lock_path.read_text())
     lock_sha256 = _sha256(holdout_lock_path)
     ids = [question["id"] for question in benchmark["questions"]]
+    selected_doc_ids = sorted({
+        f"qasper_{question['source_paper_id'].replace('.', '_')}"
+        for question in benchmark["questions"]
+    })
     answerability = Counter(
         question["expected_answerability"] for question in benchmark["questions"]
     )
@@ -58,7 +62,8 @@ def score(dataset: Path, run_dir: Path, *, holdout_lock_path: Path = DEFAULT_LOC
         or snapshot.get("source_revision") != QASPER_REVISION
         or benchmark.get("source_benchmark_sha256") != lock.get("benchmark_sha256")
         or benchmark.get("corpus_hash") != lock.get("corpus_hash")
-        or benchmark.get("reserved_doc_ids") != lock.get("reserved_doc_ids")
+        or selected_doc_ids != lock.get("reserved_doc_ids")
+        or not set(selected_doc_ids).issubset(benchmark.get("reserved_doc_ids", []))
     ):
         raise ValueError("Dataset differs from the pinned 24-question holdout lock")
     manifest = json.loads((run_dir / "manifest.json").read_text())
