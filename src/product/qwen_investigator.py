@@ -20,7 +20,13 @@ from src.env.evidence_state import FAILED_OBSERVATION_MARKERS
 from src.env.repl import PersistentREPL
 from src.env.reward import parse_submission_details
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
-from src.policies.code_execution import clean_action, used_document_tool
+from src.env.tools_v2 import HARNESS_V2_PREAMBLE, HARNESS_V2_SHA256
+from src.product.harness_v2 import (
+    FORMAT_RETRY_MESSAGE, MAX_FORMAT_RETRIES, effective_prompt, next_action,  # noqa: F401
+    v2_discovery, v2_inspection,
+)
+from src.product.submit_call import submit_call_to_line
+from src.policies.code_execution import used_document_tool
 from src.product.memory import _record_context
 from src.research.agent import load_snapshot
 from src.research.code_exec_packet import (
@@ -152,6 +158,21 @@ def prompt_for_source_domain(source_domain: str) -> str:
         raise ValueError(f"unsupported Qwen source domain: {source_domain!r}") from exc
 
 
+def effective_system_prompt(source_domain="public_papers", protocol_variant="default",
+                            harness_version="v1") -> str:
+    """One prompt identity for policy, investigator, and packet verification."""
+    if harness_version not in {"v1", "v2"}:
+        raise ValueError(f"unsupported harness_version: {harness_version!r}")
+    if protocol_variant not in {"default", "nemotron"}:
+        raise ValueError(f"unsupported protocol variant: {protocol_variant!r}")
+    if protocol_variant == "nemotron" and source_domain != "public_papers":
+        raise ValueError("Nemotron protocol variant is only for public papers")
+    base = (NEMOTRON_PAPER_SYSTEM_PROMPT
+            if protocol_variant == "nemotron" and harness_version == "v1"
+            else prompt_for_source_domain(source_domain))
+    return effective_prompt(base, harness=harness_version)
+
+
 def _used_inspection_tool(action: str, observation: str) -> bool:
     if _failed_document_observation(observation):
         return False
@@ -206,6 +227,7 @@ class QwenInvestigator:
         code_timeout_seconds: int = 20,
         source_domain: str = "personal_vault",
         protocol_variant: str = "default",
+        harness_version: str = "v1",
     ) -> None:
         if not callable(policy_factory):
             raise ValueError("policy_factory must be callable")
@@ -219,11 +241,9 @@ class QwenInvestigator:
             raise ValueError(f"unsupported protocol variant: {protocol_variant!r}")
         if protocol_variant == "nemotron" and source_domain != "public_papers":
             raise ValueError("Nemotron protocol variant is only for public papers")
-        self.system_prompt = (
-            NEMOTRON_PAPER_SYSTEM_PROMPT
-            if protocol_variant == "nemotron"
-            else prompt_for_source_domain(source_domain)
-        )
+        self.system_prompt = effective_system_prompt(
+            source_domain, protocol_variant, harness_version)
+        self.harness_version = harness_version
         self.source_domain = source_domain
         self.protocol_variant = protocol_variant
         self.policy_factory = policy_factory
@@ -240,6 +260,7 @@ class QwenInvestigator:
         # select LocalREPL when Docker or the image is unavailable.
         return PersistentREPL(
             use_docker=True, image=self.image, corpus_path=str(corpus),
+            extra_preamble=HARNESS_V2_PREAMBLE if self.harness_version == "v2" else "",
         )
 
     def investigate(self, question: str, snapshot: Path) -> dict:
@@ -273,6 +294,7 @@ class QwenInvestigator:
             "system_prompt_sha256": hashlib.sha256(self.system_prompt.encode()).hexdigest(),
             "tool_search_version": SEARCH_PROTOCOL_VERSION,
             "tool_preamble_sha256": hashlib.sha256(TOOL_PREAMBLE.encode()).hexdigest(),
+            "harness_version": self.harness_version,
             "status": "incomplete",
             "candidate_claims": [],
             "evidence": [],
@@ -286,6 +308,8 @@ class QwenInvestigator:
             "trajectory": [],
             "model_requests_attempted": 0,
         }
+        if self.harness_version == "v2":
+            result["harness_shim_sha256"] = HARNESS_V2_SHA256
         if self.repl_factory is None and not PersistentREPL._docker_available(self.image):
             result.update(
                 status="unavailable",
@@ -318,21 +342,26 @@ class QwenInvestigator:
             discovered_ids = False
             document_tool_steps = 0
             inspection_steps = 0
+            discovery = (
+                (lambda action: v2_discovery(action, docs))
+                if self.harness_version == "v2" else _starts_with_discovery
+            )
             for step in range(1, self.max_steps + 1):
-                result["model_requests_attempted"] += 1
                 remaining_before_action = self.max_steps - step
                 reminder = (
                     NEMOTRON_STOP_REMINDER.format(remaining=remaining_before_action + 1)
                     if self.protocol_variant == "nemotron" and step > 1
                     and remaining_before_action <= 2 else None
                 )
-                raw = policy.act(
-                    observation if reminder is None else f"{observation}\n\n[{reminder}]"
-                )
-                if not isinstance(raw, str):
-                    raise ValueError("Qwen policy returned a non-text action")
-                action = clean_action(raw)
+                if reminder is not None and self.harness_version == "v2":
+                    reminder = reminder.replace("Never call submit() in Python.",
+                                                "A lone literal submit() call is allowed.")
+                action, format_retries = next_action(
+                    policy, observation if reminder is None else f"{observation}\n\n[{reminder}]",
+                    result, self.harness_version, MAX_ACTION_CHARS)
                 trace = {"step": step, "action": action[:MAX_ACTION_CHARS]}
+                if format_retries:
+                    trace["format_retries"] = format_retries
                 if reminder is not None:
                     trace["protocol_reminder"] = reminder
                 if len(action) > MAX_ACTION_CHARS:
@@ -343,14 +372,24 @@ class QwenInvestigator:
                     trace["observation"] = observation
                     continue
 
-                parsed = parse_submission_details(action)
+                submission = action
+                if self.harness_version == "v2":
+                    try:
+                        converted = submit_call_to_line(action)
+                    except ValueError as exc:
+                        observation = trace["observation"] = f"Submission rejected: {exc}."
+                        continue
+                    if converted is not None:
+                        submission = converted
+                        trace["submit_call_converted"] = True
+                parsed = parse_submission_details(submission)
                 if parsed is not None:
                     answer, citations, predicted_evidence = parsed
                     abstained = answer.strip().casefold() in _ABSTENT_ANSWERS
                     if abstained:
                         exact_empty_suffix = bool(re.search(
                             r"CITATIONS:\s*\[\s*\]\s*EVIDENCE:\s*\[\s*\]\s*\Z",
-                            action, re.IGNORECASE,
+                            submission, re.IGNORECASE,
                         ))
                         if (exact_empty_suffix and document_tool_steps >= 2
                                 and inspection_steps >= 1):
@@ -432,7 +471,7 @@ class QwenInvestigator:
 
                 if action.upper().startswith("SUBMIT"):
                     observation = "Submission rejected: use the exact SUBMIT format."
-                elif not discovered_ids and not _starts_with_discovery(action):
+                elif not discovered_ids and not discovery(action):
                     observation = (
                         "Action rejected: first call search(query) or list_docs() to discover "
                         "real document IDs before using read(), passage(), extract(), "
@@ -445,7 +484,7 @@ class QwenInvestigator:
                     output = repl.execute(action, timeout=self.code_timeout_seconds)
                     if not isinstance(output, str):
                         raise ValueError("sandbox returned a non-text observation")
-                    if _starts_with_discovery(action) and not _failed_document_observation(
+                    if discovery(action) and not _failed_document_observation(
                         output
                     ):
                         discovered_ids = True
@@ -453,7 +492,10 @@ class QwenInvestigator:
                         output
                     ):
                         document_tool_steps += 1
-                    if _used_inspection_tool(action, output):
+                    if (_used_inspection_tool(action, output) or (
+                            self.harness_version == "v2" and v2_inspection(action, docs)
+                            and not _failed_document_observation(output)
+                            and output.strip() not in {"", "[]", "None"})):
                         inspection_steps += 1
                     observation = output
                 remaining = self.max_steps - step
