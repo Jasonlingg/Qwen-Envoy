@@ -27,6 +27,7 @@ if str(ROOT) not in sys.path:
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE  # noqa: E402
 from src.policies.code_execution import DEFAULT_MAX_TOKENS  # noqa: E402
 from src.policies.openai_compatible import OpenAICompatiblePolicy  # noqa: E402
+from src.product.packet_verifier import verify_investigation_packet  # noqa: E402
 from src.product.qwen_investigator import (  # noqa: E402
     PUBLIC_PAPER_SYSTEM_PROMPT,
     QwenInvestigator,
@@ -37,7 +38,6 @@ from src.research.tools_runtime import ResearchTools  # noqa: E402
 MAX_REVIEWS = 100
 MAX_SOURCE_CHARS = 8_000
 MAX_QUESTION_CHARS = 4_000
-MAX_EVIDENCE_SPANS = 5
 READ_ONLY_LOCAL = ToolAnnotations(read_only_hint=True, open_world_hint=False)
 READ_ONLY_MODEL = ToolAnnotations(read_only_hint=True, open_world_hint=True)
 PAPER_PROMPT_HASH = hashlib.sha256(PUBLIC_PAPER_SYSTEM_PROMPT.encode()).hexdigest()
@@ -67,79 +67,8 @@ def _paper_snapshot(snapshot: Path) -> tuple[dict, dict]:
 
 def _verified_investigation(packet: dict, manifest: dict, docs: dict) -> dict:
     """Return compact model output with every quoted span rebuilt from the corpus."""
-    if not isinstance(packet, dict) or packet.get("corpus_hash") != manifest["corpus_hash"]:
-        raise ValueError("Qwen packet does not match the pinned research snapshot")
-    if packet.get("source_domain") != "public_papers":
-        raise ValueError("Qwen packet did not use the public-paper task")
-    if packet.get("system_prompt_sha256") != PAPER_PROMPT_HASH:
-        raise ValueError("Qwen packet did not use the pinned public-paper prompt")
-    if (packet.get("tool_search_version") != SEARCH_PROTOCOL_VERSION
-            or packet.get("tool_preamble_sha256") != TOOL_PREAMBLE_HASH):
-        raise ValueError("Qwen packet did not use the pinned document tools")
-    status = packet.get("status")
-    if status not in {"evidence_found", "no_evidence", "incomplete", "unavailable", "error"}:
-        raise ValueError("Qwen packet has an unknown status")
-    supplied = packet.get("evidence")
-    if not isinstance(supplied, list) or len(supplied) > MAX_EVIDENCE_SPANS:
-        raise ValueError("Qwen packet has too many evidence spans")
-    if (status == "evidence_found") != bool(supplied):
-        raise ValueError("Qwen packet status and evidence disagree")
-
-    evidence = []
-    for index, item in enumerate(supplied, 1):
-        if not isinstance(item, dict):
-            raise ValueError("Qwen evidence span is not an object")
-        doc_id, start, end = item.get("doc_id"), item.get("start"), item.get("end")
-        doc = docs.get(doc_id) if isinstance(doc_id, str) else None
-        if (doc is None or type(start) is not int or type(end) is not int
-                or not 0 <= start < end <= len(doc["text"])
-                or end - start > 1_200
-                or item.get("quote") != doc["text"][start:end]):
-            raise ValueError("Qwen evidence is not an exact bounded paper span")
-        metadata = doc["metadata"]
-        evidence.append({
-            "evidence_id": f"E{index}", "doc_id": doc_id,
-            "title": doc["title"], "start": start, "end": end,
-            "quote": doc["text"][start:end],
-            "arxiv_id": metadata["arxiv_id"],
-            "source_url": metadata.get("source_url"),
-            "coverage": metadata.get("coverage"),
-        })
-
-    claims = packet.get("candidate_claims")
-    if not isinstance(claims, list) or (status == "evidence_found") != bool(claims):
-        raise ValueError("Qwen packet status and candidate claims disagree")
-    if len(claims) > 1:
-        raise ValueError("Qwen packet has too many candidate claims")
-    answer = None
-    if claims:
-        answer = claims[0].get("text") if isinstance(claims[0], dict) else None
-        if not isinstance(answer, str) or not answer.strip() or len(answer) > 2_500:
-            raise ValueError("Qwen candidate answer is invalid")
-
-    trajectory = packet.get("trajectory", [])
-    if not isinstance(trajectory, list) or len(trajectory) > 20:
-        raise ValueError("Qwen packet has an invalid trajectory length")
-    attempts = packet.get("model_requests_attempted", 0)
-    if type(attempts) is not int or not 0 <= attempts <= 20:
-        raise ValueError("Qwen packet has an invalid request count")
-    return {
-        "status": status,
-        "source_domain": "public_papers",
-        "retriever": "qwen_code_execution",
-        "corpus_hash": manifest["corpus_hash"],
-        "candidate_answer": answer,
-        "evidence": evidence,
-        "semantic_support": "not_reviewed",
-        "warning": "Exact excerpts prove provenance, not support for Qwen's proposed answer.",
-        "uncertainty": packet.get("uncertainty") if status == "no_evidence" else None,
-        "model_identity": packet.get("model_identity"),
-        "model_requests_attempted": attempts,
-        "trajectory_steps": len(trajectory),
-        "prompt_hash": PAPER_PROMPT_HASH,
-        "tool_search_version": SEARCH_PROTOCOL_VERSION,
-        "tool_preamble_sha256": TOOL_PREAMBLE_HASH,
-    }
+    return verify_investigation_packet(
+        packet, manifest, docs, allowed_prompt_sha256s=frozenset({PAPER_PROMPT_HASH}))
 
 
 def create_server(snapshot: Path, investigator: Any | None = None) -> MCPServer:
