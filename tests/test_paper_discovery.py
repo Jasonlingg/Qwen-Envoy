@@ -103,7 +103,10 @@ def test_malformed_provider_data_has_source_error(tmp_path, payload):
     assert info.value.source == "semantic_scholar"
 
 
-@pytest.mark.parametrize("payload", [b"broken", b"<feed>", ATOM.replace("2610", "2613").encode()])
+@pytest.mark.parametrize("payload", [
+    b"broken", b"<feed>", b"<html>unavailable</html>",
+    ATOM.replace("2610", "2613").encode(),
+])
 def test_malformed_recency_response_has_source_error(tmp_path, payload):
     store, _ = discovery(tmp_path, lambda url: payload)
     with pytest.raises(SourceUnavailable, match="invalid response") as info:

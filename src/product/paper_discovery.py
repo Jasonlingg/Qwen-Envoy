@@ -134,8 +134,14 @@ class PaperDiscovery:
             raise ValueError("Require since <= until")
 
         def build():
+            def fetch(url):
+                body = self._get("arxiv", url, {})
+                if ET.fromstring(body).tag != "{http://www.w3.org/2005/Atom}feed":
+                    raise ValueError("response is not an Atom feed")
+                return body
+
             found = discover(query, start.isoformat(), end.isoformat(), limit=limit,
-                             downloader=lambda url: self._get("arxiv", url, {}))
+                             downloader=fetch)
             papers = []
             for item in found["papers"][:limit]:
                 identifier = validate_arxiv_id(item["arxiv_id"])
