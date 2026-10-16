@@ -97,7 +97,7 @@ def test_teacher_export_uses_exact_inference_prompt_and_observations():
     from scripts.generate_qasper_teacher_batch import SYSTEM_PROMPT
     row = {"student_protocol": "qasper-span-v1", "question": "question",
            "initial_observation": "Question: question\n", "trajectory": [
-               {"action": "print(1)", "raw_action": "print(1)\n", "observation": "1\n"},
+               {"action": "print(1)\n", "raw_action": "print(1)\n", "observation": "1\n"},
                {"action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []"}]}
     messages = _to_conversation(row, 32000)["messages"]
     assert SYSTEM_PROMPT == QASPER_SYSTEM_PROMPT == messages[0]["content"]
