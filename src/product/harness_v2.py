@@ -40,6 +40,8 @@ def scoped_search(node: ast.Call, doc_ids) -> bool:
     if not isinstance(node.func, ast.Name) or node.func.id != 'search':
         return False
     keys = {kw.arg for kw in node.keywords}
+    if None in keys or any(isinstance(arg, ast.Starred) for arg in node.args):
+        return True
     if 'doc_id' in keys or (keys & {'query', 'q'} and node.args):
         return True
     if len(node.args) >= 2:

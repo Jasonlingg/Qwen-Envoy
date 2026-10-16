@@ -83,6 +83,9 @@ def test_unknown_harness_version_is_rejected():
     'search("{doc}", "coverage")', 'search("coverage", "{doc}")',
     'search("coverage", doc_id="{doc}")', 'search("{doc}", query="coverage")',
     'search(query="coverage", doc_id="{doc}")',
+    'search(*["{doc}", "coverage"])',
+    'search(**dict(doc_id="{doc}", query="coverage"))',
+    'd = "{doc}"; search(d, "coverage")',
 ])
 def test_scoped_search_requires_discovery_and_counts_as_inspection(tmp_path, template):
     snapshot, _, doc_id, document = _snapshot(tmp_path)
