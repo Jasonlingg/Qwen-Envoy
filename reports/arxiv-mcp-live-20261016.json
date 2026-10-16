@@ -1,0 +1,1914 @@
+{
+  "kind": "free_live_mcp_smoke",
+  "started_at": "2026-10-16T21:33:09.580789+00:00",
+  "paid_smoke": {
+    "status": "skipped",
+    "reason": "Paid smoke skipped: reliable pre-request tokenization and a provider-enforced all-in <=$0.50 limit are unavailable on this model path. Reader and reasoner are unconfigured; request, input-token, and output-token budgets are zero."
+  },
+  "model_budget": {
+    "requests": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usd": 0
+  },
+  "actual_model_requests": 0,
+  "actual_input_tokens": 0,
+  "actual_output_tokens": 0,
+  "actual_model_cost_usd": 0,
+  "max_tool_calls": 20,
+  "start_new_tools_deadline_seconds": 180,
+  "per_tool_timeout_seconds": 120,
+  "tools": [
+    {
+      "tool": "search_papers",
+      "arguments": {
+        "query": "CodeAct executable code actions",
+        "limit": 3
+      },
+      "is_error": false,
+      "result": {
+        "status": "source_unavailable",
+        "source": "semantic_scholar",
+        "detail": "rate limited",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.331
+    },
+    {
+      "tool": "get_citations",
+      "arguments": {
+        "arxiv_id": "2402.01030",
+        "limit": 3
+      },
+      "is_error": false,
+      "result": {
+        "status": "source_unavailable",
+        "source": "semantic_scholar",
+        "detail": "rate limited",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.962
+    },
+    {
+      "tool": "search_papers",
+      "arguments": {
+        "query": "all:CodeAct",
+        "since": "2024-01-01",
+        "until": "2026-10-16",
+        "limit": 3
+      },
+      "is_error": false,
+      "result": {
+        "status": "ok",
+        "source": "arxiv",
+        "mode": "recent",
+        "since": "2024-01-01",
+        "until": "2026-10-16",
+        "papers": [
+          {
+            "arxiv_id": "2608.11386v1",
+            "title": "The Devil Is in the Interface: Evaluating How Tool Architecture Shapes Coding Agent Behavior",
+            "abstract_sha256": "a9dfe61d07c0aefa1e57acce621cea0f3b8ee8269c5fac95cfb0c3496e5419ce",
+            "abstract_chars": 1491,
+            "citation_count": null,
+            "year": 2026,
+            "url": "https://arxiv.org/abs/2608.11386v1",
+            "openable": true
+          },
+          {
+            "arxiv_id": "2608.04156v2",
+            "title": "BrainBench: Benchmarking Large Language Models for Comprehensive EEG Understanding",
+            "abstract_sha256": "4e61831aad9f3e8ca504c282637e4b827998b349a12e501635edd71e75a3f614",
+            "abstract_chars": 1647,
+            "citation_count": null,
+            "year": 2026,
+            "url": "https://arxiv.org/abs/2608.04156v2",
+            "openable": true
+          },
+          {
+            "arxiv_id": "2608.02351v1",
+            "title": "KC-Agent: A Dual-Process Cognitive Architecture for Efficient ML Model Improvement",
+            "abstract_sha256": "dacf47bec0acfa447e012b4e178bdc671d83b9489be826658d7aebbd18c28aa4",
+            "abstract_chars": 1593,
+            "citation_count": null,
+            "year": 2026,
+            "url": "https://arxiv.org/abs/2608.02351v1",
+            "openable": true
+          }
+        ],
+        "coverage_note": "Bounded arXiv search; not an exhaustive literature review.",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 1.366
+    },
+    {
+      "tool": "investigate",
+      "arguments": {
+        "question": "What evidence supports code actions?",
+        "arxiv_ids": [
+          "2402.01030"
+        ]
+      },
+      "is_error": false,
+      "result": {
+        "status": "model_not_configured",
+        "evidence": [],
+        "papers": [],
+        "model_requests_attempted": 0,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals.",
+        "detail": "Start the server with --reader nemotron or --reader qwen."
+      },
+      "elapsed_seconds": 0.012
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2402.01030"
+      },
+      "is_error": false,
+      "result": {
+        "status": "ok",
+        "arxiv_id": "2402.01030v4",
+        "doc_id": "arxiv_2402_01030v4",
+        "title": "Executable Code Actions Elicit Better LLM Agents",
+        "authors": [
+          "Wang, Xingyao",
+          "Chen, Yangyi",
+          "Yuan, Lifan",
+          "Zhang, Yizhe",
+          "Li, Yunzhu",
+          "Peng, Hao",
+          "Ji, Heng"
+        ],
+        "submitted": "2024-02-01",
+        "source_url": "https://arxiv.org/abs/2402.01030v4",
+        "coverage": "html_paragraphs",
+        "total_chars": 49411,
+        "outline": [
+          {
+            "section": "Abstract",
+            "start": 0
+          },
+          {
+            "section": "Executable Code Actions Elicit Better LLM Agents",
+            "start": 1612
+          },
+          {
+            "section": "1 Introduction",
+            "start": 3316
+          },
+          {
+            "section": "2 CodeAct Makes LLMs Better Agents",
+            "start": 10145
+          },
+          {
+            "section": "2.1 What is CodeAct?",
+            "start": 10969
+          },
+          {
+            "section": "2.2 CodeAct Shows the Promise as a Strong Tool Use Framework",
+            "start": 11921
+          },
+          {
+            "section": "2.3 CodeAct Gets More Done with Fewer Interactions",
+            "start": 16834
+          },
+          {
+            "section": "2.4 CodeAct Benefits from Multi-turn Interactions and Existing Software Packages",
+            "start": 19611
+          },
+          {
+            "section": "3 Empowering Open-source LLM Agent to be Better at CodeAct",
+            "start": 20476
+          },
+          {
+            "section": "3.1 CodeActInstruct: Agent-Environment Interactions",
+            "start": 21375
+          },
+          {
+            "section": "3.2 CodeActAgent",
+            "start": 28658
+          },
+          {
+            "section": "4.1 Action Module in LLM Agents",
+            "start": 31306
+          },
+          {
+            "section": "4.2 Improving LLM Agents",
+            "start": 32248
+          },
+          {
+            "section": "5 Conclusions",
+            "start": 33554
+          },
+          {
+            "section": "Acknowledgement",
+            "start": 34079
+          },
+          {
+            "section": "Impact Statement",
+            "start": 35033
+          },
+          {
+            "section": "References",
+            "start": 36904
+          },
+          {
+            "section": "Appendix A Comparison with Work that Uses Code Generation for Problem-solving",
+            "start": 38142
+          },
+          {
+            "section": "Appendix B Comparison with TaskWeaver",
+            "start": 43066
+          },
+          {
+            "section": "Appendix C General Data Down-sample",
+            "start": 44200
+          },
+          {
+            "section": "Appendix D CodeActAgent Training Details",
+            "start": 44614
+          },
+          {
+            "section": "Appendix E Example Prompt for CodeAct",
+            "start": 45336
+          },
+          {
+            "section": "Appendix F M3ToolEval Prompt",
+            "start": 45571
+          },
+          {
+            "section": "F.1 Example of {{Tool Definition}}",
+            "start": 45653
+          },
+          {
+            "section": "F.2 Example of {{Formatting Instruction}}",
+            "start": 45716
+          },
+          {
+            "section": "G.1 Dataset Downsample",
+            "start": 45780
+          },
+          {
+            "section": "G.2 Data Selection Heuristic",
+            "start": 46687
+          },
+          {
+            "section": "G.3 Example of Trajectory Generation Prompt",
+            "start": 47944
+          },
+          {
+            "section": "G.3.1 Tabular Reasoning (WikiTableQuestion)",
+            "start": 48028
+          },
+          {
+            "section": "G.3.2 Code Generation (APPS)",
+            "start": 48291
+          },
+          {
+            "section": "Appendix H CodeActAgent Anomaly on M3ToolEval",
+            "start": 48471
+          }
+        ],
+        "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 5.927
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "executable Python code actions JSON 20%",
+        "arxiv_ids": [
+          "2402.01030v4"
+        ],
+        "top_k": 3
+      },
+      "is_error": false,
+      "result": {
+        "query": "executable Python code actions JSON 20%",
+        "papers": [
+          "2402.01030v4"
+        ],
+        "evidence": [
+          {
+            "doc_id": "arxiv_2402_01030v4",
+            "start": 1612,
+            "end": 3314,
+            "quote_sha256": "6ce2110d768b7dfea976a7c26b018fda737be3bdbddf94591c37665357f27bd6",
+            "quote_chars": 1702,
+            "source_url": "https://arxiv.org/abs/2402.01030v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Executable Code Actions Elicit Better LLM Agents",
+            "section": "Executable Code Actions Elicit Better LLM Agents",
+            "score": 8.5837,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2402.01030v4"
+          },
+          {
+            "doc_id": "arxiv_2402_01030v4",
+            "start": 0,
+            "end": 1610,
+            "quote_sha256": "7e053453816217e97c5909f22f49b67c2a007b69d1148761e0a83017200f035e",
+            "quote_chars": 1610,
+            "source_url": "https://arxiv.org/abs/2402.01030v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Executable Code Actions Elicit Better LLM Agents",
+            "section": "Abstract",
+            "score": 6.7568,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2402.01030v4"
+          },
+          {
+            "doc_id": "arxiv_2402_01030v4",
+            "start": 38779,
+            "end": 40205,
+            "quote_sha256": "edc4351d1824802b23eea3115d9e7e8674ff7a0ccdca7e9c47e8954cec4f0e6a",
+            "quote_chars": 1426,
+            "source_url": "https://arxiv.org/abs/2402.01030v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Executable Code Actions Elicit Better LLM Agents",
+            "section": "Appendix A Comparison with Work that Uses Code Generation for Problem-solving",
+            "score": 6.0465,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2402.01030v4"
+          }
+        ],
+        "retriever": "lexical_paragraph",
+        "warning": "Lexical relevance and exact excerpts do not establish claim support."
+      },
+      "elapsed_seconds": 0.063
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2402.01030v4",
+        "start": 1612,
+        "length": 900
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2402.01030v4",
+        "start": 1612,
+        "end": 2512,
+        "total_chars": 49411,
+        "text_sha256": "37154a63be937c92c3431b6b58e24efdceb5ea5dd429058be0f931cc85d4b30b",
+        "text_chars": 900,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.051
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2402.01030v4",
+        "start": 0,
+        "length": 900
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2402.01030v4",
+        "start": 0,
+        "end": 900,
+        "total_chars": 49411,
+        "text_sha256": "b62f29acc682b0ea7d4af0e006b96fc8e9a65e852c6b52d78d4097c065996260",
+        "text_chars": 900,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.001
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2402.01030v4",
+        "start": 38779,
+        "length": 900
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2402.01030v4",
+        "start": 38779,
+        "end": 39679,
+        "total_chars": 49411,
+        "text_sha256": "954f9401376c9fa2077ffe87f7ef88f0110cb2f61cead6a026fb7e08144a8f74",
+        "text_chars": 900,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.001
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2510.03215"
+      },
+      "is_error": false,
+      "result": {
+        "status": "ok",
+        "arxiv_id": "2510.03215v2",
+        "doc_id": "arxiv_2510_03215v2",
+        "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+        "authors": [
+          "Fu, Tianyu",
+          "Min, Zihan",
+          "Zhang, Hanling",
+          "Yan, Jichao",
+          "Dai, Guohao",
+          "Ouyang, Wanli",
+          "Wang, Yu"
+        ],
+        "submitted": "2025-10-03",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "coverage": "html_paragraphs",
+        "total_chars": 54751,
+        "outline": [
+          {
+            "section": "Abstract",
+            "start": 0
+          },
+          {
+            "section": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+            "start": 1446
+          },
+          {
+            "section": "1 Introduction",
+            "start": 2892
+          },
+          {
+            "section": "2.1 KV-Cache Sharing and Reuse",
+            "start": 6770
+          },
+          {
+            "section": "2.2 Multi-LLM Systems",
+            "start": 7818
+          },
+          {
+            "section": "3.1 Preliminaries",
+            "start": 10004
+          },
+          {
+            "section": "3.2 Oracles for Cache-to-Cache Communication",
+            "start": 11151
+          },
+          {
+            "section": "3.2.1 Cache Enrichment Oracle",
+            "start": 11538
+          },
+          {
+            "section": "3.2.2 Cache Transformation Oracle",
+            "start": 13393
+          },
+          {
+            "section": "3.3.1 Overview",
+            "start": 14739
+          },
+          {
+            "section": "3.3.2 Fuser Structure",
+            "start": 15543
+          },
+          {
+            "section": "3.3.3 Model Alignment",
+            "start": 16420
+          },
+          {
+            "section": "3.3.4 Training Scheme",
+            "start": 17129
+          },
+          {
+            "section": "4.1 Setup",
+            "start": 17847
+          },
+          {
+            "section": "4.2 Main Results",
+            "start": 20706
+          },
+          {
+            "section": "4.3 Scaling Behavior",
+            "start": 22250
+          },
+          {
+            "section": "4.4 Ablation Study",
+            "start": 24419
+          },
+          {
+            "section": "4.5 Behavior Analysis",
+            "start": 25687
+          },
+          {
+            "section": "5 Discussion",
+            "start": 27427
+          },
+          {
+            "section": "6 Conclusion",
+            "start": 28750
+          },
+          {
+            "section": "Acknowledgments",
+            "start": 29280
+          },
+          {
+            "section": "Ethics Statement",
+            "start": 29629
+          },
+          {
+            "section": "Reproducibility Statement",
+            "start": 29746
+          },
+          {
+            "section": "A.1 Design Choice Exploration",
+            "start": 30191
+          },
+          {
+            "section": "A.1.1 Layer Alignment",
+            "start": 30260
+          },
+          {
+            "section": "A.1.2 Tokenization Alignment",
+            "start": 31415
+          },
+          {
+            "section": "A.1.3 Fuser Architecture",
+            "start": 33630
+          },
+          {
+            "section": "A.2.1 Cache Enrichment Detail",
+            "start": 34949
+          },
+          {
+            "section": "A.2.2 Strong-to-Weak Communication",
+            "start": 35192
+          },
+          {
+            "section": "A.2.3 Accuracy Breakdown",
+            "start": 35904
+          },
+          {
+            "section": "A.2.4 Progressive Behavior",
+            "start": 37809
+          },
+          {
+            "section": "A.3.1 Cache Enrichment",
+            "start": 38751
+          },
+          {
+            "section": "A.3.2 Cache Transformation",
+            "start": 39716
+          },
+          {
+            "section": "A.3.3 Query-level routing",
+            "start": 40632
+          },
+          {
+            "section": "A.3.4 Evaluation Method",
+            "start": 41472
+          },
+          {
+            "section": "A.3.5 C2C Training",
+            "start": 42705
+          },
+          {
+            "section": "A.3.6 Evaluation Prompts",
+            "start": 44583
+          },
+          {
+            "section": "A.4.1 Effective Rank",
+            "start": 45324
+          },
+          {
+            "section": "A.4.2 Gating Behavior",
+            "start": 46152
+          },
+          {
+            "section": "A.4.3 Outlier cases in inference time",
+            "start": 47992
+          },
+          {
+            "section": "A.4.4 Example Model Output",
+            "start": 49175
+          },
+          {
+            "section": "A.4.5 Training Cost Analysis",
+            "start": 49940
+          },
+          {
+            "section": "A.4.6 Failure Mode Analysis",
+            "start": 50540
+          },
+          {
+            "section": "A.5 C2C Extensions and Future Work",
+            "start": 51491
+          },
+          {
+            "section": "A.5.1 One Receiver, Multiple Sharers",
+            "start": 51831
+          },
+          {
+            "section": "A.5.2 Multiple Receivers Multiple Sharers",
+            "start": 52285
+          },
+          {
+            "section": "A.5.3 Incorporating with Agentic Flow",
+            "start": 53917
+          }
+        ],
+        "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 5.398
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "agent memory reasoning retrieval results",
+        "arxiv_ids": [
+          "2510.03215v2"
+        ],
+        "top_k": 3
+      },
+      "is_error": false,
+      "result": {
+        "query": "agent memory reasoning retrieval results",
+        "papers": [
+          "2510.03215v2"
+        ],
+        "evidence": [
+          {
+            "doc_id": "arxiv_2510_03215v2",
+            "start": 19474,
+            "end": 19908,
+            "quote_sha256": "1afc59936cc4fbe97dea0a0258732166e39c16f2e0047f0e33b5003bfa2bbc15",
+            "quote_chars": 434,
+            "source_url": "https://arxiv.org/abs/2510.03215v2",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+            "section": "4.1 Setup",
+            "score": 2.2305,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2510.03215v2"
+          },
+          {
+            "doc_id": "arxiv_2510_03215v2",
+            "start": 49396,
+            "end": 49938,
+            "quote_sha256": "2bc736ea985ff73b6c49114cc51e31bd7f49d4c1c86ac7d686b1f8774336d95a",
+            "quote_chars": 542,
+            "source_url": "https://arxiv.org/abs/2510.03215v2",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+            "section": "A.4.4 Example Model Output",
+            "score": 1.3937,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2510.03215v2"
+          },
+          {
+            "doc_id": "arxiv_2510_03215v2",
+            "start": 35192,
+            "end": 35699,
+            "quote_sha256": "f1321702d25aac3fce4bd9bef44b15aa2b8b4aaeaba6ba9c71be0b0f3060508b",
+            "quote_chars": 507,
+            "source_url": "https://arxiv.org/abs/2510.03215v2",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+            "section": "A.2.2 Strong-to-Weak Communication",
+            "score": 1.3889,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2510.03215v2"
+          }
+        ],
+        "retriever": "lexical_paragraph",
+        "warning": "Lexical relevance and exact excerpts do not establish claim support."
+      },
+      "elapsed_seconds": 0.01
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2510.03215v2",
+        "start": 19474,
+        "length": 434
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2510.03215v2",
+        "start": 19474,
+        "end": 19908,
+        "total_chars": 54751,
+        "text_sha256": "1afc59936cc4fbe97dea0a0258732166e39c16f2e0047f0e33b5003bfa2bbc15",
+        "text_chars": 434,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.002
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2510.03215v2",
+        "start": 49396,
+        "length": 542
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2510.03215v2",
+        "start": 49396,
+        "end": 49938,
+        "total_chars": 54751,
+        "text_sha256": "2bc736ea985ff73b6c49114cc51e31bd7f49d4c1c86ac7d686b1f8774336d95a",
+        "text_chars": 542,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.001
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2510.03215v2",
+        "start": 35192,
+        "length": 507
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2510.03215v2",
+        "start": 35192,
+        "end": 35699,
+        "total_chars": 54751,
+        "text_sha256": "f1321702d25aac3fce4bd9bef44b15aa2b8b4aaeaba6ba9c71be0b0f3060508b",
+        "text_chars": 507,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.001
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2511.20639"
+      },
+      "is_error": false,
+      "result": {
+        "status": "ok",
+        "arxiv_id": "2511.20639v4",
+        "doc_id": "arxiv_2511_20639v4",
+        "title": "Latent Collaboration in Multi-Agent Systems",
+        "authors": [
+          "Zou, Jiaru",
+          "Qiu, Ruizhong",
+          "Li, Gaotang",
+          "Yang, Xiyuan",
+          "Tieu, Katherine",
+          "Lu, Pan",
+          "Shen, Ke",
+          "Tong, Hanghang",
+          "Choi, Yejin",
+          "He, Jingrui",
+          "Zou, James",
+          "Wang, Mengdi",
+          "Yang, Ling"
+        ],
+        "submitted": "2025-11-25",
+        "source_url": "https://arxiv.org/abs/2511.20639v4",
+        "coverage": "html_paragraphs",
+        "total_chars": 58177,
+        "outline": [
+          {
+            "section": "Abstract",
+            "start": 0
+          },
+          {
+            "section": "Latent Collaboration in Multi-Agent Systems",
+            "start": 1433
+          },
+          {
+            "section": "1 Introduction",
+            "start": 2838
+          },
+          {
+            "section": "2 Preliminary and Notations",
+            "start": 6767
+          },
+          {
+            "section": "3 LatentMAS",
+            "start": 10543
+          },
+          {
+            "section": "3.1 Auto-regressive Latent Thoughts Generation",
+            "start": 11263
+          },
+          {
+            "section": "3.2 Thoughts Transfer via Latent Working Memory",
+            "start": 15365
+          },
+          {
+            "section": "3.3 End-to-End Pipeline with Complexity Analyses",
+            "start": 17988
+          },
+          {
+            "section": "4 Empirical Evaluations",
+            "start": 19467
+          },
+          {
+            "section": "4.1 Main Results",
+            "start": 22172
+          },
+          {
+            "section": "4.2 Efficiency Analyses on Latent Collaboration.",
+            "start": 23213
+          },
+          {
+            "section": "5 In-depth Analyses on LatentMAS",
+            "start": 24882
+          },
+          {
+            "section": "6 Related Work",
+            "start": 28574
+          },
+          {
+            "section": "7 Conclusion",
+            "start": 30523
+          },
+          {
+            "section": "Acknowledgment",
+            "start": 31145
+          },
+          {
+            "section": "Impact Statement",
+            "start": 31534
+          },
+          {
+            "section": "References",
+            "start": 31981
+          },
+          {
+            "section": "A.1 Theoretical Justification on WaW_{a}",
+            "start": 31991
+          },
+          {
+            "section": "A.2 Solving the Alignment Matrix WaW_{a}",
+            "start": 34031
+          },
+          {
+            "section": "B.1 Proof of Theorem 3.1",
+            "start": 35348
+          },
+          {
+            "section": "B.2 Proof of Theorem 3.3",
+            "start": 36944
+          },
+          {
+            "section": "Induction step.",
+            "start": 37594
+          },
+          {
+            "section": "Induction base case.",
+            "start": 39582
+          },
+          {
+            "section": "Conclusion.",
+            "start": 39904
+          },
+          {
+            "section": "B.3 Proof of Theorem 3.4",
+            "start": 40151
+          },
+          {
+            "section": "Time complexity of our method.",
+            "start": 40870
+          },
+          {
+            "section": "Time complexity of the vanilla text-based MAS.",
+            "start": 41450
+          },
+          {
+            "section": "C.1 Evaluation Details",
+            "start": 41942
+          },
+          {
+            "section": "Math & Science Reasoning.",
+            "start": 42005
+          },
+          {
+            "section": "Commonsense Reasoning.",
+            "start": 43749
+          },
+          {
+            "section": "Code Generation.",
+            "start": 44472
+          },
+          {
+            "section": "C.2 Implementation Details",
+            "start": 45198
+          },
+          {
+            "section": "Software Backend",
+            "start": 45334
+          },
+          {
+            "section": "Evaluation protocol.",
+            "start": 45587
+          },
+          {
+            "section": "D.1 Performance of LatentMAS under Hierarchical MAS Setting",
+            "start": 46661
+          },
+          {
+            "section": "D.2 LatentMAS on Llama Backbones",
+            "start": 47222
+          },
+          {
+            "section": "D.3 Additional Efficiency Analyses on LatentMAS",
+            "start": 47785
+          },
+          {
+            "section": "E.1 Additional Analyses on Input-Output Alignment",
+            "start": 48966
+          },
+          {
+            "section": "E.2 Quantifying Latent Thought Diversity.",
+            "start": 49359
+          },
+          {
+            "section": "E.3 Ablations on Latent Reasoning and Communication in LatentMAS",
+            "start": 50352
+          },
+          {
+            "section": "Appendix F How to Debug LatentMAS?",
+            "start": 51500
+          },
+          {
+            "section": "Appendix G Additional Discussions on LatentMAS",
+            "start": 53884
+          },
+          {
+            "section": "Appendix H Additional Related Works",
+            "start": 54569
+          },
+          {
+            "section": "Appendix J Case Study on LatentMAS",
+            "start": 57091
+          }
+        ],
+        "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 6.554
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "agent memory reasoning retrieval results",
+        "arxiv_ids": [
+          "2511.20639v4"
+        ],
+        "top_k": 3
+      },
+      "is_error": false,
+      "result": {
+        "query": "agent memory reasoning retrieval results",
+        "papers": [
+          "2511.20639v4"
+        ],
+        "evidence": [
+          {
+            "doc_id": "arxiv_2511_20639v4",
+            "start": 47785,
+            "end": 48964,
+            "quote_sha256": "7e9e78a972e8d1a69233e7718e8a63995fc8111e9beea78868667e70495e2c5c",
+            "quote_chars": 1179,
+            "source_url": "https://arxiv.org/abs/2511.20639v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Latent Collaboration in Multi-Agent Systems",
+            "section": "D.3 Additional Efficiency Analyses on LatentMAS",
+            "score": 5.2356,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2511.20639v4"
+          },
+          {
+            "doc_id": "arxiv_2511_20639v4",
+            "start": 50803,
+            "end": 50990,
+            "quote_sha256": "d5e8e5e5cb83decd62a9330d31e51fe6be1d25976fbad703338d22d9309ce753",
+            "quote_chars": 187,
+            "source_url": "https://arxiv.org/abs/2511.20639v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Latent Collaboration in Multi-Agent Systems",
+            "section": "E.3 Ablations on Latent Reasoning and Communication in LatentMAS",
+            "score": 5.1282,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2511.20639v4"
+          },
+          {
+            "doc_id": "arxiv_2511_20639v4",
+            "start": 57091,
+            "end": 58177,
+            "quote_sha256": "94cc8213829cf4e334773bfd550e28b3575c0a21ae354b92bed0e59e82178d83",
+            "quote_chars": 1086,
+            "source_url": "https://arxiv.org/abs/2511.20639v4",
+            "coverage": "html_paragraphs",
+            "source_kind": "arxiv_paper",
+            "source_path": null,
+            "pages": [],
+            "title": "Latent Collaboration in Multi-Agent Systems",
+            "section": "Appendix J Case Study on LatentMAS",
+            "score": 5.0704,
+            "retriever": {
+              "kind": "lexical_paragraph",
+              "version": "v1"
+            },
+            "arxiv_id": "2511.20639v4"
+          }
+        ],
+        "retriever": "lexical_paragraph",
+        "warning": "Lexical relevance and exact excerpts do not establish claim support."
+      },
+      "elapsed_seconds": 0.055
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2511.20639v4",
+        "start": 47785,
+        "length": 900
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2511.20639v4",
+        "start": 47785,
+        "end": 48685,
+        "total_chars": 58177,
+        "text_sha256": "682491d1795b4b0f912cb250d71cb953b012a38ffa00403114304d5a333adc16",
+        "text_chars": 900,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.002
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2511.20639v4",
+        "start": 50803,
+        "length": 187
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2511.20639v4",
+        "start": 50803,
+        "end": 50990,
+        "total_chars": 58177,
+        "text_sha256": "d5e8e5e5cb83decd62a9330d31e51fe6be1d25976fbad703338d22d9309ce753",
+        "text_chars": 187,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.003
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2511.20639v4",
+        "start": 57091,
+        "length": 900
+      },
+      "is_error": false,
+      "result": {
+        "arxiv_id": "2511.20639v4",
+        "start": 57091,
+        "end": 57991,
+        "total_chars": 58177,
+        "text_sha256": "b9054322653f8574c45fd6d10681276717823a38f0f242fb4364dd94be54fdcd",
+        "text_chars": 900,
+        "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+      },
+      "elapsed_seconds": 0.007
+    }
+  ],
+  "papers": [
+    {
+      "status": "ok",
+      "arxiv_id": "2402.01030v4",
+      "doc_id": "arxiv_2402_01030v4",
+      "title": "Executable Code Actions Elicit Better LLM Agents",
+      "authors": [
+        "Wang, Xingyao",
+        "Chen, Yangyi",
+        "Yuan, Lifan",
+        "Zhang, Yizhe",
+        "Li, Yunzhu",
+        "Peng, Hao",
+        "Ji, Heng"
+      ],
+      "submitted": "2024-02-01",
+      "source_url": "https://arxiv.org/abs/2402.01030v4",
+      "coverage": "html_paragraphs",
+      "total_chars": 49411,
+      "outline": [
+        {
+          "section": "Abstract",
+          "start": 0
+        },
+        {
+          "section": "Executable Code Actions Elicit Better LLM Agents",
+          "start": 1612
+        },
+        {
+          "section": "1 Introduction",
+          "start": 3316
+        },
+        {
+          "section": "2 CodeAct Makes LLMs Better Agents",
+          "start": 10145
+        },
+        {
+          "section": "2.1 What is CodeAct?",
+          "start": 10969
+        },
+        {
+          "section": "2.2 CodeAct Shows the Promise as a Strong Tool Use Framework",
+          "start": 11921
+        },
+        {
+          "section": "2.3 CodeAct Gets More Done with Fewer Interactions",
+          "start": 16834
+        },
+        {
+          "section": "2.4 CodeAct Benefits from Multi-turn Interactions and Existing Software Packages",
+          "start": 19611
+        },
+        {
+          "section": "3 Empowering Open-source LLM Agent to be Better at CodeAct",
+          "start": 20476
+        },
+        {
+          "section": "3.1 CodeActInstruct: Agent-Environment Interactions",
+          "start": 21375
+        },
+        {
+          "section": "3.2 CodeActAgent",
+          "start": 28658
+        },
+        {
+          "section": "4.1 Action Module in LLM Agents",
+          "start": 31306
+        },
+        {
+          "section": "4.2 Improving LLM Agents",
+          "start": 32248
+        },
+        {
+          "section": "5 Conclusions",
+          "start": 33554
+        },
+        {
+          "section": "Acknowledgement",
+          "start": 34079
+        },
+        {
+          "section": "Impact Statement",
+          "start": 35033
+        },
+        {
+          "section": "References",
+          "start": 36904
+        },
+        {
+          "section": "Appendix A Comparison with Work that Uses Code Generation for Problem-solving",
+          "start": 38142
+        },
+        {
+          "section": "Appendix B Comparison with TaskWeaver",
+          "start": 43066
+        },
+        {
+          "section": "Appendix C General Data Down-sample",
+          "start": 44200
+        },
+        {
+          "section": "Appendix D CodeActAgent Training Details",
+          "start": 44614
+        },
+        {
+          "section": "Appendix E Example Prompt for CodeAct",
+          "start": 45336
+        },
+        {
+          "section": "Appendix F M3ToolEval Prompt",
+          "start": 45571
+        },
+        {
+          "section": "F.1 Example of {{Tool Definition}}",
+          "start": 45653
+        },
+        {
+          "section": "F.2 Example of {{Formatting Instruction}}",
+          "start": 45716
+        },
+        {
+          "section": "G.1 Dataset Downsample",
+          "start": 45780
+        },
+        {
+          "section": "G.2 Data Selection Heuristic",
+          "start": 46687
+        },
+        {
+          "section": "G.3 Example of Trajectory Generation Prompt",
+          "start": 47944
+        },
+        {
+          "section": "G.3.1 Tabular Reasoning (WikiTableQuestion)",
+          "start": 48028
+        },
+        {
+          "section": "G.3.2 Code Generation (APPS)",
+          "start": 48291
+        },
+        {
+          "section": "Appendix H CodeActAgent Anomaly on M3ToolEval",
+          "start": 48471
+        }
+      ],
+      "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+      "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+    },
+    {
+      "status": "ok",
+      "arxiv_id": "2510.03215v2",
+      "doc_id": "arxiv_2510_03215v2",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "authors": [
+        "Fu, Tianyu",
+        "Min, Zihan",
+        "Zhang, Hanling",
+        "Yan, Jichao",
+        "Dai, Guohao",
+        "Ouyang, Wanli",
+        "Wang, Yu"
+      ],
+      "submitted": "2025-10-03",
+      "source_url": "https://arxiv.org/abs/2510.03215v2",
+      "coverage": "html_paragraphs",
+      "total_chars": 54751,
+      "outline": [
+        {
+          "section": "Abstract",
+          "start": 0
+        },
+        {
+          "section": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+          "start": 1446
+        },
+        {
+          "section": "1 Introduction",
+          "start": 2892
+        },
+        {
+          "section": "2.1 KV-Cache Sharing and Reuse",
+          "start": 6770
+        },
+        {
+          "section": "2.2 Multi-LLM Systems",
+          "start": 7818
+        },
+        {
+          "section": "3.1 Preliminaries",
+          "start": 10004
+        },
+        {
+          "section": "3.2 Oracles for Cache-to-Cache Communication",
+          "start": 11151
+        },
+        {
+          "section": "3.2.1 Cache Enrichment Oracle",
+          "start": 11538
+        },
+        {
+          "section": "3.2.2 Cache Transformation Oracle",
+          "start": 13393
+        },
+        {
+          "section": "3.3.1 Overview",
+          "start": 14739
+        },
+        {
+          "section": "3.3.2 Fuser Structure",
+          "start": 15543
+        },
+        {
+          "section": "3.3.3 Model Alignment",
+          "start": 16420
+        },
+        {
+          "section": "3.3.4 Training Scheme",
+          "start": 17129
+        },
+        {
+          "section": "4.1 Setup",
+          "start": 17847
+        },
+        {
+          "section": "4.2 Main Results",
+          "start": 20706
+        },
+        {
+          "section": "4.3 Scaling Behavior",
+          "start": 22250
+        },
+        {
+          "section": "4.4 Ablation Study",
+          "start": 24419
+        },
+        {
+          "section": "4.5 Behavior Analysis",
+          "start": 25687
+        },
+        {
+          "section": "5 Discussion",
+          "start": 27427
+        },
+        {
+          "section": "6 Conclusion",
+          "start": 28750
+        },
+        {
+          "section": "Acknowledgments",
+          "start": 29280
+        },
+        {
+          "section": "Ethics Statement",
+          "start": 29629
+        },
+        {
+          "section": "Reproducibility Statement",
+          "start": 29746
+        },
+        {
+          "section": "A.1 Design Choice Exploration",
+          "start": 30191
+        },
+        {
+          "section": "A.1.1 Layer Alignment",
+          "start": 30260
+        },
+        {
+          "section": "A.1.2 Tokenization Alignment",
+          "start": 31415
+        },
+        {
+          "section": "A.1.3 Fuser Architecture",
+          "start": 33630
+        },
+        {
+          "section": "A.2.1 Cache Enrichment Detail",
+          "start": 34949
+        },
+        {
+          "section": "A.2.2 Strong-to-Weak Communication",
+          "start": 35192
+        },
+        {
+          "section": "A.2.3 Accuracy Breakdown",
+          "start": 35904
+        },
+        {
+          "section": "A.2.4 Progressive Behavior",
+          "start": 37809
+        },
+        {
+          "section": "A.3.1 Cache Enrichment",
+          "start": 38751
+        },
+        {
+          "section": "A.3.2 Cache Transformation",
+          "start": 39716
+        },
+        {
+          "section": "A.3.3 Query-level routing",
+          "start": 40632
+        },
+        {
+          "section": "A.3.4 Evaluation Method",
+          "start": 41472
+        },
+        {
+          "section": "A.3.5 C2C Training",
+          "start": 42705
+        },
+        {
+          "section": "A.3.6 Evaluation Prompts",
+          "start": 44583
+        },
+        {
+          "section": "A.4.1 Effective Rank",
+          "start": 45324
+        },
+        {
+          "section": "A.4.2 Gating Behavior",
+          "start": 46152
+        },
+        {
+          "section": "A.4.3 Outlier cases in inference time",
+          "start": 47992
+        },
+        {
+          "section": "A.4.4 Example Model Output",
+          "start": 49175
+        },
+        {
+          "section": "A.4.5 Training Cost Analysis",
+          "start": 49940
+        },
+        {
+          "section": "A.4.6 Failure Mode Analysis",
+          "start": 50540
+        },
+        {
+          "section": "A.5 C2C Extensions and Future Work",
+          "start": 51491
+        },
+        {
+          "section": "A.5.1 One Receiver, Multiple Sharers",
+          "start": 51831
+        },
+        {
+          "section": "A.5.2 Multiple Receivers Multiple Sharers",
+          "start": 52285
+        },
+        {
+          "section": "A.5.3 Incorporating with Agentic Flow",
+          "start": 53917
+        }
+      ],
+      "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+      "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+    },
+    {
+      "status": "ok",
+      "arxiv_id": "2511.20639v4",
+      "doc_id": "arxiv_2511_20639v4",
+      "title": "Latent Collaboration in Multi-Agent Systems",
+      "authors": [
+        "Zou, Jiaru",
+        "Qiu, Ruizhong",
+        "Li, Gaotang",
+        "Yang, Xiyuan",
+        "Tieu, Katherine",
+        "Lu, Pan",
+        "Shen, Ke",
+        "Tong, Hanghang",
+        "Choi, Yejin",
+        "He, Jingrui",
+        "Zou, James",
+        "Wang, Mengdi",
+        "Yang, Ling"
+      ],
+      "submitted": "2025-11-25",
+      "source_url": "https://arxiv.org/abs/2511.20639v4",
+      "coverage": "html_paragraphs",
+      "total_chars": 58177,
+      "outline": [
+        {
+          "section": "Abstract",
+          "start": 0
+        },
+        {
+          "section": "Latent Collaboration in Multi-Agent Systems",
+          "start": 1433
+        },
+        {
+          "section": "1 Introduction",
+          "start": 2838
+        },
+        {
+          "section": "2 Preliminary and Notations",
+          "start": 6767
+        },
+        {
+          "section": "3 LatentMAS",
+          "start": 10543
+        },
+        {
+          "section": "3.1 Auto-regressive Latent Thoughts Generation",
+          "start": 11263
+        },
+        {
+          "section": "3.2 Thoughts Transfer via Latent Working Memory",
+          "start": 15365
+        },
+        {
+          "section": "3.3 End-to-End Pipeline with Complexity Analyses",
+          "start": 17988
+        },
+        {
+          "section": "4 Empirical Evaluations",
+          "start": 19467
+        },
+        {
+          "section": "4.1 Main Results",
+          "start": 22172
+        },
+        {
+          "section": "4.2 Efficiency Analyses on Latent Collaboration.",
+          "start": 23213
+        },
+        {
+          "section": "5 In-depth Analyses on LatentMAS",
+          "start": 24882
+        },
+        {
+          "section": "6 Related Work",
+          "start": 28574
+        },
+        {
+          "section": "7 Conclusion",
+          "start": 30523
+        },
+        {
+          "section": "Acknowledgment",
+          "start": 31145
+        },
+        {
+          "section": "Impact Statement",
+          "start": 31534
+        },
+        {
+          "section": "References",
+          "start": 31981
+        },
+        {
+          "section": "A.1 Theoretical Justification on WaW_{a}",
+          "start": 31991
+        },
+        {
+          "section": "A.2 Solving the Alignment Matrix WaW_{a}",
+          "start": 34031
+        },
+        {
+          "section": "B.1 Proof of Theorem 3.1",
+          "start": 35348
+        },
+        {
+          "section": "B.2 Proof of Theorem 3.3",
+          "start": 36944
+        },
+        {
+          "section": "Induction step.",
+          "start": 37594
+        },
+        {
+          "section": "Induction base case.",
+          "start": 39582
+        },
+        {
+          "section": "Conclusion.",
+          "start": 39904
+        },
+        {
+          "section": "B.3 Proof of Theorem 3.4",
+          "start": 40151
+        },
+        {
+          "section": "Time complexity of our method.",
+          "start": 40870
+        },
+        {
+          "section": "Time complexity of the vanilla text-based MAS.",
+          "start": 41450
+        },
+        {
+          "section": "C.1 Evaluation Details",
+          "start": 41942
+        },
+        {
+          "section": "Math & Science Reasoning.",
+          "start": 42005
+        },
+        {
+          "section": "Commonsense Reasoning.",
+          "start": 43749
+        },
+        {
+          "section": "Code Generation.",
+          "start": 44472
+        },
+        {
+          "section": "C.2 Implementation Details",
+          "start": 45198
+        },
+        {
+          "section": "Software Backend",
+          "start": 45334
+        },
+        {
+          "section": "Evaluation protocol.",
+          "start": 45587
+        },
+        {
+          "section": "D.1 Performance of LatentMAS under Hierarchical MAS Setting",
+          "start": 46661
+        },
+        {
+          "section": "D.2 LatentMAS on Llama Backbones",
+          "start": 47222
+        },
+        {
+          "section": "D.3 Additional Efficiency Analyses on LatentMAS",
+          "start": 47785
+        },
+        {
+          "section": "E.1 Additional Analyses on Input-Output Alignment",
+          "start": 48966
+        },
+        {
+          "section": "E.2 Quantifying Latent Thought Diversity.",
+          "start": 49359
+        },
+        {
+          "section": "E.3 Ablations on Latent Reasoning and Communication in LatentMAS",
+          "start": 50352
+        },
+        {
+          "section": "Appendix F How to Debug LatentMAS?",
+          "start": 51500
+        },
+        {
+          "section": "Appendix G Additional Discussions on LatentMAS",
+          "start": 53884
+        },
+        {
+          "section": "Appendix H Additional Related Works",
+          "start": 54569
+        },
+        {
+          "section": "Appendix J Case Study on LatentMAS",
+          "start": 57091
+        }
+      ],
+      "coverage_note": "HTML/PDF text extraction omits figures and tables and may distort equations; abstract_only means only the abstract was available.",
+      "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals."
+    }
+  ],
+  "review_passages": [
+    {
+      "arxiv_id": "2402.01030v4",
+      "title": "Executable Code Actions Elicit Better LLM Agents",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2402.01030v4",
+      "start": 1612,
+      "end": 2512,
+      "quote_sha256": "37154a63be937c92c3431b6b58e24efdceb5ea5dd429058be0f931cc85d4b30b",
+      "quote_chars": 900,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "Executable Code Actions Elicit Better LLM Agents",
+      "excerpt": "Large Language Model (LLM) agents, capable of performing",
+      "excerpt_start": 1612,
+      "excerpt_end": 1668
+    },
+    {
+      "arxiv_id": "2402.01030v4",
+      "title": "Executable Code Actions Elicit Better LLM Agents",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2402.01030v4",
+      "start": 0,
+      "end": 900,
+      "quote_sha256": "b62f29acc682b0ea7d4af0e006b96fc8e9a65e852c6b52d78d4097c065996260",
+      "quote_chars": 900,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "Abstract"
+    },
+    {
+      "arxiv_id": "2402.01030v4",
+      "title": "Executable Code Actions Elicit Better LLM Agents",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2402.01030v4",
+      "start": 38779,
+      "end": 39679,
+      "quote_sha256": "954f9401376c9fa2077ffe87f7ef88f0110cb2f61cead6a026fb7e08144a8f74",
+      "quote_chars": 900,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "Appendix A Comparison with Work that Uses Code Generation for Problem-solving"
+    },
+    {
+      "arxiv_id": "2510.03215v2",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2510.03215v2",
+      "start": 19474,
+      "end": 19908,
+      "quote_sha256": "1afc59936cc4fbe97dea0a0258732166e39c16f2e0047f0e33b5003bfa2bbc15",
+      "quote_chars": 434,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "4.1 Setup",
+      "excerpt": "Benchmarks. We evaluate on four widely used benchmarks",
+      "excerpt_start": 19474,
+      "excerpt_end": 19528
+    },
+    {
+      "arxiv_id": "2510.03215v2",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2510.03215v2",
+      "start": 49396,
+      "end": 49938,
+      "quote_sha256": "2bc736ea985ff73b6c49114cc51e31bd7f49d4c1c86ac7d686b1f8774336d95a",
+      "quote_chars": 542,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "A.4.4 Example Model Output"
+    },
+    {
+      "arxiv_id": "2510.03215v2",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2510.03215v2",
+      "start": 35192,
+      "end": 35699,
+      "quote_sha256": "f1321702d25aac3fce4bd9bef44b15aa2b8b4aaeaba6ba9c71be0b0f3060508b",
+      "quote_chars": 507,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "A.2.2 Strong-to-Weak Communication"
+    },
+    {
+      "arxiv_id": "2511.20639v4",
+      "title": "Latent Collaboration in Multi-Agent Systems",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2511.20639v4",
+      "start": 47785,
+      "end": 48685,
+      "quote_sha256": "682491d1795b4b0f912cb250d71cb953b012a38ffa00403114304d5a333adc16",
+      "quote_chars": 900,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "D.3 Additional Efficiency Analyses on LatentMAS",
+      "excerpt": "Final-Agent Token Usage in LatentMAS. To further disentangle",
+      "excerpt_start": 47785,
+      "excerpt_end": 47845
+    },
+    {
+      "arxiv_id": "2511.20639v4",
+      "title": "Latent Collaboration in Multi-Agent Systems",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2511.20639v4",
+      "start": 50803,
+      "end": 50990,
+      "quote_sha256": "d5e8e5e5cb83decd62a9330d31e51fe6be1d25976fbad703338d22d9309ce753",
+      "quote_chars": 187,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "E.3 Ablations on Latent Reasoning and Communication in LatentMAS"
+    },
+    {
+      "arxiv_id": "2511.20639v4",
+      "title": "Latent Collaboration in Multi-Agent Systems",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2511.20639v4",
+      "start": 57091,
+      "end": 57991,
+      "quote_sha256": "b9054322653f8574c45fd6d10681276717823a38f0f242fb4364dd94be54fdcd",
+      "quote_chars": 900,
+      "exact_source_match": true,
+      "retrieved_quote_exact": true,
+      "semantic_support": "not_reviewed",
+      "section": "Appendix J Case Study on LatentMAS"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "claim_level_review": {
+    "status": "not_performed",
+    "reviewer": null
+  },
+  "warning": "Exact quotes prove provenance, not semantic support or model improvement.",
+  "unconfigured_model_check": true,
+  "elapsed_seconds": 20.774,
+  "provenance_checks": {
+    "checked": 9,
+    "exact": 9
+  },
+  "network": {
+    "fetches": [
+      {
+        "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=CodeAct+executable+code+actions&limit=3&fields=title%2Cabstract%2Cyear%2CcitationCount%2CexternalIds%2Curl",
+        "max_bytes": 2000000,
+        "status": "error",
+        "error": "SourceUnavailable: semantic_scholar: rate limited",
+        "elapsed_seconds": 0.311
+      },
+      {
+        "url": "https://api.semanticscholar.org/graph/v1/paper/arXiv:2402.01030/references?fields=title%2Cabstract%2Cyear%2CcitationCount%2CexternalIds%2Curl&limit=3",
+        "max_bytes": 2000000,
+        "status": "error",
+        "error": "SourceUnavailable: semantic_scholar: rate limited",
+        "elapsed_seconds": 0.953
+      },
+      {
+        "url": "https://export.arxiv.org/api/query?search_query=%28all%3ACodeAct%29+AND+submittedDate%3A%5B202401010000+TO+202610162359%5D&sortBy=submittedDate&sortOrder=descending&start=0&max_results=3",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 8670,
+        "elapsed_seconds": 1.323
+      },
+      {
+        "url": "https://arxiv.org/abs/2402.01030",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 43644,
+        "elapsed_seconds": 1.843
+      },
+      {
+        "url": "https://arxiv.org/html/2402.01030v4",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 1185831,
+        "elapsed_seconds": 3.506
+      },
+      {
+        "url": "https://arxiv.org/abs/2510.03215",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 43340,
+        "elapsed_seconds": 2.35
+      },
+      {
+        "url": "https://arxiv.org/html/2510.03215v2",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 405502,
+        "elapsed_seconds": 2.859
+      },
+      {
+        "url": "https://arxiv.org/abs/2511.20639",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 44190,
+        "elapsed_seconds": 3.072
+      },
+      {
+        "url": "https://arxiv.org/html/2511.20639v4",
+        "max_bytes": 2000000,
+        "status": "ok",
+        "response_bytes": 779102,
+        "elapsed_seconds": 2.929
+      }
+    ],
+    "max_fetch_calls": 12,
+    "per_hop_timeout_seconds": 15,
+    "redirects_per_fetch_max": 5
+  },
+  "raw_detail_path": "out/arxiv-mcp-live-detail.json",
+  "raw_detail_sha256": "8f689f1100b314b63e5c22d61c8e4013a07541fb69d36744cb71827beafb2e09"
+}
