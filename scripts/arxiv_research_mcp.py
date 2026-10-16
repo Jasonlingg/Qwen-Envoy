@@ -9,10 +9,12 @@ from __future__ import annotations
 
 import argparse
 import sys
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
 from mcp.server import MCPServer
+from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import ToolAnnotations
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,8 +22,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from src.product.arxiv_library import ArxivLibrary  # noqa: E402
-from src.product.paper_discovery import PaperDiscovery  # noqa: E402
-
 from src.product.arxiv_mcp_config import (  # noqa: E402
     DEFAULT_NEMOTRON,
     build_reader,
@@ -30,6 +30,7 @@ from src.product.arxiv_mcp_config import (  # noqa: E402
 from src.product.arxiv_service import investigate as run_investigation  # noqa: E402
 from src.product.evidence_search import find_evidence as search_evidence  # noqa: E402
 from src.product.net import SourceUnavailable  # noqa: E402
+from src.product.paper_discovery import PaperDiscovery  # noqa: E402
 from src.product.parallel_readers import WARNING  # noqa: E402
 
 LOCAL = ToolAnnotations(read_only_hint=True, open_world_hint=False)
@@ -43,6 +44,17 @@ def _unavailable(exc: SourceUnavailable) -> dict[str, Any]:
             "detail": exc.detail, "warning": WARNING}
 
 
+def _input_errors(function):
+    """Let clients correct expected validation failures instead of seeing an SDK crash."""
+    @wraps(function)
+    def call(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except ValueError as exc:
+            raise ToolError(str(exc)[:500]) from exc
+    return call
+
+
 def create_server(library, discovery, *, investigator=None, reasoner=None) -> MCPServer:
     server = MCPServer("Envoy arXiv Research", instructions=(
         "Research arXiv papers. search_papers and get_citations find papers; open_paper "
@@ -51,6 +63,7 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
         "provenance, not support: reason over them before answering."))
 
     @server.tool(annotations=REMOTE)
+    @_input_errors
     def search_papers(query: str, since: str | None = None, until: str | None = None,
                       limit: int = 10) -> dict[str, Any]:
         """Find papers by relevance (Semantic Scholar), or by date when since/until is set."""
@@ -61,6 +74,7 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
             return _unavailable(exc)
 
     @server.tool(annotations=REMOTE)
+    @_input_errors
     def get_citations(arxiv_id: str, direction: str = "references",
                       limit: int = 20) -> dict[str, Any]:
         """List a paper's references or the papers citing it (direction=cited_by)."""
@@ -71,6 +85,7 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
             return _unavailable(exc)
 
     @server.tool(annotations=REMOTE)
+    @_input_errors
     def open_paper(arxiv_id: str) -> dict[str, Any]:
         """Fetch and pin one arXiv paper; returns coverage and a section outline."""
         try:
@@ -80,11 +95,13 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
             return _unavailable(exc)
 
     @server.tool(annotations=LOCAL)
+    @_input_errors
     def find_evidence(query: str, arxiv_ids: list[str], top_k: int = 8) -> dict[str, Any]:
         """Rank exact passages across opened papers (model-free)."""
         return search_evidence(library, query, arxiv_ids, top_k)
 
     @server.tool(annotations=LOCAL)
+    @_input_errors
     def get_passage(arxiv_id: str, start: int = 0, length: int = 4_000) -> dict[str, Any]:
         """Return a bounded exact excerpt of an opened paper (length 1..8000)."""
         if type(start) is not int or type(length) is not int:
@@ -100,6 +117,7 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
                 "warning": WARNING}
 
     @server.tool(annotations=REMOTE)
+    @_input_errors
     def investigate(question: str, arxiv_ids: list[str],
                     synthesize: bool = False) -> dict[str, Any]:
         """Run one reader per paper (max 5) and return merged verified quotes."""
