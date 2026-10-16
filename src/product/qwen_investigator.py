@@ -21,13 +21,16 @@ from src.env.repl import PersistentREPL
 from src.env.reward import parse_submission_details
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_PREAMBLE, HARNESS_V2_SHA256
-from src.product.harness_v2 import (
-    FORMAT_RETRY_MESSAGE, MAX_FORMAT_RETRIES, effective_prompt, next_action,  # noqa: F401
-    v2_discovery, v2_inspection,
-)
-from src.product.submit_call import submit_call_to_line
 from src.policies.code_execution import used_document_tool
+from src.product.harness_v2 import (
+    FORMAT_RETRY_MESSAGE,  # noqa: F401
+    effective_prompt,
+    next_action,
+    v2_discovery,
+    v2_inspection,
+)
 from src.product.memory import _record_context
+from src.product.submit_call import submit_call_to_line
 from src.research.agent import load_snapshot
 from src.research.code_exec_packet import (
     MAX_ANSWER_CHARS,

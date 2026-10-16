@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE  # noqa: E402
+from src.env.tools import TOOL_PREAMBLE  # noqa: E402
 from src.policies.code_execution import DEFAULT_MAX_TOKENS  # noqa: E402
 from src.policies.openai_compatible import OpenAICompatiblePolicy  # noqa: E402
 from src.product.packet_verifier import verify_investigation_packet  # noqa: E402

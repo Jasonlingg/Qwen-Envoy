@@ -1,8 +1,8 @@
 import pytest
-from tests.test_qwen_investigator import FakePolicy, FakeREPL, _snapshot, _investigator
-from src.product.qwen_investigator import QwenInvestigator
+
 from src.env.tools_v2 import HARNESS_V2_SHA256, V2_PROMPT_ADDENDUM
-from src.product.qwen_investigator import FORMAT_RETRY_MESSAGE
+from src.product.qwen_investigator import FORMAT_RETRY_MESSAGE, QwenInvestigator
+from tests.test_qwen_investigator import FakePolicy, FakeREPL, _investigator, _snapshot
 
 
 def _v2(actions, repl, *, max_steps=5):
@@ -17,7 +17,8 @@ def _v2(actions, repl, *, max_steps=5):
 
 def test_v1_packets_record_harness_version_and_prompt_is_unchanged(tmp_path):
     snapshot, _, _, _ = _snapshot(tmp_path)
-    worker, _ = _investigator(['print(search("coverage"))', 'print(search("failed"))'], FakeREPL(), max_steps=2)
+    worker, _ = _investigator(
+        ['print(search("coverage"))', 'print(search("failed"))'], FakeREPL(), max_steps=2)
     assert V2_PROMPT_ADDENDUM not in worker.system_prompt
     packet = worker.investigate("What failed?", snapshot)
     assert packet["harness_version"] == "v1" and "harness_shim_sha256" not in packet
@@ -67,7 +68,8 @@ def test_v2_prose_gets_two_free_retries_then_uses_a_step(tmp_path):
 
 def test_v2_valid_python_is_not_retried(tmp_path):
     snapshot, _, _, _ = _snapshot(tmp_path)
-    worker, _ = _v2(['print(search("coverage"))', 'print(search("failed"))'], FakeREPL(), max_steps=2)
+    worker, _ = _v2(
+        ['print(search("coverage"))', 'print(search("failed"))'], FakeREPL(), max_steps=2)
     packet = worker.investigate("What failed?", snapshot)
     assert "format_retries" not in packet["trajectory"][0]
     assert packet["model_requests_attempted"] == 2
@@ -104,9 +106,11 @@ def test_scoped_search_requires_discovery_and_counts_as_inspection(tmp_path, tem
 
 def test_effective_prompt_keeps_v1_and_removes_v2_nemotron_conflict(tmp_path):
     from src.product.qwen_investigator import (
-        effective_system_prompt, NEMOTRON_PAPER_SYSTEM_PROMPT,
+        NEMOTRON_PAPER_SYSTEM_PROMPT,
+        effective_system_prompt,
     )
-    assert effective_system_prompt('public_papers', 'nemotron', 'v1') == NEMOTRON_PAPER_SYSTEM_PROMPT
+    assert (effective_system_prompt('public_papers', 'nemotron', 'v1')
+            == NEMOTRON_PAPER_SYSTEM_PROMPT)
     prompt = effective_system_prompt('public_papers', 'nemotron', 'v2')
     assert prompt.endswith(V2_PROMPT_ADDENDUM)
     assert 'There is no\nsubmit()' not in prompt
