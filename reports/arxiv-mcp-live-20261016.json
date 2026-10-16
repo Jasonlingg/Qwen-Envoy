@@ -1703,10 +1703,7 @@
       "exact_source_match": true,
       "retrieved_quote_exact": true,
       "semantic_support": "not_reviewed",
-      "section": "Executable Code Actions Elicit Better LLM Agents",
-      "excerpt": "Large Language Model (LLM) agents, capable of performing",
-      "excerpt_start": 1612,
-      "excerpt_end": 1668
+      "section": "Executable Code Actions Elicit Better LLM Agents"
     },
     {
       "arxiv_id": "2402.01030v4",
@@ -1748,10 +1745,7 @@
       "exact_source_match": true,
       "retrieved_quote_exact": true,
       "semantic_support": "not_reviewed",
-      "section": "4.1 Setup",
-      "excerpt": "Benchmarks. We evaluate on four widely used benchmarks",
-      "excerpt_start": 19474,
-      "excerpt_end": 19528
+      "section": "4.1 Setup"
     },
     {
       "arxiv_id": "2510.03215v2",
@@ -1793,10 +1787,7 @@
       "exact_source_match": true,
       "retrieved_quote_exact": true,
       "semantic_support": "not_reviewed",
-      "section": "D.3 Additional Efficiency Analyses on LatentMAS",
-      "excerpt": "Final-Agent Token Usage in LatentMAS. To further disentangle",
-      "excerpt_start": 47785,
-      "excerpt_end": 47845
+      "section": "D.3 Additional Efficiency Analyses on LatentMAS"
     },
     {
       "arxiv_id": "2511.20639v4",
@@ -1827,10 +1818,128 @@
       "section": "Appendix J Case Study on LatentMAS"
     }
   ],
-  "semantic_support": "not_reviewed",
+  "semantic_support": "selected_claims_only_agent_reviewed",
   "claim_level_review": {
-    "status": "not_performed",
-    "reviewer": null
+    "status": "completed_agent_review",
+    "reviewer": "Codex coordinator",
+    "review_kind": "model_assisted_not_independent_human",
+    "human_review": false,
+    "scope": "Three coordinator-authored claims and one rejected overgeneralization over the live source passages; no live reader answers were generated.",
+    "evidence": [
+      {
+        "evidence_id": "R1",
+        "arxiv_id": "2402.01030v4",
+        "source_url": "https://arxiv.org/abs/2402.01030v4",
+        "start": 2077,
+        "end": 2189,
+        "quote": "proposes to use executable Python code to consolidate LLM agents’ actions into a unified action space (CodeAct).",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R2",
+        "arxiv_id": "2510.03215v2",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "start": 19615,
+        "end": 19625,
+        "quote": "OpenBookQA",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R3",
+        "arxiv_id": "2510.03215v2",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "start": 19676,
+        "end": 19686,
+        "quote": "MMLU-Redux",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R4",
+        "arxiv_id": "2510.03215v2",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "start": 19744,
+        "end": 19765,
+        "quote": "ARC-Challenge (ARC-C)",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R5",
+        "arxiv_id": "2510.03215v2",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "start": 19830,
+        "end": 19836,
+        "quote": "C-Eval",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R6",
+        "arxiv_id": "2510.03215v2",
+        "source_url": "https://arxiv.org/abs/2510.03215v2",
+        "start": 35224,
+        "end": 35235,
+        "quote": "LongBenchV1",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      },
+      {
+        "evidence_id": "R7",
+        "arxiv_id": "2511.20639v4",
+        "source_url": "https://arxiv.org/abs/2511.20639v4",
+        "start": 48141,
+        "end": 48277,
+        "quote": "generates fewer text tokens than the final agent in TextMAS across different model scales and tasks, with an average reduction of 29.1%.",
+        "provenance": "exact_stored_text",
+        "semantic_support": "assessed_in_claim_context"
+      }
+    ],
+    "claims": [
+      {
+        "claim_id": "C1",
+        "claim": "CodeAct proposes executable Python as a unified agent action representation.",
+        "evidence_ids": [
+          "R1"
+        ],
+        "verdict": "supported_as_author_proposal",
+        "rationale": "The inspected abstract explicitly proposes this representation; it does not demonstrate a benefit for this repository."
+      },
+      {
+        "claim_id": "C2",
+        "claim": "The C2C setup includes OpenBookQA, MMLU-Redux, ARC-Challenge and C-Eval; the paper also reports LongBenchV1 experiments.",
+        "evidence_ids": [
+          "R2",
+          "R3",
+          "R4",
+          "R5",
+          "R6"
+        ],
+        "verdict": "supported_as_author_report",
+        "rationale": "Setup and appendix passages identify these benchmarks. The four setup names are not an exhaustive list of all evaluations."
+      },
+      {
+        "claim_id": "C3",
+        "claim": "LatentMAS authors report a 29.1% average reduction in final-answering-agent text tokens versus TextMAS under their reported settings.",
+        "evidence_ids": [
+          "R7"
+        ],
+        "verdict": "supported_as_author_report",
+        "rationale": "The inspected section explicitly excludes intermediate agents and compares final decoding stages; no result for this project follows."
+      },
+      {
+        "claim_id": "C4",
+        "claim": "The cited 29.1% establishes a 29.1% reduction in whole-system token usage or API cost.",
+        "evidence_ids": [
+          "R7"
+        ],
+        "verdict": "unsupported_overgeneralization",
+        "rationale": "This statistic covers final-agent output text only. It does not measure total system tokens, latent computation, provider pricing, or this implementation."
+      }
+    ],
+    "limitation": "Small unblinded agent judgment, potentially fallible; not independent human review, a benchmark score, or proof of model improvement."
   },
   "warning": "Exact quotes prove provenance, not semantic support or model improvement.",
   "unconfigured_model_check": true,
@@ -1910,5 +2019,27 @@
     "redirects_per_fetch_max": 5
   },
   "raw_detail_path": "out/arxiv-mcp-live-detail.json",
-  "raw_detail_sha256": "8f689f1100b314b63e5c22d61c8e4013a07541fb69d36744cb71827beafb2e09"
+  "raw_detail_sha256": "8f689f1100b314b63e5c22d61c8e4013a07541fb69d36744cb71827beafb2e09",
+  "reproducibility": {
+    "kind": "source_tool_smoke_not_model_evaluation",
+    "model_checkpoint": null,
+    "question_split": null,
+    "policy_decoding": null,
+    "reward_version": null,
+    "seed": null,
+    "seed_note": "No stochastic model or training was invoked.",
+    "runner_hardware": {
+      "platform": "macOS-26.2-arm64-arm-64bit",
+      "python": "3.11.9",
+      "gpu": null
+    },
+    "source_revision": "Pinned arXiv versions; parser arxiv-paragraphs-v1",
+    "paper_text_sha256": {
+      "2402.01030v4": "0bf337dd8e7fe03bd860ee8941ba316e577c4fe892f11497adf2f876918a19b1",
+      "2510.03215v2": "ca0f888e6c58f13de57d751c309b3fc87efddf178b83296d431ae9be48b50e9d",
+      "2511.20639v4": "e6421a55d9d49bd45a3169e3c8d344674c69afea33c2a1e6900523a76ae7a6a5"
+    },
+    "tool_inputs": "Recorded per call in tools.arguments",
+    "implementation_note": "The committed smoke runner reproduces the source-only procedure; an exact pre-run working-tree implementation hash was not captured."
+  }
 }

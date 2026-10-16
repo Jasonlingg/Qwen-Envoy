@@ -206,6 +206,15 @@ QLoRA recipe, and data. The public technical release is separate from a
 hackathon submission; the historical [submission draft](release/envoybench-v0.1/DEVPOST_DRAFT.md)
 does not constitute a completed entry.
 
+## arXiv research MCP
+
+Discover papers, follow citations, and inspect exact version-pinned passages through six read-only MCP tools.
+```bash
+claude mcp add arxiv-research -- python "$(pwd)/scripts/arxiv_research_mcp.py" --reader none
+```
+Optional Qwen/Nemotron readers run Python in Docker; quotes establish provenance, not semantic support.
+See [setup, limits and evaluation](docs/ARXIV_RESEARCH_MCP.md).
+
 ## What the agent does
 
 Each episode gives the model a question and a bounded Python tool session:
