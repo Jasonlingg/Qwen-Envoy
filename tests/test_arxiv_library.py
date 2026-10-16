@@ -91,8 +91,23 @@ def test_unknown_paper_and_bad_ids(tmp_path):
 @pytest.mark.parametrize("received", ["2609.54321v2", "2609.12345v3", "2600.12345v2",
                                       "2609.12345v0"])
 def test_metadata_must_pin_requested_modern_version(received):
-    with pytest.raises(ValueError):
+    with pytest.raises(SourceUnavailable, match="arxiv: invalid response"):
         ingest_paper(VERSION, lambda _: abs_page(received), lambda _: b"")
+
+
+@pytest.mark.parametrize("response", [b"", b"\xff", b"<html>Service unavailable</html>",
+                                      abs_page("2609.12345"), b" " * 2_000_001])
+def test_bad_metadata_response_is_source_unavailable(response):
+    with pytest.raises(SourceUnavailable) as info:
+        ingest_paper(VERSION, lambda _: response, lambda _: b"")
+    assert (info.value.source, info.value.detail) == ("arxiv", "invalid response")
+
+
+def test_caller_bad_id_is_rejected_before_fetch():
+    def unexpected_fetch(_):
+        pytest.fail("Invalid caller ID must not reach the source")
+    with pytest.raises(ValueError, match="arXiv ID"):
+        ingest_paper("invalid", unexpected_fetch, unexpected_fetch)
 
 
 def test_view_is_a_valid_deterministic_snapshot(tmp_path):

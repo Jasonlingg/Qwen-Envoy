@@ -6,6 +6,7 @@ import re
 from collections.abc import Callable
 
 from src.product.arxiv_ids import validate_arxiv_id
+from src.product.net import SourceUnavailable
 from src.research.file_sources import MAX_FILE_BYTES, MAX_TEXT_CHARS, _pdf_document
 from src.research.papers import PaperTextParser, make_document, parse_metadata
 
@@ -46,13 +47,16 @@ def _pdf_paragraphs(text: str) -> list[dict]:
 def ingest_paper(arxiv_id: str, fetch: Fetch, fetch_pdf: Fetch) -> tuple[dict, dict]:
     """The metadata page must load and pin the exact requested version, if given."""
     arxiv_id = validate_arxiv_id(arxiv_id)
-    page = _bounded(fetch, f"https://arxiv.org/abs/{arxiv_id}", MAX_HTML_BYTES)
-    metadata = parse_metadata(page.decode("utf-8"))
-    version = validate_arxiv_id(metadata["arxiv_id"])
-    if "v" not in version or arxiv_id.split("v")[0] != version.split("v")[0] or (
-            "v" in arxiv_id and arxiv_id != version):
-        raise ValueError(f"Requested {arxiv_id}, arXiv returned {version}")
-    abstract = _document(metadata, [], "abstract_only")
+    try:
+        page = _bounded(fetch, f"https://arxiv.org/abs/{arxiv_id}", MAX_HTML_BYTES)
+        metadata = parse_metadata(page.decode("utf-8"))
+        version = validate_arxiv_id(metadata["arxiv_id"])
+        if "v" not in version or arxiv_id.split("v")[0] != version.split("v")[0] or (
+                "v" in arxiv_id and arxiv_id != version):
+            raise ValueError(f"Requested {arxiv_id}, arXiv returned {version}")
+        abstract = _document(metadata, [], "abstract_only")
+    except (ValueError, TypeError, KeyError) as exc:
+        raise SourceUnavailable("arxiv", "invalid response") from exc
     notes: dict = {"html_error": None, "pdf_error": None}
     try:
         parser = PaperTextParser()
