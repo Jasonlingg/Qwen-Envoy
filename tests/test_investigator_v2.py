@@ -124,3 +124,38 @@ def test_effective_prompt_keeps_v1_and_removes_v2_nemotron_conflict(tmp_path):
     assert 'Never call submit()' not in str(result['trajectory'])
     import hashlib
     assert result['system_prompt_sha256'] == hashlib.sha256(prompt.encode()).hexdigest()
+
+
+@pytest.mark.parametrize("top_k", ['"2"', '2', '2.0'])
+def test_numeric_positional_discovery_is_not_misclassified(tmp_path, top_k):
+    snapshot, _, _, _ = _snapshot(tmp_path)
+    action = f'print(search("coverage", {top_k}))'
+    repl = FakeREPL()
+    worker, _ = _v2([action, 'print(search("different"))'], repl, max_steps=2)
+    packet = worker.investigate("Why?", snapshot)
+    assert packet["status"] == "incomplete"
+    assert repl.executed[0][0] == action
+    assert packet["inspection_steps"] == 0
+
+
+@pytest.mark.parametrize("fenced", [False, True])
+def test_literal_submit_marker_survives_policy_and_investigator_cleanup(tmp_path, fenced):
+    from src.policies.openai_compatible import OpenAICompatiblePolicy
+    from src.product.harness_v2 import clean_v2_action
+    snapshot, _, doc_id, document = _snapshot(tmp_path)
+    raw = (f'submit(answer="The paper describes SUBMIT: as a marker.", '
+           f'citations=["{doc_id}"], '
+           f'evidence=[{{"doc_id":"{doc_id}","start":0,"end":10}}])')
+    if fenced:
+        raw = f"```python\n{raw}\n```"
+    responses = iter(['print(search("coverage"))', f'print(read("{doc_id}"))', raw])
+    def transport(*_):
+        return {"choices": [{"message": {"content": next(responses)}}]}
+    policy = OpenAICompatiblePolicy(endpoint="http://test", model="fake", transport=transport,
+                                    action_cleaner=clean_v2_action)
+    worker = QwenInvestigator(lambda: policy, {"m": "fake"}, harness_version="v2",
+                              repl_factory=lambda _: FakeREPL())
+    packet = worker.investigate("What marker?", snapshot)
+    assert packet["status"] == "evidence_found"
+    assert packet["candidate_claims"][0]["text"] == "The paper describes SUBMIT: as a marker."
+    assert packet["trajectory"][-1]["submit_call_converted"]

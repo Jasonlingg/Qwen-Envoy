@@ -194,6 +194,7 @@ class OpenAICompatiblePolicy:
         extra_body: dict[str, Any] | None = None,
         transport: Transport = _post_json,
         system_prompt: str | None = None,
+        action_cleaner: Callable[[str], str] = clean_action,
     ) -> None:
         self.endpoint = endpoint or os.environ.get("ENVOY_MODEL_ENDPOINT", "")
         self.model = model or os.environ.get("ENVOY_MODEL_ID", "")
@@ -214,6 +215,7 @@ class OpenAICompatiblePolicy:
         self.extra_body = extra_body or {}
         self._transport = transport
         self.system_prompt = system_prompt or SYSTEM_PROMPT
+        self._action_cleaner = action_cleaner
         self.history: list[dict[str, str]] = []
         self.last_reasoning: str | None = None
         self.last_logprob_diagnostics: dict[str, Any] | None = None
@@ -314,7 +316,7 @@ class OpenAICompatiblePolicy:
                 self.last_raw_response_content = raw_content[:_REJECTED_CONTENT_LIMIT]
                 self.last_raw_response_truncated = len(raw_content) > _REJECTED_CONTENT_LIMIT
             reasoning, raw_action = _reasoning_and_action(message)
-            action = clean_action(raw_action)
+            action = self._action_cleaner(raw_action)
             logprob_diagnostics = _sampled_logprob_diagnostics(choice)
         except Exception:
             usage_record["failed"] = True

@@ -14,6 +14,18 @@ FORMAT_RETRY_MESSAGE = (
 )
 
 
+def clean_v2_action(raw: str) -> str:
+    """Preserve Python string contents before legacy SUBMIT substring extraction."""
+    stripped = raw.strip()
+    if stripped.startswith("```") and stripped.endswith("```"):
+        stripped = "\n".join(stripped.splitlines()[1:-1]).strip()
+    try:
+        ast.parse(stripped)
+    except SyntaxError:
+        return clean_action(raw)
+    return stripped
+
+
 def next_action(policy, prompt: str, result: dict, harness: str, max_chars: int):
     retries = []
     while True:
@@ -21,7 +33,7 @@ def next_action(policy, prompt: str, result: dict, harness: str, max_chars: int)
         raw = policy.act(prompt)
         if not isinstance(raw, str):
             raise ValueError('Qwen policy returned a non-text action')
-        action = clean_action(raw)
+        action = clean_v2_action(raw) if harness == "v2" else clean_action(raw)
         if (harness != 'v2' or len(retries) >= MAX_FORMAT_RETRIES
                 or not action or len(action) > max_chars
                 or action.upper().startswith('SUBMIT')):
@@ -51,8 +63,18 @@ def scoped_search(node: ast.Call, doc_ids) -> bool:
             return True
         # A second text/variable argument might be a paper ID. Only numeric
         # positional top_k is unambiguously discovery before IDs are known.
-        return not (isinstance(second, ast.Constant)
-                    and type(second.value) in {int, float})
+        if isinstance(second, ast.Constant):
+            value = second.value
+            if type(value) is int or (type(value) is float and value.is_integer()):
+                return False
+            if isinstance(value, str):
+                try:
+                    int(value)
+                except ValueError:
+                    pass
+                else:
+                    return False
+        return True
     return False
 
 
