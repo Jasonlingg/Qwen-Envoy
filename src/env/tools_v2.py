@@ -64,7 +64,7 @@ def search(*args, **kwargs):
         elif len(args) >= 2 and isinstance(args[0], str) and isinstance(args[1], str):
             first, second = known(args[0]), known(args[1])
             if first and second:
-                raise _usage_error("search", "two document IDs are ambiguous; use doc_id= and query=")
+                raise _usage_error("search", "two document IDs; use doc_id= and query= explicitly")
             if first or second:
                 doc_id = args.pop(0 if first else 1)
     query = _text("search", "query", _take("search", args, kwargs, ("query", "q")))
