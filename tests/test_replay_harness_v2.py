@@ -1,5 +1,6 @@
 """Replay must reproduce V1 exactly and never execute saved Python on the host."""
 
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -54,6 +55,27 @@ def test_compact_report_preserves_every_action_and_binds_observations():
     assert item["v1_observation_sha256"] == harness_replay.sha256("saved output")
     assert item["v1_observation_chars"] == len("saved output")
     assert report["questions"][0]["actions"][0]["v1_observation"] == "saved output"
+    assert compact["full_report_sha256"] == harness_replay.sha256(
+        json.dumps(report, indent=2) + "\n")
+
+
+def test_finalizer_keeps_historical_rejections_separate_from_success(tmp_path):
+    converter = tmp_path / "src/product/submit_call.py"
+    converter.parent.mkdir(parents=True)
+    converter.write_text("# converter\n")
+    actions = [{"action": "SUBMIT: answer", "v1_executed": False,
+                "recorded_observation": observation, "v2_outcome": "recorded_submission",
+                "v2_error": None} for observation in (
+                    "Submitted. Reward: 0.100", "[Evidence verifier — recovery 1/1]")]
+    report = {"v2_compared": True, "counts": {}, "questions": [{"actions": actions,
+                                                                 "counts": {}}]}
+    harness_replay.finalize_report(report, tmp_path)
+    assert report["counts"]["v2"] == {
+        "recorded_submission": 1, "recorded_submission_verifier_skip": 1}
+    assert report["v1_original_action_counts"] == {
+        "historical_submission_accepted": 1, "historical_submission_verifier_skip": 1}
+    assert report["submit_converter_sha256"] == harness_replay.sha256("# converter\n")
+    assert "not a full QwenInvestigator V2 episode replay" in report["replay_scope"]
 
 
 def test_v2_reports_per_action_without_running_submission_or_prose(tmp_path, monkeypatch):

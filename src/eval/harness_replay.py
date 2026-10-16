@@ -12,6 +12,7 @@ import json
 import subprocess
 import sys
 import tempfile
+from collections import Counter
 from pathlib import Path
 
 from src.env.corpus import Corpus
@@ -69,7 +70,8 @@ def inspect_image(image: str) -> dict:
 
 def compact_report(report: dict) -> dict:
     """Keep every action/result reviewable without duplicating megabytes of text."""
-    summary = {**report, "questions": []}
+    summary = {**report, "questions": [],
+               "full_report_sha256": sha256(json.dumps(report, indent=2) + "\n")}
     for question in report["questions"]:
         compact = {**question, "actions": [],
                    "initial_observation_sha256": sha256(question["initial_observation"])}
@@ -85,6 +87,43 @@ def compact_report(report: dict) -> dict:
             compact["actions"].append(action)
         summary["questions"].append(compact)
     return summary
+
+
+def finalize_report(report: dict, root: Path) -> dict:
+    """Add provenance and distinguish historical skips without changing execution."""
+    report["submit_converter_sha256"] = hashlib.sha256(
+        (root / "src/product/submit_call.py").read_bytes()).hexdigest()
+    report["artifact_finalizer_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    report["replay_scope"] = (
+        "V2 tool/submit/format diagnostic over fixed historical benchmark actions, "
+        "not a full QwenInvestigator V2 episode replay. Historical known-paper and "
+        "verifier decisions are retained; product discovery/inspection gates are "
+        "tested separately. No new model feedback response or quality inference.")
+    categories, v2_counts = Counter(), Counter()
+    for question in report["questions"]:
+        for item in question["actions"]:
+            if item["v1_executed"]:
+                category = "executed"
+            elif item["recorded_observation"].startswith("Submitted. Reward:"):
+                category = "historical_submission_accepted"
+            elif item["action"].strip().upper().startswith("SUBMIT:"):
+                category = "historical_submission_verifier_skip"
+            else:
+                category = "historical_other_verifier_skip"
+            item["v1_original_outcome"] = category
+            categories[category] += 1
+            if (category == "historical_submission_verifier_skip"
+                    and item.get("v2_outcome") == "recorded_submission"):
+                item["v2_outcome"] = "recorded_submission_verifier_skip"
+        if report.get("v2_compared"):
+            counts = Counter(item["v2_error"] or item["v2_outcome"]
+                             for item in question["actions"])
+            question["counts"]["v2"] = dict(counts)
+            v2_counts.update(counts)
+    report["v1_original_action_counts"] = dict(categories)
+    if report.get("v2_compared"):
+        report["counts"]["v2"] = dict(v2_counts)
+    return report
 
 
 def replay_baseline(module, row: dict, question: dict, corpus: Path,

@@ -29,6 +29,7 @@ from src.eval.harness_replay import (  # noqa: E402
     HISTORICAL_COMMIT,
     STATE_SHA256,
     compact_report,
+    finalize_report,
     historical_environment,
     inspect_image,
     replay_baseline,
@@ -183,6 +184,7 @@ def main() -> None:
         report.update(compare_v2(report["questions"], corpus, image, workers=args.workers),
                       v2_compared=True)
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    finalize_report(report, ROOT)
     args.output.write_text(json.dumps(report, indent=2) + "\n")
     if args.summary_output:
         args.summary_output.parent.mkdir(parents=True, exist_ok=True)
