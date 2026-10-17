@@ -46,6 +46,20 @@ claim seeded determinism. Both use harness V2 by default in this new server;
 `--harness v1` is available. Existing investigator callers still default to V1.
 Policy, investigator and packet use the same effective prompt and hash.
 
+### On-demand Qwen development
+
+On October 17, 2026, the user chose occasional Qwen use and accepted the model
+loading delay. Start the GPU inference server for an investigation session,
+wait for the endpoint to be ready, then run investigations. Save results locally
+before shutting down the session's compute. Retained remote storage can still
+incur charges after compute stops.
+
+The current MCP expects an already available endpoint; it does not provision,
+start, or stop GPU resources. Automatic startup and idle shutdown are not
+implemented. With Qwen offline, the source-only tools remain available, but
+Qwen-powered investigation is unavailable. This hosting decision does not
+authorize a paid deployment or change the default `--reader none`.
+
 ## Tools
 
 | Tool | Purpose | Model calls |
