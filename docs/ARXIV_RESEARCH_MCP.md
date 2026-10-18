@@ -60,6 +60,11 @@ implemented. With Qwen offline, the source-only tools remain available, but
 Qwen-powered investigation is unavailable. This hosting decision does not
 authorize a paid deployment or change the default `--reader none`.
 
+The [paired workflow pilot](implementation/2026-10-17-research-workflow-pilot.md)
+prepares five frozen development questions comparing direct host tools with Qwen
+delegation. Preparation and the scripted Docker check make no model calls; live
+answering and human claim review remain separate steps.
+
 ## Tools
 
 | Tool | Purpose | Model calls |

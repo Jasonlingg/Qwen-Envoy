@@ -172,3 +172,26 @@ accepts `--run`, `--review`, `--key`, `--costs`, and `--output`. Missing complet
 human review, genuine Qwen requests, or consistent complete request accounting
 cannot produce a successful comparison. Results and full quoted source text stay
 under ignored `out/`; publish only an appropriately compact/redacted summary.
+
+## Readiness on October 17
+
+The frozen five-question bundle is `out/research-workflow-pilot-20261017`.
+Its [readiness report](../../reports/research-workflow-pilot-readiness-20261017.json)
+records 15 exact source round trips and a real Docker check with three scripted
+actions and one verified span. These are plumbing checks, not model answers.
+Actual host/Qwen requests and new paid resources remain zero; human review is
+unperformed. A read-only provider check found no running pod or deployed endpoint.
+
+Full suite: **1,243 passed**, three existing SWIG warnings (31.58 seconds).
+Independent review approved after fixing incomplete-ledger success, unrelated
+credential inheritance, and execution of a mutable image tag. The inspected image
+digest is now the image executed. Narrow Ruff and diff checks passed.
+
+Protocol commit `93c135c`; host/budget commit `ac4278e`; frozen runner commit
+`aa6d42f`; claim-review/ledger reconciliation commit `e702c0f`.
+The example proposes Nemotron Ultra as the same host in both arms, using the
+provider's regional endpoint and a declared immutable local tokenizer. It does
+not attest the provider's actual tokenizer/weights and cannot count usage as a
+guaranteed dollar reservation. A new explicit spending decision is needed before
+temporary GPU provisioning or paid host inference. On-demand lifecycle automation
+and reliable independent idle cleanup remain unimplemented.

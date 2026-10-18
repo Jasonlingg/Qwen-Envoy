@@ -1,0 +1,92 @@
+{
+  "schema_version": "research-workflow-pilot-readiness-v1",
+  "status": "prepared_not_executed",
+  "bundle_path": "out/research-workflow-pilot-20261017",
+  "bundle_sha256": "0b4082772ba1b36db07c3ef34596e349c01d52f589b90a72f6ccf7760c76baf6",
+  "questions_sha256": "941e865f3368fd9bec8484ed692a077f7bb24972e31436e493ef07011482a351",
+  "corpus_hash": "62969fba2387bcc6052605c54712eb11dc9e3002d5a2a7504e6dfaf6e693b2ba",
+  "papers": [
+    {
+      "arxiv_id": "2402.01030v4",
+      "text_sha256": "0bf337dd8e7fe03bd860ee8941ba316e577c4fe892f11497adf2f876918a19b1",
+      "document_sha256": "06632009d550dfdd9d3a63616cd1864d87b72f2e88fe3172290c742fbb751b9b",
+      "coverage": "html_paragraphs"
+    },
+    {
+      "arxiv_id": "2510.03215v2",
+      "text_sha256": "ca0f888e6c58f13de57d751c309b3fc87efddf178b83296d431ae9be48b50e9d",
+      "document_sha256": "8a920389384bc7c50ec6938ce16d74563f4c5a22ae428cdd8e0bb2a4f59ea66d",
+      "coverage": "html_paragraphs"
+    },
+    {
+      "arxiv_id": "2511.20639v4",
+      "text_sha256": "e6421a55d9d49bd45a3169e3c8d344674c69afea33c2a1e6900523a76ae7a6a5",
+      "document_sha256": "1f331bf8da565c2aa9fcf8ea0538f478f976fe368e0b96601f9037c19442f96b",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "question_checks": [
+    {
+      "question_id": "P01",
+      "retrieved_spans": 3,
+      "exact_round_trips": 3
+    },
+    {
+      "question_id": "P02",
+      "retrieved_spans": 3,
+      "exact_round_trips": 3
+    },
+    {
+      "question_id": "P03",
+      "retrieved_spans": 3,
+      "exact_round_trips": 3
+    },
+    {
+      "question_id": "P04",
+      "retrieved_spans": 3,
+      "exact_round_trips": 3
+    },
+    {
+      "question_id": "P05",
+      "retrieved_spans": 3,
+      "exact_round_trips": 3
+    }
+  ],
+  "scripted_docker_probe": {
+    "status": "evidence_found",
+    "scripted_actions": 3,
+    "exact_evidence_spans": 1,
+    "image_digest": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+    "execution_kind": "scripted_docker_probe",
+    "actual_model_requests": 0,
+    "semantic_support": "not_reviewed"
+  },
+  "qwen_first_request_preflight": {
+    "local_input_tokens": 1153,
+    "output_reserve": 1024,
+    "context_margin": 128,
+    "context_window": 8192,
+    "fits": true,
+    "tokenizer": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "scope": "short plumbing question; not all future histories"
+  },
+  "actual_host_model_requests": 0,
+  "actual_qwen_model_requests": 0,
+  "new_paid_resources_created": 0,
+  "human_review": "not_performed",
+  "workflow_comparison_result": "not_available",
+  "fine_tuning_improvement": "not_evaluated",
+  "validation": {
+    "full_suite": "1243 passed, 3 existing SWIG warnings, 31.58 seconds",
+    "independent_review": "approved after fixing ledger completion, credential isolation, and Docker digest execution binding",
+    "ruff": "passed",
+    "diff_check": "passed"
+  },
+  "live_prerequisites": [
+    "Explicit new pilot spending authorization; prior <=USD0.50 paid smoke constraint remains unresolved",
+    "Running pinned Qwen v5 endpoint; no running Runpod pod or endpoint found on read-only check",
+    "Host endpoint billing and matching cached tokenizer/template",
+    "Human claim review and actual full cost allocation after inference"
+  ],
+  "warning": "Readiness and scripted provenance checks are not live Qwen answers, semantic support, or model improvement."
+}
