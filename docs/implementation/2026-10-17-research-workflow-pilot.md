@@ -195,3 +195,14 @@ not attest the provider's actual tokenizer/weights and cannot count usage as a
 guaranteed dollar reservation. A new explicit spending decision is needed before
 temporary GPU provisioning or paid host inference. On-demand lifecycle automation
 and reliable independent idle cleanup remain unimplemented.
+
+### Authorized live attempt
+
+The user subsequently approved the US$5 planning budget for this pilot, including
+a temporary Qwen GPU and Nemotron host calls. This supersedes the earlier
+<=US$0.50 API-smoke constraint for this pilot only; it is not a provider-enforced
+dollar cap or authority to modify unrelated resources. The first question is a
+smoke gate: stop before later questions if either arm fails to submit or the
+delegated arm performs no actual Qwen request. Keep all partial traces and mark
+the pilot incomplete. Supervised cleanup is required; production lifecycle
+automation is still unimplemented.

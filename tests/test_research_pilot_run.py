@@ -74,3 +74,19 @@ def test_run_requires_explicit_execute_before_reading_config_or_dispatch(tmp_pat
         main(["run", "--bundle", str(tmp_path / "missing"), "--config", str(tmp_path / "missing"),
               "--output", str(tmp_path / "run")])
     assert not (tmp_path / "run").exists()
+
+
+def test_initial_question_failure_stops_before_spending_on_later_arms(tmp_path):
+    library, _, path = sample(tmp_path)
+    prepare(path, library.root, tmp_path / "bundle", ROOT)
+    class InvalidHost:
+        system_prompt = SYSTEM_PROMPT
+        history = []
+        def act(self, observation):
+            return "invalid JSON"
+    result = run_pilot(tmp_path / "bundle", tmp_path / "run",
+        host_factory=lambda *args: InvalidHost(), investigator=FakeInvestigator({}),
+        budget=RequestBudget(), config={}, repo=ROOT, execution_kind="fake_test")
+    assert result["status"] == "incomplete" and len(result["results"]) == 1
+    assert result["actual_qwen_requests"] == 0
+    assert result["stop_reason"].startswith("Initial-question smoke failed")

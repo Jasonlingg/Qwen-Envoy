@@ -88,6 +88,11 @@ def run_pilot(bundle: Path, destination: Path, *, host_factory, investigator,
             if budget.summary()["blocked_reason"]:
                 run["stop_reason"] = budget.summary()["blocked_reason"]
                 break
+            if len(run["results"]) <= 2 and (
+                    result["status"] != "submitted" or
+                    (arm == "delegated" and result["telemetry"]["qwen_requests"] == 0)):
+                run["stop_reason"] = "Initial-question smoke failed; later questions unattempted"
+                break
         ledger = budget.summary()
         complete = (not ledger["blocked_reason"] and ledger["usage_complete"]
                     and all(r["status"] == "ok" for r in ledger["records"])
