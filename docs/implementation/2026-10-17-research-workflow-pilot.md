@@ -48,7 +48,7 @@ warm comparison as end-to-end first-use latency.
 
 ## Execution limits
 
-These are proposed pilot limits, not a statement that runtime enforcement exists:
+The dedicated pilot runner enforces these local limits:
 
 | Scope | Limit |
 | --- | --- |
@@ -69,10 +69,11 @@ token counts, a reliable dollar cap, or permission to start paid resources.
 The aggregate cap may stop the pilot before every per-question maximum is used;
 that is an incomplete pilot, not authorization to raise the cap.
 
-The two-reader setting is a pilot gate. Application-wide admission control,
-context budgeting, GPU startup, idle shutdown, and an independent cleanup
-watchdog remain separate new runtime work. An existing per-investigation worker
-limit does not enforce a process-wide limit across simultaneous investigations.
+The two-reader setting is shared across this pilot process. The pilot rejects a
+request before dispatch if its complete locally tokenized history plus output
+and a 128-token margin exceeds the configured context. It does not silently trim
+evidence. Admission/history compaction for the production MCP, GPU startup, idle
+shutdown, and an independent cleanup watchdog remain separate runtime work.
 
 ## Review and decision rule
 
@@ -138,3 +139,36 @@ schema must not be reused unchanged. This comparison evaluates direct versus
 delegated workflows; a separate matched base-versus-trained evaluation is needed
 for any fine-tuning claim. Five paired questions are an engineering pilot, not
 statistical evidence of general superiority or the historical product gates.
+
+## Runner and execution boundary
+
+The evaluator uses one strict JSON host-action protocol in both arms and calls
+the underlying frozen paper tools directly. It does not measure native MCP
+client transport/UI behavior or this interactive Codex session. Qwen still uses
+its existing Python/Docker protocol. Direct tool callbacks cannot fetch sources.
+
+```bash
+python scripts/run_research_workflow_pilot.py prepare --output out/research-workflow-pilot-v1
+python scripts/run_research_workflow_pilot.py check --bundle out/research-workflow-pilot-v1
+```
+
+These commands make zero model calls. Preparation pins the exact implementation;
+reprepare under a new output directory after runtime source changes. Run and
+review destinations cannot overwrite prior artifacts. An example model config
+is `data/eval/research-workflow-pilot-models.example.json`; it is deliberately
+non-executable until endpoints, cached immutable tokenizers, hardware identity,
+and billing acknowledgment are provided. Tokens use the declared endpoint chat
+template, not a character estimate; mismatched provider usage stops further work.
+
+Live execution requires `run --bundle <bundle> --config <local-config.json>
+--output <new-run-dir> --execute`. It does not create GPU infrastructure or
+enforce a dollar cap. No paid execution is authorized by this document. Inspect
+the actual configured host's JSON/protocol ability in a separately bounded
+first-question smoke before spending on a full pilot.
+
+`review --run <run-dir>/run.json --output <new-review-dir>` writes blank human
+judgments and a separate identity key. Keep the key from the reviewer. `report`
+accepts `--run`, `--review`, `--key`, `--costs`, and `--output`. Missing complete
+human review, genuine Qwen requests, or consistent complete request accounting
+cannot produce a successful comparison. Results and full quoted source text stay
+under ignored `out/`; publish only an appropriately compact/redacted summary.

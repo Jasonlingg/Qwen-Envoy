@@ -1,0 +1,31 @@
+{
+  "host": {
+    "endpoint": "http://127.0.0.1:9000/v1",
+    "model": "SET_HOST_MODEL_ID",
+    "tokenizer_id": "SET_MATCHING_HOST_TOKENIZER_ID",
+    "tokenizer_revision": "SET_IMMUTABLE_TOKENIZER_COMMIT",
+    "context_window": 8192,
+    "api_key_env": "PILOT_HOST_API_KEY",
+    "identity_note": "Replace with model/version declaration; remote weights are not attested."
+  },
+  "qwen": {
+    "endpoint": "http://127.0.0.1:8000/v1",
+    "model": "envoy",
+    "tokenizer_id": "Qwen/Qwen3-8B",
+    "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "context_window": 8192,
+    "api_key_env": "PILOT_QWEN_API_KEY",
+    "identity_note": "Pinned Envoy v5 declaration; remote weights are not attested.",
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50"
+  },
+  "execution": {
+    "billing_acknowledged": false,
+    "hardware": {
+      "gpu": "SET_GPU_TYPE_AND_COUNT",
+      "precision": "SET_SERVING_PRECISION",
+      "vllm_version": "SET_ACTUAL_VLLM_VERSION",
+      "max_num_seqs": 2,
+      "max_model_len": 8192
+    }
+  }
+}

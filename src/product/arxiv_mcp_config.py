@@ -19,7 +19,8 @@ DEFAULT_NEMOTRON = "nvidia/Nemotron-3-Ultra-550b-a55b"
 
 def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str | None = None,
                  qwen_checkpoint: str | None = None, nemotron_model: str = DEFAULT_NEMOTRON,
-                 harness_version: str = "v2") -> QwenInvestigator | None:
+                 harness_version: str = "v2", policy_transport=None,
+                 max_steps: int = 12) -> QwenInvestigator | None:
     if kind == "none":
         return None
     if kind == "qwen":
@@ -44,18 +45,19 @@ def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str
     prompt = effective_system_prompt("public_papers", variant, harness_version)
 
     def policy() -> OpenAICompatiblePolicy:
+        transport = {"transport": policy_transport} if policy_transport is not None else {}
         return OpenAICompatiblePolicy(endpoint=endpoint, model=model, api_key=api_key,
                                       system_prompt=prompt, max_tokens=DEFAULT_MAX_TOKENS,
                                       temperature=0.0, extra_body=extra,
                                       action_cleaner=(clean_v2_action if harness_version == "v2"
-                                                      else clean_action))
+                                                      else clean_action), **transport)
 
     return QwenInvestigator(
         policy_factory=policy,
         model_identity={**identity, "temperature": 0.0, "top_p": 1.0, "thinking": False,
                         "harness_version": harness_version, "max_tokens": DEFAULT_MAX_TOKENS},
         source_domain="public_papers", protocol_variant=variant,
-        harness_version=harness_version,
+        harness_version=harness_version, max_steps=max_steps,
     )
 
 
