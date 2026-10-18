@@ -206,3 +206,14 @@ smoke gate: stop before later questions if either arm fails to submit or the
 delegated arm performs no actual Qwen request. Keep all partial traces and mark
 the pilot incomplete. Supervised cleanup is required; production lifecycle
 automation is still unimplemented.
+
+The [October 18 live-attempt record](../../reports/research-workflow-pilot-live-attempt-20261018.json)
+records the authorized temporary A40. The model server started inside its
+container, but the external proxy returned HTTP403. No host or Qwen inference
+requests were made and no paired answers were produced. The pod was deleted and
+absence verified with404. Catalog-rate compute is approximately US$0.48, excluding
+disk; the billing read had no posted records yet and must not be called zero cost.
+The backup cleanup agent hit a usage limit; root performed supervised cleanup.
+There is still no independent production cleanup watchdog. Known-paper evidence
+extraction remains a closer task match than cross-paper synthesis; this failed
+transport attempt supplies no evidence for or against either model use case.

@@ -1,0 +1,58 @@
+{
+  "schema_version": "research-workflow-pilot-live-attempt-v1",
+  "status": "blocked_before_model_inference",
+  "approved_planning_budget_usd": 5,
+  "bundle_path": "out/research-workflow-pilot-20261017-live-bundle",
+  "bundle_sha256": "678bcceb2240e76bd89efaa2939d92ae1b5894db06e756579032fabc59a21235",
+  "source_commit": "3187966",
+  "host_preflight": {
+    "endpoint_models_status": 200,
+    "exact_model_present": true,
+    "tokenizer_revision": "77df655d5e9f8362164ed14dd8b48f8bce657498",
+    "initial_host_tokens_range": [
+      441,
+      520
+    ],
+    "with_sample_passage_tokens_range": [
+      752,
+      828
+    ],
+    "inference_requests": 0
+  },
+  "qwen_session": {
+    "pod_id": "p41a2tgo6lwch1",
+    "image": "runpod/pytorch:1.0.2-cu1281-torch280-ubuntu2404",
+    "image_digest_from_provider_boot_log": "sha256:0a360022e8de4375af99430f84e8b38951acc397252163a37ceac7204d01be35",
+    "gpu": "NVIDIA A40",
+    "gpu_count": 1,
+    "catalog_compute_usd_per_hour": 0.59,
+    "data_center": "EU-SE-1",
+    "host_cuda_version": "13.2",
+    "disk_gb": 80,
+    "separate_network_or_persistent_volumes": false,
+    "started_at": "2026-10-18T03:55:42.738Z",
+    "container_server_ready_log_at": "2026-10-18T04:00:40.977348969Z",
+    "external_models_status": 403,
+    "failure_layer": "external HTTP proxy; precise cause not established",
+    "inference_requests": 0,
+    "cleanup": "deleted and verified get-pod404",
+    "deleted_at_approx": "2026-10-18T04:44:13Z",
+    "elapsed_seconds_approx": 2910.262,
+    "compute_cost_estimate_usd": 0.47696,
+    "billing_records_returned": 0,
+    "invoice_cost": null,
+    "cost_warning": "Empty billing read is not proof of no charge. Compute estimate excludes disk; billing reconciliation pending."
+  },
+  "actual_host_model_requests": 0,
+  "actual_qwen_model_requests": 0,
+  "paired_questions_completed": 0,
+  "human_review": "not_performed",
+  "workflow_value": "not_measured",
+  "fine_tuning_improvement": "not_evaluated",
+  "remaining_limitations": [
+    "No live answer-quality, latency, or cost comparison",
+    "Production lifecycle watchdog not implemented; backup agent failed due usage limit; root manually cleaned up",
+    "Provider-reported model identity does not attest remote model weights/tokenizer",
+    "Known-paper evidence extraction is closer to the training task than open-ended cross-paper research"
+  ]
+}
