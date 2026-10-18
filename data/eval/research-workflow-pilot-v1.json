@@ -1,0 +1,69 @@
+{
+  "schema_version": "research-workflow-pilot-v1",
+  "pilot_id": "research-workflow-pilot-v1",
+  "status": "prepared_not_executed",
+  "authorship": "Agent-authored development questions, selected after inspecting the cached papers and earlier source smoke.",
+  "exposure_warning": "Previously inspected sources and question concepts; not held out, not gold labels, and not evidence of fine-tuning improvement.",
+  "model_visible_fields": ["questions[].id", "questions[].question", "questions[].arxiv_ids"],
+  "review_strata_scope": "Evaluator-only metadata; never sent to the host or Qwen reader.",
+  "review_strata": {
+    "P01": "answerable",
+    "P02": "answerable",
+    "P03": "answerable",
+    "P04": "answerable",
+    "P05": "deployment_insufficient"
+  },
+  "papers": [
+    {
+      "arxiv_id": "2402.01030v4",
+      "title": "Executable Code Actions Elicit Better LLM Agents",
+      "source_url": "https://arxiv.org/abs/2402.01030v4",
+      "coverage": "html_paragraphs",
+      "parser_version": "arxiv-paragraphs-v1",
+      "text_sha256": "0bf337dd8e7fe03bd860ee8941ba316e577c4fe892f11497adf2f876918a19b1"
+    },
+    {
+      "arxiv_id": "2510.03215v2",
+      "title": "Cache-to-Cache: Direct Semantic Communication Between Large Language Models",
+      "source_url": "https://arxiv.org/abs/2510.03215v2",
+      "coverage": "html_paragraphs",
+      "parser_version": "arxiv-paragraphs-v1",
+      "text_sha256": "ca0f888e6c58f13de57d751c309b3fc87efddf178b83296d431ae9be48b50e9d"
+    },
+    {
+      "arxiv_id": "2511.20639v4",
+      "title": "Latent Collaboration in Multi-Agent Systems",
+      "source_url": "https://arxiv.org/abs/2511.20639v4",
+      "coverage": "html_paragraphs",
+      "parser_version": "arxiv-paragraphs-v1",
+      "text_sha256": "e6421a55d9d49bd45a3169e3c8d344674c69afea33c2a1e6900523a76ae7a6a5"
+    }
+  ],
+  "questions": [
+    {
+      "id": "P01",
+      "question": "What changes when CodeAct represents agent actions as executable Python? Explain how execution feedback can help correct an action and identify a limitation that prevents claiming error-free execution. Cite the paper and distinguish its findings from advice for our system.",
+      "arxiv_ids": ["2402.01030v4"]
+    },
+    {
+      "id": "P02",
+      "question": "Explain Cache-to-Cache's Sharer-to-Receiver cache fusion, which components are learned, and one stated limitation. Cite the paper and separate reported findings from deployment advice.",
+      "arxiv_ids": ["2510.03215v2"]
+    },
+    {
+      "id": "P03",
+      "question": "What exactly does LatentMAS's reported 29.1% statistic measure and exclude? Does that statistic establish whole-system GPU or API-cost savings? Explain from the paper with evidence.",
+      "arxiv_ids": ["2511.20639v4"]
+    },
+    {
+      "id": "P04",
+      "question": "Compare Cache-to-Cache and LatentMAS's communication representations and assumptions about heterogeneous models and training. Support the comparison with passages from both papers. Do not rank their headline percentages across different experimental settings.",
+      "arxiv_ids": ["2510.03215v2", "2511.20639v4"]
+    },
+    {
+      "id": "P05",
+      "question": "Do these papers establish that our exact two-reader deployment of Qwen3-8B with the Envoy v5 adapter fits on one 24 GB GPU and is cheaper or faster than the host assistant using paper tools directly? State what can be established from these papers, identify missing measurements, and avoid unsupported guarantees.",
+      "arxiv_ids": ["2402.01030v4", "2510.03215v2", "2511.20639v4"]
+    }
+  ]
+}
