@@ -1,6 +1,6 @@
 import pytest
 
-from src.policies.openai_compatible import OpenAICompatiblePolicy
+from src.policies.openai_compatible import MODEL_USER_AGENT, OpenAICompatiblePolicy
 from src.policies.protocol import Policy
 from src.policies.registry import POLICY_SPECS, policy_catalog, requires_anthropic_key
 
@@ -29,6 +29,7 @@ def test_endpoint_policy_uses_the_shared_action_contract():
     assert payload["messages"][-1] == {"role": "user", "content": "Question: why mask tokens?"}
     assert payload["chat_template_kwargs"] == {"enable_thinking": False}
     assert headers["Authorization"] == "Bearer secret"
+    assert headers["User-Agent"] == MODEL_USER_AGENT
     assert timeout == 120.0
 
     policy.reset()

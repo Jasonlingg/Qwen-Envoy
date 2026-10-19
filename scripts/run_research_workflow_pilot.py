@@ -37,6 +37,9 @@ def parser():
     check = commands.add_parser("check", help="Verify frozen inputs; zero model calls")
     check.add_argument("--bundle", type=Path, required=True)
     check.add_argument("--docker", action="store_true", help="Scripted sandbox check; no model")
+    preflight = commands.add_parser("preflight",
+                                   help="GET model identities; zero inference or infra")
+    preflight.add_argument("--config", type=Path, required=True)
     execute = commands.add_parser("run", help="Explicit live inference; no GPU provisioning")
     execute.add_argument("--bundle", type=Path, required=True)
     execute.add_argument("--config", type=Path, required=True)
@@ -80,6 +83,15 @@ def main(argv=None):
                 raise ValueError("Scripted Docker probe failed")
             result["sandbox_probe"].pop("packet")
         print(json.dumps(result))
+    elif args.command == "preflight":
+        from src.eval.research_pilot_preflight import preflight
+        try:
+            result = preflight(_read(args.config))
+        except (OSError, ValueError, TypeError):
+            result = {"status": "not_ready", "error": "invalid_config", "model_requests": 0,
+                      "readiness_requests": 0, "models": {}}
+        print(json.dumps(result))
+        return 0 if result["status"] == "ready" else 1
     elif args.command == "run":
         if not args.execute:
             raise ValueError("Live inference requires explicit --execute; no calls made")
@@ -120,4 +132,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

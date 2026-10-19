@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 from src.eval.artifacts import configuration_hash
 from src.eval.research_pilot_host import SYSTEM_PROMPT
-from src.policies.openai_compatible import OpenAICompatiblePolicy
+from src.policies.openai_compatible import MODEL_USER_AGENT, OpenAICompatiblePolicy
 from src.product.arxiv_mcp_config import build_reader
 
 QWEN_BASE = "Qwen/Qwen3-8B"
@@ -63,7 +63,9 @@ class _NoRedirect(request.HTTPRedirectHandler):
 def bounded_transport(url, payload, headers, timeout):
     validate_endpoint(url)
     opener = request.build_opener(request.ProxyHandler({}), _NoRedirect())
-    req = request.Request(url, data=json.dumps(payload).encode(), headers=headers, method="POST")
+    model_headers = {**headers, "User-Agent": MODEL_USER_AGENT}
+    req = request.Request(url, data=json.dumps(payload).encode(), headers=model_headers,
+                          method="POST")
     try:
         with opener.open(req, timeout=timeout) as response:
             body = response.read(MAX_MODEL_RESPONSE_BYTES + 1)

@@ -15,6 +15,7 @@ from loguru import logger
 from src.policies.code_execution import DEFAULT_MAX_TOKENS, SYSTEM_PROMPT, clean_action
 
 Transport = Callable[[str, dict[str, Any], dict[str, str], float], dict[str, Any]]
+MODEL_USER_AGENT = "Qwen-Envoy/0.1 (OpenAI-compatible model client)"
 _LOGPROB_PREFIX_LIMIT = 64
 _TOP_LOGPROB_LIMIT = 20
 _TOP_LOGPROB_TOKEN_LIMIT = 4
@@ -248,7 +249,7 @@ class OpenAICompatiblePolicy:
             "max_tokens": self.max_tokens,
             "temperature": self.temperature,
         }
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json", "User-Agent": MODEL_USER_AGENT}
         if self.api_key:
             headers["Authorization"] = f"Bearer {self.api_key}"
 
