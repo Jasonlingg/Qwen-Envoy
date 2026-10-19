@@ -65,6 +65,12 @@ prepares five frozen development questions comparing direct host tools with Qwen
 delegation. Preparation and the scripted Docker check make no model calls; live
 answering and human claim review remain separate steps.
 
+The proposed [native-web comparison](implementation/2026-10-19-native-web-comparison.md)
+tests the actual user alternative: the same assistant using ordinary web tools,
+then adding model-free MCP tools, then adding Qwen readers. It requires fresh
+native client runs and independent claim review; the frozen pilot cannot stand
+in for that comparison. No native-web study results have been collected.
+
 ## Tools
 
 | Tool | Purpose | Model calls |
