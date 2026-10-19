@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 import hashlib
-import json
 import os
-from urllib import error, request
-from urllib.parse import urlsplit
 
 from src.eval.artifacts import configuration_hash
 from src.eval.research_pilot_host import SYSTEM_PROMPT
-from src.policies.openai_compatible import MODEL_USER_AGENT, OpenAICompatiblePolicy
+from src.policies.bounded_http import (
+    MAX_MODEL_RESPONSE_BYTES as MAX_MODEL_RESPONSE_BYTES,
+)
+from src.policies.bounded_http import bounded_transport, validate_endpoint
+from src.policies.openai_compatible import OpenAICompatiblePolicy
 from src.product.arxiv_mcp_config import build_reader
 
 QWEN_BASE = "Qwen/Qwen3-8B"
@@ -18,7 +19,6 @@ QWEN_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 QWEN_CHECKPOINT = ("jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@"
                    "27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50")
 QWEN_ADAPTER_SHA256 = "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
-MAX_MODEL_RESPONSE_BYTES = 1_000_000
 
 
 class CachedChatCounter:
@@ -41,44 +41,6 @@ class CachedChatCounter:
         encoded = self.tokenizer.apply_chat_template(messages, tokenize=True,
             add_generation_prompt=True, enable_thinking=False)
         return len(encoded["input_ids"] if hasattr(encoded, "keys") else encoded)
-
-
-def validate_endpoint(endpoint):
-    if not isinstance(endpoint, str):
-        raise ValueError("Model endpoint must be a URL")
-    parsed = urlsplit(endpoint)
-    if (not parsed.hostname or parsed.username or parsed.password or parsed.query or parsed.fragment
-            or parsed.scheme not in {"http", "https"}
-            or (parsed.scheme == "http"
-                and parsed.hostname not in {"localhost", "127.0.0.1", "::1"})):
-        raise ValueError("Use authenticated HTTPS or a loopback HTTP tunnel; no URL credentials")
-    return endpoint
-
-
-class _NoRedirect(request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        raise ValueError("Pilot model endpoint redirects are forbidden")
-
-
-def bounded_transport(url, payload, headers, timeout):
-    validate_endpoint(url)
-    opener = request.build_opener(request.ProxyHandler({}), _NoRedirect())
-    model_headers = {**headers, "User-Agent": MODEL_USER_AGENT}
-    req = request.Request(url, data=json.dumps(payload).encode(), headers=model_headers,
-                          method="POST")
-    try:
-        with opener.open(req, timeout=timeout) as response:
-            body = response.read(MAX_MODEL_RESPONSE_BYTES + 1)
-    except error.HTTPError as exc:
-        raise RuntimeError(f"Model endpoint HTTP {exc.code}; no retry") from None
-    except error.URLError:
-        raise RuntimeError("Model endpoint connection failed; no retry") from None
-    if len(body) > MAX_MODEL_RESPONSE_BYTES:
-        raise ValueError("Model response exceeds pilot byte limit")
-    result = json.loads(body)
-    if not isinstance(result, dict):
-        raise ValueError("Model response is not an object")
-    return result
 
 
 def validate_config(config):

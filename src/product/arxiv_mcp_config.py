@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 
+from src.policies.bounded_http import bounded_transport
 from src.policies.code_execution import DEFAULT_MAX_TOKENS, clean_action
 from src.policies.openai_compatible import OpenAICompatiblePolicy
 from src.product.harness_v2 import clean_v2_action
@@ -45,12 +46,13 @@ def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str
     prompt = effective_system_prompt("public_papers", variant, harness_version)
 
     def policy() -> OpenAICompatiblePolicy:
-        transport = {"transport": policy_transport} if policy_transport is not None else {}
         return OpenAICompatiblePolicy(endpoint=endpoint, model=model, api_key=api_key,
                                       system_prompt=prompt, max_tokens=DEFAULT_MAX_TOKENS,
                                       temperature=0.0, extra_body=extra,
                                       action_cleaner=(clean_v2_action if harness_version == "v2"
-                                                      else clean_action), **transport)
+                                                      else clean_action),
+                                      transport=(policy_transport if policy_transport is not None
+                                                 else bounded_transport))
 
     return QwenInvestigator(
         policy_factory=policy,
@@ -61,7 +63,8 @@ def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str
     )
 
 
-def build_reasoner(kind: str, model: str = DEFAULT_NEMOTRON) -> Reasoner | None:
+def build_reasoner(kind: str, model: str = DEFAULT_NEMOTRON, *,
+                   policy_transport=None) -> Reasoner | None:
     if kind == "none":
         return None
     if kind != "nemotron":
@@ -69,4 +72,6 @@ def build_reasoner(kind: str, model: str = DEFAULT_NEMOTRON) -> Reasoner | None:
     api_key = os.environ.get("NEBIUS_API_KEY")
     if not api_key:
         raise ValueError("--reasoner nemotron needs NEBIUS_API_KEY in the environment")
-    return Reasoner(NEBIUS_ENDPOINT, model, api_key)
+    return Reasoner(NEBIUS_ENDPOINT, model, api_key,
+                    transport=(policy_transport if policy_transport is not None
+                               else bounded_transport))

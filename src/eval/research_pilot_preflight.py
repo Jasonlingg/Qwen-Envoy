@@ -8,7 +8,7 @@ import re
 from http.client import HTTPException
 from urllib import error, request
 
-from src.eval.research_pilot_runtime import MAX_MODEL_RESPONSE_BYTES, validate_endpoint
+from src.policies.bounded_http import MAX_MODEL_RESPONSE_BYTES, validate_endpoint
 from src.policies.openai_compatible import MODEL_USER_AGENT
 
 
@@ -80,7 +80,7 @@ def probe_models(settings, *, timeout=10.0):
                                     else "http_error")}
     try:
         payload = json.loads(body)
-    except (ValueError, UnicodeError):
+    except (ValueError, UnicodeError, RecursionError):
         return {**result, "error": "invalid_response"}
     data = payload.get("data") if isinstance(payload, dict) else None
     if not isinstance(data, list):

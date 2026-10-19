@@ -152,6 +152,7 @@ def test_models_response_size_is_bounded(monkeypatch, declared_size):
     (b'{"data": "envoy"}', "invalid_response"),
     (b'{"echo": "secret-but-not-json-model-list"}', "invalid_response"),
     (b"invalid JSON secret", "invalid_response"),
+    (b"[" * 1500 + b"0" + b"]" * 1500, "invalid_response"),
 ])
 def test_exact_model_identity_and_response_shape_are_required(monkeypatch, body, expected):
     monkeypatch.setenv("PILOT_SELECTED_KEY", "selected-key")
