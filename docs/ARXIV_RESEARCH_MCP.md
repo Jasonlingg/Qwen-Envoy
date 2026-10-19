@@ -22,6 +22,13 @@ stdio; their results carry provenance warnings. The host chooses tool order.
 For example: search papers, open selected results, find evidence, then use
 get_passage to inspect the surrounding text before making a claim.
 
+For a source-only client or the model-free arm of a comparison, register with
+`--tool-profile sources`. This exposes exactly `search_papers`, `get_citations`,
+`open_paper`, `find_evidence`, and `get_passage`; it hides `investigate` and
+reader instructions from the client. This profile requires `--reader none` and
+`--reasoner none`. The default `--tool-profile full` preserves all six tools,
+including `investigate` returning `model_not_configured` when no reader is set.
+
 For a hosted reader, make `NEBIUS_API_KEY` available in the MCP server's process
 environment and register with `--reader nemotron`. The named model defaults to
 `nvidia/Nemotron-3-Ultra-550b-a55b`; its weights/revision are not endpoint-attested.

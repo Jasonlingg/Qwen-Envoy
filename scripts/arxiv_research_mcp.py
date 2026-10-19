@@ -55,12 +55,19 @@ def _input_errors(function):
     return call
 
 
-def create_server(library, discovery, *, investigator=None, reasoner=None) -> MCPServer:
-    server = MCPServer("Envoy arXiv Research", instructions=(
+def create_server(library, discovery, *, investigator=None, reasoner=None,
+                  tool_profile: str = "full") -> MCPServer:
+    if tool_profile not in {"full", "sources"}:
+        raise ValueError("tool_profile must be full or sources")
+    if tool_profile == "sources" and (investigator is not None or reasoner is not None):
+        raise ValueError("sources profile cannot configure a reader or reasoner")
+    instructions = (
         "Research arXiv papers. search_papers and get_citations find papers; open_paper "
-        "fetches one; find_evidence and get_passage return exact text with offsets; "
-        "investigate dispatches a reader per paper and returns verified quotes. Quotes prove "
-        "provenance, not support: reason over them before answering."))
+        "fetches one; find_evidence and get_passage return exact text with offsets; ")
+    if tool_profile == "full":
+        instructions += "investigate dispatches a reader per paper and returns verified quotes. "
+    instructions += "Quotes prove provenance, not support: reason over them before answering."
+    server = MCPServer("Envoy arXiv Research", instructions=instructions)
 
     @server.tool(annotations=REMOTE)
     @_input_errors
@@ -116,12 +123,14 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
                 "total_chars": len(document["text"]), "text": document["text"][start:end],
                 "warning": WARNING}
 
-    @server.tool(annotations=REMOTE)
-    @_input_errors
-    def investigate(question: str, arxiv_ids: list[str],
-                    synthesize: bool = False) -> dict[str, Any]:
-        """Run one reader per paper (max 5) and return merged verified quotes."""
-        return run_investigation(library, investigator, reasoner, question, arxiv_ids, synthesize)
+    if tool_profile == "full":
+        @server.tool(annotations=REMOTE)
+        @_input_errors
+        def investigate(question: str, arxiv_ids: list[str],
+                        synthesize: bool = False) -> dict[str, Any]:
+            """Run one reader per paper (max 5) and return merged verified quotes."""
+            return run_investigation(library, investigator, reasoner, question,
+                                     arxiv_ids, synthesize)
 
     return server
 
@@ -129,6 +138,8 @@ def create_server(library, discovery, *, investigator=None, reasoner=None) -> MC
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--library-root", type=Path, default=Path("~/.envoy/arxiv-library"))
+    parser.add_argument("--tool-profile", choices=["full", "sources"], default="full",
+                        help="sources exposes only the five model-free source tools")
     parser.add_argument("--reader", choices=["none", "qwen", "nemotron"], default="none",
                         help="Explicit model opt-in; default none makes no model calls")
     parser.add_argument("--qwen-endpoint")
@@ -138,6 +149,8 @@ def main() -> None:
     parser.add_argument("--reasoner", choices=["none", "nemotron"], default="none")
     parser.add_argument("--harness", choices=["v1", "v2"], default="v2")
     args = parser.parse_args()
+    if args.tool_profile == "sources" and (args.reader != "none" or args.reasoner != "none"):
+        parser.error("--tool-profile sources requires --reader none and --reasoner none")
     reader = args.reader
     root = args.library_root.expanduser()
     try:
@@ -150,7 +163,8 @@ def main() -> None:
     except ValueError as exc:
         parser.error(str(exc))
     create_server(ArxivLibrary(root), PaperDiscovery(root / "discovery-cache"),
-                  investigator=investigator, reasoner=reasoner).run(transport="stdio")
+                  investigator=investigator, reasoner=reasoner,
+                  tool_profile=args.tool_profile).run(transport="stdio")
 
 
 if __name__ == "__main__":
