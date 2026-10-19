@@ -1,7 +1,8 @@
 # ML experiment planning through MCP — v1 design
 
-Date: 2026-10-19. Status: Tasks 1–4 approved and implemented.
-The user's question drives the workflow. Tasks 5–6 await separate approval.
+Date: 2026-10-19. Status: Tasks 1–5 approved and implemented.
+The user's question drives the workflow. Task 5's user usefulness review is
+pending; Task 6 awaits separate approval.
 
 ## Goal and first useful workflow
 
@@ -201,7 +202,6 @@ follows; those require separate, approved evaluations.
 
 | Task | Proposed files and verification; await approval before starting |
 | --- | --- |
-| 5 — use it here | Small provenance-bound development exports and example brief; actual native-client source research and local planning, user review, retrospective result round trip. No GPU or paid reader. |
 | 6 — release | Independent review, fixes, full relevant suite, README/demo instructions, reproducible example and limitations. Paid live-reader and native-web comparison work stay separately scoped. |
 
 Each implementation task gets focused verification and a small logical commit.
@@ -209,5 +209,10 @@ Task 1 changed this design document only. Task 2 implemented the record foundati
 Task 3 adds source receipts, readable briefs, and four planning MCP tools. Task 4
 adds immutable outcomes and the fifth MCP tool, per-criterion checks, and explicit
 measurement provenance/timing labels. See `docs/ML_EXPERIMENT_MCP.md` for the
-current surface. Task 5's real-project demonstration and user review are pending;
-the synthetic round trip does not satisfy that usability gate.
+current surface. Task 5's real-project walkthrough is recorded in
+`examples/ml-experiment-qwen-v5`: native source research, real planning-MCP stdio
+calls, a proposal left as a draft, and a separate retrospective/inconclusive
+historical import. Native planning-tool discovery in the host was unavailable;
+the registered server was exercised through a Python MCP client. User review of
+the proposal's usefulness remains pending. Neither this walkthrough nor the
+synthetic tests establish the broader usability/model-improvement gates.

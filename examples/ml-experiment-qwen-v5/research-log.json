@@ -1,0 +1,230 @@
+{
+  "scope": "Host assistant used native arxiv-research MCP tools for this question; planning tools used the configured server through a Python MCP stdio client.",
+  "native_source_calls": [
+    {
+      "tool": "search_papers",
+      "arguments": {
+        "query": "Self-RAG learning retrieve generate critique self reflection retrieval augmented generation",
+        "limit": 5
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": null,
+        "papers": [
+          {
+            "arxiv_id": "2310.11511",
+            "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection"
+          },
+          {
+            "arxiv_id": null,
+            "title": "Reflective RAG: Self-Evaluation Driven Strategy Optimization in Agentic Retrieval-Augmented Generation"
+          },
+          {
+            "arxiv_id": null,
+            "title": "An Intelligent Conversational Agent Using Self-Reflective Retrieval-Augmented Generation for Enhanced Large Language Model Support in National Accounts Learning"
+          },
+          {
+            "arxiv_id": null,
+            "title": "The Development Status of Retrieval-Augmented Generation (RAG) Technology"
+          },
+          {
+            "arxiv_id": null,
+            "title": "Introspective RAG: An Adaptive Retrieval-Augmented Generation Framework Based on Self-Reflection and Efficient Reasoning"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2310.11511"
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2310.11511v1",
+        "coverage": "html_paragraphs"
+      }
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2305.14627"
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2305.14627v2",
+        "coverage": "html_paragraphs"
+      }
+    },
+    {
+      "tool": "open_paper",
+      "arguments": {
+        "arxiv_id": "2310.01798"
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2310.01798v2",
+        "coverage": "html_paragraphs"
+      }
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "training reflection tokens relevant supported citation accuracy",
+        "arxiv_ids": [
+          "2310.11511v1"
+        ],
+        "top_k": 3
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": null,
+        "papers": [
+          "2310.11511v1"
+        ],
+        "evidence_spans": [
+          {
+            "arxiv_id": "2310.11511v1",
+            "start": 14245,
+            "end": 15194
+          },
+          {
+            "arxiv_id": "2310.11511v1",
+            "start": 5638,
+            "end": 6639
+          },
+          {
+            "arxiv_id": "2310.11511v1",
+            "start": 15362,
+            "end": 16874
+          }
+        ]
+      }
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "citation recall precision entailment support statement human evaluation",
+        "arxiv_ids": [
+          "2305.14627v2"
+        ],
+        "top_k": 2
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": null,
+        "papers": [
+          "2305.14627v2"
+        ],
+        "evidence_spans": [
+          {
+            "arxiv_id": "2305.14627v2",
+            "start": 27859,
+            "end": 28618
+          },
+          {
+            "arxiv_id": "2305.14627v2",
+            "start": 38420,
+            "end": 39719
+          }
+        ]
+      }
+    },
+    {
+      "tool": "find_evidence",
+      "arguments": {
+        "query": "without external feedback self correction performance decrease limitations",
+        "arxiv_ids": [
+          "2310.01798v2"
+        ],
+        "top_k": 2
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": null,
+        "papers": [
+          "2310.01798v2"
+        ],
+        "evidence_spans": [
+          {
+            "arxiv_id": "2310.01798v2",
+            "start": 7601,
+            "end": 8586
+          },
+          {
+            "arxiv_id": "2310.01798v2",
+            "start": 5477,
+            "end": 6132
+          }
+        ]
+      }
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2305.14627v2",
+        "start": 13820,
+        "length": 1700
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2305.14627v2",
+        "start": 13820,
+        "end": 15520
+      }
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2310.01798v2",
+        "start": 12407,
+        "length": 1900
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2310.01798v2",
+        "start": 12407,
+        "end": 14307
+      }
+    },
+    {
+      "tool": "get_passage",
+      "arguments": {
+        "arxiv_id": "2310.11511v1",
+        "start": 5638,
+        "length": 600
+      },
+      "is_error": false,
+      "summary": {
+        "status": "ok",
+        "arxiv_id": "2310.11511v1",
+        "start": 5638,
+        "end": 6238
+      }
+    }
+  ],
+  "host_web_search": {
+    "calls": 1,
+    "queries": [
+      "site.arxiv.org \"Enabling Large Language Models to Generate Text with Citations\"",
+      "site.arxiv.org \"Large Language Models Cannot Self-Correct Reasoning Yet\""
+    ],
+    "purpose": "Locate primary papers; then open and inspect versioned full text through research MCP."
+  },
+  "qwen_reader_calls": 0,
+  "paid_inference_calls": 0,
+  "limitations": [
+    "Not an exhaustive or SOTA literature survey.",
+    "Claim-level source review is host-model-assisted; independent human review remains pending.",
+    "Ordinary host assistant usage is separate from the zero-inference MCP components."
+  ]
+}

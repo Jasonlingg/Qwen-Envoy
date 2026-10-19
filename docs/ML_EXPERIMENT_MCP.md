@@ -15,10 +15,11 @@ not need to fill in a form. Hypotheses, methods, and thresholds are supplied per
 experiment; the server has no built-in experiment recommendations.
 
 This companion saves, retrieves, lists, and freezes plans, then records supplied
-results against their original criteria (Tasks 2–4). Research-to-decision
-usefulness still needs the real development demonstration and user review in
-Task 5. A connection check does not establish useful recommendations or Qwen
-improvement.
+results against their original criteria (Tasks 2–4). Task 5's
+[real-project walkthrough](../examples/ml-experiment-qwen-v5/README.md) uses saved
+Qwen failures and online paper research to save one draft diagnostic, plus a
+separate historical result import. User review of its usefulness remains pending.
+It does not establish a Qwen improvement.
 
 ## Start locally
 
@@ -204,7 +205,7 @@ also save a question, revise it with synthetic data and source receipts, freeze,
 record a synthetic outcome, restart the subprocess, and retrieve the original
 plan, evidence, and result after the exports are removed.
 
-Focused verification: 179 passing tests across the experiment modules and the
+Focused verification: 182 passing tests across the experiment modules and the
 existing arXiv server/profile tests; Ruff and whitespace checks pass. Reproduce:
 
 ```bash
@@ -212,3 +213,13 @@ python -m pytest -q tests/test_ml_experiment*.py tests/test_arxiv_mcp_profiles.p
 ```
 
 The full relevant suite and independent release review remain Task 6.
+
+The Task 5 report at `out/ml-experiment-task5-20261019.json` records ten actual
+planning-MCP calls, server restart/retry checks, a draft proposal and a separate
+retrospective/inconclusive result. A portable copy and exact inputs are under
+`examples/ml-experiment-qwen-v5`. Native source tools were used for paper research;
+the locally registered planning server was invoked with a Python stdio MCP
+client because its tools were not loaded into this host's native inventory.
+Native planning-tool discovery still needs a client reload. No new Qwen outputs,
+paid inference, or GPU launch occurred. See the example for conditional corpus
+and cache prerequisites; automated tests never download those sources.

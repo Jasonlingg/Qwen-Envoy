@@ -1,0 +1,169 @@
+{
+  "schema_version": "ml-experiment-development-demo-v1",
+  "recorded_at": "2026-10-19T23:46:01.306245+00:00",
+  "transport": "Python MCP stdio client invoking the locally registered server command",
+  "native_host_planning_tool_inventory": "Not loaded in this session; used stdio client",
+  "tools": [
+    "freeze_experiment_plan",
+    "get_experiment",
+    "list_experiments",
+    "record_experiment_result",
+    "save_experiment_brief"
+  ],
+  "calls": [
+    {
+      "tool": "list_experiments",
+      "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "response_sha256": "7723e0b93c41c59b3710d3ac011406e1ddb584708f892ed5c8b5612d30dbf864",
+      "is_error": false
+    },
+    {
+      "tool": "save_experiment_brief",
+      "arguments_sha256": "2b841975af338d381763a64b5a21a4953f862ba38a1f35651db988c6b3b95a0e",
+      "response_sha256": "67676698393634698a89d5ac7576d720ea84c3e27fe31706f4ffffce5e1bbffd",
+      "is_error": false
+    },
+    {
+      "tool": "save_experiment_brief",
+      "arguments_sha256": "1b7850e4fcfb787cb62fecb6439e2e0cf22049b3ba4c9dd4b82341b3dc2233ba",
+      "response_sha256": "9e1a0feaf873fde9b85d7ed0a9574082ccaaee02115642d7be1654feb29c549d",
+      "is_error": false
+    },
+    {
+      "tool": "save_experiment_brief",
+      "arguments_sha256": "438709c36990def1dc08d5b88737aca821ffe3286832e6af0ea588efca8143d9",
+      "response_sha256": "7c336bb4b1d7dbb082e14633d6d37622b5ffa5254a2f38a4cd0db6db91d4cf5d",
+      "is_error": false
+    },
+    {
+      "tool": "freeze_experiment_plan",
+      "arguments_sha256": "3c06e5a375909e4734962d17683ee76170f169a4795e1b2f02635f62b97b50b9",
+      "response_sha256": "dfa0908cf2f3f2f5051f11f87fa8b7bb6f0017d604202e986b4e7ae5d5ffe684",
+      "is_error": false
+    },
+    {
+      "tool": "record_experiment_result",
+      "arguments_sha256": "96c5e954e152cef21960ed61ee8a0acbcff2758c08729584c29ac6503efeb059",
+      "response_sha256": "f334b0b2cae82989a7eb6bb974183572ce783a100147b43736240aad3670c2f7",
+      "is_error": false
+    },
+    {
+      "tool": "get_experiment",
+      "arguments_sha256": "934196457412e0c0d6602e04b211d0266bbee525bb054c1122d7780479e0b4cc",
+      "response_sha256": "f334b0b2cae82989a7eb6bb974183572ce783a100147b43736240aad3670c2f7",
+      "is_error": false
+    },
+    {
+      "tool": "record_experiment_result",
+      "arguments_sha256": "96c5e954e152cef21960ed61ee8a0acbcff2758c08729584c29ac6503efeb059",
+      "response_sha256": "f334b0b2cae82989a7eb6bb974183572ce783a100147b43736240aad3670c2f7",
+      "is_error": false
+    },
+    {
+      "tool": "get_experiment",
+      "arguments_sha256": "fc6797db6b8ca56083449e6ed45f845bc35d8f4b0fbe71119fa5a6dc9c00d184",
+      "response_sha256": "5d11a3193d6451b07c4e081ceed63ef8625d567ae0c5a7460b3e564c51f37682",
+      "is_error": false
+    },
+    {
+      "tool": "list_experiments",
+      "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "response_sha256": "e276768b2ba4b1e395c356d1452171a5a97c7c9dd479dba131633f19dc51576b",
+      "is_error": false
+    }
+  ],
+  "restart_verified": true,
+  "retry_verified": true,
+  "proposal": {
+    "experiment_id": "experiment_a2c10d6cf9214e169705936b11c87185",
+    "revision": 2,
+    "status": "draft",
+    "plan_sha256": null,
+    "results": []
+  },
+  "historical": {
+    "experiment_id": "experiment_039eda5a556248cfa8300aa178524c7d",
+    "plan_sha256": "57e7088cde15223d2e4bbebc41222e41d6f049815d3a23142d4ac4d0c828c4d1",
+    "result_sha256": "738c716c3618ebd9a32db8008d1cf5a7826847badd30ca936ea44ce608261aa1",
+    "assessment": {
+      "schema_version": "ml-experiment-assessment-v1",
+      "overall": "inconclusive",
+      "effective_timing": "retrospective",
+      "criteria": [
+        {
+          "criterion_id": "original_provisional_gain",
+          "metric_id": "provisional_pass_rate",
+          "required": true,
+          "status": "met",
+          "observed_value": 25.0,
+          "unit": "percentage_points",
+          "reason": "Compared against the frozen threshold"
+        },
+        {
+          "criterion_id": "original_error_tolerance",
+          "metric_id": "error_episodes",
+          "required": true,
+          "status": "met",
+          "observed_value": -21.0,
+          "unit": "count",
+          "reason": "Compared against the frozen threshold"
+        },
+        {
+          "criterion_id": "independent_support_gain",
+          "metric_id": "human_supported_rate",
+          "required": true,
+          "status": "unknown",
+          "observed_value": null,
+          "unit": "percent",
+          "reason": "baseline: measurement is missing or unknown"
+        },
+        {
+          "criterion_id": "complete_latency_nonregression",
+          "metric_id": "latency",
+          "required": true,
+          "status": "unknown",
+          "observed_value": null,
+          "unit": "seconds",
+          "reason": "baseline: relevant model/workload/runtime identity is unknown"
+        },
+        {
+          "criterion_id": "all_in_cost_nonregression",
+          "metric_id": "cost",
+          "required": true,
+          "status": "unknown",
+          "observed_value": null,
+          "unit": "USD",
+          "reason": "baseline: measurement is missing or unknown"
+        }
+      ],
+      "measurement_provenance": {
+        "baseline.cost": "artifact_measurement_verified",
+        "baseline.error_episodes": "artifact_measurement_verified",
+        "baseline.human_supported_rate": "artifact_measurement_verified",
+        "baseline.latency": "artifact_measurement_verified",
+        "baseline.provisional_pass_rate": "artifact_measurement_verified",
+        "candidate.cost": "artifact_measurement_verified",
+        "candidate.error_episodes": "artifact_measurement_verified",
+        "candidate.human_supported_rate": "artifact_measurement_verified",
+        "candidate.latency": "artifact_measurement_verified",
+        "candidate.provisional_pass_rate": "artifact_measurement_verified"
+      },
+      "warnings": [
+        "Criteria compare supplied measurements; they prove no causality or adoption.",
+        "Runtime identity, coverage, and controlled conditions remain caller declarations.",
+        "Reviewer identity and timestamps are declarations, not authenticated attestations."
+      ]
+    }
+  },
+  "model_requests": 0,
+  "gpu_launches": 0,
+  "paid_model_calls": 0,
+  "independent_human_review": "pending",
+  "user_usefulness_review": "pending",
+  "limitations": [
+    "No new Qwen outputs or intervention outcomes were collected.",
+    "Source research is documented separately; this script reuses those cached papers.",
+    "MCP checks export bytes, not faithful parent derivation; run the exporter to recheck.",
+    "The proposal's positive resource ceilings are unapproved estimates, not executed limits."
+  ]
+}
