@@ -18,7 +18,8 @@ def sources(tmp_path):
     library.open("2609.12345v2")
     exports = tmp_path / "exports"
     exports.mkdir()
-    raw = b'{"metrics":{"passed":3,"total":20},"reviewer_kind":"model_assisted"}'
+    raw = (b'{"metrics":{"passed":3,"total":20},'
+           b'"reviewer_kind":"model_assisted","unknown_cost":null}')
     (exports / "run.json").write_bytes(raw)
     resolver = EvidenceResolver(library_root=library.root, artifact_root=exports)
     refs = [{"kind": "paper_span", "reference_id": "paper", "arxiv_id": "2609.12345v2",

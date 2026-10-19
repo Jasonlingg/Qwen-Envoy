@@ -1,7 +1,7 @@
 # ML experiment planning through MCP — v1 design
 
-Date: 2026-10-19. Status: Task 1 complete; Task 2 approved after clarification
-that the user's question drives the workflow. Tasks 3–6 await separate approval.
+Date: 2026-10-19. Status: Tasks 1–2 complete; Task 3 approved and implemented.
+The user's question drives the workflow. Tasks 4–6 await separate approval.
 
 ## Goal and first useful workflow
 
@@ -206,5 +206,6 @@ follows; those require separate, approved evaluations.
 | 6 — release | Independent review, fixes, full relevant suite, README/demo instructions, reproducible example and limitations. Paid live-reader and native-web comparison work stay separately scoped. |
 
 Each implementation task gets focused verification and a small logical commit.
-Task 1 changed this design document only. Task 2 implements the record foundation;
-source verification/MCP wiring and result recording remain Tasks 3 and 4.
+Task 1 changed this design document only. Task 2 implemented the record foundation.
+Task 3 adds source receipts, readable briefs, and four planning MCP tools; result
+recording is deferred to Task 4. See `docs/ML_EXPERIMENT_MCP.md` for the current surface.
