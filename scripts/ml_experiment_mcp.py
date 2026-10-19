@@ -20,7 +20,9 @@ if str(ROOT) not in sys.path:
 from src.product.ml_experiment_evidence import EvidenceResolver  # noqa: E402
 from src.product.ml_experiment_markdown import render_brief  # noqa: E402
 from src.product.ml_experiment_models import ExperimentBrief  # noqa: E402
+from src.product.ml_experiment_results import ExperimentResult  # noqa: E402
 from src.product.ml_experiment_store import ExperimentStore  # noqa: E402
+from src.product.ml_experiment_types import Digest  # noqa: E402
 
 READ = ToolAnnotations(read_only_hint=True, open_world_hint=False)
 SAVE = ToolAnnotations(read_only_hint=False, destructive_hint=False, open_world_hint=False)
@@ -35,7 +37,11 @@ Distinguish paper claims, observed results, your hypotheses, and untested recomm
 Save the brief behind the conversation; explain the proposal and unknowns to the user.
 Freeze only when the user agrees to the exact proposed plan. Freezing grants no
 permission to execute, train, provision resources, or spend. All tools here are local,
-make zero model/network calls, and do not run experiments or evaluate results.
+make zero model/network calls, and do not run experiments. Recorded results are
+compared mechanically against frozen criteria; this is not a scientific verdict.
+Record failed/missing cases, unknown costs, and warm/cold timing honestly. Never
+invent human review. Historical outcomes remain retrospective. Record synthetic
+fixtures as synthetic. Result run IDs are immutable; identical retries are safe.
 Attach only already cached versioned paper spans or explicitly selected JSON exports.
 Use JSON Pointers to select small relevant values; preserve metric definitions,
 populations, denominators, and reviewer kind. Never send credentials or private data
@@ -54,7 +60,7 @@ def _errors(function):
         except ValidationError as exc:
             fields = [".".join(map(str, item["loc"]))
                       for item in exc.errors(include_input=False)[:5]]
-            raise ToolError("Invalid brief fields: " + ", ".join(fields)[:400]) from None
+            raise ToolError("Invalid experiment fields: " + ", ".join(fields)[:400]) from None
         except ValueError as exc:
             raise ToolError(str(exc)[:500]) from None
     return call
@@ -94,9 +100,17 @@ def create_server(store: ExperimentStore) -> MCPServer:
 
     @server.tool(annotations=READ)
     @_errors
-    def get_experiment(experiment_id: str) -> dict[str, Any]:
-        """Retrieve a saved brief, evidence receipts, revision history, and readable Markdown."""
-        return _present(store.get(experiment_id))
+    def get_experiment(experiment_id: str, run_id: str | None = None) -> dict[str, Any]:
+        """Retrieve a brief and latest result, or select a recorded run by its ID."""
+        return _present(store.get(experiment_id, run_id))
+
+    @server.tool(annotations=FREEZE)
+    @_errors
+    def record_experiment_result(experiment_id: str, plan_sha256: Digest,
+                                  result: ExperimentResult) -> dict[str, Any]:
+        """Append supplied measurements against an exact frozen plan; runs no experiment."""
+        return _present(store.record_result(experiment_id, plan_sha256,
+                                            result.model_dump(mode="json")))
 
     @server.tool(annotations=READ)
     @_errors

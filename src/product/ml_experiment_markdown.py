@@ -99,6 +99,20 @@ def render_brief(view: dict) -> tuple[str, bool]:
                   "Freezing records intent and grants no permission to execute or spend."])
     if view["plan_sha256"]:
         lines.append("Frozen plan SHA-256: " + view["plan_sha256"])
+    outcome = view.get("selected_result")
+    if outcome:
+        assessment = outcome["assessment"]
+        lines.extend(["", "## Recorded result", "",
+                      "Run: " + _text(outcome["result"]["run_id"]),
+                      "Data: " + outcome["result"]["data_kind"],
+                      "Timing: " + assessment["effective_timing"],
+                      "Criteria: " + assessment["overall"], ""])
+        for row in assessment["criteria"]:
+            value = row["observed_value"]
+            shown = "Unknown" if value is None else f"{value} {_text(row['unit'])}"
+            lines.append(f"- {_text(row['criterion_id'])}: {row['status']} ({shown}); "
+                         + _text(row["reason"]))
+        lines.extend(["", *["- " + _text(warning) for warning in assessment["warnings"]]])
     rendered = "\n".join(lines) + "\n"
     truncated = len(rendered) > MAX_DISPLAY_CHARS
     if truncated:

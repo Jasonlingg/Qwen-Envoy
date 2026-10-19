@@ -1,7 +1,7 @@
 # ML experiment planning through MCP — v1 design
 
-Date: 2026-10-19. Status: Tasks 1–2 complete; Task 3 approved and implemented.
-The user's question drives the workflow. Tasks 4–6 await separate approval.
+Date: 2026-10-19. Status: Tasks 1–4 approved and implemented.
+The user's question drives the workflow. Tasks 5–6 await separate approval.
 
 ## Goal and first useful workflow
 
@@ -77,7 +77,7 @@ Paper content and run text are data, never instructions to execute commands.
 | --- | --- |
 | `save_experiment_brief(brief, experiment_id=null, expected_revision=null)` | Create a draft, or append a draft revision with an exact prior revision. Validate and snapshot referenced evidence. Return ID, revision, digest, Markdown, and missing fields. |
 | `freeze_experiment_plan(experiment_id, expected_revision)` | Check required planning fields and freeze the exact revision and evidence hashes. Return an immutable plan digest. Freezing records the plan; it grants no permission to spend or execute. |
-| `get_experiment(experiment_id)` | Return the brief, revision history, frozen plan, recorded outcomes, limitations, and Markdown. |
+| `get_experiment(experiment_id, run_id=null)` | Return the brief, history, frozen plan, outcome summaries, selected/latest outcome, limitations, and Markdown. |
 | `list_experiments(limit=20)` | Return up to 100 recent summaries and IDs, with a truncation indicator. |
 | `record_experiment_result(experiment_id, plan_sha256, result)` | Append a result bound to a frozen plan, preserve failures/unknowns, and return per-criterion comparisons. Identical repeated run IDs are idempotent; conflicting content is rejected. |
 
@@ -134,7 +134,9 @@ limitations. Mark prospective/retrospective/unknown timing. Recorded measurement
 can be caller-reported; only artifact-bound values get artifact verification.
 Importing history never upgrades it to a prospective controlled experiment.
 
-Metric definitions include ID, unit, aggregation, population, and direction.
+Metric definitions include ID, unit, aggregation, population, direction, measurement
+kind, latency scope, and failed-case inclusion policy. Old plans retain their
+hashes; an unspecified kind makes affected comparisons inconclusive.
 V1 criteria support absolute `<=`/`>=`, candidate-minus-baseline `<=`/`>=`, and
 relative improvement `>=`; the direction determines the relative formula.
 Require finite numbers, matching units/populations/aggregation, relevant matched
@@ -199,13 +201,13 @@ follows; those require separate, approved evaluations.
 
 | Task | Proposed files and verification; await approval before starting |
 | --- | --- |
-| 2 — records | New `src/product/ml_experiment_{models,store}.py` and focused tests: schema/unknowns, atomic persistence, revision conflicts, immutable freeze, hash binding. Split helpers as needed to keep modules small. |
-| 3 — planning MCP | New `scripts/ml_experiment_mcp.py`, evidence/Markdown helpers, setup instructions and focused stdio tests: draft/save/get/list/freeze, paper/export references, directory boundaries, unchanged research tool inventories. Outcome recording follows Task 4. |
-| 4 — results | New result comparison helper, result MCP tool and tests: thresholds/direction, units/coverage/conditions, missing data, retrospective records, immutable run IDs. |
 | 5 — use it here | Small provenance-bound development exports and example brief; actual native-client source research and local planning, user review, retrospective result round trip. No GPU or paid reader. |
 | 6 — release | Independent review, fixes, full relevant suite, README/demo instructions, reproducible example and limitations. Paid live-reader and native-web comparison work stay separately scoped. |
 
 Each implementation task gets focused verification and a small logical commit.
 Task 1 changed this design document only. Task 2 implemented the record foundation.
-Task 3 adds source receipts, readable briefs, and four planning MCP tools; result
-recording is deferred to Task 4. See `docs/ML_EXPERIMENT_MCP.md` for the current surface.
+Task 3 adds source receipts, readable briefs, and four planning MCP tools. Task 4
+adds immutable outcomes and the fifth MCP tool, per-criterion checks, and explicit
+measurement provenance/timing labels. See `docs/ML_EXPERIMENT_MCP.md` for the
+current surface. Task 5's real-project demonstration and user review are pending;
+the synthetic round trip does not satisfy that usability gate.

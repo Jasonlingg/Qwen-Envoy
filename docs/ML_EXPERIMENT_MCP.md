@@ -14,8 +14,8 @@ and proposes a small test. It saves the brief behind that conversation. You do
 not need to fill in a form. Hypotheses, methods, and thresholds are supplied per
 experiment; the server has no built-in experiment recommendations.
 
-This companion currently saves, retrieves, lists, and freezes plans. Result
-recording/comparison is the separately approved Task 4. Research-to-decision
+This companion saves, retrieves, lists, and freezes plans, then records supplied
+results against their original criteria (Tasks 2–4). Research-to-decision
 usefulness still needs the real development demonstration and user review in
 Task 5. A connection check does not establish useful recommendations or Qwen
 improvement.
@@ -64,9 +64,10 @@ Configuration alone is not proof that a native assistant completed research.
 | Tool | What it does |
 | --- | --- |
 | `save_experiment_brief` | Save a draft from just a question, or revise the complete current brief with an exact prior revision. Verify and copy attached evidence. |
-| `get_experiment` | Return the saved brief, readable Markdown, evidence receipts, revision history, and frozen-plan identity. |
+| `get_experiment` | Return the brief, Markdown, evidence, frozen plan, result summaries, and latest result; optional `run_id` selects an older result. |
 | `list_experiments` | List recent question/plan summaries; default 20, maximum 100, with truncation reported. |
 | `freeze_experiment_plan` | Record the exact complete plan the user agreed to; preserve the criteria and evidence hashes. |
+| `record_experiment_result` | Append baseline/candidate measurements bound to the exact frozen `plan_sha256`; return each criterion as met, not met, or unknown. |
 
 The host can first save `{"question": "Could a smaller model help here?"}`.
 It fills in the baseline, candidate, hypothesis, evaluation sample, relevant
@@ -122,6 +123,68 @@ parent-export derivation, fair benchmarking, or causal improvement. Paper
 extraction may omit figures, table structure, or equations. Semantic support
 remains `not_reviewed`. Human and model review remain separate.
 
+## Review an experiment's results
+
+After running an independently authorized experiment, give the host its selected
+exports. The host attaches them with `record_experiment_result`, naming the
+experiment ID, frozen plan SHA-256, and a unique run ID. This records supplied
+results; it runs no inference, training, benchmark, or billing operation.
+
+Each result includes the two arms' actual identities and conditions, evaluation
+sample, measurements, coverage, failures, missing cases, and limitations. Unknown
+numbers use `value: null` with `unknown_reason`; they never become zero. The
+server preserves the frozen plan. Identical retries of a run ID return the same
+saved result, even if its source export has disappeared; different content under
+that ID is rejected. A new run ID appends another result without overwriting old
+ones. Up to 100 results are stored per experiment.
+
+Metrics declare `measurement_kind` (`quality`, `latency`, `cost`, or `other`).
+Latency additionally declares `timing_scope` (`warm`, `cold`, or `end_to_end`).
+Failed cases require the metric's explicit `failure_policy: include`; otherwise
+the comparison stays unknown. Older frozen plans without a measurement kind
+remain readable with their original digest, but yield inconclusive results.
+Create a linked successor to change their metric definitions.
+
+The comparison requires the same planned samples, population, purpose, units,
+aggregation, known matching dataset revisions, complete coverage, and matching
+planned conditions. Relevant identities must be known: model revision/workload;
+hardware/software revision for timing and cost; prompt/decoding for quality;
+session allocation for end-to-end timing. Differences in these identities must
+be declared in the frozen arm definitions. Declared deviations leave criteria
+unknown. These checks operate on supplied metadata, not independent observations
+of the runtime; they do not establish that every confound was controlled.
+
+Cost criteria require a matching USD total with all seven components known:
+host inference, worker inference, GPU loading, active time, idle time, cleanup,
+and session storage. An unknown component leaves cost unknown. Zero is allowed
+only as an explicit measurement. Resource ceilings remain recorded limits, not
+enforced billing caps.
+
+Artifact receipts distinguish `artifact_value_only` from
+`artifact_measurement_verified`. A scalar or partial measurement object verifies
+only the supplied value/fields. To bind the complete measurement, select an
+object containing every `Measurement` field (including explicit nulls, coverage,
+review, timing, and cost fields; `reference_id` may be omitted). Every selected
+field must match the declared measurement. Semantic-review criteria require an
+artifact-bound `human_declared` review with reviewer and timestamp. A model
+review cannot fill that gate. This declaration is unauthenticated; an artifact
+hash does not prove human involvement, semantic correctness, or fair measurement.
+Other caller-reported measurements may be compared but carry an explicit warning.
+
+Absolute criteria use the candidate value; deltas use candidate minus baseline.
+Percent deltas are percentage points. Relative improvement uses the metric's
+direction and divides by the absolute baseline, returning percent improvement;
+a zero baseline or nonfinite arithmetic stays unknown. Overall criteria are
+`criteria_not_met` when any required gate fails, otherwise `inconclusive` when
+any required gate is unknown, otherwise `criteria_met`. Optional gates remain
+visible. No significance test, causal claim, or automatic adoption follows.
+
+Results record prospective/retrospective/unknown timing and optional timestamps.
+Previously seen outcomes or a start before freezing force a retrospective label.
+`prospective_declared` is a caller declaration, not proof of preregistration.
+Synthetic fixtures are labeled synthetic in structured output and Markdown.
+The tests' 100-to-75 latency example is synthetic, not a measured project gain.
+
 ## Limits and verification
 
 Storage details are in the [record implementation
@@ -134,13 +197,14 @@ with an explicit truncation flag; the structured brief retains its full fields.
 The project-local development registration uses ignored `out/ml-experiments`
 and `out/ml-experiment-exports`, plus the existing `out/arxiv-mcp-live-library`.
 It contains no credentials and preserves the `arxiv-research` entry.
-The local diagnostic at `out/ml-experiment-mcp-local-20261019-v2.json` records the
-configured server's real stdio initialization, four-tool inventory, and list
+The local diagnostic at `out/ml-experiment-mcp-local-20261019-v3.json` records the
+configured server's real stdio initialization, five-tool inventory, and list
 call. It performs no question answering or reader inference. Automated tests
 also save a question, revise it with synthetic data and source receipts, freeze,
-restart the subprocess, and retrieve the original plan/evidence.
+record a synthetic outcome, restart the subprocess, and retrieve the original
+plan, evidence, and result after the exports are removed.
 
-Focused verification: 126 passing tests across the experiment modules and the
+Focused verification: 179 passing tests across the experiment modules and the
 existing arXiv server/profile tests; Ruff and whitespace checks pass. Reproduce:
 
 ```bash

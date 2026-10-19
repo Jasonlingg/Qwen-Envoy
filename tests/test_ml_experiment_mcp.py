@@ -10,9 +10,12 @@ from mcp import Client, StdioServerParameters  # noqa: E402
 from scripts.ml_experiment_mcp import create_server  # noqa: E402
 from src.product.ml_experiment_store import ExperimentStore  # noqa: E402
 from tests.ml_experiment_fixtures import complete_brief  # noqa: E402
+from tests.ml_experiment_result_fixtures import paired_result, planned_brief  # noqa: E402
 from tests.test_ml_experiment_evidence import sources  # noqa: E402
+from tests.test_ml_experiment_outcomes import attach_measurements  # noqa: E402
 
-TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments", "freeze_experiment_plan"}
+TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments", "freeze_experiment_plan",
+         "record_experiment_result"}
 
 
 def test_question_first_tools_annotations_errors_and_freeze(tmp_path):
@@ -141,18 +144,34 @@ def test_real_stdio_client_can_save_and_reopen_from_other_working_directory(tmp_
             assert not result.is_error
             key = result.structured_content["experiment_id"]
             revised = await client.call_tool("save_experiment_brief", {
-                "brief": {**complete_brief(), "references": refs},
+                "brief": {**planned_brief(), "references": refs},
                 "experiment_id": key, "expected_revision": 1})
             assert not revised.is_error
             frozen = await client.call_tool("freeze_experiment_plan", {
                 "experiment_id": key, "expected_revision": 2})
             assert not frozen.is_error
             plan_hash = frozen.structured_content["plan_sha256"]
+            outcome = paired_result()
+            measurement_path = attach_measurements(exports, outcome)
+            args = {"experiment_id": key, "plan_sha256": plan_hash, "result": outcome}
+            recorded = await client.call_tool("record_experiment_result", args)
+            assert not recorded.is_error
+            expected = recorded.structured_content["selected_result"]
+            assert expected["assessment"]["overall"] == "criteria_met"
+            assert "Synthetic data" in recorded.structured_content["markdown"]
+            assert "25.0 percent" in recorded.structured_content["markdown"]
         (exports / "run.json").unlink()
+        measurement_path.unlink()
         async with Client(parameters) as restarted:
-            saved = await restarted.call_tool("get_experiment", {"experiment_id": key})
+            saved = await restarted.call_tool("get_experiment", {
+                "experiment_id": key, "run_id": "synthetic_run"})
             assert not saved.is_error
             assert saved.structured_content["plan_sha256"] == plan_hash
             assert saved.structured_content["evidence_receipts"][1]["value"]["passed"] == 3
+            assert saved.structured_content["selected_result"] == expected
+            retry = await restarted.call_tool("record_experiment_result", args)
+            assert not retry.is_error and retry.structured_content["selected_result"] == expected
+            args["result"]["candidate"]["measurements"][0]["value"] = 1.0
+            assert (await restarted.call_tool("record_experiment_result", args)).is_error
 
     asyncio.run(body())
