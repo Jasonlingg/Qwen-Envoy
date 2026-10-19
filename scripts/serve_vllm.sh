@@ -46,7 +46,8 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PREFIX_CACHING="${PREFIX_CACHING:-default}"
 QWEN_REASONING_PARSER="${QWEN_REASONING_PARSER:-off}"
 EXPERIMENT_ARGS=()
-SERVE_HOST="0.0.0.0"
+# A public authenticated gateway can keep the model/admin API on loopback.
+SERVE_HOST="${VLLM_HOST:-0.0.0.0}"
 case "$PREFIX_CACHING" in
   default) ;;
   on|off)
