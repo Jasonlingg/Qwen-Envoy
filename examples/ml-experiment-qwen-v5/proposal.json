@@ -1,0 +1,393 @@
+{
+  "schema_version": "ml-experiment-brief-v1",
+  "question": "Would one evidence-focused review opportunity repair Qwen v5 citation and stopping failures better than a generic second look, before we consider more training?",
+  "goal": "model_comparison",
+  "current_setup": {
+    "task": {
+      "value": "Known-paper QASPER Python-tool agent; historical development analysis",
+      "unknown_reason": null
+    },
+    "model": {
+      "value": "Qwen3-8B with Qwen Envoy v5 adapter",
+      "unknown_reason": null
+    },
+    "checkpoint": {
+      "value": "artifacts/full/checkpoint-50",
+      "unknown_reason": null
+    },
+    "revision": {
+      "value": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "unknown_reason": null
+    },
+    "hardware": {
+      "value": "Historical serving: NVIDIA A40 48GB; future trial hardware not selected",
+      "unknown_reason": null
+    },
+    "workload": {
+      "value": "Five already-seen illustrative cases; no untouched test claim",
+      "unknown_reason": null
+    },
+    "software": {
+      "historical_commit": {
+        "value": "33f2ad684265a7d5e9733576fcaa94257408bb67",
+        "unknown_reason": null
+      },
+      "historical_runtime": {
+        "value": "vLLM 0.30.0; PyTorch 2.13.0+cu130",
+        "unknown_reason": null
+      }
+    }
+  },
+  "constraints": [
+    "Planning only: zero model requests, GPU launches, or paid calls in Task 5. The positive trial ceilings below are a proposal requiring separate approval.",
+    "No training or model-weight changes. Do not send gold answers, case labels, existing grades, or paper grader notes to either trial arm.",
+    "Keep model-authored Python execution in Docker. Preserve the V1 tool preamble and use the same tools and shared initial state in both arms."
+  ],
+  "observations": [
+    {
+      "text": "Both September 30 models have 3/20 provisional answerable passes; the 5/40 to 15/40 aggregate includes refusal behavior.",
+      "reference_ids": [
+        "saved_summary"
+      ],
+      "basis": "artifact_reported"
+    },
+    {
+      "text": "The dataset trace reads text containing the dataset name but submits an earlier unrelated span; fixing retrieval alone may not repair citation selection. This interpretation is model-assisted.",
+      "reference_ids": [
+        "case_wrong_span"
+      ],
+      "basis": "agent_interpretation"
+    },
+    {
+      "text": "The SEPT trace stops after abstract-level retrieval and misses the requested simplifications. This suggests an exploration/stopping diagnostic but does not identify a cause.",
+      "reference_ids": [
+        "case_shallow_answer"
+      ],
+      "basis": "agent_interpretation"
+    },
+    {
+      "text": "A fixed-BM25 one-shot comparator was already run, with official token-overlap F1 41.52/58.86 for base/v5. Support remains unreviewed; do not rerun it as a novel proposal.",
+      "reference_ids": [
+        "prior_retrieval"
+      ],
+      "basis": "artifact_reported"
+    },
+    {
+      "text": "Self-RAG trains reflection; ALCE separates citation support; intrinsic self-correction can hurt in the studied settings. The proposed prompt ablation is our inference, not a reproduction of those methods.",
+      "reference_ids": [
+        "selfrag_training",
+        "alce_support",
+        "self_correction_caution"
+      ],
+      "basis": "agent_interpretation"
+    }
+  ],
+  "alternatives": [
+    "Increase the step budget alone: does not isolate a targeted evidence rubric from a generic second look.",
+    "Change the retriever or use fixed evidence: a comparator already exists; its answer-support review is still missing.",
+    "Retrain a Self-RAG-style reflection policy: needs a new data/training study and is premature before this diagnostic."
+  ],
+  "proposed_change": "Only the review instruction at a reconstructed first-submission state: generic second look versus explicit claim-to-evidence audit.",
+  "hypothesis": "With the same model, evidence history, tools, and two-action continuation allowance, a targeted evidence audit may yield at least one additional substantive supported answer without breaking the two control cases.",
+  "expected_signal": "Candidate repairs at least one more of the four answerable cases than the generic review, retains the previously supported answer and correct refusal, and adds no execution-error episode. Record whether repairs use already visible text or newly inspected evidence.",
+  "applicability": "The saved failures include incorrect span selection after relevant text was seen and stopping before detailed evidence was inspected. A controlled continuation tests sensitivity to review instructions without weight changes.",
+  "differences": [
+    "Five cases were chosen after outcomes were seen; this is a qualitative development diagnostic, not an efficacy estimate.",
+    "This is a prompt ablation with tools, not trained Self-RAG or ALCE benchmark reproduction.",
+    "Continuation from reconstructed saved state differs from a fresh full episode; improvements would not establish an end-to-end product gain."
+  ],
+  "baseline": {
+    "description": "Qwen v5 given the generic second-look instruction at its saved first submission.",
+    "identity": {
+      "model_revision": {
+        "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb",
+        "unknown_reason": null
+      },
+      "workload": {
+        "value": "Five post-hoc September 30 v5 submission states",
+        "unknown_reason": null
+      },
+      "decoding": {
+        "value": "temperature=0; top_p=1; thinking=false; max_tokens=1024; inference seed=42 if supported, otherwise unknown",
+        "unknown_reason": null
+      },
+      "corpus_hash": {
+        "value": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+        "unknown_reason": null
+      },
+      "hardware": {
+        "value": null,
+        "unknown_reason": "Select and pin a shared endpoint only after separate execution approval"
+      },
+      "software_revision": {
+        "value": null,
+        "unknown_reason": "Future continuation runner is not implemented or approved"
+      },
+      "prompt_sha256": {
+        "value": "ed67633948913b5357c3e04f5bee566f99d407ca25ca086b78a4e7db34f42e36",
+        "unknown_reason": null
+      }
+    }
+  },
+  "candidate": {
+    "description": "Same Qwen v5 and state, given the explicit claim-to-evidence audit instruction.",
+    "identity": {
+      "model_revision": {
+        "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb",
+        "unknown_reason": null
+      },
+      "workload": {
+        "value": "Five post-hoc September 30 v5 submission states",
+        "unknown_reason": null
+      },
+      "decoding": {
+        "value": "temperature=0; top_p=1; thinking=false; max_tokens=1024; inference seed=42 if supported, otherwise unknown",
+        "unknown_reason": null
+      },
+      "corpus_hash": {
+        "value": "bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+        "unknown_reason": null
+      },
+      "hardware": {
+        "value": null,
+        "unknown_reason": "Select and pin a shared endpoint only after separate execution approval"
+      },
+      "software_revision": {
+        "value": null,
+        "unknown_reason": "Future continuation runner is not implemented or approved"
+      },
+      "prompt_sha256": {
+        "value": "4955abac9aec9081869a759c12cd6610d2200dcb41d33c4867fb401c898fa138",
+        "unknown_reason": null
+      }
+    }
+  },
+  "evaluation": {
+    "population": "Five selected September 30 v5 development states",
+    "purpose": "development",
+    "expected_cases": 5,
+    "sample_ids": [
+      "qasper_test_a71fb012631e6a8854d5945b6d0ab2ab8e7b7ee6",
+      "qasper_test_fd556a038c36abc88a800d9d4f2cfa0aef6f5aba",
+      "qasper_test_0b5a7ccf09810ff5a86162d502697d16b3536249",
+      "qasper_test_2d5d0b0c54105717bf48559b914fefd0c94964a6",
+      "qasper_test_7ae95716977d39d96e871e552c35ca0753115229"
+    ],
+    "sample_set_sha256": null,
+    "dataset_revision": {
+      "value": "QASPER@13b496d2a5359329b110e3419628de3cf791843b; corpus bc71958267aa4ef6216085ffc42d364423760f9f042fc1da661822e87bd10fe5",
+      "unknown_reason": null
+    }
+  },
+  "conditions": [
+    {
+      "name": "review_instruction",
+      "role": "proposed_change",
+      "baseline": {
+        "value": "Review the draft answer once more using the same paper tools if useful. Keep it or revise it, then submit your final answer and evidence.",
+        "unknown_reason": null
+      },
+      "candidate": {
+        "value": "Audit whether the draft answers the exact question and whether each material claim is supported by its submitted evidence. Inspect the cited text; use the same paper tools to resolve a gap. Keep, revise, or refuse honestly, then submit the answer with evidence covering its claims. Do not assume the draft is wrong.",
+        "unknown_reason": null
+      }
+    },
+    {
+      "name": "continuation_budget",
+      "role": "held_constant",
+      "baseline": {
+        "value": "Two additional generated actions total, including final SUBMIT; 1024 output tokens/action; 8192 total context cap",
+        "unknown_reason": null
+      },
+      "candidate": {
+        "value": "Two additional generated actions total, including final SUBMIT; 1024 output tokens/action; 8192 total context cap",
+        "unknown_reason": null
+      }
+    },
+    {
+      "name": "initial_state",
+      "role": "held_constant",
+      "baseline": {
+        "value": "Identical saved pre-submit history plus draft; no gold/reference/grade content",
+        "unknown_reason": null
+      },
+      "candidate": {
+        "value": "Identical saved pre-submit history plus draft; no gold/reference/grade content",
+        "unknown_reason": null
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "metric_id": "supported_answers",
+      "unit": "count",
+      "aggregation": "Number of substantive correct answers supported by their own evidence on the four answerable cases",
+      "population": "Five selected September 30 v5 development states",
+      "direction": "higher",
+      "measurement_kind": "quality",
+      "timing_scope": null,
+      "failure_policy": "include",
+      "requires_semantic_review": true
+    },
+    {
+      "metric_id": "control_preservation",
+      "unit": "count",
+      "aggregation": "Number of the two control behaviors retained: supported answer and correct refusal",
+      "population": "Five selected September 30 v5 development states",
+      "direction": "higher",
+      "measurement_kind": "quality",
+      "timing_scope": null,
+      "failure_policy": "include",
+      "requires_semantic_review": true
+    },
+    {
+      "metric_id": "error_episodes",
+      "unit": "count",
+      "aggregation": "Episodes with tool/runtime/endpoint error or no submission",
+      "population": "Five selected September 30 v5 development states",
+      "direction": "lower",
+      "measurement_kind": "other",
+      "timing_scope": null,
+      "failure_policy": "include",
+      "requires_semantic_review": false
+    }
+  ],
+  "criteria": [
+    {
+      "criterion_id": "one_more_supported",
+      "metric_id": "supported_answers",
+      "operation": "delta_gte",
+      "threshold": 1.0,
+      "required": true
+    },
+    {
+      "criterion_id": "both_controls_retained",
+      "metric_id": "control_preservation",
+      "operation": "absolute_gte",
+      "threshold": 2.0,
+      "required": true
+    },
+    {
+      "criterion_id": "no_extra_error",
+      "metric_id": "error_episodes",
+      "operation": "delta_lte",
+      "threshold": 0.0,
+      "required": true
+    }
+  ],
+  "budget": {
+    "max_model_requests": 20,
+    "max_input_tokens": 143360,
+    "max_output_tokens": 20480,
+    "max_gpu_seconds": 900.0,
+    "max_elapsed_seconds": 1800.0,
+    "max_cost_usd": null,
+    "cost_unknown_reason": "Trial is not authorized. Select an endpoint, reliable billing limits, and cleanup policy before approval; no paid call is permitted by this draft.",
+    "stop_conditions": [
+      "Do not start without separate execution approval and a priced, enforceable resource plan.",
+      "Stop before exceeding any aggregate request/token/context/time ceiling; count failed requests too; disable retries.",
+      "Use identical limits for both arms; any truncated/missing case remains missing, not a successful completion.",
+      "Stop on sandbox failure or evidence/corpus hash mismatch."
+    ]
+  },
+  "procedure": [
+    "Validate the five source states, corpus, adapter identity and prompt hashes; independently check the answerability/control labels before running.",
+    "Build identical per-case contexts through the saved first draft submission. Keep reference answers, grader notes, post-hoc labels and this brief outside model input. Do not execute saved code on the host.",
+    "After separate approval, use one shared pinned model/runtime/tokenizer and Docker sandbox. Run each arm once per case in alternating order, with at most two additional actions and the aggregate ceilings above; reserve completion tokens within 8192 context.",
+    "Save every action/observation, attempted and accepted submissions, requests/tokens, timing and failures. Record whether supporting text was already visible or first obtained during continuation; this classification is an analysis annotation.",
+    "Have an identity-blind human inspect each material claim against its exact cited text, plus answer relevance and refusal correctness. Preserve model judgments separately. A valid quotation alone is not a pass.",
+    "Use the frozen thresholds only if the user first approves this exact draft. At least one extra supported substantive answer and no control/error regression justifies a larger separately approved study; otherwise stop and report null/harm. No outcome here establishes training improvement."
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "saved_summary",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/summary"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "prior_retrieval",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/prior_retrieval"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "case_false_refusal",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/cases/false_refusal"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "case_refusal_control",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/cases/refusal_control"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "case_shallow_answer",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/cases/shallow_answer"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "case_supported_control",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/cases/supported_control"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "case_wrong_span",
+      "relative_path": "qwen-v5-task5-development.json",
+      "sha256": "681e7387a00564e93d359b042aa3c42683d5d85849e31cc67e4aba450e131954",
+      "json_pointer": "/cases/wrong_span"
+    },
+    {
+      "kind": "paper_span",
+      "reference_id": "selfrag_training",
+      "arxiv_id": "2310.11511v1",
+      "start": 5638,
+      "end": 5709,
+      "quote": "Self-Rag trains an arbitrary LM to generate text with reflection tokens",
+      "document_sha256": "0467e73577b9bfec66a58a1e36a2a3910639d4bfee88e85d55ce246076d08f2e"
+    },
+    {
+      "kind": "paper_span",
+      "reference_id": "alce_support",
+      "arxiv_id": "2305.14627v2",
+      "start": 13874,
+      "end": 13961,
+      "quote": "citation recall, which determines if the output is entirely supported by cited passages",
+      "document_sha256": "b711e0d5925380c7428cbe63d5ae2e93b5d9a18acf39f98b67229f9156533ef5"
+    },
+    {
+      "kind": "paper_span",
+      "reference_id": "self_correction_caution",
+      "arxiv_id": "2310.01798v2",
+      "start": 13875,
+      "end": 13971,
+      "quote": "We observe that, after self-correction, the accuracies of all models drop across all benchmarks.",
+      "document_sha256": "be0951db1964e1b30813528e86c95dd94e028ad7f7dfca9457dd5feb767fa0cd"
+    }
+  ],
+  "unknowns": [
+    "The user has not reviewed this exact proposal; leave it as a draft.",
+    "Future continuation runner, shared runtime/hardware, inference seed support, reliable price cap and independent human reviewer are not yet selected.",
+    "The unanswerable control label needs independent source review; preserve uncertainty if absence cannot be established."
+  ],
+  "limitations": [
+    "This is a five-case post-hoc diagnostic, not a held-out model evaluation or a model-promotion gate.",
+    "A gain could reflect better task instructions rather than general self-correction. New evidence inspection and interpretation are not fully causally separated.",
+    "The v6 pilot is a separate saved study; this example deliberately investigates the September 30 v5 failures, not the latest checkpoint ranking.",
+    "No result has been collected for this proposed intervention."
+  ],
+  "candidate_outcomes_already_seen": "no",
+  "author_kind": "agent_authored",
+  "supersedes_experiment_id": null
+}
