@@ -20,12 +20,12 @@ _GUARD = threading.Lock()
 _NAME = re.compile(r"(?:experiment_[0-9a-f]{32}|object_[0-9a-f]{64})\.json")
 
 
-def _tree(value) -> None:
+def _tree(value, max_bytes=MAX_BYTES) -> None:
     stack, count, characters = [(value, 0)], 0, 0
     while stack:
         item, depth = stack.pop()
         count += 1
-        if depth > 20 or count > 20_000 or characters > MAX_BYTES:
+        if depth > 20 or count > 20_000 or characters > max_bytes:
             raise ValueError("Experiment JSON exceeds depth or element limits")
         if isinstance(item, dict):
             if any(type(key) is not str for key in item):
@@ -43,8 +43,8 @@ def _tree(value) -> None:
         elif (type(item) not in (str, bool, int, float, type(None))
               or type(item) is float and not math.isfinite(item)):
             raise ValueError("Experiment values must be finite JSON data")
-    if characters > MAX_BYTES:
-        raise ValueError("Experiment JSON exceeds 256 KiB")
+    if characters > max_bytes:
+        raise ValueError("Experiment JSON exceeds byte limit")
 
 
 def encode(value) -> bytes:
@@ -68,12 +68,12 @@ def _pairs(items):
     return value
 
 
-def decode(raw: bytes):
-    if len(raw) > MAX_BYTES:
-        raise ValueError("Experiment JSON exceeds 256 KiB")
+def decode(raw: bytes, *, max_bytes=MAX_BYTES):
+    if len(raw) > max_bytes:
+        raise ValueError("Experiment JSON exceeds byte limit")
     try:
         value = json.loads(raw, object_pairs_hook=_pairs)
-        _tree(value)
+        _tree(value, max_bytes)
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise ValueError("Invalid experiment JSON") from exc
     return value

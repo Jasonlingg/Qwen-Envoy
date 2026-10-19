@@ -7,6 +7,7 @@ from typing import Annotated, Literal
 
 from pydantic import Field, field_validator, model_validator
 
+from src.product.ml_experiment_receipts import EvidenceReceipt, check_receipts
 from src.product.ml_experiment_types import (
     Condition,
     Criterion,
@@ -113,7 +114,14 @@ class BriefRevision(Timestamped):
     previous_sha256: Digest | None
     recorded_at: str
     brief: ExperimentBrief
+    evidence_receipts: list[EvidenceReceipt] = Field(default_factory=list, max_length=20)
     reference_warning: Literal[SOURCE_WARNING] = SOURCE_WARNING
+
+    @model_validator(mode="after")
+    def bound_evidence(self):
+        if self.evidence_receipts:
+            check_receipts(self.brief.references, self.evidence_receipts)
+        return self
 
 
 class FrozenPlan(Timestamped):
@@ -123,12 +131,15 @@ class FrozenPlan(Timestamped):
     revision_sha256: Digest
     frozen_at: str
     brief: ExperimentBrief
+    evidence_receipts: list[EvidenceReceipt] = Field(default_factory=list, max_length=20)
     warning: Literal[FREEZE_WARNING] = FREEZE_WARNING
 
     @model_validator(mode="after")
     def complete_brief(self):
         if self.brief.missing_fields():
             raise ValueError("A frozen plan contains an incomplete brief")
+        if self.evidence_receipts:
+            check_receipts(self.brief.references, self.evidence_receipts)
         return self
 
 

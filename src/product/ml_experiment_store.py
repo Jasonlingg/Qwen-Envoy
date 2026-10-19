@@ -37,8 +37,9 @@ def _now() -> str:
 
 
 class ExperimentStore:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, *, evidence_resolver=None):
         self.files = LocalFiles(root)
+        self.evidence_resolver = evidence_resolver
 
     def _load(self, directory, experiment_id):
         name = f"{_identifier(experiment_id)}.json"
@@ -64,7 +65,8 @@ class ExperimentStore:
                 plan = FrozenPlan.model_validate(
                     self.files.read_object(directory, index.frozen_plan_sha256))
                 if (plan.experiment_id != experiment_id or plan.revision != len(revisions)
-                        or plan.revision_sha256 != previous or plan.brief != revisions[-1].brief):
+                        or plan.revision_sha256 != previous or plan.brief != revisions[-1].brief
+                        or plan.evidence_receipts != revisions[-1].evidence_receipts):
                     raise ValueError("Frozen plan binding mismatch")
             return index, revisions, plan
         except ValueError as exc:
@@ -86,12 +88,15 @@ class ExperimentStore:
                               for r, p in zip(revisions, index.revisions, strict=True)],
                 "plan_sha256": index.frozen_plan_sha256,
                 "frozen_plan": plan.model_dump(mode="json") if plan else None,
+                "evidence_receipts": [r.model_dump(mode="json")
+                                      for r in revisions[-1].evidence_receipts],
                 "reference_warning": revisions[-1].reference_warning}
 
     def save_brief(self, brief: dict, experiment_id: str | None = None,
                    expected_revision: int | None = None) -> dict:
         # Copy through bounded JSON: caller-owned dictionaries cannot mutate saved state.
         parsed = ExperimentBrief.model_validate(decode(encode(brief)))
+        receipts = self.evidence_resolver(parsed.references) if self.evidence_resolver else []
         with self.files.locked() as directory:
             if experiment_id is None:
                 if expected_revision is not None:
@@ -119,7 +124,7 @@ class ExperimentStore:
                 self._load(directory, parent)
             record = BriefRevision(experiment_id=experiment_id, revision=len(revisions) + 1,
                                    previous_sha256=pointers[-1].sha256 if pointers else None,
-                                   recorded_at=_now(), brief=parsed)
+                                   recorded_at=_now(), brief=parsed, evidence_receipts=receipts)
             sha = self.files.object(directory, record.model_dump(mode="json"))
             index = ExperimentIndex(experiment_id=experiment_id, revisions=[*pointers,
                 RevisionPointer(revision=record.revision, sha256=sha)])
@@ -137,12 +142,16 @@ class ExperimentStore:
             if plan:
                 return self._view(index, revisions, plan)
             brief = revisions[-1].brief
+            if (self.evidence_resolver is not None
+                    and len(revisions[-1].evidence_receipts) != len(brief.references)):
+                raise ValueError("Re-save the brief to verify its references before freezing")
             missing = brief.missing_fields()
             if missing:
                 raise ValueError("Incomplete experiment plan: " + ", ".join(missing))
             plan = FrozenPlan(experiment_id=experiment_id, revision=len(revisions),
                               revision_sha256=index.revisions[-1].sha256,
-                              frozen_at=_now(), brief=brief)
+                              frozen_at=_now(), brief=brief,
+                              evidence_receipts=revisions[-1].evidence_receipts)
             sha = self.files.object(directory, plan.model_dump(mode="json"))
             index = index.model_copy(update={"frozen_plan_sha256": sha})
             self._write_index(directory, index)
