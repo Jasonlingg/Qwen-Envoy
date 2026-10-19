@@ -149,6 +149,9 @@ class Metric(RecordModel):
     aggregation: Name
     population: Name
     direction: Literal["higher", "lower"]
+    measurement_kind: Literal["quality", "latency", "cost", "other", "unspecified"] = "unspecified"
+    timing_scope: Literal["warm", "cold", "end_to_end"] | None = None
+    failure_policy: Literal["include", "unspecified"] = "unspecified"
     requires_semantic_review: bool = False
 
 
