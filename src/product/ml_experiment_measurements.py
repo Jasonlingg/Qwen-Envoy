@@ -94,6 +94,9 @@ class Measurement(KnownNumber):
 
     @model_validator(mode="after")
     def consistent_counts(self):
+        if self.value is not None and self.unit == "count":
+            if self.value < 0 or not self.value.is_integer():
+                raise ValueError("Count measurement must be a nonnegative integer")
         if self.value is not None and self.unit in {"fraction", "percent"}:
             if not 0 <= self.value <= (100 if self.unit == "percent" else 1):
                 raise ValueError("Fraction or percent measurement is outside its valid range")

@@ -6,6 +6,7 @@ import os
 import stat
 from pathlib import Path
 
+from src.product.ml_experiment_directories import open_directory
 from src.product.ml_experiment_io import decode
 
 MAX_SOURCE_BYTES = 2 * 1_024 * 1_024
@@ -20,16 +21,17 @@ def read_json(root: Path, relative: str):
         raise ValueError("Source must remain inside the selected directory without symlinks")
     descriptors = []
     try:
-        descriptors.append(os.open(root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW))
-        for part in parts[:-1]:
-            descriptors.append(os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
-                                       dir_fd=descriptors[-1]))
-        descriptor = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
-                             dir_fd=descriptors[-1])
-        with os.fdopen(descriptor, "rb") as stream:
-            if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
-                raise ValueError("Selected source is not a regular file")
-            raw = stream.read(MAX_SOURCE_BYTES + 1)
+        with open_directory(root) as directory:
+            for part in parts[:-1]:
+                directory = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                                    dir_fd=directory)
+                descriptors.append(directory)
+            descriptor = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                 dir_fd=directory)
+            with os.fdopen(descriptor, "rb") as stream:
+                if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                    raise ValueError("Selected source is not a regular file")
+                raw = stream.read(MAX_SOURCE_BYTES + 1)
         return raw, decode(raw, max_bytes=MAX_SOURCE_BYTES)
     except OSError as exc:
         raise ValueError("Selected JSON source is unavailable or unsafe") from exc

@@ -14,6 +14,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from uuid import uuid4
 
+from src.product.ml_experiment_directories import open_directory
+
 MAX_BYTES = 256 * 1_024
 _LOCKS: dict[Path, threading.RLock] = {}
 _GUARD = threading.Lock()
@@ -88,8 +90,12 @@ class LocalFiles:
         path = Path(root).expanduser().absolute()
         if any(part.is_symlink() for part in (path, *path.parents)):
             raise ValueError("Experiment store must not use symlinks")
-        path.mkdir(mode=0o700, parents=True, exist_ok=True)
-        self.root = path.resolve(strict=True)
+        try:
+            with open_directory(path, create=True):
+                pass
+        except OSError as exc:
+            raise ValueError("Experiment store must be a directory without symlinks") from exc
+        self.root = path
         with _GUARD:
             self.thread_lock = _LOCKS.setdefault(self.root, threading.RLock())
 
@@ -97,8 +103,7 @@ class LocalFiles:
     def locked(self):
         try:
             with self.thread_lock:
-                directory = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-                try:
+                with open_directory(self.root) as directory:
                     lock = os.open(".experiments.lock", os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW
                                    | os.O_NONBLOCK, 0o600, dir_fd=directory)
                     try:
@@ -108,8 +113,6 @@ class LocalFiles:
                         yield directory
                     finally:
                         os.close(lock)
-                finally:
-                    os.close(directory)
         except OSError as exc:
             raise ValueError("Experiment store is inaccessible or unsafe") from exc
 

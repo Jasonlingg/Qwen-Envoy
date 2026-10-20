@@ -34,6 +34,7 @@ class ExperimentOutcomes:
         selected = next(((sha, r) for sha, r in records if r.result.run_id == run_id),
                         records[-1] if records else None)
         return {"results": [{"run_id": r.result.run_id, "sha256": sha,
+                             "data_kind": r.result.data_kind,
                              "recorded_at": r.recorded_at, "overall": r.assessment.overall,
                              "effective_timing": r.assessment.effective_timing}
                             for sha, r in records],
