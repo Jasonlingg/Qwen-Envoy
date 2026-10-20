@@ -38,7 +38,8 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
         try:
             verified = verify_investigation_packet(
                 packet, manifest, docs, allowed_prompt_sha256s=allowed,
-                expected_reader_mode=getattr(investigator, "reader_mode", "discovery"))
+                expected_reader_mode=getattr(investigator, "reader_mode", "discovery"),
+                expected_reader_guidance=getattr(investigator, "reader_guidance", "baseline"))
         except Exception as exc:
             return version, None, "unverified", f"{type(exc).__name__}: {exc}"[:500]
         if verified["status"] in {"error", "unavailable"}:
@@ -61,6 +62,8 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
                            "harness_version", "harness_shim_sha256", "prompt_hash",
                            "tool_preamble_sha256", "model_identity")}})
         if verified.get("reader_mode") == "assigned":
+            if "reader_guidance" in verified:
+                papers[-1]["reader_guidance"] = verified["reader_guidance"]
             papers[-1].update({key: verified[key] for key in (
                 "reader_mode", "paper_assignment", "assignment_sha256", "research_gaps",
                 "gap_report_error")})

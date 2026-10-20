@@ -23,6 +23,7 @@ from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_PREAMBLE, HARNESS_V2_SHA256
 from src.policies.code_execution import used_document_tool
 from src.product.assigned_actions import displayed_tool_call, source_text_visible
+from src.product.assigned_guidance import BASELINE, guidance_prompt, validate_guidance
 from src.product.harness_v2 import (
     FORMAT_RETRY_MESSAGE,  # noqa: F401
     effective_prompt,
@@ -170,7 +171,8 @@ def prompt_for_source_domain(source_domain: str) -> str:
 
 
 def effective_system_prompt(source_domain="public_papers", protocol_variant="default",
-                            harness_version="v1", *, reader_mode="discovery") -> str:
+                            harness_version="v1", *, reader_mode="discovery",
+                            reader_guidance=BASELINE) -> str:
     """One prompt identity for policy, investigator, and packet verification."""
     if harness_version not in {"v1", "v2"}:
         raise ValueError(f"unsupported harness_version: {harness_version!r}")
@@ -182,11 +184,13 @@ def effective_system_prompt(source_domain="public_papers", protocol_variant="def
         raise ValueError("reader_mode must be discovery or assigned")
     if reader_mode == "assigned" and (source_domain != "public_papers" or harness_version != "v2"):
         raise ValueError("assigned reader requires public papers and harness v2")
+    validate_guidance(reader_guidance, reader_mode)
     base = (NEMOTRON_PAPER_SYSTEM_PROMPT
             if protocol_variant == "nemotron" and harness_version == "v1"
             else prompt_for_source_domain(source_domain))
     prompt = effective_prompt(base, harness=harness_version)
-    return assigned_prompt(prompt) if reader_mode == "assigned" else prompt
+    prompt = assigned_prompt(prompt) if reader_mode == "assigned" else prompt
+    return guidance_prompt(prompt, reader_guidance)
 
 
 def _used_inspection_tool(action: str, observation: str) -> bool:
@@ -245,6 +249,7 @@ class QwenInvestigator:
         protocol_variant: str = "default",
         harness_version: str = "v1",
         reader_mode: str = "discovery",
+        reader_guidance: str = BASELINE,
     ) -> None:
         if not callable(policy_factory):
             raise ValueError("policy_factory must be callable")
@@ -259,8 +264,10 @@ class QwenInvestigator:
         if protocol_variant == "nemotron" and source_domain != "public_papers":
             raise ValueError("Nemotron protocol variant is only for public papers")
         self.system_prompt = effective_system_prompt(
-            source_domain, protocol_variant, harness_version, reader_mode=reader_mode)
+            source_domain, protocol_variant, harness_version, reader_mode=reader_mode,
+            reader_guidance=reader_guidance)
         self.reader_mode = reader_mode
+        self.reader_guidance = reader_guidance
         self.harness_version = harness_version
         self.source_domain = source_domain
         self.protocol_variant = protocol_variant
@@ -332,6 +339,8 @@ class QwenInvestigator:
         if assignment is not None:
             result.update(reader_mode="assigned", paper_assignment=assignment,
                           assignment_sha256=assignment_hash(assignment), research_gaps=[])
+            if self.reader_guidance != BASELINE:
+                result["reader_guidance"] = self.reader_guidance
         if self.repl_factory is None and not PersistentREPL._docker_available(self.image):
             result.update(
                 status="unavailable",

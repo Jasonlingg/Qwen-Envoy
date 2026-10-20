@@ -49,7 +49,8 @@ def verify(reader, packet, snapshot):
     manifest, docs = load_snapshot(snapshot)
     return verify_investigation_packet(packet, manifest, docs,
         allowed_prompt_sha256s=frozenset({hashlib.sha256(reader.system_prompt.encode()).hexdigest()}),
-        expected_reader_mode=reader.reader_mode)
+        expected_reader_mode=reader.reader_mode,
+        expected_reader_guidance=reader.reader_guidance)
 
 
 def test_assigned_id_is_supplied_and_first_action_can_inspect(tmp_path):

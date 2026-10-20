@@ -6,6 +6,7 @@ from src.product.qwen_investigator import QwenInvestigator, effective_system_pro
 
 
 def build_assigned_reader(kind: str, *, sandbox_image: str = "rlm-sandbox",
+                          reader_guidance: str = "baseline",
                           **configuration) -> QwenInvestigator:
     configuration.setdefault("harness_version", "v2")
     if configuration["harness_version"] != "v2":
@@ -14,7 +15,7 @@ def build_assigned_reader(kind: str, *, sandbox_image: str = "rlm-sandbox",
     if reader is None:
         raise ValueError("assigned reader requires qwen or nemotron")
     prompt = effective_system_prompt("public_papers", reader.protocol_variant, "v2",
-                                     reader_mode="assigned")
+                                     reader_mode="assigned", reader_guidance=reader_guidance)
 
     def policy():
         # build_reader's factory creates a fresh policy. Replace its prompt
@@ -28,4 +29,4 @@ def build_assigned_reader(kind: str, *, sandbox_image: str = "rlm-sandbox",
         max_steps=reader.max_steps, image=sandbox_image,
         code_timeout_seconds=reader.code_timeout_seconds,
         source_domain="public_papers", protocol_variant=reader.protocol_variant,
-        harness_version="v2", reader_mode="assigned")
+        harness_version="v2", reader_mode="assigned", reader_guidance=reader_guidance)
