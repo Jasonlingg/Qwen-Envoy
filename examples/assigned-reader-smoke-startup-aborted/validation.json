@@ -1,0 +1,64 @@
+{
+  "schema_version": "assigned-reader-smoke-attempt-validation-v1",
+  "date": "2026-10-20",
+  "attempt_commit": "d6b9532",
+  "startup_fix_commit": "518e52c",
+  "actual_model_inference_requests": 0,
+  "paid_replacement_attempts": 0,
+  "tests": {
+    "focused": {
+      "passed": 48,
+      "seconds": 1.72,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_assigned_smoke_startup.py tests/test_assigned_smoke_run.py tests/test_assigned_smoke_plan.py tests/test_runpod_queue.py"
+    },
+    "full_suite": {
+      "passed": 1620,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_summary": "Existing SWIG deprecation warnings",
+      "seconds": 55.48,
+      "exit_code": 0,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q"
+    },
+    "ruff": "passed for six added/changed Python files",
+    "cli_help": "passed",
+    "git_diff_check": "passed"
+  },
+  "independent_review": {
+    "pre_activation_findings_closed": [
+      "Historical identity log could satisfy startup check",
+      "Cleanup/child failures could exit successfully",
+      "Failed packet verification could leave cases unattempted with successful exit"
+    ],
+    "post_attempt_fix_review": "No actionable finding; original provider reason unknown, zero inference is not model failure or proof of zero spend.",
+    "human_answer_review": "not_performed"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "artifact_sha256": {
+    "endpoint-activated.json": "1a497f328e8bae6b4a8684d16df38f4223e08dab465196a484a56683d2955679",
+    "endpoint-before.json": "9681b2254d7e9e0c167ce52f0b67ca65d230ce7abc459bdd946a842678b98145",
+    "evaluation-summary.json": "faa1c2671a5d3deb8a85d2576e253300bcabe9136b85d7ab52ec5da37d92786a",
+    "final-runpod-state.json": "1a02bcadf4642fb028687f967e76e4a2c545ea33581eb3855490eb92aa36b294",
+    "health-latest.json": "9f0799e34b380da9e58f8b05bd7141aecd29989b0e9c24c1e6a9abca178b78d1",
+    "lifecycle.json": "e4dbc94f4be134db9f0c91a2ad4d04ae8c82f091048f0ac3ee764f25b4691ac7",
+    "runtime.json": "12b65b337964a6e6da650a33b77b6949a1c89c20246e0b553541e11294e76072"
+  },
+  "final_state": "Fresh independent MCP reads: worker min/max0/0, zero activeworkerrecords/healthworkers and no pendingjobs.",
+  "limitations": [
+    "No Qwen response or current-protocol quality result was observed.",
+    "Local startup repair was not live-tested.",
+    "Original provider failure code was not retained.",
+    "Actual billed cost is unknown; no provider dollar cap."
+  ]
+}

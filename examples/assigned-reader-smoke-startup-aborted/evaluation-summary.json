@@ -1,0 +1,44 @@
+{
+  "schema_version": "assigned-reader-startup-attempt-v1",
+  "status": "startup_aborted_before_inference",
+  "implementation_commit_at_attempt": "d6b9532",
+  "prepared_bundle": "../assigned-reader-smoke-prepared/plan.json",
+  "actual_model_inference_requests": 0,
+  "reserved_model_requests": 0,
+  "completed_model_requests": 0,
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "question": "What batch size was used for the walltime measurements?",
+      "status": "not_attempted",
+      "reason": "Supervisor stopped during startup log retrieval before inference worker launched.",
+      "semantic_support": "not_reviewed",
+      "human_review": "not_performed"
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "question": "From the available extracted text, what walltime speedup, if any, is established specifically for speculative decoding on an NVIDIA RTX A5000 at batch size 8?",
+      "status": "not_attempted",
+      "reason": "Supervisor stopped during startup log retrieval before inference worker launched.",
+      "semantic_support": "not_reviewed",
+      "human_review": "not_performed"
+    }
+  ],
+  "failure": {
+    "stage": "startup_log_read",
+    "type": "RuntimeError",
+    "provider_reason": "not_retained_by_original_cli_wrapper; exact cause unknown",
+    "health_ready_at_failure": 0,
+    "host_supervisor_seconds_before_cleanup": 2.9957190840505064
+  },
+  "shutdown_verified": true,
+  "watchdog_fired": false,
+  "catalog_gpu_hourly_usd": 0.69,
+  "actual_spend_usd": null,
+  "provider_dollar_cap": false,
+  "paid_retry_performed": false,
+  "post_attempt_fix_live_tested": false,
+  "interpretation": "Runner startup failure; no model behavior or model-quality result was observed.",
+  "reward": "not_computed",
+  "human_review": "not_performed"
+}
