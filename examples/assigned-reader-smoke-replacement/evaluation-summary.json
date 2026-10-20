@@ -1,0 +1,52 @@
+{
+  "schema_version": "assigned-reader-replacement-attempt-v1",
+  "status": "startup_aborted_before_inference",
+  "attempt_commit": "ebbd0d4",
+  "post_attempt_parser_fix_commit": "32e18c8",
+  "actual_model_inference_requests": 0,
+  "cumulative_model_inference_requests_both_attempts": 0,
+  "reserved_model_requests": 0,
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "question": "What batch size was used for the walltime measurements?",
+      "status": "not_attempted",
+      "semantic_support": "not_reviewed",
+      "human_review": "not_performed"
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "question": "From the available extracted text, what walltime speedup, if any, is established specifically for speculative decoding on an NVIDIA RTX A5000 at batch size 8?",
+      "status": "not_attempted",
+      "semantic_support": "not_reviewed",
+      "human_review": "not_performed"
+    }
+  ],
+  "failure": {
+    "stage": "startup_log_read",
+    "error_type": "ControlError",
+    "recorded_code": "unknown",
+    "recorded_status": null,
+    "original_provider_error": "unknown; stderr was not retained by attempted wrapper",
+    "health_ready_before_failure": 1,
+    "host_supervisor_seconds_excluding_cleanup": 30.42473058286123
+  },
+  "post_shutdown_read_only_reproduction": {
+    "worker_id": "lwxx4ad8d4pkkb",
+    "warning_prefix": "--tail is ignored when --since is set",
+    "json_error": {
+      "code": "not_found",
+      "status": 404,
+      "error": "worker not found"
+    },
+    "interpretation": "Demonstrates warning-prefixed stderr and a later missing worker; does not establish the active-time provider error or successful access after the fix."
+  },
+  "shutdown_verified": true,
+  "catalog_gpu_hourly_usd": 0.69,
+  "actual_spend_usd": null,
+  "provider_dollar_cap": false,
+  "additional_activation_after_replacement": false,
+  "post_attempt_parser_fix_live_tested": false,
+  "reward": "not_computed",
+  "human_review": "not_performed"
+}

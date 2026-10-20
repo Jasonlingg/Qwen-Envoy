@@ -1,0 +1,60 @@
+{
+  "schema_version": "assigned-reader-replacement-validation-v1",
+  "date": "2026-10-20",
+  "attempt_commit": "ebbd0d4",
+  "post_attempt_parser_fix_commit": "32e18c8",
+  "actual_model_inference_requests": 0,
+  "cumulative_model_inference_requests_both_attempts": 0,
+  "tests": {
+    "focused": {
+      "passed": 49,
+      "seconds": 1.27,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_assigned_smoke_authorization.py tests/test_assigned_smoke_startup.py tests/test_assigned_smoke_run.py tests/test_assigned_smoke_plan.py tests/test_runpod_queue.py"
+    },
+    "full_suite": {
+      "passed": 1621,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_summary": "Existing SWIG deprecation warnings",
+      "seconds": 63.03,
+      "exit_code": 0,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q"
+    },
+    "ruff": "passed",
+    "git_diff_check": "passed"
+  },
+  "independent_review": {
+    "authorization_amendment": "No actionable finding; approval predates activation and binds original plan and limits.",
+    "parser_repair": "No actionable code finding; correctly handles warning-prefixed JSON and removes conflicting flags.",
+    "interpretation": "Later 404 does not prove active-time provider error or successful access after repair.",
+    "human_answer_review": "not_performed"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "prior_attempt_artifact_hashes_unchanged": true,
+  "artifact_sha256": {
+    "endpoint-activated.json": "1a497f328e8bae6b4a8684d16df38f4223e08dab465196a484a56683d2955679",
+    "endpoint-before.json": "9681b2254d7e9e0c167ce52f0b67ca65d230ce7abc459bdd946a842678b98145",
+    "evaluation-summary.json": "147d7939359c1fdef8813db43b6ab9131ad27810406a0f5559c315e6d1ea200c",
+    "final-runpod-state.json": "1a02bcadf4642fb028687f967e76e4a2c545ea33581eb3855490eb92aa36b294",
+    "health-latest.json": "904da2dd364e3dae991648a6f8fe7ffa60f1d1cbbc0e1fb9178071bcf3b1b52f",
+    "lifecycle.json": "f5b458f29986d84b3f10205bf700027023f2e462a2732262a0c8e09ecd4edb5e",
+    "runtime.json": "a4dacde6a7bb3a80bd610e0ada1ebf512ca88278f0ac1879c181286c817d736d"
+  },
+  "limitations": [
+    "Both questions remain unattempted; no Qwen behavior or quality result.",
+    "Live identity-log access remains unverified.",
+    "Parser fix has not been live-tested.",
+    "Actual billed cost is unknown; no provider dollar cap."
+  ]
+}
