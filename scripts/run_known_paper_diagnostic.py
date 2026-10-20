@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.runpod_qwen_bootstrap import BASE, BASE_REVISION, ADAPTER, ADAPTER_REVISION, ADAPTER_SHA256
 from src.env.tools import TOOL_PREAMBLE
-from src.eval.native_pilot_client import Deadline
+from src.eval.native_pilot_client import Deadline, kill_group
 from src.eval.known_paper_diagnostic import run_trial, training_prompt
 from src.policies.openai_compatible import OpenAICompatiblePolicy
 from src.policies.runpod_queue import RunpodQueueTransport
@@ -113,6 +113,21 @@ def run(args):
         "unattempted_trials": list(range(len(trials) + 1, 3)), "human_review": "not_performed"})
 
 
+def wait_worker(child, output, *, seconds=900):
+    deadline = Deadline(child.pid, seconds)
+    try:
+        return child.wait()
+    except BaseException:
+        # The worker has its own session: parent interruption cannot stop it.
+        # Reap it before disarming the watchdog; preserve its request ledger.
+        kill_group(child.pid)
+        child.wait()
+        raise
+    finally:
+        deadline.close()
+        write(output / "watchdog.json", {"fired": deadline.fired.is_set()})
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["prepare", "run"])
@@ -128,13 +143,7 @@ def main():
     else:
         child = subprocess.Popen([sys.executable, __file__, *sys.argv[1:], "--worker"],
                                   start_new_session=True)
-        deadline = Deadline(child.pid, 900)
-        try:
-            code = child.wait()
-        finally:
-            deadline.close()
-            write(args.output / "watchdog.json", {"fired": deadline.fired.is_set()})
-        raise SystemExit(code)
+        raise SystemExit(wait_worker(child, args.output))
 
 
 if __name__ == "__main__":

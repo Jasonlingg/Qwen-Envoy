@@ -79,3 +79,32 @@ def test_training_prompt_is_pinned():
     import hashlib
     prompt = training_prompt(Path('data/sft/qasper-v5/train.jsonl'))
     assert hashlib.sha256(prompt.encode()).hexdigest() == TRAINING_PROMPT_SHA256
+
+
+def test_parent_interruption_kills_and_reaps_separate_worker(tmp_path, monkeypatch):
+    import subprocess
+    import sys
+    from scripts.run_known_paper_diagnostic import wait_worker
+    from src.eval.native_pilot_client import kill_group
+
+    child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"],
+                             start_new_session=True)
+    original_wait = child.wait
+    calls = 0
+
+    def interrupted_wait(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            raise KeyboardInterrupt
+        return original_wait(*args, **kwargs)
+
+    monkeypatch.setattr(child, "wait", interrupted_wait)
+    try:
+        with pytest.raises(KeyboardInterrupt):
+            wait_worker(child, tmp_path)
+        assert child.poll() is not None and calls == 2
+        assert json.loads((tmp_path / "watchdog.json").read_text()) == {"fired": False}
+    finally:
+        kill_group(child.pid)
+        original_wait(timeout=5)
