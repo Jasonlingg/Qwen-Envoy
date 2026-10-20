@@ -1,0 +1,50 @@
+{
+  "review_scope": "One factual claim per trial; same question and answer twice. Provenance equality alone is not semantic support.",
+  "human_review": "not_performed",
+  "checks": [
+    {
+      "trial": 1,
+      "claim": "The passage reports a batch size of 1 for the walltime measurements.",
+      "reviewer_kind": "root_assistant",
+      "human_review": "not_performed",
+      "semantic_assessment": "supported_for_this_narrow_question",
+      "reason": "The recorded retrieved window explicitly states batch size 1 for the reported measurements; the frozen reference paragraph identifies these as the walltime measurements. This says nothing about optimal batch sizes for another workload.",
+      "provenance_check": {
+        "source_window_exact_match": true,
+        "doc_id": "arxiv_2211_17192v2",
+        "start": 21400,
+        "end": 21900,
+        "source_window_sha256": "6976a14d40e02d7a0dd01eb40bd984e64cc798bd74171224f6f1811c500b9d8e",
+        "short_excerpt": "batch size of 1 on a single TPU-v4",
+        "reference_source_start": 20895,
+        "reference_source_end": 21506
+      },
+      "span_attribution": "Root assistant reconstructed this window from the recorded tool observation. The model supplied a citation, not EVIDENCE spans.",
+      "reference_match": true,
+      "cited_named_paper": true,
+      "source_inspection_before_submission": true
+    },
+    {
+      "trial": 2,
+      "claim": "The passage reports a batch size of 1 for the walltime measurements.",
+      "reviewer_kind": "root_assistant",
+      "human_review": "not_performed",
+      "semantic_assessment": "supported_for_this_narrow_question",
+      "reason": "The recorded retrieved window explicitly states batch size 1 for the reported measurements; the frozen reference paragraph identifies these as the walltime measurements. This says nothing about optimal batch sizes for another workload.",
+      "provenance_check": {
+        "source_window_exact_match": true,
+        "doc_id": "arxiv_2211_17192v2",
+        "start": 21400,
+        "end": 21900,
+        "source_window_sha256": "6976a14d40e02d7a0dd01eb40bd984e64cc798bd74171224f6f1811c500b9d8e",
+        "short_excerpt": "batch size of 1 on a single TPU-v4",
+        "reference_source_start": 20895,
+        "reference_source_end": 21506
+      },
+      "span_attribution": "Root assistant reconstructed this window from the recorded tool observation. The model supplied a citation, not EVIDENCE spans.",
+      "reference_match": true,
+      "cited_named_paper": true,
+      "source_inspection_before_submission": true
+    }
+  ]
+}

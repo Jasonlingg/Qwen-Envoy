@@ -1,0 +1,85 @@
+{
+  "trials": [
+    {
+      "status": "submitted",
+      "question": "Use the known paper \"Fast Inference from Transformers via Speculative Decoding\" (doc_id: \"arxiv_2211_17192v2\") to answer: What batch size was used for the walltime measurements?",
+      "doc_id": "arxiv_2211_17192v2",
+      "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+      "max_steps": 6,
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime measurements\"))",
+          "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 4}, {'text': 'ces the number of calls to the target model by a factor of 1−αγ+11−α\\\\frac{1-\\\\alpha^{\\\\gamma+1}}{1-\\\\alpha}. Note that speculative execution in general, and our algorithm in particular, assume that we have enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of runnin', 'offset': 12400, 'score': 3}, {'text': 've enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is', 'offset': 12600, 'score': 3}]\n",
+          "inspection_action": true,
+          "execution_error": false
+        },
+        {
+          "step": 2,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime measurements\"))",
+          "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 4}, {'text': 'ces the number of calls to the target model by a factor of 1−αγ+11−α\\\\frac{1-\\\\alpha^{\\\\gamma+1}}{1-\\\\alpha}. Note that speculative execution in general, and our algorithm in particular, assume that we have enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of runnin', 'offset': 12400, 'score': 3}, {'text': 've enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is', 'offset': 12600, 'score': 3}]\n",
+          "inspection_action": true,
+          "execution_error": false
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The passage reports a batch size of 1 for the walltime measurements. CITATIONS: [\"arxiv_2211_17192v2\"]",
+          "observation": "Submitted under the original citation-only protocol."
+        }
+      ],
+      "answer": "The passage reports a batch size of 1 for the walltime measurements.",
+      "citations": [
+        "arxiv_2211_17192v2"
+      ],
+      "evidence": [],
+      "source_inspection_actions": 2,
+      "model_requests_attempted": 3,
+      "execution": "docker_only",
+      "semantic_support": "not_reviewed",
+      "reward": "not_computed",
+      "elapsed_seconds": 111.50464549986646,
+      "trial": 1
+    },
+    {
+      "status": "submitted",
+      "question": "Use the known paper \"Fast Inference from Transformers via Speculative Decoding\" (doc_id: \"arxiv_2211_17192v2\") to answer: What batch size was used for the walltime measurements?",
+      "doc_id": "arxiv_2211_17192v2",
+      "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+      "max_steps": 6,
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime measurements\"))",
+          "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 4}, {'text': 'ces the number of calls to the target model by a factor of 1−αγ+11−α\\\\frac{1-\\\\alpha^{\\\\gamma+1}}{1-\\\\alpha}. Note that speculative execution in general, and our algorithm in particular, assume that we have enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of runnin', 'offset': 12400, 'score': 3}, {'text': 've enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is', 'offset': 12600, 'score': 3}]\n",
+          "inspection_action": true,
+          "execution_error": false
+        },
+        {
+          "step": 2,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime measurements\"))",
+          "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 4}, {'text': 'ces the number of calls to the target model by a factor of 1−αγ+11−α\\\\frac{1-\\\\alpha^{\\\\gamma+1}}{1-\\\\alpha}. Note that speculative execution in general, and our algorithm in particular, assume that we have enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of runnin', 'offset': 12400, 'score': 3}, {'text': 've enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is', 'offset': 12600, 'score': 3}]\n",
+          "inspection_action": true,
+          "execution_error": false
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The passage reports a batch size of 1 for the walltime measurements. CITATIONS: [\"arxiv_2211_17192v2\"]",
+          "observation": "Submitted under the original citation-only protocol."
+        }
+      ],
+      "answer": "The passage reports a batch size of 1 for the walltime measurements.",
+      "citations": [
+        "arxiv_2211_17192v2"
+      ],
+      "evidence": [],
+      "source_inspection_actions": 2,
+      "model_requests_attempted": 3,
+      "execution": "docker_only",
+      "semantic_support": "not_reviewed",
+      "reward": "not_computed",
+      "elapsed_seconds": 14.000638416968286,
+      "trial": 2
+    }
+  ],
+  "raw_result_fields": "Retained as recorded; separate assistant review does not rewrite semantic_support or add model-supplied spans."
+}
