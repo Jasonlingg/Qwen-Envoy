@@ -13,11 +13,22 @@ from src.eval.assigned_smoke_plan import MODEL_IDENTITY, ROOT, write_json
 from src.eval.native_pilot_client import kill_group
 
 
+class ControlError(RuntimeError):
+    def __init__(self, command: str, code: str, status):
+        self.details = {"command": command, "code": code, "status": status}
+        super().__init__(f"Runpod {command} failed ({code}, HTTP {status})")
+
+
 def cli(*args, raw=False):
     result = subprocess.run(["runpodctl", "serverless", *args], capture_output=True,
                             text=True, timeout=30)
     if result.returncode:
-        raise RuntimeError("Runpod control CLI failed; inspect endpoint before any retry")
+        # Retain machine-readable diagnostics, never raw endpoint/env or credentials.
+        try:
+            error = json.loads(result.stderr)
+        except ValueError:
+            error = {}
+        raise ControlError(args[0], error.get("code", "unknown"), error.get("status"))
     if len(result.stdout) > 1_000_000:
         raise ValueError("control CLI output too large")
     return result.stdout if raw else json.loads(result.stdout)
@@ -52,6 +63,21 @@ def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> 
                 raise ValueError("live worker identity differs from the approved pins")
             return {**identity, "worker_id": worker, "identity_log_ts": stamp}
     return None
+
+
+def identity_logs(control, endpoint, active, since, expired):
+    for attempt in range(3):
+        try:
+            return control("logs", endpoint, "--source", "container", "--tail", "2000",
+                "--worker", next(iter(active)), "--since", since.isoformat(),
+                "--max-wait", "1s", raw=True)
+        except ControlError as exc:
+            if (attempt == 2 or exc.details["code"] not in
+                    {"not_found", "network_error", "server_error", "rate_limited"}):
+                raise
+            if expired.wait(1):
+                raise TimeoutError("watchdog expired while reading startup logs") from None
+    raise AssertionError("unreachable")
 
 
 def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
@@ -107,10 +133,9 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
             if len(active) > 1:
                 raise ValueError("more than one active worker; refusing inference")
             identity = None
-            if active:
-                logs = control("logs", endpoint, "--source", "container", "--tail", "2000",
-                    "--worker", next(iter(active)), "--since", since.isoformat(),
-                    "--max-wait", "1s", raw=True)
+            # A newly scheduled worker can be listed before its log service exists.
+            if active and health["workers"].get("ready", 0):
+                logs = identity_logs(control, endpoint, active, since, expired)
                 identity = worker_identity(logs, active_workers=active, since=since)
             if identity and health["workers"].get("ready", 0):
                 write_json(output / "worker-identity.json", identity)
@@ -128,6 +153,8 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
         outcome["exit_code"] = child.wait()
     except BaseException as exc:
         outcome["error_type"] = type(exc).__name__
+        if isinstance(exc, ControlError):
+            outcome["control_error"] = exc.details
         raise
     finally:
         if child is not None:
