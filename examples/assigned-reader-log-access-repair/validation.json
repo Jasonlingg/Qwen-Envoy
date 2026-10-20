@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-20T20:39:17.729302+00:00",
+  "implementation_commit": "9580aadd984ab0a8c953c0b054bdacd54f2514e0",
+  "actual_gpu_activations": 0,
+  "actual_model_requests": 0,
+  "paid_calls": 0,
+  "mutations": 0,
+  "tests": {
+    "focused": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_assigned_smoke_control.py tests/test_assigned_smoke_cli_integration.py tests/test_assigned_smoke_worker_binding.py tests/test_assigned_smoke_startup.py tests/test_assigned_smoke_run.py tests/test_assigned_smoke_plan.py tests/test_assigned_smoke_authorization.py tests/test_runpod_queue.py",
+      "passed": 65,
+      "seconds": 6.1
+    },
+    "full": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q",
+      "passed": 1637,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_kind": "existing SWIG deprecations",
+      "seconds": 92.68
+    },
+    "ruff": "passed on all 10 implementation/test files",
+    "whitespace": "git diff --check passed",
+    "preparation": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python scripts/prepare_assigned_reader_smoke.py check --output examples/assigned-reader-smoke-prepared",
+      "result": "prepared_not_run",
+      "initial_prompt_tokens": [
+        1938,
+        1964
+      ]
+    },
+    "actual_cli_integration": "2 local HTTP/SSE tests passed; no external requests or inference"
+  },
+  "installed_cli": {
+    "version": "2.14.0-dd55bcf",
+    "binary_sha256": "377ea9f6b72c68cb766be2784f137ab4cefdd8d10022f0f2910104d386e48918",
+    "source_revision": "dd55bcf",
+    "inspected_source_sha256": {
+      "cmd/serverless/logs.go": "9428f51c102833159418f3191060e82cbaf4a9036e0addba538187f61a18dfa7",
+      "internal/api/health.go": "12affe551634e33b084732548bcf68867b7f1727e51799246da4d5d313c7c39e",
+      "internal/api/logs.go": "3689b30edeaa63fca8e19d968a9fbcb62b63b3a0f43ca7372e857c8f12ade486",
+      "internal/api/restv2.go": "d72e4fefc5c39073ff7cc40accfa668786c1a21b065fd2a8dbed4097248d8dff",
+      "internal/logstream/logstream.go": "1a6b5eff46be536e113e06043a13a848c512f5c1a078caaddca5de54bc299f24"
+    }
+  },
+  "independent_review": {
+    "reviewer": "qwen_live_final_review",
+    "result": "No actionable findings in v2 binding, credential destination, identity checks, bounded retries or shutdown; live log access remains unverified",
+    "human_answer_review": "not performed",
+    "report_artifact_review": "No findings: factual consistency, evidence distinctions and sanitized parked-state artifacts checked; no secrets exposed."
+  },
+  "source_sha256": {
+    "scripts/run_assigned_reader_smoke.py": "962041c11f00e2060f56e28729443037c658231c03b1e5bf78b541f987a53f94",
+    "src/eval/assigned_smoke_cleanup.py": "f50cc51f0da706ddc72a82b3317070a32eb4efae108658d58246945726b18212",
+    "src/eval/assigned_smoke_control.py": "0b06ef51c2bf7ce18b68b92d788f6446baebe27b471b0013244e2e0ce64e2d5c",
+    "src/eval/assigned_smoke_lifecycle.py": "440275abaaae99d5d48d26c159bc3a2cc5b333466e9383d9cf292b5b38b37572",
+    "tests/assigned_smoke_cli_fixture.py": "6f851b5970c66ded96525b5cae90c26dcf0dcdf7441adf87f5d2b2bb607f7905",
+    "tests/test_assigned_smoke_cli_integration.py": "1793c431fd11057813f6a3523fedc0e9ddebe518e17fe14dc5a304f7e80e2d0e",
+    "tests/test_assigned_smoke_control.py": "f1fb263e46165c64440b65d8f2d17a0c80bc4033ab9dc8cec70d2d46861032a4",
+    "tests/test_assigned_smoke_run.py": "01a801386cfd12751f21419d98b14a38e4a6b6ca3611cad9b203848e1e5a8541",
+    "tests/test_assigned_smoke_startup.py": "98722bd023064775b4eae42c264f8ee9cc7ab7b4a3d221bd5e00f02934b3d951",
+    "tests/test_assigned_smoke_worker_binding.py": "98af8c44fa4baddeebd9c7dfc30238dc0d866d8bfabab5905fd44ee2b68857a5"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "prior_attempt_artifacts": {
+    "assigned-reader-smoke-startup-aborted": {
+      "all_unchanged": true,
+      "files": 7,
+      "validation_sha256": "8e11955f94303db13b4c0a15f1ea4612d45450d7976732f6c190eb644e8a4f8a"
+    },
+    "assigned-reader-smoke-replacement": {
+      "all_unchanged": true,
+      "files": 7,
+      "validation_sha256": "f94151cb638275fca954ef5ec429f205c2e5bdf6f51687c1302da4119707dad4"
+    }
+  },
+  "limitations": [
+    "Local CLI/SSE success and parked worker-list access do not verify active-worker log access.",
+    "Hazards repaired are not proven causes of prior live failures.",
+    "No live model answers, execution-error rate, semantic-support judgments, fine-tuning benefit or comparative benchmark results.",
+    "Original and replacement attempt allowances exhausted; markers unchanged.",
+    "Prior actual billed spend unknown."
+  ],
+  "artifact_sha256": {
+    "final-runpod-state.json": "9fc1ec9df0562e07e717e60da6c392c3e5fe2ec98175fc0b2919d9c495100ad8",
+    "read-only-worker-api.json": "47f3cdd05a5a42542922c451b63d1202fd38b052e7212e12073104b9c7bd91a3"
+  }
+}
