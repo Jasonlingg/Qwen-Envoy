@@ -24,10 +24,15 @@ def cli(*args, raw=False):
                             text=True, timeout=30)
     if result.returncode:
         # Retain machine-readable diagnostics, never raw endpoint/env or credentials.
-        try:
-            error = json.loads(result.stderr)
-        except ValueError:
-            error = {}
+        error = {}
+        for line in reversed(result.stderr.splitlines()):
+            try:
+                candidate = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(candidate, dict) and "code" in candidate:
+                error = candidate
+                break
         raise ControlError(args[0], error.get("code", "unknown"), error.get("status"))
     if len(result.stdout) > 1_000_000:
         raise ValueError("control CLI output too large")
@@ -68,7 +73,7 @@ def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> 
 def identity_logs(control, endpoint, active, since, expired):
     for attempt in range(3):
         try:
-            return control("logs", endpoint, "--source", "container", "--tail", "2000",
+            return control("logs", endpoint, "--source", "container",
                 "--worker", next(iter(active)), "--since", since.isoformat(),
                 "--max-wait", "1s", raw=True)
         except ControlError as exc:

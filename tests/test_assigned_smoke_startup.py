@@ -41,8 +41,9 @@ def test_log_failure_has_finite_read_attempts_and_preserved_reason(code, expecte
 
 def test_cli_preserves_safe_error_code_without_printing_stderr(monkeypatch):
     def failed(*args, **kwargs):
-        return subprocess.CompletedProcess(args, 1, "", json.dumps({
-            "code": "not_found", "status": 404, "error": "sensitive raw message"}))
+        stderr = "--tail is ignored when --since is set\n" + json.dumps({
+            "code": "not_found", "status": 404, "error": "sensitive raw message"})
+        return subprocess.CompletedProcess(args, 1, "", stderr)
     monkeypatch.setattr(lifecycle.subprocess, "run", failed)
     with pytest.raises(lifecycle.ControlError) as failure:
         lifecycle.cli("logs", "endpoint")
