@@ -1,0 +1,16 @@
+{
+  "id": "MLP01",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "question": "Which two smaller open-weight model candidates should I test against an 8B model for extracting structured fields from English technical documents? I have one 24 GB GPU, need two concurrent requests, and must handle 6,000 input tokens plus up to 256 output tokens per request. Licensing must permit commercial use. Compare their applicability and propose one matched evaluation; do not promise quality or latency without measurements.",
+  "input": {
+    "workload": "English technical-document field extraction; exact-match and field-level errors can be reviewed",
+    "baseline": "An 8B decoder model; exact checkpoint, serving runtime and baseline accuracy are not supplied",
+    "gpu_vram_gb": 24,
+    "concurrent_requests": 2,
+    "input_tokens_per_request": 6000,
+    "max_output_tokens_per_request": 256,
+    "license_constraint": "Commercial use must be permitted by the selected version's terms",
+    "gpu_model": "unknown",
+    "production_latency_target": "unknown"
+  }
+}

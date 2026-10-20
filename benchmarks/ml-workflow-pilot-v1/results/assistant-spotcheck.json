@@ -1,0 +1,76 @@
+{
+  "schema_version": "native-ml-pilot-assistant-spotcheck-v1",
+  "checked_at_utc": "2026-10-20T03:08:13.465810+00:00",
+  "reviewer_kind": "assistant_unblinded",
+  "human_review": "not_performed",
+  "scope": "Four selected checks across MLP04/MLP05; no total answer grades or winner. All other material claims remain unchecked.",
+  "post_collection_operator_research": {
+    "web_tool_invocations": 2,
+    "page_operations": 5,
+    "distinct_primary_urls": 3,
+    "included_in_answer_generation_budget": false,
+    "explanation": "Source-review work after all ten native answers completed; no extra reader/provider endpoint script."
+  },
+  "checks": [
+    {
+      "question_id": "MLP04",
+      "arm": "A",
+      "answer_sha256": "599302d2af17cae5b0163ab3c1ec21a49bec392ef887c58cbd51a8dac9e0d3c8",
+      "reviewer_kind": "assistant_unblinded",
+      "review_kind": "limited_claim_level_spotcheck",
+      "claim_paraphrase": "Corrected speculative sampling preserves the target distribution subject to numerical precision.",
+      "assessment": "Supported as a statement about the algorithms described by these papers.",
+      "primary_sources_opened": [
+        "https://proceedings.mlr.press/v202/leviathan23a.html",
+        "https://arxiv.org/abs/2302.01318v1",
+        "https://docs.vllm.ai/en/v0.17.1/features/speculative_decoding/"
+      ],
+      "scope_and_limitations": "The two abstracts explicitly describe distribution preservation; the pinned vLLM page qualifies numerical/batching behavior and logprob stability. This does not validate a local sampler or every speedup/table claim in the answer.",
+      "human_verdict": null,
+      "whole_answer_verdict": null
+    },
+    {
+      "question_id": "MLP05",
+      "arm": "A",
+      "answer_sha256": "5bb21a2c3208b2aaaa7a52191dea33d6ee8e9bc9df1ad079704f29e385151180",
+      "reviewer_kind": "assistant_unblinded",
+      "review_kind": "limited_claim_level_spotcheck",
+      "claim_paraphrase": "The quality gate is met on the supplied 100 cases; latency and all-in cost remain unknown; adoption is deferred.",
+      "assessment": "Consistent with supplied hypothetical inputs and original gates.",
+      "primary_sources_opened": [],
+      "scope_and_limitations": "96/100 to 97/100 is +1 percentage point; the raw reported latency reduction is 24%, but 80-vs-100 coverage/unknown conditions prevent a matched pass; active-only 0.014 leaves 0.006 of the 0.020 all-in ceiling, with overhead unknown. This is arithmetic and limited interpretation, not validation of any real result.",
+      "human_verdict": null,
+      "whole_answer_verdict": null
+    },
+    {
+      "question_id": "MLP04",
+      "arm": "B",
+      "answer_sha256": "b934fbe5f6d8d6cf2efd8ba9e6d536de0e534e0b2fc717970b81d3fcb13eb7b4",
+      "reviewer_kind": "assistant_unblinded",
+      "review_kind": "limited_claim_level_spotcheck",
+      "claim_paraphrase": "Corrected speculative sampling preserves the target distribution subject to numerical precision.",
+      "assessment": "Supported as a statement about the algorithms described by these papers.",
+      "primary_sources_opened": [
+        "https://proceedings.mlr.press/v202/leviathan23a.html",
+        "https://arxiv.org/abs/2302.01318v1",
+        "https://docs.vllm.ai/en/v0.17.1/features/speculative_decoding/"
+      ],
+      "scope_and_limitations": "The two abstracts explicitly describe distribution preservation; the pinned vLLM page qualifies numerical/batching behavior and logprob stability. This does not validate a local sampler or every speedup/table claim in the answer.",
+      "human_verdict": null,
+      "whole_answer_verdict": null
+    },
+    {
+      "question_id": "MLP05",
+      "arm": "B",
+      "answer_sha256": "333cac42d76fd87b30e9cf779aa9271ecec8a46e50e390e7b86399135a3f3a46",
+      "reviewer_kind": "assistant_unblinded",
+      "review_kind": "limited_claim_level_spotcheck",
+      "claim_paraphrase": "The quality gate is met on the supplied 100 cases; latency and all-in cost remain unknown; adoption is deferred.",
+      "assessment": "Consistent with supplied hypothetical inputs and original gates.",
+      "primary_sources_opened": [],
+      "scope_and_limitations": "96/100 to 97/100 is +1 percentage point; the raw reported latency reduction is 24%, but 80-vs-100 coverage/unknown conditions prevent a matched pass; active-only 0.014 leaves 0.006 of the 0.020 all-in ceiling, with overhead unknown. This is arithmetic and limited interpretation, not validation of any real result.",
+      "human_verdict": null,
+      "whole_answer_verdict": null
+    }
+  ]
+}

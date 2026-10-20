@@ -5,6 +5,9 @@ research-call ceiling with a monitored target. The validated controller and
 frozen answering protocol are in [EXECUTION.md](EXECUTION.md) and
 [execution-manifest.json](execution-manifest.json). The earlier native preflight
 remains recorded in [preflight.json](preflight.json) and [PREFLIGHT.md](PREFLIGHT.md).
+All ten answers have now been collected; see [RESULTS.md](RESULTS.md). Human
+quality review is pending. No B session called MCP, so active tool benefit has
+not been evaluated by this run.
 All scenario measurements/hardware
 numbers are hypothetical inputs, not observations from this project. These are
 assistant-authored development questions; they are not untouched confirmation

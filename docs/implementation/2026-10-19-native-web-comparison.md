@@ -1,13 +1,14 @@
 # Research MCP versus ordinary web research
 
-Status: proposed evaluation protocol; no study answers collected. This document
+Status: proposed three-arm evaluation protocol; no three-arm answers collected. This document
 starts no infrastructure and makes no model calls. Freeze tasks, review criteria,
 execution settings and a costed run manifest before collecting results.
 
-The current [five-question ML decision pilot](
-../../benchmarks/ml-workflow-pilot-v1/README.md) has draft questions, a rubric
-and proposed ceilings for A versus B with Qwen off. It is preparation only;
-this broader three-arm reader protocol is not its execution authorization.
+The separately approved [five-question ML decision pilot](
+../../benchmarks/ml-workflow-pilot-v1/RESULTS.md) collected ten native A/B answers
+with Qwen off. None of the B sessions called MCP; human quality review remains
+pending. That development collection does not execute or authorize this broader
+three-arm reader study.
 
 ## Question and hypothesis
 
@@ -180,5 +181,6 @@ made zero inference requests and produced no answer comparison; its temporary
 pod was deleted and absence verified. Build a separately costed manifest for
 the native three-arm study, including review effort and enforced request/token
 limits. The previous frozen-pilot US$5 planning approval is not a budget estimate
-for these 60 answers. Native client orchestration, trace export and human review
-still need to be arranged; the existing runner does not provide them.
+for these 60 answers. The separate native A/B collector now provides isolated
+host sessions and trace export, but adding reader arm C, its request/token/spend
+controls and the required human review remain prerequisites for this study.

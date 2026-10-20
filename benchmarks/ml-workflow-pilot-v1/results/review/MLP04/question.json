@@ -1,0 +1,16 @@
+{
+  "id": "MLP04",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "question": "Is speculative decoding worth a small test for an 8B document reader on one 24 GB GPU serving two concurrent requests with roughly 4,000 input and 200 output tokens per request? Find two primary papers and relevant implementation documentation. Compare the conditions behind reported speedups with this workload, including draft-model overhead, acceptance rate, memory, concurrency and decoding guarantees. Recommend a bounded test or explain which missing information prevents a responsible recommendation. An additional GPU is not available.",
+  "input": {
+    "target_model_size_parameters": "8B",
+    "gpu_vram_gb": 24,
+    "concurrent_requests": 2,
+    "input_tokens_per_request": 4000,
+    "typical_output_tokens_per_request": 200,
+    "additional_gpu_available": false,
+    "exact_target_checkpoint_gpu_model_and_runtime": "unknown",
+    "draft_model": "not selected",
+    "required_decoding_behavior": "Preserve the target decoding distribution or explicitly justify and evaluate any changed behavior"
+  }
+}

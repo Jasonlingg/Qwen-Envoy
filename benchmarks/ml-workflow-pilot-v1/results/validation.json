@@ -1,0 +1,83 @@
+{
+  "schema_version": "native-ml-pilot-validation-v1",
+  "checked_at_utc": "2026-10-20T03:12:33.876534+00:00",
+  "focused_tests": {
+    "command": "python -m pytest -q tests/test_native_ml_pilot.py tests/test_native_ml_pilot_packet.py",
+    "passed": 8
+  },
+  "final_full_suite": {
+    "command": "python -m pytest -q",
+    "passed": 1486,
+    "warnings": 3,
+    "seconds": 54.96
+  },
+  "earlier_full_suite_failure": {
+    "passed": 1485,
+    "failed": 1,
+    "warnings": 3,
+    "seconds": 106.17,
+    "test": "tests/test_harness_staging.py::test_duplicate_run_is_rejected_across_processes",
+    "detail": "Child FileNotFoundError opening .stage.lock",
+    "focused_recheck_passed": 1,
+    "staging_module_recheck_passed": 28,
+    "staging_source_or_test_changed": false,
+    "root_cause": "unresolved_not_reproduced_on_rechecks",
+    "native_answers_retried": 0
+  },
+  "style": "Ruff and git diff --check passed",
+  "artifact_checks": {
+    "scheduled_pairs": 5,
+    "native_answers": 10,
+    "anonymous_answers_match_raw": 10,
+    "human_grades_prefilled": 0,
+    "frozen_generation_hashes_match": 48,
+    "native_inventory_settings_canary_checks_pass": 10,
+    "remaining_pilot_mcp_processes": 0
+  },
+  "preserved_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "exported_artifact_sha256": {
+    "results/aggregates.json": "5c3260830e1fabc6bf97e38a69d74652413f3bbb66252dfa3622e3ef37835bfe",
+    "results/assistant-spotcheck.json": "b105a18870ccf99f45c97e234c15bdea6ae2b87b0fc9af9ec8b1ef4f608ba162",
+    "results/collection-report.json": "ea65baaf55336eb08910de1b7f1f98f93827d99ca101ac0fe0c2bc8eddb74504",
+    "results/operator/MLP01-A.json": "df49685383f4b8810c67ea79dea401e5aa51dd0f19d0eac07e2dc2302f6157f0",
+    "results/operator/MLP01-B.json": "e61c0971e6af44be79b1c38db7c4d22d6eb28163879502c389155117259eb6ed",
+    "results/operator/MLP02-A.json": "18c538361d3908786b5a307df71e81c897b6f7fc3d1c43d1233501a2c71e104a",
+    "results/operator/MLP02-B.json": "645f3845c39d3b942b2d290e800deffc4098217177d6ca639654d1b01609168d",
+    "results/operator/MLP03-A.json": "16572237ede29be51d01a2c5e1aca513c0684dd6cac2d68ed1a2ea24db583d62",
+    "results/operator/MLP03-B.json": "3fd480209d37a7bee66a054e780d2ab66860a7a6c3da5ca3da93685fd62958a8",
+    "results/operator/MLP04-A.json": "bcef26033128f4908f5e2db46a12e2c86036dd9c80db1184e9625c93a821494d",
+    "results/operator/MLP04-B.json": "5285f323f0817bd96672a1d41230ff7c82f7b856517fc0a3ee133e325090402b",
+    "results/operator/MLP05-A.json": "19e36da1563744d6b37746721637e00e56474a08b49ef51a5565b0337720ae51",
+    "results/operator/MLP05-B.json": "7b464c0432f73b4b32a7ec13340ee4a0421936e8c818ca83848b807c8f25886a",
+    "results/operator/arm-map.json": "2168f30f91bfd5c99c0fd039c88388b9ae63543d365264befd3ccb0a8817fabb",
+    "results/review/MLP01/answer-0346ae6cdb5ea439.md": "465504616078e058b15f0d90abf7fc10062ec7c243593100b74cb4317f4d2e99",
+    "results/review/MLP01/answer-ea8888cb2b322849.md": "ea2bbc826c12e9fe2916ab3098f6844edeb92c8cbeb975176e2258cb950e2706",
+    "results/review/MLP01/question.json": "89f85a49d6d5b30ff5c889692dd70084194df14458959ee6216a211ba5e95eea",
+    "results/review/MLP02/answer-0f0d60736204cd26.md": "387e1ae114a124451d01d8b2db943169f8cd65a61e96e5cb8ca5c162bd51f86a",
+    "results/review/MLP02/answer-34b05d0a60281e30.md": "4415a64d2257c77f9a032390fcf5a6f5df4388200911a181d3788811ff74af57",
+    "results/review/MLP02/question.json": "07f9b3ae827388d4b336dcf1e5d800e0608efaada5b4c898c481092f6c93d846",
+    "results/review/MLP03/answer-7a054cc59989e761.md": "1ae3283be61364ca48f8346badd96938733c01df6790ba2791be104d7ab33f99",
+    "results/review/MLP03/answer-95b27734676e90d3.md": "9f94284fdd8b90a2d8524298757b238addcd646767727c01bb3bfe36c15adb8a",
+    "results/review/MLP03/question.json": "c7b6bdf72f51a4531f6ac2c7c26c4931450c12c2a88b586282526807cbbec54a",
+    "results/review/MLP04/answer-a462cde1dfbf7e44.md": "b934fbe5f6d8d6cf2efd8ba9e6d536de0e534e0b2fc717970b81d3fcb13eb7b4",
+    "results/review/MLP04/answer-a88474a8497661e4.md": "599302d2af17cae5b0163ab3c1ec21a49bec392ef887c58cbd51a8dac9e0d3c8",
+    "results/review/MLP04/question.json": "dfdcdcebc5d6fc38852f00e583afdd4ab46ec5fc5ef45d7af57b61a1a3347deb",
+    "results/review/MLP05/answer-d2ee1b071bf4ec95.md": "5bb21a2c3208b2aaaa7a52191dea33d6ee8e9bc9df1ad079704f29e385151180",
+    "results/review/MLP05/answer-ed4fa41660000672.md": "333cac42d76fd87b30e9cf779aa9271ecec8a46e50e390e7b86399135a3f3a46",
+    "results/review/MLP05/question.json": "1a6d6b8d167fdc6ab07ec4e532289080d572994c0bf3691d9dc636467b19ac15",
+    "results/review/README.md": "a829abea6666e298984388d02e07656b702a748c53d43a8f5478d0820e2e93f0",
+    "results/review/rubric.json": "e2edadf4a52c58197825f17e7ae9dc354c23724728002db9224b71fb1c3ff238",
+    "results/review/worksheet.json": "59ced17216176c9cb2199d25bddbca208eceb74e240c999ec4167204dce10da7"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "MLP03",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "question": "Should I fine-tune this retrieval-augmented support assistant next, or test a different fix first? Of 200 hypothetically audited development questions, 150 pass, 20 failures lack the necessary retrieved evidence, 20 have the necessary evidence visible but answer incorrectly, and 10 violate the output schema. These categories are mutually exclusive. I have 300 possible training examples and 100 untouched evaluation cases, but their quality and overlap have not been checked. Recommend one diagnostic experiment before any training job and explain what result would change your recommendation.",
+  "input": {
+    "development_questions": 200,
+    "passes": 150,
+    "missing_evidence_failures": 20,
+    "wrong_answer_with_evidence_failures": 20,
+    "schema_failures": 10,
+    "categories_mutually_exclusive": true,
+    "potential_training_examples": 300,
+    "untouched_evaluation_cases": 100,
+    "checkpoint_runtime_and_dataset_revision": "unknown",
+    "training_example_quality_and_overlap": "unknown",
+    "audit_status": "Hypothetical scenario input, not a new human review performed by this project"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "id": "MLP02",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "question": "What should I investigate first to reduce this reader's latency without changing answer quality? It serves two concurrent requests with an 8B model on one 24 GB GPU. The scenario reports median time to first token of 0.6 seconds, median decode throughput of 20 tokens/second/request, median output length of 200 tokens, and p95 end-to-end latency of 18 seconds. Choose one initial measurement or intervention and explain how we would test it. Separate prefill, queueing and decoding; do not combine marginal medians as if they were a paired trace.",
+  "input": {
+    "gpu_vram_gb": 24,
+    "concurrent_requests": 2,
+    "model_size_parameters": "8B",
+    "median_input_tokens": 4000,
+    "median_output_tokens": 200,
+    "median_ttft_seconds": 0.6,
+    "median_decode_tokens_per_second_per_request": 20,
+    "p95_end_to_end_seconds": 18,
+    "shared_prefix_tokens": 512,
+    "gpu_model": "unknown",
+    "runtime_and_batching_settings": "unknown",
+    "queueing_time": "unknown",
+    "quality_baseline_and_tolerance": "unknown"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "MLP05",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "question": "Can we adopt the candidate under the supplied frozen decision rule, or what remains unresolved? Review only these hypothetical saved results unless an external fact is necessary. Report each original gate as met, not met or unknown, distinguish observations from conclusions, and propose the smallest next measurement. Keep the decision criteria unchanged; do not treat an unmeasured cost as zero or a faster reported number as a complete matched comparison.",
+  "input": {
+    "record_kind": "synthetic_historical_results_for_benchmarking",
+    "same_question_ids_and_dataset_revision_for_quality": true,
+    "quality_population": "The same 100 hypothetically source-reviewed cases",
+    "baseline_correct_supported_answers": 96,
+    "candidate_correct_supported_answers": 97,
+    "baseline_quality_case_count": 100,
+    "candidate_quality_case_count": 100,
+    "baseline_reported_p95_latency_seconds": 5.0,
+    "candidate_reported_p95_latency_seconds": 3.8,
+    "baseline_latency_case_count": 80,
+    "candidate_latency_case_count": 100,
+    "latency_missing_case_reason": "20 baseline failures have no timing; their outcomes must not disappear",
+    "warm_cold_cache_and_load_conditions": "not recorded",
+    "baseline_gpu_active_only_usd_per_request": 0.02,
+    "candidate_gpu_active_only_usd_per_request": 0.014,
+    "loading_idle_cleanup_storage_and_host_inference_costs": "unknown",
+    "frozen_rule": {
+      "all_gates_required": true,
+      "quality": "Candidate supported-answer rate must be no more than 1 percentage point below baseline",
+      "latency": "At least 20% lower p95 end-to-end latency on the same complete workload under matched conditions",
+      "cost": "All-in allocated cost at or below USD 0.020 per request, including host and lifecycle overhead"
+    }
+  }
+}

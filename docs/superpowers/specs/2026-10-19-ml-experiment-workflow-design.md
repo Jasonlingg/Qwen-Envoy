@@ -2,7 +2,10 @@
 
 Date: 2026-10-19. Status: implementation Tasks 1–6 approved and complete.
 The user's question drives the workflow. Task 5's user usefulness review remains
-pending; no proposed intervention or ordinary-Codex comparison has been run.
+pending; no proposed ML intervention has been executed. The separately approved
+five-question native Codex pilot has collected ten answers, with human quality
+review pending and no MCP calls observed. See its
+[results](../../../benchmarks/ml-workflow-pilot-v1/RESULTS.md).
 
 ## Goal and first useful workflow
 

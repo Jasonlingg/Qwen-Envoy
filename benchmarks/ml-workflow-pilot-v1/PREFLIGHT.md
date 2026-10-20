@@ -1,5 +1,9 @@
 # Native comparison preflight — October 19, 2026
 
+Historical preflight snapshot: the user subsequently approved the monitored-limit
+amendment. See [EXECUTION.md](EXECUTION.md) and the execution manifest for the
+later answering stage. The zero-answer counts below describe preflight only.
+
 The user approved the five-question comparison. Answer collection has not
 started because the approved hard research-call ceiling is not enforceable with
 the native controls verified so far. This is a setup finding, not an A/B result.
