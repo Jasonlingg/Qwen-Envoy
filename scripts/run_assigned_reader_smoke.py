@@ -30,12 +30,23 @@ def hashes():
     return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in FILES}
 
 
+def authorization(path: Path | None, plan_sha256: str):
+    if path is None:
+        return "User said 'ok go' after the live $0.69/hour A5000 quote."
+    record = json.loads(path.read_text())
+    if (record.get("approved") is not True or record.get("replacement_attempts") != 1
+            or record.get("prepared_sha256") != plan_sha256 or record.get("limits") != LIMITS):
+        raise ValueError("replacement approval must match the frozen plan and limits")
+    return {"record": record, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["run", "worker"])
     parser.add_argument("--prepared", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--approved-live", action="store_true")
+    parser.add_argument("--authorization-file", type=Path)
     args = parser.parse_args()
     os.environ.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1")
     from transformers import AutoTokenizer
@@ -64,13 +75,15 @@ def main():
         parser.error("run requires separate live activation approval (--approved-live)")
     if not PersistentREPL._docker_available(plan["sandbox_image"]):
         raise ValueError("pinned Docker image unavailable; GPU was not activated")
+    plan_sha = hashlib.sha256((args.prepared / "plan.json").read_bytes()).hexdigest()
+    approval = authorization(args.authorization_file, plan_sha)
     args.output.mkdir(parents=True, exist_ok=False)
     # Global exclusive attempt marker, shared across output directories/copies of the plan.
     marker = ROOT / "out/assigned-reader-two-case-LIVE_ATTEMPT"
     with marker.open("x") as stream:
         stream.write(str(args.output.resolve()) + "\n")
     write_json(args.output / "runtime.json", {"approved_live": True,
-        "authorization": "User said 'ok go' after the live $0.69/hour A5000 quote.",
+        "authorization": approval,
         "started_at": datetime.now(timezone.utc).isoformat(),
         "prepared_sha256": hashlib.sha256((args.prepared / "plan.json").read_bytes()).hexdigest(),
         "implementation_sha256": hashes(),
