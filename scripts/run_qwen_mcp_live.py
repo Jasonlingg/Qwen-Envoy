@@ -36,6 +36,13 @@ provenance, not semantic support; review whether each major claim follows from
 its cited passage. Do not claim trained Qwen is better than base Qwen or Codex.
 This is an integration check with required tool use, not the earlier free-choice
 A/B comparison. Finish within 700 words plus source links and saved record ID.
+The brief uses a strict schema: question, goal (latency), proposed_change,
+hypothesis, expected_signal, applicability, and lists of strings for procedure,
+unknowns and limitations are valid fields. observations is a list of objects
+with text, basis (agent_interpretation) and reference_ids. A cached paper
+reference uses kind=paper_span, reference_id, versioned arxiv_id, start and end;
+its span must be at most 1200 characters. Leave complex fields unset if their
+schema is unavailable; never hide an entire proposed brief inside question.
 """
 QUESTION = """I want to reduce latency for two concurrent Qwen3-8B document-reading
 agents on one 48 GB GPU. Using Fast Inference from Transformers via Speculative
@@ -47,6 +54,23 @@ including cold/warm separation, throughput and p50/p95 latency, memory, answer
 quality and execution failures. Mark unknown implementation/workload details
 explicitly. No benchmark is authorized to run by saving the draft.
 """
+
+
+async def connected_inventory(client, tid, *, seconds=90):
+    deadline = time.monotonic() + seconds
+    while True:
+        page = await client.request("mcpServerStatus/list", {
+            "threadId": tid, "detail": "full", "limit": 100})
+        required = {row["name"]: row for row in page["data"]
+                    if row["name"] in {"arxiv-research", "ml-experiments"}}
+        if any(row.get("runtimeStatus") == "failed" for row in required.values()):
+            raise RuntimeError("required MCP server failed during startup")
+        if len(required) == 2 and all(row.get("runtimeStatus") == "connected"
+                                      for row in required.values()):
+            return page
+        if time.monotonic() >= deadline:
+            raise TimeoutError("required MCP servers did not connect")
+        await asyncio.sleep(1)
 
 
 async def run(args):
@@ -62,6 +86,8 @@ async def run(args):
             "--credentials-file", str(Path.home() / ".runpod/config.toml"),
             "--sandbox-image", args.sandbox_image],
         "mcp_servers.arxiv-research.startup_timeout_sec": 90,
+        "mcp_servers.arxiv-research.env": {
+            "ENVOY_STARTUP_DIAGNOSTICS": str(output / "server-startup.jsonl")},
         "mcp_servers.arxiv-research.tool_timeout_sec": 900})
     (output / "settings.json").write_text(json.dumps(config, indent=2) + "\n")
     (output / "instructions.txt").write_text(INSTRUCTIONS + "\n\n" + question)
@@ -87,8 +113,7 @@ async def run(args):
             raise RuntimeError("unexpected native host settings")
         (output / "thread.json").write_text(json.dumps(thread, indent=2) + "\n")
         tid = thread["thread"]["id"]
-        page = await client.request("mcpServerStatus/list", {
-            "threadId": tid, "detail": "full", "limit": 100})
+        page = await connected_inventory(client, tid)
         (output / "mcp-inventory.json").write_text(json.dumps(page, indent=2) + "\n")
         active = {r["name"]: set(r["tools"]) for r in page["data"] if r["tools"]}
         expected = {
@@ -98,6 +123,9 @@ async def run(args):
                                "get_experiment", "list_experiments", "record_experiment_result"}}
         if active != expected:
             raise RuntimeError("full research and experiment MCP inventory required")
+        if args.preflight_only:
+            result["status"] = "preflight_passed"
+            return result
         turn = await client.request("turn/start", {"threadId": tid,
             "input": [{"type": "text", "text": question}], "effort": EFFORT,
             "permissions": "ml-pilot", "approvalPolicy": "never"})
@@ -124,6 +152,7 @@ def main():
     parser.add_argument("--endpoint-id", required=True)
     parser.add_argument("--sandbox-image", required=True)
     parser.add_argument("--gpu-memory-gb", type=int, choices=[24, 48], default=48)
+    parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--output", type=Path, required=True)
     asyncio.run(run(parser.parse_args()))
 

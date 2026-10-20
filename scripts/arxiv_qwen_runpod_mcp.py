@@ -6,6 +6,7 @@ this server, never placed in the host model's configuration or sandbox.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from pathlib import Path
 import sys
@@ -22,12 +23,20 @@ from src.product.arxiv_mcp_config import build_reader
 from src.product.paper_discovery import PaperDiscovery
 
 
+def diagnostic(event, **fields):
+    path = os.environ.get("ENVOY_STARTUP_DIAGNOSTICS")
+    if path:
+        with Path(path).open("a") as stream:
+            stream.write(json.dumps({"event": event, "pid": os.getpid(), **fields}) + "\n")
+
+
 def main():
+    diagnostic("starting")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--endpoint-id", required=True)
     parser.add_argument("--library-root", type=Path, required=True)
     parser.add_argument("--audit-path", type=Path, required=True,
-                        help="New exclusive file; restart requires a new explicitly budgeted session")
+                        help="Session ledger; MCP processes and restarts share its remaining budget")
     parser.add_argument("--credentials-file", type=Path)
     parser.add_argument("--sandbox-image", default="rlm-sandbox")
     args = parser.parse_args()
@@ -46,9 +55,14 @@ def main():
                           harness_version="v2", max_steps=8,
                           policy_transport=transport, sandbox_image=args.sandbox_image)
     root = args.library_root.expanduser()
+    diagnostic("serving")
     create_server(ArxivLibrary(root), PaperDiscovery(root / "discovery-cache"),
                   investigator=reader, reasoner=None, tool_profile="full").run(transport="stdio")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as exc:
+        diagnostic("failed", error_type=type(exc).__name__)
+        raise

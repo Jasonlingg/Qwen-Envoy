@@ -1,4 +1,6 @@
 import json
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 import pytest
 
@@ -31,7 +33,9 @@ def test_success_uses_one_submission_and_enforces_shared_budget(tmp_path):
     assert len(calls) == 1
     assert calls[0][2]["policy"]["executionTimeout"] == 120000
     assert "secret" not in audit.read_text()
-    with pytest.raises(FileExistsError):
+    restarted = RunpodQueueTransport("abc", "secret", Tokenizer(), audit, requests_max=1)
+    assert restarted.remaining == 0
+    with pytest.raises(ValueError, match="refusing reset"):
         RunpodQueueTransport("abc", "secret", Tokenizer(), audit)
 
 
@@ -49,6 +53,43 @@ def test_uncertain_submission_is_not_retried_or_refunded(tmp_path):
         transport("unused", payload(), {}, 120)
     assert len(calls) == 1
     assert json.loads(audit.read_text().splitlines()[-1])["reservation_retained"] is True
+    restarted = RunpodQueueTransport("abc", "secret", Tokenizer(), audit,
+                                      requests_max=1, http=http)
+    assert restarted.remaining == 0
+
+
+def _process_request(path):
+    def http(*args):
+        return {"id": "job-1", "status": "COMPLETED", "output": [{
+            "model": "envoy", "choices": [{"message": {"content": "print(1)"}}]}]}
+    from pathlib import Path
+    transport = RunpodQueueTransport("abc", "secret", Tokenizer(), Path(path),
+                                      requests_max=3, http=http)
+    try:
+        transport("unused", payload(), {}, 120)
+    except RuntimeError as exc:
+        assert "budget exhausted" in str(exc)
+        return False
+    return True
+
+
+def test_multiple_processes_share_one_hard_budget(tmp_path):
+    path = tmp_path / "audit.jsonl"
+    with ProcessPoolExecutor(max_workers=4, mp_context=multiprocessing.get_context("spawn")) as pool:
+        results = list(pool.map(_process_request, [str(path)] * 8))
+    assert sum(results) == 3
+    rows = [json.loads(line) for line in path.read_text().splitlines()]
+    assert len([r for r in rows if r["event"] == "budget"]) == 1
+    assert sorted(r["request"] for r in rows if r["event"] == "reserved") == [1, 2, 3]
+
+
+def test_corrupt_session_ledger_cannot_restore_budget(tmp_path):
+    path = tmp_path / "audit.jsonl"
+    RunpodQueueTransport("abc", "secret", Tokenizer(), path)
+    with path.open("a") as stream:
+        stream.write('{"event": "reserved"')
+    with pytest.raises(ValueError, match="corrupt"):
+        RunpodQueueTransport("abc", "secret", Tokenizer(), path)
 
 
 @pytest.mark.parametrize("changes", [{"model": "envoy-base-only"}, {"stream": True},

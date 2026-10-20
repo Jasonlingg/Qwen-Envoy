@@ -1,12 +1,15 @@
 """Bounded, opt-in adapter from chat completions to Runpod's queued vLLM API.
 
-One process owns an exclusive audit file and a shared reservation budget. A
+Processes sharing a session audit file share a locked reservation budget. A
 submission with an uncertain outcome is never retried. Polling an existing job
 does not create another inference request. This is not a provider dollar cap.
 """
 from __future__ import annotations
 
+from contextlib import contextmanager
+import fcntl
 import json
+import os
 import re
 import threading
 import time
@@ -30,18 +33,65 @@ class RunpodQueueTransport:
             raise ValueError("queue deadline must be 1..900 seconds")
         self.base = f"https://api.runpod.ai/v2/{endpoint_id}"
         self._key, self.tokenizer = api_key, tokenizer
-        self.audit = audit_path.open("x", buffering=1)
-        self.lock = threading.Lock()
+        self.audit = audit_path.open("a+", buffering=1)
+        self.lock = threading.RLock()
         self.requests_max = requests_max
-        self.remaining, self.wait_seconds = requests_max, wait_seconds
+        self.wait_seconds = wait_seconds
         self._http = http or self._request
-        self._write({"event": "budget", "requests": requests_max,
-                     "input_tokens_reserved_max": requests_max * 7168,
-                     "output_tokens_reserved_max": requests_max * 1024})
+        self._budget = {"event": "budget", "version": 2, "endpoint": self.base,
+                        "requests": requests_max,
+                        "input_tokens_reserved_max": requests_max * 7168,
+                        "output_tokens_reserved_max": requests_max * 1024}
+        with self._locked():
+            self.audit.seek(0, 2)
+            if self.audit.tell() == 0:
+                self._append(self._budget)
+            self._reservations()
 
-    def _write(self, event):
+    @contextmanager
+    def _locked(self):
+        with self.lock:
+            fcntl.flock(self.audit.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(self.audit.fileno(), fcntl.LOCK_UN)
+
+    def _reservations(self):
+        self.audit.seek(0)
+        raw = self.audit.read(32 * 1024 * 1024 + 1)
+        if len(raw) > 32 * 1024 * 1024:
+            raise ValueError("Qwen audit exceeds size limit")
+        try:
+            rows = [json.loads(line) for line in raw.splitlines()]
+        except ValueError:
+            raise ValueError("Qwen audit is corrupt; budget cannot be resumed") from None
+        if not rows or rows[0] != self._budget:
+            raise ValueError("Qwen session budget does not match; refusing reset")
+        reservations = [r for r in rows[1:] if r.get("event") == "reserved"]
+        if (len(reservations) > self.requests_max or any(
+                r.get("request") != n or r.get("input_reservation") != 7168
+                or r.get("output_reservation") != 1024
+                for n, r in enumerate(reservations, 1))
+                or any(r.get("event") not in {"reserved", "completed", "failed"}
+                       for r in rows[1:])):
+            raise ValueError("Qwen audit reservations are invalid")
+        return len(reservations)
+
+    @property
+    def remaining(self):
+        with self._locked():
+            return self.requests_max - self._reservations()
+
+    def _append(self, event):
+        self.audit.seek(0, 2)
         self.audit.write(json.dumps(event, ensure_ascii=False) + "\n")
         self.audit.flush()
+        os.fsync(self.audit.fileno())
+
+    def _write(self, event):
+        with self._locked():
+            self._append(event)
 
     def _request(self, method, path, payload=None):
         opener = request.build_opener(request.ProxyHandler({}), _NoRedirect())
@@ -77,17 +127,17 @@ class RunpodQueueTransport:
                 or payload.get("n", 1) != 1 or payload.get("max_tokens") != 1024
                 or payload.get("chat_template_kwargs") != {"enable_thinking": False}):
             raise ValueError("unsupported reader request")
-        with self.lock:
-            if self.remaining <= 0:
+        with self._locked():
+            used = self._reservations()
+            if used >= self.requests_max:
                 raise RuntimeError("Qwen request budget exhausted")
             tokens = self.tokenizer.apply_chat_template(
                 payload["messages"], tokenize=True, add_generation_prompt=True,
                 enable_thinking=False)
             if len(tokens) > 7168:
                 raise ValueError("reader prompt exceeds 7168-token input limit")
-            self.remaining -= 1
-            number = self.requests_max - self.remaining
-            self._write({"event": "reserved", "request": number, "prompt_tokens": len(tokens),
+            number = used + 1
+            self._append({"event": "reserved", "request": number, "prompt_tokens": len(tokens),
                          "input_reservation": 7168, "output_reservation": 1024,
                          "payload": payload})
         job_id = None
