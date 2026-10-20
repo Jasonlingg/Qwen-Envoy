@@ -1,0 +1,161 @@
+{
+  "schema_version": "assigned-reader-claim-review-v1",
+  "reviewed_at": "2026-10-20T22:33:04.030281+00:00",
+  "reviewer_kind": "model_assisted",
+  "reviewers": [
+    "root source-visible review",
+    "qwen_live_final_review independent source-visible review"
+  ],
+  "human_review": "not_performed",
+  "frozen_decision": "not_met; both cases must pass, observed one pass and one fail",
+  "counts": {
+    "pass": 1,
+    "partial": 0,
+    "fail": 1
+  },
+  "total_model_requests": 6,
+  "reported_usage": {
+    "prompt_tokens": 21349,
+    "completion_tokens": 355,
+    "total_tokens": 21704
+  },
+  "reward": "not_computed",
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "packet_sha256": "bd572649c1a78695c94dde12a811b09191388a54e8ff88c965c31a2a6bce2eac",
+      "model_requests": 3,
+      "reader_seconds": 69.4417174581904,
+      "provenance_verification": "passed",
+      "mcp_fidelity_checks": "passed",
+      "python_execution_error_steps": [],
+      "action_rejection_steps": [],
+      "submission_rejection_steps": [],
+      "gap_rejection_steps": [],
+      "repeated_call_rejections": [],
+      "accepted_gap_reports": 0,
+      "host_preserves_candidate_answer": true,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime\"))",
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2211_17192v2\", 21000, 1000))",
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The walltime measurements used a batch size of 1 on a single TPU-v4. CITATIONS: [\"arxiv_2211_17192v2\"] EVIDENCE: [{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21000,\"end\":22000}]",
+          "source_inspection": false,
+          "mechanical_outcome": "accepted"
+        }
+      ],
+      "verdict": "pass",
+      "answer_supported": true,
+      "gap_appropriate": null,
+      "unsupported_target_speedup": false,
+      "claim_reviews": [
+        {
+          "claim": "The walltime measurements used a batch size of 1 on a single TPU-v4.",
+          "verdict": "supported",
+          "source_span": {
+            "start": 21000,
+            "end": 22000
+          },
+          "notes": "The inspected and cited methods paragraph states this measurement setup; host preserves it unchanged."
+        }
+      ]
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "packet_sha256": "69e4283063140facb6f9d8482c44d02f623515be00f6a2424b545adca47f89df",
+      "model_requests": 3,
+      "reader_seconds": 23.49476033402607,
+      "provenance_verification": "passed",
+      "mcp_fidelity_checks": "passed",
+      "python_execution_error_steps": [],
+      "action_rejection_steps": [],
+      "submission_rejection_steps": [],
+      "gap_rejection_steps": [],
+      "repeated_call_rejections": [],
+      "accepted_gap_reports": 0,
+      "host_preserves_candidate_answer": true,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"speedup RTX A5000 batch size 8\"))",
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2211_17192v2\", 21400, 1000))",
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The inspected passage reports speedups of 2.6X and 3.4X for argmax sampling (temp=0) and standard sampling (temp=1), respectively, on the translation task with T5-small at batch size 1 on a TPU-v4. No evidence is provided for the NVIDIA RTX A5000 or batch size 8. CITATIONS: [\"arxiv_2211_17192v2\"] EVIDENCE: [{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21400,\"end\":22400}]",
+          "source_inspection": false,
+          "mechanical_outcome": "accepted"
+        }
+      ],
+      "verdict": "fail",
+      "answer_supported": false,
+      "gap_appropriate": false,
+      "unsupported_target_speedup": false,
+      "claim_reviews": [
+        {
+          "claim": "2.6X and 3.4X for argmax sampling (temp=0) and standard sampling (temp=1), respectively.",
+          "verdict": "contradicted",
+          "source_span": {
+            "start": 21400,
+            "end": 22400
+          },
+          "source_states": "2.6X at temp=1 (standard sampling) and 3.4X at temp=0 (argmax).",
+          "notes": "Numbers are present, but the answer reverses the conditions."
+        },
+        {
+          "claim": "The cited measurement is T5-small at batch size 1 on a TPU-v4.",
+          "verdict": "supported",
+          "notes": "This is the approximation-model/measurement context; it does not establish target A5000/batch8 performance."
+        },
+        {
+          "claim": "No evidence is provided for the NVIDIA RTX A5000 or batch size 8.",
+          "verdict": "scope_sensitive",
+          "notes": "Only defendable as not established in the inspected extracted context; the bounded source inspection cannot prove absence from the full paper or literature."
+        }
+      ],
+      "missing_requirements": [
+        "explicit unresolved target-setup gap report",
+        "useful follow-up query"
+      ],
+      "notes": "No numeric A5000/batch8 speedup was invented, but a cited source result was misinterpreted and the required host-visible gap is absent. The literal-abstention gate was not triggered by this supported-looking submission."
+    }
+  ],
+  "baseline_comparison": {
+    "source": "examples/assigned-reader-smoke-v2logs/claim-review.json",
+    "baseline_counts": {
+      "pass": 0,
+      "partial": 1,
+      "fail": 1
+    },
+    "changes": [
+      "Batch-size case: fail to pass.",
+      "Target-setup case: partial to fail; now contains a condition-mapping error and still lacks a gap/query."
+    ],
+    "interpretation": "Mixed development signal on familiar questions. Same v5 checkpoint; no fine-tuning or held-out improvement inference. Candidate guidance and MCP invocation path changed; cold starts/hosts differ."
+  },
+  "limitations": [
+    "Two familiar assistant-authored development cases, not held out.",
+    "No base-model or larger-assistant control; no training-benefit conclusion.",
+    "Exact quoted spans prove provenance, not semantic support.",
+    "In-process MCP/cached paper only; desktop/stdio launch and fresh discovery excluded.",
+    "Raw results/packets remain unchanged; source-visible semantic judgments are recorded separately."
+  ]
+}

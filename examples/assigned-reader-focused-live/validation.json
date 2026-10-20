@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-20T22:34:32.791300+00:00",
+  "attempt_commit": "1222b360ae2e713d5cca41d3a21f48dde4c042ad",
+  "approval_commit": "1222b36",
+  "prepared_sha256": "e8690bda6fc7ddbfbe48458205af724800e0ddf4017d12ba53e1032ccf398b15",
+  "actual_endpoint_activations": 1,
+  "actual_model_requests": 6,
+  "reported_usage": {
+    "prompt_tokens": 21349,
+    "completion_tokens": 355,
+    "total_tokens": 21704
+  },
+  "budget_checks": [
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "requests": 3,
+      "max_prompt_tokens": 4392
+    },
+    {
+      "case_id": "assigned-batch-size-v1",
+      "requests": 3,
+      "max_prompt_tokens": 4218
+    }
+  ],
+  "provider_dollar_cap": false,
+  "actual_billed_spend_usd": null,
+  "source_changed_during_attempt": false,
+  "tests": {
+    "preflight": "Fresh cached preparation check passed; all32 frozen implementation hashes match.",
+    "live": "Both cases completed; real MCP host fidelity/packet checks and ledger/shutdown audits passed.",
+    "preparation_source_suite": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q",
+      "passed": 1677,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_kind": "existing SWIG deprecations",
+      "seconds": 58.27
+    },
+    "suite_rerun_this_attempt": false,
+    "reason": "No source changed; used the exact source-pinned passing preparation suite.",
+    "artifact_checks": "All raw copies, prior artifact hashes and protected hashes verified."
+  },
+  "independent_review": {
+    "reviewer": "qwen_live_final_review",
+    "approval_runtime_review": "No findings; exact approval/plan/limits and prior marker preservation verified.",
+    "source_visible_claim_review": "One pass, one fail. Second answer reverses temperature-speedup mapping and lacks gap/query.",
+    "kind": "model-assisted, not human",
+    "human_review": "not_performed",
+    "final_publication_review": "No findings: 19 raw copies, artifact hashes and32 source hashes verified; usage/peak prompts, one pass/one fail, faithful MCP versus semantic support, preparation test provenance, unknown billing and parked state accurately recorded; no secrets identified."
+  },
+  "runtime_hashes_match_attempt_commit": true,
+  "copied_raw_artifact_sha256": {
+    "assigned-a5000-batch8-v1.mcp.json": "8dc52f62d0ebf8c6604f6660ab1239740746b20e56ee1932ad7f33c3f9e45204",
+    "assigned-batch-size-v1.verified.json": "5b164a78e7803774a2da6358e67dad54f02bb7e85feb33e4f43ad1d067507705",
+    "final-runpod-state.json": "d45a7878766e63fe6aaad17da36557955009bd54c999bb7d3bac6ceb7bad60e6",
+    "runtime.json": "7c1762f6a83d8aa6aae2a8b68a6cfd44b9a756991578ae6fd0416b3a726c84ed",
+    "assigned-a5000-batch8-v1.verified.json": "0c16f18b23d687805812aa7b1c9af1afdecab82acf7e73e515e3565677cc9f45",
+    "worker-identity.json": "bc63fa5f5c1e1693f3a09056336e59ee8842fec610de9bd63eb8eb144a9e0fba",
+    "endpoint-activated.json": "1a497f328e8bae6b4a8684d16df38f4223e08dab465196a484a56683d2955679",
+    "assigned-batch-size-v1.requests.jsonl": "ed928945bd305dad255b9cf38c6e277bc77be808c35b51a5d3542b3bb8106773",
+    "assigned-a5000-batch8-v1.packet.json": "69e4283063140facb6f9d8482c44d02f623515be00f6a2424b545adca47f89df",
+    "results.json": "fbed3197bf96b0805755334459e57a9656eefe170ab909abdf5b3839b5dea0d5",
+    "preflight-readbacks.json": "6eec32b2055d70fbcb5cea79f0fc72f2fbd3effd20d2acda3fef67a0ac31af9c",
+    "lifecycle.json": "8bfdf673740f9a9e9038164b6ab96cfa5f5bc1881f3ee3bfaeffff00dcb29874",
+    "workers-latest.json": "7a26b4c4d13dbab715e96e3e7de8e3479bee15daf0100ad87dd491b1e618941d",
+    "assigned-batch-size-v1.packet.json": "bd572649c1a78695c94dde12a811b09191388a54e8ff88c965c31a2a6bce2eac",
+    "assigned-a5000-batch8-v1.requests.jsonl": "97bdad7d676535840ecc33e25c8e1fb8810b5adab0e15a6558017d2cf3d36df6",
+    "assigned-batch-size-v1.mcp.json": "14de6e6d56388c92ebf71938edeacfe851fe36625096793252c2a0a2c8fa7109",
+    "health-latest.json": "023e3c8fd180bdeaaee3e4f4ea3daea764548fae2b3e7b645a0167efa98bce08",
+    "startup-log-reads.jsonl": "05ebcd85c3d3502edf382dde3909a8a0feded6e6901fc164bffcb0534f73faa0",
+    "endpoint-before.json": "0c44ec49c98e178f7ebe309217e6f4e55eb11889ac23e2747ea6fcbb26ff1005"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "prior_artifacts": {
+    "assigned-reader-smoke-startup-aborted": {
+      "artifact_files_unchanged": 7,
+      "validation_sha256": "8e11955f94303db13b4c0a15f1ea4612d45450d7976732f6c190eb644e8a4f8a"
+    },
+    "assigned-reader-smoke-replacement": {
+      "artifact_files_unchanged": 7,
+      "validation_sha256": "f94151cb638275fca954ef5ec429f205c2e5bdf6f51687c1302da4119707dad4"
+    },
+    "assigned-reader-log-access-repair": {
+      "artifact_files_unchanged": 2,
+      "validation_sha256": "7f62d53dc9b366acf4ce7e2891f1a039be58531361d96ebf928ce1d7ce39606d"
+    },
+    "assigned-reader-smoke-v2logs": {
+      "artifact_files_unchanged": 17,
+      "validation_sha256": "aa3560ec7954ee4e5c1b76c233db80cbdd2e62af6d7e16b84745edfa1115a3da"
+    },
+    "assigned-guidance-offline": {
+      "artifact_files_unchanged": 9,
+      "validation_sha256": "e68f285f33c7fac2da89a7b6e0c8e0160b84b8dd99ce95800ef4a74d7b032754"
+    },
+    "assigned-reader-focused-prepared": {
+      "artifact_files_unchanged": 10,
+      "validation_sha256": "0896401eceee378d50f6612137e07415722ba0d53f9639e4462cc04507bb0819"
+    }
+  },
+  "original_preparation_sha256": {
+    "examples/assigned-reader-smoke-prepared/claim-review-template.json": "bd7ee9b4567fbd75391bf97983d425f411570765cc9f61bda9c4452e53566ea5",
+    "examples/assigned-reader-smoke-prepared/model_inputs.json": "a668ebf7635e6191550f182d9aecfff7e72412520670ea00ea56996e42a34032",
+    "examples/assigned-reader-smoke-prepared/plan.json": "a1bb90b5c51ff02e0f64c0c363aced56f7126a6e8ac58825c3845bcc1c51850f",
+    "examples/assigned-reader-smoke-prepared/plan.sha256": "ee8dfefe9361a067b4801e8934323e46db77a7deb39d75b725bd3e69ead095cd",
+    "examples/assigned-reader-smoke-prepared/references.json": "40547a65ceac847e1998094f796dac71873a48dc7a4617c1ae1bcbafcb7de9a9",
+    "examples/assigned-reader-smoke-prepared/system-prompt.txt": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+    "examples/assigned-reader-smoke-prepared/validation.json": "b8d7103f970e4ce7102592ed56e6348413d6f3534315d2a7d8b85b346ae9020f"
+  },
+  "all_prior_marker_archives_verified": true,
+  "new_exclusive_marker_retained": true,
+  "one_attempt_allowance": "exhausted; no replacement or further activation",
+  "semantic_gate": "not_met",
+  "python_execution_errors": 0,
+  "controller_rejections": 0,
+  "budget_breaches": 0,
+  "source_sha256": {
+    "src/eval/assigned_smoke_plan.py": "b1f9d5952958c7258d6fb456bf12f8d74bb5750ff0ed3ad3c9b3e654ae3ccb78",
+    "src/eval/assigned_smoke_check.py": "fcea129a053429e6155c9c921b59feb6eb78402b547264a9692a00be6c40c92a",
+    "scripts/prepare_assigned_reader_smoke.py": "518d6745ae205e6dbd6f77f9b124caf91bbf43d4d87ccc3b9f3deb239da4f2d1",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "scripts/run_known_paper_diagnostic.py": "1b77a5419e77da74194562f97810d6835569a308914714c9b052076f51ae3c8c",
+    "src/eval/native_pilot_client.py": "b8ce5f34c3eafcd1b4223ab6fe46c8ac9c154b8c644985fd235724a7ad3ee7f1",
+    "src/product/assigned_reader.py": "a98ca9b70358cde415b1c2bdc7cafa516e8cba9af916787e2357be9fb3460414",
+    "src/product/assigned_actions.py": "e01e5336459153dfbb694ff03ee4902babb7c43d6733bc823ca7acaad869d09f",
+    "src/product/paper_assignment.py": "a4072074ae6db9db1f1912e6d52d326178736a728108da6e193a3c5e6a9994f4",
+    "src/product/reader_gaps.py": "3f6ac543098eeaccca97a72b04d0a4f9584e23cb10c9f4d5afa95e47480f70b8",
+    "src/product/qwen_investigator.py": "43734177d3881786e54b4b30f7c074e888e33c1d60d6af5fd575cf7b1a19d391",
+    "src/product/packet_verifier.py": "51119bb4a9cb4d98bda0177e417cf46f4bae01488d237c19424f4dd910db0c4c",
+    "src/product/parallel_readers.py": "537f551b283b11330d806b0e98bb90fc08916112cd505b37d3cb114e444716c1",
+    "src/product/arxiv_service.py": "52a3c52ce4fcace50fdf0dcf12fae13f2fb44629830e9d242ab24b2cd753b25a",
+    "src/product/arxiv_library.py": "8bb596b24d93453cfb5da233fe2bcbb4f0c67f06a9a06b9d78da1c687a89d1dc",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "src/policies/runpod_queue.py": "83ffc6b0c825a0f1b6cb60101aae0a4b1935bbf50465f707bca8937c9d1246e4",
+    "src/policies/openai_compatible.py": "a75e0446df2de28cda8b9ce85e5e4ae2de40b1684fa8e0e29124ff3e83b781d6",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/tools_v2.py": "6b33102cd149317832497835055c79f414f020065f141930aaf733224d29fa22",
+    "src/product/harness_v2.py": "14e9fee1577834ccea97f2db66277619014e92c485d4e8fe48f5a9de2a142ea7",
+    "src/product/submit_call.py": "7e2a1faa91e8b62f740b2e2d22fe7e9abba90348afc54903142ce1878d04096b",
+    "src/product/assigned_guidance.py": "514e4c230272eee44e4fede448459727290fd25a48abdb0aff2d2d76481035b9",
+    "src/eval/assigned_smoke_candidate.py": "5506455697f195bdd2ff2c3782e76dc073f6072b7bbb3be177b4aeca49cd9f19",
+    "src/eval/assigned_smoke_mcp.py": "74ca331cc302da6a7755d28ea133e8a5299757dc4dd32b5d1c3050702ee70448",
+    "src/eval/assigned_smoke_run.py": "d11ad8d694635a7d3d50ea1a842560c39851f1e39c72d8c7b270c4c00952e022",
+    "src/eval/assigned_smoke_lifecycle.py": "440275abaaae99d5d48d26c159bc3a2cc5b333466e9383d9cf292b5b38b37572",
+    "src/eval/assigned_smoke_cleanup.py": "f50cc51f0da706ddc72a82b3317070a32eb4efae108658d58246945726b18212",
+    "src/eval/assigned_smoke_control.py": "0b06ef51c2bf7ce18b68b92d788f6446baebe27b471b0013244e2e0ce64e2d5c",
+    "scripts/run_assigned_reader_smoke.py": "595eaefb4f090c669fbe0b7e07aa8a163129ea795a7abd96c267bb498f90aa71"
+  },
+  "limitations": [
+    "One pass/one fail on two familiar development questions; no held-out/base-model/larger-assistant control.",
+    "Same trained checkpoint, no training or fine-tuning benefit conclusion.",
+    "Exact source spans and faithful MCP output do not establish semantic support.",
+    "Gap gate covers explicit abstention; supported-looking mixed answers can omit a missing-result gap.",
+    "In-process MCP/cached paper only; no desktop/stdio launch or fresh discovery test.",
+    "Actual billed spend unknown; client limits are not a provider dollar ceiling."
+  ],
+  "artifact_sha256": {
+    "assigned-a5000-batch8-v1.mcp.json": "8dc52f62d0ebf8c6604f6660ab1239740746b20e56ee1932ad7f33c3f9e45204",
+    "assigned-a5000-batch8-v1.packet.json": "69e4283063140facb6f9d8482c44d02f623515be00f6a2424b545adca47f89df",
+    "assigned-a5000-batch8-v1.requests.jsonl": "97bdad7d676535840ecc33e25c8e1fb8810b5adab0e15a6558017d2cf3d36df6",
+    "assigned-a5000-batch8-v1.verified.json": "0c16f18b23d687805812aa7b1c9af1afdecab82acf7e73e515e3565677cc9f45",
+    "assigned-batch-size-v1.mcp.json": "14de6e6d56388c92ebf71938edeacfe851fe36625096793252c2a0a2c8fa7109",
+    "assigned-batch-size-v1.packet.json": "bd572649c1a78695c94dde12a811b09191388a54e8ff88c965c31a2a6bce2eac",
+    "assigned-batch-size-v1.requests.jsonl": "ed928945bd305dad255b9cf38c6e277bc77be808c35b51a5d3542b3bb8106773",
+    "assigned-batch-size-v1.verified.json": "5b164a78e7803774a2da6358e67dad54f02bb7e85feb33e4f43ad1d067507705",
+    "claim-review.json": "77465f6089600a79921458b4b61f56600e5d77214f4624dd949cc452400ebb0e",
+    "endpoint-activated.json": "1a497f328e8bae6b4a8684d16df38f4223e08dab465196a484a56683d2955679",
+    "endpoint-before.json": "0c44ec49c98e178f7ebe309217e6f4e55eb11889ac23e2747ea6fcbb26ff1005",
+    "final-runpod-state.json": "d45a7878766e63fe6aaad17da36557955009bd54c999bb7d3bac6ceb7bad60e6",
+    "health-latest.json": "023e3c8fd180bdeaaee3e4f4ea3daea764548fae2b3e7b645a0167efa98bce08",
+    "lifecycle.json": "8bfdf673740f9a9e9038164b6ab96cfa5f5bc1881f3ee3bfaeffff00dcb29874",
+    "preflight-readbacks.json": "6eec32b2055d70fbcb5cea79f0fc72f2fbd3effd20d2acda3fef67a0ac31af9c",
+    "results.json": "fbed3197bf96b0805755334459e57a9656eefe170ab909abdf5b3839b5dea0d5",
+    "runtime.json": "7c1762f6a83d8aa6aae2a8b68a6cfd44b9a756991578ae6fd0416b3a726c84ed",
+    "startup-log-reads.jsonl": "05ebcd85c3d3502edf382dde3909a8a0feded6e6901fc164bffcb0534f73faa0",
+    "worker-identity.json": "bc63fa5f5c1e1693f3a09056336e59ee8842fec610de9bd63eb8eb144a9e0fba",
+    "workers-latest.json": "7a26b4c4d13dbab715e96e3e7de8e3479bee15daf0100ad87dd491b1e618941d"
+  }
+}

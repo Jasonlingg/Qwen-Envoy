@@ -1,0 +1,100 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "42d11586-6098-4472-a04f-07a6669aa62b",
+  "question_id": "paper_50e46ace019a0e43",
+  "question": "From the available extracted text, what walltime speedup, if any, is established specifically for speculative decoding on an NVIDIA RTX A5000 at batch size 8?",
+  "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "The inspected passage reports speedups of 2.6X and 3.4X for argmax sampling (temp=0) and standard sampling (temp=1), respectively, on the translation task with T5-small at batch size 1 on a TPU-v4. No evidence is provided for the NVIDIA RTX A5000 or batch size 8.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2211_17192v2",
+      "start": 21400,
+      "end": 22400,
+      "quote": "h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\n\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\alpha increases with the size of the approximation model. Interestingly, α\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (temp=1) and 3.4X (temp=0) on the translation task and slightly lower speedups of 2.3X (temp=1) and 3.1X (temp=0) for the summarization task. These empirical results match well with the theoretical predictions, with some variance due to implementation details (see Section A.3).\n\nWhile we only implemented our method for T5, we measured α\\alpha values for various tasks, sampling methods, target models MpM_{p}, and approximation models MqM_{q}. Specifically, we evaluated the expectation from Corollary ",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2211.17192v2",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "Fast Inference from Transformers via Speculative Decoding",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "endpoint_id": "q05pjrvguakieg"
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2211_17192v2\", \"speedup RTX A5000 batch size 8\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 5}, {'text': 'test several existing configurations, namely T5-large (800M), T5-base (250M), and T5-small (77M) (Raffel et al., 2020). We use existing checkpoints for all models. We measure walltime improvements with a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As ex', 'offset': 21200, 'score': 4}, {'text': 'alance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (temp=1) and 3.4X (temp=0) on the translation task and slightly lower speedups of 2.3X (temp=1) and 3.1X (temp=0) for the summarization task. These empirical results match well with the theoretical predic', 'offset': 21600, 'score': 4}, {'text': 'dizing the distributions. For example, we could accept the token xx sampled from MqM_{q} in case p\\u2061(x)≤l⋅m\\u200ba\\u200bx\\u200b(p)p(x)\\\\leq l\\\\cdot max(p). In this case, we measure similar empirical increases in α\\\\alpha values to those with temperature = 1. For example, when using lenience values of 1, 0.5, 0.3, and 0.1 for MpM_{p} T5-XXL MqM_{q} T5-small for English-German translation, we get α\\\\alpha values of 0.75, 0.75, 0.8, 0.87. Taking for example c=0.015c=0.015 and γ=8\\\\gamma=8 we get speed improvement facto', 'offset': 35800, 'score': 4}, {'text': 'a values to those with temperature = 1. For example, when using lenience values of 1, 0.5, 0.3, and 0.1 for MpM_{p} T5-XXL MqM_{q} T5-small for English-German translation, we get α\\\\alpha values of 0.75, 0.75, 0.8, 0.87. Taking for example c=0.015c=0.015 and γ=8\\\\gamma=8 we get speed improvement factors of 3.3X, 3.3X, 3.9X, and 4.9X respectively77 7 In this case, unlike in the standard sampling case shown in Table 5, a lenience factor of 0.5 doesn’t improve the speed-up..', 'offset': 36000, 'score': 4}, {'text': '5, 0.75, 0.8, 0.87. Taking for example c=0.015c=0.015 and γ=8\\\\gamma=8 we get speed improvement factors of 3.3X, 3.3X, 3.9X, and 4.9X respectively77 7 In this case, unlike in the standard sampling case shown in Table 5, a lenience factor of 0.5 doesn’t improve the speed-up..', 'offset': 36200, 'score': 4}, {'text': 'per: (1) English to German translation fine tuned on WMT EnDe, and (2) Text summarization fine tuned on CCN/DM. For both tasks, we use T5-XXL (11B) for MpM_{p}. For the approximation model MqM_{q} we test several existing configurations, namely T5-large (800M), T5-base (250M), and T5-small (77M) (Raffel et al., 2020). We use existing checkpoints for all models. We measure walltime improvements with a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp', 'offset': 21000, 'score': 3}, {'text': '4, 2 layers, 4 attention heads, as well as simple unigram and bigram models. MpM_{p} has 97M parameters: dim 768, dim feed-forward 3072, 12 layers, 12 attention heads. We used Bert tokenization (Devlin et al., 2019) with 8k tokens for all models.\\n\\nWe tested a decoder only LaMDA model on a dialog task (Thoppilan et al., 2022). We used existing checkpoints from LaMDA 137B as MpM_{p} and LaMDA 8B, LaMDA 2B, and LaMDA 100M for MqM_{q}.\\n\\nSee Section 4.1 for the setup of the T5-XXL (11B params) model.', 'offset': 22800, 'score': 3}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2211_17192v2\", 21400, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2211_17192v2', 'start': 21400, 'end': 22400, 'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (temp=1) and 3.4X (temp=0) on the translation task and slightly lower speedups of 2.3X (temp=1) and 3.1X (temp=0) for the summarization task. These empirical results match well with the theoretical predictions, with some variance due to implementation details (see Section A.3).\\n\\nWhile we only implemented our method for T5, we measured α\\\\alpha values for various tasks, sampling methods, target models MpM_{p}, and approximation models MqM_{q}. Specifically, we evaluated the expectation from Corollary '}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: The inspected passage reports speedups of 2.6X and 3.4X for argmax sampling (temp=0) and standard sampling (temp=1), respectively, on the translation task with T5-small at batch size 1 on a TPU-v4. No evidence is provided for the NVIDIA RTX A5000 or batch size 8. CITATIONS: [\"arxiv_2211_17192v2\"] EVIDENCE: [{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21400,\"end\":22400}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+    "doc_id": "arxiv_2211_17192v2",
+    "arxiv_id": "2211.17192v2",
+    "title": "Fast Inference from Transformers via Speculative Decoding",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e84f84860c2961bb5073bd93918f1eb23f4318ff1637e73f9dad89090a6c23b8",
+  "research_gaps": [],
+  "reader_guidance": "focused-v1",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}
