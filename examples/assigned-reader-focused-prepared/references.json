@@ -1,0 +1,32 @@
+{
+  "reviewer_kind": "assistant_prepared",
+  "human_review": "not_performed",
+  "held_out": false,
+  "sent_to_model": false,
+  "source_review_scope": "Selected cached HTML paragraphs and context; figures/tables may be omitted. No-match string checks are not proof of absence in the full paper or literature.",
+  "source_context": {
+    "start": 20895,
+    "end": 21504,
+    "text": "We test a standard encoder-decoder T5 version 1.1 model (Raffel et al., 2020) on two tasks from the T5 paper: (1) English to German translation fine tuned on WMT EnDe, and (2) Text summarization fine tuned on CCN/DM. For both tasks, we use T5-XXL (11B) for MpM_{p}. For the approximation model MqM_{q} we test several existing configurations, namely T5-large (800M), T5-base (250M), and T5-small (77M) (Raffel et al., 2020). We use existing checkpoints for all models. We measure walltime improvements with a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1)."
+  },
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "reference_answer": "1",
+      "review_requirements": "Correct batch-size claim, named paper citation and exact supporting spans after source inspection."
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "reference_constraint": "Do not invent or transfer a measured speedup to A5000/batch8. The inspected context reports TPU-v4/batch1. Missing measurements do not mean zero/negative speedup. Report an unresolved target-setup gap and useful next query. Cited partial findings are allowed if clearly limited to their measured setup.",
+      "allowed_terminal_statuses": [
+        "no_evidence",
+        "evidence_found"
+      ],
+      "incomplete_with_gap": "partial, not a pass"
+    }
+  ],
+  "literal_no_match_counts": {
+    "A5000": 0,
+    "GPU": 0
+  }
+}
