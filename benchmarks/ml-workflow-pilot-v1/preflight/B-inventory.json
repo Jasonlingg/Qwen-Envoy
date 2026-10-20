@@ -1,0 +1,2231 @@
+{
+  "arm": "B",
+  "probe": "zero_turn_inventory",
+  "model_turns": 0,
+  "config_overrides": {
+    "mcp_servers.computer-use.enabled": false,
+    "mcp_servers.hf-mcp-server.enabled": false,
+    "mcp_servers.huggingface.enabled": false,
+    "mcp_servers.node_repl.enabled": false,
+    "mcp_servers.runpod.enabled": false,
+    "mcp_servers.arxiv-research.enabled": true,
+    "mcp_servers.ml-experiments.enabled": true,
+    "mcp_servers.computer-use.command": "/usr/bin/false",
+    "mcp_servers.hf-mcp-server.url": "https://huggingface.co/mcp?login",
+    "mcp_servers.huggingface.command": "/usr/bin/false",
+    "mcp_servers.node_repl.command": "/usr/bin/false",
+    "mcp_servers.runpod.url": "https://mcp.getrunpod.io/",
+    "mcp_servers.arxiv-research.command": "/Users/jasonling/.pyenv/versions/3.11.9/bin/python",
+    "mcp_servers.ml-experiments.command": "/Users/jasonling/.pyenv/versions/3.11.9/bin/python",
+    "features.plugins": false,
+    "features.apps": false,
+    "features.multi_agent": false,
+    "features.memories": false,
+    "web_search": "live",
+    "approval_policy": "never",
+    "model": "gpt-6.1-sol",
+    "model_reasoning_effort": "medium",
+    "default_permissions": "ml-pilot",
+    "permissions.ml-pilot.filesystem": {
+      ":minimal": "read",
+      ":workspace_roots": "write",
+      "/Users/jasonling/.local/bin": "read",
+      "/Users/jasonling/.codex/packages/standalone": "read",
+      "/Users/jasonling/.codex/packages/standalone/releases/0.160.0-aarch64-apple-darwin/bin/codex": "read"
+    },
+    "permissions.ml-pilot.network.enabled": false,
+    "mcp_servers.arxiv-research.args": [
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/scripts/arxiv_research_mcp.py",
+      "--tool-profile",
+      "sources",
+      "--library-root",
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/B/library"
+    ],
+    "mcp_servers.arxiv-research.cwd": "/Users/jasonling/Documents/GitHub/rlm-explorer",
+    "mcp_servers.arxiv-research.startup_timeout_sec": 30,
+    "mcp_servers.ml-experiments.args": [
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/scripts/ml_experiment_mcp.py",
+      "--store-root",
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/B/records",
+      "--artifact-root",
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/B/artifacts",
+      "--library-root",
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/B/library"
+    ],
+    "mcp_servers.ml-experiments.cwd": "/Users/jasonling/Documents/GitHub/rlm-explorer",
+    "mcp_servers.ml-experiments.startup_timeout_sec": 30
+  },
+  "initialize": {
+    "userAgent": "ml_workflow_inventory/0.160.0 (Mac OS 26.2.0; arm64) dumb (ml_workflow_inventory; 1)",
+    "codexHome": "/Users/jasonling/.codex",
+    "platformFamily": "unix",
+    "platformOs": "macos"
+  },
+  "effective_config": {
+    "model": "gpt-6.1-sol",
+    "model_provider": null,
+    "model_reasoning_effort": "medium",
+    "web_search": "live",
+    "sandbox_mode": null,
+    "approval_policy": "never",
+    "features": {
+      "network_proxy": null,
+      "apps": false,
+      "memories": false,
+      "multi_agent": false,
+      "plugins": false,
+      "api_key_model_discovery": false,
+      "auth_elicitation": true,
+      "background_paginated_rollout_migration": false,
+      "codex_apps_mcp_2026_07_28": false,
+      "mcp_2026_07_28": false,
+      "mentions_v2": true,
+      "remote_control": false,
+      "remote_plugin": true,
+      "tool_suggest": true,
+      "windows_sandbox_service": false
+    }
+  },
+  "configured_mcp_enabled": {
+    "node_repl": false,
+    "ml-experiments": true,
+    "computer-use": false,
+    "huggingface": false,
+    "hf-mcp-server": false,
+    "arxiv-research": true,
+    "runpod": false
+  },
+  "thread": {
+    "model": "gpt-6.1-sol",
+    "modelProvider": "openai",
+    "reasoningEffort": "medium",
+    "sandbox": {
+      "type": "workspaceWrite",
+      "writableRoots": [],
+      "networkAccess": false,
+      "excludeTmpdirEnvVar": true,
+      "excludeSlashTmp": true
+    },
+    "activePermissionProfile": {
+      "id": "ml-pilot",
+      "extends": null
+    },
+    "instructionSources": [],
+    "runtimeWorkspaceRoots": [
+      "/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/ml-workflow-preflight-B-pjt1_4qw"
+    ]
+  },
+  "mcp_inventory": [
+    {
+      "name": "arxiv-research",
+      "runtimeStatus": "connected",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": {
+        "name": "Envoy arXiv Research",
+        "title": null,
+        "version": "",
+        "description": null,
+        "icons": null,
+        "websiteUrl": null
+      },
+      "serverCapabilities": {
+        "experimental": {},
+        "prompts": {
+          "listChanged": false
+        },
+        "resources": {
+          "subscribe": false,
+          "listChanged": false
+        },
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "tools": {
+        "find_evidence": {
+          "name": "find_evidence",
+          "description": "Rank exact passages across opened papers (model-free).",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "title": "Query",
+                "type": "string"
+              },
+              "arxiv_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Arxiv Ids",
+                "type": "array"
+              },
+              "top_k": {
+                "default": 8,
+                "title": "Top K",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query",
+              "arxiv_ids"
+            ],
+            "type": "object",
+            "title": "find_evidenceArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "find_evidenceDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          }
+        },
+        "open_paper": {
+          "name": "open_paper",
+          "description": "Fetch and pin one arXiv paper; returns coverage and a section outline.",
+          "inputSchema": {
+            "properties": {
+              "arxiv_id": {
+                "title": "Arxiv Id",
+                "type": "string"
+              }
+            },
+            "required": [
+              "arxiv_id"
+            ],
+            "type": "object",
+            "title": "open_paperArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "open_paperDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          }
+        },
+        "get_passage": {
+          "name": "get_passage",
+          "description": "Return a bounded exact excerpt of an opened paper (length 1..8000).",
+          "inputSchema": {
+            "properties": {
+              "arxiv_id": {
+                "title": "Arxiv Id",
+                "type": "string"
+              },
+              "start": {
+                "default": 0,
+                "title": "Start",
+                "type": "integer"
+              },
+              "length": {
+                "default": 4000,
+                "title": "Length",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "arxiv_id"
+            ],
+            "type": "object",
+            "title": "get_passageArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "get_passageDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          }
+        },
+        "search_papers": {
+          "name": "search_papers",
+          "description": "Find papers by relevance (Semantic Scholar), or by date when since/until is set.",
+          "inputSchema": {
+            "properties": {
+              "query": {
+                "title": "Query",
+                "type": "string"
+              },
+              "since": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Since"
+              },
+              "until": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Until"
+              },
+              "limit": {
+                "default": 10,
+                "title": "Limit",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object",
+            "title": "search_papersArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "search_papersDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          }
+        },
+        "get_citations": {
+          "name": "get_citations",
+          "description": "List a paper's references or the papers citing it (direction=cited_by).",
+          "inputSchema": {
+            "properties": {
+              "arxiv_id": {
+                "title": "Arxiv Id",
+                "type": "string"
+              },
+              "direction": {
+                "default": "references",
+                "title": "Direction",
+                "type": "string"
+              },
+              "limit": {
+                "default": 20,
+                "title": "Limit",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "arxiv_id"
+            ],
+            "type": "object",
+            "title": "get_citationsArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "get_citationsDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": true
+          }
+        }
+      },
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "computer-use",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "hf-mcp-server",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": "https://huggingface.co",
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "huggingface",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "ml-experiments",
+      "runtimeStatus": "starting",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": {
+        "name": "Envoy ML Experiments",
+        "title": null,
+        "version": "",
+        "description": null,
+        "icons": null,
+        "websiteUrl": null
+      },
+      "serverCapabilities": {
+        "experimental": {},
+        "prompts": {
+          "listChanged": false
+        },
+        "resources": {
+          "subscribe": false,
+          "listChanged": false
+        },
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "tools": {
+        "get_experiment": {
+          "name": "get_experiment",
+          "description": "Retrieve a brief and latest result, or select a recorded run by its ID.",
+          "inputSchema": {
+            "properties": {
+              "experiment_id": {
+                "title": "Experiment Id",
+                "type": "string"
+              },
+              "run_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Run Id"
+              }
+            },
+            "required": [
+              "experiment_id"
+            ],
+            "type": "object",
+            "title": "get_experimentArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "get_experimentDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          }
+        },
+        "save_experiment_brief": {
+          "name": "save_experiment_brief",
+          "description": "Save a question-only draft or revise a brief after research; references are checked.",
+          "inputSchema": {
+            "properties": {
+              "brief": {
+                "$ref": "#/$defs/ExperimentBrief"
+              },
+              "experiment_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Experiment Id"
+              },
+              "expected_revision": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Expected Revision"
+              }
+            },
+            "required": [
+              "brief"
+            ],
+            "type": "object",
+            "$defs": {
+              "Condition": {
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Name",
+                    "type": "string"
+                  },
+                  "role": {
+                    "enum": [
+                      "held_constant",
+                      "proposed_change",
+                      "declared_difference"
+                    ],
+                    "title": "Role",
+                    "type": "string"
+                  },
+                  "baseline": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "candidate": {
+                    "$ref": "#/$defs/KnownText"
+                  }
+                },
+                "required": [
+                  "name",
+                  "role",
+                  "baseline",
+                  "candidate"
+                ],
+                "title": "Condition",
+                "type": "object"
+              },
+              "Criterion": {
+                "additionalProperties": false,
+                "properties": {
+                  "criterion_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Criterion Id",
+                    "type": "string"
+                  },
+                  "metric_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Metric Id",
+                    "type": "string"
+                  },
+                  "operation": {
+                    "enum": [
+                      "absolute_lte",
+                      "absolute_gte",
+                      "delta_lte",
+                      "delta_gte",
+                      "relative_improvement_gte"
+                    ],
+                    "title": "Operation",
+                    "type": "string"
+                  },
+                  "threshold": {
+                    "title": "Threshold",
+                    "type": "number"
+                  },
+                  "required": {
+                    "default": true,
+                    "title": "Required",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "criterion_id",
+                  "metric_id",
+                  "operation",
+                  "threshold"
+                ],
+                "title": "Criterion",
+                "type": "object"
+              },
+              "CurrentSetup": {
+                "additionalProperties": false,
+                "properties": {
+                  "task": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "model": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "checkpoint": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "revision": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "hardware": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "workload": {
+                    "$ref": "#/$defs/KnownText"
+                  },
+                  "software": {
+                    "maxProperties": 30,
+                    "patternProperties": {
+                      "^[A-Za-z][A-Za-z0-9_-]{0,63}$": {
+                        "$ref": "#/$defs/KnownText"
+                      }
+                    },
+                    "title": "Software",
+                    "type": "object"
+                  }
+                },
+                "title": "CurrentSetup",
+                "type": "object"
+              },
+              "Evaluation": {
+                "additionalProperties": false,
+                "properties": {
+                  "population": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Population",
+                    "type": "string"
+                  },
+                  "purpose": {
+                    "enum": [
+                      "development",
+                      "confirmation",
+                      "historical"
+                    ],
+                    "title": "Purpose",
+                    "type": "string"
+                  },
+                  "expected_cases": {
+                    "minimum": 1,
+                    "title": "Expected Cases",
+                    "type": "integer"
+                  },
+                  "sample_ids": {
+                    "items": {
+                      "maxLength": 500,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 1000,
+                    "title": "Sample Ids",
+                    "type": "array"
+                  },
+                  "sample_set_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Set Sha256"
+                  },
+                  "dataset_revision": {
+                    "$ref": "#/$defs/KnownText"
+                  }
+                },
+                "required": [
+                  "population",
+                  "purpose",
+                  "expected_cases"
+                ],
+                "title": "Evaluation",
+                "type": "object"
+              },
+              "ExperimentArm": {
+                "additionalProperties": false,
+                "properties": {
+                  "description": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Description",
+                    "type": "string"
+                  },
+                  "identity": {
+                    "maxProperties": 30,
+                    "patternProperties": {
+                      "^[A-Za-z][A-Za-z0-9_-]{0,63}$": {
+                        "$ref": "#/$defs/KnownText"
+                      }
+                    },
+                    "title": "Identity",
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "description"
+                ],
+                "title": "ExperimentArm",
+                "type": "object"
+              },
+              "ExperimentBrief": {
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": "ml-experiment-brief-v1",
+                    "default": "ml-experiment-brief-v1",
+                    "title": "Schema Version",
+                    "type": "string"
+                  },
+                  "question": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Question",
+                    "type": "string"
+                  },
+                  "goal": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "model_comparison",
+                          "fine_tuning",
+                          "latency"
+                        ],
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Goal"
+                  },
+                  "current_setup": {
+                    "$ref": "#/$defs/CurrentSetup"
+                  },
+                  "constraints": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Constraints",
+                    "type": "array"
+                  },
+                  "observations": {
+                    "items": {
+                      "$ref": "#/$defs/Observation"
+                    },
+                    "maxItems": 20,
+                    "title": "Observations",
+                    "type": "array"
+                  },
+                  "alternatives": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 10,
+                    "title": "Alternatives",
+                    "type": "array"
+                  },
+                  "proposed_change": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Proposed Change"
+                  },
+                  "hypothesis": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Hypothesis"
+                  },
+                  "expected_signal": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Expected Signal"
+                  },
+                  "applicability": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Applicability"
+                  },
+                  "differences": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Differences",
+                    "type": "array"
+                  },
+                  "baseline": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/ExperimentArm"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "candidate": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/ExperimentArm"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "evaluation": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/Evaluation"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "conditions": {
+                    "items": {
+                      "$ref": "#/$defs/Condition"
+                    },
+                    "maxItems": 30,
+                    "title": "Conditions",
+                    "type": "array"
+                  },
+                  "metrics": {
+                    "items": {
+                      "$ref": "#/$defs/Metric"
+                    },
+                    "maxItems": 20,
+                    "title": "Metrics",
+                    "type": "array"
+                  },
+                  "criteria": {
+                    "items": {
+                      "$ref": "#/$defs/Criterion"
+                    },
+                    "maxItems": 20,
+                    "title": "Criteria",
+                    "type": "array"
+                  },
+                  "budget": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/ResourceBudget"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  },
+                  "procedure": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 30,
+                    "title": "Procedure",
+                    "type": "array"
+                  },
+                  "references": {
+                    "items": {
+                      "discriminator": {
+                        "mapping": {
+                          "external_reference": "#/$defs/ExternalReference",
+                          "local_artifact": "#/$defs/LocalArtifact",
+                          "paper_span": "#/$defs/PaperSpan"
+                        },
+                        "propertyName": "kind"
+                      },
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/PaperSpan"
+                        },
+                        {
+                          "$ref": "#/$defs/LocalArtifact"
+                        },
+                        {
+                          "$ref": "#/$defs/ExternalReference"
+                        }
+                      ]
+                    },
+                    "maxItems": 20,
+                    "title": "References",
+                    "type": "array"
+                  },
+                  "unknowns": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 30,
+                    "title": "Unknowns",
+                    "type": "array"
+                  },
+                  "limitations": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Limitations",
+                    "type": "array"
+                  },
+                  "candidate_outcomes_already_seen": {
+                    "default": "unknown",
+                    "enum": [
+                      "yes",
+                      "no",
+                      "unknown"
+                    ],
+                    "title": "Candidate Outcomes Already Seen",
+                    "type": "string"
+                  },
+                  "author_kind": {
+                    "default": "agent_authored",
+                    "enum": [
+                      "user_supplied",
+                      "agent_authored"
+                    ],
+                    "title": "Author Kind",
+                    "type": "string"
+                  },
+                  "supersedes_experiment_id": {
+                    "anyOf": [
+                      {
+                        "pattern": "^experiment_[0-9a-f]{32}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Supersedes Experiment Id"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "title": "ExperimentBrief",
+                "type": "object"
+              },
+              "ExternalReference": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "external_reference",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "url": {
+                    "maxLength": 2000,
+                    "pattern": "^https://",
+                    "title": "Url",
+                    "type": "string"
+                  },
+                  "description": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Description",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "url",
+                  "description"
+                ],
+                "title": "ExternalReference",
+                "type": "object"
+              },
+              "KnownText": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Value"
+                  },
+                  "unknown_reason": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Unknown Reason"
+                  }
+                },
+                "title": "KnownText",
+                "type": "object"
+              },
+              "LocalArtifact": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "local_artifact",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "relative_path": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Relative Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "json_pointer": {
+                    "default": "",
+                    "maxLength": 1000,
+                    "title": "Json Pointer",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "relative_path",
+                  "sha256"
+                ],
+                "title": "LocalArtifact",
+                "type": "object"
+              },
+              "Metric": {
+                "additionalProperties": false,
+                "properties": {
+                  "metric_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Metric Id",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Unit",
+                    "type": "string"
+                  },
+                  "aggregation": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Aggregation",
+                    "type": "string"
+                  },
+                  "population": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Population",
+                    "type": "string"
+                  },
+                  "direction": {
+                    "enum": [
+                      "higher",
+                      "lower"
+                    ],
+                    "title": "Direction",
+                    "type": "string"
+                  },
+                  "measurement_kind": {
+                    "default": "unspecified",
+                    "enum": [
+                      "quality",
+                      "latency",
+                      "cost",
+                      "other",
+                      "unspecified"
+                    ],
+                    "title": "Measurement Kind",
+                    "type": "string"
+                  },
+                  "timing_scope": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "warm",
+                          "cold",
+                          "end_to_end"
+                        ],
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Timing Scope"
+                  },
+                  "failure_policy": {
+                    "default": "unspecified",
+                    "enum": [
+                      "include",
+                      "unspecified"
+                    ],
+                    "title": "Failure Policy",
+                    "type": "string"
+                  },
+                  "requires_semantic_review": {
+                    "default": false,
+                    "title": "Requires Semantic Review",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "metric_id",
+                  "unit",
+                  "aggregation",
+                  "population",
+                  "direction"
+                ],
+                "title": "Metric",
+                "type": "object"
+              },
+              "Observation": {
+                "additionalProperties": false,
+                "properties": {
+                  "text": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Text",
+                    "type": "string"
+                  },
+                  "reference_ids": {
+                    "items": {
+                      "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Reference Ids",
+                    "type": "array"
+                  },
+                  "basis": {
+                    "default": "user_reported",
+                    "enum": [
+                      "user_reported",
+                      "artifact_reported",
+                      "agent_interpretation"
+                    ],
+                    "title": "Basis",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "title": "Observation",
+                "type": "object"
+              },
+              "PaperSpan": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "paper_span",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "arxiv_id": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Arxiv Id",
+                    "type": "string"
+                  },
+                  "start": {
+                    "minimum": 0,
+                    "title": "Start",
+                    "type": "integer"
+                  },
+                  "end": {
+                    "minimum": 0,
+                    "title": "End",
+                    "type": "integer"
+                  },
+                  "quote": {
+                    "anyOf": [
+                      {
+                        "maxLength": 1200,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Quote"
+                  },
+                  "document_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Document Sha256"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "arxiv_id",
+                  "start",
+                  "end"
+                ],
+                "title": "PaperSpan",
+                "type": "object"
+              },
+              "ResourceBudget": {
+                "additionalProperties": false,
+                "properties": {
+                  "max_model_requests": {
+                    "minimum": 0,
+                    "title": "Max Model Requests",
+                    "type": "integer"
+                  },
+                  "max_input_tokens": {
+                    "minimum": 0,
+                    "title": "Max Input Tokens",
+                    "type": "integer"
+                  },
+                  "max_output_tokens": {
+                    "minimum": 0,
+                    "title": "Max Output Tokens",
+                    "type": "integer"
+                  },
+                  "max_gpu_seconds": {
+                    "minimum": 0,
+                    "title": "Max Gpu Seconds",
+                    "type": "number"
+                  },
+                  "max_elapsed_seconds": {
+                    "exclusiveMinimum": 0,
+                    "title": "Max Elapsed Seconds",
+                    "type": "number"
+                  },
+                  "max_cost_usd": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Max Cost Usd"
+                  },
+                  "cost_unknown_reason": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Cost Unknown Reason"
+                  },
+                  "stop_conditions": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "minItems": 1,
+                    "title": "Stop Conditions",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "max_model_requests",
+                  "max_input_tokens",
+                  "max_output_tokens",
+                  "max_gpu_seconds",
+                  "max_elapsed_seconds",
+                  "stop_conditions"
+                ],
+                "title": "ResourceBudget",
+                "type": "object"
+              }
+            },
+            "title": "save_experiment_briefArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "save_experiment_briefDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false
+          }
+        },
+        "record_experiment_result": {
+          "name": "record_experiment_result",
+          "description": "Append supplied measurements against an exact frozen plan; runs no experiment.",
+          "inputSchema": {
+            "properties": {
+              "experiment_id": {
+                "title": "Experiment Id",
+                "type": "string"
+              },
+              "plan_sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "title": "Plan Sha256",
+                "type": "string"
+              },
+              "result": {
+                "$ref": "#/$defs/ExperimentResult"
+              }
+            },
+            "required": [
+              "experiment_id",
+              "plan_sha256",
+              "result"
+            ],
+            "type": "object",
+            "$defs": {
+              "CostBreakdown": {
+                "additionalProperties": false,
+                "properties": {
+                  "host_inference": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "worker_inference": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "gpu_loading": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "gpu_active": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "gpu_idle": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "cleanup": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "session_storage": {
+                    "$ref": "#/$defs/KnownNumber"
+                  },
+                  "accounting": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Accounting",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "host_inference",
+                  "worker_inference",
+                  "gpu_loading",
+                  "gpu_active",
+                  "gpu_idle",
+                  "cleanup",
+                  "session_storage",
+                  "accounting"
+                ],
+                "title": "CostBreakdown",
+                "type": "object"
+              },
+              "Evaluation": {
+                "additionalProperties": false,
+                "properties": {
+                  "population": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Population",
+                    "type": "string"
+                  },
+                  "purpose": {
+                    "enum": [
+                      "development",
+                      "confirmation",
+                      "historical"
+                    ],
+                    "title": "Purpose",
+                    "type": "string"
+                  },
+                  "expected_cases": {
+                    "minimum": 1,
+                    "title": "Expected Cases",
+                    "type": "integer"
+                  },
+                  "sample_ids": {
+                    "items": {
+                      "maxLength": 500,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 1000,
+                    "title": "Sample Ids",
+                    "type": "array"
+                  },
+                  "sample_set_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Set Sha256"
+                  },
+                  "dataset_revision": {
+                    "$ref": "#/$defs/KnownText"
+                  }
+                },
+                "required": [
+                  "population",
+                  "purpose",
+                  "expected_cases"
+                ],
+                "title": "Evaluation",
+                "type": "object"
+              },
+              "ExperimentResult": {
+                "additionalProperties": false,
+                "properties": {
+                  "schema_version": {
+                    "const": "ml-experiment-result-v1",
+                    "default": "ml-experiment-result-v1",
+                    "title": "Schema Version",
+                    "type": "string"
+                  },
+                  "run_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Run Id",
+                    "type": "string"
+                  },
+                  "timing": {
+                    "default": "unknown",
+                    "enum": [
+                      "prospective",
+                      "retrospective",
+                      "unknown"
+                    ],
+                    "title": "Timing",
+                    "type": "string"
+                  },
+                  "started_at": {
+                    "anyOf": [
+                      {
+                        "maxLength": 500,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Started At"
+                  },
+                  "completed_at": {
+                    "anyOf": [
+                      {
+                        "maxLength": 500,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Completed At"
+                  },
+                  "data_kind": {
+                    "default": "recorded",
+                    "enum": [
+                      "recorded",
+                      "synthetic"
+                    ],
+                    "title": "Data Kind",
+                    "type": "string"
+                  },
+                  "baseline": {
+                    "$ref": "#/$defs/MeasuredArm"
+                  },
+                  "candidate": {
+                    "$ref": "#/$defs/MeasuredArm"
+                  },
+                  "references": {
+                    "items": {
+                      "discriminator": {
+                        "mapping": {
+                          "external_reference": "#/$defs/ExternalReference",
+                          "local_artifact": "#/$defs/LocalArtifact",
+                          "paper_span": "#/$defs/PaperSpan"
+                        },
+                        "propertyName": "kind"
+                      },
+                      "oneOf": [
+                        {
+                          "$ref": "#/$defs/PaperSpan"
+                        },
+                        {
+                          "$ref": "#/$defs/LocalArtifact"
+                        },
+                        {
+                          "$ref": "#/$defs/ExternalReference"
+                        }
+                      ]
+                    },
+                    "maxItems": 20,
+                    "title": "References",
+                    "type": "array"
+                  },
+                  "deviations": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Deviations",
+                    "type": "array"
+                  },
+                  "interpretation": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Interpretation"
+                  },
+                  "limitations": {
+                    "items": {
+                      "maxLength": 4000,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 20,
+                    "title": "Limitations",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "run_id",
+                  "baseline",
+                  "candidate"
+                ],
+                "title": "ExperimentResult",
+                "type": "object"
+              },
+              "ExternalReference": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "external_reference",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "url": {
+                    "maxLength": 2000,
+                    "pattern": "^https://",
+                    "title": "Url",
+                    "type": "string"
+                  },
+                  "description": {
+                    "maxLength": 4000,
+                    "minLength": 1,
+                    "title": "Description",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "url",
+                  "description"
+                ],
+                "title": "ExternalReference",
+                "type": "object"
+              },
+              "KnownNumber": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Value"
+                  },
+                  "unknown_reason": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Unknown Reason"
+                  }
+                },
+                "title": "KnownNumber",
+                "type": "object"
+              },
+              "KnownText": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Value"
+                  },
+                  "unknown_reason": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Unknown Reason"
+                  }
+                },
+                "title": "KnownText",
+                "type": "object"
+              },
+              "LocalArtifact": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "local_artifact",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "relative_path": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Relative Path",
+                    "type": "string"
+                  },
+                  "sha256": {
+                    "pattern": "^[0-9a-f]{64}$",
+                    "title": "Sha256",
+                    "type": "string"
+                  },
+                  "json_pointer": {
+                    "default": "",
+                    "maxLength": 1000,
+                    "title": "Json Pointer",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "relative_path",
+                  "sha256"
+                ],
+                "title": "LocalArtifact",
+                "type": "object"
+              },
+              "MeasuredArm": {
+                "additionalProperties": false,
+                "properties": {
+                  "identity": {
+                    "maxProperties": 30,
+                    "patternProperties": {
+                      "^[A-Za-z][A-Za-z0-9_-]{0,63}$": {
+                        "$ref": "#/$defs/KnownText"
+                      }
+                    },
+                    "title": "Identity",
+                    "type": "object"
+                  },
+                  "conditions": {
+                    "maxProperties": 30,
+                    "patternProperties": {
+                      "^[A-Za-z][A-Za-z0-9_-]{0,63}$": {
+                        "$ref": "#/$defs/KnownText"
+                      }
+                    },
+                    "title": "Conditions",
+                    "type": "object"
+                  },
+                  "evaluation": {
+                    "$ref": "#/$defs/Evaluation"
+                  },
+                  "measurements": {
+                    "items": {
+                      "$ref": "#/$defs/Measurement"
+                    },
+                    "maxItems": 20,
+                    "title": "Measurements",
+                    "type": "array"
+                  },
+                  "failed_case_ids": {
+                    "items": {
+                      "maxLength": 500,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 1000,
+                    "title": "Failed Case Ids",
+                    "type": "array"
+                  },
+                  "missing_case_ids": {
+                    "items": {
+                      "maxLength": 500,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "maxItems": 1000,
+                    "title": "Missing Case Ids",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "evaluation"
+                ],
+                "title": "MeasuredArm",
+                "type": "object"
+              },
+              "Measurement": {
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Value"
+                  },
+                  "unknown_reason": {
+                    "anyOf": [
+                      {
+                        "maxLength": 4000,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Unknown Reason"
+                  },
+                  "metric_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Metric Id",
+                    "type": "string"
+                  },
+                  "unit": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Unit",
+                    "type": "string"
+                  },
+                  "aggregation": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Aggregation",
+                    "type": "string"
+                  },
+                  "population": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Population",
+                    "type": "string"
+                  },
+                  "sample_count": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Sample Count"
+                  },
+                  "coverage": {
+                    "default": "unknown",
+                    "enum": [
+                      "complete",
+                      "incomplete",
+                      "unknown"
+                    ],
+                    "title": "Coverage",
+                    "type": "string"
+                  },
+                  "numerator": {
+                    "anyOf": [
+                      {
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Numerator"
+                  },
+                  "denominator": {
+                    "anyOf": [
+                      {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Denominator"
+                  },
+                  "reference_id": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Reference Id"
+                  },
+                  "review": {
+                    "$ref": "#/$defs/ReviewDeclaration"
+                  },
+                  "timing_scope": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "warm",
+                          "cold",
+                          "end_to_end"
+                        ],
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Timing Scope"
+                  },
+                  "cost_breakdown": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/$defs/CostBreakdown"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null
+                  }
+                },
+                "required": [
+                  "metric_id",
+                  "unit",
+                  "aggregation",
+                  "population"
+                ],
+                "title": "Measurement",
+                "type": "object"
+              },
+              "PaperSpan": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "const": "paper_span",
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reference_id": {
+                    "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+                    "title": "Reference Id",
+                    "type": "string"
+                  },
+                  "arxiv_id": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "title": "Arxiv Id",
+                    "type": "string"
+                  },
+                  "start": {
+                    "minimum": 0,
+                    "title": "Start",
+                    "type": "integer"
+                  },
+                  "end": {
+                    "minimum": 0,
+                    "title": "End",
+                    "type": "integer"
+                  },
+                  "quote": {
+                    "anyOf": [
+                      {
+                        "maxLength": 1200,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Quote"
+                  },
+                  "document_sha256": {
+                    "anyOf": [
+                      {
+                        "pattern": "^[0-9a-f]{64}$",
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Document Sha256"
+                  }
+                },
+                "required": [
+                  "kind",
+                  "reference_id",
+                  "arxiv_id",
+                  "start",
+                  "end"
+                ],
+                "title": "PaperSpan",
+                "type": "object"
+              },
+              "ReviewDeclaration": {
+                "additionalProperties": false,
+                "properties": {
+                  "kind": {
+                    "default": "not_reviewed",
+                    "enum": [
+                      "not_reviewed",
+                      "model_assisted",
+                      "human_declared"
+                    ],
+                    "title": "Kind",
+                    "type": "string"
+                  },
+                  "reviewer": {
+                    "anyOf": [
+                      {
+                        "maxLength": 500,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Reviewer"
+                  },
+                  "reviewed_at": {
+                    "anyOf": [
+                      {
+                        "maxLength": 500,
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Reviewed At"
+                  }
+                },
+                "title": "ReviewDeclaration",
+                "type": "object"
+              }
+            },
+            "title": "record_experiment_resultArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "record_experiment_resultDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        "freeze_experiment_plan": {
+          "name": "freeze_experiment_plan",
+          "description": "Freeze the user-agreed complete plan; does not authorize execution or spending.",
+          "inputSchema": {
+            "properties": {
+              "experiment_id": {
+                "title": "Experiment Id",
+                "type": "string"
+              },
+              "expected_revision": {
+                "title": "Expected Revision",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "experiment_id",
+              "expected_revision"
+            ],
+            "type": "object",
+            "title": "freeze_experiment_planArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "freeze_experiment_planDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          }
+        },
+        "list_experiments": {
+          "name": "list_experiments",
+          "description": "List up to 100 recent experiment summaries with IDs and a truncation indicator.",
+          "inputSchema": {
+            "properties": {
+              "limit": {
+                "default": 20,
+                "title": "Limit",
+                "type": "integer"
+              }
+            },
+            "type": "object",
+            "title": "list_experimentsArguments"
+          },
+          "outputSchema": {
+            "type": "object",
+            "additionalProperties": true,
+            "title": "list_experimentsDictOutput"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "openWorldHint": false
+          }
+        }
+      },
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "node_repl",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "runpod",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": "https://mcp.getrunpod.io",
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    }
+  ],
+  "status": "inventory_observed",
+  "filesystem_checks": {
+    "workspace": {
+      "exitCode": 0,
+      "stdout": "public probe canary\n",
+      "stderr": ""
+    },
+    "outside_workspace": {
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "cat: /Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/not-for-child.txt: Operation not permitted\n"
+    }
+  },
+  "methods_requested": [
+    "initialize",
+    "config/read",
+    "thread/start",
+    "mcpServerStatus/list",
+    "command/exec",
+    "command/exec"
+  ],
+  "notification_methods": [
+    "account/updated",
+    "mcpServer/startupStatus/updated",
+    "remoteControl/status/changed",
+    "thread/started"
+  ]
+}

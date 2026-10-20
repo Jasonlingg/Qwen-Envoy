@@ -1,0 +1,217 @@
+{
+  "arm": "A",
+  "probe": "zero_turn_inventory",
+  "model_turns": 0,
+  "config_overrides": {
+    "mcp_servers.computer-use.enabled": false,
+    "mcp_servers.hf-mcp-server.enabled": false,
+    "mcp_servers.huggingface.enabled": false,
+    "mcp_servers.node_repl.enabled": false,
+    "mcp_servers.runpod.enabled": false,
+    "mcp_servers.arxiv-research.enabled": false,
+    "mcp_servers.ml-experiments.enabled": false,
+    "mcp_servers.computer-use.command": "/usr/bin/false",
+    "mcp_servers.hf-mcp-server.url": "https://huggingface.co/mcp?login",
+    "mcp_servers.huggingface.command": "/usr/bin/false",
+    "mcp_servers.node_repl.command": "/usr/bin/false",
+    "mcp_servers.runpod.url": "https://mcp.getrunpod.io/",
+    "mcp_servers.arxiv-research.command": "/usr/bin/false",
+    "mcp_servers.ml-experiments.command": "/usr/bin/false",
+    "features.plugins": false,
+    "features.apps": false,
+    "features.multi_agent": false,
+    "features.memories": false,
+    "web_search": "live",
+    "approval_policy": "never",
+    "model": "gpt-6.1-sol",
+    "model_reasoning_effort": "medium",
+    "default_permissions": "ml-pilot",
+    "permissions.ml-pilot.filesystem": {
+      ":minimal": "read",
+      ":workspace_roots": "write",
+      "/Users/jasonling/.local/bin": "read",
+      "/Users/jasonling/.codex/packages/standalone": "read",
+      "/Users/jasonling/.codex/packages/standalone/releases/0.160.0-aarch64-apple-darwin/bin/codex": "read"
+    },
+    "permissions.ml-pilot.network.enabled": false
+  },
+  "initialize": {
+    "userAgent": "ml_workflow_inventory/0.160.0 (Mac OS 26.2.0; arm64) dumb (ml_workflow_inventory; 1)",
+    "codexHome": "/Users/jasonling/.codex",
+    "platformFamily": "unix",
+    "platformOs": "macos"
+  },
+  "effective_config": {
+    "model": "gpt-6.1-sol",
+    "model_provider": null,
+    "model_reasoning_effort": "medium",
+    "web_search": "live",
+    "sandbox_mode": null,
+    "approval_policy": "never",
+    "features": {
+      "network_proxy": null,
+      "apps": false,
+      "memories": false,
+      "multi_agent": false,
+      "plugins": false,
+      "api_key_model_discovery": false,
+      "auth_elicitation": true,
+      "background_paginated_rollout_migration": false,
+      "codex_apps_mcp_2026_07_28": false,
+      "mcp_2026_07_28": false,
+      "mentions_v2": true,
+      "remote_control": false,
+      "remote_plugin": true,
+      "tool_suggest": true,
+      "windows_sandbox_service": false
+    }
+  },
+  "configured_mcp_enabled": {
+    "hf-mcp-server": false,
+    "huggingface": false,
+    "arxiv-research": false,
+    "node_repl": false,
+    "computer-use": false,
+    "ml-experiments": false,
+    "runpod": false
+  },
+  "thread": {
+    "model": "gpt-6.1-sol",
+    "modelProvider": "openai",
+    "reasoningEffort": "medium",
+    "sandbox": {
+      "type": "workspaceWrite",
+      "writableRoots": [],
+      "networkAccess": false,
+      "excludeTmpdirEnvVar": true,
+      "excludeSlashTmp": true
+    },
+    "activePermissionProfile": {
+      "id": "ml-pilot",
+      "extends": null
+    },
+    "instructionSources": [],
+    "runtimeWorkspaceRoots": [
+      "/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/ml-workflow-preflight-A-j42tdcpi"
+    ]
+  },
+  "mcp_inventory": [
+    {
+      "name": "arxiv-research",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "computer-use",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "hf-mcp-server",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": "https://huggingface.co",
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "huggingface",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "ml-experiments",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "node_repl",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": null,
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    },
+    {
+      "name": "runpod",
+      "runtimeStatus": "disabled",
+      "pluginId": null,
+      "httpOrigin": "https://mcp.getrunpod.io",
+      "serverInfo": null,
+      "serverCapabilities": null,
+      "tools": {},
+      "toolsError": null,
+      "resources": [],
+      "resourceTemplates": [],
+      "authStatus": "unsupported"
+    }
+  ],
+  "status": "inventory_observed",
+  "filesystem_checks": {
+    "workspace": {
+      "exitCode": 0,
+      "stdout": "public probe canary\n",
+      "stderr": ""
+    },
+    "outside_workspace": {
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "cat: /Users/jasonling/Documents/GitHub/rlm-explorer/out/ml-workflow-pilot-preflight/not-for-child.txt: Operation not permitted\n"
+    }
+  },
+  "methods_requested": [
+    "initialize",
+    "config/read",
+    "thread/start",
+    "mcpServerStatus/list",
+    "command/exec",
+    "command/exec"
+  ],
+  "notification_methods": [
+    "account/updated",
+    "remoteControl/status/changed",
+    "thread/started"
+  ]
+}

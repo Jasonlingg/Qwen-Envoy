@@ -1,7 +1,9 @@
-# Five-question ML workflow comparison — preparation only
+# Five-question ML workflow comparison
 
-Status: draft questions, rubric and budget for user review. No comparison answers
-collected; execution is not authorized. All scenario measurements/hardware
+Status: the user approved proceeding on October 19. Native preflight is recorded
+in [preflight.json](preflight.json) and [PREFLIGHT.md](PREFLIGHT.md). No comparison
+answers have been collected: the hard research-call limit remains unresolved.
+All scenario measurements/hardware
 numbers are hypothetical inputs, not observations from this project. These are
 assistant-authored development questions; they are not untouched confirmation
 data, an original research benchmark, or independent gold labels.
@@ -96,7 +98,7 @@ Do not reward more citations, longer answers, fancy formatting or more calls.
 Accept a justified deferral with a bounded next measurement where the scenario
 is underdetermined; do not prescribe a winning model or method to reviewers.
 
-## Proposed budget — not execution approval
+## Approved proposed budget — enforcement still pending
 
 | Resource | Proposed ceiling |
 | --- | --- |
@@ -133,5 +135,9 @@ execution/review effort. The older [three-arm source/reader protocol](
 ../../docs/implementation/2026-10-19-native-web-comparison.md) remains a broader
 proposal, not an executed benchmark or authorization for this pilot.
 
-Preparation created documents/input JSON only. No answering sessions, model
-workers, training, benchmark execution or infrastructure were started.
+The initial preparation created documents/input JSON only. The subsequent
+preflight started native ephemeral threads and inspected their MCP inventories
+and filesystem canaries, without starting model turns. No answers, model workers,
+training or infrastructure were started. A proposed change from the hard research
+call cap to a monitored limit is awaiting the user's decision; approval of the
+benchmark itself is already recorded and does not need to be requested again.

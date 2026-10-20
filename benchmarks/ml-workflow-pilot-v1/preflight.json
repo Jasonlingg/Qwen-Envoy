@@ -1,0 +1,110 @@
+{
+  "schema_version": "ml-workflow-pilot-preflight-v1",
+  "date": "2026-10-19",
+  "status": "awaiting_budget_control_decision_no_answers_collected",
+  "user_execution_authorized": true,
+  "question_ids": [
+    "MLP01",
+    "MLP02",
+    "MLP03",
+    "MLP04",
+    "MLP05"
+  ],
+  "hypothesis": "The same native host with source and experiment MCP tools produces more supported, actionable ML recommendations than the host with ordinary tools alone.",
+  "expected_signal": "More human-reviewed useful initial answers, fewer material errors or less correction effort under matched inputs and limits.",
+  "decision_rule": "Report all five pairs using the frozen rubric; human verdicts remain unknown until independently supplied. This diagnostic cannot establish broad superiority.",
+  "client": "codex-cli 0.160.0",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "model_provider": "openai",
+  "model_identity_scope": "thread/start resolved identifier; not independent weight attestation",
+  "model_decoding": {
+    "temperature": null,
+    "seed": null,
+    "limitation": "Not established through the native client configuration."
+  },
+  "budgets": {
+    "scheduled_answers": 10,
+    "attempts_per_answer": 1,
+    "seconds_per_answer": 600,
+    "research_tool_calls_per_answer": 20,
+    "qwen_or_other_extra_model_endpoint_calls": 0,
+    "gpu_starts": 0,
+    "host_token_cap": null,
+    "host_dollar_cap": null
+  },
+  "controls": {
+    "research_calls": "Hard before-dispatch cap not established for hosted web search; monitored-limit alternative awaiting user decision.",
+    "elapsed": "Interrupt plus process-group termination proposed; answer controller has not yet been implemented or validated.",
+    "filesystem": "Named ml-pilot profile permits minimum platform access, Codex executable packages and only current workspace writes; inside/outside canary behavior observed for both arms.",
+    "model_inference": "No turn/start requests made. Model access/web results/final answer export are untested.",
+    "mcp_inventory": "A: all configured servers disabled, zero tools returned; B: two connected servers, five source and five experiment tools returned. Disabled server metadata remains visible to inventory RPC."
+  },
+  "isolation": {
+    "workspaces": "Fresh temporary directories outside repository; zero loaded instructionSources observed.",
+    "mcp_source_cache": "Empty B-specific probe library; future answering cases must use new per-case roots.",
+    "normal_tools": "Matching configuration; full model-advertised built-in inventory has not been captured.",
+    "mcp_scope": "sources-only; no investigate or Qwen policy"
+  },
+  "collection": {
+    "answers": 0,
+    "host_generation_turns": 0,
+    "human_review": "not_assigned_not_performed",
+    "semantic_quality_winner": "unknown",
+    "actual_spend": null
+  },
+  "arm_order": [
+    [
+      "MLP01",
+      "A",
+      "B"
+    ],
+    [
+      "MLP02",
+      "B",
+      "A"
+    ],
+    [
+      "MLP03",
+      "A",
+      "B"
+    ],
+    [
+      "MLP04",
+      "B",
+      "A"
+    ],
+    [
+      "MLP05",
+      "A",
+      "B"
+    ]
+  ],
+  "sha256": {
+    "questions.json": "5c37ac59b9f70f351396eca0809aba9a001d344a1971e4e176bd92b73a8bb9c9",
+    "reviewer-rubric.json": "e2edadf4a52c58197825f17e7ae9dc354c23724728002db9224b71fb1c3ff238",
+    "preflight/A-inventory.json": "a3c109a92055077c49be81854825c09cbd948ad978afcb029dbdacb80a6c4e1f",
+    "preflight/B-inventory.json": "e060421e58041c94c233e273884b6e94a92eb478fffeb32248202f4f22a52b06",
+    "preflight/native_inventory_probe.py": "4ed2650a1db11c208b032ec730ce7c2cab3de2bab957ce64b653d7f6b2744e7c"
+  },
+  "limitations": [
+    "Preflight is not an end-to-end answer comparison.",
+    "Native model/catalog selection does not prove inference entitlement.",
+    "No new Qwen run or fine-tuning evaluation.",
+    "The tool cap cannot be silently relaxed from the approved protocol."
+  ],
+  "recorded_at_utc": "2026-10-20T02:34:43.905170+00:00",
+  "validation": {
+    "native_probes": "Both completed without model turns; workspace reads allowed and repository canary reads denied.",
+    "artifact_checks": "Ten tool schemas in B, zero in A; absent investigate; matched resolved model and effort; zero instruction sources; five IDs; all linked SHA-256 values checked.",
+    "preserved_files": "All ten protected/pre-existing file hashes match the Task 6 receipt.",
+    "python": "AST parse and Ruff passed for the probe.",
+    "full_suite": {
+      "command": "python -m pytest -q",
+      "passed": 1478,
+      "warnings": 3,
+      "seconds": 53.64,
+      "warning_scope": "Existing SWIG dependency deprecations."
+    }
+  }
+}

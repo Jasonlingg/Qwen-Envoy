@@ -1,6 +1,6 @@
 {
   "schema_version": "ml-workflow-pilot-reviewer-rubric-v1",
-  "status": "draft_assistant_authored_requirements_need_user_review",
+  "status": "user_approved_requirements_human_review_not_started",
   "reviewer_only": true,
   "independent_human_review_status": "not_started",
   "model_generated_answers_collected": 0,
@@ -63,12 +63,23 @@
   "pairwise_review": "Hide arm identity and traces; randomize answer display order. Prefer higher initial verdict, then the more trustworthy/actionable answer using the rubric. Allow ties and review_unknown. Preserve reasons; never award points for MCP use, citation count, answer length or JSON storage alone.",
   "source_checks": "Inspect context for every material external claim and licensing/hardware/performance assertion. Exact quotation matching is provenance only. A supplied hypothetical number needs no external citation, but must not be presented as an actual project result.",
   "review_fields_to_collect": [
-    "question_id", "anonymous_answer_id", "reviewer_kind", "reviewer_identity",
-    "review_timestamp", "four_dimension_scores_or_null", "must_have_checks",
-    "initial_verdict", "major_error_answer_flag", "material_claim_errors",
-    "claim_source_checks", "pairwise_preference_or_tie_or_unknown",
-    "reason", "human_correction_seconds_or_null", "correction_censored",
-    "corrected_artifact_path_or_null", "review_limitations"
+    "question_id",
+    "anonymous_answer_id",
+    "reviewer_kind",
+    "reviewer_identity",
+    "review_timestamp",
+    "four_dimension_scores_or_null",
+    "must_have_checks",
+    "initial_verdict",
+    "major_error_answer_flag",
+    "material_claim_errors",
+    "claim_source_checks",
+    "pairwise_preference_or_tie_or_unknown",
+    "reason",
+    "human_correction_seconds_or_null",
+    "correction_censored",
+    "corrected_artifact_path_or_null",
+    "review_limitations"
   ],
   "limits": [
     "This is an assistant-authored development rubric, not a gold answer set or a completed human review.",
