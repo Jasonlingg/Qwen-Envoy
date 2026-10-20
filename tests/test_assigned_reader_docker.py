@@ -18,7 +18,8 @@ pytestmark = pytest.mark.skipif(not IMAGE, reason="set ENVOY_ASSIGNED_TEST_DOCKE
 
 
 @pytest.mark.parametrize("dead_code", [False, True])
-def test_scripted_mcp_with_real_docker_source_access(tmp_path, dead_code):
+@pytest.mark.parametrize("guidance", ["baseline", "focused-v1"])
+def test_scripted_mcp_with_real_docker_source_access(tmp_path, dead_code, guidance):
     assert PersistentREPL._docker_available(IMAGE), "configured Docker image must be available"
     library, fake = make_library(tmp_path, {"2609.12345v2": {"html": article_page()}})
     library.open("2609.12345v2")
@@ -38,7 +39,7 @@ def test_scripted_mcp_with_real_docker_source_access(tmp_path, dead_code):
         return {"choices": [{"message": {"content": next(actions)}}]}
     reader = build_assigned_reader("qwen", qwen_endpoint="http://scripted-no-model",
         qwen_model="fake", qwen_checkpoint="fake", policy_transport=transport,
-        max_steps=3, sandbox_image=IMAGE)
+        max_steps=3, sandbox_image=IMAGE, reader_guidance=guidance)
     server = create_server(library, FakeDiscovery(), investigator=reader)
     fetches = len(fake.calls)
     async def call():
@@ -48,6 +49,7 @@ def test_scripted_mcp_with_real_docker_source_access(tmp_path, dead_code):
             assert not reply.is_error
             return reply.structured_content
     result = asyncio.run(call())
+    assert result["papers"][0].get("reader_guidance", "baseline") == guidance
     assert len(scripted_requests) == 3 and len(fake.calls) == fetches
     if dead_code:
         assert result["status"] == "incomplete"
