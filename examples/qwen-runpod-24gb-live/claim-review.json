@@ -1,0 +1,55 @@
+{
+  "review_kind": "assistant_spotcheck",
+  "independent_human_review": false,
+  "scope": "Three stored brief observations and their stated qualifications; not a grade of the whole answer or model.",
+  "paper": "https://arxiv.org/abs/2211.17192v2",
+  "title": "Fast Inference from Transformers via Speculative Decoding",
+  "authors": [
+    "Yaniv Leviathan",
+    "Matan Kalman",
+    "Yossi Matias"
+  ],
+  "cached_document_sha256": "bb2cd47f15044685a756ac413e484dc84499b817c9208e9e1bbe65c98acac2f2",
+  "claims": [
+    {
+      "claim": "Acceptance, relative inference cost and draft length condition the analytical speedup.",
+      "source_spans": [
+        [
+          10075,
+          10965
+        ],
+        [
+          12338,
+          14713
+        ]
+      ],
+      "judgment": "supported_with_conditions",
+      "reason": "The passage explicitly assumes independent acceptance, sufficient parallel compute and sufficiently long outputs. Those qualifications are retained."
+    },
+    {
+      "claim": "The reported measurements apply to the paper\u2019s T5/TPU configuration.",
+      "source_spans": [
+        [
+          20895,
+          22176
+        ]
+      ],
+      "judgment": "supported",
+      "reason": "The source identifies models, hardware, batch size and task-specific measurements. The brief declines to extrapolate them to Qwen."
+    },
+    {
+      "claim": "Additional compute is required; the algorithm preserves its target distribution.",
+      "source_spans": [
+        [
+          26882,
+          28082
+        ]
+      ],
+      "judgment": "supported_with_conditions",
+      "reason": "The discussion supports these algorithm claims, not memory fit, implementation correctness or actual latency for this deployment."
+    }
+  ],
+  "model_improvement_conclusion": "none",
+  "store_semantic_support_fields": "not_modified; remain not_reviewed",
+  "provenance_warning": "Exact matching alone does not establish semantic support."
+}

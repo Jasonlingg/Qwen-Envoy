@@ -1,0 +1,159 @@
+{
+  "experiment_id": "experiment_d959763164d04733894cc5446c1087e0",
+  "revision": 1,
+  "status": "draft",
+  "brief": {
+    "schema_version": "ml-experiment-brief-v1",
+    "question": "Can exact speculative decoding reduce end-to-end latency for two concurrent Qwen3-8B document-reading agents on one 24 GB GPU?",
+    "goal": "latency",
+    "current_setup": {
+      "task": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "model": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "checkpoint": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "revision": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "hardware": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "workload": {
+        "value": null,
+        "unknown_reason": "Not provided yet"
+      },
+      "software": {}
+    },
+    "constraints": [],
+    "observations": [
+      {
+        "text": "Paper sections 3.1-3.3 support acceptance alpha, hardware/software-dependent draft/target cost c, and speed factor (1-alpha^(gamma+1))/((1-alpha)*(1+gamma*c)), conditional on the stated assumptions; alpha>c permits a beneficial gamma in that model.",
+        "reference_ids": [
+          "acceptance",
+          "cost_parallel",
+          "speed_formula"
+        ],
+        "basis": "agent_interpretation"
+      },
+      {
+        "text": "Paper section 4.1 reports 2.6x/3.4x translation and 2.3x/3.1x summarization speedups at temperatures 1/0 respectively, for its T5/TPU setup. These passages do not support extrapolating these numbers to this Qwen workload.",
+        "reference_ids": [
+          "setup",
+          "results"
+        ],
+        "basis": "agent_interpretation"
+      },
+      {
+        "text": "Paper discussion supports increased computation and spare-resource requirements, alongside unchanged output distribution for the algorithm. It does not establish memory fit, implementation correctness or end-to-end gains on the proposed system.",
+        "reference_ids": [
+          "resources_correctness"
+        ],
+        "basis": "agent_interpretation"
+      }
+    ],
+    "alternatives": [],
+    "proposed_change": "Draft only: compare the unchanged Qwen3-8B target-only serving configuration against the same target with one smaller, tokenizer-compatible draft model and fixed gamma=4, if supported. Keep concurrency at two and all other settings identical. Draft checkpoint and engine remain unresolved; no execution is authorized.",
+    "hypothesis": "A cheap draft with sufficient target-distribution overlap may reduce warm decode latency if parallel verification has spare compute and both models plus two request caches fit. End-to-end benefit may be small or negative when prefill, contention, or draft overhead dominate.",
+    "expected_signal": "Exploratory evidence would be lower warm end-to-end p50/p95 with no throughput or answer-quality regression and no additional failures or OOM. Report all differences and denominators; do not infer a 2-3x gain or a definitive p95 from this small sample.",
+    "applicability": "Paper evidence concerns T5-XXL encoder-decoder translation/summarization at batch size one on TPU-v4, not Qwen3 concurrent GPU document reading. The analytic model assumes iid acceptance, sufficiently long generations and gamma+1 parallel target evaluations without increased walltime. Two readers may consume the required spare resources. Exact speculative sampling preserves the target distribution in the algorithm; deployed correctness remains to be checked.",
+    "differences": [],
+    "baseline": null,
+    "candidate": null,
+    "evaluation": null,
+    "conditions": [],
+    "metrics": [],
+    "criteria": [],
+    "budget": null,
+    "procedure": [
+      "Before any separately authorized run, identify engine/version, exact target and draft checkpoints, tokenizer compatibility, precision/quantization, cache allocation, GPU model, shared versus duplicated weights, scheduler, sampling settings, prompt/output limits, timeout and gamma support. Keep unresolved details explicit; do not run an unsupported configuration.",
+      "Select 20 fixed representative document-question requests spanning typical context lengths, with known source passages and an answer rubric. Reuse identical prompts, order, target settings, output caps and seeds across arms. Keep exactly two requests in flight; alternate arm order across three warm replays (60 measured requests per arm).",
+      "For each arm, propose three independent process restarts: report startup-to-ready and first-pair submission-to-completion separately, plus total startup-to-first-answer. Define cold as process/model cold; record OS/disk cache state as uncontrolled unless measured. Never pool cold and warm observations.",
+      "After one unmeasured warm-up pair per arm, run the warm replays with a documented identical prefix-cache policy. Record submission, first-token and completion timestamps; report end-to-end and time-to-first-token p50/p95, decode tokens/s, successful requests/s and aggregate successful output tokens per measured wall-clock second. Report input/output lengths, per-agent results and pair makespan; use nearest-rank percentiles and publish sample sizes.",
+      "Record GPU peak used/reserved memory across target, draft, KV caches and workspaces; record acceptance rate, accepted tokens per verification and draft/verification time when exposed. Missing instrumentation stays missing.",
+      "Score correctness, completeness and citation support against the fixed rubric with a named reviewer/method once selected; record no human review until performed. Compare outputs under identical decoding; stochastic samples need not match even when distributions match. Record every OOM, timeout, crash, malformed answer and fallback; report attempted/completed/failed denominators and time consumed by failed attempts.",
+      "Save results only after separate execution authorization. This brief is an unfrozen proposal and grants no benchmark, provisioning or spending authorization."
+    ],
+    "references": [
+      {
+        "kind": "paper_span",
+        "reference_id": "acceptance",
+        "arxiv_id": "2211.17192v2",
+        "start": 10075,
+        "end": 10965,
+        "quote": null,
+        "document_sha256": null
+      },
+      {
+        "kind": "paper_span",
+        "reference_id": "cost_parallel",
+        "arxiv_id": "2211.17192v2",
+        "start": 12338,
+        "end": 13538,
+        "quote": null,
+        "document_sha256": null
+      },
+      {
+        "kind": "paper_span",
+        "reference_id": "speed_formula",
+        "arxiv_id": "2211.17192v2",
+        "start": 13538,
+        "end": 14713,
+        "quote": null,
+        "document_sha256": null
+      },
+      {
+        "kind": "paper_span",
+        "reference_id": "setup",
+        "arxiv_id": "2211.17192v2",
+        "start": 20895,
+        "end": 21506,
+        "quote": null,
+        "document_sha256": null
+      },
+      {
+        "kind": "paper_span",
+        "reference_id": "results",
+        "arxiv_id": "2211.17192v2",
+        "start": 21506,
+        "end": 22176,
+        "quote": null,
+        "document_sha256": null
+      },
+      {
+        "kind": "paper_span",
+        "reference_id": "resources_correctness",
+        "arxiv_id": "2211.17192v2",
+        "start": 26882,
+        "end": 28082,
+        "quote": null,
+        "document_sha256": null
+      }
+    ],
+    "unknowns": [
+      "Engine and exact Qwen checkpoint; draft model availability/compatibility and measured cost c or acceptance alpha.",
+      "GPU model, memory bandwidth, precision/quantization, shared versus separate model copies, KV cache capacity and actual 24 GB fit.",
+      "Real document/context/output length distributions, sampling/thinking configuration, scheduling, batching, prefix caching and current latency baseline.",
+      "Quality reviewer, acceptable regression thresholds, timeout budget and cold-cache controls are not selected."
+    ],
+    "limitations": [
+      "No benchmark measurements exist for this proposal; all expected outcomes are hypotheses.",
+      "Small warm and cold samples make tail estimates exploratory; paper HTML extraction omits tables/figures and can distort equations.",
+      "One authorized investigate call returned incomplete with zero evidence or candidate answers after eight internally observed model requests; it was not retried. Direct get_passage evidence was reviewed separately. This behavior does not establish reader quality relative to base Qwen or Codex."
+    ],
+    "candidate_outcomes_already_seen": "unknown",
+    "author_kind": "agent_authored",
+    "supersedes_experiment_id": null
+  },
+  "source_receipt_count": 6,
+  "human_review": "not_performed",
+  "execution_authorized": false
+}

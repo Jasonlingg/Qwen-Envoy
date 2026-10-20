@@ -1,5 +1,10 @@
 # Pinned Qwen reader on Runpod
 
+This is the initial A6000 smoke snapshot. The API key is now configured and a
+subsequent 24 GB A5000 run completed. See the
+[October 20 follow-up](2026-10-20-qwen-24gb-live.md) for the actual worker
+failure, host fallback, saved brief and final parked state.
+
 The v5 adapter ran on an RTX A6000 through a new Runpod Serverless endpoint,
 `q05pjrvguakieg`. The full native research-to-experiment check stopped during
 MCP setup because the local server has no Runpod API key. No host answering
@@ -46,8 +51,9 @@ helps catch accidental base-model calls. No network volume was created.
 `src/policies/runpod_queue.py` bridges OpenAI-style chat bodies to Runpod's
 asynchronous `/run` and `/status/{id}` API. It rejects redirects, bounds HTTP
 bodies, makes one submission, and polls only the returned job ID. An uncertain
-submission consumes its reservation. A single process shares at most 12
-requests across readers, reserving 7,168 input and 1,024 output tokens each;
+submission consumes its reservation. A durable, file-locked session ledger
+shares at most 12 requests across native MCP processes and restarts, reserving
+7,168 input and 1,024 output tokens each;
 the pinned tokenizer checks prompts against the 8,192-token model context.
 The server also enforces the 8,192-token context and 120-second job execution
 timeout. This is a request/token bound, **not a provider dollar cap**.
@@ -92,7 +98,7 @@ python scripts/run_qwen_mcp_live.py \
   --output out/qwen-live-native-retry
 ```
 
-This fresh native Codex session must open `2211.17192v3`, call `investigate`
+This fresh native Codex session must open `2211.17192v2`, call `investigate`
 once, inspect context, save an experiment brief and retrieve it. It explicitly
 tests required worker use; it is separate from the earlier free-choice A/B
 pilot. A completed host answer alone is insufficient: inspect the native tool
