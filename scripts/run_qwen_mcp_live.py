@@ -81,7 +81,8 @@ async def run(args):
         thread = await client.request("thread/start", {"cwd": str(work), "ephemeral": True,
             "permissions": "ml-pilot", "approvalPolicy": "never", "model": MODEL,
             "allowProviderModelFallback": False, "developerInstructions": INSTRUCTIONS})
-        if thread["model"] != MODEL or thread["reasoningEffort"] != EFFORT:
+        if (thread["model"] != MODEL or thread["reasoningEffort"] != EFFORT
+                or thread["modelProvider"] != "openai" or thread["instructionSources"]):
             raise RuntimeError("unexpected native host settings")
         (output / "thread.json").write_text(json.dumps(thread, indent=2) + "\n")
         tid = thread["thread"]["id"]
@@ -89,15 +90,19 @@ async def run(args):
             "threadId": tid, "detail": "full", "limit": 100})
         (output / "mcp-inventory.json").write_text(json.dumps(page, indent=2) + "\n")
         active = {r["name"]: set(r["tools"]) for r in page["data"] if r["tools"]}
-        if (set(active) != {"arxiv-research", "ml-experiments"}
-                or "investigate" not in active["arxiv-research"]
-                or "save_experiment_brief" not in active["ml-experiments"]):
+        expected = {
+            "arxiv-research": {"search_papers", "open_paper", "get_citations",
+                               "find_evidence", "get_passage", "investigate"},
+            "ml-experiments": {"save_experiment_brief", "freeze_experiment_plan",
+                               "get_experiment", "list_experiments", "record_experiment_result"}}
+        if active != expected:
             raise RuntimeError("full research and experiment MCP inventory required")
         turn = await client.request("turn/start", {"threadId": tid,
             "input": [{"type": "text", "text": QUESTION}], "effort": EFFORT,
             "permissions": "ml-pilot", "approvalPolicy": "never"})
         events.turn_id = turn["turn"]["id"]
-        result.update(await collect(client, tid, events, seconds=950), status="finished")
+        collected = await collect(client, tid, events, seconds=950)
+        result.update(collected, status=collected["turn"]["status"])
     except Exception as exc:
         result.update(status="error", error=f"{type(exc).__name__}: {exc}"[:1000])
     finally:

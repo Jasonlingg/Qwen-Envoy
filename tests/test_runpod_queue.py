@@ -53,12 +53,63 @@ def test_uncertain_submission_is_not_retried_or_refunded(tmp_path):
 
 @pytest.mark.parametrize("changes", [{"model": "envoy-base-only"}, {"stream": True},
                                      {"max_tokens": 2048}, {"n": 2},
+                                     {"best_of": 4}, {"max_completion_tokens": 9999},
                                      {"chat_template_kwargs": {"enable_thinking": True}}])
 def test_request_cannot_bypass_worker_limits(tmp_path, changes):
     transport = RunpodQueueTransport("abc", "secret", Tokenizer(), tmp_path / "audit")
     with pytest.raises(ValueError):
         transport("unused", payload(**changes), {}, 120)
     assert transport.remaining == 12
+
+
+def test_poll_existing_job_then_reject_base_model_output(tmp_path, monkeypatch):
+    monkeypatch.setattr("src.policies.runpod_queue.time.sleep", lambda _: None)
+    calls = []
+    def http(method, path, body=None):
+        calls.append((method, path))
+        if path == "/run":
+            return {"id": "job-1", "status": "IN_QUEUE"}
+        if path == "/status/job-1":
+            return {"status": "COMPLETED", "output": [{
+                "model": "envoy-base-only", "choices": [{"message": {"content": "oops"}}]}]}
+        return {}
+    transport = RunpodQueueTransport("abc", "secret", Tokenizer(), tmp_path / "audit", http=http)
+    with pytest.raises(ValueError, match="invalid adapter"):
+        transport("unused", payload(), {}, 120)
+    assert calls == [("POST", "/run"), ("GET", "/status/job-1"), ("POST", "/cancel/job-1")]
+    assert transport.remaining == 11
+
+
+def test_http_redirect_and_error_do_not_leak_credentials(tmp_path, monkeypatch):
+    from urllib.error import HTTPError
+    from src.policies import runpod_queue
+    seen = []
+    class Opener:
+        def open(self, req, **kwargs):
+            seen.append(req.full_url)
+            raise HTTPError(req.full_url, 302, "secret", {}, None)
+    monkeypatch.setattr(runpod_queue.request, "build_opener", lambda *args: Opener())
+    transport = RunpodQueueTransport("abc", "secret", Tokenizer(), tmp_path / "audit")
+    with pytest.raises(RuntimeError, match="^Runpod HTTP 302; no retry$"):
+        transport("https://evil.example/", payload(), {"Authorization": "untrusted"}, 120)
+    assert seen == ["https://api.runpod.ai/v2/abc/run"]
+    assert runpod_queue._NoRedirect().redirect_request(None, None, 302, "", {}, "https://evil.example") is None
+
+
+def test_bounded_http_response(tmp_path, monkeypatch):
+    from src.policies import runpod_queue
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self, *args): pass
+        def read(self, size):
+            assert size == 1_000_001
+            return b"x" * size
+    class Opener:
+        def open(self, *args, **kwargs): return Response()
+    monkeypatch.setattr(runpod_queue.request, "build_opener", lambda *args: Opener())
+    transport = RunpodQueueTransport("abc", "secret", Tokenizer(), tmp_path / "audit")
+    with pytest.raises(ValueError, match="response too large"):
+        transport("unused", payload(), {}, 120)
 
 
 def test_context_limit_fails_before_submission(tmp_path):

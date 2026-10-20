@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "experiment_kind": "GPU adapter and sandbox smoke; required-tool workflow blocked",
+  "endpoint_id": "q05pjrvguakieg",
+  "hub_release": "v2.29.0",
+  "hub_release_id": "cmuxgi0a3000407jv5igk1ezr",
+  "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6",
+  "image_digest": "sha256:a218acc3f5032d2bc1b9104b613b5ed0bf34bcd6b7c561396d17a60aa4b7962c",
+  "bootstrap_sha256": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+  "runtime_identity": {
+    "adapter_rank": 4,
+    "adapter_repo": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_subfolder": "artifacts/full/checkpoint-50",
+    "base_repo": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "cuda_runtime": "13.0",
+    "gpu": "NVIDIA RTX A6000",
+    "gpu_memory_bytes": 47697428480,
+    "served_adapter": "envoy",
+    "torch_version": "2.13.0+cu130",
+    "vllm_version": "0.31.0"
+  },
+  "jobs": {
+    "models": {
+      "id": "bbb4dba8-0b49-4b43-869c-9191db860806-u1",
+      "status": "COMPLETED",
+      "delay_ms": 296300,
+      "execution_ms": 214
+    },
+    "smoke": {
+      "id": "655a4ddc-a236-410d-aae6-bfdf3dc564d8-u1",
+      "status": "COMPLETED",
+      "worker_id": "74615fmx2o7cvb",
+      "delay_ms": 22,
+      "execution_ms": 5747,
+      "request": {
+        "model": "envoy",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Return only one line of executable Python. No markdown."
+          },
+          {
+            "role": "user",
+            "content": "Print the string qwen_gpu_ready."
+          }
+        ],
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 42,
+        "max_tokens": 64,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+              "annotations": null,
+              "audio": null,
+              "content": "print(\"qwen_gpu_ready\")",
+              "function_call": null,
+              "reasoning": null,
+              "refusal": null,
+              "role": "assistant"
+            },
+            "routed_experts": null,
+            "stop_reason": null,
+            "token_ids": null
+          }
+        ],
+        "created": 1792467225,
+        "ec_transfer_params": null,
+        "id": "chatcmpl-a2ecd2b56882146d",
+        "kv_transfer_params": null,
+        "metrics": null,
+        "model": "envoy",
+        "object": "chat.completion",
+        "prompt_logprobs": null,
+        "prompt_text": null,
+        "prompt_token_ids": null,
+        "service_tier": null,
+        "system_fingerprint": "vllm-0.31.0-d8286ddd",
+        "usage": {
+          "completion_tokens": 8,
+          "completion_tokens_details": null,
+          "prompt_tokens": 36,
+          "prompt_tokens_details": null,
+          "total_tokens": 44
+        }
+      }
+    }
+  },
+  "native_workflow": {
+    "status": "setup_error",
+    "host_model_turns": 0,
+    "qwen_requests": 0,
+    "reason": "Local ~/.runpod/config.toml apikey is empty and RUNPOD_API_KEY is absent. Runpod connector OAuth credentials are not shared with the local Python MCP.",
+    "paper": "2211.17192v3",
+    "experiment_record": null,
+    "claim_level_paper_review": "not_performed; no paper workflow ran",
+    "intended_reader_prompt_sha256": "6d2d419864af685f6fce506faf1ec5bd775aef08c55b8576ab36a8f7ff3d4061"
+  },
+  "bounds": {
+    "smoke_inference_requests": 1,
+    "smoke_max_output_tokens": 64,
+    "reader_session_requests": 12,
+    "reader_session_reserved_input_tokens": 86016,
+    "reader_session_reserved_output_tokens": 12288,
+    "reader_context_tokens": 8192,
+    "reader_max_steps": 8,
+    "paid_nebius_requests": 0
+  },
+  "billing": {
+    "catalog_active_gpu_hourly_usd": 1.22,
+    "actual_spend_usd": null,
+    "billing_read": "No records yet; not proof of zero cost."
+  },
+  "final_workers": {
+    "min": 0,
+    "max": 0,
+    "idle_timeout_seconds": 60
+  },
+  "human_review": "not_performed",
+  "limitations": [
+    "A print smoke is not paper research or an answer-quality evaluation.",
+    "No trained-over-base improvement or Codex comparison is established.",
+    "No live two-reader concurrency or load test ran.",
+    "No automated inference or submission retries in the local transport. Upstream provider startup recovery is separate.",
+    "Request/token limits are not an enforceable provider dollar cap."
+  ],
+  "docker_execution": {
+    "image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+    "network": "none",
+    "output": "qwen_gpu_ready\n",
+    "passed": true
+  },
+  "final_observed_worker_count": 0,
+  "tests": {
+    "focused_passed": 19,
+    "full_suite_passed": 1500,
+    "full_suite_seconds": 53.91,
+    "warnings": "3 pre-existing SWIG deprecation warnings",
+    "preserved_file_hashes_matched": 10
+  }
+}
