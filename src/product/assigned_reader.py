@@ -5,7 +5,8 @@ from src.product.arxiv_mcp_config import build_reader
 from src.product.qwen_investigator import QwenInvestigator, effective_system_prompt
 
 
-def build_assigned_reader(kind: str, **configuration) -> QwenInvestigator:
+def build_assigned_reader(kind: str, *, sandbox_image: str = "rlm-sandbox",
+                          **configuration) -> QwenInvestigator:
     configuration.setdefault("harness_version", "v2")
     if configuration["harness_version"] != "v2":
         raise ValueError("assigned reader requires harness v2")
@@ -24,7 +25,7 @@ def build_assigned_reader(kind: str, **configuration) -> QwenInvestigator:
 
     return QwenInvestigator(
         policy, {**reader.model_identity, "reader_mode": "assigned"},
-        max_steps=reader.max_steps, image=reader.image,
+        max_steps=reader.max_steps, image=sandbox_image,
         code_timeout_seconds=reader.code_timeout_seconds,
         source_domain="public_papers", protocol_variant=reader.protocol_variant,
         harness_version="v2", reader_mode="assigned")

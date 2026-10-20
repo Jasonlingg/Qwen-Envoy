@@ -4,6 +4,7 @@ import hashlib
 
 import pytest
 
+from src.product.assigned_actions import displayed_tool_call
 from src.product.assigned_reader import build_assigned_reader
 from src.product.packet_verifier import verify_investigation_packet
 from src.product.paper_assignment import paper_assignment
@@ -13,12 +14,25 @@ from tests.arxiv_fakes import article_page, make_library
 from tests.test_qwen_investigator import FakePolicy, FakeREPL
 
 
+class SourceREPL(FakeREPL):
+    """Faithful displayed source for an assigned paper, never a real model."""
+    def __init__(self, text):
+        super().__init__()
+        self.text = text
+
+    def execute(self, code, timeout=30):
+        self.executed.append((code, timeout))
+        if displayed_tool_call(code).func.id == "read":
+            return self.text
+        return repr([{"text": self.text[:200], "offset": 0}])
+
+
 def setup_reader(tmp_path, actions, *, mode="assigned", repl=None, steps=4):
     library, _ = make_library(tmp_path, {"2609.12345v2": {"html": article_page()}})
     library.open("2609.12345v2")
     snapshot = library.view(["2609.12345v2"])
     policy = FakePolicy(actions)
-    repl = repl or FakeREPL()
+    repl = repl or SourceREPL(library.document("2609.12345v2")["text"])
     reader = QwenInvestigator(lambda: policy, {"checkpoint": "fake"},
                               source_domain="public_papers", harness_version="v2",
                               reader_mode=mode, max_steps=steps, repl_factory=lambda _: repl)
@@ -34,7 +48,8 @@ SUBMIT = (f'submit(answer="A proposal.", citations=["{DOC_ID}"], '
 def verify(reader, packet, snapshot):
     manifest, docs = load_snapshot(snapshot)
     return verify_investigation_packet(packet, manifest, docs,
-        allowed_prompt_sha256s=frozenset({hashlib.sha256(reader.system_prompt.encode()).hexdigest()}))
+        allowed_prompt_sha256s=frozenset({hashlib.sha256(reader.system_prompt.encode()).hexdigest()}),
+        expected_reader_mode=reader.reader_mode)
 
 
 def test_assigned_id_is_supplied_and_first_action_can_inspect(tmp_path):
@@ -104,6 +119,15 @@ def test_assignment_needs_one_pinned_real_paper(tmp_path):
         effective_system_prompt("public_papers", "default", "v1", reader_mode="assigned")
 
 
+def test_packet_cannot_strip_mode_to_skip_assignment_validation(tmp_path):
+    reader, _, _, snapshot = setup_reader(tmp_path, [INSPECT, SUBMIT], steps=2)
+    packet = reader.investigate("Memory?", snapshot)
+    packet.pop("reader_mode")
+    packet.pop("paper_assignment")
+    with pytest.raises(ValueError, match="configured reader"):
+        verify(reader, packet, snapshot)
+
+
 @pytest.mark.parametrize("kind", ["qwen", "nemotron"])
 def test_policy_investigator_and_packet_share_assigned_prompt(tmp_path, monkeypatch, kind):
     monkeypatch.setenv("NEBIUS_API_KEY", "test")
@@ -115,13 +139,17 @@ def test_policy_investigator_and_packet_share_assigned_prompt(tmp_path, monkeypa
     reader = build_assigned_reader(kind, qwen_endpoint="http://test", qwen_model="fake",
         qwen_checkpoint="fake-pinned", policy_transport=transport, max_steps=2)
     _, _, _, snapshot = setup_reader(tmp_path, [], steps=2)
-    reader.repl_factory = lambda _: FakeREPL()
+    _, docs = load_snapshot(snapshot)
+    reader.repl_factory = lambda _: SourceREPL(docs[DOC_ID]["text"])
     packet = reader.investigate("Memory?", snapshot)
     assert packet["status"] == "evidence_found"
     assert reader.system_prompt == reader.policy_factory().system_prompt
     assert sent[0]["messages"][0]["content"] == reader.system_prompt
     assert packet["system_prompt_sha256"] == verify(reader, packet, snapshot)["prompt_hash"]
     assert "Never call submit()" not in reader.system_prompt
+    discovery = "Discover document IDs with corpus search() before using paper-scoped tools."
+    assert discovery not in reader.system_prompt
+    assert discovery in effective_system_prompt("public_papers", reader.protocol_variant, "v2")
 
 
 def test_assigned_reader_still_requires_docker(tmp_path, monkeypatch):
@@ -132,3 +160,17 @@ def test_assigned_reader_still_requires_docker(tmp_path, monkeypatch):
     packet = reader.investigate("Memory?", snapshot)
     assert packet["status"] == "unavailable" and policy.observations == []
     assert packet["execution"] == "docker_only"
+
+
+def test_assigned_builder_does_not_depend_on_uncommitted_base_image_argument(monkeypatch):
+    from src.product.arxiv_mcp_config import build_reader
+
+    def committed_signature(kind, *, qwen_endpoint, qwen_model, qwen_checkpoint,
+                            harness_version):
+        return build_reader(kind, qwen_endpoint=qwen_endpoint, qwen_model=qwen_model,
+                            qwen_checkpoint=qwen_checkpoint, harness_version=harness_version)
+
+    monkeypatch.setattr("src.product.assigned_reader.build_reader", committed_signature)
+    reader = build_assigned_reader("qwen", qwen_endpoint="http://test", qwen_model="fake",
+                                    qwen_checkpoint="fake", sandbox_image="pinned-image")
+    assert reader.image == "pinned-image"

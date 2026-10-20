@@ -22,6 +22,7 @@ from src.env.reward import parse_submission_details
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_PREAMBLE, HARNESS_V2_SHA256
 from src.policies.code_execution import used_document_tool
+from src.product.assigned_actions import displayed_tool_call, source_text_visible
 from src.product.harness_v2 import (
     FORMAT_RETRY_MESSAGE,  # noqa: F401
     effective_prompt,
@@ -31,8 +32,12 @@ from src.product.harness_v2 import (
 )
 from src.product.memory import _record_context
 from src.product.paper_assignment import (
-    assigned_prompt, assignment_hash, assignment_observation, paper_assignment,
+    assigned_prompt,
+    assignment_hash,
+    assignment_observation,
+    paper_assignment,
 )
+from src.product.reader_gaps import parse_gap_call, record_gap
 from src.product.submit_call import submit_call_to_line
 from src.research.agent import load_snapshot
 from src.research.code_exec_packet import (
@@ -180,9 +185,8 @@ def effective_system_prompt(source_domain="public_papers", protocol_variant="def
     base = (NEMOTRON_PAPER_SYSTEM_PROMPT
             if protocol_variant == "nemotron" and harness_version == "v1"
             else prompt_for_source_domain(source_domain))
-    if reader_mode == "assigned":
-        base = assigned_prompt(base)
-    return effective_prompt(base, harness=harness_version)
+    prompt = effective_prompt(base, harness=harness_version)
+    return assigned_prompt(prompt) if reader_mode == "assigned" else prompt
 
 
 def _used_inspection_tool(action: str, observation: str) -> bool:
@@ -327,7 +331,7 @@ class QwenInvestigator:
             result["harness_shim_sha256"] = HARNESS_V2_SHA256
         if assignment is not None:
             result.update(reader_mode="assigned", paper_assignment=assignment,
-                          assignment_sha256=assignment_hash(assignment))
+                          assignment_sha256=assignment_hash(assignment), research_gaps=[])
         if self.repl_factory is None and not PersistentREPL._docker_available(self.image):
             result.update(
                 status="unavailable",
@@ -350,6 +354,7 @@ class QwenInvestigator:
             result.update(status="unavailable", error=f"Sandbox did not start: {exc}")
             return result
 
+        document_tool_steps = inspection_steps = 0
         try:
             policy = self.policy_factory()
             reset = getattr(policy, "reset", None)
@@ -360,8 +365,6 @@ class QwenInvestigator:
                 observation += assignment_observation(assignment)
             seen_code: set[str] = set()
             discovered_ids = assignment is not None
-            document_tool_steps = 0
-            inspection_steps = 0
             discovery = (
                 (lambda action: v2_discovery(action, docs))
                 if self.harness_version == "v2" else _starts_with_discovery
@@ -391,6 +394,24 @@ class QwenInvestigator:
                     observation = "Action rejected: empty or oversized action."
                     trace["observation"] = observation
                     continue
+
+                if assignment is not None:
+                    try:
+                        gap = parse_gap_call(action)
+                        if gap is not None:
+                            trace["research_gap"] = record_gap(result, gap, step, inspection_steps)
+                            observation = (
+                                "Gap recorded for host review; this is not proof of absence. "
+                                "No search was launched. Continue inspecting or submit using "
+                                "the existing evidence/abstention rules.")
+                    except ValueError as exc:
+                        observation = f"Gap report rejected: {exc}."
+                        gap = {}
+                    if gap is not None:
+                        trace["observation"] = (
+                            observation + f" [{self.max_steps - step} steps left.]")
+                        observation = trace["observation"]
+                        continue
 
                 submission = action
                 if self.harness_version == "v2":
@@ -500,7 +521,20 @@ class QwenInvestigator:
                 elif action in seen_code:
                     observation = "Action rejected: identical code was already executed."
                 else:
-                    seen_code.add(action)
+                    call = None
+                    key = action
+                    if assignment is not None:
+                        try:
+                            call = displayed_tool_call(action)
+                        except ValueError as exc:
+                            observation = trace["observation"] = f"Action rejected: {exc}."
+                            continue
+                        key = ast.dump(call)
+                        if key in seen_code:
+                            observation = trace["observation"] = (
+                                "Action rejected: identical tool call was already executed.")
+                            continue
+                    seen_code.add(key)
                     output = repl.execute(action, timeout=self.code_timeout_seconds)
                     if not isinstance(output, str):
                         raise ValueError("sandbox returned a non-text observation")
@@ -512,11 +546,17 @@ class QwenInvestigator:
                         output
                     ):
                         document_tool_steps += 1
-                    if (_used_inspection_tool(action, output) or (
+                    inspected = (_used_inspection_tool(action, output) or (
                             self.harness_version == "v2" and v2_inspection(action, docs)
                             and not _failed_document_observation(output)
-                            and output.strip() not in {"", "[]", "None"})):
+                            and output.strip() not in {"", "[]", "None"}))
+                    if assignment is not None:
+                        inspected = (not _failed_document_observation(output)
+                                     and source_text_visible(call, output, docs))
+                    if inspected:
                         inspection_steps += 1
+                        if assignment is not None:
+                            trace["source_inspection"] = True
                     observation = output
                 remaining = self.max_steps - step
                 if remaining:
@@ -529,6 +569,8 @@ class QwenInvestigator:
             result.update(status="error", error=f"{type(exc).__name__}: {exc}")
             return result
         finally:
+            result.update(document_tool_steps=document_tool_steps,
+                          inspection_steps=inspection_steps)
             try:
                 repl.kill_session()
             except Exception:

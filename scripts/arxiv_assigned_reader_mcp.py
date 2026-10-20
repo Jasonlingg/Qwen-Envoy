@@ -1,9 +1,10 @@
 """Opt-in arXiv MCP: assign each reader one pinned paper; never provision compute."""
+# ruff: noqa: E402
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import sys
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))

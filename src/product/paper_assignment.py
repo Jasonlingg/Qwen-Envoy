@@ -5,6 +5,8 @@ import hashlib
 import json
 
 from src.product.arxiv_ids import validate_arxiv_id
+from src.product.assigned_actions import ACTION_PROTOCOL
+from src.product.reader_gaps import GAP_PROTOCOL
 
 ASSIGNMENT_VERSION = "assigned-paper-v1"
 _DISCOVERY_INSTRUCTION = (
@@ -12,6 +14,7 @@ _DISCOVERY_INSTRUCTION = (
     "real document IDs. Never guess a document ID. Use an ID with read(), passage(),\n"
     "extract(), or search_within() only after a tool returned that ID."
 )
+_V2_DISCOVERY = "Discover document IDs with corpus search() before using paper-scoped tools."
 _ASSIGNMENT_INSTRUCTION = """The controller supplies one verified paper assignment in the initial
 observation. Its document ID is already discovered; use that exact ID with
 search_within(), passage(), read(), or extract() without rediscovering it.
@@ -21,9 +24,11 @@ The assigned paper is a limited source, not an exhaustive literature search."""
 
 
 def assigned_prompt(base: str) -> str:
-    if base.count(_DISCOVERY_INSTRUCTION) != 1:
+    if base.count(_DISCOVERY_INSTRUCTION) != 1 or base.count(_V2_DISCOVERY) != 1:
         raise ValueError("assigned reader requires the known discovery instruction")
-    return base.replace(_DISCOVERY_INSTRUCTION, _ASSIGNMENT_INSTRUCTION)
+    return (base.replace(_DISCOVERY_INSTRUCTION, _ASSIGNMENT_INSTRUCTION)
+            .replace(_V2_DISCOVERY, "The controller has supplied the discovered paper ID.")
+            + ACTION_PROTOCOL + GAP_PROTOCOL)
 
 
 def paper_assignment(manifest: dict, docs: dict) -> dict:

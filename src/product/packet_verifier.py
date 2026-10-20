@@ -11,6 +11,7 @@ import hashlib
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_SHA256
 from src.product.paper_assignment import verify_assignment
+from src.product.reader_gaps import verify_gap_reports
 
 MAX_EVIDENCE_SPANS = 5
 MAX_SPAN_CHARS = 1_200
@@ -39,12 +40,15 @@ def _check_header(packet: dict, manifest: dict, allowed_prompt_sha256s: frozense
 
 
 def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
-                                allowed_prompt_sha256s: frozenset[str]) -> dict:
+                                allowed_prompt_sha256s: frozenset[str],
+                                expected_reader_mode: str = "discovery") -> dict:
     """Return compact model output with every quoted span rebuilt from the corpus."""
     harness = _check_header(packet, manifest, allowed_prompt_sha256s)
     mode = packet.get("reader_mode", "discovery")
     if not isinstance(mode, str) or mode not in {"discovery", "assigned"}:
         raise ValueError("Qwen packet used an unknown reader mode")
+    if mode != expected_reader_mode:
+        raise ValueError("packet reader mode differs from the configured reader")
     assignment = None
     if mode == "assigned":
         if harness != "v2":
@@ -112,4 +116,5 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
     if assignment is not None:
         result.update(reader_mode="assigned", paper_assignment=assignment,
                       assignment_sha256=packet["assignment_sha256"])
+        result["research_gaps"], result["gap_report_error"] = verify_gap_reports(packet)
     return result

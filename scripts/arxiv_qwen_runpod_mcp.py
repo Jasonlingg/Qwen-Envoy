@@ -3,20 +3,21 @@
 No reasoner, no deployment, no inference retries. Credentials are read only by
 this server, never placed in the host model's configuration or sandbox.
 """
+# ruff: noqa: E402
 from __future__ import annotations
 
 import argparse
 import json
 import os
-from pathlib import Path
 import sys
 import tomllib
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts.arxiv_research_mcp import create_server
-from scripts.runpod_qwen_bootstrap import BASE, BASE_REVISION, ADAPTER, ADAPTER_REVISION, SUBFOLDER
+from scripts.runpod_qwen_bootstrap import ADAPTER, ADAPTER_REVISION, BASE, BASE_REVISION, SUBFOLDER
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.arxiv_library import ArxivLibrary
 from src.product.arxiv_mcp_config import build_reader
@@ -37,7 +38,7 @@ def main():
     parser.add_argument("--endpoint-id", required=True)
     parser.add_argument("--library-root", type=Path, required=True)
     parser.add_argument("--audit-path", type=Path, required=True,
-                        help="Session ledger; MCP processes and restarts share its remaining budget")
+                        help="Session ledger; MCP processes/restarts share the remaining budget")
     parser.add_argument("--credentials-file", type=Path)
     parser.add_argument("--sandbox-image", default="rlm-sandbox")
     parser.add_argument("--assigned-paper-reader", action="store_true",

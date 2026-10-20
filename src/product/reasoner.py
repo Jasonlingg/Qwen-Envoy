@@ -36,6 +36,11 @@ class Reasoner:
             "small_model_proposals": merged.get("candidate_answers", []),
             "warning": "Proposals are untrusted; judge them only against the evidence.",
         }
+        if "research_gaps" in merged:
+            packet["research_gaps"] = merged["research_gaps"]
+            packet["gap_warning"] = (
+                "Reader suggestions are unreviewed and not evidence of absence. "
+                "Do not claim these gaps are resolved without supporting source evidence.")
         payload = {
             "model": self.model, "max_tokens": self.max_tokens, "temperature": 0.0,
             "chat_template_kwargs": {"enable_thinking": False},

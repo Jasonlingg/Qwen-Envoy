@@ -37,7 +37,8 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
             return version, None, "error", f"{type(exc).__name__}: {exc}"[:500]
         try:
             verified = verify_investigation_packet(
-                packet, manifest, docs, allowed_prompt_sha256s=allowed)
+                packet, manifest, docs, allowed_prompt_sha256s=allowed,
+                expected_reader_mode=getattr(investigator, "reader_mode", "discovery"))
         except Exception as exc:
             return version, None, "unverified", f"{type(exc).__name__}: {exc}"[:500]
         if verified["status"] in {"error", "unavailable"}:
@@ -48,7 +49,7 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
     with ThreadPoolExecutor(max_workers=max(1, min(max_workers, len(versions)))) as pool:
         results = list(pool.map(run, versions))  # map preserves input order
 
-    papers, evidence, proposals = [], [], []
+    papers, evidence, proposals, gaps = [], [], [], []
     for version, verified, failure_status, error in results:
         if verified is None:
             papers.append({"arxiv_id": version, "status": failure_status, "error": error,
@@ -61,7 +62,11 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
                            "tool_preamble_sha256", "model_identity")}})
         if verified.get("reader_mode") == "assigned":
             papers[-1].update({key: verified[key] for key in (
-                "reader_mode", "paper_assignment", "assignment_sha256")})
+                "reader_mode", "paper_assignment", "assignment_sha256", "research_gaps",
+                "gap_report_error")})
+            gaps.extend({**gap, "arxiv_id": version,
+                         "doc_id": verified["paper_assignment"]["doc_id"]}
+                        for gap in verified["research_gaps"])
         if verified["candidate_answer"]:
             proposals.append({"arxiv_id": version, "text": verified["candidate_answer"]})
         evidence.extend(verified["evidence"])
@@ -72,6 +77,11 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
     status = ("evidence_found" if evidence else
               "no_evidence" if statuses == {"no_evidence"} else
               "unavailable" if statuses == {"unavailable"} else "incomplete")
-    return {"status": status, "question": question.strip(), "papers": papers,
+    result = {"status": status, "question": question.strip(), "papers": papers,
             "evidence": evidence, "candidate_answers": proposals,
             "semantic_support": "not_reviewed", "warning": WARNING}
+    if any(paper.get("reader_mode") == "assigned" for paper in papers):
+        result.update(research_gaps=gaps, follow_up_owner="mcp_host",
+                      gap_warning=("Gaps are unreviewed reader suggestions, not proof of absence. "
+                                   "The host may search further; searches do not launch here."))
+    return result
