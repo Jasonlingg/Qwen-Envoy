@@ -64,6 +64,7 @@ def run_cases(prepared: Path, output: Path, *, tokenizer, key: str,
     inputs = json.loads((prepared / "model_inputs.json").read_text())
     manifest, docs = load_snapshot(Path(plan["snapshot"]))
     endpoint = plan["model"]["endpoint_id"]
+    guidance = plan.get("reader_guidance", "baseline")
     results = []
     for case, initial in zip(plan["cases"], inputs):
         name = case["case_id"]
@@ -86,7 +87,7 @@ def run_cases(prepared: Path, output: Path, *, tokenizer, key: str,
             qwen_model="envoy", qwen_checkpoint=(f'{plan["model"]["adapter"]}@'
                 f'{plan["model"]["adapter_revision"]}/{plan["model"]["subfolder"]}'),
             max_steps=LIMITS["action_steps_per_case"], sandbox_image=plan["sandbox_image"],
-            policy_transport=guarded)
+            policy_transport=guarded, reader_guidance=guidance)
         prompt_hash = hashlib.sha256(reader.system_prompt.encode()).hexdigest()
         if prompt_hash != plan["system_prompt_sha256"]:
             raise ValueError("live effective prompt differs from preparation")
@@ -95,19 +96,32 @@ def run_cases(prepared: Path, output: Path, *, tokenizer, key: str,
             track_sandbox(reader, output)
         started = time.monotonic()
         try:
-            packet = reader.investigate(case["question"], Path(plan["snapshot"]))
+            if plan.get("execution_path") == "mcp_in_process":
+                from src.eval.assigned_smoke_mcp import investigate_through_mcp
+                packet = investigate_through_mcp(reader, case["question"],
+                    Path(plan["snapshot"]), output / name)
+            else:
+                packet = reader.investigate(case["question"], Path(plan["snapshot"]))
         finally:
             transport.audit.close()
         write_json(output / f"{name}.packet.json", packet)
         result = {"case_id": name, "status": packet["status"],
                   "seconds": time.monotonic() - started, "audit": audit_summary(audit_path),
                   "execution_error_steps": [], "action_rejection_steps": [],
+                  "submission_rejection_steps": [], "gap_rejection_steps": [],
                   "repeated_call_rejections": [],
+                  "execution_path": plan.get("execution_path", "direct_reader"),
+                  "mcp_verification": ("passed" if plan.get("execution_path") ==
+                                       "mcp_in_process" else "not_applicable"),
                   "semantic_support": "not_reviewed", "human_review": "not_performed"}
         for trace in packet.get("trajectory", []):
             observation = trace.get("observation", "")
             if observation.startswith("Action rejected:"):
                 result["action_rejection_steps"].append(trace["step"])
+            if observation.startswith("Submission rejected:"):
+                result["submission_rejection_steps"].append(trace["step"])
+            if observation.startswith("Gap report rejected:"):
+                result["gap_rejection_steps"].append(trace["step"])
             if re.search(r"Traceback|(?:Type|Value|Name|Syntax|Runtime|Key|Index)Error:|ERROR:",
                          observation):
                 result["execution_error_steps"].append(trace["step"])
@@ -116,7 +130,7 @@ def run_cases(prepared: Path, output: Path, *, tokenizer, key: str,
         try:
             compact = verify_investigation_packet(packet, manifest, docs,
                 allowed_prompt_sha256s=frozenset({plan["system_prompt_sha256"]}),
-                expected_reader_mode="assigned")
+                expected_reader_mode="assigned", expected_reader_guidance=guidance)
             write_json(output / f"{name}.verified.json", compact)
             result["packet_verification"] = "passed"
         except ValueError as exc:

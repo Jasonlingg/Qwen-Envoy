@@ -13,10 +13,12 @@ from tests.test_assigned_smoke_plan import IMAGE, Tokenizer, cached  # noqa: F40
 
 
 @pytest.mark.parametrize("rejected_assignment", [False, True])
+@pytest.mark.parametrize("guidance", ["baseline", "focused-v1"])
 def test_two_real_reader_loops_use_fixed_payloads_separate_six_request_ledgers(
-        cached, rejected_assignment):  # noqa: F811
+        cached, rejected_assignment, guidance):  # noqa: F811
     library, _, prepared = cached
-    plan = prepare(library.root, prepared, sandbox_image=IMAGE, tokenizer=Tokenizer())
+    plan = prepare(library.root, prepared, sandbox_image=IMAGE, tokenizer=Tokenizer(),
+                   reader_guidance=guidance)
     doc = library.document(plan["paper_version"])
     did = doc["doc_id"]
     start = doc["text"].index("We measure walltime")
@@ -54,6 +56,13 @@ def test_two_real_reader_loops_use_fixed_payloads_separate_six_request_ledgers(
     assert all(r["semantic_support"] == "not_reviewed" for r in summary["cases"])
     assert summary["cases"][0]["action_rejection_steps"] == ([1] if rejected_assignment else [])
     assert all(r["execution_error_steps"] == [] for r in summary["cases"])
+    if guidance == "focused-v1":
+        assert all(r["execution_path"] == "mcp_in_process" and
+                   r["mcp_verification"] == "passed" for r in summary["cases"])
+        replies = [json.loads(p.read_text()) for p in output.glob("*.mcp.json")]
+        assert len(replies) == 2 and all(r["tool"] == "investigate" for r in replies)
+        gap_reply = json.loads((output / "assigned-a5000-batch8-v1.mcp.json").read_text())
+        assert gap_reply["result"]["research_gaps"][0]["absence_proven"] is False
     with pytest.raises(FileExistsError):
         run_cases(prepared, output, tokenizer=Tokenizer(), key="fake",
                   transport_factory=factory, reader_factory=reader)

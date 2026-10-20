@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from src.eval.assigned_smoke_candidate import candidate_contract
 from src.eval.assigned_smoke_plan import (
     CASES,
     LIMITS,
@@ -15,6 +16,7 @@ from src.eval.assigned_smoke_plan import (
     initial_payload,
     source_digest,
 )
+from src.product.assigned_guidance import BASELINE, FOCUSED, validate_guidance
 from src.product.paper_assignment import assignment_hash, paper_assignment
 from src.product.qwen_investigator import effective_system_prompt
 from src.research.agent import load_snapshot
@@ -25,6 +27,12 @@ def check(output: Path, *, tokenizer) -> dict:
     if hashlib.sha256(raw).hexdigest() != (output / "plan.sha256").read_text().strip():
         raise ValueError("prepared plan changed")
     plan = json.loads(raw)
+    guidance = plan.get("reader_guidance", BASELINE)
+    validate_guidance(guidance, "assigned")
+    if guidance == FOCUSED and any(plan.get(k) != v for k, v in candidate_contract().items()):
+        raise ValueError("candidate execution contract changed")
+    if guidance == BASELINE and plan.get("execution_path") is not None:
+        raise ValueError("unknown baseline execution path")
     if (plan.get("schema_version") != "assigned-reader-smoke-plan-v1"
             or plan.get("limits") != LIMITS or plan.get("cases") != CASES
             or plan.get("activation", {}).get("approved") is not False
@@ -45,7 +53,7 @@ def check(output: Path, *, tokenizer) -> dict:
     prompt = (output / "system-prompt.txt").read_text()
     if (hashlib.sha256(prompt.encode()).hexdigest() != plan["system_prompt_sha256"]
             or prompt != effective_system_prompt("public_papers", "default", "v2",
-                                                 reader_mode="assigned")):
+                reader_mode="assigned", reader_guidance=guidance)):
         raise ValueError("prepared effective prompt changed")
     manifest, docs = load_snapshot(Path(plan["snapshot"]))
     if manifest["corpus_hash"] != plan["corpus_hash"]:
@@ -79,4 +87,5 @@ def check(output: Path, *, tokenizer) -> dict:
     return {"status": "prepared_not_run", "cases": len(CASES), "model_calls": 0,
             "initial_prompt_tokens": token_counts, "limits": LIMITS,
             "reference_review": "assistant_prepared; human review not performed",
-            "activation_approved": False}
+            "activation_approved": False, "reader_guidance": guidance,
+            "execution_path": plan.get("execution_path", "direct_reader")}

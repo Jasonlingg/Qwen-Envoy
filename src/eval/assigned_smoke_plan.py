@@ -17,6 +17,7 @@ from scripts.runpod_qwen_bootstrap import (
 from src.env.tools import TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_SHA256
 from src.product.arxiv_library import ArxivLibrary
+from src.product.assigned_guidance import BASELINE, FOCUSED
 from src.product.paper_assignment import assignment_hash, assignment_observation, paper_assignment
 from src.product.qwen_investigator import effective_system_prompt
 from src.research.agent import load_snapshot
@@ -55,6 +56,10 @@ SOURCE_FILES = [
     "scripts/arxiv_research_mcp.py", "src/policies/runpod_queue.py",
     "src/policies/openai_compatible.py", "src/env/repl.py", "src/env/tools.py",
     "src/env/tools_v2.py", "src/product/harness_v2.py", "src/product/submit_call.py",
+    "src/product/assigned_guidance.py", "src/eval/assigned_smoke_candidate.py",
+    "src/eval/assigned_smoke_mcp.py", "src/eval/assigned_smoke_run.py",
+    "src/eval/assigned_smoke_lifecycle.py", "src/eval/assigned_smoke_cleanup.py",
+    "src/eval/assigned_smoke_control.py", "scripts/run_assigned_reader_smoke.py",
 ]
 
 
@@ -80,7 +85,8 @@ def initial_payload(prompt: str, assignment: dict, question: str) -> dict:
 
 
 def prepare(library_root: Path, output: Path, *, sandbox_image: str, tokenizer,
-            endpoint_id: str = "q05pjrvguakieg", implementation_commit: str = "unrecorded") -> dict:
+            endpoint_id: str = "q05pjrvguakieg", implementation_commit: str = "unrecorded",
+            reader_guidance: str = BASELINE) -> dict:
     if output.exists():
         raise FileExistsError("use a new directory; frozen sessions are never overwritten")
     if not re.fullmatch(r"sha256:[0-9a-f]{64}", sandbox_image):
@@ -94,7 +100,8 @@ def prepare(library_root: Path, output: Path, *, sandbox_image: str, tokenizer,
     snapshot = library.view([PAPER])
     manifest, docs = load_snapshot(snapshot)
     assignment = paper_assignment(manifest, docs)
-    prompt = effective_system_prompt("public_papers", "default", "v2", reader_mode="assigned")
+    prompt = effective_system_prompt("public_papers", "default", "v2", reader_mode="assigned",
+                                     reader_guidance=reader_guidance)
     model_inputs = []
     for case in CASES:
         payload = initial_payload(prompt, assignment, case["question"])
@@ -171,6 +178,9 @@ def prepare(library_root: Path, output: Path, *, sandbox_image: str, tokenizer,
                             hashlib.sha256(prompt.encode()).hexdigest(),
                             "claim-review-template.json": digest(review_template)},
         "semantic_support": "not_reviewed", "reward": "not_computed", "model_calls": 0}
+    if reader_guidance == FOCUSED:
+        from src.eval.assigned_smoke_candidate import candidate_contract
+        plan.update(candidate_contract())
     output.mkdir(parents=True)
     write_json(output / "model_inputs.json", model_inputs)
     write_json(output / "references.json", references)

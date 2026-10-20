@@ -74,6 +74,8 @@ def main():
         return
     if not args.approved_live:
         parser.error("run requires separate live activation approval (--approved-live)")
+    if plan.get("reader_guidance", "baseline") != "baseline" and not args.authorization_file:
+        parser.error("candidate run requires a plan-bound --authorization-file")
     if not PersistentREPL._docker_available(plan["sandbox_image"]):
         raise ValueError("pinned Docker image unavailable; GPU was not activated")
     plan_sha = hashlib.sha256((args.prepared / "plan.json").read_bytes()).hexdigest()

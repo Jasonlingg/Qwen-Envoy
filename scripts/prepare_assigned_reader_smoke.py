@@ -23,6 +23,8 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--library-root", type=Path)
     parser.add_argument("--sandbox-image")
+    parser.add_argument("--reader-guidance", choices=["baseline", "focused-v1"],
+                        default="baseline", help="Opt-in candidate; prepare phase only")
     args = parser.parse_args()
     if args.phase == "prepare" and (args.library_root is None or not args.sandbox_image):
         parser.error("prepare needs --library-root and a pinned --sandbox-image")
@@ -35,7 +37,8 @@ def main():
     if args.phase == "prepare":
         commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
         prepare(args.library_root, args.output, sandbox_image=args.sandbox_image,
-                tokenizer=tokenizer, implementation_commit=commit)
+                tokenizer=tokenizer, implementation_commit=commit,
+                reader_guidance=args.reader_guidance)
     print(json.dumps(check(args.output, tokenizer=tokenizer), indent=2))
 
 
