@@ -50,6 +50,7 @@ explicitly. No benchmark is authorized to run by saving the draft.
 
 
 async def run(args):
+    question = QUESTION.replace("48 GB", f"{args.gpu_memory_gb} GB")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     work = Path(tempfile.mkdtemp(prefix="qwen-mcp-live-")).resolve()
@@ -63,7 +64,7 @@ async def run(args):
         "mcp_servers.arxiv-research.startup_timeout_sec": 90,
         "mcp_servers.arxiv-research.tool_timeout_sec": 900})
     (output / "settings.json").write_text(json.dumps(config, indent=2) + "\n")
-    (output / "instructions.txt").write_text(INSTRUCTIONS + "\n\n" + QUESTION)
+    (output / "instructions.txt").write_text(INSTRUCTIONS + "\n\n" + question)
     stderr, trace = (output / "stderr.log").open("w"), (output / "events.jsonl").open("w")
     process = await asyncio.create_subprocess_exec(*command(config), cwd=work,
         env={**os.environ, "PWD": str(work)}, stdin=asyncio.subprocess.PIPE,
@@ -98,7 +99,7 @@ async def run(args):
         if active != expected:
             raise RuntimeError("full research and experiment MCP inventory required")
         turn = await client.request("turn/start", {"threadId": tid,
-            "input": [{"type": "text", "text": QUESTION}], "effort": EFFORT,
+            "input": [{"type": "text", "text": question}], "effort": EFFORT,
             "permissions": "ml-pilot", "approvalPolicy": "never"})
         events.turn_id = turn["turn"]["id"]
         collected = await collect(client, tid, events, seconds=950)
@@ -122,6 +123,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--endpoint-id", required=True)
     parser.add_argument("--sandbox-image", required=True)
+    parser.add_argument("--gpu-memory-gb", type=int, choices=[24, 48], default=48)
     parser.add_argument("--output", type=Path, required=True)
     asyncio.run(run(parser.parse_args()))
 
