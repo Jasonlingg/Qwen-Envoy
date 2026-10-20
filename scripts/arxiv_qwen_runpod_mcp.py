@@ -58,7 +58,8 @@ def main():
                           qwen_model="envoy",
                           qwen_checkpoint=f"{ADAPTER}@{ADAPTER_REVISION}/{SUBFOLDER}",
                           harness_version="v2", max_steps=8,
-                          policy_transport=transport, sandbox_image=args.sandbox_image)
+                          policy_transport=transport)
+    reader.image = args.sandbox_image
     root = args.library_root.expanduser()
     diagnostic("serving")
     create_server(ArxivLibrary(root), PaperDiscovery(root / "discovery-cache"),
