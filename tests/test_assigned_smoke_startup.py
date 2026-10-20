@@ -24,7 +24,8 @@ def test_only_transient_log_reads_are_retried_within_same_session():
     assert all(args[0] == "logs" for args in calls)  # No inference resubmission.
 
 
-@pytest.mark.parametrize("code,expected", [("not_found", 3), ("unauthorized", 1), ("unknown", 1)])
+@pytest.mark.parametrize("code,expected", [
+    ("not_found", 3), ("timeout", 3), ("unauthorized", 1), ("unknown", 1)])
 def test_log_failure_has_finite_read_attempts_and_preserved_reason(code, expected):
     calls = []
     def broken(*args, **kwargs):
@@ -66,6 +67,8 @@ def test_warmup_never_reads_logs_before_ready(tmp_path, monkeypatch):
             state.update(workersMin=int(args[1]), workersMax=int(args[3]))
             return state
         raise AssertionError("warming worker logs must not be fetched")
+    monkeypatch.setattr(lifecycle.WorkerCatalog, "list", lambda self: [
+        {"id": "warming", "status": "INITIALIZING"}] if state["workersMin"] else [])
     with pytest.raises(TimeoutError):
         lifecycle.supervise("test", tmp_path, [], key="fake", control=control, seconds=0.02)
     assert "logs" not in calls and state["workersMin"] == state["workersMax"] == 0

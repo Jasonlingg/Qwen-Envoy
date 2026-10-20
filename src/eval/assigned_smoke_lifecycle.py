@@ -9,34 +9,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from src.eval.assigned_smoke_cleanup import cleanup_containers, cleanup_jobs, wait_parked
+from src.eval.assigned_smoke_control import ControlError, WorkerCatalog, cli
 from src.eval.assigned_smoke_plan import MODEL_IDENTITY, ROOT, write_json
 from src.eval.native_pilot_client import kill_group
-
-
-class ControlError(RuntimeError):
-    def __init__(self, command: str, code: str, status):
-        self.details = {"command": command, "code": code, "status": status}
-        super().__init__(f"Runpod {command} failed ({code}, HTTP {status})")
-
-
-def cli(*args, raw=False):
-    result = subprocess.run(["runpodctl", "serverless", *args], capture_output=True,
-                            text=True, timeout=30)
-    if result.returncode:
-        # Retain machine-readable diagnostics, never raw endpoint/env or credentials.
-        error = {}
-        for line in reversed(result.stderr.splitlines()):
-            try:
-                candidate = json.loads(line)
-            except ValueError:
-                continue
-            if isinstance(candidate, dict) and "code" in candidate:
-                error = candidate
-                break
-        raise ControlError(args[0], error.get("code", "unknown"), error.get("status"))
-    if len(result.stdout) > 1_000_000:
-        raise ValueError("control CLI output too large")
-    return result.stdout if raw else json.loads(result.stdout)
 
 
 def configuration(endpoint: dict) -> dict:
@@ -70,29 +45,39 @@ def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> 
     return None
 
 
-def identity_logs(control, endpoint, active, since, expired):
+def identity_logs(control, endpoint, active, since, expired, *, audit=None):
     for attempt in range(3):
+        event = {"attempt": attempt + 1, "worker_id": next(iter(active)),
+                 "since": since.isoformat(), "max_wait_seconds": 5}
         try:
-            return control("logs", endpoint, "--source", "container",
+            logs = control("logs", endpoint, "--source", "container",
                 "--worker", next(iter(active)), "--since", since.isoformat(),
-                "--max-wait", "1s", raw=True)
+                "--max-wait", "5s", raw=True)
+            event["status"] = "received"
+            return logs
         except ControlError as exc:
+            event.update(status="error", error=exc.details)
             if (attempt == 2 or exc.details["code"] not in
-                    {"not_found", "network_error", "server_error", "rate_limited"}):
+                    {"not_found", "network_error", "server_error", "rate_limited", "timeout"}):
                 raise
             if expired.wait(1):
                 raise TimeoutError("watchdog expired while reading startup logs") from None
+        finally:
+            if audit is not None:
+                with audit.open("a") as stream:
+                    stream.write(json.dumps(event) + "\n")
     raise AssertionError("unreachable")
 
 
 def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
-              control=cli, popen=subprocess.Popen, seconds=900) -> dict:
+              control=cli, popen=subprocess.Popen, seconds=900, worker_reader=None) -> dict:
+    worker_reader = worker_reader or WorkerCatalog(endpoint, key).list
     before = configuration(control("get", endpoint))
     health = control("health", endpoint)
     if (before["workersMin"] != 0 or before["workersMax"] != 0
             or before["gpuIds"] != ["NVIDIA RTX A5000"] or before["gpuCount"] != 1
             or health["jobs"]["inQueue"] or health["jobs"]["inProgress"]
-            or any(health["workers"].values())):
+            or any(health["workers"].values()) or worker_reader()):
         raise ValueError("endpoint must be parked, empty and pinned to one A5000")
     write_json(output / "endpoint-before.json", {"configuration": before, "health": health})
     child = None
@@ -133,14 +118,19 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
         while not expired.is_set():
             health = control("health", endpoint)
             write_json(output / "health-latest.json", health)
-            workers = control("get", endpoint, "--include-workers").get("workers") or []
+            workers = worker_reader()
+            write_json(output / "workers-latest.json", workers)
             active = {worker["id"] for worker in workers}
+            outcome["startup_worker_ids"] = sorted(active)
             if len(active) > 1:
                 raise ValueError("more than one active worker; refusing inference")
             identity = None
             # A newly scheduled worker can be listed before its log service exists.
-            if active and health["workers"].get("ready", 0):
-                logs = identity_logs(control, endpoint, active, since, expired)
+            usable = all(w["status"] in {"IDLE", "RUNNING"} and not w.get("isStale")
+                         for w in workers)
+            if active and usable and health["workers"].get("ready", 0):
+                logs = identity_logs(control, endpoint, active, since, expired,
+                                     audit=output / "startup-log-reads.jsonl")
                 identity = worker_identity(logs, active_workers=active, since=since)
             if identity and health["workers"].get("ready", 0):
                 write_json(output / "worker-identity.json", identity)
@@ -181,7 +171,7 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
             errors.append("job_cleanup:" + type(exc).__name__)
         try:
             cleanup_containers(output)
-            config, health = wait_parked(control, endpoint)
+            config, health = wait_parked(control, endpoint, worker_reader=worker_reader)
             outcome["endpoint_after"] = configuration(config)
             outcome["health_after"] = health
             outcome["shutdown_verified"] = True

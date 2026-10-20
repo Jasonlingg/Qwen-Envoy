@@ -37,13 +37,13 @@ def cleanup_containers(output: Path):
             subprocess.run(["docker", "rm", "-f", cid], capture_output=True, timeout=15)
 
 
-def wait_parked(control, endpoint, *, seconds=90):
+def wait_parked(control, endpoint, *, worker_reader, seconds=90):
     deadline = time.monotonic() + seconds
     while True:
-        config = control("get", endpoint, "--include-workers")
+        config = control("get", endpoint)
         health = control("health", endpoint)
         if (config.get("workersMin") == config.get("workersMax") == 0
-                and not config.get("workers") and not any(health["workers"].values())
+                and not worker_reader() and not any(health["workers"].values())
                 and not health["jobs"]["inQueue"] and not health["jobs"]["inProgress"]):
             return config, health
         if time.monotonic() >= deadline:

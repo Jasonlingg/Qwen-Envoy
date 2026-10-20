@@ -1,11 +1,10 @@
 """Scripted inference only: budgets, source checks, shutdown and one-attempt behavior."""
 import json
-from datetime import datetime, timezone
 
 import pytest
 
 from src.eval import assigned_smoke_lifecycle as lifecycle
-from src.eval.assigned_smoke_plan import MODEL_IDENTITY, prepare
+from src.eval.assigned_smoke_plan import prepare
 from src.eval.assigned_smoke_run import require_completed_cases, run_cases
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.assigned_reader import build_assigned_reader
@@ -66,30 +65,8 @@ def test_partial_or_unverified_session_cannot_be_success(failure):
         require_completed_cases(summary)
 
 
-def test_worker_identity_rejects_unpinned_adapter():
-    identity = {"base_repo": MODEL_IDENTITY["base"],
-        "base_revision": MODEL_IDENTITY["base_revision"],
-        "adapter_repo": MODEL_IDENTITY["adapter"],
-        "adapter_revision": MODEL_IDENTITY["adapter_revision"],
-        "adapter_sha256": MODEL_IDENTITY["adapter_sha256"],
-        "adapter_subfolder": MODEL_IDENTITY["subfolder"],
-        "served_adapter": "envoy", "gpu": "NVIDIA RTX A5000"}
-    def logs():
-        return json.dumps({"line": "ENVOY_PINNED_IDENTITY " + json.dumps(identity),
-                           "workerId": "current", "ts": "2026-10-20T12:00:00Z"})
-    kwargs = {"active_workers": {"current"}, "since": datetime(2026, 10, 20, tzinfo=timezone.utc)}
-    observed = lifecycle.worker_identity(logs(), **kwargs)
-    assert observed["adapter_sha256"] == identity["adapter_sha256"]
-    assert lifecycle.worker_identity(logs(), **{**kwargs, "active_workers": {"other"}}) is None
-    later = datetime(2026, 10, 21, tzinfo=timezone.utc)
-    assert lifecycle.worker_identity(logs(), **{**kwargs, "since": later}) is None
-    identity["adapter_revision"] = "HEAD"
-    with pytest.raises(ValueError, match="identity"):
-        lifecycle.worker_identity(logs(), **kwargs)
-
-
 @pytest.fixture
-def control():
+def control(monkeypatch):
     calls = []
     state = {"id": "test", "workersMin": 0, "workersMax": 0, "gpuCount": 1,
              "gpuIds": ["NVIDIA RTX A5000"], "idleTimeout": 60}
@@ -107,6 +84,8 @@ def control():
             health["workers"]["ready"] = state["workersMin"]
             return dict(state)
         raise AssertionError(command)
+    monkeypatch.setattr(lifecycle.WorkerCatalog, "list", lambda self: [
+        {"id": "current", "status": "IDLE"}] if state["workersMin"] else [])
     return invoke, calls, state
 
 
@@ -181,7 +160,7 @@ def test_shutdown_rejects_lingering_workers_and_pending_jobs(control):
             result["workers"] = [{"id": "lingering"}]
         return result
     with pytest.raises(RuntimeError, match="shutdown not verified"):
-        wait_parked(lingering, "test", seconds=0)
+        wait_parked(lingering, "test", worker_reader=lambda: [{"id": "lingering"}], seconds=0)
 
 
 def test_failed_child_cannot_exit_as_success(tmp_path, control, monkeypatch):

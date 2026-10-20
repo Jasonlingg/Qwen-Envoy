@@ -23,7 +23,8 @@ from src.eval.assigned_smoke_plan import LIMITS, write_json
 from src.eval.assigned_smoke_run import require_completed_cases, run_cases
 
 FILES = ["scripts/run_assigned_reader_smoke.py", "src/eval/assigned_smoke_run.py",
-         "src/eval/assigned_smoke_lifecycle.py", "src/eval/assigned_smoke_cleanup.py"]
+         "src/eval/assigned_smoke_lifecycle.py", "src/eval/assigned_smoke_cleanup.py",
+         "src/eval/assigned_smoke_control.py"]
 
 
 def hashes():
