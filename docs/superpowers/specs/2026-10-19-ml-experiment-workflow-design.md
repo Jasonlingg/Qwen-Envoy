@@ -1,8 +1,8 @@
 # ML experiment planning through MCP — v1 design
 
-Date: 2026-10-19. Status: Tasks 1–5 approved and implemented.
-The user's question drives the workflow. Task 5's user usefulness review is
-pending; Task 6 awaits separate approval.
+Date: 2026-10-19. Status: implementation Tasks 1–6 approved and complete.
+The user's question drives the workflow. Task 5's user usefulness review remains
+pending; no proposed intervention or ordinary-Codex comparison has been run.
 
 ## Goal and first useful workflow
 
@@ -198,11 +198,13 @@ One native-client research-to-brief demonstration and user review are required
 before calling v1 useful. No Qwen improvement or ordinary-web superiority claim
 follows; those require separate, approved evaluations.
 
-## Remaining approval gates
+## Further work requires separate approval
 
-| Task | Proposed files and verification; await approval before starting |
+| Separate task | Boundary |
 | --- | --- |
-| 6 — release | Independent review, fixes, full relevant suite, README/demo instructions, reproducible example and limitations. Paid live-reader and native-web comparison work stay separately scoped. |
+| Execute the proposed diagnostic | User must agree to the exact plan; resolve runtime/reviewer/pricing and enforceable resource controls before execution approval. |
+| Compare with ordinary Codex | Freeze fresh questions, matched tool/settings/input/budget conditions and review criteria in a separately approved benchmark. |
+| Paid live reader or GPU deployment | No authorization is supplied by completed planning or software tests. |
 
 Each implementation task gets focused verification and a small logical commit.
 Task 1 changed this design document only. Task 2 implemented the record foundation.
@@ -216,3 +218,11 @@ historical import. Native planning-tool discovery in the host was unavailable;
 the registered server was exercised through a Python MCP client. User review of
 the proposal's usefulness remains pending. Neither this walkthrough nor the
 synthetic tests establish the broader usability/model-improvement gates.
+
+Task 6 completed independent assistant code review and re-review, fixed ancestor
+symlink redirection and invalid count measurements, labeled synthetic summaries,
+and passed all 1,478 repository tests. Both configured MCP inventories and saved
+Task 5 records were verified through stdio after the fixes. See
+`docs/implementation/2026-10-19-ml-experiment-release-review.md`. This does not
+complete native planning-tool discovery in the current host session or independent
+human semantic/usefulness review.

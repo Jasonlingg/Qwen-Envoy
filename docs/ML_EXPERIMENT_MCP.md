@@ -134,6 +134,9 @@ results; it runs no inference, training, benchmark, or billing operation.
 Each result includes the two arms' actual identities and conditions, evaluation
 sample, measurements, coverage, failures, missing cases, and limitations. Unknown
 numbers use `value: null` with `unknown_reason`; they never become zero. The
+canonical unit `count` accepts only nonnegative whole-number values; percent
+and fraction values must stay within their respective 0–100 and 0–1 ranges.
+Each result summary labels its data as `recorded` or `synthetic`. The
 server preserves the frozen plan. Identical retries of a run ID return the same
 saved result, even if its source export has disappeared; different content under
 that ID is rejected. A new run ID appends another result without overwriting old
@@ -205,14 +208,20 @@ also save a question, revise it with synthetic data and source receipts, freeze,
 record a synthetic outcome, restart the subprocess, and retrieve the original
 plan, evidence, and result after the exports are removed.
 
-Focused verification: 182 passing tests across the experiment modules and the
-existing arXiv server/profile tests; Ruff and whitespace checks pass. Reproduce:
+Release verification: 1,478 repository tests pass, including 188 focused cases
+across the experiment modules and existing arXiv server/profile tests. Ruff and
+whitespace checks pass. Reproduce the focused checks:
 
 ```bash
 python -m pytest -q tests/test_ml_experiment*.py tests/test_arxiv_mcp_profiles.py tests/test_arxiv_research_mcp.py
 ```
 
-The full relevant suite and independent release review remain Task 6.
+Task 6's independent assistant code review found two validation/boundary gaps;
+both were fixed and re-reviewed. The full repository suite and configured-server
+read-back passed. See the [review and verification record](
+implementation/2026-10-19-ml-experiment-release-review.md) for commands, findings,
+remaining limits and machine-readable evidence. This is code verification,
+not independent human validation of recommendations or model answers.
 
 The Task 5 report at `out/ml-experiment-task5-20261019.json` records ten actual
 planning-MCP calls, server restart/retry checks, a draft proposal and a separate

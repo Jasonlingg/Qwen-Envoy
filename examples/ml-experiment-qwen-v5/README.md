@@ -171,4 +171,9 @@ An export hash is not proof of faithful derivation without that separate check.
 Focused verification covers export reproduction, bounded references, exact
 prompt bindings and a temporary-store stdio round trip. Corpus/cache-dependent
 checks explicitly skip if those inputs are absent; they never fetch in tests.
-The independent release review and full relevant suite remain Task 6.
+Task 6 is complete: independent assistant code review and re-review, two fixes,
+1,478 passing repository tests, and read-back of these unchanged records through
+the configured servers. See the [review record](
+../../docs/implementation/2026-10-19-ml-experiment-release-review.md) and
+[machine-readable verification](task6-validation.json). User usefulness review,
+human semantic review and intervention/model performance remain unestablished.

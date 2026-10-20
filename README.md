@@ -208,12 +208,40 @@ does not constitute a completed entry.
 
 ## arXiv research MCP
 
-Discover papers, follow citations, and inspect exact version-pinned passages through six read-only MCP tools.
+Discover papers, follow citations, and inspect exact version-pinned passages
+through five model-free source tools.
 ```bash
-claude mcp add arxiv-research -- python "$(pwd)/scripts/arxiv_research_mcp.py" --reader none
+claude mcp add arxiv-research -- python "$(pwd)/scripts/arxiv_research_mcp.py" --tool-profile sources
 ```
-Optional Qwen/Nemotron readers run Python in Docker; quotes establish provenance, not semantic support.
+The full profile adds an optional investigation tool. Configured Qwen/Nemotron
+readers run Python in Docker; quotes establish provenance, not semantic support.
 See [setup, limits and evaluation](docs/ARXIV_RESEARCH_MCP.md).
+
+## ML experiment planning through MCP
+
+Ask an engineering question such as “Would fine-tuning address these failures?”
+The host assistant inspects selected run exports, researches relevant methods,
+and saves a proposed experiment behind the conversation. The companion MCP
+keeps versioned briefs, immutable agreed plans, evidence receipts, and supplied
+results compared against the original criteria. Missing measurements stay unknown.
+
+```bash
+python scripts/ml_experiment_mcp.py \
+  --store-root ~/.envoy/ml-experiments \
+  --library-root ~/.envoy/arxiv-library \
+  --artifact-root /absolute/path/to/selected-run-exports
+```
+
+Use the same paper cache as the research server and a dedicated directory of
+sanitized JSON exports. The planning server makes no model/network calls and
+runs no experiments. Qwen readers are optional and require a separately
+configured endpoint; this workflow needs no GPU to plan or review saved results.
+
+See [setup and conversation flow](docs/ML_EXPERIMENT_MCP.md) and the
+[real Qwen development walkthrough](examples/ml-experiment-qwen-v5/README.md).
+That walkthrough leaves its proposed intervention as an unrun draft. Neither
+Qwen improvement nor an advantage over ordinary assistant research has been
+established; the Codex comparison is a separate proposed benchmark.
 
 ## What the agent does
 

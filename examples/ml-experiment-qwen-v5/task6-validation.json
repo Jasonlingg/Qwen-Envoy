@@ -1,0 +1,110 @@
+{
+  "schema_version": "ml-experiment-task6-validation-v1",
+  "recorded_at": "2026-10-20T01:03:02.870782+00:00",
+  "python": "3.11.9",
+  "full_suite": {
+    "command": "python -m pytest -q --tb=short",
+    "passed": 1478,
+    "warnings": 3,
+    "seconds": 50.75,
+    "exit_code": 0,
+    "downloads_disabled": true,
+    "log": "out/ml-experiment-task6-full-suite.log"
+  },
+  "independent_code_review": {
+    "reviewer": "fresh assistant agent task6_independent_review",
+    "findings": [
+      "P2 ancestor symlink write escape",
+      "P2 negative/fractional count validation"
+    ],
+    "fix_commit": "e3d2f5b",
+    "re_review": "no remaining blocking findings",
+    "focused_tests_passed": 91,
+    "semantic_human_review": false
+  },
+  "inventories": {
+    "arxiv-research": [
+      "find_evidence",
+      "get_citations",
+      "get_passage",
+      "open_paper",
+      "search_papers"
+    ],
+    "ml-experiments": [
+      "freeze_experiment_plan",
+      "get_experiment",
+      "list_experiments",
+      "record_experiment_result",
+      "save_experiment_brief"
+    ]
+  },
+  "read_only_calls": [
+    {
+      "tool": "get_experiment",
+      "experiment_id": "experiment_a2c10d6cf9214e169705936b11c87185",
+      "is_error": false
+    },
+    {
+      "tool": "get_experiment",
+      "experiment_id": "experiment_039eda5a556248cfa8300aa178524c7d",
+      "is_error": false
+    }
+  ],
+  "saved_records": {
+    "proposal": {
+      "experiment_id": "experiment_a2c10d6cf9214e169705936b11c87185",
+      "status": "draft",
+      "plan_sha256": null,
+      "result_count": 0
+    },
+    "historical": {
+      "experiment_id": "experiment_039eda5a556248cfa8300aa178524c7d",
+      "status": "frozen",
+      "plan_sha256": "57e7088cde15223d2e4bbebc41222e41d6f049815d3a23142d4ac4d0c828c4d1",
+      "result_count": 1,
+      "overall": "inconclusive",
+      "result_sha256": "738c716c3618ebd9a32db8008d1cf5a7826847badd30ca936ea44ce608261aa1"
+    }
+  },
+  "model_requests": 0,
+  "gpu_launches": 0,
+  "paid_model_calls": 0,
+  "source_sha256": {
+    "scripts/demo_ml_experiment_workflow.py": "0f7b9c48f603fdc7fde41fbeddd25a874033b4fe2e719102b062eedf6644aac9",
+    "scripts/export_ml_experiment_case_study.py": "64fe1219c0bc3b40d044ebf166e50d09f34291045910e51eec780908df4abf52",
+    "scripts/ml_experiment_mcp.py": "8c5af151e46e6ab1927ff3b6546c74ae071d8c98b1956c2c22df1d43c3fc7141",
+    "src/product/ml_experiment_comparability.py": "3c0c16e9d3f87080ded26fcb10fc2b2ea267499afcffc1e6af54df047f535c32",
+    "src/product/ml_experiment_compare.py": "fa8e3ba632a7db784b69f393ae8fcf0b2cdaaf7de0a1c6b005617fc80f659b02",
+    "src/product/ml_experiment_directories.py": "bf55e45feacb6d92f0f2bb71be561ede42349e778046117f97aca35a58c104b7",
+    "src/product/ml_experiment_evidence.py": "f8c039927db99d59d7ba5397490f70680f32e3f8b217b3e5f5d9e4073a819a05",
+    "src/product/ml_experiment_io.py": "789982484b6a7624375140dbcc3486c87c4d4a9cecac4b21d190dcf491c84c18",
+    "src/product/ml_experiment_markdown.py": "a1bcf4c84c22886106c8112f5f806bfaf9041c9312ba2a93ea9ed832bc65094b",
+    "src/product/ml_experiment_measurements.py": "1f985ab4eb8a04b061d0b709686c8e17a9b71da535e0f62fda6b7ee4abcecfde",
+    "src/product/ml_experiment_models.py": "330675495fa513d26712ac81f8c029beecaa8121d372157a3d56fd71bd40162b",
+    "src/product/ml_experiment_outcomes.py": "e150b2b29daf3c52221e9aa2422e1ac389f2296f778f34459731124837082d96",
+    "src/product/ml_experiment_receipts.py": "ebf8ba8b8d18e70e80bb20fafeb114b314948e2cb5232015491186eae35adb94",
+    "src/product/ml_experiment_result_evidence.py": "a1719243c952ad2211c1270dc4381f776861248e780f51e9da40017838888d9b",
+    "src/product/ml_experiment_results.py": "381ad2e2342dbe3fb0508cbdfb499daed8ac4161943b344eba5678856336ec16",
+    "src/product/ml_experiment_sources.py": "d43382399d9d24b78824cc19a1c46015fa8f5bb85152b4cf072304570e1fde0e",
+    "src/product/ml_experiment_store.py": "5ecf92c28a95d1b6727df42a77812a02c6078d31452536b3f67137aa6e2660f9",
+    "src/product/ml_experiment_types.py": "2bbf44cda113fd4f93c2009d9356ecb5e7b07b92febebf7b3a5eca0c3de944db"
+  },
+  "limitations": [
+    "Planning tools verified through configured stdio client; not loaded into native host tool inventory.",
+    "User usefulness review is pending.",
+    "No proposed intervention or Codex comparison executed.",
+    "No model improvement or cost/time advantage is established."
+  ],
+  "preserved_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  }
+}
