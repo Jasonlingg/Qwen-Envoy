@@ -73,7 +73,7 @@ class RunpodQueueTransport:
                 r.get("request") != n or r.get("input_reservation") != 7168
                 or r.get("output_reservation") != 1024
                 for n, r in enumerate(reservations, 1))
-                or any(r.get("event") not in {"reserved", "completed", "failed"}
+                or any(r.get("event") not in {"reserved", "submitted", "completed", "failed"}
                        for r in rows[1:])):
             raise ValueError("Qwen audit reservations are invalid")
         return len(reservations)
@@ -133,7 +133,9 @@ class RunpodQueueTransport:
                 raise RuntimeError("Qwen request budget exhausted")
             tokens = self.tokenizer.apply_chat_template(
                 payload["messages"], tokenize=True, add_generation_prompt=True,
-                enable_thinking=False)
+                enable_thinking=False, return_dict=False)
+            if not isinstance(tokens, list) or any(type(token) is not int for token in tokens):
+                raise ValueError("tokenizer must return a flat token-id list")
             if len(tokens) > 7168:
                 raise ValueError("reader prompt exceeds 7168-token input limit")
             number = used + 1
@@ -149,6 +151,7 @@ class RunpodQueueTransport:
             job_id = job.get("id")
             if not isinstance(job_id, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", job_id):
                 raise ValueError("missing or invalid Runpod job id; no retry")
+            self._write({"event": "submitted", "request": number, "job_id": job_id})
             while job.get("status") in {"IN_QUEUE", "IN_PROGRESS"}:
                 if time.monotonic() - started >= self.wait_seconds:
                     raise TimeoutError("Runpod queue deadline exceeded")

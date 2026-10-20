@@ -9,7 +9,8 @@ from src.policies.runpod_queue import RunpodQueueTransport
 
 class Tokenizer:
     def apply_chat_template(self, messages, **kwargs):
-        assert kwargs == dict(tokenize=True, add_generation_prompt=True, enable_thinking=False)
+        assert kwargs == dict(tokenize=True, add_generation_prompt=True, enable_thinking=False,
+                              return_dict=False)
         return [1] * len(messages[0]["content"])
 
 
@@ -157,4 +158,14 @@ def test_context_limit_fails_before_submission(tmp_path):
     transport = RunpodQueueTransport("abc", "secret", Tokenizer(), tmp_path / "audit")
     with pytest.raises(ValueError, match="input limit"):
         transport("unused", payload(messages=[{"content": "x" * 7169}]), {}, 120)
+    assert transport.remaining == 12
+
+
+def test_batch_encoding_cannot_be_miscounted_as_two_tokens(tmp_path):
+    class WrongTokenizer:
+        def apply_chat_template(self, *args, **kwargs):
+            return {"input_ids": [1] * 9000, "attention_mask": [1] * 9000}
+    transport = RunpodQueueTransport("abc", "secret", WrongTokenizer(), tmp_path / "audit")
+    with pytest.raises(ValueError, match="flat token-id list"):
+        transport("unused", payload(), {}, 120)
     assert transport.remaining == 12
