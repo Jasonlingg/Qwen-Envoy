@@ -1,8 +1,10 @@
 # Five-question ML workflow comparison
 
-Status: the user approved proceeding on October 19. Native preflight is recorded
-in [preflight.json](preflight.json) and [PREFLIGHT.md](PREFLIGHT.md). No comparison
-answers have been collected: the hard research-call limit remains unresolved.
+Status: the user approved proceeding and subsequently approved replacing the hard
+research-call ceiling with a monitored target. The validated controller and
+frozen answering protocol are in [EXECUTION.md](EXECUTION.md) and
+[execution-manifest.json](execution-manifest.json). The earlier native preflight
+remains recorded in [preflight.json](preflight.json) and [PREFLIGHT.md](PREFLIGHT.md).
 All scenario measurements/hardware
 numbers are hypothetical inputs, not observations from this project. These are
 assistant-authored development questions; they are not untouched confirmation
@@ -104,16 +106,17 @@ is underdetermined; do not prescribe a winning model or method to reviewers.
 | --- | --- |
 | Answer generation | 10 answers: five questions × two arms, one attempt each; no selective retries |
 | Elapsed answering | 600 seconds per answer; 100 minutes total maximum answering time, excluding setup/review |
-| External research | At most 20 web/search/open/fetch tool invocations per answer across all research tools combined; compound calls also record their underlying requests where exposed |
+| External research | User-approved amendment: monitored target of 20 combined research-tool calls per answer; interrupt at the observed target and retain/report any in-flight overshoot; compound actions are retained where exposed |
 | Final brief | Up to 800 words plus a short source list, same instructions in both arms; this is an output contract, not an enforced token-spend cap |
 | Human work | Budget at most 10 minutes correcting each answer; source/initial blind review is separate and logged, so this is not a complete estimate of review labor |
 | Extra reader/reasoner API calls and GPU starts | Zero; no Qwen/Nemotron worker or additional paid model endpoint is used by this pilot |
 | Codex host tokens/dollar spend | Unresolved until the actual client/account telemetry and enforcement are checked; account usage is not assumed free |
 
-No hard native-host token or monetary cap has been established. Elapsed/tool
-ceilings require a verified controller/operator stop procedure before execution;
-the planning MCP's recorded budgets do not enforce them. Do not run if the
-approved limits cannot be observed/enforced. There is no cost-savings claim
+No hard native-host token or monetary cap has been established. The validated
+controller kills its local process group at 600 seconds and monitors the research
+target; it cannot recall an already-dispatched hosted request or cap remote
+spending. The planning MCP's recorded budgets do not enforce these controls.
+There is no cost-savings claim
 without complete host/tool accounting, and no quality/efficiency winner is
 predeclared for this five-case diagnostic.
 
@@ -135,9 +138,8 @@ execution/review effort. The older [three-arm source/reader protocol](
 ../../docs/implementation/2026-10-19-native-web-comparison.md) remains a broader
 proposal, not an executed benchmark or authorization for this pilot.
 
-The initial preparation created documents/input JSON only. The subsequent
-preflight started native ephemeral threads and inspected their MCP inventories
-and filesystem canaries, without starting model turns. No answers, model workers,
-training or infrastructure were started. A proposed change from the hard research
-call cap to a monitored limit is awaiting the user's decision; approval of the
-benchmark itself is already recorded and does not need to be requested again.
+The initial preparation and zero-turn preflight generated no answers. The user
+then approved the monitored-limit amendment. See the execution manifest and
+collection report for subsequent answer attempts; historical preflight counts
+remain snapshots of that earlier stage. No Qwen/model-worker, training or
+infrastructure execution is included.
