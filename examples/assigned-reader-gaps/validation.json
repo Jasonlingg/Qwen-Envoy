@@ -1,0 +1,177 @@
+{
+  "schema_version": "assigned-reader-validation-v1",
+  "date": "2026-10-20",
+  "implementation_commits": [
+    "9043a32",
+    "14da384",
+    "523dddb"
+  ],
+  "verification_scope": "Local scripted control-flow, source-provenance, compatibility and sandbox integration; not model quality.",
+  "actual_model_inference_requests": 0,
+  "paid_model_requests": 0,
+  "runpod_mutations": 0,
+  "protocol": {
+    "reader_mode": "assigned",
+    "harness_version": "v2",
+    "source_domain": "public_papers",
+    "effective_prompt_sha256": {
+      "default": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+      "nemotron": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56"
+    },
+    "v1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "default_prompt_byte_comparison_reference": "cad4b4b",
+    "unchanged_default_prompt_sha256": {
+      "personal_vault/default/v1": "1194c8f506b270f03d43e21bc66df357cddbfad484c8db025d69496b6df4c382",
+      "personal_vault/default/v2": "de8c02d67f8ef2d4e2bc5e646a3a95e279d03d499a6f0bf91648e883d2dafefc",
+      "public_papers/default/v1": "4ecac01fde505d5e129f83a8e5ac95a316f12d00ea9d18ddb832f3c3fda64449",
+      "public_papers/default/v2": "6d2d419864af685f6fce506faf1ec5bd775aef08c55b8576ab36a8f7ff3d4061",
+      "public_papers/nemotron/v1": "d2c9431fedec290617503d5463a34678da5e0d86b93e475b9c70368add2ae0c8",
+      "public_papers/nemotron/v2": "6d2d419864af685f6fce506faf1ec5bd775aef08c55b8576ab36a8f7ff3d4061"
+    }
+  },
+  "tests": {
+    "core_focused": {
+      "passed": 122,
+      "scope": [
+        "assigned actions",
+        "assigned reader",
+        "gaps",
+        "MCP",
+        "packet verifier",
+        "parallel readers",
+        "reasoner",
+        "default V2 investigator",
+        "default investigator"
+      ]
+    },
+    "cli_and_assigned_mcp_focused": {
+      "passed": 16,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_assigned_reader_cli.py tests/test_assigned_reader.py tests/test_assigned_reader_mcp.py"
+    },
+    "clean_export": {
+      "commit": "14da384",
+      "exported_paths": [
+        "src",
+        "scripts",
+        "tests",
+        "pyproject.toml"
+      ],
+      "user_uncommitted_changes_included": false,
+      "command": [
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_assigned_reader.py",
+        "tests/test_assigned_actions.py",
+        "tests/test_reader_gaps.py",
+        "tests/test_assigned_reader_mcp.py",
+        "tests/test_packet_verifier.py",
+        "tests/test_parallel_readers.py",
+        "tests/test_reasoner.py"
+      ],
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 80%]\n..................                                                       [100%]\n90 passed in 2.26s\n"
+    },
+    "full_suite": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q",
+      "passed": 1588,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_summary": "Existing SWIG deprecation warnings",
+      "seconds": 68.49,
+      "exit_code": 0
+    },
+    "ruff": "passed for all changed/new Python files",
+    "git_diff_check": "passed",
+    "cli_help": "both assigned and queue entry points passed"
+  },
+  "docker_tests": {
+    "scripted_model_responses": true,
+    "real_mcp_client_and_docker": true,
+    "image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+    "positive_case": "Exact source span and unreviewed gap both returned.",
+    "negative_case": "Dead-code inspection plus metadata cannot unlock a gap or supported submission.",
+    "executed_in_final_full_suite": true
+  },
+  "independent_review": {
+    "handoff_commit": "9043a32 reviewed together with gap work in final independent review; findings are listed and closed below.",
+    "final_findings_closed": [
+      "dead-code/metadata-only inspection spoof",
+      "reader-mode downgrade bypass",
+      "residual assigned-mode prompt discovery conflict",
+      "pre-existing clean-checkout queue image argument incompatibility"
+    ],
+    "final_review": "No remaining actionable code/documentation findings; independent72 focused plus2CLI regression tests passed.",
+    "human_answer_review": "not_performed"
+  },
+  "final_runpod_state": {
+    "endpoint": {
+      "id": "q05pjrvguakieg",
+      "workers": {
+        "idleTimeout": 60,
+        "max": 0,
+        "min": 0
+      }
+    },
+    "workers": {
+      "endpointVersion": 3,
+      "summary": {
+        "idle": 0,
+        "initializing": 0,
+        "running": 0,
+        "throttled": 0,
+        "total": 0,
+        "unhealthy": 0
+      },
+      "workers": []
+    },
+    "health": {
+      "jobs": {
+        "completed": 16,
+        "failed": 0,
+        "inProgress": 0,
+        "inQueue": 0,
+        "retried": 0
+      },
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      }
+    }
+  },
+  "preserved_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "implementation_sha256": {
+    "src/product/assigned_reader.py": "7436817736bb110dc1e487ae8ec316185107d209404706ecd54d21c377c124df",
+    "src/product/assigned_actions.py": "e01e5336459153dfbb694ff03ee4902babb7c43d6733bc823ca7acaad869d09f",
+    "src/product/paper_assignment.py": "a4072074ae6db9db1f1912e6d52d326178736a728108da6e193a3c5e6a9994f4",
+    "src/product/reader_gaps.py": "3f6ac543098eeaccca97a72b04d0a4f9584e23cb10c9f4d5afa95e47480f70b8",
+    "src/product/qwen_investigator.py": "bb987ad9387885c3098946314922279d6441dfde81f199842e46bef0343944fc",
+    "src/product/packet_verifier.py": "85bd51308447a30ca5c64a4263ae6ce5693f843c563f6cc7f3bbc85d59c82c89",
+    "src/product/parallel_readers.py": "b4d022b5f3f49a905458ceb19f0e8e5540f93e316a3aff5123b0d20c1a8a96b4",
+    "src/product/reasoner.py": "967f308042f63852680c36a9e62660341e0ece1c831a414efa4b86dc2792571b",
+    "scripts/arxiv_assigned_reader_mcp.py": "0826de181538d57338c75d72893e5bfcc72177014e73f35f1d23a7d398ed102e",
+    "scripts/arxiv_qwen_runpod_mcp.py": "bc99ad027ee27502f51145e6f156fda38ff21086936a74a8ffa8272e3e97cd53"
+  },
+  "limitations": [
+    "New assigned/gap protocol has not been live-tested with v5 or Nemotron.",
+    "Assigned mode deliberately restricts Python actions and has not demonstrated transfer from the v5 training protocol.",
+    "Exact visible source and quote checks establish access/provenance, not semantic reading or support.",
+    "Gaps are unreviewed suggestions, not evidence of absence or proof of exhaustive search.",
+    "No new retrieval/reranking implementation, live-model comparison, latency/cost improvement or fine-tuned Qwen improvement is established."
+  ]
+}
