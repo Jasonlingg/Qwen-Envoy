@@ -1,0 +1,86 @@
+{
+  "mode": "offline_fixed_action_replay",
+  "actual_model_requests": 0,
+  "gpu_activations": 0,
+  "sandbox_image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+  "prepared_sha256": "a1bb90b5c51ff02e0f64c0c363aced56f7126a6e8ac58825c3845bcc1c51850f",
+  "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+  "baseline_match": true,
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "guidance": "baseline",
+      "status": "evidence_found",
+      "verified_status": "evidence_found",
+      "recorded_actions_exhausted": false,
+      "note": "No new model response generated.",
+      "rejected_steps": [],
+      "prompt_sha256": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56"
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "guidance": "baseline",
+      "status": "no_evidence",
+      "verified_status": "no_evidence",
+      "recorded_actions_exhausted": false,
+      "note": "No new model response generated.",
+      "rejected_steps": [
+        2
+      ],
+      "prompt_sha256": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56"
+    },
+    {
+      "case_id": "assigned-batch-size-v1",
+      "guidance": "focused-v1",
+      "status": "evidence_found",
+      "verified_status": "evidence_found",
+      "recorded_actions_exhausted": false,
+      "note": "No new model response generated.",
+      "rejected_steps": [],
+      "prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad"
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "guidance": "focused-v1",
+      "status": "error",
+      "verified_status": "error",
+      "recorded_actions_exhausted": true,
+      "note": "Fixed actions ended after new feedback; no model continuation was generated.",
+      "rejected_steps": [
+        2,
+        4
+      ],
+      "prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad"
+    }
+  ],
+  "implementation_commit": "e66cf05ca4034a0206720e11546032082a5db8dd",
+  "source_sha256": {
+    "src/eval/assigned_smoke_plan.py": "87723e65ccc5b78b04607deb9d260f1fa5ea2987ea730e90bdcb3985abf6ce46",
+    "src/eval/assigned_smoke_check.py": "7fa582dc30bc7c0c217f602a5bce2531f6e4e6e7e22bf3cc985d447f98528342",
+    "scripts/prepare_assigned_reader_smoke.py": "5b710c59cc0a8a0786997365ff46d3c3a707c50a7dd7d4087a606a2d3ee227db",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "scripts/run_known_paper_diagnostic.py": "1b77a5419e77da74194562f97810d6835569a308914714c9b052076f51ae3c8c",
+    "src/eval/native_pilot_client.py": "b8ce5f34c3eafcd1b4223ab6fe46c8ac9c154b8c644985fd235724a7ad3ee7f1",
+    "src/product/assigned_reader.py": "a98ca9b70358cde415b1c2bdc7cafa516e8cba9af916787e2357be9fb3460414",
+    "src/product/assigned_actions.py": "e01e5336459153dfbb694ff03ee4902babb7c43d6733bc823ca7acaad869d09f",
+    "src/product/paper_assignment.py": "a4072074ae6db9db1f1912e6d52d326178736a728108da6e193a3c5e6a9994f4",
+    "src/product/reader_gaps.py": "3f6ac543098eeaccca97a72b04d0a4f9584e23cb10c9f4d5afa95e47480f70b8",
+    "src/product/qwen_investigator.py": "43734177d3881786e54b4b30f7c074e888e33c1d60d6af5fd575cf7b1a19d391",
+    "src/product/packet_verifier.py": "51119bb4a9cb4d98bda0177e417cf46f4bae01488d237c19424f4dd910db0c4c",
+    "src/product/parallel_readers.py": "537f551b283b11330d806b0e98bb90fc08916112cd505b37d3cb114e444716c1",
+    "src/product/arxiv_service.py": "52a3c52ce4fcace50fdf0dcf12fae13f2fb44629830e9d242ab24b2cd753b25a",
+    "src/product/arxiv_library.py": "8bb596b24d93453cfb5da233fe2bcbb4f0c67f06a9a06b9d78da1c687a89d1dc",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "src/policies/runpod_queue.py": "83ffc6b0c825a0f1b6cb60101aae0a4b1935bbf50465f707bca8937c9d1246e4",
+    "src/policies/openai_compatible.py": "a75e0446df2de28cda8b9ce85e5e4ae2de40b1684fa8e0e29124ff3e83b781d6",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/tools_v2.py": "6b33102cd149317832497835055c79f414f020065f141930aaf733224d29fa22",
+    "src/product/harness_v2.py": "14e9fee1577834ccea97f2db66277619014e92c485d4e8fe48f5a9de2a142ea7",
+    "src/product/submit_call.py": "7e2a1faa91e8b62f740b2e2d22fe7e9abba90348afc54903142ce1878d04096b",
+    "scripts/replay_assigned_guidance.py": "9469a8efe4204b49257d2ae76e15bb719bb1d56b61e094d0d557a8941c73575f",
+    "src/product/assigned_guidance.py": "514e4c230272eee44e4fede448459727290fd25a48abdb0aff2d2d76481035b9"
+  },
+  "interpretation": "Recorded actions are fixed. Replay cannot measure how Qwen would respond to new feedback, answer quality improvement, or fine-tuning benefit."
+}

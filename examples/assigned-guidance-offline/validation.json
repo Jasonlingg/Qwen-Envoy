@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-20T21:12:36.203047+00:00",
+  "scope": "Offline candidate only; no training, GPU activation, model endpoint or paid calls.",
+  "actual_model_requests": 0,
+  "gpu_activations": 0,
+  "paid_calls": 0,
+  "commits": {
+    "prompt_identity": "0c7bbd0",
+    "recovery_gap_gate": "59fcd70",
+    "docker_replay": "e66cf05",
+    "mcp_docker_tests": "9ddf36b"
+  },
+  "hypothesis": "Focused reading instructions and explicit recovery/gap feedback may help source interpretation and gap compliance; model behavior remains unmeasured.",
+  "offline_decision_rule": "Both baselines must exactly reproduce recorded observations/results before candidate replay. Validate safe recovery and mechanical gap requirement, with unchanged sandbox/budgets; do not infer model quality from replay.",
+  "tests": {
+    "focused": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q tests/test_assigned_guidance.py tests/test_assigned_guidance_recovery.py tests/test_assigned_guidance_replay.py tests/test_assigned_reader_docker.py tests/test_assigned_reader_mcp.py tests/test_assigned_reader_cli.py tests/test_reader_gaps.py tests/test_packet_verifier.py tests/test_parallel_readers.py tests/test_investigator_v2.py tests/test_assigned_smoke_run.py",
+      "passed": 102,
+      "seconds": 10.68
+    },
+    "full": {
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q",
+      "passed": 1662,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_kind": "existing SWIG deprecations",
+      "seconds": 83.09
+    },
+    "ruff": "passed on all 11 changed/new Python files",
+    "whitespace": "git diff --check passed"
+  },
+  "replay": {
+    "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python scripts/replay_assigned_guidance.py --prepared examples/assigned-reader-smoke-prepared --recorded examples/assigned-reader-smoke-v2logs --output out/assigned-guidance-replay-20261020",
+    "baseline_both_cases_match": true,
+    "comparison": "Entire trajectory, every recorded model-input observation, evidence/claims/status/inspection counts and protocol hashes.",
+    "candidate_fact": "Same wrong recorded claim still passes provenance check.",
+    "candidate_gap": "Step2 provides concrete displayed retry; step4 gapless abstention rejected; no recorded continuation at next policy call.",
+    "candidate_gap_stop": "RecordedActionsExhaustedError; replay bookkeeping, not new inference/provider failure.",
+    "actual_model_requests": 0,
+    "sandbox": "Docker only, pinned digest; no LocalREPL fallback",
+    "can_measure_response_to_new_feedback": false
+  },
+  "independent_review": {
+    "reviewer": "qwen_live_final_review",
+    "code": "No actionable findings in opt-in compatibility, safe AST suggestions, gap checks, packet identity, evidence retention or sandbox/budget boundaries.",
+    "replay": "No actionable findings; baseline prerequisite and replay limitations accurately enforced.",
+    "human_answer_review": "not_performed",
+    "final_publication": "No findings. Artifact, frozen preparation and protected hashes match; baseline/candidate prompt identities, token overhead, opt-in scope and replay limitations are accurately reported. No exposed secrets identified."
+  },
+  "source_sha256": {
+    "scripts/replay_assigned_guidance.py": "9469a8efe4204b49257d2ae76e15bb719bb1d56b61e094d0d557a8941c73575f",
+    "src/product/assigned_guidance.py": "514e4c230272eee44e4fede448459727290fd25a48abdb0aff2d2d76481035b9",
+    "src/product/assigned_reader.py": "a98ca9b70358cde415b1c2bdc7cafa516e8cba9af916787e2357be9fb3460414",
+    "src/product/packet_verifier.py": "51119bb4a9cb4d98bda0177e417cf46f4bae01488d237c19424f4dd910db0c4c",
+    "src/product/parallel_readers.py": "537f551b283b11330d806b0e98bb90fc08916112cd505b37d3cb114e444716c1",
+    "src/product/qwen_investigator.py": "43734177d3881786e54b4b30f7c074e888e33c1d60d6af5fd575cf7b1a19d391",
+    "tests/test_assigned_guidance.py": "022e538049bb6f091690bf3d81a248b9f47124f04b6233560c8ad228f90d8b04",
+    "tests/test_assigned_guidance_recovery.py": "6d844da824087a50655f97c94813dd7bc3ab509d39f91a13a0d8cfec2cb2ea35",
+    "tests/test_assigned_guidance_replay.py": "966fe5233e3353f50521abba8d74bc0c3362a0b8fe6ccf879b18960833578e4d",
+    "tests/test_assigned_reader.py": "694f6d009e28cba1752b9fafd234c8f7b55afa629c3e7fb625c920d8dd0616f0",
+    "tests/test_assigned_reader_docker.py": "00b2b8d0665d94d651b0c9d133e9bb5ef9d8aa3a01699a7725e8669eef5d4d4b"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "prior_artifacts": {
+    "assigned-reader-smoke-startup-aborted": {
+      "artifact_files_unchanged": 7,
+      "validation_sha256": "8e11955f94303db13b4c0a15f1ea4612d45450d7976732f6c190eb644e8a4f8a"
+    },
+    "assigned-reader-smoke-replacement": {
+      "artifact_files_unchanged": 7,
+      "validation_sha256": "f94151cb638275fca954ef5ec429f205c2e5bdf6f51687c1302da4119707dad4"
+    },
+    "assigned-reader-log-access-repair": {
+      "artifact_files_unchanged": 2,
+      "validation_sha256": "7f62d53dc9b366acf4ce7e2891f1a039be58531361d96ebf928ce1d7ce39606d"
+    },
+    "assigned-reader-smoke-v2logs": {
+      "artifact_files_unchanged": 17,
+      "validation_sha256": "aa3560ec7954ee4e5c1b76c233db80cbdd2e62af6d7e16b84745edfa1115a3da"
+    }
+  },
+  "frozen_preparation_sha256": {
+    "examples/assigned-reader-smoke-prepared/claim-review-template.json": "bd7ee9b4567fbd75391bf97983d425f411570765cc9f61bda9c4452e53566ea5",
+    "examples/assigned-reader-smoke-prepared/model_inputs.json": "a668ebf7635e6191550f182d9aecfff7e72412520670ea00ea56996e42a34032",
+    "examples/assigned-reader-smoke-prepared/plan.json": "a1bb90b5c51ff02e0f64c0c363aced56f7126a6e8ac58825c3845bcc1c51850f",
+    "examples/assigned-reader-smoke-prepared/plan.sha256": "ee8dfefe9361a067b4801e8934323e46db77a7deb39d75b725bd3e69ead095cd",
+    "examples/assigned-reader-smoke-prepared/references.json": "40547a65ceac847e1998094f796dac71873a48dc7a4617c1ae1bcbafcb7de9a9",
+    "examples/assigned-reader-smoke-prepared/system-prompt.txt": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+    "examples/assigned-reader-smoke-prepared/validation.json": "b8d7103f970e4ce7102592ed56e6348413d6f3534315d2a7d8b85b346ae9020f"
+  },
+  "v1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "limitations": [
+    "Candidate is opt-in via Python builder; MCP CLI/defaults remain baseline.",
+    "Prompt instructions do not establish semantic support; wrong cited answers can still pass mechanical checks.",
+    "Fixed-action replay cannot measure how Qwen or Nemotron would respond to new feedback.",
+    "No live latency, answer-quality or fine-tuning improvement measurement.",
+    "Old live plan pins old code; candidate live execution requires a newly frozen preparation and separate bounded approval.",
+    "Two familiar development cases are not held out; human review not performed."
+  ],
+  "artifact_sha256": {
+    "assigned-a5000-batch8-v1.baseline.json": "ec852b277c32147f8a29661cca55cb7a0757904235efefb69bc7fcc568f83c19",
+    "assigned-a5000-batch8-v1.focused-v1.json": "5d2edc699ade0078c114d3f9a1a848c5c010393545e036bd845f85ed664d37ff",
+    "assigned-batch-size-v1.baseline.json": "9da99d4c1a9f21425c4d46ebebe11f362bb7cbb5d62231d022d5ee076eba6274",
+    "assigned-batch-size-v1.focused-v1.json": "235ea72b0838d1a6e6976385b7675854985af8c1f1fd5e55e290205ac66134da",
+    "baseline.prompt.txt": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+    "diagnosis.json": "410fbb40ca95853e702230efc06bc0bdb88bddd2f3e9347bc87114ee706a2628",
+    "focused-v1.prompt.txt": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+    "replay.json": "48e87e5275cac718e2303a7ee39a13f3d3a5f35acc0293becbbf52a6a525c9ab",
+    "token-check.json": "a090ffec591721fe000f0035df6462f9ecd18c87e5b79c35328c59a5d4fe567e"
+  }
+}

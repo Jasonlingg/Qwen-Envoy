@@ -1,0 +1,32 @@
+{
+  "kind": "offline_source_visible_diagnosis",
+  "actual_model_requests": 0,
+  "human_review": "not_performed",
+  "reviewer_kind": "model_assisted",
+  "facts": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "correct_fact_present_in_final_model_input": true,
+      "supporting_quoted_span": {
+        "start": 21400,
+        "end": 21600,
+        "quote": "h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\n\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good b"
+      },
+      "final_claim": "The inspected passage and search results do not establish the batch size used for walltime measurements.",
+      "assessment": "Claim contradicts displayed and cited text; no evidence of dropped answer text."
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "rejected_step": 2,
+      "action": "hits = search_within(\"arxiv_2211_17192v2\", \"speedup RTX A5000 batch size 8\")",
+      "assessment": "Assignment did not display its result; conservative action parser rejected it before execution. No accepted gap report or next query."
+    }
+  ],
+  "initial_layout": {
+    "system_prompt_repeated_at_start_of_first_user_message": true,
+    "changed_by_candidate": false,
+    "causal_role": "unknown; preserved to avoid another variable"
+  },
+  "candidate_not_specific_to_evaluation_answers": true,
+  "semantic_support_check": "not implemented; remains a source-visible review responsibility"
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c7791b7f-0231-49d5-aff6-d37bc0f4b77c",
+  "question_id": "paper_1a28772bbb41ddd0",
+  "question": "What batch size was used for the walltime measurements?",
+  "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "The inspected passage and search results do not establish the batch size used for walltime measurements.",
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2211_17192v2",
+      "start": 21000,
+      "end": 21200,
+      "quote": "per: (1) English to German translation fine tuned on WMT EnDe, and (2) Text summarization fine tuned on CCN/DM. For both tasks, we use T5-XXL (11B) for MpM_{p}. For the approximation model MqM_{q} we ",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2211.17192v2",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "Fast Inference from Transformers via Speculative Decoding",
+      "source_path": null,
+      "record": {}
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "arxiv_2211_17192v2",
+      "start": 21400,
+      "end": 21600,
+      "quote": "h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\n\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good b",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2211.17192v2",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "Fast Inference from Transformers via Speculative Decoding",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "endpoint_id": "q05pjrvguakieg"
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"arxiv_2211_17192v2\", 0, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2211_17192v2', 'start': 0, 'end': 1000, 'text': 'Inference from large autoregressive models like Transformers is slow - decoding K tokens takes K serial runs of the model. In this work we introduce speculative decoding - an algorithm to sample from autoregressive models faster without any changes to the outputs, by computing several tokens in parallel. At the heart of our approach lie the observations that (1) hard language-modeling tasks often include easier subtasks that can be approximated well by more efficient models, and (2) using speculative execution and a novel sampling method, we can make exact decoding from the large models faster, by running them in parallel on the outputs of the approximation models, potentially generating several tokens concurrently, and without changing the distribution. Our method can accelerate existing off-the-shelf models without retraining or architecture changes. We demonstrate it on T5-XXL and show a 2X-3X acceleration compared to the standard T5X implementation, with identical outputs.\\n\\nInferen'}\n\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'h a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (tem', 'offset': 21400, 'score': 4}, {'text': 'ces the number of calls to the target model by a factor of 1−αγ+11−α\\\\frac{1-\\\\alpha^{\\\\gamma+1}}{1-\\\\alpha}. Note that speculative execution in general, and our algorithm in particular, assume that we have enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of runnin', 'offset': 12400, 'score': 3}, {'text': 've enough compute resources to support the increased concurrency (Section 3.4). For the walltime anaylsis, we’ll assume that we can run γ+1\\\\gamma+1 concurrent evaluations of MpM_{p} in parallel without increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is', 'offset': 12600, 'score': 3}, {'text': 'per: (1) English to German translation fine tuned on WMT EnDe, and (2) Text summarization fine tuned on CCN/DM. For both tasks, we use T5-XXL (11B) for MpM_{p}. For the approximation model MqM_{q} we test several existing configurations, namely T5-large (800M), T5-base (250M), and T5-small (77M) (Raffel et al., 2020). We use existing checkpoints for all models. We measure walltime improvements with a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp', 'offset': 21000, 'score': 3}, {'text': 'test several existing configurations, namely T5-large (800M), T5-base (250M), and T5-small (77M) (Raffel et al., 2020). We use existing checkpoints for all models. We measure walltime improvements with a batch size of 1 on a single TPU-v4 for both argmax sampling (temp=0) and standard sampling (temp=1).\\n\\nTable 2 shows the empirical results from our method. We see that T5-small (77M), with a good balance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As ex', 'offset': 21200, 'score': 3}, {'text': 'd in a variety of tasks and model sizes: unconditional generation from a 97M parameter GPT-like model trained on lm1b, English to German translation and news article summarization with an 11B parameters T5-XXL model, and a dialog task with a 137B parameter LaMDA model. We implement our method and compare actual walltimes for T5-XXL to those of the robust T5X implementation (Roberts et al., 2022), showing an out-of-the-box latency improvement of 2X-3X, without any change to the outputs (Section 4', 'offset': 5600, 'score': 2}, {'text': 't increasing the walltime. To get the total walltime improvement, we now consider the cost of running the approximation model MqM_{q}.\\n\\nLet cc, the cost coefficient, be the ratio between the time for a single run of MqM_{q} and the time for a single run of MpM_{p}.\\n\\nNote that unlike α\\\\alpha which is an intrinsic property of the models and the task, the value of cc depends on the hardware configuration and software implementation details. In our experiments where MqM_{q} is typically a couple of ', 'offset': 12800, 'score': 2}, {'text': 'alance of cc and α\\\\alpha, provides the highest speedup out of the tested approximation models. As expected we see that α\\\\alpha increases with the size of the approximation model. Interestingly, α\\\\alpha and walltime improvement are higher for argmax sampling (temp=0). We observe speedups of 2.6X (temp=1) and 3.4X (temp=0) on the translation task and slightly lower speedups of 2.3X (temp=1) and 3.1X (temp=0) for the summarization task. These empirical results match well with the theoretical predic', 'offset': 21600, 'score': 2}]\n\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: The inspected passage and search results do not establish the batch size used for walltime measurements. CITATIONS: [\"arxiv_2211_17192v2\"] EVIDENCE: [{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21000,\"end\":21200},{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21400,\"end\":21600}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+    "doc_id": "arxiv_2211_17192v2",
+    "arxiv_id": "2211.17192v2",
+    "title": "Fast Inference from Transformers via Speculative Decoding",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e84f84860c2961bb5073bd93918f1eb23f4318ff1637e73f9dad89090a6c23b8",
+  "research_gaps": [],
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2,
+  "replay": {
+    "actual_model_requests": 0,
+    "fixed_actions": true,
+    "recorded_actions_exhausted": false
+  }
+}
