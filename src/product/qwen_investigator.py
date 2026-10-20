@@ -30,6 +30,9 @@ from src.product.harness_v2 import (
     v2_inspection,
 )
 from src.product.memory import _record_context
+from src.product.paper_assignment import (
+    assigned_prompt, assignment_hash, assignment_observation, paper_assignment,
+)
 from src.product.submit_call import submit_call_to_line
 from src.research.agent import load_snapshot
 from src.research.code_exec_packet import (
@@ -162,7 +165,7 @@ def prompt_for_source_domain(source_domain: str) -> str:
 
 
 def effective_system_prompt(source_domain="public_papers", protocol_variant="default",
-                            harness_version="v1") -> str:
+                            harness_version="v1", *, reader_mode="discovery") -> str:
     """One prompt identity for policy, investigator, and packet verification."""
     if harness_version not in {"v1", "v2"}:
         raise ValueError(f"unsupported harness_version: {harness_version!r}")
@@ -170,9 +173,15 @@ def effective_system_prompt(source_domain="public_papers", protocol_variant="def
         raise ValueError(f"unsupported protocol variant: {protocol_variant!r}")
     if protocol_variant == "nemotron" and source_domain != "public_papers":
         raise ValueError("Nemotron protocol variant is only for public papers")
+    if reader_mode not in {"discovery", "assigned"}:
+        raise ValueError("reader_mode must be discovery or assigned")
+    if reader_mode == "assigned" and (source_domain != "public_papers" or harness_version != "v2"):
+        raise ValueError("assigned reader requires public papers and harness v2")
     base = (NEMOTRON_PAPER_SYSTEM_PROMPT
             if protocol_variant == "nemotron" and harness_version == "v1"
             else prompt_for_source_domain(source_domain))
+    if reader_mode == "assigned":
+        base = assigned_prompt(base)
     return effective_prompt(base, harness=harness_version)
 
 
@@ -231,6 +240,7 @@ class QwenInvestigator:
         source_domain: str = "personal_vault",
         protocol_variant: str = "default",
         harness_version: str = "v1",
+        reader_mode: str = "discovery",
     ) -> None:
         if not callable(policy_factory):
             raise ValueError("policy_factory must be callable")
@@ -245,7 +255,8 @@ class QwenInvestigator:
         if protocol_variant == "nemotron" and source_domain != "public_papers":
             raise ValueError("Nemotron protocol variant is only for public papers")
         self.system_prompt = effective_system_prompt(
-            source_domain, protocol_variant, harness_version)
+            source_domain, protocol_variant, harness_version, reader_mode=reader_mode)
+        self.reader_mode = reader_mode
         self.harness_version = harness_version
         self.source_domain = source_domain
         self.protocol_variant = protocol_variant
@@ -274,6 +285,7 @@ class QwenInvestigator:
             raise ValueError(f"question exceeds {MAX_QUESTION_CHARS} characters")
         snapshot = Path(snapshot).expanduser().resolve(strict=True)
         manifest, docs = load_snapshot(snapshot)
+        assignment = paper_assignment(manifest, docs) if self.reader_mode == "assigned" else None
         corpus = snapshot / "corpus"
         question_prefix = "vault_" if self.source_domain == "personal_vault" else "paper_"
         question_id = question_prefix + hashlib.sha256(question.encode()).hexdigest()[:16]
@@ -313,6 +325,9 @@ class QwenInvestigator:
         }
         if self.harness_version == "v2":
             result["harness_shim_sha256"] = HARNESS_V2_SHA256
+        if assignment is not None:
+            result.update(reader_mode="assigned", paper_assignment=assignment,
+                          assignment_sha256=assignment_hash(assignment))
         if self.repl_factory is None and not PersistentREPL._docker_available(self.image):
             result.update(
                 status="unavailable",
@@ -341,8 +356,10 @@ class QwenInvestigator:
             if callable(reset):
                 reset()
             observation = f"{self.system_prompt}\nQuestion: {question}\n"
+            if assignment is not None:
+                observation += assignment_observation(assignment)
             seen_code: set[str] = set()
-            discovered_ids = False
+            discovered_ids = assignment is not None
             document_tool_steps = 0
             inspection_steps = 0
             discovery = (

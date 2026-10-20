@@ -20,6 +20,7 @@ from scripts.runpod_qwen_bootstrap import BASE, BASE_REVISION, ADAPTER, ADAPTER_
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.arxiv_library import ArxivLibrary
 from src.product.arxiv_mcp_config import build_reader
+from src.product.assigned_reader import build_assigned_reader
 from src.product.paper_discovery import PaperDiscovery
 
 
@@ -39,6 +40,8 @@ def main():
                         help="Session ledger; MCP processes and restarts share its remaining budget")
     parser.add_argument("--credentials-file", type=Path)
     parser.add_argument("--sandbox-image", default="rlm-sandbox")
+    parser.add_argument("--assigned-paper-reader", action="store_true",
+                        help="Opt in to controller-owned paper IDs (harness v2)")
     args = parser.parse_args()
     key = os.environ.get("RUNPOD_API_KEY")
     if not key and args.credentials_file:
@@ -49,7 +52,8 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(BASE, revision=BASE_REVISION,
                                                trust_remote_code=False)
     transport = RunpodQueueTransport(args.endpoint_id, key, tokenizer, args.audit_path)
-    reader = build_reader("qwen", qwen_endpoint=f"https://api.runpod.ai/v2/{args.endpoint_id}",
+    builder = build_assigned_reader if args.assigned_paper_reader else build_reader
+    reader = builder("qwen", qwen_endpoint=f"https://api.runpod.ai/v2/{args.endpoint_id}",
                           qwen_model="envoy",
                           qwen_checkpoint=f"{ADAPTER}@{ADAPTER_REVISION}/{SUBFOLDER}",
                           harness_version="v2", max_steps=8,

@@ -59,6 +59,9 @@ def investigate_papers(investigator, library, question: str, arxiv_ids: list[str
                            "candidate_answer", "model_requests_attempted", "error",
                            "harness_version", "harness_shim_sha256", "prompt_hash",
                            "tool_preamble_sha256", "model_identity")}})
+        if verified.get("reader_mode") == "assigned":
+            papers[-1].update({key: verified[key] for key in (
+                "reader_mode", "paper_assignment", "assignment_sha256")})
         if verified["candidate_answer"]:
             proposals.append({"arxiv_id": version, "text": verified["candidate_answer"]})
         evidence.extend(verified["evidence"])

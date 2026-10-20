@@ -10,6 +10,7 @@ import hashlib
 
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_SHA256
+from src.product.paper_assignment import verify_assignment
 
 MAX_EVIDENCE_SPANS = 5
 MAX_SPAN_CHARS = 1_200
@@ -41,6 +42,14 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                                 allowed_prompt_sha256s: frozenset[str]) -> dict:
     """Return compact model output with every quoted span rebuilt from the corpus."""
     harness = _check_header(packet, manifest, allowed_prompt_sha256s)
+    mode = packet.get("reader_mode", "discovery")
+    if not isinstance(mode, str) or mode not in {"discovery", "assigned"}:
+        raise ValueError("Qwen packet used an unknown reader mode")
+    assignment = None
+    if mode == "assigned":
+        if harness != "v2":
+            raise ValueError("assigned reader requires harness v2")
+        assignment = verify_assignment(packet, manifest, docs)
     status = packet.get("status")
     if not isinstance(status, str) or status not in _STATUSES:
         raise ValueError("Qwen packet has an unknown status")
@@ -88,7 +97,7 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         raise ValueError("Qwen packet has an invalid request count")
     retriever = ("nemotron_code_execution" if packet.get("retriever") == "nemotron_investigator"
                  else "qwen_code_execution")
-    return {
+    result = {
         "status": status, "source_domain": "public_papers", "retriever": retriever,
         "corpus_hash": manifest["corpus_hash"], "candidate_answer": answer,
         "evidence": evidence, "semantic_support": "not_reviewed",
@@ -100,3 +109,7 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         "tool_search_version": SEARCH_PROTOCOL_VERSION,
         "tool_preamble_sha256": TOOL_PREAMBLE_SHA256, "harness_version": harness,
     }
+    if assignment is not None:
+        result.update(reader_mode="assigned", paper_assignment=assignment,
+                      assignment_sha256=packet["assignment_sha256"])
+    return result
