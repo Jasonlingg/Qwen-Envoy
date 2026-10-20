@@ -12,18 +12,24 @@ from tests.test_assigned_reader import SourceREPL
 from tests.test_assigned_smoke_plan import IMAGE, Tokenizer, cached  # noqa: F401
 
 
-def test_two_real_reader_loops_use_fixed_payloads_separate_six_request_ledgers(cached):  # noqa: F811
+@pytest.mark.parametrize("rejected_assignment", [False, True])
+def test_two_real_reader_loops_use_fixed_payloads_separate_six_request_ledgers(
+        cached, rejected_assignment):  # noqa: F811
     library, _, prepared = cached
     plan = prepare(library.root, prepared, sandbox_image=IMAGE, tokenizer=Tokenizer())
     doc = library.document(plan["paper_version"])
     did = doc["doc_id"]
     start = doc["text"].index("We measure walltime")
-    actions = iter([f'print(search_within("{did}", "batch size"))',
+    actions = [f'print(search_within("{did}", "batch size"))',
         f'submit(answer="1", citations=["{did}"], evidence=[{{"doc_id":"{did}",'
         f'"start":{start},"end":{start + 80}}}])',
         f'print(read("{did}"))', f'print(search_within("{did}", "A5000"))',
         'report_gap(missing="A5000 batch8 measurements", follow_up_query="A5000 batch8")',
-        'submit(answer="Unanswerable", citations=[], evidence=[])'])
+        'submit(answer="Unanswerable", citations=[], evidence=[])']
+    if rejected_assignment:
+        # Observed live: an assignment without display is rejected before execution.
+        actions.insert(0, f'hits = search_within("{did}", "batch size")')
+    actions = iter(actions)
     posts = []
     def factory(endpoint, key, tokenizer, audit, **kwargs):
         assert kwargs == {"requests_max": 6}
@@ -43,13 +49,15 @@ def test_two_real_reader_loops_use_fixed_payloads_separate_six_request_ledgers(c
     summary = run_cases(prepared, output, tokenizer=Tokenizer(), key="fake",
                          transport_factory=factory, reader_factory=reader)
     assert [r["status"] for r in summary["cases"]] == ["evidence_found", "no_evidence"]
-    assert summary["model_requests_reserved"] == len(posts) == 6
+    assert summary["model_requests_reserved"] == len(posts) == 6 + rejected_assignment
     assert all(r["packet_verification"] == "passed" for r in summary["cases"])
     assert all(r["semantic_support"] == "not_reviewed" for r in summary["cases"])
+    assert summary["cases"][0]["action_rejection_steps"] == ([1] if rejected_assignment else [])
+    assert all(r["execution_error_steps"] == [] for r in summary["cases"])
     with pytest.raises(FileExistsError):
         run_cases(prepared, output, tokenizer=Tokenizer(), key="fake",
                   transport_factory=factory, reader_factory=reader)
-    assert len(posts) == 6  # No second attempt or replacement budget.
+    assert len(posts) == 6 + rejected_assignment  # No replacement budget.
 
 
 @pytest.mark.parametrize("failure", ["status", "packet_verification", "audit", "unattempted"])

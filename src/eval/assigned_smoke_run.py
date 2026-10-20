@@ -101,10 +101,13 @@ def run_cases(prepared: Path, output: Path, *, tokenizer, key: str,
         write_json(output / f"{name}.packet.json", packet)
         result = {"case_id": name, "status": packet["status"],
                   "seconds": time.monotonic() - started, "audit": audit_summary(audit_path),
-                  "execution_error_steps": [], "repeated_call_rejections": [],
+                  "execution_error_steps": [], "action_rejection_steps": [],
+                  "repeated_call_rejections": [],
                   "semantic_support": "not_reviewed", "human_review": "not_performed"}
         for trace in packet.get("trajectory", []):
             observation = trace.get("observation", "")
+            if observation.startswith("Action rejected:"):
+                result["action_rejection_steps"].append(trace["step"])
             if re.search(r"Traceback|(?:Type|Value|Name|Syntax|Runtime|Key|Index)Error:|ERROR:",
                          observation):
                 result["execution_error_steps"].append(trace["step"])
