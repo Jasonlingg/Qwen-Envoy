@@ -1,0 +1,109 @@
+{
+  "schema_version": "ml-workflow-pilot-questions-v1",
+  "status": "draft_for_user_review_not_authorized_for_execution",
+  "question_author": "assistant_authored_development_scenarios",
+  "input_status": "All hardware, performance and audit numbers below are hypothetical benchmark inputs, not measured project results or claims about the user's setup.",
+  "source_cutoff": "2026-10-19",
+  "common_instruction": "Treat the supplied scenario as hypothetical input. Research primary sources published by 2026-10-19 where external facts matter; record source versions and qualifications. Give a recommendation or justified deferral, explain the evidence and applicability, and propose the smallest useful experiment or measurement with a baseline, metrics, decision rule and stop condition. Mark missing setup details as unknown rather than inventing them. Keep the final brief within 800 words, excluding a short source list. You may save normal local files. Do not launch model inference/training jobs, provision hardware, script paid model endpoints or execute the proposed experiments. Ordinary host-assistant reasoning and local calculations on the supplied input are allowed. Do not inspect other answers, reviewer materials or the existing Task 5 proposal.",
+  "questions": [
+    {
+      "id": "MLP01",
+      "topic": "model_selection",
+      "question": "Which two smaller open-weight model candidates should I test against an 8B model for extracting structured fields from English technical documents? I have one 24 GB GPU, need two concurrent requests, and must handle 6,000 input tokens plus up to 256 output tokens per request. Licensing must permit commercial use. Compare their applicability and propose one matched evaluation; do not promise quality or latency without measurements.",
+      "input": {
+        "workload": "English technical-document field extraction; exact-match and field-level errors can be reviewed",
+        "baseline": "An 8B decoder model; exact checkpoint, serving runtime and baseline accuracy are not supplied",
+        "gpu_vram_gb": 24,
+        "concurrent_requests": 2,
+        "input_tokens_per_request": 6000,
+        "max_output_tokens_per_request": 256,
+        "license_constraint": "Commercial use must be permitted by the selected version's terms",
+        "gpu_model": "unknown",
+        "production_latency_target": "unknown"
+      }
+    },
+    {
+      "id": "MLP02",
+      "topic": "latency_diagnosis",
+      "question": "What should I investigate first to reduce this reader's latency without changing answer quality? It serves two concurrent requests with an 8B model on one 24 GB GPU. The scenario reports median time to first token of 0.6 seconds, median decode throughput of 20 tokens/second/request, median output length of 200 tokens, and p95 end-to-end latency of 18 seconds. Choose one initial measurement or intervention and explain how we would test it. Separate prefill, queueing and decoding; do not combine marginal medians as if they were a paired trace.",
+      "input": {
+        "gpu_vram_gb": 24,
+        "concurrent_requests": 2,
+        "model_size_parameters": "8B",
+        "median_input_tokens": 4000,
+        "median_output_tokens": 200,
+        "median_ttft_seconds": 0.6,
+        "median_decode_tokens_per_second_per_request": 20,
+        "p95_end_to_end_seconds": 18,
+        "shared_prefix_tokens": 512,
+        "gpu_model": "unknown",
+        "runtime_and_batching_settings": "unknown",
+        "queueing_time": "unknown",
+        "quality_baseline_and_tolerance": "unknown"
+      }
+    },
+    {
+      "id": "MLP03",
+      "topic": "fine_tuning_decision",
+      "question": "Should I fine-tune this retrieval-augmented support assistant next, or test a different fix first? Of 200 hypothetically audited development questions, 150 pass, 20 failures lack the necessary retrieved evidence, 20 have the necessary evidence visible but answer incorrectly, and 10 violate the output schema. These categories are mutually exclusive. I have 300 possible training examples and 100 untouched evaluation cases, but their quality and overlap have not been checked. Recommend one diagnostic experiment before any training job and explain what result would change your recommendation.",
+      "input": {
+        "development_questions": 200,
+        "passes": 150,
+        "missing_evidence_failures": 20,
+        "wrong_answer_with_evidence_failures": 20,
+        "schema_failures": 10,
+        "categories_mutually_exclusive": true,
+        "potential_training_examples": 300,
+        "untouched_evaluation_cases": 100,
+        "checkpoint_runtime_and_dataset_revision": "unknown",
+        "training_example_quality_and_overlap": "unknown",
+        "audit_status": "Hypothetical scenario input, not a new human review performed by this project"
+      }
+    },
+    {
+      "id": "MLP04",
+      "topic": "research_transfer",
+      "question": "Is speculative decoding worth a small test for an 8B document reader on one 24 GB GPU serving two concurrent requests with roughly 4,000 input and 200 output tokens per request? Find two primary papers and relevant implementation documentation. Compare the conditions behind reported speedups with this workload, including draft-model overhead, acceptance rate, memory, concurrency and decoding guarantees. Recommend a bounded test or explain which missing information prevents a responsible recommendation. An additional GPU is not available.",
+      "input": {
+        "target_model_size_parameters": "8B",
+        "gpu_vram_gb": 24,
+        "concurrent_requests": 2,
+        "input_tokens_per_request": 4000,
+        "typical_output_tokens_per_request": 200,
+        "additional_gpu_available": false,
+        "exact_target_checkpoint_gpu_model_and_runtime": "unknown",
+        "draft_model": "not selected",
+        "required_decoding_behavior": "Preserve the target decoding distribution or explicitly justify and evaluate any changed behavior"
+      }
+    },
+    {
+      "id": "MLP05",
+      "topic": "result_review",
+      "question": "Can we adopt the candidate under the supplied frozen decision rule, or what remains unresolved? Review only these hypothetical saved results unless an external fact is necessary. Report each original gate as met, not met or unknown, distinguish observations from conclusions, and propose the smallest next measurement. Keep the decision criteria unchanged; do not treat an unmeasured cost as zero or a faster reported number as a complete matched comparison.",
+      "input": {
+        "record_kind": "synthetic_historical_results_for_benchmarking",
+        "same_question_ids_and_dataset_revision_for_quality": true,
+        "quality_population": "The same 100 hypothetically source-reviewed cases",
+        "baseline_correct_supported_answers": 96,
+        "candidate_correct_supported_answers": 97,
+        "baseline_quality_case_count": 100,
+        "candidate_quality_case_count": 100,
+        "baseline_reported_p95_latency_seconds": 5.0,
+        "candidate_reported_p95_latency_seconds": 3.8,
+        "baseline_latency_case_count": 80,
+        "candidate_latency_case_count": 100,
+        "latency_missing_case_reason": "20 baseline failures have no timing; their outcomes must not disappear",
+        "warm_cold_cache_and_load_conditions": "not recorded",
+        "baseline_gpu_active_only_usd_per_request": 0.02,
+        "candidate_gpu_active_only_usd_per_request": 0.014,
+        "loading_idle_cleanup_storage_and_host_inference_costs": "unknown",
+        "frozen_rule": {
+          "all_gates_required": true,
+          "quality": "Candidate supported-answer rate must be no more than 1 percentage point below baseline",
+          "latency": "At least 20% lower p95 end-to-end latency on the same complete workload under matched conditions",
+          "cost": "All-in allocated cost at or below USD 0.020 per request, including host and lifecycle overhead"
+        }
+      }
+    }
+  ]
+}

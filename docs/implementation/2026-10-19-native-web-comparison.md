@@ -4,6 +4,11 @@ Status: proposed evaluation protocol; no study answers collected. This document
 starts no infrastructure and makes no model calls. Freeze tasks, review criteria,
 execution settings and a costed run manifest before collecting results.
 
+The current [five-question ML decision pilot](
+../../benchmarks/ml-workflow-pilot-v1/README.md) has draft questions, a rubric
+and proposed ceilings for A versus B with Qwen off. It is preparation only;
+this broader three-arm reader protocol is not its execution authorization.
+
 ## Question and hypothesis
 
 Does the same main assistant produce more useful, supported research answers
@@ -26,10 +31,11 @@ model experiment. A product win cannot be attributed to fine-tuning.
 | C | The same tools plus the full MCP with Qwen readers | Value of the complete product |
 
 B must hide `investigate` and reader-advertising instructions from its tool
-inventory. The current `--reader none` still registers that tool and returns
-`model_not_configured`; it alone does not implement B. Add a client filter or
-server adapter and archive each arm's actual advertised tool inventory before
-running. That comparison-specific filtering is not yet implemented.
+inventory. Use the implemented `--tool-profile sources`, which exposes only the
+five model-free tools and rejects reader/reasoner configuration. `--reader none`
+alone in the full profile still advertises an unconfigured `investigate` tool.
+Archive each native session's actual advertised inventory before running;
+server flags or a stdio check do not establish native-session isolation.
 
 A versus C is the primary product comparison. B versus C diagnoses the marginal
 value of readers; A versus B diagnoses the source tools. All arms use the same

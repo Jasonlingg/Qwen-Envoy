@@ -1,0 +1,78 @@
+{
+  "schema_version": "ml-workflow-pilot-reviewer-rubric-v1",
+  "status": "draft_assistant_authored_requirements_need_user_review",
+  "reviewer_only": true,
+  "independent_human_review_status": "not_started",
+  "model_generated_answers_collected": 0,
+  "score_dimensions": {
+    "correctness_and_support": {
+      "0": "A material factual error, fabricated result/source, or unsupported claim changes the decision.",
+      "1": "Core reasoning is supported but minor factual, source-context or qualification gaps need correction.",
+      "2": "Material factual claims are supported by the supplied scenario or checked primary sources, with correct scope."
+    },
+    "workload_fit": {
+      "0": "Ignores a binding resource, workload or deployment constraint.",
+      "1": "Addresses the setting but leaves an important transfer assumption unclear.",
+      "2": "Fits the stated workload and constraints; distinguishes missing setup details from established facts."
+    },
+    "actionability": {
+      "0": "No usable next decision, experiment or bounded measurement.",
+      "1": "A plausible next step is present but the control, metric or decision rule is underspecified.",
+      "2": "A small test or justified deferral has an actionable baseline/measurement, metric, decision rule and stop condition."
+    },
+    "uncertainty_and_fair_comparison": {
+      "0": "Invents missing data, changes frozen criteria, claims unjustified guarantees or treats partial accounting as complete.",
+      "1": "Acknowledges uncertainty but misses a material comparison limitation.",
+      "2": "Preserves material unknowns, distinguishes published findings from local predictions, and proposes a matched comparison."
+    }
+  },
+  "initial_answer_verdict": {
+    "pass": "All question-specific must-haves satisfied; total at least 6/8; no dimension zero; no major unsupported claim or binding-constraint violation.",
+    "partial": "Useful supported content but a must-have or actionable detail is missing; no major material error.",
+    "fail": "A major material error, invented evidence, binding-constraint violation, unusable non-answer or timeout.",
+    "review_unknown": "Source checking or human review was not completed; never substitute a model judgment for a human verdict."
+  },
+  "task_must_haves": {
+    "MLP01": [
+      "Two concrete version-identifiable open-weight candidates and official commercial-license applicability checks, with any unresolved terms explicit.",
+      "Discusses 6,000-token inputs, two concurrent requests, weight/KV/runtime memory and unknown GPU/runtime details; does not equate concurrency with two full model copies or guarantee fit/speed from parameter count alone.",
+      "A matched extraction-quality/resource evaluation against the supplied baseline; no preferred model name is prescribed by the rubric."
+    ],
+    "MLP02": [
+      "Distinguishes TTFT/prefill, queueing and decode throughput; does not turn marginal medians into a purported paired measurement.",
+      "Identifies missing traces/runtime/batching/GPU/quality settings and explains what one measurement or intervention would resolve.",
+      "Specifies matched load/output behavior and a quality check; no unconditional inference-speed guarantee or arbitrary choice of winning technique."
+    ],
+    "MLP03": [
+      "Uses all mutually exclusive error categories and the 200-question denominator; distinguishes missing evidence, failure despite visible evidence and schema errors.",
+      "Chooses one diagnostic before training and explains which outcome would support changing the recommendation; does not assume all failures are learnable through SFT.",
+      "Checks data quality/overlap, isolates evaluation from tuning, and preserves the 100 untouched cases; no training job or fabricated training benefit."
+    ],
+    "MLP04": [
+      "Checks two primary papers and relevant implementation documentation with identifiable versions and settings.",
+      "Examines reported speedups against target/draft costs, acceptance, one-GPU memory, concurrency, input/output lengths and decoding behavior; does not treat another workload's speedup as a prediction here.",
+      "A bounded same-target comparison or justified deferral with specific missing measurements. Do not require a positive speculative-decoding recommendation."
+    ],
+    "MLP05": [
+      "Keeps the original three-gate rule and 100-case quality denominators; distinguishes a percentage-point quality change from relative improvement.",
+      "Does not promote the incomplete 80-vs-100 latency population or unknown cache/load conditions into a matched latency pass.",
+      "Distinguishes active-GPU-only cost from all-in cost, preserves unknown overhead, and gives per-gate and overall decisions with a minimal next measurement."
+    ]
+  },
+  "major_error_definition": "A false, contradicted or materially unsupported claim that could change model/method selection, experiment execution, licensing/resource suitability or adoption. Count affected answers and individual material claims separately.",
+  "pairwise_review": "Hide arm identity and traces; randomize answer display order. Prefer higher initial verdict, then the more trustworthy/actionable answer using the rubric. Allow ties and review_unknown. Preserve reasons; never award points for MCP use, citation count, answer length or JSON storage alone.",
+  "source_checks": "Inspect context for every material external claim and licensing/hardware/performance assertion. Exact quotation matching is provenance only. A supplied hypothetical number needs no external citation, but must not be presented as an actual project result.",
+  "review_fields_to_collect": [
+    "question_id", "anonymous_answer_id", "reviewer_kind", "reviewer_identity",
+    "review_timestamp", "four_dimension_scores_or_null", "must_have_checks",
+    "initial_verdict", "major_error_answer_flag", "material_claim_errors",
+    "claim_source_checks", "pairwise_preference_or_tie_or_unknown",
+    "reason", "human_correction_seconds_or_null", "correction_censored",
+    "corrected_artifact_path_or_null", "review_limitations"
+  ],
+  "limits": [
+    "This is an assistant-authored development rubric, not a gold answer set or a completed human review.",
+    "Reviewers may accept different defensible methods; the rubric specifies evidence and constraints, not a predetermined technical answer.",
+    "This pilot evaluates answer/decision-brief quality, not the outcome of any recommended experiment or long-term memory benefit."
+  ]
+}
