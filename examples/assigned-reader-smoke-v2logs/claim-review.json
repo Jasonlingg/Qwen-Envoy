@@ -1,0 +1,128 @@
+{
+  "schema_version": "assigned-reader-claim-review-v1",
+  "reviewed_at": "2026-10-20T20:56:32.767155+00:00",
+  "reviewer_kind": "model_assisted",
+  "reviewers": [
+    "root source-visible review",
+    "qwen_live_final_review independent source-visible review"
+  ],
+  "human_review": "not_performed",
+  "reference": "examples/assigned-reader-smoke-prepared/references.json",
+  "frozen_decision": "not_met; neither case passes all frozen requirements",
+  "counts": {
+    "pass": 0,
+    "partial": 1,
+    "fail": 1
+  },
+  "total_model_requests": 7,
+  "reported_usage": {
+    "prompt_tokens": 16824,
+    "completion_tokens": 290,
+    "total_tokens": 17114
+  },
+  "reward": "not_computed",
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "original_packet_sha256": "232869ecfcc5a93b5488cb0231626699c37628e0da36685f20e5f7f369d900b1",
+      "model_requests": 3,
+      "seconds": 77.17776462505572,
+      "packet_provenance_verification": "passed",
+      "python_execution_error_steps": [],
+      "controller_action_rejection_steps": [],
+      "repeated_call_rejections": [],
+      "accepted_gap_reports": 0,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2211_17192v2\", 0, 1000))",
+          "controller_rejected": false,
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 2,
+          "action": "print(search_within(\"arxiv_2211_17192v2\", \"batch size walltime\"))",
+          "controller_rejected": false,
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The inspected passage and search results do not establish the batch size used for walltime measurements. CITATIONS: [\"arxiv_2211_17192v2\"] EVIDENCE: [{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21000,\"end\":21200},{\"doc_id\":\"arxiv_2211_17192v2\",\"start\":21400,\"end\":21600}]",
+          "controller_rejected": false,
+          "source_inspection": false,
+          "mechanical_outcome": "accepted"
+        }
+      ],
+      "verdict": "fail",
+      "answer_supported": false,
+      "gap_appropriate": null,
+      "unsupported_target_speedup": false,
+      "claim_reviews": [
+        {
+          "claim": "The inspected passage and search results do not establish the batch size used for walltime measurements.",
+          "verdict": "contradicted",
+          "source": "Cited E2 [21400,21600) explicitly says batch size of 1 on a single TPU-v4. Step2 also displayed the full walltime measurement sentence in search windows21000/21200.",
+          "correct_narrow_answer": "Batch size1 for the reported T5-XXL walltime measurements on a single TPU-v4."
+        }
+      ],
+      "notes": "Retrieval displayed the answer; the final interpretation was wrong despite valid source spans."
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "original_packet_sha256": "155d2bfb7d0a4596b4b7519245a657018851dcbd7d5048cc93e2fd47b5082d93",
+      "model_requests": 4,
+      "seconds": 18.55910816602409,
+      "packet_provenance_verification": "passed",
+      "python_execution_error_steps": [],
+      "controller_action_rejection_steps": [
+        2
+      ],
+      "repeated_call_rejections": [],
+      "accepted_gap_reports": 0,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2211_17192v2\", 0, 1000))",
+          "controller_rejected": false,
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 2,
+          "action": "hits = search_within(\"arxiv_2211_17192v2\", \"speedup RTX A5000 batch size 8\")",
+          "controller_rejected": true,
+          "source_inspection": false,
+          "mechanical_outcome": "rejected before execution"
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2211_17192v2\", 1000, 1000))",
+          "controller_rejected": false,
+          "source_inspection": true,
+          "mechanical_outcome": "accepted"
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "controller_rejected": false,
+          "source_inspection": false,
+          "mechanical_outcome": "accepted"
+        }
+      ],
+      "verdict": "partial_not_pass",
+      "answer_supported": null,
+      "gap_appropriate": "directionally reasonable abstention; required explicit gap and next query absent",
+      "unsupported_target_speedup": false,
+      "claim_reviews": [],
+      "notes": "No fabricated A5000/batch8 speedup, but targeted search never executed. Only duplicated abstract windows0\u20132000 were inspected. No report_gap or follow-up query. This cannot establish absence from full paper/literature."
+    }
+  ],
+  "limitations": [
+    "Two familiar assistant-authored development questions, not held out.",
+    "Exact source matching verifies provenance, not semantic support.",
+    "No base-model control, architecture baseline or training-benefit conclusion.",
+    "Original live results and packets remain unchanged; this is a separate post-run review."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "ce7efff7-b3a3-4d0e-9260-f56884a2e946",
+  "question_id": "paper_50e46ace019a0e43",
+  "question": "From the available extracted text, what walltime speedup, if any, is established specifically for speculative decoding on an NVIDIA RTX A5000 at batch size 8?",
+  "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "endpoint_id": "q05pjrvguakieg"
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"arxiv_2211_17192v2\", 0, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2211_17192v2', 'start': 0, 'end': 1000, 'text': 'Inference from large autoregressive models like Transformers is slow - decoding K tokens takes K serial runs of the model. In this work we introduce speculative decoding - an algorithm to sample from autoregressive models faster without any changes to the outputs, by computing several tokens in parallel. At the heart of our approach lie the observations that (1) hard language-modeling tasks often include easier subtasks that can be approximated well by more efficient models, and (2) using speculative execution and a novel sampling method, we can make exact decoding from the large models faster, by running them in parallel on the outputs of the approximation models, potentially generating several tokens concurrently, and without changing the distribution. Our method can accelerate existing off-the-shelf models without retraining or architecture changes. We demonstrate it on T5-XXL and show a 2X-3X acceleration compared to the standard T5X implementation, with identical outputs.\\n\\nInferen'}\n\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "hits = search_within(\"arxiv_2211_17192v2\", \"speedup RTX A5000 batch size 8\")",
+      "observation": "Action rejected: assigned readers use one literal document-tool call, optionally print(tool(...)), or result = tool(...); print(result). Other Python forms are rejected."
+    },
+    {
+      "step": 3,
+      "action": "print(passage(\"arxiv_2211_17192v2\", 1000, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2211_17192v2', 'start': 1000, 'end': 2000, 'text': 'ce from large autoregressive models like Transformers is slow - decoding KK tokens takes KK serial runs of the model. In this work we introduce speculative decoding - an algorithm to sample from autoregressive models faster without any changes to the outputs, by computing several tokens in parallel. At the heart of our approach lie the observations that (1) hard language-modeling tasks often include easier subtasks that can be approximated well by more efficient models, and (2) using speculative execution and a novel sampling method, we can make exact decoding from the large models faster, by running them in parallel on the outputs of the approximation models, potentially generating several tokens concurrently, and without changing the distribution. Our method can accelerate existing off-the-shelf models without retraining or architecture changes. We demonstrate it on T5-XXL and show a 2X-3X acceleration compared to the standard T5X implementation, with identical outputs.\\n\\nLarge autore'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 4,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Explicit abstention after investigation."
+    }
+  ],
+  "model_requests_attempted": 4,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+    "doc_id": "arxiv_2211_17192v2",
+    "arxiv_id": "2211.17192v2",
+    "title": "Fast Inference from Transformers via Speculative Decoding",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e84f84860c2961bb5073bd93918f1eb23f4318ff1637e73f9dad89090a6c23b8",
+  "research_gaps": [],
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}
