@@ -91,7 +91,7 @@ def investigate_through_mcp(reader, question: str, snapshot: Path, prefix: Path)
             or papers[0].get("reader_mode") != "assigned"
             or any(papers[0].get(k) != packet.get(k) for k in (
                 "model_identity", "paper_assignment", "assignment_sha256"))
-            or result.get("corpus_hash") != packet["corpus_hash"]
+            or papers[0].get("paper_assignment", {}).get("corpus_hash") != packet["corpus_hash"]
             or result.get("paper_versions") != request["arxiv_ids"]
             or result.get("model_requests_attempted") != packet["model_requests_attempted"]):
         raise ValueError("MCP result differs from the configured reader's raw packet")
