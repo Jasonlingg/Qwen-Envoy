@@ -23,7 +23,15 @@ from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_PREAMBLE, HARNESS_V2_SHA256
 from src.policies.code_execution import used_document_tool
 from src.product.assigned_actions import displayed_tool_call, source_text_visible
-from src.product.assigned_guidance import BASELINE, guidance_prompt, validate_guidance
+from src.product.assigned_guidance import (
+    BASELINE,
+    FOCUSED,
+    action_recovery,
+    guidance_prompt,
+    inspection_feedback,
+    missing_gap_feedback,
+    validate_guidance,
+)
 from src.product.harness_v2 import (
     FORMAT_RETRY_MESSAGE,  # noqa: F401
     effective_prompt,
@@ -443,6 +451,10 @@ class QwenInvestigator:
                         ))
                         if (exact_empty_suffix and document_tool_steps >= 2
                                 and inspection_steps >= 1):
+                            if self.reader_guidance == FOCUSED and not result["research_gaps"]:
+                                observation = trace["observation"] = missing_gap_feedback(
+                                    self.max_steps - step)
+                                continue
                             result.update(
                                 status="no_evidence", candidate_claims=[], evidence=[],
                                 warning=(
@@ -536,7 +548,10 @@ class QwenInvestigator:
                         try:
                             call = displayed_tool_call(action)
                         except ValueError as exc:
-                            observation = trace["observation"] = f"Action rejected: {exc}."
+                            observation = trace["observation"] = (
+                                action_recovery(action, str(exc), self.max_steps - step)
+                                if self.reader_guidance == FOCUSED
+                                else f"Action rejected: {exc}.")
                             continue
                         key = ast.dump(call)
                         if key in seen_code:
@@ -567,6 +582,8 @@ class QwenInvestigator:
                         if assignment is not None:
                             trace["source_inspection"] = True
                     observation = output
+                    if self.reader_guidance == FOCUSED and inspected:
+                        observation += inspection_feedback(call)
                 remaining = self.max_steps - step
                 if remaining:
                     observation += f"\n\n[{remaining} steps left; submit with evidence or abstain.]"

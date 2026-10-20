@@ -1,6 +1,9 @@
 """Opt-in guidance candidate; baseline prompt bytes stay reproducible."""
 from __future__ import annotations
 
+import ast
+
+from src.product.assigned_actions import displayed_tool_call
 from src.product.reader_gaps import GAP_PROTOCOL
 
 BASELINE = "baseline"
@@ -42,3 +45,41 @@ def guidance_prompt(base: str, version: str) -> str:
         raise ValueError("focused guidance requires the known assigned gap protocol")
     required = GAP_PROTOCOL.replace("you may\nuse", "you must\nuse")
     return base.replace(GAP_PROTOCOL, required) + FOCUSED_PROTOCOL
+
+
+def action_recovery(action: str, reason: str, remaining: int) -> str:
+    """Suggest a displayed retry only after the same conservative AST validation."""
+    suggestion = 'print(search_within("assigned_id", "question keywords"))'
+    try:
+        tree = ast.parse(action)
+        if (len(tree.body) == 1 and isinstance(tree.body[0], ast.Assign)
+                and len(tree.body[0].targets) == 1
+                and isinstance(tree.body[0].targets[0], ast.Name)
+                and tree.body[0].targets[0].id in {"hits", "result"}):
+            call = displayed_tool_call(ast.unparse(tree.body[0].value))
+            suggestion = f"print({ast.unparse(call)})"
+    except (SyntaxError, ValueError, TypeError, RecursionError):
+        pass
+    return (f"Action rejected: {reason}. Nothing ran; no source text was inspected. "
+            f"Use displayed literal tool code, for example {suggestion}. "
+            "Use the controller's actual assigned ID and a query for your question. "
+            f"[{remaining} steps left.]")
+
+
+def missing_gap_feedback(remaining: int) -> str:
+    return ("Submission rejected: focused-v1 abstention requires a gap report first. "
+            'Use report_gap(missing="What you have not established", '
+            'follow_up_query="A useful next search"), then explicitly abstain. '
+            "A gap report is an unreviewed host suggestion, not evidence or a search. "
+            f"[{remaining} steps left.]")
+
+
+def inspection_feedback(call: ast.Call) -> str:
+    if call.func.id in {"search", "search_within", "extract", "scan"}:
+        return ("\nController reminder: matching source text is not semantic support. "
+                "If a hit appears relevant, inspect a short passage around its returned "
+                "offset before claiming the requested fact was not found. Reserve the "
+                "last two actions for report_gap and abstention if evidence remains missing.")
+    return ("\nController reminder: check that your answer agrees with the displayed "
+            "source. Cite its exact supporting span; preserve its measurement conditions. "
+            "If evidence remains missing, report_gap before abstaining.")

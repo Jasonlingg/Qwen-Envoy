@@ -10,7 +10,7 @@ import hashlib
 
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_SHA256
-from src.product.assigned_guidance import BASELINE, validate_guidance
+from src.product.assigned_guidance import BASELINE, FOCUSED, validate_guidance
 from src.product.paper_assignment import verify_assignment
 from src.product.reader_gaps import verify_gap_reports
 
@@ -123,6 +123,8 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         result.update(reader_mode="assigned", paper_assignment=assignment,
                       assignment_sha256=packet["assignment_sha256"])
         result["research_gaps"], result["gap_report_error"] = verify_gap_reports(packet)
+        if guidance == FOCUSED and status == "no_evidence" and not result["research_gaps"]:
+            raise ValueError("focused-v1 abstention requires a verified gap report")
         if guidance != BASELINE:
             result["reader_guidance"] = guidance
     return result
