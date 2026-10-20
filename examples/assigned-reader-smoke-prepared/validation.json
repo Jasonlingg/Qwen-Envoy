@@ -1,0 +1,77 @@
+{
+  "status": "prepared_not_run",
+  "cases": 2,
+  "model_calls": 0,
+  "initial_prompt_tokens": [
+    1938,
+    1964
+  ],
+  "limits": {
+    "cases": 2,
+    "attempts_per_case": 1,
+    "action_steps_per_case": 6,
+    "model_requests_per_case": 6,
+    "model_requests_total": 12,
+    "input_tokens_per_request": 7168,
+    "output_tokens_per_request": 1024,
+    "input_tokens_reserved_total": 86016,
+    "output_tokens_reserved_total": 12288,
+    "whole_session_watchdog_seconds": 900,
+    "provider_execution_timeout_ms": 120000,
+    "inference_resubmissions": 0,
+    "max_active_gpu_workers": 1
+  },
+  "reference_review": "assistant_prepared; human review not performed",
+  "activation_approved": false,
+  "schema_version": "assigned-reader-smoke-preparation-validation-v1",
+  "date": "2026-10-20",
+  "implementation_commit": "272685b",
+  "actual_model_inference_requests": 0,
+  "paid_model_requests": 0,
+  "runpod_mutations": 0,
+  "tests": {
+    "focused": {
+      "passed": 36,
+      "seconds": 8.87,
+      "files": [
+        "tests/test_assigned_smoke_plan.py",
+        "tests/test_runpod_queue.py",
+        "tests/test_known_paper_diagnostic.py"
+      ]
+    },
+    "full_suite": {
+      "passed": 1602,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_summary": "Existing SWIG deprecation warnings",
+      "seconds": 58.86,
+      "exit_code": 0,
+      "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q"
+    },
+    "ruff": "passed",
+    "cli_help": "passed",
+    "real_cached_tokenizer_prepare_and_check": "passed"
+  },
+  "independent_review": {
+    "result": "No actionable findings in offline preparation, reference separation, payload identity or budget wording.",
+    "human_answer_review": "not_performed"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "limitations": [
+    "No inference or assigned-protocol live result exists.",
+    "Budget/watchdog values are requirements for a later executor, not an executed live guarantee.",
+    "Claim review is pending; quote provenance is not semantic support.",
+    "Familiar-paper development cases do not establish fine-tuning or product improvement."
+  ]
+}

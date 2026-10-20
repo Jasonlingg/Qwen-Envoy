@@ -1,0 +1,113 @@
+{
+  "schema_version": "assigned-reader-smoke-plan-v1",
+  "status": "prepared_not_run",
+  "split": "two assistant-authored development cases; familiar paper; not held out",
+  "hypothesis": "v5 can inspect its assigned paper under the new protocol, return a supported fact, and report a target-setup gap without fabrication.",
+  "expected_signal": "A source-supported batch-size answer and a qualified gap report.",
+  "decision_rule": "Proceed to another development comparison only if both cases meet their source/claim review requirements, with zero execution errors, repeated-call rejections or budget violations. Mechanical span checks alone cannot pass a case.",
+  "cases": [
+    {
+      "case_id": "assigned-batch-size-v1",
+      "kind": "answerable",
+      "question": "What batch size was used for the walltime measurements?"
+    },
+    {
+      "case_id": "assigned-a5000-batch8-v1",
+      "kind": "target_setup_gap",
+      "question": "From the available extracted text, what walltime speedup, if any, is established specifically for speculative decoding on an NVIDIA RTX A5000 at batch size 8?"
+    }
+  ],
+  "limits": {
+    "cases": 2,
+    "attempts_per_case": 1,
+    "action_steps_per_case": 6,
+    "model_requests_per_case": 6,
+    "model_requests_total": 12,
+    "input_tokens_per_request": 7168,
+    "output_tokens_per_request": 1024,
+    "input_tokens_reserved_total": 86016,
+    "output_tokens_reserved_total": 12288,
+    "whole_session_watchdog_seconds": 900,
+    "provider_execution_timeout_ms": 120000,
+    "inference_resubmissions": 0,
+    "max_active_gpu_workers": 1
+  },
+  "paper_version": "2211.17192v2",
+  "source_sha256": "fa425ba4ebcd43f7d6b66d49c1d74225adf894a2f66aa8002d1a53aab54d06ff",
+  "snapshot": "/Users/jasonling/Documents/GitHub/rlm-explorer/out/qwen-live-cheaper-20261019/native-v3/servers/library/views/0b06a7a2ff02143e10cf74f7",
+  "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "aafa8b1f2413798dc59e2ff97dfae74a2e97390215c6f88f0d99180dcd8b524f",
+    "doc_id": "arxiv_2211_17192v2",
+    "arxiv_id": "2211.17192v2",
+    "title": "Fast Inference from Transformers via Speculative Decoding",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e84f84860c2961bb5073bd93918f1eb23f4318ff1637e73f9dad89090a6c23b8",
+  "system_prompt_sha256": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "sandbox_image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+  "model": {
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "thinking": false,
+    "endpoint_id": "q05pjrvguakieg"
+  },
+  "budget_enforcement": "Two fixed cases, one exclusive session attempt; each uses its own RunpodQueueTransport(requests_max=6) durable audit, including format retries. Qwen max_steps=6; shared process watchdog=900 seconds with kill/reap cleanup. No new session/audit after a failure or uncertain submission.",
+  "budget_status": "Frozen requirements for the later live executor; not executed here.",
+  "activation": {
+    "approval": "separate live activation approval required",
+    "approved": false,
+    "current_gpu_rate_usd_per_hour": null,
+    "actual_spend_usd": null,
+    "provider_dollar_cap": false,
+    "required_before_activation": "Recheck current GPU rate and pinned worker identity; explain cold-start/idle billing. Start watchdog with activation; park endpoint and verify no jobs/workers afterward. Client termination alone does not cancel remote work or guarantee a dollar ceiling."
+  },
+  "implementation_commit": "272685b6b9f1ce3a415ac2bc11d677baf7a0f797",
+  "implementation_note": "File hashes describe the exact working tree, including preserved uncommitted configuration; the commit alone is not its identity.",
+  "implementation_sha256": {
+    "src/eval/assigned_smoke_plan.py": "87723e65ccc5b78b04607deb9d260f1fa5ea2987ea730e90bdcb3985abf6ce46",
+    "src/eval/assigned_smoke_check.py": "7fa582dc30bc7c0c217f602a5bce2531f6e4e6e7e22bf3cc985d447f98528342",
+    "scripts/prepare_assigned_reader_smoke.py": "5b710c59cc0a8a0786997365ff46d3c3a707c50a7dd7d4087a606a2d3ee227db",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "scripts/run_known_paper_diagnostic.py": "1b77a5419e77da74194562f97810d6835569a308914714c9b052076f51ae3c8c",
+    "src/eval/native_pilot_client.py": "b8ce5f34c3eafcd1b4223ab6fe46c8ac9c154b8c644985fd235724a7ad3ee7f1",
+    "src/product/assigned_reader.py": "7436817736bb110dc1e487ae8ec316185107d209404706ecd54d21c377c124df",
+    "src/product/assigned_actions.py": "e01e5336459153dfbb694ff03ee4902babb7c43d6733bc823ca7acaad869d09f",
+    "src/product/paper_assignment.py": "a4072074ae6db9db1f1912e6d52d326178736a728108da6e193a3c5e6a9994f4",
+    "src/product/reader_gaps.py": "3f6ac543098eeaccca97a72b04d0a4f9584e23cb10c9f4d5afa95e47480f70b8",
+    "src/product/qwen_investigator.py": "bb987ad9387885c3098946314922279d6441dfde81f199842e46bef0343944fc",
+    "src/product/packet_verifier.py": "85bd51308447a30ca5c64a4263ae6ce5693f843c563f6cc7f3bbc85d59c82c89",
+    "src/product/parallel_readers.py": "b4d022b5f3f49a905458ceb19f0e8e5540f93e316a3aff5123b0d20c1a8a96b4",
+    "src/product/arxiv_service.py": "52a3c52ce4fcace50fdf0dcf12fae13f2fb44629830e9d242ab24b2cd753b25a",
+    "src/product/arxiv_library.py": "8bb596b24d93453cfb5da233fe2bcbb4f0c67f06a9a06b9d78da1c687a89d1dc",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "src/policies/runpod_queue.py": "83ffc6b0c825a0f1b6cb60101aae0a4b1935bbf50465f707bca8937c9d1246e4",
+    "src/policies/openai_compatible.py": "a75e0446df2de28cda8b9ce85e5e4ae2de40b1684fa8e0e29124ff3e83b781d6",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/tools_v2.py": "6b33102cd149317832497835055c79f414f020065f141930aaf733224d29fa22",
+    "src/product/harness_v2.py": "14e9fee1577834ccea97f2db66277619014e92c485d4e8fe48f5a9de2a142ea7",
+    "src/product/submit_call.py": "7e2a1faa91e8b62f740b2e2d22fe7e9abba90348afc54903142ce1878d04096b"
+  },
+  "artifact_sha256": {
+    "model_inputs.json": "e752ef5bc181be8cb2e79580b3c55d188b715e3882a6c53ab19761e2a4d199bd",
+    "references.json": "d64c98aa52c397403341732f325fd71834ea7e6d700035a770ffb103b2ff8010",
+    "system-prompt.txt": "721d7dc8bb9c4c8bef05b53923f9daa581715b6750e206c34d78e722cac96e56",
+    "claim-review-template.json": "257ea442c201ca5bb60113df9b5acfae4c595573531f48b99df85239ff45a417"
+  },
+  "semantic_support": "not_reviewed",
+  "reward": "not_computed",
+  "model_calls": 0
+}
