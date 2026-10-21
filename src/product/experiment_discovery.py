@@ -7,7 +7,11 @@ class ExperimentDiscovery:
     def __init__(self, discovery):
         self.discovery = discovery
 
-    def search(self, query, *, limit=5):
+    def search(self, query, since=None, until=None, limit=5):
+        # The source MCP passes these four arguments positionally. Date-bounded
+        # searches already use arXiv; never replace them with an undated fallback.
+        if since is not None or until is not None:
+            return self.discovery.search(query, since, until, limit)
         try:
             return self.discovery.search(query, limit=limit)
         except SourceUnavailable as exc:

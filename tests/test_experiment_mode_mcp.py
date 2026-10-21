@@ -9,6 +9,7 @@ from mcp import Client, StdioServerParameters
 
 from scripts.experiment_mode_mcp import create_server
 from src.product.experiment_context import MAX_CONTEXT_CHARS
+from src.product.experiment_discovery import ExperimentDiscovery
 from src.product.ml_experiment_store import ExperimentStore
 from tests.ml_experiment_result_fixtures import paired_result, planned_brief
 from tests.test_arxiv_research_mcp import FakeDiscovery
@@ -26,7 +27,8 @@ def test_real_mcp_question_research_revision_result_restart_and_resume(tmp_path)
     store = ExperimentStore(tmp_path / "records", evidence_resolver=resolver)
 
     async def run():
-        async with Client(create_server(store, library, FakeDiscovery())) as client:
+        server = create_server(store, library, ExperimentDiscovery(FakeDiscovery()))
+        async with Client(server) as client:
             tools = {t.name: t for t in (await client.list_tools()).tools}
             assert set(tools) == TOOLS
             assert "resume_experiment" in client.instructions
