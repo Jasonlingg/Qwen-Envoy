@@ -21,3 +21,28 @@ streams fail, requests remain capped at ten plus nine telemetry jobs, and the
 original deadline and shutdown checks remain effective. Run focused checks
 after each change and the full relevant suite before finishing. Live behavior
 after these repairs remains unverified until a separately authorized run.
+
+## Implemented and verified
+
+`7596653` replaces the profile's CLI startup-log dependency with a fixed-host,
+bounded native HTTP/SSE reader. The existing source/time/worker checks and
+supervisor deadline remain in force. `45a815a` exercises the complete automatic
+local flow through a real child process and JSON queue, including numeric
+normalization, all 19 jobs, an extra-request block, rejection before dispatch,
+failure retention and cleanup. These are scripted component checks, not a model
+evaluation or GPU benchmark.
+
+An additional loopback run used the exact saved payloads and pinned cached
+tokenizer. Raw hashes and message content stayed unchanged; input counts were
+1400 and 2043, and all ten scripted requests/nine telemetry jobs completed.
+Saved startup logs also passed the new reader and existing verification logic.
+
+Focused results: 51 passed (13.33 seconds), then 3 full-wire checks passed
+(11.43 seconds). Full suite: 1903 passed, no skips, three existing SWIG warnings,
+107.59 seconds. Ruff and whitespace checks passed. All protected files and
+prior live-attempt artifacts/markers are unchanged. No activation or inference
+occurred; final read-only endpoint checks show 0/0 and zero workers/pending jobs.
+
+The [repair evidence](../../examples/two-reader-profile/automation-repair/README.md)
+records scope, source hashes and limitations. Live behavior after this repair
+and the original rejected-input transformation remain unverified.

@@ -1,0 +1,108 @@
+{
+  "status": "local_component_flow_verified_live_unverified",
+  "commits": [
+    "7596653",
+    "45a815a"
+  ],
+  "tests": {
+    "reader_and_existing_guards": {
+      "passed": 51,
+      "seconds": 13.33
+    },
+    "full_wire": {
+      "passed": 3,
+      "seconds": 11.43
+    },
+    "full": {
+      "passed": 1903,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_description": "Existing SWIG deprecation warnings",
+      "seconds": 107.59,
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+    },
+    "ruff": "passed",
+    "git_diff_check": "passed"
+  },
+  "source_sha256": {
+    "src/eval/worker_log_reader.py": "abe720bcd3c1a721b8e07a808189ea6601541d9bfcbe3cd52fc234aadf72aa91",
+    "src/eval/assigned_smoke_lifecycle.py": "103bdc8fc989fbc0d7c6c50018e2fce780c4d842fa8a7707a46dff0bc7f6858d",
+    "scripts/profile_two_readers.py": "e300be9d5bf4b179ed0c05271bb7260a64282bc23d7fe35409f373f6d96a56e3",
+    "tests/test_worker_log_reader.py": "0a79d4a7278f77c1899e35373cd2a85e36bf8c6ef7cf7330771f915200d6e2e4",
+    "tests/profile_wire_fixture.py": "3f6ef80d72e05dfc506b5de51ae74666dd15a0c09259ada07a4b528a586b63e5",
+    "tests/test_profile_wire.py": "7aa99e58fdb9a0b231e192bd04e668bc224a4e42c08c168c33ab99f5e2bb7a4a"
+  },
+  "public_artifacts_sha256": {
+    "README.md": "dbf2be170de3dee9a57172c2f533ebb0b94489f29d0602bcae7011cea0f9b954",
+    "saved-input-check.json": "1a4ab2070165ba67e29f135a77f98bb317211ada2113637bbee5d01d9e9c2e76",
+    "endpoint-after.json": "11e55da7bdb1b194ba116bcb122d0205ef905a571be55010d4402e2571a6c139"
+  },
+  "private_evidence_sha256": {
+    "out/profile-automation-repair-20261021/baseline.json": "baa59e91d943a36814cea5b71166f9904605cfdead814bb21281c3fe41806f8c",
+    "out/profile-automation-repair-20261021/reader-focused.txt": "9cd939c566b84e8cef8c9b776f21641a5d9da4a3f7f9bf1d3f420f5e87d5513a",
+    "out/profile-automation-repair-20261021/wire-focused.txt": "5b6486a66babe63b3a63d60489f8bb1da285be0962a11be287e8b31d7996e834",
+    "out/profile-automation-repair-20261021/full-tests.txt": "6759f5204d47895861b43fa186715cb2749756343b7593868c5530717748f7c6",
+    "out/profile-automation-repair-20261021/check_saved_inputs.py": "6a19fbdcbf6f1a63d65e86e913ee466166d741bc0a86e4b64f8f081553072cd2",
+    "out/profile-automation-repair-20261021/saved-input-check.stdout.log": "1a4ab2070165ba67e29f135a77f98bb317211ada2113637bbee5d01d9e9c2e76"
+  },
+  "protected_files_unchanged_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+  },
+  "prior_artifacts_and_consumed_markers_unchanged_sha256": {
+    "examples/two-reader-profile/entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+    "examples/two-reader-profile/outcome.json": "410742ee7927eb330ed60518af0c38fc2f1c33f34949f6b099287aa0c41af0ef",
+    "examples/two-reader-profile/plan.json": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+    "examples/two-reader-profile/lifecycle.json": "6106eb31bf01c8a1c91ed860016c46825ddd70e63a1f1df9ac164204f7cc0622",
+    "examples/two-reader-profile/authorization.json": "ecb5b904a36c8c2f7f03a55753d85cca2e6e719d0fdea821328190bed50fc2fe",
+    "examples/two-reader-profile/README.md": "973ab8ff3dfec92778daa156534c068da758bd0fb4154f51ded6977d0cb12012",
+    "examples/two-reader-profile/validation.json": "620ebc401c23615ef9c40d588bd5b2686171163a7844d9441691fe3207f06c07",
+    "examples/two-reader-profile/preflight.json": "b8958c5060b247afdfbfad6038c4c335b7a3bc0eded420616620bb519ddfe162",
+    "examples/two-reader-profile/endpoint-after.json": "9c56a67ad40b77c5898f8409cee933bd5b8b13f3a17fb9e55ec4d6ee9286bd4e",
+    "examples/two-reader-profile/startup-log-reads.jsonl": "dddc8bf5ac7310bee3879971536abb7fcf3417bd27dd2d85caf0e4c168533c82",
+    "examples/two-reader-profile/log-repair/cli-reproduction.json": "0357e59c100cd03b1e4a1408bef074622a29c756d2bc59743bf81b41ed627748",
+    "examples/two-reader-profile/log-repair/provider-read.json": "025cd2a6a7e5d65e8cd90b6ed00a41f5ede40659bcc03e99990c60206738804e",
+    "examples/two-reader-profile/log-repair/README.md": "93f5116b171787e65550a9eac45c5c716c84703f50c846efd20fae6140b2d273",
+    "examples/two-reader-profile/log-repair/validation.json": "5e234fb6e712d7ba2a8c74fe3d5d0f3487e0d0478a20261df7624f3e444b1055",
+    "examples/two-reader-profile/retry-1/handoff.json": "d111e2241bf98522e2160572c0d3490b078c005b8e070187f33248a1ed83a4a7",
+    "examples/two-reader-profile/retry-1/startup-proof.json": "bc75229809587c3ab7e78a67cc8242f75a6afe81a2f1632f68331b55e311c7e1",
+    "examples/two-reader-profile/retry-1/entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+    "examples/two-reader-profile/retry-1/outcome.json": "d8b2e814cb90bf6f7676b9e5142ac0c7c5fdb6f9daaf404b2911aa73b0c8ad0b",
+    "examples/two-reader-profile/retry-1/plan.json": "05c6aa8a0327ec4f865299fbb4f0691e0faa4ee39637ddfcf0a69b651d2b0386",
+    "examples/two-reader-profile/retry-1/result.json": "9a8866ab909d4bfcb18dcfb0ef6a3bafaf0de295a95f2d4cb553c8d9452fad91",
+    "examples/two-reader-profile/retry-1/lifecycle.json": "c67c4fe63bb132113a9c6c66136003925caf27ce104414d3fcbc042180eb9230",
+    "examples/two-reader-profile/retry-1/offline-env-comparison.json": "298eb83d9034feccf9534be1eb314ba3e2494a2b39b684601c52437e12ab1bd1",
+    "examples/two-reader-profile/retry-1/failed-job.json": "ae7c9cb117eea23a4f212b5bdd34a7b11db2d84e021b829da4f5acb14947d81d",
+    "examples/two-reader-profile/retry-1/authorization.json": "1edbbc01026573a612a6b4e7b346c672c21cce5724f391ce8c59d6e3ec9efd96",
+    "examples/two-reader-profile/retry-1/handoff-controller.py.txt": "5128ce7f48f0dce6792051175efa06408812a3b44e2c0dcfb5842dc58193766c",
+    "examples/two-reader-profile/retry-1/README.md": "e52ca12ac037e22474ff2269a92eb1494b3eb4cbab70c7917d64ea6af9b4428f",
+    "examples/two-reader-profile/retry-1/validation.json": "31eb2f5d1c5e9aea9eaeea028ffcd87f751b262b86718c6c05b3c2823241aaf6",
+    "examples/two-reader-profile/retry-1/worker-identity-manual.json": "0a5963e1e077b89c3dfa1e754c47fa5fee83b52fc90ffb8a128585256abcbecf",
+    "examples/two-reader-profile/retry-1/log-query-comparison.json": "2280a5d5f63716e9f5da1861713f5d93668582ae9d1fcb2570d1aa77b1e486bc",
+    "examples/two-reader-profile/retry-1/endpoint-after.json": "e1dd829deea55410519054d49019e86da5c080e3038ef1a13d20c32e68352350",
+    "examples/two-reader-profile/retry-1/startup-log-reads.jsonl": "315b8938637c64eb4711bd51b67aa84ed2980b37ac61a7ba3b169c9f3cdfeb49",
+    "out/two-reader-profile-LIVE_ATTEMPT": "eb1a42b983c80d5b1450b2afe17c5f86300c8c712b8eb06636c70f14633a8297",
+    "out/two-reader-profile-REPLACEMENT-1": "f2e1cd8044d33566a537dc44ad7e1b17996dbc664aaa81c1d46b49adb88cbe03"
+  },
+  "task_cloud_operations": {
+    "read_only_final_checks": 3,
+    "mutations": 0,
+    "gpu_activations": 0,
+    "inference_submissions": 0
+  },
+  "limitations": [
+    "No live test of updated automatic startup or serialized inference.",
+    "Original live input transformation is unknown; local numeric normalization simulates a candidate cause.",
+    "Model responses, usage and delays in local HTTP fixtures are scripted; no performance/quality claim.",
+    "No model-authored Python execution, new training or fine-tuning benefit evaluation."
+  ]
+}
