@@ -1,0 +1,424 @@
+[
+  {
+    "case_id": "gqa-sharing",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Query heads are divided into G groups, each sharing one key head and one value head.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "One group recovers MQA; as many groups as query heads recovers MHA.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 3608,
+        "end": 4187,
+        "text": "Grouped-query attention divides query heads into GG groups, each of which shares a single key head and value head. GQA-g refers to grouped-query with GG groups. GQA-11, with a single group and therefore single key and value head, is equivalent to MQA, while GQA-h, with groups equal to number of heads, is equivalent to MHA. Figure 2 shows a comparison of grouped-query attention and multi-head/multi-query attention. When converting a multi-head checkpoint to a GQA checkpoint, we construct each group key and value head by mean-pooling all the original heads within that group."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "gqa-uptraining",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Key/value heads are mean-pooled into the required MQA/GQA structure.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "The starting checkpoints are public T5.1.1; the main reported uptraining proportion is alpha=0.05, or 5% of original pretraining steps. Do not replace steps with an asserted wall-clock fraction.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 6087,
+        "end": 6466,
+        "text": "Uptrained models are initialized from public T5.1.1 checkpoints. The key and value heads are mean-pooled to the appropriate MQA or GQA structure, and then pre-trained for a further α\\alpha proportion of original pre-training steps with the original pre-training setup and dataset from (Raffel et al., 2020). For α=0.05\\alpha=0.05, training took approximately 600 TPUv3 chip-days."
+      },
+      {
+        "context_id": "c2",
+        "start": 7591,
+        "end": 8124,
+        "text": "Figure 3 shows average performance over all datasets as a function of average inference time for MHA T5-Large and T5-XXL, and uptrained MQA and GQA-88 XXL models with uptraining proportion α=0.05\\alpha=0.05. We see that a larger uptrained MQA model provides a favorable trade-off relative to MHA models, with higher quality and faster inference than MHA-Large. Moreover, GQA achieves significant additional quality gains, achieving performance close to MHA-XXL with speed close to MQA. Table 1 contains full results for all datasets."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "gqa-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "The inspected extracted paper does not establish an exact peak-memory result for this target; do not invent one or infer it from a different model.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "If using reported T5 or encoder-decoder results, preserve their source scope; do not present an expectation about decoder-only models as a measured Qwen3 result. Reciting all source model details is not required.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Suggest a next search targeting Qwen3-8B, two readers, A5000 and peak KV-cache footprint, distinguishing cache storage from total VRAM. The suggestion is not executed evidence.",
+        "context_ids": []
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 6087,
+        "end": 6466,
+        "text": "Uptrained models are initialized from public T5.1.1 checkpoints. The key and value heads are mean-pooled to the appropriate MQA or GQA structure, and then pre-trained for a further α\\alpha proportion of original pre-training steps with the original pre-training setup and dataset from (Raffel et al., 2020). For α=0.05\\alpha=0.05, training took approximately 600 TPUv3 chip-days."
+      },
+      {
+        "context_id": "c2",
+        "start": 11870,
+        "end": 12743,
+        "text": "This paper focuses on ameliorating the memory bandwidth overhead from loading keys and values. This overhead is most important when generating longer sequences, for which quality is inherently difficult to evaluate. For summarization we employ Rouge score, which we know is a flawed evaluation that does not tell the whole story; for that reason, it is difficult to be certain our trade-offs are correct. Due to limited computation, we also do not compare our XXL GQA model to a comparitive model trained from scratch, so we do not know the relative performance of uptraining vs training from scratch. Finally, we evaluate the impact of uptraining and GQA only on encoder-decoder models. Recently, decoder-only models are extremely popular, and since these models do not have separate self-attention and cross-attention, we expect GQA to have a stronger advantage over MQA."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "smooth-mechanism",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "It targets 8-bit weights and 8-bit activations (W8A8).",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Divide activations by per-channel smoothing factors and multiply weights in the corresponding opposite direction; this equivalent rescaling migrates quantization difficulty from activations toward weights.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 0,
+        "end": 1201,
+        "text": "Large language models (LLMs) show excellent performance but are compute- and memory-intensive. Quantization can reduce memory and accelerate inference. However, existing methods cannot maintain accuracy and hardware efficiency at the same time. We propose SmoothQuant, a training-free, accuracy-preserving, and general-purpose post-training quantization (PTQ) solution to enable 8-bit weight, 8-bit activation (W8A8) quantization for LLMs. Based on the fact that weights are easy to quantize while activations are not, SmoothQuant smooths the activation outliers by offline migrating the quantization difficulty from activations to weights with a mathematically equivalent transformation. SmoothQuant enables an INT8 quantization of both weights and activations for all the matrix multiplications in LLMs, including OPT, BLOOM, GLM, MT-NLG, Llama-1/2, Falcon, Mistral, and Mixtral models. We demonstrate up to 1.56x speedup and 2x memory reduction for LLMs with negligible loss in accuracy. SmoothQuant enables serving 530B LLM within a single node. Our work offers a turn-key solution that reduces hardware costs and democratizes LLMs. Code is available at https://github.com/mit-han-lab/smoothquant."
+      },
+      {
+        "context_id": "c2",
+        "start": 11990,
+        "end": 12306,
+        "text": "Instead of per-channel activation quantization (which is infeasible), we propose to “smooth” the input activation by dividing it by a per-channel smoothing factor 𝐬∈ℝCi\\mathbf{s}\\in\\mathbb{R}^{C_{i}}. To keep the mathematical equivalence of a linear layer, we scale the weights accordingly in the reversed direction:"
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "smooth-calibration",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "The calibration data are 512 random sentences from the pretraining dataset Pile.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "The stated strengths are alpha=0.5 for OPT/BLOOM and alpha=0.75 for GLM-130B; do not swap the assignments.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 17618,
+        "end": 18286,
+        "text": "The migration strength α=0.5\\alpha=0.5 is a general sweet spot for all the OPT and BLOOM models, and α=0.75\\alpha=0.75 for GLM-130B since its activations are more difficult to quantize (Zeng et al., 2022). We get a suitable α\\alpha by running a quick grid search on a subset of the Pile (Gao et al., 2020) validation set. To get the statistics of activations, we calibrate the smoothing factors and the static quantization step sizes once with 512 random sentences from the pre-training dataset Pile, and apply the same smoothed and quantized model for all downstream tasks. In this way, we can benchmark the generality and zero-shot performance of the quantized LLMs."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "smooth-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "No exact speedup for the stated Qwen3/A5000/two-reader setup is established by the inspected text; no direct transfer of headline speedups.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "If using reported model/framework/calibration results, preserve their conditions rather than claiming measured compatibility or speedup for the target. Reciting all source setup details is not required.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Suggest a next search targeting a matched SmoothQuant versus baseline Qwen3-8B/A5000 workload with latency and quality measurements. The suggestion is not executed evidence.",
+        "context_ids": []
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 5011,
+        "end": 6373,
+        "text": "Based on this observation, SmoothQuant offline migrates the quantization difficulty from activations to weights (Figure 2). SmoothQuant proposes a mathematically equivalent per-channel scaling transformation that significantly smooths the magnitude across the channels, making the model quantization-friendly. Since SmoothQuant is compatible with various quantization schemes, we implement three efficiency levels of quantization settings for SmoothQuant (see Table 2, O1-O3). Experiments show that SmoothQuant is hardware-efficient: it can maintain the performance of OPT-175B (Zhang et al., 2022), BLOOM-176B (Scao et al., 2022) , GLM-130B (Zeng et al., 2022), and MT-NLG 530B (Smith et al., 2022), leading to up to 1.51×\\times speed up and 1.96×\\times memory saving on PyTorch. SmoothQuant is easy to implement. We integrate SmoothQuant into FasterTransformer, the state-of-the-art transformer serving framework, achieving up to 1.56×\\times speedup and halving the memory usage compared with FP16. Remarkably, SmoothQuant allows serving large models like OPT-175B using only half number of GPUs compared to FP16 while being faster, and enabling the serving of a 530B model within one 8-GPU node. Our work democratizes the use of LLMs by offering a turnkey solution to reduce the serving cost. We hope SmoothQuant can inspire greater use of LLMs in the future."
+      },
+      {
+        "context_id": "c2",
+        "start": 17618,
+        "end": 18286,
+        "text": "The migration strength α=0.5\\alpha=0.5 is a general sweet spot for all the OPT and BLOOM models, and α=0.75\\alpha=0.75 for GLM-130B since its activations are more difficult to quantize (Zeng et al., 2022). We get a suitable α\\alpha by running a quick grid search on a subset of the Pile (Gao et al., 2020) validation set. To get the statistics of activations, we calibrate the smoothing factors and the static quantization step sizes once with 512 random sentences from the pre-training dataset Pile, and apply the same smoothed and quantized model for all downstream tasks. In this way, we can benchmark the generality and zero-shot performance of the quantized LLMs."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "kivi-layout",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Keys are quantized per-channel in groups of tokens; values are quantized per-token.",
+        "context_ids": [
+          "c1",
+          "c3"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Not every new cache entry is immediately 2-bit: recent residual key/value entries remain in full precision. Queue and group-threshold implementation details may explain this but are not additional mandatory clauses.",
+        "context_ids": [
+          "c1",
+          "c2",
+          "c3"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 17168,
+        "end": 18254,
+        "text": "As we previously analyzed, key cache should be quantized per-channel and value cache should be quantized per-token. Recall that key and value cache of newly generated tokens arrive sequentially. From the implementation perspective, per-token quantization aligns well with streaming settings, allowing newly quantized tensors to be directly appended to the existing quantized value cache by token dimension. However, for per-channel quantization, the quantization process spans across different tokens, which cannot be directly implemented in the streaming setting. As shown in Figure 3, our key idea to solve this problem is to group key cache every GG tokens and quantize them separately. Because the number of tokens in 𝑿K{\\bm{X}}_{K} can be arbitrary, we split 𝑿K{\\bm{X}}_{K} into two parts, namely, the grouped part 𝑿Kg=𝑿K[:l−r]{\\bm{X}}_{K_{g}}={\\bm{X}}_{K}[:l-r] and residual part 𝑿Kr=𝑿K[l−r:]{\\bm{X}}_{K_{r}}={\\bm{X}}_{K}[l-r:], where ll is the number of tokens inside the current key cache 𝑿K{\\bm{X}}_{K}, rr is the number of residual tokens, where l−rl-r can be divisible by GG."
+      },
+      {
+        "context_id": "c2",
+        "start": 18256,
+        "end": 18921,
+        "text": "Since 𝑿Kg{\\bm{X}}_{K_{g}} can be evenly divided into (l−r)/G(l-r)/G groups, we only store Q⁡(𝑿Kg)Q({\\bm{X}}_{K_{g}}) with group-wise quantization, while 𝑿Kr{\\bm{X}}_{K_{r}} is kept in full precision. During the decoding process, each newly arrived key cache 𝒕K{\\bm{t}}_{K} is added to 𝑿Kr{\\bm{X}}_{K_{r}} and once 𝑿Kr{\\bm{X}}_{K_{r}} reaches RR tokens, which is a hyperparameter - residual length, we quantize and concatenate it with the previously quantized Q⁡(𝑿KG)Q({\\bm{X}}_{K_{G}}). Then we reset 𝑿Kr{\\bm{X}}_{K_{r}} to an empty tensor. We note that RR should be divisible by GG. With tiled matrix multiplication, the raw attention logits is then calculated as:"
+      },
+      {
+        "context_id": "c3",
+        "start": 18923,
+        "end": 19431,
+        "text": "For value cache, similar to key cache, we also split it into two parts and keep the most recent value cache in full precision, namely, 𝑿Vg{\\bm{X}}_{V_{g}} and 𝑿Vr{\\bm{X}}_{V_{r}}. Specifically, we maintain a queue and each newly arrived value cache is pushed into the queue. Once the queue reaches the predefined residual length RR, the most outdated value cache is poped. Then the poped value cache is quantized per-token and concatenated with the previously quantized value cache along the token dimension."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "kivi-protocol",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "The comparison uses Llama-2-7B on one NVIDIA A100 80GB GPU, not Qwen3 or A5000.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "ShareGPT-derived workloads average 161 input tokens and 338 output tokens; batch size increases until out of memory. Do not reverse input/output lengths.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 26994,
+        "end": 27587,
+        "text": "To evaluate the wall-clock time efficiency of KIVI, following vLLM (Kwon et al., 2023), we synthesize workloads based on ShareGPT (sha, 2023), which contain input and output texts of real LLM services. On average, the data set has an input prompt length lpromptl_{\\text{prompt}} of 161 and an output length lgenl_{\\text{gen}} of 338 (Kwon et al., 2023). We increase the batch size until out of memory and report the peak memory usage and throughput between KIVI (with residual length 32 and 128) and FP16 baseline for the Llama-2-7B model. The hardware here is a single NVIDIA A100 GPU (80GB)."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "kivi-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "The exact target peak VRAM is not established by the inspected paper; a cache compression or throughput result cannot supply it.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "If using reported model-family or efficiency results, preserve their original conditions rather than treating Llama/Falcon/Mistral or A100 results as Qwen3/A5000 measurements. Reciting all source setup details is not required.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Suggest a next search targeting total peak memory for the requested Qwen3/A5000/token/concurrency workload; a cache-only compression factor is insufficient. The suggestion is not executed evidence.",
+        "context_ids": []
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 21116,
+        "end": 21698,
+        "text": "We evaluate KIVI using three popular model families: Llama/Llama-2 (Touvron et al., 2023a; Touvron et al., 2023b), Falcon (Penedo et al., 2023) and Mistral (Jiang et al., 2023). Llama and Mistral model is based on multi-head attention, while Falcon is based on multi-query attention (Shazeer, 2019). We use the Hugging Face Transformers codebase and implement the KIVI algorithm upon it. Following previous work (Sheng et al., 2023), the group size GG in Algorithm 1 for quantization is set as 32 across all experiments, the residual length RR for key and value cache is set to 128."
+      },
+      {
+        "context_id": "c2",
+        "start": 26994,
+        "end": 27587,
+        "text": "To evaluate the wall-clock time efficiency of KIVI, following vLLM (Kwon et al., 2023), we synthesize workloads based on ShareGPT (sha, 2023), which contain input and output texts of real LLM services. On average, the data set has an input prompt length lpromptl_{\\text{prompt}} of 161 and an output length lgenl_{\\text{gen}} of 338 (Kwon et al., 2023). We increase the batch size until out of memory and report the peak memory usage and throughput between KIVI (with residual length 32 and 128) and FP16 baseline for the Llama-2-7B model. The hardware here is a single NVIDIA A100 GPU (80GB)."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "dora-components",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "DoRA decomposes pretrained weights into magnitude and direction and fine-tunes both components.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "LoRA is used for the directional adaptation, not exclusively for magnitude.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 3471,
+        "end": 5037,
+        "text": "Drawing on Weight Normalization (Salimans & Kingma, 2016), which achieves faster convergence via improving the conditioning of the gradient with weight reparameterization, we introduce a novel weight decomposition analysis that initially reparameterizes model weights into magnitude and directional components, subsequently examining the changes in magnitude and direction introduced by LoRA and FT. Our analysis reveals that LoRA and FT exhibit markedly distinct patterns of updates, leading us to surmise that these variations mirror the learning capability of each method. Inspired by our findings, we propose Weight-Decomposed Low-Rank Adaptation (DoRA), which begins by decomposing the pre-trained weight into its magnitude and directional components, then fine-tunes both. Given the substantial size of the directional component in terms of parameters, we exploit LoRA for the directional adaptation to enable efficient fine-tuning, as illustrated in Figure.1. Moreover, by showing a learning behavior similar to FT both empirically and mathematically, suggesting a learning capacity closely resembling FT, we have validated DoRA across a wide variety of tasks, from NLP to Vision-Language, and over various backbones, including LLM and LVLM. The experimental results show that DoRA consistently outperforms LoRA without sacrificing inference efficiency, such as commonsense reasoning (+3.7/+1.0 on LLaMA-7B/13B, +2.9 on LLaMA2-7B, and +4.4 on LLaMA3-8B), visual instruction tuning (+0.6 on LLaVA-7B), and image/video-text understanding (+0.9/+1.9 on VL-BART)."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "dora-memory",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Treat the directional norm as a constant for backpropagation by detaching it from the gradient graph, reducing gradient-graph memory.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Approximately 24.4% for LLaMA-7B and 12.4% for VL-BART, comparing the modified DoRA approach with its unmodified version. These are not reductions versus full fine-tuning or target Qwen3 measurements.",
+        "context_ids": [
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 20711,
+        "end": 21451,
+        "text": "In Eq. (1), the gradients of W′W^{\\prime} and Δ​W\\Delta W are the same. However, with DoRA, which redirects the low-rank adaptation towards the directional component, the gradient of the low-rank updates differs from that of W′W^{\\prime}, as illustrated in Eq. (6). This divergence necessitates extra memory during backpropagation. To address this, we suggest treating ‖V+Δ​V‖c||V+\\Delta V||_{c} in Eq. (5) as a constant, thereby detaching it from the gradient graph. This means that while ‖V+Δ​V‖c||V+\\Delta V||_{c} dynamically reflects the updates of Δ​V\\Delta V, it won’t receive any gradient during backpropagation. With this modification, the gradient w.r.t mm remains unchanged, and ∇V′ℒ\\nabla_{V^{\\prime}}\\mathcal{L} is redefined as:"
+      },
+      {
+        "context_id": "c2",
+        "start": 21453,
+        "end": 22215,
+        "text": "This approach reduces the gradient graph memory consumption drastically without a noticeable difference in accuracy. We conduct an ablation study to evaluate the impact of the proposed modification on fine-tuning LLaMA-7B and VL-BART. The results indicate that the modification leads to a training memory reduction of approximately 24.4% in fine-tuning LLaMA and 12.4% in VL-BART. Furthermore, the accuracy of DoRA with the modification remains unchanged for VL-BART and shows a negligible difference of only 0.2 compared to DoRA without the modification on LLaMA. For a comprehensive comparison of training memory usage and accuracy differences, please see Table 7 in the appendix. Consequently, all subsequent experiments with DoRA incorporate this adjustment."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  },
+  {
+    "case_id": "dora-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "The inspected paper does not establish an exact Qwen3-8B/A5000 DoRA-versus-LoRA training VRAM reduction.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "If citing the 24.4% or 12.4% numbers, keep their modified-versus-unmodified DoRA comparator and LLaMA/VL-BART conditions. These numbers need not be recited when simply reporting the target gap.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Suggest a next search targeting a matched DoRA-versus-LoRA Qwen3-8B/A5000 memory and quality comparison. The suggestion is not executed evidence.",
+        "context_ids": []
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 21453,
+        "end": 22215,
+        "text": "This approach reduces the gradient graph memory consumption drastically without a noticeable difference in accuracy. We conduct an ablation study to evaluate the impact of the proposed modification on fine-tuning LLaMA-7B and VL-BART. The results indicate that the modification leads to a training memory reduction of approximately 24.4% in fine-tuning LLaMA and 12.4% in VL-BART. Furthermore, the accuracy of DoRA with the modification remains unchanged for VL-BART and shows a negligible difference of only 0.2 compared to DoRA without the modification on LLaMA. For a comprehensive comparison of training memory usage and accuracy differences, please see Table 7 in the appendix. Consequently, all subsequent experiments with DoRA incorporate this adjustment."
+      },
+      {
+        "context_id": "c2",
+        "start": 22217,
+        "end": 23280,
+        "text": "We conduct a variety of experiments to showcase the efficacy of DoRA on various tasks including language, image, and video domains. Firstly, we evaluate DoRA against several Parameter-Efficient Fine-Tuning (PEFT) methods by fine-tuning LLaMA-7B/13B, LLaMA2-7B, and LLaMA3-8B on commonsense reasoning tasks. Subsequently, we extend from single modality to multimodality. We compare DoRA with LoRA across multi-task image/video-text understanding tasks using VL-BART and visual instruction tuning with LLaVA-1.5-7B. Following this, we explore the compatibility of DoRA with LoRA and VeRA (Kopiczko et al., 2024) for instruction-tuning on LLaMA-7B and LLaMA2-7B. Furthermore, we perform a series of ablation studies to illustrate that DoRA surpasses LoRA in performance, irrespective of the number of fine-tuning training samples and rank variations. Lastly, We analyze the tuning granularity of DoRA, and show that DoRA can achieve better accuracy than LoRA with fewer trainable parameters by selectively updating only the directional components of certain modules."
+      }
+    ],
+    "origin": "Assistant-authored draft for independent source review; human review pending"
+  }
+]

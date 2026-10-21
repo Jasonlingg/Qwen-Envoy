@@ -1,0 +1,187 @@
+{
+  "review_kind": "model_assisted",
+  "human_review": "not_performed",
+  "reviewer_identity": "Codex independent paired_claim_review agent",
+  "reviewed_at": "2026-10-21T13:38:07.511897Z",
+  "scope": "Independent review of all 12 new questions, criteria and contexts against the complete four cached evaluation extractions; copied development cases reviewed only for packaging and inherited limitations. No training, candidate inference, external calls, or bundle edits.",
+  "source_review_verdict": "accepted",
+  "packaging_verdict": "accepted_for_preparation_and_freeze; execution_not_run_or_authorized",
+  "checks": {
+    "evaluation_case_count": 12,
+    "evaluation_answerable_count": 8,
+    "evaluation_gap_count": 4,
+    "all_evaluation_context_offsets_exact": true,
+    "all_development_context_offsets_exact": true,
+    "all_eight_source_hashes_match_manifest": true,
+    "development_evaluation_paper_ids_disjoint": true,
+    "human_fields_left_blank": true,
+    "target_models_or_hardware_not_present_in_full_evaluation_sources": "Qwen and A5000 have zero occurrences in each complete cached evaluation extraction; nearby reported setup paragraphs were also inspected. This is evidence about these extractions, not all literature.",
+    "original_development_reference_provenance_hash_matches": true,
+    "latest_revisions_rechecked": true
+  },
+  "rows": [
+    {
+      "case_id": "gqa-sharing",
+      "verdict": "accepted",
+      "notes": "GQA divides query heads into G groups, each sharing one key/value head; G=1 is MQA and G equal to query-head count is MHA. Source c1 exactly supports both facts.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "gqa-uptraining",
+      "verdict": "accepted",
+      "notes": "Mean pooling and public T5.1.1 starting checkpoints are supported. Main results use alpha=0.05 of original pretraining steps; the full source separately uses compute language in its abstract, so the explicit steps question and criterion correctly select the experimental definition.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "gqa-target",
+      "verdict": "accepted",
+      "notes": "Full cached source does not establish the Qwen3/A5000/two-reader target measurement. Revised f2 is conditional rather than demanding T5/encoder-decoder recitation. Final question and f3 ask an unexecuted next search for peak KV-cache footprint distinct from total VRAM, matching the existing report_gap channel.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "smooth-mechanism",
+      "verdict": "accepted",
+      "notes": "W8A8 and the reciprocal per-channel activation/weight rescaling are supported. Although the displayed equation itself is omitted by the paragraph extractor, c2 states the inverse scaling relationship and the multiplication direction is a valid stated algebraic derivation preserving the linear layer.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "smooth-calibration",
+      "verdict": "accepted",
+      "notes": "Revised f1 now grades only the requested 512 random sentences from Pile. Alpha=0.5 for OPT/BLOOM and alpha=0.75 for GLM-130B are correctly bound in c1 and the full source.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "smooth-target",
+      "verdict": "accepted",
+      "notes": "The complete extraction establishes no Qwen3/A5000/two-reader latency measurement. Final question/f3 ask a next search for a matched latency and quality comparison, not an experiment proposal. Partial source results remain conditional and retain actual scope; a 1.56x headline cannot be transferred to this target.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "kivi-layout",
+      "verdict": "accepted",
+      "notes": "Per-channel keys grouped across tokens, per-token values, and recent full-precision residual caches are supported by the full source and exact contexts. Revised f2 explicitly treats queue and group-threshold details as explanatory rather than additional required clauses, matching the question.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "kivi-protocol",
+      "verdict": "accepted",
+      "notes": "The full efficiency paragraph supports Llama-2-7B, one A100 80GB, mean prompt 161 and generated 338, and increasing batch size until OOM. No input/output reversal or numeric/baseline mismatch. ShareGPT provenance is useful context, not an additional question requirement.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "kivi-target",
+      "verdict": "accepted",
+      "notes": "Full source establishes no requested Qwen3/A5000/token/concurrency peak-VRAM measurement. Final f2 is conditional on offered partial results; final question/f3 ask a next search targeting total peak memory, correctly rejecting a cache-only compression factor as a target VRAM measurement.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "dora-components",
+      "verdict": "accepted",
+      "notes": "Magnitude and direction are both fine-tuned in the main DoRA construction, with LoRA used for directional updates. Full source also studies selective update variants; the criteria describe the general construction and should not be read as asserting every later variant updates every component of every layer.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "dora-memory",
+      "verdict": "accepted",
+      "notes": "Detaching the dynamically updated directional norm from the gradient graph is supported. The 24.4% LLaMA-7B and 12.4% VL-BART reductions are correctly attributed to modified versus unmodified DoRA, not DoRA versus LoRA or full fine-tuning.",
+      "fact_context_mismatches": []
+    },
+    {
+      "case_id": "dora-target",
+      "verdict": "accepted",
+      "notes": "No exact Qwen3/A5000 DoRA-versus-LoRA training-VRAM reduction is established by the complete extraction. Conditional f2 preserves the modified-versus-unmodified DoRA comparator if its percentages are cited. Final question/f3 request an unexecuted next search for matched memory and quality evidence, matching report_gap.",
+      "fact_context_mismatches": []
+    }
+  ],
+  "initial_findings_and_resolutions": [
+    {
+      "finding": "Gap f2 criteria demanded unasked source model/architecture/framework recitation.",
+      "resolution": "Fixed: all four f2 criteria are now conditional on offering the corresponding partial source result."
+    },
+    {
+      "finding": "GQA target asked peak KV-cache memory while the proposal criterion only required generic peak memory.",
+      "resolution": "Fixed in final form: question/f3 ask a next search for peak KV-cache storage distinct from total VRAM. An experiment/control design is no longer a required output."
+    },
+    {
+      "finding": "SmoothQuant calibration criterion required once/static-step-size details that the question did not request.",
+      "resolution": "Fixed: f1 now requires the requested data and count only."
+    },
+    {
+      "finding": "SmoothQuant and DoRA proposal criteria required quality checks not explicitly requested.",
+      "resolution": "Fixed in final form: SmoothQuant and DoRA questions/f3 ask next searches targeting matched latency-or-memory and quality evidence. They no longer require a structured local experiment proposal."
+    },
+    {
+      "finding": "KIVI layout criterion could make detailed queue/group-threshold mechanics mandatory although the question asks dimensions and immediate universal two-bit behavior.",
+      "resolution": "Fixed: f2 explicitly says queue/group-threshold details are explanatory, not extra mandatory clauses."
+    }
+  ],
+  "material_findings": [
+    {
+      "id": "packaging-exposure-wording",
+      "status": "resolved",
+      "location": "manifest.json splits.evaluation.exposure",
+      "finding": "The phrase public author-reviewed sources implies review provenance not established by this bundle.",
+      "resolution": "Resolved: exposure now says version-pinned public papers, assistant-authored references, human review not performed, and no certified training/pretraining absence."
+    },
+    {
+      "id": "packaging-development-gap-rule",
+      "status": "resolved",
+      "location": "protocol.json grading.gap_pass",
+      "finding": "The global rule requires a local measurement, but copied development gap questions/references request a next search.",
+      "resolution": "Resolved: protocol.gap_pass now requires the next-search suggestion requested by the question. All new gap questions now request next searches, aligning both splits without changing historical grades."
+    },
+    {
+      "id": "packaging-reference-lineage",
+      "status": "resolved",
+      "location": "manifest.json lineage.development_references_sha256",
+      "finding": "The manifest hash 7c7d58cf204b1a55ba502bf22ed3ea880b666131f01a0f3f4e4a18e726bcd343 does not match current packaged references/development.json, whose hash is dbc1e49e3f2c610cb6d49e7c79f240dbb4084fae3fad03cb0fdf49d4ad790f57.",
+      "resolution": "Resolved: the original reference hash is named original_development_references_sha256 and linked to examples/base-v5-reader-comparison/references.json. That original file exists and its SHA256 exactly matches. Current packaged-reference hash is separately recorded in this audit."
+    },
+    {
+      "id": "execution-gap-proposal-channel",
+      "status": "resolved",
+      "location": "protocol.json execution.effective_prompt and grading.gap_pass",
+      "finding": "The pinned focused-v1 prompt routes missing answers through report_gap(missing, follow_up_query) followed by Unanswerable; this does not explicitly define a local-proposal answer channel.",
+      "resolution": "Resolved for preparation: final questions/f3 request search suggestions, not local experiments. execution.gap_output_contract explicitly grades report_gap(missing, follow_up_query) jointly with the Unanswerable submission and describes suggestions as unexecuted. The harness/prompt remain unchanged; runtime behavior was not exercised by this review."
+    }
+  ],
+  "inherited_and_split_limits": [
+    "The 12 development questions were previously evaluated. Their copied references are exposed model-assisted development rubrics, not human gold or untouched evaluation.",
+    "The requested-facts-only protocol must govern overcomplete development reference strings; do not require irrelevant recitation or repetition of conditions already given in the question. Historical grades are unchanged by this audit.",
+    "Both development and final evaluation gaps request a next search. Optional partial findings retain actual source conditions; the report_gap channel and Unanswerable submission are reviewed jointly. The FlashAttention extracted self-comparison typo remains an inherited source limitation.",
+    "Paper-ID disjointness is verified within this bundle, not semantic/topic disjointness, training contamination absence, or certified pretraining disjointness.",
+    "All four new target gaps concern one later model/hardware family; these are useful scoped extrapolation and next-search checks but do not assess local experiment-design execution, broad abstention, or real-world compatibility performance.",
+    "The public bundle contains grader references and complete evaluation sources. The policy to keep them out of training/tuning is documented but not enforced by public files; the eventual runner must expose only assigned source/question fields.",
+    "Complete cached html_paragraphs extractions are the reviewed evidence boundary; equations, tables, or figures may be omitted. This audit does not certify complete original-paper rendering or independent author/human verification."
+  ],
+  "reviewed_file_sha256": {
+    "cases/development.json": "96527fd3dc7d81c89ecefedbc18e2c46aab3be7b502c772ace167b69f4531229",
+    "cases/evaluation.json": "6d95f74ece3ae4f71da0e121af901fb62138db5757ede2ed84847501769ae55f",
+    "manifest.json": "a609b8dba6c603bc517de43696be63f0e983a298449e9b71cedbab6fcdc84330",
+    "protocol.json": "e8a02541ec6f09f565ce547ba4e8137f22a6f5f04353e3e58255aba1e7f1deda",
+    "references/development.json": "dbc1e49e3f2c610cb6d49e7c79f240dbb4084fae3fad03cb0fdf49d4ad790f57",
+    "references/evaluation.json": "8461ca5c3999b3dc8be23bcef85d6c6052e950ac7db224babb4bc7062f220c2c",
+    "reviews/human-answer-template.json": "d8dbfdbce7a2dbe384165d6da62099bdc072ed7b228bbe82bf959217218032d7",
+    "sources/2211.10438v7.json": "52a94e9a84ac52347f9fb63ba23d7664054bcfa47b9d0478138eb782461b10e1",
+    "sources/2305.13245v3.json": "28c19cda55fc0de948d8cba231133e89724907a38686628f406da5813850397c",
+    "sources/2305.14314v1.json": "418a34b337a31cde44ab3586b362c93f186667a7743f7e8a51a406573b120a7f",
+    "sources/2306.00978v6.json": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f",
+    "sources/2307.08691v1.json": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641",
+    "sources/2309.06180v1.json": "24cf62925e5c4c7093c612361513f3069e04f0b0b4f7f8a65715d8d9d60105c2",
+    "sources/2402.02750v2.json": "f3af985ecdd7fd61686ed0f5d3898aec9cefec05594539eec5c29e409ca27d14",
+    "sources/2402.09353v6.json": "b3df8c9f1434de9b1c8f6ed96146ef499e392e635d4b7d3702feb8d20f314286"
+  },
+  "authorization": "Preparation/source review only. No training, reinforcement-learning reward, paid run, or candidate inference was performed or authorized by this audit.",
+  "open_material_findings": [],
+  "freeze_metadata_verification": {
+    "only_previously_reviewed_file_changed": "manifest.json",
+    "delta": {
+      "field": "status",
+      "previous": "draft_pending_independent_source_review",
+      "current": "frozen_pending_human_review_not_run"
+    },
+    "verified_previous_manifest_by_reconstructing_status": true,
+    "new_manifest_sha256": "a609b8dba6c603bc517de43696be63f0e983a298449e9b71cedbab6fcdc84330",
+    "unreviewed_added_files": []
+  }
+}

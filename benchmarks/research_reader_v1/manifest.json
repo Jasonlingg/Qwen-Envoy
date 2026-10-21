@@ -1,0 +1,95 @@
+{
+  "schema_version": "research-reader-eval-v1",
+  "status": "frozen_pending_human_review_not_run",
+  "scope": "Multi-step assigned-paper reading using Python document tools in Docker; discovery and full research synthesis not evaluated",
+  "splits": {
+    "development": {
+      "cases": "cases/development.json",
+      "references": "references/development.json",
+      "exposure": "Previously evaluated base/v5 development cases; never claim untouched"
+    },
+    "evaluation": {
+      "cases": "cases/evaluation.json",
+      "references": "references/evaluation.json",
+      "exposure": "Reserved before inference for these new questions; paper-ID-disjoint from development. Version-pinned public papers; assistant-authored references; human review not performed. Not certified absent from training/pretraining."
+    }
+  },
+  "sources": {
+    "2305.14314v1": {
+      "path": "sources/2305.14314v1.json",
+      "sha256": "418a34b337a31cde44ab3586b362c93f186667a7743f7e8a51a406573b120a7f",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2305.14314v1",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs"
+    },
+    "2306.00978v6": {
+      "path": "sources/2306.00978v6.json",
+      "sha256": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2306.00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration"
+    },
+    "2307.08691v1": {
+      "path": "sources/2307.08691v1.json",
+      "sha256": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2307.08691v1",
+      "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning"
+    },
+    "2309.06180v1": {
+      "path": "sources/2309.06180v1.json",
+      "sha256": "24cf62925e5c4c7093c612361513f3069e04f0b0b4f7f8a65715d8d9d60105c2",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2309.06180v1",
+      "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention"
+    },
+    "2305.13245v3": {
+      "path": "sources/2305.13245v3.json",
+      "sha256": "28c19cda55fc0de948d8cba231133e89724907a38686628f406da5813850397c",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2305.13245v3",
+      "title": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints"
+    },
+    "2211.10438v7": {
+      "path": "sources/2211.10438v7.json",
+      "sha256": "52a94e9a84ac52347f9fb63ba23d7664054bcfa47b9d0478138eb782461b10e1",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2211.10438v7",
+      "title": "SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models"
+    },
+    "2402.02750v2": {
+      "path": "sources/2402.02750v2.json",
+      "sha256": "f3af985ecdd7fd61686ed0f5d3898aec9cefec05594539eec5c29e409ca27d14",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2402.02750v2",
+      "title": "KIVI: A Tuning-Free Asymmetric 2bit Quantization for KV Cache"
+    },
+    "2402.09353v6": {
+      "path": "sources/2402.09353v6.json",
+      "sha256": "b3df8c9f1434de9b1c8f6ed96146ef499e392e635d4b7d3702feb8d20f314286",
+      "coverage": "html_paragraphs",
+      "source_url": "https://arxiv.org/abs/2402.09353v6",
+      "title": "DoRA: Weight-Decomposed Low-Rank Adaptation"
+    }
+  },
+  "model_visible_fields": [
+    "question",
+    "paper_version"
+  ],
+  "grader_only_fields": [
+    "kind",
+    "facts",
+    "source_contexts"
+  ],
+  "human_review": "not_performed",
+  "model_inference_requests": 0,
+  "training_approved": false,
+  "reward": "not_defined; MuSiQue reward is not a research correctness score",
+  "lineage": {
+    "development_cases_sha256": "96527fd3dc7d81c89ecefedbc18e2c46aab3be7b502c772ace167b69f4531229",
+    "evaluation_author": "implementing assistant",
+    "prior_exposure_check": "Searched examples/benchmarks/docs/scripts/src for the four evaluation paper IDs; no direct hits before this preparation. This is not a complete training/pretraining contamination audit. LoRA was excluded because it already occurs in web_evidence_cases_v1.json.",
+    "original_development_references_sha256": "7c7d58cf204b1a55ba502bf22ed3ea880b666131f01a0f3f4e4a18e726bcd343",
+    "original_development_references_path": "examples/base-v5-reader-comparison/references.json"
+  }
+}

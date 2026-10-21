@@ -1,0 +1,74 @@
+[
+  {
+    "case_id": "gqa-sharing",
+    "paper_version": "2305.13245v3",
+    "kind": "supported",
+    "question": "How are query heads grouped and key/value heads shared in GQA, and which group-count settings recover MQA and MHA?"
+  },
+  {
+    "case_id": "gqa-uptraining",
+    "paper_version": "2305.13245v3",
+    "kind": "condition_binding",
+    "question": "In the GQA experiments, how are existing key/value projections converted, which checkpoint family is the starting point, and what fraction of original pretraining steps is used for the main results?"
+  },
+  {
+    "case_id": "gqa-target",
+    "paper_version": "2305.13245v3",
+    "kind": "target_gap",
+    "question": "What measured peak KV-cache memory does this paper establish for two Qwen3-8B readers at 7168 input and 1024 output tokens on one RTX A5000? What should I search for next to establish that cache footprint separately from total VRAM?"
+  },
+  {
+    "case_id": "smooth-mechanism",
+    "paper_version": "2211.10438v7",
+    "kind": "supported",
+    "question": "What bit widths does SmoothQuant target for weights and activations, and how does its smoothing transformation preserve a linear layer while moving quantization difficulty?"
+  },
+  {
+    "case_id": "smooth-calibration",
+    "paper_version": "2211.10438v7",
+    "kind": "condition_binding",
+    "question": "What calibration data and sample count are used for SmoothQuant activation smoothing, and which migration strengths are used for OPT/BLOOM versus GLM-130B?"
+  },
+  {
+    "case_id": "smooth-target",
+    "paper_version": "2211.10438v7",
+    "kind": "target_gap",
+    "question": "What measured latency speedup does this paper establish for SmoothQuant on Qwen3-8B serving two readers on an RTX A5000? What should I search for next to establish a matched latency and quality comparison?"
+  },
+  {
+    "case_id": "kivi-layout",
+    "paper_version": "2402.02750v2",
+    "kind": "supported",
+    "question": "Along which dimensions does KIVI quantize keys and values, and does it immediately quantize every newly generated cache entry to two bits?"
+  },
+  {
+    "case_id": "kivi-protocol",
+    "paper_version": "2402.02750v2",
+    "kind": "condition_binding",
+    "question": "For KIVI’s wall-clock efficiency comparison, which model and GPU are used, what are the average prompt and generated lengths, and how is the batch size chosen?"
+  },
+  {
+    "case_id": "kivi-target",
+    "paper_version": "2402.02750v2",
+    "kind": "target_gap",
+    "question": "What measured peak VRAM does KIVI establish for Qwen3-8B at two concurrent 7168-token prompts and 1024 generated tokens on a 24GB RTX A5000? What should I search for next to establish total peak memory for that setup?"
+  },
+  {
+    "case_id": "dora-components",
+    "paper_version": "2402.09353v6",
+    "kind": "supported",
+    "question": "Which components of a pretrained weight does DoRA fine-tune, and where does it use LoRA?"
+  },
+  {
+    "case_id": "dora-memory",
+    "paper_version": "2402.09353v6",
+    "kind": "condition_binding",
+    "question": "How does the DoRA paper reduce training-memory overhead, and what memory reductions does this modification report for LLaMA-7B versus VL-BART?"
+  },
+  {
+    "case_id": "dora-target",
+    "paper_version": "2402.09353v6",
+    "kind": "target_gap",
+    "question": "What peak training VRAM reduction does this paper measure for DoRA versus LoRA on Qwen3-8B with an RTX A5000? What should I search for next to establish a matched memory and quality comparison?"
+  }
+]

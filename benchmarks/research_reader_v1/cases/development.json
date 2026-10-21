@@ -1,0 +1,74 @@
+[
+  {
+    "case_id": "paged-blocks",
+    "paper_version": "2309.06180v1",
+    "kind": "supported",
+    "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?"
+  },
+  {
+    "case_id": "paged-traces",
+    "paper_version": "2309.06180v1",
+    "kind": "condition_binding",
+    "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?"
+  },
+  {
+    "case_id": "paged-target",
+    "paper_version": "2309.06180v1",
+    "kind": "target_gap",
+    "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search."
+  },
+  {
+    "case_id": "qlora-dtypes",
+    "paper_version": "2305.14314v1",
+    "kind": "supported",
+    "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients."
+  },
+  {
+    "case_id": "qlora-dq",
+    "paper_version": "2305.14314v1",
+    "kind": "condition_binding",
+    "question": "For the described blocksize-64 weights, how does double quantization change average quantization-constant overhead in bits per parameter, and what blocksize is used for the second quantization?"
+  },
+  {
+    "case_id": "qlora-target",
+    "paper_version": "2305.14314v1",
+    "kind": "target_gap",
+    "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure."
+  },
+  {
+    "case_id": "flash-warps",
+    "paper_version": "2307.08691v1",
+    "kind": "supported",
+    "question": "In the forward pass, how does FlashAttention-2 split Q, K and V across warps compared with the original split-K scheme, and why does that help?"
+  },
+  {
+    "case_id": "flash-triton",
+    "paper_version": "2307.08691v1",
+    "kind": "condition_binding",
+    "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?"
+  },
+  {
+    "case_id": "flash-target",
+    "paper_version": "2307.08691v1",
+    "kind": "target_gap",
+    "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified."
+  },
+  {
+    "case_id": "awq-profile",
+    "paper_version": "2306.00978v6",
+    "kind": "condition_binding",
+    "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation."
+  },
+  {
+    "case_id": "awq-protocol",
+    "paper_version": "2306.00978v6",
+    "kind": "supported",
+    "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?"
+  },
+  {
+    "case_id": "awq-target",
+    "paper_version": "2306.00978v6",
+    "kind": "target_gap",
+    "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing."
+  }
+]

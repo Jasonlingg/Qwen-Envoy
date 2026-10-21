@@ -1,0 +1,55 @@
+{
+  "schema_version": "research-reader-protocol-v1",
+  "hypothesis": "A future intervention improves complete source-supported answers on new paper questions beyond increasing abstention. This preparation tests no model intervention.",
+  "expected_signal": "More supported answerable-case passes, with no condition swaps or unsupported target extrapolation and bounded execution failures, tokens and latency.",
+  "execution": {
+    "mode": "assigned multi-step paper reading; Docker only",
+    "effective_prompt": "public_papers/default/v2/assigned/focused-v1",
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 42,
+    "thinking": false,
+    "requests_per_case_max": 6,
+    "actions_per_case_max": 6,
+    "input_tokens_per_request_max": 7168,
+    "output_tokens_per_request_max": 1024,
+    "paid_execution_approved": false,
+    "hardware": "not_run; record actual hardware before any run",
+    "models": "Record exact base and candidate checkpoint revisions before execution; no future RL candidate exists yet",
+    "effective_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+    "existing_baseline_model_identities": {
+      "base": "Qwen/Qwen3-8B",
+      "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+      "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+      "subfolder": "artifacts/full/checkpoint-50",
+      "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "seed": 42,
+      "thinking": false
+    },
+    "gap_output_contract": "Use existing report_gap(missing, follow_up_query) after source inspection, then the existing Unanswerable submission. Review the research_gaps channel and abstention together; follow_up_query is an unexecuted search suggestion, not a structured experiment proposal. New gap questions ask next searches to match focused-v1. No prompt or harness extension is implied."
+  },
+  "decision_rule": "Before a paid run, freeze model identities, effective prompt hash, corpus and question hashes, attempt/request/token/time budgets and actual hardware. For a future paired exploratory evaluation on 8 answerable and 4 gap cases, require at least 2 additional supported answerable passes, no additional condition/unsupported-number/execution-error cases, complete telemetry, <=25% more total tokens and <=1.25 median paired latency. Missing cases/usage/semantic review means inconclusive. A favorable result is limited evidence on this small set, not general improvement or training authorization.",
+  "grading": {
+    "pass": "All facts explicitly requested by the question are correct, appropriately qualified and supported by the candidate’s own cited evidence. Accept equivalent paraphrases and valid derivations when stated and supported. No critical unsupported additions.",
+    "partial": "Supported useful core but an explicitly requested clause or its supporting evidence is missing; never count as a full pass.",
+    "fail": "Wrong answer, critical condition swap, unsupported target result, or no useful answer to an answerable question.",
+    "incomplete": "Infrastructure failure, interrupted run or missing review; report coverage separately and do not silently exclude these cases.",
+    "gap_pass": "Recognizes unestablished target measurement and supplies the next-search suggestion requested by that question. Any cited source result preserves its actual conditions. Unasked source-detail recitation is not required. Does not claim absence throughout the literature.",
+    "report_separately": [
+      "answerable supported passes out of 8",
+      "gap passes out of 4",
+      "condition-error cases",
+      "unsupported numeric claims",
+      "execution-error cases",
+      "tokens",
+      "latency",
+      "host correction effort"
+    ],
+    "provenance": "Exact offsets and valid code are mechanical checks, never correctness rewards. Reference excerpts cannot repair a candidate’s unsupported citation. Do not penalize omission of irrelevant context or repetition of conditions already provided in the question."
+  },
+  "split_policy": "Develop prompts/data/rewards only on development. Keep evaluation questions, facts, excerpts and complete evaluation paper snapshots out of training and tuning inputs. Once evaluation outputs inform changes, retire that split into development and create a new paper-ID-disjoint reserved evaluation. These public files do not enforce access control or establish pretraining disjointness.",
+  "review": "Independent model-assisted source review is provisional. Human source/answer review fields remain blank until a person fills them. A model reviewer must never be labeled human."
+}

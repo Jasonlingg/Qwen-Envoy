@@ -1,0 +1,442 @@
+[
+  {
+    "case_id": "paged-blocks",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Fixed-size logical KV blocks map through block tables to physical KV blocks; logical contiguity need not mean physical contiguity.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Memory grows dynamically without reserving every future token position in advance.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 23426,
+        "end": 24131,
+        "text": "The key idea behind vLLM’s memory manager is analogous to the virtual memory (Kilburn et al., 1962) in operating systems. OS partitions memory into fixed-sized pages and maps user programs’ logical pages to physical pages. Contiguous logical pages can correspond to non-contiguous physical memory pages, allowing user programs to access memory as though it were contiguous. Moreover, physical memory space needs not to be fully reserved in advance, enabling the OS to dynamically allocate physical pages as needed. vLLM uses the ideas behind virtual memory to manage the KV cache in an LLM service. Enabled by PagedAttention, we organize the KV cache as fixed-size KV blocks, like pages in virtual memory."
+      },
+      {
+        "context_id": "c2",
+        "start": 24133,
+        "end": 24970,
+        "text": "A request’s KV cache is represented as a series of logical KV blocks, filled from left to right as new tokens and their KV cache are generated. The last KV block’s unfilled positions are reserved for future generations. On GPU workers, a block engine allocates a contiguous chunk of GPU DRAM and divides it into physical KV blocks (this is also done on CPU RAM for swapping; see §4.5). The KV block manager also maintains block tables—the mapping between logical and physical KV blocks of each request. Each block table entry records the corresponding physical blocks of a logical block and the number of filled positions. Separating logical and physical KV blocks allows vLLM to dynamically grow the KV cache memory without reserving it for all positions in advance, which eliminates most memory waste in existing systems, as in Fig. 2."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "paged-traces",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Most experiments use 1-hour traces; OPT-175B uses 15-minute traces because of the cost limit.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Do not swap durations or present 15 minutes as the general protocol.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 47000,
+        "end": 47512,
+        "text": "Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request’s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "paged-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "No measured p95 latency is established for this target setup by the inspected extracted text.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Partial findings must retain OPT/LLaMA model identities and A100/GCP setup; normalized mean latency is not p95.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Return a valid unresolved gap report and a useful next query; do not infer zero speedup or universal absence.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 44228,
+        "end": 44730,
+        "text": "Model and server configurations. We use OPT (Zhang et al., 2022) models with 13B, 66B, and 175B parameters and LLaMA (Touvron et al., 2023) with 13B parameters for our evaluation. 13B and 66B are popular sizes for LLMs as shown in an LLM leaderboard (ORG, 2023), while 175B is the size of the famous GPT-3 (Brown et al., 2020) model. For all of our experiments, we use A2 instances with NVIDIA A100 GPUs on Google Cloud Platform. The detailed model sizes and server configurations are shown in Table 1."
+      },
+      {
+        "context_id": "c2",
+        "start": 47000,
+        "end": 47512,
+        "text": "Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request’s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "qlora-dtypes",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Storage usually 4-bit NF4; computation BFloat16/16-bit BrainFloat after dequantization.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Base quantized weights are frozen; LoRA adapter parameters receive weight gradients.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 12848,
+        "end": 13131,
+        "text": "QLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit."
+      },
+      {
+        "context_id": "c2",
+        "start": 19416,
+        "end": 19735,
+        "text": "To summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "qlora-dq",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Overhead falls from 0.5 to about 0.127 bits per parameter, saving about 0.373 bits per parameter.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Weights use blocksize 64; second quantization uses 8-bit floats and blocksize 256. These are overhead bits, not total model weight precision.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 16463,
+        "end": 16935,
+        "text": "We introduce Double Quantization (DQ), the process of quantizing the quantization constants for additional memory savings. While a small blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants."
+      },
+      {
+        "context_id": "c2",
+        "start": 16937,
+        "end": 17850,
+        "text": "More specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\text{FP32}} are positive, we subtract the mean from c2c_{2} before quantization to center the values around zero and make use of symmetric quantization. On average, for a blocksize of 64, this quantization reduces the memory footprint per parameter from 32/64=0.532/64=0.5 bits, to 8/64+32/(64⋅256)=0.1278/64+32/(64\\cdot 256)=0.127 bits, a reduction of 0.373 bits per parameter."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "qlora-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "No peak VRAM measurement for this specific model/length/hardware is established in the inspected text.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "The 65B/single48GB finding is not a measurement for Qwen3-8B/32k/A5000.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Return a valid unresolved gap and useful next query; no fabricated numeric target estimate.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 0,
+        "end": 1856,
+        "text": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training."
+      },
+      {
+        "context_id": "c2",
+        "start": 12487,
+        "end": 12846,
+        "text": "QLoRA achieves high-fidelity 4-bit finetuning via two techniques we propose—4-bit NormalFloat (NF4) quantization and Double Quantization. Additionally, we introduce Paged Optimizers, to prevent memory spikes during gradient checkpointing from causing out-of-memory errors that have traditionally made finetuning on a single machine difficult for large models."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "flash-warps",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Original splits K and V across 4 warps with Q shared; FA2 splits Q across 4 warps with K and V shared.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Forward-pass change avoids inter-warp communication for combining outputs and reduces shared-memory reads/writes. Do not claim backward has no synchronization.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 20313,
+        "end": 20891,
+        "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention."
+      },
+      {
+        "context_id": "c2",
+        "start": 20893,
+        "end": 21351,
+        "text": "In FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "flash-triton",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "About 1.3–1.5x forward and about 2x backward versus FlashAttention in Triton, on A100 80GB SXM4.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Do not exchange forward/backward values or conflate the up-to-10x PyTorch baseline.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 23447,
+        "end": 24051,
+        "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "flash-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "No exact end-to-end measurement for this model/device/length is established by inspected text.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "A100 kernel speedups cannot be transferred to A5000/Qwen3 end-to-end training.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Return unresolved gap and useful next query. The extracted end-to-end paragraph contains an apparent self-comparison typo; do not silently repair it into a target result.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 23447,
+        "end": 24051,
+        "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+      },
+      {
+        "context_id": "c2",
+        "start": 24971,
+        "end": 25293,
+        "text": "We measure the training throughput of GPT-style models with either 1.3B or 2.7B parameters, on 8×\\timesA100 80GB SXM. As shown in Table 1, FlashAttention-2 yields 2.8×\\times speedup compared to a baseline without FlashAttention and 1.3×\\times speedup compared to FlashAttention-2, reaching up to 225 TFLOPs/s per A100 GPU."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "awq-profile",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "310ms generates 20 tokens; 10ms summarizes/processes a 200-token prompt.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "LLaMA-7B, RTX4090, batch1, FP16 NVIDIA FasterTransformer; do not label this TinyChat quantized timing or swap task/count mappings.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 20426,
+        "end": 20737,
+        "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer."
+      },
+      {
+        "context_id": "c2",
+        "start": 20739,
+        "end": 20993,
+        "text": "As in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "awq-protocol",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Fixed prompt4 tokens, generate200 tokens, batch1; median latency.",
+        "context_ids": [
+          "c1"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Named benchmark devices are RTX4090 and JetsonOrin; do not substitute the initial profiling setup or median with p95.",
+        "context_ids": [
+          "c1"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 33939,
+        "end": 34439,
+        "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  },
+  {
+    "case_id": "awq-target",
+    "facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "No measured speedup for A5000/batch8/8192-token prompt is established by inspected extracted text.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "The 2.7–3.9x RTX4090 finding belongs to batch1/4-token prompt/200 generated tokens; do not transfer it to target setup.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Return unresolved gap and useful next query; no fabricated target speedup.",
+        "context_ids": [
+          "c1",
+          "c2"
+        ]
+      }
+    ],
+    "source_contexts": [
+      {
+        "context_id": "c1",
+        "start": 33939,
+        "end": 34439,
+        "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      },
+      {
+        "context_id": "c2",
+        "start": 34441,
+        "end": 35619,
+        "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+      }
+    ],
+    "origin": "Previously exposed development references; historical model-assisted review, not human gold"
+  }
+]
