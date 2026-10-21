@@ -91,6 +91,19 @@ def render_brief(view: dict) -> tuple[str, bool]:
                 lines.extend("> " + _text(line) for line in rendered.splitlines())
         else:
             lines.append("Declared reference; source verification has not been performed.")
+    research = view.get("selected_research_note")
+    if research:
+        lines.extend(["", "## Linked research (unreviewed)", "",
+                      "Note: " + _text(research["note"]["note_id"]),
+                      "Written against brief revision: " + str(research["brief_revision"]),
+                      "Question: " + _text(research["note"]["question"]),
+                      "Data: " + research["note"]["data_kind"],
+                      "Source checks prove provenance, not semantic support.",
+                      *_details(research["note"]["findings"]),
+                      "Uncertainties:", *_details(research["note"]["uncertainties"]),
+                      "Proposed test (not executed): "
+                      + _text(research["note"]["proposed_test"] or "None"),
+                      "Research record SHA-256: " + research["sha256"]])
     missing = (", ".join(name.replace("_", " ").replace(".", " ")
                          for name in view["missing_fields"]) or "No structural fields missing")
     lines.extend(["", "## Planning status", "", "Missing: " + _text(missing),

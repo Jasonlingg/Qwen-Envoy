@@ -77,6 +77,12 @@ def _present(view):
 
 def create_server(store: ExperimentStore) -> MCPServer:
     server = MCPServer("Envoy ML Experiments", instructions=INSTRUCTIONS)
+    register_experiment_tools(server, store)
+    return server
+
+
+def register_experiment_tools(server: MCPServer, store: ExperimentStore) -> None:
+    """Reuse the existing local tools in the combined experiment-mode server."""
 
     @server.tool(annotations=SAVE)
     @_errors
@@ -100,9 +106,10 @@ def create_server(store: ExperimentStore) -> MCPServer:
 
     @server.tool(annotations=READ)
     @_errors
-    def get_experiment(experiment_id: str, run_id: str | None = None) -> dict[str, Any]:
-        """Retrieve a brief and latest result, or select a recorded run by its ID."""
-        return _present(store.get(experiment_id, run_id))
+    def get_experiment(experiment_id: str, run_id: str | None = None,
+                       research_note_id: str | None = None) -> dict[str, Any]:
+        """Retrieve a brief, result and research; select older records by their IDs."""
+        return _present(store.get(experiment_id, run_id, research_note_id))
 
     @server.tool(annotations=FREEZE)
     @_errors
@@ -117,9 +124,6 @@ def create_server(store: ExperimentStore) -> MCPServer:
     def list_experiments(limit: StrictInt = 20) -> dict[str, Any]:
         """List up to 100 recent experiment summaries with IDs and a truncation indicator."""
         return store.list(limit)
-
-    return server
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)

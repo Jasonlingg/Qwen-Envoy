@@ -1,5 +1,9 @@
 # Question-first ML experiment planning
 
+For one server combining these records, linked research notes, compact resumption
+and model-free paper tools, use [experiment mode](EXPERIMENT_MODE.md). This older
+entry point remains available for local records alone.
+
 Ask your normal engineering question, for example:
 
 > Could a smaller open-source model handle this workload?
