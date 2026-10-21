@@ -302,6 +302,38 @@ def test_one_replacement_binds_original_without_resetting_its_marker(tmp_path, m
         cli.attempt_marker(approved)
 
 
+def test_automatic_validation_is_single_use_and_preserves_prior_allowances(tmp_path, monkeypatch):
+    previous = tmp_path / "previous"
+    previous.mkdir()
+    (previous / "plan.json").write_text('{"previous":true}')
+    marker = tmp_path / "consumed-replacement"
+    marker.write_text(str(previous) + "\n")
+    outcome = tmp_path / "outcome.json"
+    outcome.write_text(json.dumps({"shutdown_verified": True,
+                                   "plan_sha256": cli.sha(previous / "plan.json")}))
+    validation = tmp_path / "validation"
+    monkeypatch.setattr(cli, "REPLACEMENT_MARKER", marker)
+    monkeypatch.setattr(cli, "REPLACEMENT_OUTCOME", outcome)
+    monkeypatch.setattr(cli, "VALIDATION_MARKER", validation)
+    prior_bytes = marker.read_bytes(), outcome.read_bytes()
+    approved = {"validation_attempts": 1, "validation_of": {
+        "outcome_sha256": cli.sha(outcome), "marker_sha256": cli.sha(marker),
+        "plan_sha256": cli.sha(previous / "plan.json")}}
+    with cli.attempt_marker(approved).open("x") as stream:
+        stream.write("one newly authorized automatic validation")
+    with pytest.raises(FileExistsError):
+        cli.attempt_marker(approved).open("x")
+    assert (marker.read_bytes(), outcome.read_bytes()) == prior_bytes
+    for invalid in ({**approved, "validation_attempts": 2},
+                    {**approved, "replacement_of": {}},
+                    {**approved, "validation_of": {}}):
+        with pytest.raises(ValueError, match="validation"):
+            cli.attempt_marker(invalid)
+    (previous / "plan.json").write_text("changed")
+    with pytest.raises(ValueError, match="validation"):
+        cli.attempt_marker(approved)
+
+
 def test_telemetry_failure_stops_before_more_model_requests():
     class Client:
         model_calls = 0

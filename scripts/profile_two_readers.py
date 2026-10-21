@@ -39,6 +39,8 @@ CONFIG = {"MAX_NUM_SEQS": "2", "MAX_CONCURRENCY": "2", "MAX_MODEL_LEN": "8192",
 MARKER = ROOT / "out/two-reader-profile-LIVE_ATTEMPT"
 REPLACEMENT_MARKER = ROOT / "out/two-reader-profile-REPLACEMENT-1"
 PRIOR_OUTCOME = ROOT / "examples/two-reader-profile/outcome.json"
+VALIDATION_MARKER = ROOT / "out/two-reader-profile-AUTOMATIC-VALIDATION-1"
+REPLACEMENT_OUTCOME = ROOT / "examples/two-reader-profile/retry-1/outcome.json"
 
 
 def sha(path):
@@ -156,7 +158,21 @@ def authorization(output, plan):
 
 
 def attempt_marker(approved):
-    """One explicitly approved replacement; never reset the original allowance."""
+    """Fixed, single-use allowances; none can reset an earlier attempt."""
+    if "validation_of" in approved:
+        if "replacement_of" in approved:
+            raise ValueError("validation cannot also request a replacement allowance")
+        prior = json.loads(REPLACEMENT_OUTCOME.read_text())
+        previous = Path(REPLACEMENT_MARKER.read_text().strip())
+        expected = {"outcome_sha256": sha(REPLACEMENT_OUTCOME),
+                    "marker_sha256": sha(REPLACEMENT_MARKER),
+                    "plan_sha256": prior["plan_sha256"]}
+        if (approved["validation_of"] != expected
+                or approved.get("validation_attempts") != 1
+                or prior.get("shutdown_verified") is not True
+                or sha(previous / "plan.json") != prior["plan_sha256"]):
+            raise ValueError("validation approval does not bind the consumed replacement attempt")
+        return VALIDATION_MARKER
     if "replacement_of" not in approved:
         return MARKER
     prior = json.loads(PRIOR_OUTCOME.read_text())
