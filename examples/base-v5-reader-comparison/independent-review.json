@@ -1,0 +1,22 @@
+{
+  "reviewer": "/root/qwen_live_final_review",
+  "reviewer_kind": "model_assisted_independent_agent",
+  "human_review": "not_performed",
+  "source_review": "All twelve questions and every reference context across four pinned cached papers. No factual mapping errors; narrowed AWQ device question and clarified context-processing latency.",
+  "implementation_review_scope": [
+    "sandbox boundary and no host execution",
+    "matched model routing and default V1/adapter compatibility",
+    "request/token/attempt/watchdog limits and cleanup reuse",
+    "reference leakage and immutable preparation",
+    "claim review semantics, token telemetry coverage, plan/runtime/packet binding"
+  ],
+  "findings_fixed": [
+    "Require per-request usage coverage rather than positive cell aggregate",
+    "Copy and hash references at preparation; export exact frozen rubric",
+    "Bind review to prepared plan content and runtime plan SHA",
+    "Validate exact complete case/arm schedule",
+    "Reject results overwrite before saving a repeated run",
+    "Pin review CLI source alongside runner source"
+  ],
+  "final_review": "No remaining blockers; no provider or GPU actions performed by reviewer."
+}

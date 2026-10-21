@@ -127,3 +127,22 @@ blank grades, inconsistent pass/error labels, changed references, packets,
 results or plan identity. Record partial/fail for unsupported or misbound clauses,
 even when every quoted character exists. A model-assisted result remains
 provisional; independent human review remains unperformed.
+
+## Completed local verification
+
+Transport tests: 19 passed. Final focused tests: **40 passed**, including both
+aliases through real MCP and real Docker with scripted model responses, uncertain
+dispatch without retry, prior-result retention, incomplete token coverage and
+reference/runtime/schedule tampering. Full offline repository suite: **1,701
+passed, zero skipped**, with three existing SWIG deprecation warnings. Ruff and
+`git diff --check` passed. All ten protected file hashes remain unchanged; the
+V1 preamble retains SHA-256
+`233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71`.
+
+The independent implementation reviewer reported no remaining blockers after
+fixes. Initial prompts range from 2,472 to 2,516 tokens, identical across the
+paired arms. The preparation pins 150 implementation files. Full evidence is in
+[validation.json](../../examples/base-v5-reader-comparison/validation.json) and
+[independent-review.json](../../examples/base-v5-reader-comparison/independent-review.json).
+There are **no new live comparison results**. Scripted responses do not show
+whether base or v5 is better. The live-attempt marker has not been created.

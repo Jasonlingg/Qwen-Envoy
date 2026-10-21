@@ -1,0 +1,438 @@
+{
+  "schema": "reader-comparison-v1",
+  "status": "prepared_not_run",
+  "model_calls": 0,
+  "activation_approved": false,
+  "limits": {
+    "questions": 12,
+    "arms": 2,
+    "attempts_per_cell": 1,
+    "action_steps_per_cell": 6,
+    "requests_per_cell": 6,
+    "requests_total": 144,
+    "input_tokens_per_request": 7168,
+    "output_tokens_per_request": 1024,
+    "input_tokens_reserved_total": 1032192,
+    "output_tokens_reserved_total": 147456,
+    "watchdog_seconds": 900,
+    "inference_resubmissions": 0,
+    "max_active_gpu_workers": 1
+  },
+  "arms": {
+    "base": "envoy-base-only",
+    "v5": "envoy"
+  },
+  "models": {
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "thinking": false
+  },
+  "endpoint_id": "q05pjrvguakieg",
+  "cases": [
+    {
+      "case_id": "paged-blocks",
+      "paper_version": "2309.06180v1",
+      "kind": "supported",
+      "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?"
+    },
+    {
+      "case_id": "paged-traces",
+      "paper_version": "2309.06180v1",
+      "kind": "condition_binding",
+      "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?"
+    },
+    {
+      "case_id": "paged-target",
+      "paper_version": "2309.06180v1",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search."
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "paper_version": "2305.14314v1",
+      "kind": "supported",
+      "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients."
+    },
+    {
+      "case_id": "qlora-dq",
+      "paper_version": "2305.14314v1",
+      "kind": "condition_binding",
+      "question": "For the described blocksize-64 weights, how does double quantization change average quantization-constant overhead in bits per parameter, and what blocksize is used for the second quantization?"
+    },
+    {
+      "case_id": "qlora-target",
+      "paper_version": "2305.14314v1",
+      "kind": "target_gap",
+      "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure."
+    },
+    {
+      "case_id": "flash-warps",
+      "paper_version": "2307.08691v1",
+      "kind": "supported",
+      "question": "In the forward pass, how does FlashAttention-2 split Q, K and V across warps compared with the original split-K scheme, and why does that help?"
+    },
+    {
+      "case_id": "flash-triton",
+      "paper_version": "2307.08691v1",
+      "kind": "condition_binding",
+      "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?"
+    },
+    {
+      "case_id": "flash-target",
+      "paper_version": "2307.08691v1",
+      "kind": "target_gap",
+      "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified."
+    },
+    {
+      "case_id": "awq-profile",
+      "paper_version": "2306.00978v6",
+      "kind": "condition_binding",
+      "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation."
+    },
+    {
+      "case_id": "awq-protocol",
+      "paper_version": "2306.00978v6",
+      "kind": "supported",
+      "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?"
+    },
+    {
+      "case_id": "awq-target",
+      "paper_version": "2306.00978v6",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing."
+    }
+  ],
+  "schedule": [
+    {
+      "case_id": "flash-triton",
+      "arm": "base"
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "v5"
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "v5"
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "base"
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "base"
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "v5"
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "v5"
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "base"
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "base"
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "v5"
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "v5"
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "base"
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "base"
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "v5"
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "v5"
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "base"
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "base"
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "v5"
+    },
+    {
+      "case_id": "paged-blocks",
+      "arm": "v5"
+    },
+    {
+      "case_id": "paged-blocks",
+      "arm": "base"
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "base"
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "v5"
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "v5"
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "base"
+    }
+  ],
+  "papers": {
+    "2305.14314v1": {
+      "snapshot": "/Users/jasonling/Documents/GitHub/rlm-explorer/out/base-v5-comparison-20261020/library/views/928c5d16a4454aa2508edadc",
+      "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+      "assignment": {
+        "version": "assigned-paper-v1",
+        "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+        "doc_id": "arxiv_2305_14314v1",
+        "arxiv_id": "2305.14314v1",
+        "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+        "coverage": "html_paragraphs",
+        "counts_as_source_inspection": false
+      },
+      "document_sha256": "04eb8938f3ff92103676a097a86118290f1284cb44b8c9287d8d2ecc65882201"
+    },
+    "2306.00978v6": {
+      "snapshot": "/Users/jasonling/Documents/GitHub/rlm-explorer/out/base-v5-comparison-20261020/library/views/3dc7bea98965a79ee4f4364d",
+      "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+      "assignment": {
+        "version": "assigned-paper-v1",
+        "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+        "doc_id": "arxiv_2306_00978v6",
+        "arxiv_id": "2306.00978v6",
+        "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+        "coverage": "html_paragraphs",
+        "counts_as_source_inspection": false
+      },
+      "document_sha256": "39fa36b9d1290766c5fab40068d1600742ba18884c3f5528f2b1410b5c1c9911"
+    },
+    "2307.08691v1": {
+      "snapshot": "/Users/jasonling/Documents/GitHub/rlm-explorer/out/base-v5-comparison-20261020/library/views/65fdfc823297889773243a34",
+      "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+      "assignment": {
+        "version": "assigned-paper-v1",
+        "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+        "doc_id": "arxiv_2307_08691v1",
+        "arxiv_id": "2307.08691v1",
+        "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+        "coverage": "html_paragraphs",
+        "counts_as_source_inspection": false
+      },
+      "document_sha256": "fd18598fcda9561d4e612811b362f50e0c7de1b032977263e51591ec349451a7"
+    },
+    "2309.06180v1": {
+      "snapshot": "/Users/jasonling/Documents/GitHub/rlm-explorer/out/base-v5-comparison-20261020/library/views/11959ae06a296f48078cccad",
+      "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+      "assignment": {
+        "version": "assigned-paper-v1",
+        "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+        "doc_id": "arxiv_2309_06180v1",
+        "arxiv_id": "2309.06180v1",
+        "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+        "coverage": "html_paragraphs",
+        "counts_as_source_inspection": false
+      },
+      "document_sha256": "162d90dc619e688a6ab9781bafc5c00fbb61ce9eb2217d3cc26347a630596995"
+    }
+  },
+  "sandbox_image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+  "guidance": "focused-v1",
+  "prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "hypothesis": "The existing v5 adapter improves supported answering over base Qwen3-8B under the same assigned-paper MCP harness, beyond merely increasing refusals.",
+  "expected_signal": "More of the eight answerable cases meet every source-visible claim requirement, without more condition swaps, fabricated numbers or execution failures.",
+  "decision_rule": "Exploratory only: at least two additional supported-answer passes out of eight, no additional condition-swap/fabricated-number cases or execution-failure episodes, and no more than 25% higher total reported tokens or median paired latency. Require all 24 cells and source-visible review; missing telemetry/reviews means inconclusive. Report four target-gap cases separately. A favorable signal only justifies an untouched evaluation; it does not prove improvement or authorize training.",
+  "split": "New assistant-authored development questions; no established training/pretraining disjointness. Questions and references frozen before inference.",
+  "reward": "not_computed",
+  "human_review": "not_performed",
+  "budget": "One exclusive session, 24 fixed cells, six durable reserved requests each. All format retries count; no resubmission after uncertain dispatch. One A5000; 900-second watchdog includes cold start, then job/container cleanup and shutdown readback. Not a hard dollar ceiling; current rate and separate activation approval must be recorded before running. Stop on infrastructure failure; retain prior evidence.",
+  "provider_dollar_cap": false,
+  "actual_spend_usd": null,
+  "implementation_sha256": {
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/reader_comparison.py": "3e5bc009ca411b8b85792741498218465dcfe8e88cbcd28bf67f57100d679110",
+    "scripts/review_reader_comparison.py": "0927c4086081d026064aaf7b9c181d7568716be458d6d99101ba435d078c0f01",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/env/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/env/corpus.py": "91e264a1f9307724e3280f02bdc404fd84435f5f2ba31424e78dfbaae573bc4f",
+    "src/env/document_env.py": "0a09b9963e0bf78c52aa6cf2378b12e1a27f2d4fb509b2624119f5fdf2b56a4b",
+    "src/env/evidence_state.py": "69789ccd04a08b84a3dc50e01bba8ced2e71a333ebe756404da2b83df9a62dbe",
+    "src/env/repl.py": "3ae63a35f6d57cd20b63e4c3acf838bacff5bef409b0a1e85852bd23867d43db",
+    "src/env/repl_worker.py": "f0afaf86c857f3bea899834aef5d3108f8b27aaf1cda487761708e4d1a081caa",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+    "src/env/tools.py": "56128534a3f24ff1d95008a473be80e28c843d0f7ebdfb013733361771d96208",
+    "src/env/tools_v2.py": "6b33102cd149317832497835055c79f414f020065f141930aaf733224d29fa22",
+    "src/env/verifiers_env.py": "fa3f423ba32336f0c676164ab7f4f7e16e423d390d4baec6290c2e9cf7507d6e",
+    "src/eval/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/eval/abstention.py": "d54c365df89b102cc9b452e33b5e1c50d0218b89883feb52329288ef96bfc22f",
+    "src/eval/artifacts.py": "f0913432ce451e64b11af5b64797ad73d9338522a86b4ffebc72a5a7c47df155",
+    "src/eval/assigned_smoke_candidate.py": "5506455697f195bdd2ff2c3782e76dc073f6072b7bbb3be177b4aeca49cd9f19",
+    "src/eval/assigned_smoke_check.py": "fcea129a053429e6155c9c921b59feb6eb78402b547264a9692a00be6c40c92a",
+    "src/eval/assigned_smoke_cleanup.py": "f50cc51f0da706ddc72a82b3317070a32eb4efae108658d58246945726b18212",
+    "src/eval/assigned_smoke_control.py": "0b06ef51c2bf7ce18b68b92d788f6446baebe27b471b0013244e2e0ce64e2d5c",
+    "src/eval/assigned_smoke_lifecycle.py": "440275abaaae99d5d48d26c159bc3a2cc5b333466e9383d9cf292b5b38b37572",
+    "src/eval/assigned_smoke_mcp.py": "74ca331cc302da6a7755d28ea133e8a5299757dc4dd32b5d1c3050702ee70448",
+    "src/eval/assigned_smoke_plan.py": "b1f9d5952958c7258d6fb456bf12f8d74bb5750ff0ed3ad3c9b3e654ae3ccb78",
+    "src/eval/assigned_smoke_run.py": "d11ad8d694635a7d3d50ea1a842560c39851f1e39c72d8c7b270c4c00952e022",
+    "src/eval/harness.py": "465d290c31e124e86d5c16f512b0b6fc708805449a8b3e59a8bc5df5c19bf099",
+    "src/eval/harness_replay.py": "03298429d6a09298923d8edc84c608f1cd36a2c429aa31ea87d43d213d1ca778",
+    "src/eval/harness_replay_checkpoint.py": "224df771e9ec8ab7b02e00f204f168bd8886ae1634477367faf7aab25e0b6250",
+    "src/eval/hashing.py": "a2530f97624b22b00df1ae8b66b90433c694626387c203f141c0b25e239373be",
+    "src/eval/known_paper_diagnostic.py": "147f1741e78ff8130e8cf9333d6e868f9f53c891b9d6139c14551850ea8ff1d1",
+    "src/eval/live_harness.py": "6b225524d736ff6f6c801886fc323a5447184bd83b57079e45015c1631a36502",
+    "src/eval/native_pilot_case.py": "15a2d558f874869f25bea37363dc0d91e75f37081bd05bf8e6c1627bc1086b1e",
+    "src/eval/native_pilot_client.py": "b8ce5f34c3eafcd1b4223ab6fe46c8ac9c154b8c644985fd235724a7ad3ee7f1",
+    "src/eval/native_pilot_config.py": "5a92912d8d8a3214b660c896d0feff50783495f57244c306b973c229da41772d",
+    "src/eval/native_pilot_events.py": "e3d35f683c8136f18c1ee884b2c266ea4d8d14ca7a2cce527d40bfdfe28b5a36",
+    "src/eval/native_pilot_packet.py": "2613d0637ba9a212816b6712493166c47949e6a2aa704312d91a43d2da214d5d",
+    "src/eval/qasper_reward.py": "6c68b5a307dfda96073f83573c53a5d630879bd0749493efe7caa076710e0122",
+    "src/eval/reader_comparison_plan.py": "c543b4342d5dc2aeab1ec3811cbac2c952f5c5cce40e86c710f4647ad961b162",
+    "src/eval/reader_comparison_review.py": "ac21f1802ab9c55e50a70f6a1139c381172eb91b19f6c2e7a44b4014db88a7c8",
+    "src/eval/reader_comparison_run.py": "d5ebaadb154bb3744a375c08297755bf3253d9417eaaefc4f329f719595a083e",
+    "src/eval/report.py": "4debd1eee38d8a53e19091622af9929d9db42621edc85e275c69ccf71327d863",
+    "src/eval/research_pilot_budget.py": "2a613ab2ee540082e9fcb8d56730daa51d0ba441c5fd86a30bc10fab47854356",
+    "src/eval/research_pilot_bundle.py": "2aad2aeb1bd6b61fd95b4734222f0540205267cab4d6a49c2182ef9487ffeb37",
+    "src/eval/research_pilot_host.py": "f55d0d26ddaa603ae356cd73bc0884037c3dc81daec1154e1d57fac1cc654c4c",
+    "src/eval/research_pilot_preflight.py": "6172f05a995bbf95ca4767ebf23c0cf6ad84c75e928db6e40890783694a0a7bd",
+    "src/eval/research_pilot_probe.py": "d98e3ee090ee049c9f60581fd9a75d22bb7df2b5240f89a90c83e18388ac9c83",
+    "src/eval/research_pilot_review.py": "8b524cbff304f5dd6b43726317576c1a0a1d381c64563ef63f981ad5794b8809",
+    "src/eval/research_pilot_run.py": "eaa3f31b7b36cb4b25175b8fbe970901fd502c47d7f9eebf40f3e1d63c5fb81f",
+    "src/eval/research_pilot_runtime.py": "718aac8f740739cba2b117b5099f3e720fb44c6839de820ea97eaee270a4fe62",
+    "src/eval/research_pilot_tools.py": "b80c663324db9e42e2865d6243a463f6c6173a7bee41ed445ef49d7be6f90444",
+    "src/eval/research_review.py": "d00edea744f68703006f4effe14f5cb837306e3edc46160758ba7f9ae1b1ab99",
+    "src/eval/scorer.py": "c1d58104f1e201e79577659393c64d43c1e6da191a8318f5d73bf13f1252aa04",
+    "src/eval/sft_quality.py": "9ff3f63c09072b4756f993287e0c06f1b7455c5c9072116317c6a367a08ea1cb",
+    "src/harness/__init__.py": "0c3e68cece7772d917d111b2466a724fb3ec41e0df78905c27d55a4e2ad01488",
+    "src/harness/draft.py": "ab7133b4f375c38b47f6ff1e1f6caba2451fee323b5d580906fc1dac4aa1719b",
+    "src/harness/evidence.py": "fc1cf3a2e1ac0d03b6dc3edc7688374d09962a28aef4aa2989165618feeb6af5",
+    "src/harness/pipeline.py": "c356222243886abf341b77d8b063f01f03db9acd07e2133cc16f446432fb8e6d",
+    "src/harness/run_record.py": "f87884f08e7d6a87b8ca77e2889409146eb0b89a796b43a596cebd7229c4f9ed",
+    "src/harness/source.py": "90ef31edc16f561a2e9c9f49c5161fa8ff5858562d4e847a23553882717bd0ae",
+    "src/harness/staging.py": "c7070b9d5cd8aa24ab221ad33b5de59e4eaec62c8ce67a00e4967bb1a60fa7c0",
+    "src/policies/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/policies/bounded_http.py": "00cee4749d854a1a7f171b397e66108207add21edecd64cd45c05103c0a9de3a",
+    "src/policies/claude_action_cleaning.py": "0d1589d8b40055227f862bf61898497d99ed61b04bf3a31be3dd770eca75d609",
+    "src/policies/claude_policy.py": "e83ac30dc987568b033efabecb9b0d7036945d569f36bea56a8023771bcdfffc",
+    "src/policies/claude_prompts.py": "e1f6eeed58152bc4db26b89d6145e15f217891150977ef8e5d4b0e6f233d75d5",
+    "src/policies/code_execution.py": "697eea843fb2b3d1785816b51462264486189381d865459d09bf94b85d1253de",
+    "src/policies/forced_first_read.py": "b2e70adade8d2673dfdaf50f67a15a5cd1688b33b3880178d2be34854f68100b",
+    "src/policies/grpo_policy.py": "abb03e922efb3ab3e797045a343279864a6ad0f6b385d8ef15b90dab0bfcdbcd",
+    "src/policies/naive_rag.py": "ac1124dc40f98c2b0b59358450eec101ec39ed060b7e8c7988017d05090fd949",
+    "src/policies/openai_compatible.py": "a75e0446df2de28cda8b9ce85e5e4ae2de40b1684fa8e0e29124ff3e83b781d6",
+    "src/policies/protocol.py": "cd0389359324c643c793f52b9c53e78983620286b97843522b21d9903f754af9",
+    "src/policies/qwen3_chat_template.py": "585402e9d9a627a3828bcf3cfb68f20495fd3a91f077d1c46a4c41cd47cd4673",
+    "src/policies/qwen_base_policy.py": "545d9db62df821722c6d655e7c2ceacd7e683509b52b40de363566b4a76888b3",
+    "src/policies/qwen_common.py": "6d163a078c675fae28082870d0739ab274ed313cf4f81809f715df402e362826",
+    "src/policies/qwen_rag.py": "2a7b6716651ff41612eed0a1ebc13ea43db5676ae84c96d85e57207adedc2be2",
+    "src/policies/qwen_sft_policy.py": "e022369fe0266c5ecc648eaf10dc4fe8115dd9b4738c025ae3d17ef365a70274",
+    "src/policies/registry.py": "ddcf9afebcc434a21b607c032f486047bb9d6037a1af15b1e980215019e219f1",
+    "src/policies/runpod_queue.py": "efd0ac37b390bcf455233f0b1947e1bf2aa60f2525aea1b47aa2896c1e25bca2",
+    "src/policies/single_shot.py": "6aedd7609baca1679d4ed81b5db1b16e3beee25b188ee63ea44273db7803f948",
+    "src/policies/sparse_rag.py": "7a6120e1e578adb12c6a56b57702caa1d1f811efc8ca72a276821ab63144e41e",
+    "src/policies/stuffing.py": "2feeb1fd5f5e56e82fb273187fe0d6164410ea249f7fcc1fa27ef592af251e7e",
+    "src/policies/teacher_budget.py": "959ccbfd65e5a1a37ad5cf3605e1673cf275d1b5429429385806dbf511e57e33",
+    "src/policies/teacher_hint_policy.py": "6f88b736362dd9ecf567c6d1fd04b97790570427be44ee0250ba3386a36fb9c6",
+    "src/product/__init__.py": "031070affa859a01105f6a4030b2095c1d378839c598ec3389c68e711310d257",
+    "src/product/arxiv_ids.py": "e5eeee035025a0d938d35475b668602d42cc6933ef3bf54781c2e591993a7767",
+    "src/product/arxiv_ingest.py": "ed19991e3f091d91cc5feee94a9457920330a6963d0a16a669a867b653169273",
+    "src/product/arxiv_library.py": "8bb596b24d93453cfb5da233fe2bcbb4f0c67f06a9a06b9d78da1c687a89d1dc",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "src/product/arxiv_service.py": "52a3c52ce4fcace50fdf0dcf12fae13f2fb44629830e9d242ab24b2cd753b25a",
+    "src/product/assigned_actions.py": "e01e5336459153dfbb694ff03ee4902babb7c43d6733bc823ca7acaad869d09f",
+    "src/product/assigned_guidance.py": "514e4c230272eee44e4fede448459727290fd25a48abdb0aff2d2d76481035b9",
+    "src/product/assigned_reader.py": "a98ca9b70358cde415b1c2bdc7cafa516e8cba9af916787e2357be9fb3460414",
+    "src/product/chat.py": "8c6c998d843f6aa19a21b914e30e2b5702d1df2411994d649cda8cff1a4e200f",
+    "src/product/evidence_search.py": "f40dfa6fb53d0463ee07672baf6bc92c170f4ea740a362f6a89284f43e2436a2",
+    "src/product/graph.py": "06e83f9ed209b12df5860e332640e94a68b4f007724eaa2752dabcf788877700",
+    "src/product/harness_v2.py": "14e9fee1577834ccea97f2db66277619014e92c485d4e8fe48f5a9de2a142ea7",
+    "src/product/impact.py": "dd2980937d315e38a8135a6d8bc858bd85a558668a32ca2bc45acb8ab34f703b",
+    "src/product/learning_lab_api.py": "8423a7d5cfa8c9a992fbb0c3ce4142a4ae6c1a63c533ed87bb791d7db3ce917a",
+    "src/product/learning_thread.py": "853500ac6f6109802e50ab3394e00fc5ec151f481317e6b75fa82d061368c2ed",
+    "src/product/memory.py": "8bbfee7973386409d7ccd3ac58d035f542a658c494b2fb7122233d88927e3898",
+    "src/product/ml_experiment_comparability.py": "3c0c16e9d3f87080ded26fcb10fc2b2ea267499afcffc1e6af54df047f535c32",
+    "src/product/ml_experiment_compare.py": "fa8e3ba632a7db784b69f393ae8fcf0b2cdaaf7de0a1c6b005617fc80f659b02",
+    "src/product/ml_experiment_directories.py": "bf55e45feacb6d92f0f2bb71be561ede42349e778046117f97aca35a58c104b7",
+    "src/product/ml_experiment_evidence.py": "f8c039927db99d59d7ba5397490f70680f32e3f8b217b3e5f5d9e4073a819a05",
+    "src/product/ml_experiment_io.py": "789982484b6a7624375140dbcc3486c87c4d4a9cecac4b21d190dcf491c84c18",
+    "src/product/ml_experiment_markdown.py": "a1bcf4c84c22886106c8112f5f806bfaf9041c9312ba2a93ea9ed832bc65094b",
+    "src/product/ml_experiment_measurements.py": "1f985ab4eb8a04b061d0b709686c8e17a9b71da535e0f62fda6b7ee4abcecfde",
+    "src/product/ml_experiment_models.py": "330675495fa513d26712ac81f8c029beecaa8121d372157a3d56fd71bd40162b",
+    "src/product/ml_experiment_outcomes.py": "e150b2b29daf3c52221e9aa2422e1ac389f2296f778f34459731124837082d96",
+    "src/product/ml_experiment_receipts.py": "ebf8ba8b8d18e70e80bb20fafeb114b314948e2cb5232015491186eae35adb94",
+    "src/product/ml_experiment_result_evidence.py": "a1719243c952ad2211c1270dc4381f776861248e780f51e9da40017838888d9b",
+    "src/product/ml_experiment_results.py": "381ad2e2342dbe3fb0508cbdfb499daed8ac4161943b344eba5678856336ec16",
+    "src/product/ml_experiment_sources.py": "d43382399d9d24b78824cc19a1c46015fa8f5bb85152b4cf072304570e1fde0e",
+    "src/product/ml_experiment_store.py": "5ecf92c28a95d1b6727df42a77812a02c6078d31452536b3f67137aa6e2660f9",
+    "src/product/ml_experiment_types.py": "2bbf44cda113fd4f93c2009d9356ecb5e7b07b92febebf7b3a5eca0c3de944db",
+    "src/product/nemotron_chat.py": "9fe349d93dd7aa37e7ea7c872a8a2ce7c6221164ac8279370a30017e2f06e65d",
+    "src/product/net.py": "6f5e044a7095a0fda41dcf7d2318bd9b4da9811e81524020510ad89bbd085837",
+    "src/product/packet_verifier.py": "51119bb4a9cb4d98bda0177e417cf46f4bae01488d237c19424f4dd910db0c4c",
+    "src/product/paper_assignment.py": "a4072074ae6db9db1f1912e6d52d326178736a728108da6e193a3c5e6a9994f4",
+    "src/product/paper_discovery.py": "335028b9379a78e983cb2a95e002d66478955b1949bf69fb9b904a127cc974ca",
+    "src/product/parallel_readers.py": "537f551b283b11330d806b0e98bb90fc08916112cd505b37d3cb114e444716c1",
+    "src/product/qwen_investigator.py": "43734177d3881786e54b4b30f7c074e888e33c1d60d6af5fd575cf7b1a19d391",
+    "src/product/reader_gaps.py": "3f6ac543098eeaccca97a72b04d0a4f9584e23cb10c9f4d5afa95e47480f70b8",
+    "src/product/reasoner.py": "967f308042f63852680c36a9e62660341e0ece1c831a414efa4b86dc2792571b",
+    "src/product/submit_call.py": "7e2a1faa91e8b62f740b2e2d22fe7e9abba90348afc54903142ce1878d04096b",
+    "src/product/system_map.py": "e90c82ae23dd081583635ad6f3b7de64a68e67c0670353fb76607c8b5889e8cc",
+    "src/product/weekly_digest.py": "afa80973910abeaebf38b7d51fd4f8d4bed8318980aad958212a02f23263614f",
+    "src/research/__init__.py": "c6c55d790b017fdea3c48bf2ab0a11d9f3c5ca254e2087267f12433c33190af1",
+    "src/research/action_schema.py": "7de97e34de084cca878231b29075b2a37078e853bd2d10d12a899a82d9a82526",
+    "src/research/agent.py": "aac93560ccad4a59563e9515d7687f5f70deaa863a8906f7fe1267176a5af911",
+    "src/research/benchmark.py": "6c9ea304d37bfb54d74f96cf5fe165a0cea5931d7f2dd23071a0aca356a77068",
+    "src/research/code_exec_packet.py": "f5c4263a44489297ba318d73bd8a83dae25aec24eb00f87b8f8b9dd1c0908664",
+    "src/research/demonstrations.py": "83834123aade450a2d36a2fac0dc1a89ba9dd60424b72278e63b702a2697ce14",
+    "src/research/escalation.py": "908e764950ba71d9d5a21ce9169ae92f8b41b12e8c786d71fe4ec989fdcfa500",
+    "src/research/explainer.py": "0c5cd771c32b6c759c69f1c28af8e791bf7975dbd23001ef1420cd646e27ad34",
+    "src/research/file_sources.py": "7c3f87975fcba2da462b0f71ba14ba28e8d770a97907ebf29cf87aff30aa7de3",
+    "src/research/knowledge_tool.py": "426bc04192d5be3c5544975bd50092a4a7cfc237676137e833288f544627d43f",
+    "src/research/papers.py": "2597ccb9f6f8276da32726ced39d45e7abc030e95102f21b0ce4f99a8a966411",
+    "src/research/qasper.py": "808e57b7bf21adf58c6779847c2333bab75fd17a8518db791e4e3c3f83a3e4ad",
+    "src/research/qasper_demonstrations.py": "84170949832b4ffab87dea7fa519331a55b01ea837e6593fcd828c21efd48679",
+    "src/research/qasper_evaluation.py": "8a16afa025a10efab7229be3c226a5a0a3c49f8dec971783e55b21e386b39729",
+    "src/research/qasper_retrieval.py": "bbc66fd886b15778076752860131eebcf6ee19f966c698c9102dd285dea1a38b",
+    "src/research/qasper_smoke.py": "7a6015e956daae93860451a755c56f5fae940de9c8d2dffd91d436cd7900999e",
+    "src/research/radar.py": "d1c38637d7d78790f550aaa2c2832b0453374d02ff7348bbf0221525f1596d68",
+    "src/research/reranker.py": "1f1dc29b2a8cce8b622569dfeb3a390eb2603a8b34413b758bbc3c11e8ecb300",
+    "src/research/retrieval_eval.py": "e8f785c7250359da7dc5f66b14adb2cffca2d30089c43f69c48c3c6642dc1e94",
+    "src/research/tools_runtime.py": "5e60011ae721d53b7e1c05eba38f5a004fa9b58fc07079a30ec5b40eff10e046",
+    "src/research/vault.py": "7090407240225803672b060b7e54163dcd0cae014717533239d117a5f0a871d1",
+    "src/research/web_sources.py": "3aff578f527b3984d1837d2c5bad7156549a64eac6826837eba92d0aac371ea4"
+  },
+  "data_sha256": {
+    "cases.json": "96527fd3dc7d81c89ecefedbc18e2c46aab3be7b502c772ace167b69f4531229",
+    "references.json": "7c7d58cf204b1a55ba502bf22ed3ea880b666131f01a0f3f4e4a18e726bcd343"
+  },
+  "inputs_sha256": "c1f9bdb80fc3db62ac8d1e2804745e4d94d9f0e29472f074fb5bdabb4d9bc1dd",
+  "references_sha256": "22189d39298b345303b20526effbaa4d5924f3625ee6e31574a9cf971ccd9573"
+}

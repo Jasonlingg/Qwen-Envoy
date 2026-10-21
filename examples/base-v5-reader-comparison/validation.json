@@ -1,0 +1,66 @@
+{
+  "status": "prepared_not_run",
+  "implementation_commit": "47b28426a5c334f62c4169eacf250c6b54fc44a9",
+  "transport_commit": "c41316d",
+  "prepared_sha256": "99e4ff20a37323b92ff86dc5e4d3e40ca61dd30fce7a70456ad693b9dcd90b88",
+  "checks": [
+    {
+      "command": "python -m pytest -q tests/test_runpod_queue.py tests/test_runpod_queue_models.py",
+      "result": "19 passed in 0.25s"
+    },
+    {
+      "command": "ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q tests/test_reader_comparison.py tests/test_reader_comparison_review.py tests/test_runpod_queue.py tests/test_runpod_queue_models.py",
+      "result": "40 passed in 14.45s; includes real Docker with scripted model responses for both aliases"
+    },
+    {
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+      "result": "1701 passed, 0 skipped, 3 existing SWIG deprecation warnings in 71.44s"
+    },
+    {
+      "command": "python -m ruff check src/eval/reader_comparison*.py scripts/reader_comparison.py scripts/review_reader_comparison.py tests/test_reader_comparison*.py tests/test_runpod_queue_models.py",
+      "result": "All checks passed"
+    },
+    {
+      "command": "python scripts/reader_comparison.py check --prepared examples/base-v5-reader-comparison/prepared",
+      "result": "24 frozen cells valid; no model calls; activation_approved=false"
+    }
+  ],
+  "initial_prompt_tokens": {
+    "paged-blocks": 2483,
+    "paged-traces": 2484,
+    "paged-target": 2516,
+    "qlora-dtypes": 2472,
+    "qlora-dq": 2489,
+    "qlora-target": 2512,
+    "flash-warps": 2486,
+    "flash-triton": 2482,
+    "flash-target": 2510,
+    "awq-profile": 2498,
+    "awq-protocol": 2488,
+    "awq-target": 2514
+  },
+  "source_files_pinned": 150,
+  "v1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "preserved_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "independent_review": "independent-review.json",
+  "actual_model_calls": 0,
+  "gpu_activations": 0,
+  "training_runs": 0,
+  "live_attempt_marker_created": false,
+  "actual_replay_results": "No new fixed-action replay experiment. Scripted action execution is plumbing verification, not fresh model behavior.",
+  "live_comparison_results": "Not run. Prior focused v5 run remains 1/2 passes and is not part of this comparison.",
+  "actual_spend_usd": null,
+  "semantic_support": "not_reviewed",
+  "human_review": "not_performed"
+}
