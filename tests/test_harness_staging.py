@@ -16,13 +16,25 @@ def _draft(body: str = "# Draft\n") -> str:
     return f"---\nreview_status: agent_authored_draft\n---\n{body}"
 
 
-def _stage_in_process(vault: str, result_queue: multiprocessing.Queue) -> None:
+def _stage_in_process(vault: str, result_queue: multiprocessing.Queue, barrier) -> None:
+    identity = None
+    original = staging.fcntl.flock
+    def capture(fd, operation):
+        nonlocal identity
+        if operation == staging.fcntl.LOCK_EX:
+            info = staging.os.fstat(fd)
+            identity = (info.st_dev, info.st_ino)
+        return original(fd, operation)
+    staging.fcntl.flock = capture
     try:
+        barrier.wait(timeout=10)
         staging.stage_drafts(Path(vault), "same-run", {"Papers/a.md": _draft()})
     except staging.DuplicateRunError:
-        result_queue.put("duplicate")
+        result_queue.put(("duplicate", identity))
     else:
-        result_queue.put("staged")
+        result_queue.put(("staged", identity))
+    finally:
+        staging.fcntl.flock = original
 
 
 def test_stages_complete_batch_and_hash_manifest_inside_inbox(tmp_path: Path) -> None:
@@ -227,18 +239,57 @@ def test_post_publish_fsync_failure_reports_visible_batch(
     ]
 
 
-def test_duplicate_run_is_rejected_across_processes(tmp_path: Path) -> None:
+@pytest.mark.parametrize("start_method", ["fork", "spawn"])
+def test_duplicate_run_is_rejected_across_processes(tmp_path: Path, start_method) -> None:
     vault = tmp_path / "vault"
     vault.mkdir()
-    context = multiprocessing.get_context("fork")
+    context = multiprocessing.get_context(start_method)
     queue = context.Queue()
+    barrier = context.Barrier(3)
     processes = [
-        context.Process(target=_stage_in_process, args=(str(vault), queue)) for _ in range(2)
+        context.Process(target=_stage_in_process, args=(str(vault), queue, barrier))
+        for _ in range(2)
     ]
-    for process in processes:
-        process.start()
-    for process in processes:
-        process.join(timeout=10)
-        assert process.exitcode == 0
-    assert sorted([queue.get(timeout=2), queue.get(timeout=2)]) == ["duplicate", "staged"]
-    assert (vault / "_inbox" / "same-run" / "Papers" / "a.md").read_text() == _draft()
+    try:
+        for process in processes:
+            process.start()
+        barrier.wait(timeout=10)
+        for process in processes:
+            process.join(timeout=10)
+            assert process.exitcode == 0
+        results = [queue.get(timeout=2), queue.get(timeout=2)]
+        assert sorted(status for status, _ in results) == ["duplicate", "staged"]
+        assert results[0][1] is not None and results[0][1] == results[1][1]
+        assert (vault / "_inbox" / "same-run" / "Papers" / "a.md").read_text() == _draft()
+    finally:
+        for process in processes:
+            if process.is_alive():
+                process.terminate()
+            if process.pid is not None:
+                process.join(timeout=2)
+        queue.close()
+        queue.join_thread()
+
+
+def test_existing_lock_symlink_cannot_escape_inbox(tmp_path):
+    vault = tmp_path / "vault"
+    (vault / "_inbox").mkdir(parents=True)
+    outside = tmp_path / "outside"
+    outside.write_text("preserve")
+    (vault / "_inbox" / ".stage.lock").symlink_to(outside)
+    with pytest.raises(OSError):
+        staging.stage_drafts(vault, "run", {"a.md": _draft()})
+    assert outside.read_text() == "preserve"
+    assert not (vault / "_inbox" / "run").exists()
+
+
+def test_missing_lock_boundary_is_not_retried(monkeypatch):
+    calls = []
+    def missing(*args, **kwargs):
+        calls.append(args)
+        raise FileNotFoundError("boundary vanished")
+    with monkeypatch.context() as patch:
+        patch.setattr(staging.os, "open", missing)
+        with pytest.raises(FileNotFoundError):
+            staging._open_stage_lock(123)
+    assert len(calls) == 1

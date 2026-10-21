@@ -279,6 +279,16 @@ def _publish_no_replace(inbox_fd: int, temp_name: str, run_id: str) -> None:
         raise OSError(error, os.strerror(error))
 
 
+def _open_stage_lock(inbox_fd: int) -> int:
+    """Atomically create the persistent lock, or open the winner's existing inode."""
+    flags = os.O_RDWR | os.O_NOFOLLOW
+    try:
+        return os.open(".stage.lock", flags | os.O_CREAT | os.O_EXCL, 0o600, dir_fd=inbox_fd)
+    except FileExistsError:
+        # Do not retry missing/replaced directories or follow a substituted symlink.
+        return os.open(".stage.lock", flags, dir_fd=inbox_fd)
+
+
 def stage_drafts(vault: Path, run_id: str, files: Mapping[str, str]) -> StageResult:
     """Publish one complete batch under ``vault/_inbox/run_id``.
 
@@ -299,12 +309,7 @@ def stage_drafts(vault: Path, run_id: str, files: Mapping[str, str]) -> StageRes
     try:
         inbox_fd = _mkdir_and_open_at(vault_fd, "_inbox")
         try:
-            lock_fd = os.open(
-                ".stage.lock",
-                os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW,
-                0o600,
-                dir_fd=inbox_fd,
-            )
+            lock_fd = _open_stage_lock(inbox_fd)
             try:
                 if not stat.S_ISREG(os.fstat(lock_fd).st_mode):
                     raise StagingError("_inbox/.stage.lock must be a regular file")
