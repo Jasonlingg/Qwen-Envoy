@@ -1,7 +1,7 @@
 """Model text is parsed as bounded literal requests, never executed on the host."""
 import pytest
 
-from src.product.experiment_protocol import parse_request, validate_brief
+from src.product.experiment_protocol import controller_prompt, parse_request, validate_brief
 
 
 @pytest.mark.parametrize("action", [
@@ -36,3 +36,9 @@ def test_no_evidence_cannot_turn_into_experiment_recommendation():
     with pytest.raises(ValueError):
         validate_brief({"findings": [], "uncertainties": ["No evidence."],
                         "proposed_test": {"hypothesis": "try it"}}, [])
+
+
+def test_effective_prompt_exposes_lowered_shared_limits():
+    prompt = controller_prompt(12, 98304)
+    assert "12 total model requests" in prompt and "98304 reserved tokens" in prompt
+    assert "18 total model requests" not in prompt

@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from src.product.arxiv_ids import validate_arxiv_id
 from src.product.arxiv_service import investigate
 from src.product.experiment_budget import BudgetExhaustedError, ExperimentBudget
-from src.product.experiment_protocol import PROMPT, parse_request, text, validate_brief
+from src.product.experiment_protocol import controller_prompt, parse_request, text, validate_brief
 from src.product.parallel_readers import WARNING
 
 
@@ -34,10 +34,11 @@ class ExperimentResearcher:
     """
 
     def __init__(self, library, discovery, reader_factory, tokenizer, transport, *,
-                 requests_max=18, tokens_max=147456):
+                 requests_max=18, tokens_max=147456, checkpoint=None):
         self.library, self.discovery, self.reader_factory = library, discovery, reader_factory
         self.tokenizer, self.transport = tokenizer, transport
         self.requests_max, self.tokens_max = requests_max, tokens_max
+        self.checkpoint = checkpoint
 
     def run(self, question, constraints=""):
         question = text(question, 1500)
@@ -51,7 +52,8 @@ class ExperimentResearcher:
         if reader.reader_mode != "assigned" or reader.repl_factory is not None:
             raise ValueError("experiment research requires the Docker-only assigned reader")
         policy = reader.policy_factory()
-        policy.system_prompt = PROMPT
+        prompt = controller_prompt(self.requests_max, self.tokens_max)
+        policy.system_prompt = prompt
         policy.reset()
         result = {"schema_version": "experiment-research-v1", "question": question,
                   "constraints": constraints, "status": "incomplete", "brief": None,
@@ -60,7 +62,7 @@ class ExperimentResearcher:
                   "reader_runs": raw_runs, "warning": WARNING,
                   "semantic_support": "not_reviewed", "model_identity": reader.model_identity,
                   "started_at": datetime.now(timezone.utc).isoformat(),
-                  "controller_prompt_sha256": hashlib.sha256(PROMPT.encode()).hexdigest(),
+                  "controller_prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
                   "reader_prompt_sha256": hashlib.sha256(reader.system_prompt.encode()).hexdigest(),
                   "limits": {"control_turns": 8, "searches": 3, "paper_read_attempts": 2},
                   "source_scope": "arXiv papers via Semantic Scholar/arXiv; not general web"}
@@ -73,6 +75,9 @@ class ExperimentResearcher:
             if budget.remaining <= 0:
                 result["status"] = "budget_exhausted"
                 break
+            if self.checkpoint is not None:
+                self.checkpoint({**result, "budget": budget.summary()})
+            observation += f"\nRemaining shared model requests: {budget.remaining}."
             trace = {"step": step}
             result["trajectory"].append(trace)
             requests_before = len(budget.records)
@@ -120,8 +125,10 @@ class ExperimentResearcher:
                         candidates.append({"arxiv_id": identifier,
                             "title": str(paper.get("title", ""))[:300],
                             "abstract": str(paper.get("abstract") or "")[:500]})
-                    entry.update(source=found.get("source"), papers=candidates)
-                    feedback = {"papers": candidates, "note": "Metadata only; read to inspect."}
+                    entry.update(source=found.get("source"), papers=candidates,
+                                 fallback=found.get("fallback"),
+                                 coverage_note=found.get("coverage_note"))
+                    feedback = {**entry, "note": "Metadata only; read to inspect."}
                 else:
                     if reads >= 2:
                         raise ValueError("paper-read budget exhausted; finish with partial results")
@@ -157,4 +164,6 @@ class ExperimentResearcher:
             result["status"] = "budget_exhausted"
         result.update(budget=budget.summary(), duration_seconds=time.monotonic() - started,
                       paper_read_attempts=reads)
+        if self.checkpoint is not None:
+            self.checkpoint(result)
         return result

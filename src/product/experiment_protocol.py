@@ -32,6 +32,11 @@ inference errors consume requests too. Never import, execute code, or request UR
 '''
 
 
+def controller_prompt(requests_max, tokens_max):
+    return (PROMPT.replace("18 total model requests", f"{requests_max} total model requests")
+            .replace("147456 reserved tokens", f"{tokens_max} reserved tokens"))
+
+
 def _search(query):
     return "search", {"query": text(query, 500)}
 

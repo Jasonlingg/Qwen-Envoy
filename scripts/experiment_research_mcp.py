@@ -20,6 +20,7 @@ from src.env.repl import PersistentREPL
 from src.policies.bounded_http import bounded_transport, validate_endpoint
 from src.product.arxiv_library import ArxivLibrary
 from src.product.assigned_reader import build_assigned_reader
+from src.product.experiment_discovery import ExperimentDiscovery
 from src.product.experiment_research import ExperimentResearcher
 from src.product.experiment_tokenizer import load_tokenizer
 from src.product.paper_discovery import PaperDiscovery
@@ -94,7 +95,8 @@ def main():
     except (ValueError, OSError, ImportError) as exc:
         parser.error(str(exc))
     root = args.library_root.expanduser()
-    library, discovery = ArxivLibrary(root), PaperDiscovery(root / "discovery-cache")
+    library = ArxivLibrary(root)
+    discovery = ExperimentDiscovery(PaperDiscovery(root / "discovery-cache"))
     researcher = ExperimentResearcher(library, discovery, reader_factory, tokenizer,
         bounded_transport, requests_max=args.requests_max, tokens_max=args.tokens_max)
     create_server(library, discovery, researcher,
