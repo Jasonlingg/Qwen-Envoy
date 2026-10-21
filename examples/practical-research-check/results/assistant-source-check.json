@@ -1,0 +1,116 @@
+{
+  "schema_version": "practical-research-assistant-source-check-v1",
+  "recorded_at": "2026-10-21T15:53:23.889073+00:00",
+  "reviewer_kind": "implementing_assistant_unblinded_manual_source_check",
+  "human_review": "not_performed",
+  "scope": "Central recommendations and selected material factual/numeric claims in allfive pairs; not complete independent semantic grading or a zero-error certification. No scalar rewards or automated external judge.",
+  "audit_timing": "Completed answers were inspected during continuing collection; generation prompts/configuration stayed frozen and child histories remained isolated.",
+  "checks": [
+    {
+      "question_id": "P01",
+      "arms": [
+        "A",
+        "B"
+      ],
+      "central_claim": "Screen Qwen3-4B-Instruct-2507 and Qwen3-1.7B; both cover6256 tokens; conditional BF16 KV sizes are1.718GiB and1.336GiB.",
+      "assessment": "Selected identity/context/license metadata and memory arithmetic supported; actual quality/speed/fit unmeasured.",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/cdbee75/README.md",
+        "https://huggingface.co/Qwen/Qwen3-1.7B/raw/70d244c/README.md",
+        "https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/cdbee75/config.json",
+        "https://huggingface.co/Qwen/Qwen3-1.7B/raw/70d244c/config.json"
+      ],
+      "notes": "Directly fetched official pinned files: Apache-2.0 metadata, card context262144/32768,36/28 layers,8 KV heads,128 head dimension. Recomputed2*6256*layers*2*8*128*2 bytes. The A83.4 IFEval value matches the4B-2507 column. These public benchmarks are not extraction evidence. Both propose a40-case follow-up, more effort than needed for initial personal-use inspection."
+    },
+    {
+      "question_id": "P02",
+      "arms": [
+        "A",
+        "B"
+      ],
+      "central_claim": "One shared engine need not duplicate weights; two6256-token BF16/FP16 sequences use1844969472 raw KV bytes, before runtime overhead.",
+      "assessment": "Selected configuration and conditional arithmetic supported; no real24GB admission/latency measurement.",
+      "sources": [
+        "https://huggingface.co/Qwen/Qwen3-8B/raw/47719a242beab8f9aecc40ce3928b034dd5dd559/config.json",
+        "https://docs.vllm.ai/en/v0.10.2/configuration/engine_args.html",
+        "https://docs.vllm.ai/en/v0.10.2/configuration/conserving_memory.html"
+      ],
+      "notes": "Official config has36 layers,8 KV heads,128 head dimension and no sliding window. Per-instance memory limits and CUDA graph overhead are documented. Identical core conclusion in both answers. Rounded8.2B weight estimates are not precise allocation measurements."
+    },
+    {
+      "question_id": "P03",
+      "arms": [
+        "A",
+        "B"
+      ],
+      "central_claim": "Profile queue/prefill/decode/cold start first; prefix caching targets reusable prefill, not decoding.",
+      "assessment": "Selected mechanism claims supported by versioned docs. B paper-specific kernel-overhead comparison needs its baseline named when reused.",
+      "sources": [
+        "https://docs.vllm.ai/en/v0.8.5/features/automatic_prefix_caching.html",
+        "https://docs.vllm.ai/en/v0.8.5/features/quantization/quantized_kvcache.html",
+        "https://arxiv.org/abs/2309.06180v1"
+      ],
+      "notes": "The v0.8.5 page explicitly limits APC benefit to prefill and describes no latency improvement for that FP8-cache implementation; this is not a claim about every later release. PagedAttention snapshot confirms1.67x/3.58x throughput on LLaMA13B WMT16 one-/five-shot prefixes. Its20-26% attention-kernel latency overhead is versus FasterTransformer; B omitted that comparator beside the number. Core profile-first recommendation remains supported."
+    },
+    {
+      "question_id": "P04",
+      "arms": [
+        "A",
+        "B"
+      ],
+      "central_claim": "The supplied2/8 versus1/8 strict development grades and zero recorded Python error episodes do not justify more training; separate evidence sufficiency from reader/task failures.",
+      "assessment": "Interpretation consistent with supplied project observations; selected external research claims supported. Proposed diagnostic effect is not measured.",
+      "sources": [
+        "https://arxiv.org/abs/2411.06037v3",
+        "https://aclanthology.org/2023.emnlp-main.398/",
+        "https://arxiv.org/abs/2403.10131v2"
+      ],
+      "notes": "Sufficient Context abstract names hallucination/abstention despite sufficient context in smaller studied models, not Qwen. ALCE separates correctness and citation quality. B own retrieved RAFT passages support its golden/distractor-training comparison at top3 evaluation docs and distinct task scope. Oracle replacement changes distractors/presentation too. A48/B32 proposed generations are planning arithmetic, not work executed or required for this personal pilot; do not automatically start either study."
+    },
+    {
+      "question_id": "P05",
+      "arms": [
+        "A",
+        "B"
+      ],
+      "central_claim": "Speculation speedups depend on acceptance/draft/verification cost and setup; original papers do not establish this Qwen two-request workload.",
+      "assessment": "Selected original-paper conditions, values and illustrative calculations supported; compatibility/quality/speed in our stack remain unmeasured.",
+      "sources": [
+        "https://proceedings.mlr.press/v202/leviathan23a/leviathan23a.pdf",
+        "https://arxiv.org/pdf/2302.01318v1",
+        "https://docs.vllm.ai/en/v0.10.2/features/spec_decode.html",
+        "https://docs.vllm.ai/en/v0.18.0/features/speculative_decoding/draft_model/",
+        "https://docs.vllm.ai/en/v0.18.0/features/speculative_decoding/"
+      ],
+      "notes": "Leviathan setup/results support T5XXL11B/T5small77M,batch1,oneTPUv4 and2.3/3.1 summarization,2.6/3.4 translation speedups. Chen v1 supports70B/4B on16TPUv4,batch1,K4,1.92x XSum nucleus/2.46x HumanEval and1.8/14.1ms/token. Distribution preservation is within numerics, not identical seeded text. The v0.18.0 example usesQwen3-8B/Qwen3-0.6B,TP1; A older v0.10.2 documentation cannot rule out newer support. B found the newer example through ordinary web tools, so that difference cannot be attributed to MCP."
+    }
+  ],
+  "human_quality_winner": null,
+  "user_usefulness_preferences": null,
+  "answer_sha256": {
+    "P01-A.md": "f5aad4f344c973acc491571834788b9940eba81f3bfb5bfe8520a00ac7a94ce2",
+    "P01-B.md": "7ca0d94b75d72c9f31f19e6c1c7ffc7cd8a473e5d8c1c37346cdc93efef45b66",
+    "P02-A.md": "7802b0a7c3c94a61ea84ac978a258751208498afa48382ffa46519afd826cfdb",
+    "P02-B.md": "4c6155d6e533e8026bfbc19268112f62f215d7a385661a449275018f01dfbcab",
+    "P03-A.md": "9cfa5d42c1bd5631d032afb18eeeb6b3089147e9aa4d99c4276a07e5bbbe1942",
+    "P03-B.md": "71931de3278ba939244c6ab7aaaa6a6456df9f5c00cc2a14d1836530dd2fe4ae",
+    "P04-A.md": "ad49a856b4f33c72442784c6948c4f13577783b55536c26e31dabf6f00ebca56",
+    "P04-B.md": "d45257b169a2bb91695a0bebc262edade6f990d74233056b9cb674ea2a06a058",
+    "P05-A.md": "ebd55bb053e0633431665b4425e8a24e5b46d0db172792dbcd61fb5807e44af9",
+    "P05-B.md": "e01d211b11b0e1e39ff3bceb9bb6948db118b2f659f6863807d8db4f6901e613"
+  },
+  "operator_downloaded_source_sha256": {
+    "out/practical-research-check-20261021/operator-sources/Qwen3-1.7B-README.md": "257e52c419dac2258852643f18af6c974f21f8c6c1b6f371b6cca6201cf29091",
+    "out/practical-research-check-20261021/operator-sources/Qwen3-1.7B-config.json": "1ddb5b89ebc90dcb417a45c213d818577e65976454d29385c8f6140771d95197",
+    "out/practical-research-check-20261021/operator-sources/Qwen3-4B-Instruct-2507-README.md": "8e3dd0c3b5b11897cc71092ccfe517bb7a9783479baa3665aad73c8d1a2041cd",
+    "out/practical-research-check-20261021/operator-sources/Qwen3-4B-Instruct-2507-config.json": "5beea1a4a34c62782bfb2f911c606741a3bab8f92d80a118fa053c28af12e8ba",
+    "out/practical-research-check-20261021/operator-sources/Qwen3-8B-config.json": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30"
+  },
+  "limits": [
+    "Questions are assistant-authored project-derived development prompts, not five independently chosen real user tasks.",
+    "Native B was prescribed to use sources; forced retrieval and fresh per-answer caches can overstate overhead versus selective personal use.",
+    "Both arms also browsed official documents. Differences in versions/sources cannot be attributed causally to MCP in one pair.",
+    "Source cutoff compliance and every peripheral assertion were not exhaustively checked.",
+    "Human preference, correction effort, actual dollar cost, reader delegation benefit and training improvement remain unknown."
+  ]
+}

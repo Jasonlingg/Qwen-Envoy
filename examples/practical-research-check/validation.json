@@ -1,0 +1,89 @@
+{
+  "schema_version": "practical-research-check-validation-v1",
+  "recorded_at": "2026-10-21T15:55:41.350918+00:00",
+  "generation_commit": "ff28a1c",
+  "model": "gpt-6.1-sol",
+  "native_client": "codex-cli0.160.0",
+  "answers": 10,
+  "pairs": 5,
+  "model_turns_attempted": 10,
+  "answering_retries": 0,
+  "qwen_requests": 0,
+  "extra_paid_provider_or_judge_calls": 0,
+  "gpu_starts": 0,
+  "training_jobs": 0,
+  "human_review": "not_performed",
+  "actual_host_request_count": null,
+  "actual_host_cost_usd": null,
+  "operator_research": {
+    "web_tool_invocations": 10,
+    "protocol_documentation_calls": 2,
+    "source_audit_calls": 8,
+    "successful_public_http_file_reads": 5,
+    "underlying_http_requests_including_redirects": null,
+    "included_in_answer_generation_metrics": false
+  },
+  "tests": {
+    "focused": {
+      "passed": 8,
+      "seconds": 0.68,
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_native_ml_pilot.py tests/test_native_ml_pilot_packet.py"
+    },
+    "full": {
+      "passed": 1830,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 136.53,
+      "warning_note": "Existing SWIG deprecation warnings",
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+    },
+    "ruff": "passed on runner/exporter",
+    "git_diff_check": "passed",
+    "live_native_inventory_settings_and_boundary_checks": "All10 passed before prompting",
+    "all10_exports_and_raw_hashes_match": true,
+    "fresh_export_byte_identical": true,
+    "existing_export_destination_rejected": true,
+    "frozen_generation_inputs_unchanged": true
+  },
+  "preservation": {
+    "all10_protected_file_hashes_match": true,
+    "active_reward_unchanged": true,
+    "historical_benchmarks_and_judge_artifacts_unchanged": true,
+    "local_reserved_reader_questions_references_not_read": true,
+    "no_training_reward_design_or_reserved_task_tuning": true
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "artifact_sha256": {
+    "PLAN.md": "e5bb0b4bf55a9b8a6f9ee00bbfbc4e32e5b9d203d4598dad184bf57fe17d181d",
+    "RESULTS.md": "51a456ac589a65cb56a7aa62c6e6fd30aec1bea077a621464b72832601f99451",
+    "execution-manifest.json": "65091928dc7cfb208eb71dde15b79cbc86f1f42c795229f3bf1615d3513e6c7f",
+    "export.py": "a09a2b5a35a71b0b177780e3becaa2462e2e4c031724e10de5aa0a4a81e46b17",
+    "questions.json": "e1713bda5b8fd873023264877227d3c9e3c12585acc0073c6ee994ecbd0d4542",
+    "results/aggregates.json": "b51500fed45f88c0221e9809827f696042157518e7ce77f3b0a4e5a16156d73f",
+    "results/answers/P01-A.md": "f5aad4f344c973acc491571834788b9940eba81f3bfb5bfe8520a00ac7a94ce2",
+    "results/answers/P01-B.md": "7ca0d94b75d72c9f31f19e6c1c7ffc7cd8a473e5d8c1c37346cdc93efef45b66",
+    "results/answers/P02-A.md": "7802b0a7c3c94a61ea84ac978a258751208498afa48382ffa46519afd826cfdb",
+    "results/answers/P02-B.md": "4c6155d6e533e8026bfbc19268112f62f215d7a385661a449275018f01dfbcab",
+    "results/answers/P03-A.md": "9cfa5d42c1bd5631d032afb18eeeb6b3089147e9aa4d99c4276a07e5bbbe1942",
+    "results/answers/P03-B.md": "71931de3278ba939244c6ab7aaaa6a6456df9f5c00cc2a14d1836530dd2fe4ae",
+    "results/answers/P04-A.md": "ad49a856b4f33c72442784c6948c4f13577783b55536c26e31dabf6f00ebca56",
+    "results/answers/P04-B.md": "d45257b169a2bb91695a0bebc262edade6f990d74233056b9cb674ea2a06a058",
+    "results/answers/P05-A.md": "ebd55bb053e0633431665b4425e8a24e5b46d0db172792dbcd61fb5807e44af9",
+    "results/answers/P05-B.md": "e01d211b11b0e1e39ff3bceb9bb6948db118b2f659f6863807d8db4f6901e613",
+    "results/assistant-source-check.json": "496559513a1b72a072216eec6c2ced9eddb214a52956185ac4277208f23a351c",
+    "results/receipts.json": "31aa11fbcbd79a7e3f5255f7da055520c7b374df2ad5f4c22ef6879243428953",
+    "results/user-preferences.json": "92092cbe99e21c1027fae8086e3c42eb07e4492fa2b1f9de148765efe8ef3a29"
+  }
+}
