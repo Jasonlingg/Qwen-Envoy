@@ -1,0 +1,58 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+  "candidate_answer": "Input length is 4 tokens, generated length is 200 tokens, batch size is 1, and latency statistic is median latency. The two devices named are RTX 4090 and Jetson Orin.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2306_00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "start": 34000,
+      "end": 34500,
+      "quote": "rom TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\n\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup t",
+      "arxiv_id": "2306.00978v6",
+      "source_url": "https://arxiv.org/abs/2306.00978v6",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "doc_id": "arxiv_2306_00978v6",
+    "arxiv_id": "2306.00978v6",
+    "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}

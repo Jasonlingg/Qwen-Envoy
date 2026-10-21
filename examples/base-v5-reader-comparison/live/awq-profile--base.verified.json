@@ -1,0 +1,58 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+  "candidate_answer": "The 310 ms corresponds to generating 20 tokens, and the 10 ms corresponds to summarizing a prompt with 200 tokens. The GPU used is an RTX 4090, the batch size is 1, and the implementation is based on NVIDIA FasterTransformer.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2306_00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "start": 20400,
+      "end": 20900,
+      "quote": "., CUDA/PTX, Neon, AVX).\n\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs",
+      "arxiv_id": "2306.00978v6",
+      "source_url": "https://arxiv.org/abs/2306.00978v6",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "doc_id": "arxiv_2306_00978v6",
+    "arxiv_id": "2306.00978v6",
+    "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}

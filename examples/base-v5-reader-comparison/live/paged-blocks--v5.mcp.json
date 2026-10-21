@@ -1,0 +1,92 @@
+{
+  "transport": "in_process",
+  "tool": "investigate",
+  "request": {
+    "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?",
+    "arxiv_ids": [
+      "2309.06180v1"
+    ],
+    "synthesize": false
+  },
+  "is_error": false,
+  "result": {
+    "status": "evidence_found",
+    "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?",
+    "papers": [
+      {
+        "arxiv_id": "2309.06180v1",
+        "status": "evidence_found",
+        "candidate_answer": "vLLM maps a request's logical KV blocks to physical memory through a block table that records the corresponding physical blocks and filled positions. It does not reserve all future token positions in advance, allowing dynamic allocation.",
+        "model_requests_attempted": 3,
+        "error": null,
+        "harness_version": "v2",
+        "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+        "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+        "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+        "model_identity": {
+          "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+          "served_model": "envoy",
+          "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+          "seed": 42,
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "thinking": false,
+          "harness_version": "v2",
+          "max_tokens": 1024,
+          "reader_mode": "assigned",
+          "base": "Qwen/Qwen3-8B",
+          "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+          "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+          "subfolder": "artifacts/full/checkpoint-50",
+          "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+          "adapter_applied": true
+        },
+        "reader_guidance": "focused-v1",
+        "reader_mode": "assigned",
+        "paper_assignment": {
+          "version": "assigned-paper-v1",
+          "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+          "doc_id": "arxiv_2309_06180v1",
+          "arxiv_id": "2309.06180v1",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "coverage": "html_paragraphs",
+          "counts_as_source_inspection": false
+        },
+        "assignment_sha256": "04ea91c7aceb63af3d117a1954693467e3826c5b064e03a4e5968f8860e88a7f",
+        "research_gaps": [],
+        "gap_report_error": null
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "E1",
+        "doc_id": "arxiv_2309_06180v1",
+        "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+        "start": 24400,
+        "end": 25400,
+        "quote": "iguous chunk of GPU DRAM and divides it into physical KV blocks (this is also done on CPU RAM for swapping; see §4.5). The KV block manager also maintains block tables—the mapping between logical and physical KV blocks of each request. Each block table entry records the corresponding physical blocks of a logical block and the number of filled positions. Separating logical and physical KV blocks allows vLLM to dynamically grow the KV cache memory without reserving it for all positions in advance, which eliminates most memory waste in existing systems, as in Fig. 2.\n\nNext, we walk through an example, as in Fig. 6, to demonstrate how vLLM executes PagedAttention and manages the memory during the decoding process of a single input sequence: \\small1⃝ As in OS’s virtual memory, vLLM does not require reserving the memory for the maximum possible generated sequence length initially. Instead, it reserves only the necessary KV blocks to accommodate the KV cache generated during prompt computatio",
+        "arxiv_id": "2309.06180v1",
+        "source_url": "https://arxiv.org/abs/2309.06180v1",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "candidate_answers": [
+      {
+        "arxiv_id": "2309.06180v1",
+        "text": "vLLM maps a request's logical KV blocks to physical memory through a block table that records the corresponding physical blocks and filled positions. It does not reserve all future token positions in advance, allowing dynamic allocation."
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals.",
+    "research_gaps": [],
+    "follow_up_owner": "mcp_host",
+    "gap_warning": "Gaps are unreviewed reader suggestions, not proof of absence. The host may search further; searches do not launch here.",
+    "paper_versions": [
+      "2309.06180v1"
+    ],
+    "model_requests_observed": 3,
+    "model_requests_complete": true,
+    "model_requests_attempted": 3
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c4a601cb-ab95-4bd1-923f-1e5ab0018038",
+  "question_id": "paper_d799401cb9847c91",
+  "question": "For the described blocksize-64 weights, how does double quantization change average quantization-constant overhead in bits per parameter, and what blocksize is used for the second quantization?",
+  "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "Double quantization reduces the average quantization-constant overhead by about 0.37 bits per parameter. The blocksize used for the second quantization is 256.",
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2305_14314v1",
+      "start": 17000,
+      "end": 17500,
+      "quote": "tants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\text{FP32}} are positive, we",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2305.14314v1",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "source_path": null,
+      "record": {}
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "arxiv_2305_14314v1",
+      "start": 16600,
+      "end": 17100,
+      "quote": "blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\n\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This s",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2305.14314v1",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2305_14314v1\", \"double quantization\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\\n\\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\\\text{FP32}} of the first quantization as inputs to a second quantization. This s', 'offset': 16600, 'score': 10}, {'text': ' add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\\n\\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for', 'offset': 16800, 'score': 10}, {'text': 'he exact values of this data type can be found in Appendix E.\\n\\nWe introduce Double Quantization (DQ), the process of quantizing the quantization constants for additional memory savings. While a small blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory f', 'offset': 16400, 'score': 7}, {'text': 'tants c2FP32c_{2}^{\\\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\\\text{FP32}} are positive, we', 'offset': 17000, 'score': 6}, {'text': 'of quantization constants c1FP32c_{1}^{\\\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\\\text{FP32}} are positive, we subtract the mean from c2c_{2} before quantization to center the values around zero and make use of symmetric quantization. On average, for a blocksize of 64, this quantization reduces the memory foo', 'offset': 17200, 'score': 6}, {'text': ' type that has equal expected number of values in each quantization bin k-bit NormalFloat (NFk), since the data type is information-theoretically optimal for zero-centered normally distributed data. The exact values of this data type can be found in Appendix E.\\n\\nWe introduce Double Quantization (DQ), the process of quantizing the quantization constants for additional memory savings. While a small blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhea', 'offset': 16200, 'score': 5}, {'text': ' on the Vicuna benchmark (Table 6).\\n\\nQLoRA introduces multiple innovations designed to reduce memory use without sacrificing performance: (1) 4-bit NormalFloat, an information theoretically optimal quantization data type for normally distributed data that yields better empirical results than 4-bit Integers and 4-bit Floats. (2) Double Quantization, a method that quantizes the quantization constants, saving an average of about 0.37 bits per parameter (approximately 3 GB for a 65B model). (3) Page', 'offset': 5600, 'score': 4}, {'text': 'uantizing a 32-bit Floating Point (FP32) tensor into a Int8 tensor with range [−127,127][-127,127]:\\n\\nwhere cc is the quantization constant or quantization scale. Dequantization is the inverse:\\n\\nThe problem with this approach is that if a large magnitude value (i.e., an outlier) occurs in the input tensor, then the quantization bins—certain bit combinations—are not utilized well with few or no numbers quantized in some bins. To prevent the outlier issue, a common approach is to chunk the input te', 'offset': 9400, 'score': 4}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2305_14314v1\", 16600, 500))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 16600, 'end': 17100, 'text': 'blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\\n\\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\\\text{FP32}} of the first quantization as inputs to a second quantization. This s'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "print(passage(\"arxiv_2305_14314v1\", 17000, 500))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 17000, 'end': 17500, 'text': 'tants c2FP32c_{2}^{\\\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\\\text{FP32}} are positive, we'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 4,
+      "action": "SUBMIT: Double quantization reduces the average quantization-constant overhead by about 0.37 bits per parameter. The blocksize used for the second quantization is 256. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":17000,\"end\":17500},{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":16600,\"end\":17100}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 4,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "doc_id": "arxiv_2305_14314v1",
+    "arxiv_id": "2305.14314v1",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+  "research_gaps": [],
+  "reader_guidance": "focused-v1",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 3,
+  "inspection_steps": 3
+}

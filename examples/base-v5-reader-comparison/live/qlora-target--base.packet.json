@@ -1,0 +1,95 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "a3020f42-b9ec-440f-8fee-efdc3b178a93",
+  "question_id": "paper_23db3323121631da",
+  "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure.",
+  "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2305_14314v1\", \"peak training VRAM Qwen3-8B QLoRA sequence length 32768 RTX A5000\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'e claim that neural network weights.\\n\\nThe memory footpring for QLoRA training with different LLaMA base models can be seen in Figure 6. We see that the 33B model does not quite fit into a 24 GB and that paged optimizers are needed to train it. Depicted is also batch size 1 with a sequence length of 512 and gradient checkpointning. This means, if one uses a larger batch size, or if a long sequence is processed, the activation gradient might consume a considerable amount of memory.', 'offset': 63600, 'score': 5}, {'text': 'n a single machine difficult for large models.\\n\\nQLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit.\\n\\nWe now discuss the components of QLoRA followed by a formal definition of QLoRA.\\n\\nThe NormalFloat (NF) data type builds on Quantile Quantization [15] which is an infor', 'offset': 12800, 'score': 4}, {'text': 'e split the training data in training and validation datasets allowing us to perform more rigorous hyperparameter tuning and early stopping. We use the same hyperparameters described in the paper for training the various T5 model sizes on the Super-Natural Instruction data. We use LoRA r=16r=16 for small, medium, and large T5 models and LoRA r=64r=64 for T5 xl and xxl models. We also use LoRA α=64\\\\alpha=64 in all our experiments and no LoRA dropout.\\n\\nWe describe the datasets used for QLoRA finet', 'offset': 56200, 'score': 4}, {'text': 'e schedule. We use group-by-length to group examples of similar lengths in the same batch (note this will produce a oscillating loss curve). The hyperparameters we tune for each model size are shown in Table 9.\\n\\nWhile it is general practice in the literature to only train on the response in instruction following datasets, we study the effect of training on the instruction in addition to the response in Table 10. In these experiments, we restrict the training data to 52,000 examples and use the 7', 'offset': 60200, 'score': 4}, {'text': 'tions might be due to outliers weights [13] or because the p-value of the Shaprio-Wilk test is not accurate for large samples sizes[53] that occur in the LLaMA FFN layer hidden units. this verifies the claim that neural network weights.\\n\\nThe memory footpring for QLoRA training with different LLaMA base models can be seen in Figure 6. We see that the 33B model does not quite fit into a 24 GB and that paged optimizers are needed to train it. Depicted is also batch size 1 with a sequence length of ', 'offset': 63400, 'score': 4}, {'text': 'hatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.\\n\\nWe present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a froz', 'offset': 1600, 'score': 3}, {'text': 'els and code, including CUDA kernels for 4-bit training.\\n\\nWe present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters (LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reac', 'offset': 1800, 'score': 3}, {'text': 'e the memory footprint of LLMs [14, 13, 18, 66], such techniques only work for inference and break down during training [65].\\n\\nWe demonstrate for the first time that it is possible to finetune a quantized 4-bit model without any performance degradation. Our method, QLoRA, uses a novel high-precision technique to quantize a pretrained model to 4-bit, then adds a small set of learnable Low-rank Adapter weights [28]\\n\\nthat are tuned by backpropagating gradients through the quantized weights.\\n\\nQLoRA ', 'offset': 4200, 'score': 3}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2305_14314v1\", 63600, 500))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 63600, 'end': 64084, 'text': 'e claim that neural network weights.\\n\\nThe memory footpring for QLoRA training with different LLaMA base models can be seen in Figure 6. We see that the 33B model does not quite fit into a 24 GB and that paged optimizers are needed to train it. Depicted is also batch size 1 with a sequence length of 512 and gradient checkpointning. This means, if one uses a larger batch size, or if a long sequence is processed, the activation gradient might consume a considerable amount of memory.'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [3 steps left.]"
+    },
+    {
+      "step": 4,
+      "action": "report_gap(missing=\"The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.\", follow_up_query=\"Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.\")",
+      "research_gap": {
+        "missing": "The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.",
+        "follow_up_query": "Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.",
+        "reported_at_step": 4
+      },
+      "observation": "Gap recorded for host review; this is not proof of absence. No search was launched. Continue inspecting or submit using the existing evidence/abstention rules. [2 steps left.]"
+    },
+    {
+      "step": 5,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Explicit abstention after investigation."
+    }
+  ],
+  "model_requests_attempted": 5,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "doc_id": "arxiv_2305_14314v1",
+    "arxiv_id": "2305.14314v1",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+  "research_gaps": [
+    {
+      "missing": "The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.",
+      "follow_up_query": "Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.",
+      "reported_at_step": 4
+    }
+  ],
+  "reader_guidance": "focused-v1",
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

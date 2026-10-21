@@ -1,0 +1,93 @@
+{
+  "transport": "in_process",
+  "tool": "investigate",
+  "request": {
+    "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure.",
+    "arxiv_ids": [
+      "2305.14314v1"
+    ],
+    "synthesize": false
+  },
+  "is_error": false,
+  "result": {
+    "status": "no_evidence",
+    "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure.",
+    "papers": [
+      {
+        "arxiv_id": "2305.14314v1",
+        "status": "no_evidence",
+        "candidate_answer": null,
+        "model_requests_attempted": 5,
+        "error": null,
+        "harness_version": "v2",
+        "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+        "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+        "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+        "model_identity": {
+          "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+          "served_model": "envoy",
+          "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+          "seed": 42,
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "thinking": false,
+          "harness_version": "v2",
+          "max_tokens": 1024,
+          "reader_mode": "assigned",
+          "base": "Qwen/Qwen3-8B",
+          "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+          "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+          "subfolder": "artifacts/full/checkpoint-50",
+          "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+          "adapter_applied": true
+        },
+        "reader_guidance": "focused-v1",
+        "reader_mode": "assigned",
+        "paper_assignment": {
+          "version": "assigned-paper-v1",
+          "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+          "doc_id": "arxiv_2305_14314v1",
+          "arxiv_id": "2305.14314v1",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "coverage": "html_paragraphs",
+          "counts_as_source_inspection": false
+        },
+        "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+        "research_gaps": [
+          {
+            "missing": "I have not established the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000",
+            "follow_up_query": "What is the measured peak VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000?",
+            "reported_at_step": 4,
+            "review_status": "unreviewed_model_report",
+            "absence_proven": false
+          }
+        ],
+        "gap_report_error": null
+      }
+    ],
+    "evidence": [],
+    "candidate_answers": [],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals.",
+    "research_gaps": [
+      {
+        "missing": "I have not established the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000",
+        "follow_up_query": "What is the measured peak VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000?",
+        "reported_at_step": 4,
+        "review_status": "unreviewed_model_report",
+        "absence_proven": false,
+        "arxiv_id": "2305.14314v1",
+        "doc_id": "arxiv_2305_14314v1"
+      }
+    ],
+    "follow_up_owner": "mcp_host",
+    "gap_warning": "Gaps are unreviewed reader suggestions, not proof of absence. The host may search further; searches do not launch here.",
+    "paper_versions": [
+      "2305.14314v1"
+    ],
+    "model_requests_observed": 5,
+    "model_requests_complete": true,
+    "model_requests_attempted": 5
+  }
+}

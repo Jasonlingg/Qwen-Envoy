@@ -1,0 +1,88 @@
+{
+  "transport": "in_process",
+  "tool": "investigate",
+  "request": {
+    "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?",
+    "arxiv_ids": [
+      "2309.06180v1"
+    ],
+    "synthesize": false
+  },
+  "is_error": false,
+  "result": {
+    "status": "evidence_found",
+    "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?",
+    "papers": [
+      {
+        "arxiv_id": "2309.06180v1",
+        "status": "evidence_found",
+        "candidate_answer": "The evaluation traces for most vLLM experiments are 1 hour long, while OPT-175B uses 15-minute traces due to cost limitations.",
+        "model_requests_attempted": 3,
+        "error": null,
+        "harness_version": "v2",
+        "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+        "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+        "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+        "model_identity": {
+          "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+          "served_model": "envoy-base-only",
+          "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+          "seed": 42,
+          "temperature": 0.0,
+          "top_p": 1.0,
+          "thinking": false,
+          "harness_version": "v2",
+          "max_tokens": 1024,
+          "reader_mode": "assigned",
+          "base": "Qwen/Qwen3-8B",
+          "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "adapter_applied": false
+        },
+        "reader_guidance": "focused-v1",
+        "reader_mode": "assigned",
+        "paper_assignment": {
+          "version": "assigned-paper-v1",
+          "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+          "doc_id": "arxiv_2309_06180v1",
+          "arxiv_id": "2309.06180v1",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "coverage": "html_paragraphs",
+          "counts_as_source_inspection": false
+        },
+        "assignment_sha256": "04ea91c7aceb63af3d117a1954693467e3826c5b064e03a4e5968f8860e88a7f",
+        "research_gaps": [],
+        "gap_report_error": null
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "E1",
+        "doc_id": "arxiv_2309_06180v1",
+        "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+        "start": 47200,
+        "end": 47700,
+        "quote": "y divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.\n\nWe evaluate the performance of vLLM with basic sampling (one sample per request) on three models and two datasets. The first row of Fig. 12 shows the results on the ShareGPT dataset. The",
+        "arxiv_id": "2309.06180v1",
+        "source_url": "https://arxiv.org/abs/2309.06180v1",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "candidate_answers": [
+      {
+        "arxiv_id": "2309.06180v1",
+        "text": "The evaluation traces for most vLLM experiments are 1 hour long, while OPT-175B uses 15-minute traces due to cost limitations."
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not that they support any proposed answer; reason over the quotes, not the proposals.",
+    "research_gaps": [],
+    "follow_up_owner": "mcp_host",
+    "gap_warning": "Gaps are unreviewed reader suggestions, not proof of absence. The host may search further; searches do not launch here.",
+    "paper_versions": [
+      "2309.06180v1"
+    ],
+    "model_requests_observed": 3,
+    "model_requests_complete": true,
+    "model_requests_attempted": 3
+  }
+}

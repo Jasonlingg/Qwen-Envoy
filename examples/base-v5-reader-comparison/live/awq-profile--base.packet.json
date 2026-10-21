@@ -1,0 +1,96 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "589d5f1b-995d-47df-be88-7c8cf229c1ab",
+  "question_id": "paper_421fe2aea310a44b",
+  "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation.",
+  "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "The 310 ms corresponds to generating 20 tokens, and the 10 ms corresponds to summarizing a prompt with 200 tokens. The GPU used is an RTX 4090, the batch size is 1, and the implementation is based on NVIDIA FasterTransformer.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2306_00978v6",
+      "start": 20400,
+      "end": 20900,
+      "quote": "., CUDA/PTX, Neon, AVX).\n\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2306.00978v6",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2306_00978v6\", \"FP16 LLaMA-7B latency profile\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'the median latency as the final result.\\n\\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not suppo', 'offset': 34400, 'score': 4}, {'text': 'annels with large norm (i.e., FP16% (based on W)) does not significantly improve the quantized performance, leading to a similar marginal improvement as random selection. Interestingly, selecting weights based on activation magnitude can significantly improve the performance despite keeping only 0.1%-1% of channels in FP16. We hypothesize that the input features with larger magnitudes are generally more important. Keeping the corresponding weights in FP16 can preserve those features, which contr', 'offset': 13200, 'score': 3}, {'text': 'hts based on activation magnitude can significantly improve the performance despite keeping only 0.1%-1% of channels in FP16. We hypothesize that the input features with larger magnitudes are generally more important. Keeping the corresponding weights in FP16 can preserve those features, which contributes to better model performance.\\n\\nLimitations: Despite keeping 0.1% of weights in FP16 can improve the quantized performance without a noticeable increase in model size (measured in total bits), su', 'offset': 13400, 'score': 3}, {'text': 'y more important. Keeping the corresponding weights in FP16 can preserve those features, which contributes to better model performance.\\n\\nLimitations: Despite keeping 0.1% of weights in FP16 can improve the quantized performance without a noticeable increase in model size (measured in total bits), such a mixed-precision data type will make the system implementation difficult. We need to come up with a method to protect the important weights without actually keeping them as FP16.\\n\\nWe propose an al', 'offset': 13600, 'score': 3}, {'text': '., CUDA/PTX, Neon, AVX).\\n\\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\\n\\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs', 'offset': 20400, 'score': 3}, {'text': 'hieves more than 3×\\\\times speedup compared with the Huggingface FP16 implementation across different families of LLMs on GPUs. On CPUs, we lower the entire computation graph to C++ to minimize overhead.\\n\\nFor quantized layers, as the hardware does not provide multiplication instructions between INT4 and FP16, we need to dequantize the integers to FP16 before performing matrix computation. We avoid writing dequantized weights into DRAM by fusing dequantization kernels with the matrix multplication', 'offset': 22600, 'score': 3}, {'text': ' Wei et al. (2021); Sanh et al. (2021); Ouyang et al. (2022); Chung et al. (2022). It has become an essential procedure before model deployment. We further benchmark our method’s performance on a popular instruction-tuned model Vicuna Chiang et al. (2023) in Figure 5. We used the GPT-4 score to evaluate the quantized models’ performance against the FP16 counterpart on 80 sample questions Chiang et al. (2023). We compare the responses with both orders (quantized-FP16, FP16-quantized) to get rid o', 'offset': 28400, 'score': 3}, {'text': 'lar instruction-tuned model Vicuna Chiang et al. (2023) in Figure 5. We used the GPT-4 score to evaluate the quantized models’ performance against the FP16 counterpart on 80 sample questions Chiang et al. (2023). We compare the responses with both orders (quantized-FP16, FP16-quantized) to get rid of the ordering effect (we found GPT-4 tends to increase the rating of the first input), leading to 160 trials. AWQ consistently improves the INT3-g128 quantized Vicuna models over RTN and GPTQ under b', 'offset': 28600, 'score': 3}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2306_00978v6\", 20400, 500))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2306_00978v6', 'start': 20400, 'end': 20900, 'text': '., CUDA/PTX, Neon, AVX).\\n\\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\\n\\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: The 310 ms corresponds to generating 20 tokens, and the 10 ms corresponds to summarizing a prompt with 200 tokens. The GPU used is an RTX 4090, the batch size is 1, and the implementation is based on NVIDIA FasterTransformer. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":20400,\"end\":20900}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "doc_id": "arxiv_2306_00978v6",
+    "arxiv_id": "2306.00978v6",
+    "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+  "research_gaps": [],
+  "reader_guidance": "focused-v1",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

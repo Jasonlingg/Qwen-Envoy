@@ -1,0 +1,100 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c18624f5-55be-4729-922a-ca97df51260d",
+  "question_id": "paper_af0ba1d8f7353509",
+  "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients.",
+  "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. It computes gradients only for the LoRA parameters.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2305_14314v1",
+      "start": 19200,
+      "end": 20200,
+      "quote": "th dequantization from storage 𝐖NF4\\mathbf{W}^{\\text{NF4}} to computation data type 𝐖BF16\\mathbf{W}^{\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\frac{\\partial\\mathbf{X}}{\\partial\\mathbf{W}} in BFloat16 precision.\n\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.\n\nWe have discussed how QLoRA works and how it can significantly reduce the required memory for finetuning models. The main question now is whether QLoRA can perform as well as full-model finetuning. Furthermore, we want to analyze the components of QLoRA including the impact of NormalFloat4 over standard Float4. The following sections will discuss the experiments that aimed at answering these questions.\n\nWe consider three architectures (encoder, encoder-decode",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2305.14314v1",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2305_14314v1\", \"weight storage dtype computation dtype gradient parameters\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'th dequantization from storage 𝐖NF4\\\\mathbf{W}^{\\\\text{NF4}} to computation data type 𝐖BF16\\\\mathbf{W}^{\\\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\\\frac{\\\\partial\\\\mathbf{X}}{\\\\partial\\\\mathbf{W}} in BFloat16 precision.\\n\\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA para', 'offset': 19200, 'score': 8}, {'text': 'ory used. While LoRA was designed as a Parameter Efficient Finetuning (PEFT) method, most of the memory footprint for LLM finetuning comes from activation gradients and not from the learned LoRA parameters. For a 7B LLaMA model trained on FLAN v2 with a batch size of 1, with LoRA weights equivalent to commonly used 0.2% of the original model weights[28, 37], the LoRA input gradients have a memory footprint of 567 MB while the LoRA parameters take up only 26 MB. With gradient checkpointing [9], t', 'offset': 11400, 'score': 7}, {'text': 'eters. For a 7B LLaMA model trained on FLAN v2 with a batch size of 1, with LoRA weights equivalent to commonly used 0.2% of the original model weights[28, 37], the LoRA input gradients have a memory footprint of 567 MB while the LoRA parameters take up only 26 MB. With gradient checkpointing [9], the input gradients reduce to an average of 18 MB per sequence making them more memory intensive than all LoRA weights combined. In comparison, the 4-bit base model consumes 5,048 MB of memory. This hi', 'offset': 11600, 'score': 7}, {'text': 't16 precision.\\n\\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.\\n\\nWe have discussed how QLoRA works and how it can significantly reduce the required memory for finetuning models. The main question now is whether QLoRA can perform', 'offset': 19400, 'score': 7}, {'text': 'nto n=(b×h)/B{n=({b\\\\times h})/{B}} blocks. We quantize these blocks independently with Equation 1 to create a quantized tensor and nn quantization constants cic_{i}.\\n\\nLow-rank Adapter (LoRA) finetuning [28] is a method that reduces memory requirements by using a small set of trainable parameters, often termed adapters, while not updating the full model parameters which remain fixed. Gradients during stochastic gradient descent are passed through the fixed pretrained model weights to the adapter,', 'offset': 10200, 'score': 5}, {'text': 'g [28] is a method that reduces memory requirements by using a small set of trainable parameters, often termed adapters, while not updating the full model parameters which remain fixed. Gradients during stochastic gradient descent are passed through the fixed pretrained model weights to the adapter, which is updated to optimize the loss function. LoRA augments a linear projection through an additional factorized projection. Given a projection 𝐗𝐖=𝐘{\\\\mathbf{X}\\\\mathbf{W}=\\\\mathbf{Y}} with 𝐗∈ℝb×h\\\\mat', 'offset': 10400, 'score': 5}, {'text': 'footprint of 567 MB while the LoRA parameters take up only 26 MB. With gradient checkpointing [9], the input gradients reduce to an average of 18 MB per sequence making them more memory intensive than all LoRA weights combined. In comparison, the 4-bit base model consumes 5,048 MB of memory. This highlights that gradient checkpointing is important but also that aggressively reducing the amount of LoRA parameter yields only minor memory benefits. This means we can use more adapters without signif', 'offset': 11800, 'score': 5}, {'text': 'arameter updates only the gradient with respect to the error for the adapters weights ∂E∂𝐋i\\\\frac{\\\\partial E}{\\\\partial\\\\mathbf{L}_{i}} are needed, and not for 4-bit weights ∂E∂𝐖\\\\frac{\\\\partial E}{\\\\partial\\\\mathbf{W}}. However, the calculation of ∂E∂𝐋i\\\\frac{\\\\partial E}{\\\\partial\\\\mathbf{L}_{i}} entails the calculation of ∂𝐗∂𝐖\\\\frac{\\\\partial\\\\mathbf{X}}{\\\\partial\\\\mathbf{W}} which proceeds via equation (5) with dequantization from storage 𝐖NF4\\\\mathbf{W}^{\\\\text{NF4}} to computation data type 𝐖BF16\\\\mathbf{W}^', 'offset': 18800, 'score': 5}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2305_14314v1\", 19200, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 19200, 'end': 20200, 'text': 'th dequantization from storage 𝐖NF4\\\\mathbf{W}^{\\\\text{NF4}} to computation data type 𝐖BF16\\\\mathbf{W}^{\\\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\\\frac{\\\\partial\\\\mathbf{X}}{\\\\partial\\\\mathbf{W}} in BFloat16 precision.\\n\\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.\\n\\nWe have discussed how QLoRA works and how it can significantly reduce the required memory for finetuning models. The main question now is whether QLoRA can perform as well as full-model finetuning. Furthermore, we want to analyze the components of QLoRA including the impact of NormalFloat4 over standard Float4. The following sections will discuss the experiments that aimed at answering these questions.\\n\\nWe consider three architectures (encoder, encoder-decode'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. It computes gradients only for the LoRA parameters. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19200,\"end\":20200}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "doc_id": "arxiv_2305_14314v1",
+    "arxiv_id": "2305.14314v1",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+  "research_gaps": [],
+  "reader_guidance": "focused-v1",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

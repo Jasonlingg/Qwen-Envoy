@@ -1,0 +1,54 @@
+{
+  "status": "no_evidence",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+  "candidate_answer": null,
+  "evidence": [],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "model_requests_attempted": 5,
+  "trajectory_steps": 5,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "doc_id": "arxiv_2305_14314v1",
+    "arxiv_id": "2305.14314v1",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+  "research_gaps": [
+    {
+      "missing": "The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.",
+      "follow_up_query": "Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.",
+      "reported_at_step": 4,
+      "review_status": "unreviewed_model_report",
+      "absence_proven": false
+    }
+  ],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}

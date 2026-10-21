@@ -1,0 +1,99 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "300a275e-622b-4ee7-ab56-5d90e7a67eed",
+  "question_id": "paper_08d272ce0fc5dce2",
+  "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified.",
+  "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2307_08691v1\", \"training speedup RTX A5000 sequence length 32768\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'e models, FlashAttention-2 reaches training speed of up to 225 TFLOPs/s per A100 GPU (72% model FLOPs utilization).11 1 FlashAttention-2 is available at https://github.com/Dao-AILab/flash-attention\\n\\nScaling up the context length of Transformers [18] is a challenge, since the attention layer at their heart has runtime and memory requirements quadratic in the input sequence length. Ideally, we would like to go beyond the standard 2k sequence length limit to train models to understand books, high r', 'offset': 3400, 'score': 6}, {'text': 'caling up the context length of Transformers [18] is a challenge, since the attention layer at their heart has runtime and memory requirements quadratic in the input sequence length. Ideally, we would like to go beyond the standard 2k sequence length limit to train models to understand books, high resolution images, and long-form videos. Just within the last year, there have been several language models with much longer context than before: GPT-4 [12] with context length 32k, MosaicML’s MPT with', 'offset': 3600, 'score': 6}, {'text': 'ber is large (say ≥80\\\\geq 80), since we can effectively use almost all of the compute resources on the GPU.\\n\\nIn the case of long sequences (which usually means small batch sizes or small number of heads), to make better use of the multiprocessors on the GPU, we now additionally parallelize over the sequence length dimension. This results in significant speedup for this regime.\\n\\nWe see that the outer loop (over sequence length) is embarrassingly parallel, and we schedule them on different thread ', 'offset': 18200, 'score': 6}, {'text': 'ds), to make better use of the multiprocessors on the GPU, we now additionally parallelize over the sequence length dimension. This results in significant speedup for this regime.\\n\\nWe see that the outer loop (over sequence length) is embarrassingly parallel, and we schedule them on different thread blocks that do not need to communicate with each other. We also parallelize over the batch dimension and number of heads dimension, as done in FlashAttention. The increased parallelism over sequence l', 'offset': 18400, 'score': 6}, {'text': 'Scaling Transformers to longer sequence lengths has been a major problem in the last several years, promising to improve performance in language modeling and high-resolution image understanding, as well as to unlock new applications in code, audio, and video generation. The attention layer is the main bottleneck in scaling to longer sequences, as its runtime and memory increase quadratically in the sequence length. FlashAttention exploits the asymmetric GPU memory hierarchy to bring significant ', 'offset': 0, 'score': 5}, {'text': ' like to go beyond the standard 2k sequence length limit to train models to understand books, high resolution images, and long-form videos. Just within the last year, there have been several language models with much longer context than before: GPT-4 [12] with context length 32k, MosaicML’s MPT with context length 65k, and Anthropic’s Claude with context length 100k. Emerging use cases such as long document querying and story writing have demonstrated a need for models with such long context.\\n\\nT', 'offset': 3800, 'score': 5}, {'text': 'ivated by this, Dao et al. [5] proposed to reorder the attention computation and leverages classical techniques (tiling, recomputation) to significantly speed it up and reduce memory usage from quadratic to linear in sequence length. This yields 2-4×\\\\times wall-clock time speedup over optimized baselines, up to 10-20×\\\\times memory saving, with no approximation, and as a result FlashAttention has seen wide adoption in large-scale training and inference of Transformers.\\n\\nHowever, context length in', 'offset': 4600, 'score': 5}, {'text': 'tic to linear in sequence length. This yields 2-4×\\\\times wall-clock time speedup over optimized baselines, up to 10-20×\\\\times memory saving, with no approximation, and as a result FlashAttention has seen wide adoption in large-scale training and inference of Transformers.\\n\\nHowever, context length increases even more, FlashAttention is still not nearly as efficient as other primitives such as matrix-multiply (GEMM). In particular, while FlashAttention is already 2-4×\\\\times faster than a standard ', 'offset': 4800, 'score': 5}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2307_08691v1\", 3400, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2307_08691v1', 'start': 3400, 'end': 4400, 'text': 'e models, FlashAttention-2 reaches training speed of up to 225 TFLOPs/s per A100 GPU (72% model FLOPs utilization).11 1 FlashAttention-2 is available at https://github.com/Dao-AILab/flash-attention\\n\\nScaling up the context length of Transformers [18] is a challenge, since the attention layer at their heart has runtime and memory requirements quadratic in the input sequence length. Ideally, we would like to go beyond the standard 2k sequence length limit to train models to understand books, high resolution images, and long-form videos. Just within the last year, there have been several language models with much longer context than before: GPT-4 [12] with context length 32k, MosaicML’s MPT with context length 65k, and Anthropic’s Claude with context length 100k. Emerging use cases such as long document querying and story writing have demonstrated a need for models with such long context.\\n\\nTo reduce the computational requirement of attention on such long context, there have been numerous m'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [3 steps left.]"
+    },
+    {
+      "step": 4,
+      "action": "report_gap(missing=\"I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768\", follow_up_query=\"What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?\")",
+      "research_gap": {
+        "missing": "I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768",
+        "follow_up_query": "What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?",
+        "reported_at_step": 4
+      },
+      "observation": "Gap recorded for host review; this is not proof of absence. No search was launched. Continue inspecting or submit using the existing evidence/abstention rules. [2 steps left.]"
+    },
+    {
+      "step": 5,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Explicit abstention after investigation."
+    }
+  ],
+  "model_requests_attempted": 5,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+    "doc_id": "arxiv_2307_08691v1",
+    "arxiv_id": "2307.08691v1",
+    "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "44b4e844715709a6b08f09ff5c36468ec9547009df51fd5a450167f418742c9d",
+  "research_gaps": [
+    {
+      "missing": "I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768",
+      "follow_up_query": "What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?",
+      "reported_at_step": 4
+    }
+  ],
+  "reader_guidance": "focused-v1",
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

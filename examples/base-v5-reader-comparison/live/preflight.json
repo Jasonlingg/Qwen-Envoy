@@ -1,0 +1,107 @@
+{
+  "gpu": {
+    "availability": "HIGH",
+    "community": true,
+    "cudaVersions": [
+      {
+        "available": false,
+        "version": "13.0"
+      },
+      {
+        "available": true,
+        "version": "13.2"
+      }
+    ],
+    "dataCenters": [
+      {
+        "availability": "MEDIUM",
+        "id": "CA-MTL-1",
+        "name": "CA-MTL-1"
+      },
+      {
+        "availability": "LOW",
+        "id": "EU-SE-1",
+        "name": "EU-SE-1"
+      },
+      {
+        "availability": "LOW",
+        "id": "US-CA-2",
+        "name": "US-CA-2"
+      },
+      {
+        "availability": "LOW",
+        "id": "US-IL-1",
+        "name": "US-IL-1"
+      }
+    ],
+    "id": "NVIDIA RTX A5000",
+    "manufacturer": "NVIDIA",
+    "maxCount": {
+      "community": 10,
+      "secure": 10
+    },
+    "memory": 24,
+    "name": "RTX A5000",
+    "pool": "AMPERE_24",
+    "price": {
+      "community": 0.16,
+      "secure": 0.27,
+      "serverless": 0.69
+    },
+    "secure": true
+  },
+  "endpoint": {
+    "id": "q05pjrvguakieg",
+    "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6",
+    "gpu": {
+      "allowedCudaVersions": [],
+      "count": 1,
+      "excludedTypes": [
+        "NVIDIA GeForce RTX 3090",
+        "NVIDIA L4",
+        "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+      ],
+      "minCudaVersion": "13.0",
+      "pools": [
+        "AMPERE_24"
+      ]
+    },
+    "workers": {
+      "idleTimeout": 60,
+      "max": 0,
+      "min": 0
+    },
+    "type": "QUEUE",
+    "timeout": 120000,
+    "env": {
+      "DTYPE": "bfloat16",
+      "MAX_MODEL_LEN": "8192",
+      "MAX_CONCURRENCY": "2",
+      "MAX_NUM_SEQS": "2",
+      "SEED": "0",
+      "ENABLE_LORA": "true",
+      "ENABLE_PREFIX_CACHING": "false",
+      "MODEL_REVISION": "b968826d9c46dd6066d109eabc6255188de91218",
+      "TOKENIZER_REVISION": "b968826d9c46dd6066d109eabc6255188de91218",
+      "GPU_MEMORY_UTILIZATION": "0.85"
+    },
+    "entrypoint": [
+      "python3",
+      "-u",
+      "-c",
+      "\"\"\"Entrypoint for the pinned Runpod worker-vllm image (public weights only).\n\nResolve both revisions before starting vLLM. Serving a local immutable snapshot\nalso prevents the upstream worker's revision-recovery path from using HF HEAD.\n\"\"\"\nfrom __future__ import annotations\n\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport sys\n\nBASE = \"Qwen/Qwen3-8B\"\nBASE_REVISION = \"b968826d9c46dd6066d109eabc6255188de91218\"\nADAPTER = \"jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5\"\nADAPTER_REVISION = \"27b912a863ff914ad45baa03624d8911dc1e17fb\"\nSUBFOLDER = \"artifacts/full/checkpoint-50\"\nADAPTER_SHA256 = \"7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\"\n\n\ndef configure(snapshot_download):\n    base = Path(snapshot_download(repo_id=BASE, revision=BASE_REVISION,\n                                  allow_patterns=[\"*.json\", \"*.safetensors\", \"*.jinja\",\n                                                  \"*.txt\", \"*.model\"]))\n    adapter = Path(snapshot_download(repo_id=ADAPTER, revision=ADAPTER_REVISION,\n                                     allow_patterns=[f\"{SUBFOLDER}/*\"])) / SUBFOLDER\n    config = json.loads((adapter / \"adapter_config.json\").read_text())\n    digest = hashlib.sha256((adapter / \"adapter_model.safetensors\").read_bytes()).hexdigest()\n    if digest != ADAPTER_SHA256 or config.get(\"base_model_name_or_path\") != BASE:\n        raise ValueError(\"pinned adapter verification failed\")\n    if config.get(\"r\") != 4:\n        raise ValueError(\"unexpected adapter rank\")\n    os.environ.update(MODEL_NAME=str(base), TOKENIZER_NAME=str(base),\n                      MODEL_REVISION=\"\", TOKENIZER_REVISION=\"\",\n                      LORA_MODULES=json.dumps({\"name\": \"envoy\", \"path\": str(adapter),\n                                               \"base_model_name\": str(base)}),\n                      OPENAI_SERVED_MODEL_NAME_OVERRIDE=\"envoy-base-only\")\n    return {\"base_repo\": BASE, \"base_revision\": BASE_REVISION,\n            \"adapter_repo\": ADAPTER, \"adapter_revision\": ADAPTER_REVISION,\n            \"adapter_subfolder\": SUBFOLDER, \"adapter_sha256\": digest,\n            \"adapter_rank\": 4, \"served_adapter\": \"envoy\"}\n\n\ndef main():\n    from huggingface_hub import snapshot_download\n    import torch\n    import vllm\n    identity = configure(snapshot_download)\n    identity.update(torch_version=torch.__version__, vllm_version=vllm.__version__,\n                    cuda_runtime=torch.version.cuda,\n                    gpu=torch.cuda.get_device_name(0),\n                    gpu_memory_bytes=torch.cuda.get_device_properties(0).total_memory)\n    print(\"ENVOY_PINNED_IDENTITY \" + json.dumps(identity, sort_keys=True), flush=True)\n    os.execv(sys.executable, [sys.executable, \"/src/main.py\"])\n\n\nif __name__ == \"__main__\":\n    main()\n"
+    ]
+  },
+  "workers": {
+    "endpointVersion": 3,
+    "summary": {
+      "idle": 0,
+      "initializing": 0,
+      "running": 0,
+      "throttled": 0,
+      "total": 0,
+      "unhealthy": 0
+    },
+    "workers": []
+  }
+}

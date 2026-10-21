@@ -1,0 +1,96 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "a921ee3f-3022-4432-abaf-95ec0be4410c",
+  "question_id": "paper_cdf64eb2d22db567",
+  "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?",
+  "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "FlashAttention-2 is 1.3-1.5× faster than FlashAttention in Triton in the forward pass and 2× faster in the backward pass on the A100 GPU.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2307_08691v1",
+      "start": 23600,
+      "end": 24100,
+      "quote": "28). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster.\n\nBenchmark setting: we vary the sequence length ",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2307.08691v1",
+      "coverage": "html_paragraphs",
+      "source_kind": "paper",
+      "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2307_08691v1\", \"speedups over FlashAttention in Triton\"))",
+      "source_inspection": true,
+      "observation": "[{'text': ' and number of heads dimension, as done in FlashAttention. The increased parallelism over sequence length helps improve occupancy (fraction of GPU resources being used) when the batch size and number of heads are small, leading to speedup in this case.\\n\\nThese ideas of swapping the order of the loop (outer loop over row blocks and inner loop over column blocks, instead of the other way round in the original FlashAttention paper), as well as parallelizing over the sequence length dimension were fi', 'offset': 18800, 'score': 17}, {'text': 'engths has been a major problem in the last several years, promising to improve performance in language modeling and high-resolution image understanding, as well as to unlock new applications in code, audio, and video generation. The attention layer is the main bottleneck in scaling to longer sequences, as its runtime and memory increase quadratically in the sequence length. FlashAttention [5] exploits the asymmetric GPU memory hierarchy to bring significant memory saving (linear instead of quad', 'offset': 1800, 'score': 16}, {'text': 'of heads are small, leading to speedup in this case.\\n\\nThese ideas of swapping the order of the loop (outer loop over row blocks and inner loop over column blocks, instead of the other way round in the original FlashAttention paper), as well as parallelizing over the sequence length dimension were first suggested and implemented by Phil Tillet in the Triton [17] implementation.33 3 https://github.com/openai/triton/blob/main/python/tutorials/06-fused-attention.py\\n\\nNotice that the only shared compu', 'offset': 19000, 'score': 16}, {'text': '28). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\\\times faster than FlashAttention in Triton in the forward pass and around 2×\\\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\\\times faster.\\n\\nBenchmark setting: we vary the sequence length ', 'offset': 23600, 'score': 15}, {'text': 'Scaling Transformers to longer sequence lengths has been a major problem in the last several years, promising to improve performance in language modeling and high-resolution image understanding, as well as to unlock new applications in code, audio, and video generation. The attention layer is the main bottleneck in scaling to longer sequences, as its runtime and memory increase quadratically in the sequence length. FlashAttention exploits the asymmetric GPU memory hierarchy to bring significant ', 'offset': 0, 'score': 14}, {'text': 'at when used end-to-end to train GPT-style models, FlashAttention-2 reaches training speed of up to 225 TFLOPs/s per A100 GPU (72\\\\% model FLOPs utilization).\\n\\nScaling Transformers to longer sequence lengths has been a major problem in the last several years, promising to improve performance in language modeling and high-resolution image understanding, as well as to unlock new applications in code, audio, and video generation. The attention layer is the main bottleneck in scaling to longer sequen', 'offset': 1600, 'score': 14}, {'text': 'tic to linear in sequence length. This yields 2-4×\\\\times wall-clock time speedup over optimized baselines, up to 10-20×\\\\times memory saving, with no approximation, and as a result FlashAttention has seen wide adoption in large-scale training and inference of Transformers.\\n\\nHowever, context length increases even more, FlashAttention is still not nearly as efficient as other primitives such as matrix-multiply (GEMM). In particular, while FlashAttention is already 2-4×\\\\times faster than a standard ', 'offset': 4800, 'score': 14}, {'text': 'on. We measure the runtime of FlashAttention-2 across different sequence lengths and compare it to a standard implementation in PyTorch, FlashAttention, and FlashAttention in Triton. We confirm that FlashAttention-2 is 1.7-3.0×\\\\times faster than FlashAttention, 1.3-2.5×\\\\times faster than FlashAttention in Triton, and 3-10×\\\\times faster than a standard attention implementation. FlashAttention-2 reaches up to 230 TFLOPs/s, 73% of the theoretical maximum TFLOPs/s on A100 GPUs.\\n\\nEnd-to-end training ', 'offset': 22600, 'score': 14}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2307_08691v1\", 23600, 500))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2307_08691v1', 'start': 23600, 'end': 24100, 'text': '28). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\\\times faster than FlashAttention in Triton in the forward pass and around 2×\\\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\\\times faster.\\n\\nBenchmark setting: we vary the sequence length '}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: FlashAttention-2 is 1.3-1.5× faster than FlashAttention in Triton in the forward pass and 2× faster in the backward pass on the A100 GPU. CITATIONS: [\"arxiv_2307_08691v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2307_08691v1\",\"start\":23600,\"end\":24100}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+    "doc_id": "arxiv_2307_08691v1",
+    "arxiv_id": "2307.08691v1",
+    "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "44b4e844715709a6b08f09ff5c36468ec9547009df51fd5a450167f418742c9d",
+  "research_gaps": [],
+  "reader_guidance": "focused-v1",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

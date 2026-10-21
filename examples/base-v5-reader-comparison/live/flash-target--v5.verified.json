@@ -1,0 +1,58 @@
+{
+  "status": "no_evidence",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+  "candidate_answer": null,
+  "evidence": [],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "model_requests_attempted": 5,
+  "trajectory_steps": 5,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+    "doc_id": "arxiv_2307_08691v1",
+    "arxiv_id": "2307.08691v1",
+    "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "44b4e844715709a6b08f09ff5c36468ec9547009df51fd5a450167f418742c9d",
+  "research_gaps": [
+    {
+      "missing": "I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768",
+      "follow_up_query": "What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?",
+      "reported_at_step": 4,
+      "review_status": "unreviewed_model_report",
+      "absence_proven": false
+    }
+  ],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}

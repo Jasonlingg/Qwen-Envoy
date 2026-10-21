@@ -1,0 +1,99 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c8d870fc-416c-4c1a-b7e1-54ba1f7c8261",
+  "question_id": "paper_4bbd955e96e56914",
+  "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing.",
+  "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 6,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(search_within(\"arxiv_2306_00978v6\", \"TinyChat HuggingFace FP16 speedup RTX A5000 batch size 8 8192-token prompt\"))",
+      "source_inspection": true,
+      "observation": "[{'text': 'rom TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\\n\\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\\\times speedup t', 'offset': 34000, 'score': 8}, {'text': 'xllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\\n\\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP1', 'offset': 34200, 'score': 7}, {'text': 'the median latency as the final result.\\n\\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not suppo', 'offset': 34400, 'score': 7}, {'text': 'es lower memory footprint to measured speedup. On desktop, laptop and mobile GPUs, we consistently observe a 3.2-3.3×\\\\times average speedup compared to the FP16 implementation by Huggingface across a diverse spectrum of LLMs. Furthermore, it facilitates effortless deployment of the Llama-2-70B model on a single NVIDIA Jetson Orin with 64GB of memory. It also democratizes 13 billion parameter LLM at an interactive pace of 30 tokens/second on a laptop RTX 4070 GPU with only 8GB of memory. AWQ has ', 'offset': 8200, 'score': 6}, {'text': 'end, we demonstrated that 4-bit weight quantization could lead to a 4×\\\\times theoretical peak performance. We further design TinyChat to realize this speedup. On GPUs, we only focus on implementing essential components, including attention, layer normalization, and linear projection kernels. The flexible frontend allows easy customization and fast support for new models. TinyChat with 4-bit AWQ achieves more than 3×\\\\times speedup compared with the Huggingface FP16 implementation across different', 'offset': 22200, 'score': 6}, {'text': 'ghts, as opposed to 3 scalar instructions per weight in a conventional packing (w0,w1,…,w31w_{0},w_{1},...,w_{31}). Generally, for 2n2^{n}-bit SIMD registers, adjacent weights will have indices off by 1/8×2n1/8\\\\times 2^{n}, since each register can hold 1/8×2n1/8\\\\times 2^{n} 8-bit integers. On GPUs, we found it more efficient to pack each 8 weights into w{0,2,4,6,1,3,5,7}w_{\\\\{0,2,4,6,1,3,5,7\\\\}} following Kim et al. (2022).\\n\\nWe also extensively apply kernel fusion to optimize on-device LLM inferen', 'offset': 24000, 'score': 6}, {'text': ' 1/8×2n1/8\\\\times 2^{n}, since each register can hold 1/8×2n1/8\\\\times 2^{n} 8-bit integers. On GPUs, we found it more efficient to pack each 8 weights into w{0,2,4,6,1,3,5,7}w_{\\\\{0,2,4,6,1,3,5,7\\\\}} following Kim et al. (2022).\\n\\nWe also extensively apply kernel fusion to optimize on-device LLM inference. For layer normalization, we fuse all operators (e.g. multiplication, division and square root) into a single kernel. For attention layers, we fuse QKV projections into a single kernel, and also pe', 'offset': 24200, 'score': 6}, {'text': 'ls. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native Py', 'offset': 35000, 'score': 6}]\n\nController reminder: matching source text is not semantic support. If a hit appears relevant, inspect a short passage around its returned offset before claiming the requested fact was not found. Reserve the last two actions for report_gap and abstention if evidence remains missing.\n\n[5 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"arxiv_2306_00978v6\", 34000, 1000))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'arxiv_2306_00978v6', 'start': 34000, 'end': 35000, 'text': 'rom TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\\n\\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other mode'}\n\nController reminder: check that your answer agrees with the displayed source. Cite its exact supporting span; preserve its measurement conditions. If evidence remains missing, report_gap before abstaining.\n\n[4 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [3 steps left.]"
+    },
+    {
+      "step": 4,
+      "action": "report_gap(missing=\"I have not established TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt\", follow_up_query=\"What TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt is reported\")",
+      "research_gap": {
+        "missing": "I have not established TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt",
+        "follow_up_query": "What TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt is reported",
+        "reported_at_step": 4
+      },
+      "observation": "Gap recorded for host review; this is not proof of absence. No search was launched. Continue inspecting or submit using the existing evidence/abstention rules. [2 steps left.]"
+    },
+    {
+      "step": 5,
+      "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+      "observation": "Explicit abstention after investigation."
+    }
+  ],
+  "model_requests_attempted": 5,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "doc_id": "arxiv_2306_00978v6",
+    "arxiv_id": "2306.00978v6",
+    "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+  "research_gaps": [
+    {
+      "missing": "I have not established TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt",
+      "follow_up_query": "What TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt is reported",
+      "reported_at_step": 4
+    }
+  ],
+  "reader_guidance": "focused-v1",
+  "uncertainty": "The selected snapshot did not yield a supported answer in this bounded Qwen investigation.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

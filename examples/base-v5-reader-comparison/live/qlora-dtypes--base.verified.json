@@ -1,0 +1,58 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+  "candidate_answer": "The usual weight storage dtype in QLoRA is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2305_14314v1",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "start": 19200,
+      "end": 19700,
+      "quote": "th dequantization from storage 𝐖NF4\\mathbf{W}^{\\text{NF4}} to computation data type 𝐖BF16\\mathbf{W}^{\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\frac{\\partial\\mathbf{X}}{\\partial\\mathbf{W}} in BFloat16 precision.\n\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA para",
+      "arxiv_id": "2305.14314v1",
+      "source_url": "https://arxiv.org/abs/2305.14314v1",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "served_model": "envoy-base-only",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "doc_id": "arxiv_2305_14314v1",
+    "arxiv_id": "2305.14314v1",
+    "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}

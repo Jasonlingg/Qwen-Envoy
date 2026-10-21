@@ -1,0 +1,62 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+  "candidate_answer": "FlashAttention-2 splits Q across 4 warps while keeping K and V accessible by all warps, whereas FlashAttention splits K and V across 4 warps while keeping Q accessible by all warps. This avoids communication between warps and shared memory reads/writes.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2307_08691v1",
+      "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+      "start": 20000,
+      "end": 21000,
+      "quote": "f{dQ}.\n\nWe describe the parallelization scheme in Fig. 2.\n\nAs Section 3.2 describe how we schedule thread blocks, even within each thread block, we also have to decide how to partition the work between different warps. We typically use 4 or 8 warps per thread block, and the partitioning is described in Fig. 3.\n\nFor each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} ",
+      "arxiv_id": "2307.08691v1",
+      "source_url": "https://arxiv.org/abs/2307.08691v1",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "c0f14e1dca80c88d477f6a96b1676c621b54ef93c8f27de94d701617ea67d7ad",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-paper-v1",
+    "corpus_hash": "74d47a8a2b3fad517b78593541dc6230fe7037815efa7a2beae5f67f8bdedfc9",
+    "doc_id": "arxiv_2307_08691v1",
+    "arxiv_id": "2307.08691v1",
+    "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+    "coverage": "html_paragraphs",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "44b4e844715709a6b08f09ff5c36468ec9547009df51fd5a450167f418742c9d",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "focused-v1"
+}
