@@ -16,10 +16,12 @@ from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import ToolAnnotations
 
 from scripts.arxiv_research_mcp import create_server as source_server
+from src.env.repl import PersistentREPL
 from src.policies.bounded_http import bounded_transport, validate_endpoint
 from src.product.arxiv_library import ArxivLibrary
 from src.product.assigned_reader import build_assigned_reader
 from src.product.experiment_research import ExperimentResearcher
+from src.product.experiment_tokenizer import load_tokenizer
 from src.product.paper_discovery import PaperDiscovery
 
 
@@ -70,11 +72,10 @@ def main():
     args = parser.parse_args()
     try:
         validate_endpoint(args.qwen_endpoint)
+        if not PersistentREPL._docker_available(args.sandbox_image):
+            raise ValueError("Docker sandbox image is unavailable; no model calls were made")
         # Never download tokenizer code or weights at server startup.
-        from transformers import AutoTokenizer
-        tokenizer = AutoTokenizer.from_pretrained(
-            args.tokenizer, revision=args.tokenizer_revision,
-            local_files_only=True, trust_remote_code=False)
+        tokenizer = load_tokenizer(args.tokenizer, args.tokenizer_revision)
 
         def reader_factory(transport):
             reader = build_assigned_reader(
