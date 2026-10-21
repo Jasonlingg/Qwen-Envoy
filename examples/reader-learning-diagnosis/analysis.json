@@ -1,0 +1,1570 @@
+{
+  "schema_version": "reader-learning-diagnosis-v1",
+  "scope": "saved development only",
+  "review_kind": "implementing_assistant_manual_diagnosis; not a new semantic grade",
+  "human_review": "not_performed",
+  "rewards_computed": false,
+  "historical_grades_changed": false,
+  "reserved_evaluation_opened": false,
+  "model_requests": 0,
+  "gpu_activations": 0,
+  "tag_count_note": "Manual diagnostic tags can overlap; not new pass/fail labels.",
+  "input_sha256": {
+    "benchmarks/research_reader_v1/cases/development.json": "96527fd3dc7d81c89ecefedbc18e2c46aab3be7b502c772ace167b69f4531229",
+    "benchmarks/research_reader_v1/sources/2305.14314v1.json": "418a34b337a31cde44ab3586b362c93f186667a7743f7e8a51a406573b120a7f",
+    "benchmarks/research_reader_v1/sources/2306.00978v6.json": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f",
+    "benchmarks/research_reader_v1/sources/2307.08691v1.json": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641",
+    "benchmarks/research_reader_v1/sources/2309.06180v1.json": "24cf62925e5c4c7093c612361513f3069e04f0b0b4f7f8a65715d8d9d60105c2",
+    "examples/base-v5-reader-comparison/live/awq-profile--base.packet.json": "2c0c294dac8d1920d27b871a3f46224abf9352639153fed6151dba99fdfbb561",
+    "examples/base-v5-reader-comparison/live/awq-profile--v5.packet.json": "131fa531ba6b58c1781db45ee187ef283406f81ff1a80a88eed36448ee1c7e55",
+    "examples/base-v5-reader-comparison/live/awq-protocol--base.packet.json": "a3230682338f819ad1946117fc64ffb34bbaef53fa9956bbd1c4c181bc49f951",
+    "examples/base-v5-reader-comparison/live/awq-protocol--v5.packet.json": "c8466a89b96821ac49942bab94290dfdc52ae80fec922c2dc2aae487fbc30ed6",
+    "examples/base-v5-reader-comparison/live/awq-target--base.packet.json": "953825b296f5d38993f7eff8b80f6ab32ce1670fd3d2dcb1d03b31ffbfc5725c",
+    "examples/base-v5-reader-comparison/live/awq-target--v5.packet.json": "d4f38af88550925a3dc77269e941f21ac83c72db5cfa56fb31a20b9c5cb8c2bd",
+    "examples/base-v5-reader-comparison/live/flash-target--base.packet.json": "01a833acacafda04a1c58258f31f8f2b4cd4a25e67f53b47959eb183f841983c",
+    "examples/base-v5-reader-comparison/live/flash-target--v5.packet.json": "66fa59be6ad99a76dc489fe1490c8f63222f07416e29a6ca4bc68f18702866cc",
+    "examples/base-v5-reader-comparison/live/flash-triton--base.packet.json": "157389978681da688cebf2f2353333995a425267ff97a9ba8842e246d0587b29",
+    "examples/base-v5-reader-comparison/live/flash-triton--v5.packet.json": "a8b4dab45410bc542aa78586bf590d5a8eb13bf535345310e12bd501296c548f",
+    "examples/base-v5-reader-comparison/live/flash-warps--base.packet.json": "7829bb3cc783e1f9216830b744c11edac5666a5a46c7b38a862084f22b93ab71",
+    "examples/base-v5-reader-comparison/live/flash-warps--v5.packet.json": "e6cac749c918e9787cbabe8a6b903cb0d53c2240d8d5fa30678ac260d24e8be3",
+    "examples/base-v5-reader-comparison/live/paged-blocks--base.packet.json": "9cb3574e22cc99a20a776ca3483762b7a9ec2302eb26fa6a1c918e6351553341",
+    "examples/base-v5-reader-comparison/live/paged-blocks--v5.packet.json": "e53e8f08684b0e8984e5ea32a69fb263fa6827ee155dce1eac564f1bf81fdcf6",
+    "examples/base-v5-reader-comparison/live/paged-target--base.packet.json": "3027756ec3cc15f9aa09440e4e3e85f1ecfbd97cf658e6f1167267dbe3e3a5eb",
+    "examples/base-v5-reader-comparison/live/paged-target--v5.packet.json": "67c81304f02fbb9f10f3ee6c51887c9c9119c9b5380ee9e858663188261fd219",
+    "examples/base-v5-reader-comparison/live/paged-traces--base.packet.json": "a6b89712f3097337556db45635737439fe7345cb051d716580b6628e3b57b11b",
+    "examples/base-v5-reader-comparison/live/paged-traces--v5.packet.json": "5ed4a1a0081cf0bd90e3c4087f108392f2a57dd566c8f62408cf323bea9ddff5",
+    "examples/base-v5-reader-comparison/live/qlora-dq--base.packet.json": "4f781b045f246b2186079872e12aa2a6925a3132dc219415ab83306a0b7926f3",
+    "examples/base-v5-reader-comparison/live/qlora-dq--v5.packet.json": "cddbf91a2c0e647b4fd08594a1019b48e8de190c3cea07c6ee2aba68b5501d65",
+    "examples/base-v5-reader-comparison/live/qlora-dtypes--base.packet.json": "206323f4381f9312f0ce7c0bc60620229a3224b14473027687c8267042c1ed78",
+    "examples/base-v5-reader-comparison/live/qlora-dtypes--v5.packet.json": "794a5b60b752d5e602095f9193209785b1071c9f7a1a7fb4a619b726bbb1f19f",
+    "examples/base-v5-reader-comparison/live/qlora-target--base.packet.json": "535b1eccb2b29cb975a51ed0508768dd8a238e251fb37fafba525c19deae2872",
+    "examples/base-v5-reader-comparison/live/qlora-target--v5.packet.json": "b569bbbad59edccd878a27aff393ae1144fcc8a608668d23806f471c610b55be",
+    "examples/base-v5-reader-comparison/per-question-results.json": "b32c3dcc9e24b695a14e540b033dc9459343edf216386f40bac0b16cc44e33a9",
+    "examples/reader-learning-diagnosis/annotations.json": "00a866b8162d8f6eaf00972e6afd79220dcbffe775434d4f3e8977474f68bfad"
+  },
+  "summary": {
+    "base": {
+      "episodes": 12,
+      "requests": 45,
+      "recorded_execution_error_episodes": 0,
+      "original_answerable_passes": 2,
+      "original_gap_passes": 2,
+      "primary_counts": {
+        "citation_scope_missing": 2,
+        "historical_supported_pass": 2,
+        "policy_budget_exhaustion": 1,
+        "rubric_scope_ambiguity": 2,
+        "citation_boundary_derivation_ambiguity": 1,
+        "appropriately_scoped_gap": 2,
+        "condition_swap": 2
+      },
+      "nonexclusive_tag_counts": {
+        "appropriately_scoped_gap": 2,
+        "citation_boundary_derivation_ambiguity": 1,
+        "citation_scope_missing": 2,
+        "claim_source_contradiction": 1,
+        "condition_swap": 2,
+        "historical_supported_pass": 2,
+        "missing_gap_report": 1,
+        "policy_budget_exhaustion": 1,
+        "rubric_scope_ambiguity": 5,
+        "supported_requested_core": 2,
+        "unsupported_target_number": 1
+      }
+    },
+    "v5": {
+      "episodes": 12,
+      "requests": 44,
+      "recorded_execution_error_episodes": 0,
+      "original_answerable_passes": 1,
+      "original_gap_passes": 3,
+      "primary_counts": {
+        "rubric_scope_ambiguity": 2,
+        "historical_supported_pass": 1,
+        "appropriately_scoped_gap": 3,
+        "citation_boundary_derivation_ambiguity": 1,
+        "citation_scope_missing": 1,
+        "wrong_measurement": 1,
+        "gap_target_condition_missing": 1,
+        "requested_fact_missing": 2
+      },
+      "nonexclusive_tag_counts": {
+        "appropriately_scoped_gap": 3,
+        "citation_boundary_derivation_ambiguity": 1,
+        "citation_scope_missing": 2,
+        "claim_overgeneralization": 1,
+        "gap_target_condition_missing": 1,
+        "historical_supported_pass": 1,
+        "requested_fact_missing": 3,
+        "rubric_scope_ambiguity": 3,
+        "supported_requested_core": 2,
+        "wrong_measurement": 1
+      }
+    }
+  },
+  "rows": [
+    {
+      "case_id": "paged-blocks",
+      "arm": "v5",
+      "kind": "supported",
+      "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports the logical-to-physical block table, filled-position entries, and dynamic growth without reserving all future positions. The answer omits the frozen fixed-size-block and logical-contiguous/physical-noncontiguous clauses; E1 also does not establish those clauses. No false reservation claim.",
+      "diagnosis": {
+        "case_id": "paged-blocks",
+        "arm": "v5",
+        "primary": "rubric_scope_ambiguity",
+        "secondary": [
+          "supported_requested_core"
+        ],
+        "rationale": "The requested block-table mapping and dynamic allocation are answered and supported by the submitted quote. Historical extra fixed-size/noncontiguity requirements need question-aligned adjudication before training; this is not a new pass verdict."
+      },
+      "candidate_claims": [
+        {
+          "text": "vLLM maps a request's logical KV blocks to physical memory through a block table that records the corresponding physical blocks and filled positions. It does not reserve all future token positions in advance, allowing dynamic allocation.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 24400,
+          "end": 25400,
+          "quote": "iguous chunk of GPU DRAM and divides it into physical KV blocks (this is also done on CPU RAM for swapping; see §4.5). The KV block manager also maintains block tables—the mapping between logical and physical KV blocks of each request. Each block table entry records the corresponding physical blocks of a logical block and the number of filled positions. Separating logical and physical KV blocks allows vLLM to dynamically grow the KV cache memory without reserving it for all positions in advance, which eliminates most memory waste in existing systems, as in Fig. 2.\n\nNext, we walk through an example, as in Fig. 6, to demonstrate how vLLM executes PagedAttention and manages the memory during the decoding process of a single input sequence: \\small1⃝ As in OS’s virtual memory, vLLM does not require reserving the memory for the maximum possible generated sequence length initially. Instead, it reserves only the necessary KV blocks to accommodate the KV cache generated during prompt computatio",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2309.06180v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"KV blocks physical memory mapping\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 24400, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: vLLM maps a request's logical KV blocks to physical memory through a block table that records the corresponding physical blocks and filled positions. It does not reserve all future token positions in advance, allowing dynamic allocation. CITATIONS: [\"arxiv_2309_06180v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2309_06180v1\",\"start\":24400,\"end\":25400}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "paged-blocks",
+      "arm": "base",
+      "kind": "supported",
+      "question": "How does vLLM map a request's logical KV blocks to physical memory, and must it reserve every future token position in advance?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "The answer omits fixed-size blocks and the possibility of physically noncontiguous blocks. E1 contains the OS-page analogy, dynamic allocation, and fixed-size KV-block introduction, but no block-table statement; the answer's block-table claim is not established by its own citation. Full-source/reference context cannot repair that missing support.",
+      "diagnosis": {
+        "case_id": "paged-blocks",
+        "arm": "base",
+        "primary": "citation_scope_missing",
+        "secondary": [
+          "rubric_scope_ambiguity"
+        ],
+        "rationale": "The answer claims a block table but its cited window stops before the block-table description. Historical extra detail requirements are also debatable."
+      },
+      "candidate_claims": [
+        {
+          "text": "vLLM maps a request's logical KV blocks to physical memory using a block table that maintains the mapping between logical and physical KV blocks. It does not need to reserve every future token position in advance, as physical memory can be dynamically allocated as needed.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 23600,
+          "end": 24100,
+          "quote": " user programs’ logical pages to physical pages. Contiguous logical pages can correspond to non-contiguous physical memory pages, allowing user programs to access memory as though it were contiguous. Moreover, physical memory space needs not to be fully reserved in advance, enabling the OS to dynamically allocate physical pages as needed. vLLM uses the ideas behind virtual memory to manage the KV cache in an LLM service. Enabled by PagedAttention, we organize the KV cache as fixed-size KV blocks",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2309.06180v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"map request's logical KV blocks to physical memory\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 23600, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: vLLM maps a request's logical KV blocks to physical memory using a block table that maintains the mapping between logical and physical KV blocks. It does not need to reserve every future token position in advance, as physical memory can be dynamically allocated as needed. CITATIONS: [\"arxiv_2309_06180v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2309_06180v1\",\"start\":23600,\"end\":24100}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "v5",
+      "kind": "condition_binding",
+      "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "E1 explicitly binds most experiments to 1-hour traces and OPT-175B to 15-minute traces because of the cost limit. All required conditions and durations are correct.",
+      "diagnosis": {
+        "case_id": "paged-traces",
+        "arm": "v5",
+        "primary": "historical_supported_pass",
+        "secondary": [],
+        "rationale": "Both requested trace durations and the cost-limited exception are supported by the submitted evidence."
+      },
+      "candidate_claims": [
+        {
+          "text": "vLLM uses 1-hour evaluation traces for most experiments, but 15-minute traces for OPT-175B due to cost limits.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 47200,
+          "end": 48200,
+          "quote": "y divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.\n\nWe evaluate the performance of vLLM with basic sampling (one sample per request) on three models and two datasets. The first row of Fig. 12 shows the results on the ShareGPT dataset. The curves illustrate that as the request rate increases, the latency initially increases at a gradual pace but then suddenly explodes. This can be attributed to the fact that when the request rate surpasses the capacity of the serving system, the queue length continues to grow infinitely and so does the latency of the requests.\n\nOn the ShareGPT dataset, vLLM can sustain 1.7×1.7\\times–2.7×2.7\\times higher request rates compared to Orca (Oracle) and 2.7×2.7\\times–8×8\\times compared to Orca (Max), wh",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2309.06180v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"evaluation traces vLLM OPT-175B\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47200, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: vLLM uses 1-hour evaluation traces for most experiments, but 15-minute traces for OPT-175B due to cost limits. CITATIONS: [\"arxiv_2309_06180v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2309_06180v1\",\"start\":47200,\"end\":48200}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "base",
+      "kind": "condition_binding",
+      "question": "How long are the evaluation traces for most vLLM experiments versus OPT-175B, and why is that model treated differently?",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "E1 explicitly supports 1-hour traces for most experiments and the cost-limited 15-minute OPT-175B exception. No duration swap or generalization of the exception.",
+      "diagnosis": {
+        "case_id": "paged-traces",
+        "arm": "base",
+        "primary": "historical_supported_pass",
+        "secondary": [],
+        "rationale": "Both requested trace durations and the cost-limited exception are supported by the submitted evidence."
+      },
+      "candidate_claims": [
+        {
+          "text": "The evaluation traces for most vLLM experiments are 1 hour long, while OPT-175B uses 15-minute traces due to cost limitations.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 47200,
+          "end": 47700,
+          "quote": "y divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.\n\nWe evaluate the performance of vLLM with basic sampling (one sample per request) on three models and two datasets. The first row of Fig. 12 shows the results on the ShareGPT dataset. The",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2309.06180v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"evaluation traces vLLM OPT-175B\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47200, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The evaluation traces for most vLLM experiments are 1 hour long, while OPT-175B uses 15-minute traces due to cost limitations. CITATIONS: [\"arxiv_2309_06180v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2309_06180v1\",\"start\":47200,\"end\":47700}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "base",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search.",
+      "original_model_assisted_verdict": "fail",
+      "original_review_notes": "The sample is incomplete with no candidate claims, evidence, unresolved research_gaps, or follow-up query. It supplies none of the required target-gap response.",
+      "diagnosis": {
+        "case_id": "paged-target",
+        "arm": "base",
+        "primary": "policy_budget_exhaustion",
+        "secondary": [
+          "missing_gap_report"
+        ],
+        "rationale": "All six requests returned; a final abstention was rejected without a required gap report. This is a policy/protocol exhaustion, not an uncertain external inference failure."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [],
+      "requests": 6,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        6
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"p95 latency\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47000, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47600, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 4,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 48000, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 5,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 48400, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 6,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "v5",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search.",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "The unresolved research_gaps entry accurately identifies the exact missing p95 measurement for Llama-3.1-8B/one RTX A5000/32 simultaneous users and supplies an exact-target next query. The complete pinned extraction has no target-model, A5000, or p95 occurrence, and its stated evaluation is OPT/LLaMA on A100/GCP with normalized mean latency. No partial numeric result is asserted or transferred. Rubric interpretation: the partial-findings qualification is conditional on offering a partial finding; a valid target gap plus query suffices.",
+      "diagnosis": {
+        "case_id": "paged-target",
+        "arm": "v5",
+        "primary": "appropriately_scoped_gap",
+        "secondary": [],
+        "rationale": "Reports the exact unresolved target and useful next query without inventing latency."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "I have not established the measured p95 latency of vLLM for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users",
+          "follow_up_query": "What is the measured p95 latency of vLLM for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users?",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2309_06180v1\", \"p95 latency RTX A5000\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47000, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"I have not established the measured p95 latency of vLLM for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users\", follow_up_query=\"What is the measured p95 latency of vLLM for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users?\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "v5",
+      "kind": "supported",
+      "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients.",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports 4-bit NormalFloat storage, 16-bit BrainFloat computation, and weight gradients only for LoRA parameters (hence frozen base weights). The response omits the frozen requirement that computation follows dequantization of the stored weights, although E1 explicitly contains that mechanism. Treating a supporting quote as a substitute for an omitted requested explanation would be a rubric ambiguity; this strict review requires the answer itself to state it.",
+      "diagnosis": {
+        "case_id": "qlora-dtypes",
+        "arm": "v5",
+        "primary": "rubric_scope_ambiguity",
+        "secondary": [
+          "supported_requested_core"
+        ],
+        "rationale": "All three explicitly requested dtype/gradient facts are present and supported. Do not automatically punish omission of a separately unasked dequantization explanation."
+      },
+      "candidate_claims": [
+        {
+          "text": "QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. It computes gradients only for the LoRA parameters.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 19200,
+          "end": 20200,
+          "quote": "th dequantization from storage 𝐖NF4\\mathbf{W}^{\\text{NF4}} to computation data type 𝐖BF16\\mathbf{W}^{\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\frac{\\partial\\mathbf{X}}{\\partial\\mathbf{W}} in BFloat16 precision.\n\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.\n\nWe have discussed how QLoRA works and how it can significantly reduce the required memory for finetuning models. The main question now is whether QLoRA can perform as well as full-model finetuning. Furthermore, we want to analyze the components of QLoRA including the impact of NormalFloat4 over standard Float4. The following sections will discuss the experiments that aimed at answering these questions.\n\nWe consider three architectures (encoder, encoder-decode",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2305.14314v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"weight storage dtype computation dtype gradient parameters\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 19200, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. It computes gradients only for the LoRA parameters. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19200,\"end\":20200}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "base",
+      "kind": "supported",
+      "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients.",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "The dtype distinction and LoRA-only weight gradients are supported by E1; its ending 'LoRA para' is an intelligible clipped reference to LoRA parameters. Only-LoRA gradients implies no base-weight update. The answer omits dequantization from storage to computation dtype, a frozen clause present in its evidence. Same strict completeness interpretation as slot A; omission, not an erroneous dtype or number.",
+      "diagnosis": {
+        "case_id": "qlora-dtypes",
+        "arm": "base",
+        "primary": "rubric_scope_ambiguity",
+        "secondary": [
+          "supported_requested_core"
+        ],
+        "rationale": "All three explicitly requested dtype/gradient facts are present and supported. Historical dequantization completeness requirement goes beyond the literal three-part question; hold for adjudication."
+      },
+      "candidate_claims": [
+        {
+          "text": "The usual weight storage dtype in QLoRA is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 19200,
+          "end": 19700,
+          "quote": "th dequantization from storage 𝐖NF4\\mathbf{W}^{\\text{NF4}} to computation data type 𝐖BF16\\mathbf{W}^{\\text{BF16}} to calculate the derivative ∂𝐗∂𝐖\\frac{\\partial\\mathbf{X}}{\\partial\\mathbf{W}} in BFloat16 precision.\n\nTo summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA para",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2305.14314v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"weight storage dtype computation dtype parameters receive weight gradients\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 19200, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The usual weight storage dtype in QLoRA is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19200,\"end\":19700}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "v5",
+      "kind": "condition_binding",
+      "question": "For the described blocksize-64 weights, how does double quantization change average quantization-constant overhead in bits per parameter, and what blocksize is used for the second quantization?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "Correctly identifies quantization-constant overhead, blocksize-64 weights, and second blocksize 256. E1 explicitly supplies 0.5 overhead bits and 8-bit Floats/blocksize 256, but ends before the 0.127 result/formula; that claimed result is not explicitly established by the submitted excerpt or an answer-provided calculation. The full pinned source confirms 0.127 and 0.373, so this is missing submitted numeric support, not a false source value. The answer also omits the required approximately 0.373 saving and 8-bit second-stage datatype. Ambiguity flagged: accepting an unstated nested-overhead derivation from FP8/FP32 and block sizes could change the numeric-support flag, but would not cure the completeness omissions.",
+      "diagnosis": {
+        "case_id": "qlora-dq",
+        "arm": "v5",
+        "primary": "citation_boundary_derivation_ambiguity",
+        "secondary": [
+          "rubric_scope_ambiguity"
+        ],
+        "rationale": "Correct source values 0.5/0.127 appear in the answer but its quote ends before the result. Whether a supported derivation suffices must be explicit; historical extra clauses are not automatic learning labels."
+      },
+      "candidate_claims": [
+        {
+          "text": "Double quantization reduces average quantization-constant overhead from 0.5 to 0.127 bits per parameter for blocksize-64 weights, using a second quantization blocksize of 256.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 16400,
+          "end": 17400,
+          "quote": "he exact values of this data type can be found in Appendix E.\n\nWe introduce Double Quantization (DQ), the process of quantizing the quantization constants for additional memory savings. While a small blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\n\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line w",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2305.14314v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"blocksize-64 double quantization overhead bits per parameter\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 16400, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Double quantization reduces average quantization-constant overhead from 0.5 to 0.127 bits per parameter for blocksize-64 weights, using a second quantization blocksize of 256. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":16400,\"end\":17400}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "base",
+      "kind": "condition_binding",
+      "question": "For the described blocksize-64 weights, how does double quantization change average quantization-constant overhead in bits per parameter, and what blocksize is used for the second quantization?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports second-stage 8-bit Floats and blocksize 256; E2 supports initial 0.5 overhead bits for blocksize-64 weights. Neither cited excerpt reaches the resulting 0.127 overhead or 0.373 saving, and the answer gives no calculation; the about-0.37 saving lacks explicit submitted numeric support despite being correct in the complete source. The answer omits the required 0.5-to-0.127 endpoints, weight blocksize 64, and second-stage 8-bit datatype. Same possible arithmetic-inference ambiguity as slot A, without changing the partial verdict.",
+      "diagnosis": {
+        "case_id": "qlora-dq",
+        "arm": "base",
+        "primary": "citation_boundary_derivation_ambiguity",
+        "secondary": [
+          "rubric_scope_ambiguity"
+        ],
+        "rationale": "The numerical saving is correct in the complete source, but submitted excerpts stop before the result. Unstated derivation and extra historical endpoint/datatype requirements need adjudication; do not label the value fabricated."
+      },
+      "candidate_claims": [
+        {
+          "text": "Double quantization reduces the average quantization-constant overhead by about 0.37 bits per parameter. The blocksize used for the second quantization is 256.",
+          "evidence_ids": [
+            "E1",
+            "E2"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 17000,
+          "end": 17500,
+          "quote": "tants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This second step yields the quantized quantization constants c2FP8c_{2}^{\\text{FP8}} and the second level of quantization constants c1FP32c_{1}^{\\text{FP32}}. We use 8-bit Floats with a blocksize of 256 for the second quantization as no performance degradation is observed for 8-bit quantization, in line with results from Dettmers and Zettlemoyer [13]. Since the c2FP32c_{2}^{\\text{FP32}} are positive, we",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2305.14314v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "source_path": null,
+          "record": {}
+        },
+        {
+          "evidence_id": "E2",
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 16600,
+          "end": 17100,
+          "quote": "blocksize is required for precise 4-bit quantization [13], it also has a considerable memory overhead. For example, using 32-bit constants and a blocksize of 64 for 𝐖\\mathbf{W}, quantization constants add 32/64=0.532/64=0.5 bits per parameter on average. Double Quantization helps reduce the memory footprint of quantization constants.\n\nMore specifically, Double Quantization treats quantization constants c2FP32c_{2}^{\\text{FP32}} of the first quantization as inputs to a second quantization. This s",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2305.14314v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 4,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"double quantization\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 16600, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 17000, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: Double quantization reduces the average quantization-constant overhead by about 0.37 bits per parameter. The blocksize used for the second quantization is 256. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":17000,\"end\":17500},{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":16600,\"end\":17100}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "v5",
+      "kind": "target_gap",
+      "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure.",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "A valid unresolved gap names the exact missing Qwen3-8B/32768/RTX A5000 peak-training-VRAM measurement and provides an exact-target follow-up query. The complete extraction has no Qwen3, A5000, or 32768 occurrence; its 65B/single-48GB statement supplies no target measurement. No target estimate or transferred 65B figure is asserted. Partial findings are treated as conditional, not mandatory when no such finding is offered.",
+      "diagnosis": {
+        "case_id": "qlora-target",
+        "arm": "v5",
+        "primary": "appropriately_scoped_gap",
+        "secondary": [],
+        "rationale": "Reports missing exact target VRAM and a targeted follow-up without transferring the 65B result."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "I have not established the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000",
+          "follow_up_query": "What is the measured peak VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000?",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"training VRAM sequence length 32768 RTX A5000\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 63400, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"I have not established the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000\", follow_up_query=\"What is the measured peak VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000?\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "base",
+      "kind": "target_gap",
+      "question": "Does this extracted paper establish the measured peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000? Report what is missing, any qualified relevant finding, and a next search rather than extrapolating a memory figure.",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "The gap accurately states that the extracted paper supplies no peak-training-VRAM measurement for Qwen3-8B/32768/RTX A5000, and the follow-up query retains all target conditions. Complete-source inspection supports that limitation. No 65B/48GB result is transferred and no target estimate is fabricated. As for slot A, no partial numerical finding is offered to qualify.",
+      "diagnosis": {
+        "case_id": "qlora-target",
+        "arm": "base",
+        "primary": "appropriately_scoped_gap",
+        "secondary": [],
+        "rationale": "Reports missing exact target VRAM and a targeted follow-up without transferring the 65B result."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.",
+          "follow_up_query": "Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2305_14314v1\", \"peak training VRAM Qwen3-8B QLoRA sequence length 32768 RTX A5000\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 63600, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"The paper does not provide specific measurements of peak training VRAM for Qwen3-8B QLoRA at sequence length 32768 on an RTX A5000.\", follow_up_query=\"Search for VRAM usage details of Qwen3-8B QLoRA training on RTX A5000 with sequence length 32768.\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "v5",
+      "kind": "supported",
+      "question": "In the forward pass, how does FlashAttention-2 split Q, K and V across warps compared with the original split-K scheme, and why does that help?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "The claimed Q-vs-K/V partition matches the complete forward-pass source, and E1 supports the original split-K plus the start of FA2's split-Q sentence. However E1 ends after 'keeping K and V' and does not establish their accessibility to all warps or the elimination of inter-warp combination. It never reaches the claimed FA2 benefit. 'Avoids ... shared memory reads/writes' is also too broad unless restricted to the intermediate-output communication: the frozen source says reduction, not elimination of all shared-memory traffic. No backward no-synchronization claim is made.",
+      "diagnosis": {
+        "case_id": "flash-warps",
+        "arm": "v5",
+        "primary": "citation_scope_missing",
+        "secondary": [
+          "claim_overgeneralization"
+        ],
+        "rationale": "Its selected quote cuts off before completing the FA2 sharing/benefit statement. The wording about avoiding shared-memory reads/writes needs restriction to intermediate inter-warp communication."
+      },
+      "candidate_claims": [
+        {
+          "text": "FlashAttention-2 splits Q across 4 warps while keeping K and V accessible by all warps, whereas FlashAttention splits K and V across 4 warps while keeping Q accessible by all warps. This avoids communication between warps and shared memory reads/writes.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 20000,
+          "end": 21000,
+          "quote": "f{dQ}.\n\nWe describe the parallelization scheme in Fig. 2.\n\nAs Section 3.2 describe how we schedule thread blocks, even within each thread block, we also have to decide how to partition the work between different warps. We typically use 4 or 8 warps per thread block, and the partitioning is described in Fig. 3.\n\nFor each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} ",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2307.08691v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"forward pass warp split\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 20000, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: FlashAttention-2 splits Q across 4 warps while keeping K and V accessible by all warps, whereas FlashAttention splits K and V across 4 warps while keeping Q accessible by all warps. This avoids communication between warps and shared memory reads/writes. CITATIONS: [\"arxiv_2307_08691v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2307_08691v1\",\"start\":20000,\"end\":21000}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "base",
+      "kind": "supported",
+      "question": "In the forward pass, how does FlashAttention-2 split Q, K and V across warps compared with the original split-K scheme, and why does that help?",
+      "original_model_assisted_verdict": "fail",
+      "original_review_notes": "Attributes the original FlashAttention split-K arrangement (K/V across 4 warps, shared Q) to FlashAttention-2. E1 explicitly labels that arrangement FlashAttention and describes it as inefficient, so it contradicts the claimed FA2 speed rationale. FA2 instead splits Q with shared K/V. The numeric 4-warps arrangement is attached to the wrong algorithm/operands; the claimed performance improvement is not supported by E1.",
+      "diagnosis": {
+        "case_id": "flash-warps",
+        "arm": "base",
+        "primary": "condition_swap",
+        "secondary": [
+          "claim_source_contradiction"
+        ],
+        "rationale": "Assigns the original split-K arrangement to FlashAttention-2 even though its quote identifies the original algorithm and calls the arrangement inefficient."
+      },
+      "candidate_claims": [
+        {
+          "text": "FlashAttention-2 splits 𝐊 and 𝐕 across 4 warps while keeping 𝐐 accessible by all warps, which is referred to as the “split-K” scheme. This helps reduce shared memory reads/writes and improves speed.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 20200,
+          "end": 20700,
+          "quote": "n different warps. We typically use 4 or 8 warps per thread block, and the partitioning is described in Fig. 3.\n\nFor each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps n",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2307.08691v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 4,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"split Q, K and V across warps\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 20000, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 20200, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: FlashAttention-2 splits 𝐊 and 𝐕 across 4 warps while keeping 𝐐 accessible by all warps, which is referred to as the “split-K” scheme. This helps reduce shared memory reads/writes and improves speed. CITATIONS: [\"arxiv_2307_08691v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2307_08691v1\",\"start\":20200,\"end\":20700}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "v5",
+      "kind": "condition_binding",
+      "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports the general approximately 2x FlashAttention comparison and 73% forward/63% backward throughput ceilings, but these do not answer the requested Triton forward-versus-backward speedup. The answer supplies neither approximately 1.3-1.5x Triton forward nor approximately 2x Triton backward, and omits A100 80GB SXM4. Its A100 attribution for those throughput ceilings is not established by E1's separate end-to-end A100 clause. The displayed numeric values themselves occur in E1; no explicit reversal or false Triton attribution is made.",
+      "diagnosis": {
+        "case_id": "flash-triton",
+        "arm": "v5",
+        "primary": "wrong_measurement",
+        "secondary": [
+          "requested_fact_missing",
+          "citation_scope_missing"
+        ],
+        "rationale": "Reports throughput ceilings and a different overall comparison instead of the requested Triton forward/backward speedups; copied true numbers do not answer this question."
+      },
+      "candidate_claims": [
+        {
+          "text": "FlashAttention-2 achieves about 2× speedup over FlashAttention, reaching up to 73% of the theoretical max throughput in the forward pass and up to 63% in the backward pass on the A100 GPU.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 7000,
+          "end": 8000,
+          "quote": "ficant speedup compared to even FlashAttention. Benchmarks on different settings (with or without causal mask, different head dimensions) show that FlashAttention-2 achieves around 2×\\times speedup over FlashAttention, reaching up to 73% of the theoretical max throughput in the forward pass, and up to 63% of the theoretical max throughput in the backward pass. When used end-to-end to train GPT-style models, we reach training speed of up to 225 TFLOPs/s per A100 GPU.\n\nWe provide some background on the performance characteristics and execution model of GPUs. We also describe the standard implementation of attention, as well as FlashAttention.\n\nGPU performance characteristics. The GPU consists of compute elements (e.g., floating point arithmetic units) and a memory hierarchy. Most modern GPUs contain specialized units to accelerate matrix multiply in low-precision (e.g., Tensor Cores on Nvidia GPUs for FP16/BF16 matrix multiply). The memory hierarchy comprise of high bandwidth memory (HBM",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2307.08691v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"speedup forward backward GPU\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 7000, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: FlashAttention-2 achieves about 2× speedup over FlashAttention, reaching up to 73% of the theoretical max throughput in the forward pass and up to 63% in the backward pass on the A100 GPU. CITATIONS: [\"arxiv_2307_08691v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2307_08691v1\",\"start\":7000,\"end\":8000}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "base",
+      "kind": "condition_binding",
+      "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "The 1.3-1.5x forward and approximately 2x backward Triton mappings are correct and explicitly supported by E1. The answer gives only A100, omitting the frozen 80GB SXM4 configuration; its E1 starts after the GPU sentence and therefore supplies no GPU support at all. The preceding complete-source sentence confirms the hardware, but cannot repair the submitted citation.",
+      "diagnosis": {
+        "case_id": "flash-triton",
+        "arm": "base",
+        "primary": "citation_scope_missing",
+        "secondary": [
+          "rubric_scope_ambiguity"
+        ],
+        "rationale": "Correct forward/backward Triton speedups, but the submitted window excludes the GPU sentence supporting its A100 claim. Requiring every GPU qualifier is a separate rubric issue."
+      },
+      "candidate_claims": [
+        {
+          "text": "FlashAttention-2 is 1.3-1.5× faster than FlashAttention in Triton in the forward pass and 2× faster in the backward pass on the A100 GPU.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 23600,
+          "end": 24100,
+          "quote": "28). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster.\n\nBenchmark setting: we vary the sequence length ",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2307.08691v1",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"speedups over FlashAttention in Triton\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 23600, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: FlashAttention-2 is 1.3-1.5× faster than FlashAttention in Triton in the forward pass and 2× faster in the backward pass on the A100 GPU. CITATIONS: [\"arxiv_2307_08691v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2307_08691v1\",\"start\":23600,\"end\":24100}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "base",
+      "kind": "target_gap",
+      "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified.",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "Valid unresolved gap and useful exact-target Qwen3-8B/single RTX A5000/32768 next query. Complete pinned text has no target model/device/length occurrence, describes A100 kernel benchmarks and 8x A100 GPT-style end-to-end training instead, and contains the apparent self-comparison typo. No A100 speedup is transferred and no typo is silently repaired into a target result.",
+      "diagnosis": {
+        "case_id": "flash-target",
+        "arm": "base",
+        "primary": "appropriately_scoped_gap",
+        "secondary": [],
+        "rationale": "Identifies the full missing Qwen3/device/length target and a useful follow-up, without transferring kernel figures."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "The paper does not provide specific training speedup measurements for Qwen3-8B on a single RTX A5000 at sequence length 32768.",
+          "follow_up_query": "Search for Qwen3-8B training speedup on RTX A5000 with sequence length 32768",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"training speedup RTX A5000 sequence length 32768\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 3400, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"The paper does not provide specific training speedup measurements for Qwen3-8B on a single RTX A5000 at sequence length 32768.\", follow_up_query=\"Search for Qwen3-8B training speedup on RTX A5000 with sequence length 32768\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "v5",
+      "kind": "target_gap",
+      "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified.",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "Provides an unresolved device/length-specific FlashAttention-2 training-speedup gap and a useful next query, but both omit the requested Qwen3-8B identity. Thus it does not identify the complete model/device/length target or seek that model-specific end-to-end result. No fabricated speedup, A100 transfer, or repair of the extracted self-comparison typo is asserted.",
+      "diagnosis": {
+        "case_id": "flash-target",
+        "arm": "v5",
+        "primary": "gap_target_condition_missing",
+        "secondary": [],
+        "rationale": "Gap and next query retain device/length but omit the Qwen3-8B identity. The source limitation is sensible; the follow-up target is incomplete, not fabricated."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768",
+          "follow_up_query": "What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2307_08691v1\", \"training speedup RTX A5000 sequence length 32768\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2307_08691v1\", 3400, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"I have not established the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768\", follow_up_query=\"What is the measured training speedup of FlashAttention-2 on a single RTX A5000 at sequence length 32768?\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "v5",
+      "kind": "condition_binding",
+      "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation.",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports 310 ms to generate 20 tokens and 10 ms to summarize/process a 200-token prompt on RTX 4090, batch 1, FP16 NVIDIA FasterTransformer. The answer correctly supplies generation/20 tokens and device/batch/FP16, but leaves the 10 ms task as merely 'latency for 200 tokens', and omits LLaMA-7B and NVIDIA FasterTransformer. These missing frozen conditions prevent pass; no swapped timings or false TinyChat attribution.",
+      "diagnosis": {
+        "case_id": "awq-profile",
+        "arm": "v5",
+        "primary": "requested_fact_missing",
+        "secondary": [],
+        "rationale": "The 10ms/200-token entry is not bound to summarization and the requested FasterTransformer implementation is omitted. This is incomplete requested information, not a timing swap."
+      },
+      "candidate_claims": [
+        {
+          "text": "The inspected passage reports a 310 ms generation latency for 20 tokens and a 10 ms latency for 200 tokens on an RTX 4090 GPU with batch size 1 and FP16 implementation.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 20400,
+          "end": 20900,
+          "quote": "., CUDA/PTX, Neon, AVX).\n\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2306.00978v6",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"FP16 LLaMA-7B latency profile\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 20400, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The inspected passage reports a 310 ms generation latency for 20 tokens and a 10 ms latency for 200 tokens on an RTX 4090 GPU with batch size 1 and FP16 implementation. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":20400,\"end\":20900}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "base",
+      "kind": "condition_binding",
+      "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation.",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports both task/token/time mappings and RTX 4090/batch 1/NVIDIA FasterTransformer, all correctly reported. The answer omits the frozen LLaMA-7B and FP16 conditions. They appear in the question/source but are not explicitly retained in the submitted answer under the strict every-requirement rule. No false task mapping or TinyChat attribution.",
+      "diagnosis": {
+        "case_id": "awq-profile",
+        "arm": "base",
+        "primary": "rubric_scope_ambiguity",
+        "secondary": [
+          "supported_requested_core"
+        ],
+        "rationale": "The answer supplies the requested task/time/token, device, batch and implementation mapping. Historical penalties for not repeating prompt-provided LLaMA-7B/FP16 context need adjudication."
+      },
+      "candidate_claims": [
+        {
+          "text": "The 310 ms corresponds to generating 20 tokens, and the 10 ms corresponds to summarizing a prompt with 200 tokens. The GPU used is an RTX 4090, the batch size is 1, and the implementation is based on NVIDIA FasterTransformer.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 20400,
+          "end": 20900,
+          "quote": "., CUDA/PTX, Neon, AVX).\n\nTo understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is subs",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2306.00978v6",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"FP16 LLaMA-7B latency profile\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 20400, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The 310 ms corresponds to generating 20 tokens, and the 10 ms corresponds to summarizing a prompt with 200 tokens. The GPU used is an RTX 4090, the batch size is 1, and the implementation is based on NVIDIA FasterTransformer. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":20400,\"end\":20900}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "v5",
+      "kind": "supported",
+      "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?",
+      "original_model_assisted_verdict": "partial",
+      "original_review_notes": "E1 supports fixed input length 4, generated length 200, median latency, RTX 4090 and Jetson Orin, all correctly reported. The answer omits the explicitly requested/frozen batch size 1, despite E1 containing it. No p95 or initial-profile substitution.",
+      "diagnosis": {
+        "case_id": "awq-protocol",
+        "arm": "v5",
+        "primary": "requested_fact_missing",
+        "secondary": [],
+        "rationale": "The explicitly requested batch size 1 is omitted even though it is in the cited passage."
+      },
+      "candidate_claims": [
+        {
+          "text": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs on RTX 4090 and Jetson Orin.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 33800,
+          "end": 34800,
+          "quote": "plexity by 0.5-0.6, while GPTQ has 2.3-4.9 worse perplexity. This demonstrates the robustness of AWQ to the calibration set distribution.\n\nIn Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\n\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional spee",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2306.00978v6",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"Figure 9 TinyChat benchmark-protocol input generated batch latency devices\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 33800, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs on RTX 4090 and Jetson Orin. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":33800,\"end\":34800}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "base",
+      "kind": "supported",
+      "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "E1 explicitly supports all requested Figure 9 conditions: prompt 4 tokens, generate 200, batch 1, median latency, RTX 4090 and Jetson Orin. Every frozen requirement is retained; no task/count/statistic swap.",
+      "diagnosis": {
+        "case_id": "awq-protocol",
+        "arm": "base",
+        "primary": "historical_supported_pass",
+        "secondary": [],
+        "rationale": "All requested TinyChat protocol fields are present and source-supported."
+      },
+      "candidate_claims": [
+        {
+          "text": "Input length is 4 tokens, generated length is 200 tokens, batch size is 1, and latency statistic is median latency. The two devices named are RTX 4090 and Jetson Orin.",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 34000,
+          "end": 34500,
+          "quote": "rom TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.\n\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup t",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2306.00978v6",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"Figure 9 TinyChat benchmark-protocol\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 34000, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Input length is 4 tokens, generated length is 200 tokens, batch size is 1, and latency statistic is median latency. The two devices named are RTX 4090 and Jetson Orin. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":34000,\"end\":34500}]",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "v5",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing.",
+      "original_model_assisted_verdict": "pass",
+      "original_review_notes": "Valid unresolved research_gaps entry names TinyChat versus HuggingFace FP16 on RTX A5000/batch 8/8192-token prompt and provides the same exact-target next query. Complete pinned source has no A5000 or 8192 occurrence and binds its reported RTX4090 speedup to a different protocol. No partial speedup is offered or transferred; qualifying partial findings is conditional here.",
+      "diagnosis": {
+        "case_id": "awq-target",
+        "arm": "v5",
+        "primary": "appropriately_scoped_gap",
+        "secondary": [],
+        "rationale": "Identifies the full missing target and next query without inventing or transferring a speedup."
+      },
+      "candidate_claims": [],
+      "submitted_evidence": [],
+      "research_gaps": [
+        {
+          "missing": "I have not established TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt",
+          "follow_up_query": "What TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt is reported",
+          "reported_at_step": 4
+        }
+      ],
+      "requests": 5,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"TinyChat HuggingFace FP16 speedup RTX A5000 batch size 8 8192-token prompt\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 34000, 1000))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"I have not established TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt\", follow_up_query=\"What TinyChat speedup over HuggingFace FP16 on RTX A5000 at batch size 8 and 8192-token prompt is reported\")",
+          "source_inspection": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false
+        }
+      ]
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "base",
+      "kind": "target_gap",
+      "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing.",
+      "original_model_assisted_verdict": "fail",
+      "original_review_notes": "The bare '2.7-3.9x speedup' answers the requested RTX A5000/batch 8/8192-prompt setup without qualification. E1 explicitly binds that range to 4090/Llama-2,MPT,Falcon, and does not establish the target conditions; the complete source binds the benchmark to batch 1/prompt 4/generated 200. This is an unsupported target numeric result and a condition-transfer error. No unresolved gap or next query is supplied.",
+      "diagnosis": {
+        "case_id": "awq-target",
+        "arm": "base",
+        "primary": "condition_swap",
+        "secondary": [
+          "unsupported_target_number"
+        ],
+        "rationale": "The bare 2.7-3.9x number is transferred from RTX4090 conditions into an A5000/batch8/8192-token target without qualification."
+      },
+      "candidate_claims": [
+        {
+          "text": "2.7-3.9× speedup",
+          "evidence_ids": [
+            "E1"
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "evidence_id": "E1",
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 34400,
+          "end": 34900,
+          "quote": "the median latency as the final result.\n\nAs in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not suppo",
+          "quote_truncated": false,
+          "source_url": "https://arxiv.org/abs/2306.00978v6",
+          "coverage": "html_paragraphs",
+          "source_kind": "paper",
+          "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+          "source_path": null,
+          "record": {}
+        }
+      ],
+      "research_gaps": [],
+      "requests": 3,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"arxiv_2306_00978v6\", \"TinyChat speedup over HuggingFace FP16\"))",
+          "source_inspection": true
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 34400, 500))",
+          "source_inspection": true
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: 2.7-3.9× speedup CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":34400,\"end\":34900}]",
+          "source_inspection": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+{
+  "schema_version": "reader-learning-diagnosis-annotations-v1",
+  "review_kind": "implementing_assistant_manual_development_diagnosis",
+  "human_review": "not_performed",
+  "changes_historical_grades": false,
+  "creates_training_rewards": false,
+  "reserved_evaluation_used": false,
+  "rows": [
+    {
+      "case_id": "paged-blocks",
+      "arm": "v5",
+      "primary": "rubric_scope_ambiguity",
+      "secondary": [
+        "supported_requested_core"
+      ],
+      "rationale": "The requested block-table mapping and dynamic allocation are answered and supported by the submitted quote. Historical extra fixed-size/noncontiguity requirements need question-aligned adjudication before training; this is not a new pass verdict."
+    },
+    {
+      "case_id": "paged-blocks",
+      "arm": "base",
+      "primary": "citation_scope_missing",
+      "secondary": [
+        "rubric_scope_ambiguity"
+      ],
+      "rationale": "The answer claims a block table but its cited window stops before the block-table description. Historical extra detail requirements are also debatable."
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "v5",
+      "primary": "historical_supported_pass",
+      "secondary": [],
+      "rationale": "Both requested trace durations and the cost-limited exception are supported by the submitted evidence."
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "base",
+      "primary": "historical_supported_pass",
+      "secondary": [],
+      "rationale": "Both requested trace durations and the cost-limited exception are supported by the submitted evidence."
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "base",
+      "primary": "policy_budget_exhaustion",
+      "secondary": [
+        "missing_gap_report"
+      ],
+      "rationale": "All six requests returned; a final abstention was rejected without a required gap report. This is a policy/protocol exhaustion, not an uncertain external inference failure."
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "v5",
+      "primary": "appropriately_scoped_gap",
+      "secondary": [],
+      "rationale": "Reports the exact unresolved target and useful next query without inventing latency."
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "v5",
+      "primary": "rubric_scope_ambiguity",
+      "secondary": [
+        "supported_requested_core"
+      ],
+      "rationale": "All three explicitly requested dtype/gradient facts are present and supported. Do not automatically punish omission of a separately unasked dequantization explanation."
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "base",
+      "primary": "rubric_scope_ambiguity",
+      "secondary": [
+        "supported_requested_core"
+      ],
+      "rationale": "All three explicitly requested dtype/gradient facts are present and supported. Historical dequantization completeness requirement goes beyond the literal three-part question; hold for adjudication."
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "v5",
+      "primary": "citation_boundary_derivation_ambiguity",
+      "secondary": [
+        "rubric_scope_ambiguity"
+      ],
+      "rationale": "Correct source values 0.5/0.127 appear in the answer but its quote ends before the result. Whether a supported derivation suffices must be explicit; historical extra clauses are not automatic learning labels."
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "base",
+      "primary": "citation_boundary_derivation_ambiguity",
+      "secondary": [
+        "rubric_scope_ambiguity"
+      ],
+      "rationale": "The numerical saving is correct in the complete source, but submitted excerpts stop before the result. Unstated derivation and extra historical endpoint/datatype requirements need adjudication; do not label the value fabricated."
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "v5",
+      "primary": "appropriately_scoped_gap",
+      "secondary": [],
+      "rationale": "Reports missing exact target VRAM and a targeted follow-up without transferring the 65B result."
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "base",
+      "primary": "appropriately_scoped_gap",
+      "secondary": [],
+      "rationale": "Reports missing exact target VRAM and a targeted follow-up without transferring the 65B result."
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "v5",
+      "primary": "citation_scope_missing",
+      "secondary": [
+        "claim_overgeneralization"
+      ],
+      "rationale": "Its selected quote cuts off before completing the FA2 sharing/benefit statement. The wording about avoiding shared-memory reads/writes needs restriction to intermediate inter-warp communication."
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "base",
+      "primary": "condition_swap",
+      "secondary": [
+        "claim_source_contradiction"
+      ],
+      "rationale": "Assigns the original split-K arrangement to FlashAttention-2 even though its quote identifies the original algorithm and calls the arrangement inefficient."
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "v5",
+      "primary": "wrong_measurement",
+      "secondary": [
+        "requested_fact_missing",
+        "citation_scope_missing"
+      ],
+      "rationale": "Reports throughput ceilings and a different overall comparison instead of the requested Triton forward/backward speedups; copied true numbers do not answer this question."
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "base",
+      "primary": "citation_scope_missing",
+      "secondary": [
+        "rubric_scope_ambiguity"
+      ],
+      "rationale": "Correct forward/backward Triton speedups, but the submitted window excludes the GPU sentence supporting its A100 claim. Requiring every GPU qualifier is a separate rubric issue."
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "base",
+      "primary": "appropriately_scoped_gap",
+      "secondary": [],
+      "rationale": "Identifies the full missing Qwen3/device/length target and a useful follow-up, without transferring kernel figures."
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "v5",
+      "primary": "gap_target_condition_missing",
+      "secondary": [],
+      "rationale": "Gap and next query retain device/length but omit the Qwen3-8B identity. The source limitation is sensible; the follow-up target is incomplete, not fabricated."
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "v5",
+      "primary": "requested_fact_missing",
+      "secondary": [],
+      "rationale": "The 10ms/200-token entry is not bound to summarization and the requested FasterTransformer implementation is omitted. This is incomplete requested information, not a timing swap."
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "base",
+      "primary": "rubric_scope_ambiguity",
+      "secondary": [
+        "supported_requested_core"
+      ],
+      "rationale": "The answer supplies the requested task/time/token, device, batch and implementation mapping. Historical penalties for not repeating prompt-provided LLaMA-7B/FP16 context need adjudication."
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "v5",
+      "primary": "requested_fact_missing",
+      "secondary": [],
+      "rationale": "The explicitly requested batch size 1 is omitted even though it is in the cited passage."
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "base",
+      "primary": "historical_supported_pass",
+      "secondary": [],
+      "rationale": "All requested TinyChat protocol fields are present and source-supported."
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "v5",
+      "primary": "appropriately_scoped_gap",
+      "secondary": [],
+      "rationale": "Identifies the full missing target and next query without inventing or transferring a speedup."
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "base",
+      "primary": "condition_swap",
+      "secondary": [
+        "unsupported_target_number"
+      ],
+      "rationale": "The bare 2.7-3.9x number is transferred from RTX4090 conditions into an A5000/batch8/8192-token target without qualification."
+    }
+  ]
+}
