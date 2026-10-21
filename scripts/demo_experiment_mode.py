@@ -152,7 +152,7 @@ async def run_demo(output: Path, *, source_root=ROOT):
     (output / "report.json").write_bytes(encoded(report))
     (output / "complete-record.json").write_bytes(encoded(full))
     (output / "resume.json").write_bytes(encoded(resumed))
-    (output / "EXPERIMENT.md").write_text(full["markdown"] + "\n")
+    (output / "EXPERIMENT.md").write_text(full["markdown"].rstrip() + "\n")
     (output / "RESUME.md").write_text(resumed["context"] + "\n\n" + resumed["warning"] + "\n")
     return report
 
