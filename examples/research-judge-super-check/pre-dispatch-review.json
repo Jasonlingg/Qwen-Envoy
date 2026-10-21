@@ -1,0 +1,134 @@
+{
+  "schema_version": "research-judge-super-pre-dispatch-review-v1",
+  "review_kind": "independent_model_assisted_code_and_artifact_review",
+  "reviewer_identity": "/root/qwen_live_final_review",
+  "recorded_at": "2026-10-21T15:14:56.932564+00:00",
+  "human_review": "not_performed",
+  "verdict": "no_remaining_material_findings_in_amended_alias_diagnostic_scope",
+  "scope": "Pre-dispatch implementation and artifact review only; not a judge result, semantic regrading, user authorization or training readiness attestation.",
+  "model_id": "nvidia/nemotron-3-super-120b-a12b",
+  "endpoint": "https://api.tokenfactory.us-central1.nebius.com/v1/chat/completions",
+  "request_sha256": "ae9d15ca1a2d1299a4201f4d7858d777c20cc73f3a64dd21bebf1e8c9c834991",
+  "fixture_lock_sha256": "0d2f79c1e2e9a1e712830bd3d4981e51748c9b08ae71310bb50a8f054051f768",
+  "payload_checks": {
+    "cases": 32,
+    "deduplicated_development_sources": 2,
+    "candidate_expected_labels_exported": false,
+    "tools": [],
+    "n": 1,
+    "stream": false,
+    "max_completion_tokens_including_reasoning": 16384,
+    "candidate_text_execution": "none; strings are serialized as JSON data"
+  },
+  "cost_eligibility": {
+    "eligible_under_stated_provider_api_contract": true,
+    "provider_context_reserved_as_input_tokens": 262144,
+    "completion_tokens_reserved_including_reasoning": 16384,
+    "uncached_input_usd_per_million": "0.30",
+    "output_usd_per_million": "0.90",
+    "maximum_catalog_cost_usd": "0.0933888",
+    "authorized_ceiling_usd": "0.50",
+    "basis": "Reserve the entire advertised/enforced provider context as input plus a separate full completion allowance, conservatively double-counting output if the context is combined. No tokenizer or server framing count is needed.",
+    "required_dispatch_conditions": [
+      "Fresh provider catalog confirms exact active model, 262144 context, and unchanged uncached input/output rates before the only POST",
+      "Provider honors its published context, billing and total-completion contract including reasoning",
+      "One experiment-wide exclusive allowance is consumed before directory dispatch and retained across failures and alternate output directories",
+      "No inference retry, continuation or alternate model"
+    ],
+    "not_a_provider_account_or_invoice_lock": true,
+    "reviewer_live_catalog_check": "not_performed; no external calls",
+    "rejected_ultra_option": "No eligibility attestation: unexposed hosted tokenizer/framing could not establish its proposed sub-$0.50 bound. The amended full-context Super bound removes that assumption."
+  },
+  "identity_scope": {
+    "hosted_alias_only": true,
+    "immutable_provider_weight_revision": null,
+    "original_immutable_judge_readiness_condition_met": false,
+    "even_perfect_score_agreement": "Alias-scoped diagnostic agreement only; cannot pass immutable-judge readiness, validate a production reward or authorize training.",
+    "pre_dispatch_amendment": "examples/research-judge-super-check/pre-dispatch-amendment.json",
+    "original_contract": "Preserved unchanged; immutable revision condition remains unmet."
+  },
+  "findings_and_resolutions": [
+    {
+      "id": "JUDGE-RUN-001",
+      "severity": "P2",
+      "status": "resolved",
+      "finding": "Directory-local consumption allowed another output directory to refresh the paid attempt.",
+      "resolution": "Fixed experiment-wide exclusive allowance is consumed before POST; alternate-directory regression retains exactly one dispatch."
+    },
+    {
+      "id": "JUDGE-RUN-002",
+      "severity": "P2",
+      "status": "resolved",
+      "finding": "Named judge scoring lacked response identity and manifest/request/fixture/response bindings.",
+      "resolution": "Saved scoring verifies canonical hashes, exact served model and raw usage. Missing/mismatched bindings yield an inconclusive result; default pure comparison cannot attest a named run."
+    },
+    {
+      "id": "JUDGE-RUN-003",
+      "severity": "P2",
+      "status": "resolved_by_scope_correction",
+      "finding": "Per-I/O timeout plus post-chunk elapsed checks did not enforce a hard absolute wall deadline.",
+      "resolution": "Limits and amendment explicitly describe a 240-second per-I/O timeout plus soft elapsed guard; they do not claim a hard absolute deadline."
+    },
+    {
+      "id": "JUDGE-RUN-004",
+      "severity": "P2",
+      "status": "resolved",
+      "finding": "Scorer rejected valid facts solely because they arrived out of reference order, which the prompt did not require.",
+      "resolution": "Exact unique fact-ID membership is checked and canonicalized after validation; reversed-order and duplicate-fact regressions reviewed."
+    },
+    {
+      "id": "JUDGE-RUN-005",
+      "severity": "P2",
+      "status": "resolved",
+      "finding": "Non-object response or null/list usage could crash saved scoring before an inconclusive record.",
+      "resolution": "Raw bodies are retained, usage is safely typed, and malformed/unverifiable bodies yield inconclusive/missing-case diagnostics."
+    }
+  ],
+  "open_material_findings": [],
+  "failure_and_gate_review": [
+    "HTTP destination allowlist, no redirect following, proxy environment disabled and transport retries=0",
+    "Paid uncertainty consumes the only attempt; missing usage is unknown, never zero cost",
+    "Raw response is retained before analysis; unknown/missing/duplicate/schema-invalid judgments prevent passing and do not silently discard other valid case results",
+    "All seven predeclared score-error maxima remain zero; authored labels and future judge judgments remain distinct",
+    "Reserved reader evaluation questions, references and paper contents are not used",
+    "Batched diagnostic does not validate independent one-case production judging or population reliability"
+  ],
+  "reviewer_actions": {
+    "external_calls": 0,
+    "model_requests": 0,
+    "gpu_operations": 0,
+    "training_operations": 0,
+    "pytest_runs": 0,
+    "local_functions_run": [
+      "request_payload on the frozen development fixtures"
+    ],
+    "writes": [
+      "examples/research-judge-super-check/pre-dispatch-review.json"
+    ]
+  },
+  "test_execution_attribution": "Tests were inspected; implementing agent executes focused/full tests separately. No test pass count is independently asserted by this reviewer.",
+  "reviewed_file_sha256": {
+    "benchmarks/research_judge_checks_v1/README.md": "c9f13f93b6e0b6198b20220597392de1ef8d32612c57acbd143adc7f2592c9c2",
+    "benchmarks/research_judge_checks_v1/cases.json": "f0994f68d65db8de8fc69c2db27f8dbffe6dfb1a5bf38c607427ebd23448847b",
+    "benchmarks/research_judge_checks_v1/freeze-lock.json": "0d2f79c1e2e9a1e712830bd3d4981e51748c9b08ae71310bb50a8f054051f768",
+    "benchmarks/research_judge_checks_v1/labels.json": "6073cf1e6b5151924fe66b6ef9f40170998f210ee9155b6893880c1f9fef597d",
+    "benchmarks/research_judge_checks_v1/manifest.json": "4bd910b8bc4b69b251d4c71627367ebed8e694244572f8aed15432b12d35b917",
+    "benchmarks/research_judge_checks_v1/questions.json": "36f6121ad5678d2afafa6e60cf5ac1eb3a888e648b2a8f4a2c0207b9e4cfbef1",
+    "benchmarks/research_judge_checks_v1/reviews/human-template.json": "83296a65e7b05a669db1a975258d4d8010fdef47a9d888afe543e04a6edd08b9",
+    "benchmarks/research_judge_checks_v1/reviews/source-review.json": "9577753c82ee16f8009a5b2f64a1ee0caa0b3f7ebf8670069dd7fec4bf467dd5",
+    "benchmarks/research_judge_checks_v1/sources/2306.00978v6.json": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f",
+    "benchmarks/research_judge_checks_v1/sources/2307.08691v1.json": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641",
+    "benchmarks/research_reader_v1/freeze-lock.json": "dd44858a0ec792cafad7f13ca3e10666c089576bf98acf2dea15ff37ed9205a2",
+    "examples/reader-learning-diagnosis/judge-validation-plan.json": "6a0ea572fd9f85eb9555787543dc22be10af6d9d76dfbb728ec5ce96a292d42a",
+    "examples/reader-learning-diagnosis/reward-proposal.json": "0464bf2d3b58ff8d94dfcaf0cbbc5bb33d998a6298c262cbfc7e3e9025920b86",
+    "examples/research-judge-super-check/pre-dispatch-amendment.json": "0bc4a0a730e1d94f3db9e57f9e2e6b4d80c798593c095f72853aede39a70b722",
+    "scripts/run_research_judge_check.py": "d4127cb2dccbe5178bf8341066948039758a95113cbc3e85e1be96113779a6b0",
+    "src/eval/research_judge_checks.py": "29656a6045f3f9210065c11c57b1b2b63b18f612378f1c05f92d00f2a489bfcb",
+    "src/eval/research_judge_plan.py": "e7bcd967864e79944a2235c75e29b323cf12449552afa54c625ff8738112eae0",
+    "src/eval/research_judge_run.py": "c9769617144cf292f4a07b4cf8b058bc8bb47db06e177668028d6dffdd86a7dc",
+    "src/eval/research_judge_score.py": "8f862bf14bc2aa4bf0a29bd1f141ffd6413abebf41d98a5447cb74cb75fb3ffc",
+    "tests/test_research_judge_checks.py": "6ec0870abc1c547883d7e5f4d360ba4c273d643f91008626de9432315c3651d2",
+    "tests/test_research_judge_run.py": "ade5b8071d99d18c4159741d7cb4c8f31ee332d1feaeb395f65bc87b3661026b"
+  },
+  "review_renewal": "Any later change to these exact code/test/data/amendment bytes requires renewal before relying on this attestation."
+}

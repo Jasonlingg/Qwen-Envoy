@@ -1,0 +1,30 @@
+{
+  "schema_version": "research-judge-alias-diagnostic-amendment-v1",
+  "status": "declared_before_any_judge_inference",
+  "original_contract": "examples/reader-learning-diagnosis/judge-validation-plan.json",
+  "original_contract_changed": false,
+  "scope": "One hosted Nebius Nemotron Super alias diagnostic on all32 frozen development fixtures; no training, Qwen inference or reserved evaluation.",
+  "model_id": "nvidia/nemotron-3-super-120b-a12b",
+  "immutable_provider_weight_revision": null,
+  "identity_condition": "The hosted API exposes a model alias and no immutable weight revision. Even perfect agreement does not satisfy the original immutable-judge readiness condition. This run can report alias-scoped diagnostic scores only, not reproducible training-judge readiness, production reward validation or training approval.",
+  "case_labels_and_score_thresholds": "Unchanged: all seven predeclared error maxima remain0. No fixture examples, labels or expected candidate scores are provided to the judge. Grade every case once in one batch.",
+  "retirement_rule": "Any judge/prompt/reward change informed by these diagnostic outputs retires this check into design and requires fresh development validation. Never repair using reserved reader evaluation.",
+  "rejected_pre_dispatch_option": "Ultra was not called: its1M provider context at1USD/M input cannot guarantee <=0.50 without tokenizer/template assumptions. The local upstream tokenizer audit did not attest hosted behavior. No Ultra inference cost was incurred.",
+  "budget_basis": {
+    "provider_context_tokens_reserved_as_input": 262144,
+    "provider_max_completion_tokens_including_reasoning": 16384,
+    "requests": 1,
+    "retries": 0,
+    "input_usd_per_million": "0.30",
+    "output_usd_per_million": "0.90",
+    "maximum_catalog_cost_usd": "0.0933888",
+    "approved_ceiling_usd": "0.50",
+    "explanation": "Reserve the full advertised/enforced provider context as input and separately reserve all output, conservatively double-counting output if context is combined. This removes tokenizer/framing assumptions. Require unchanged active model/context/rates immediately before dispatch, n=1, fixed experiment-wide durable one-shot allowance and no retries. This is a reliable local request bound under the provider billing/context/output contract, not an account/invoice lock. If these conditions cannot be established, skip paid dispatch."
+  },
+  "timeout_scope": "240-second per-I/O timeout plus soft elapsed-time check, not a hard absolute wall deadline; an interrupted request retains its consumed allowance and is never retried.",
+  "hypothesis": "The fixed hosted alias can separate supported requested facts from the 32 clear predeclared evidence failures.",
+  "expected_signal": "Complete score agreement with no unknown or missing cases; disagreements remain recorded.",
+  "decision_rule": "Any predeclared score/unknown/missing error fails the diagnostic thresholds. No optimization follows even if all agree: immutable revision, one-case production behavior, independent human labels, broader reliability, rollout variance and training authorization remain absent.",
+  "human_review": "not_performed",
+  "training_approved": false
+}
