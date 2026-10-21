@@ -1,0 +1,80 @@
+{
+  "status": "prepared_only_budget_pending",
+  "implementation_commits": [
+    "2b784b1",
+    "18e3fd8",
+    "9d94ef7"
+  ],
+  "tests": {
+    "focused": {
+      "command": "python -m pytest -q tests/test_reader_profile.py",
+      "passed": 12,
+      "duration_seconds": 4.39
+    },
+    "broader_focused_before_final_error_case": {
+      "passed": 23,
+      "duration_seconds": 14.2,
+      "files": [
+        "tests/test_reader_profile.py",
+        "tests/test_runpod_qwen_bootstrap.py",
+        "tests/test_experiment_smoke.py",
+        "tests/test_assigned_smoke_startup.py",
+        "tests/test_assigned_smoke_authorization.py"
+      ]
+    },
+    "full": {
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+      "passed": 1867,
+      "skipped": 0,
+      "warnings": 3,
+      "warning_description": "Existing SWIG deprecations",
+      "duration_seconds": 109.08,
+      "log_path": "out/two-reader-profile-preparation-20261021/full-tests-final.txt",
+      "log_sha256": "bc88c43229e6a7206381921eb20a66430336ed7b54138fc84446a48e7786f0a2"
+    },
+    "prepared_plan_check": {
+      "passed": true,
+      "model_calls": 0
+    }
+  },
+  "artifacts_sha256": {
+    "scripts/profile_two_readers.py": "8d781d5a6836164973a29bf52f19b8ae8c5ebb9059e7ba7a9ee8385833aead3d",
+    "src/eval/reader_profile.py": "793cfa61271d092632248f5314804d8eda4c5970e6da9a4eee0614edc72dbed4",
+    "src/eval/reader_profile_worker.py": "ce9d2141c4f510f4bd2fa9d33192c50954efd7b146b7da0c3018872f79d3f45a",
+    "tests/test_reader_profile.py": "92a20f9d6e8a75a1a2f5ef99e9441e2b0f7f219095ff5595697ec856d89ff9af",
+    "examples/two-reader-profile/README.md": "cd72cdf5f92d4353cb7de0b4f261b19b2dac8cf2be46b04679615cfd05471ba5",
+    "examples/two-reader-profile/preflight.json": "b8958c5060b247afdfbfad6038c4c335b7a3bc0eded420616620bb519ddfe162",
+    "examples/two-reader-profile/plan.json": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5"
+  },
+  "prepared_plan_sha256": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+  "generated_entrypoint_sha256": "aa636af51df6fa99b1ee8c552aa4d7d56322c2b3ef1f4c9651e41c699e75a003",
+  "protected_files_unchanged_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+  },
+  "execution": {
+    "budget_selection": "pending",
+    "authorization_file_present": false,
+    "endpoint_mutations": 0,
+    "inference_submissions": 0,
+    "gpu_activation": false,
+    "live_telemetry_verified": false,
+    "performance_results": null
+  },
+  "limitations": [
+    "Two short historical next-action inputs; not representative long research answers.",
+    "Fixed-input serving diagnostic cannot measure adaptation to new feedback or answer quality.",
+    "No independent human review.",
+    "No demonstrated MCP benefit or fine-tuned Qwen improvement.",
+    "Local session/price guard is not a provider dollar cap."
+  ]
+}

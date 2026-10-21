@@ -36,3 +36,23 @@ input hashes, worker-local request allowance and one active telemetry window.
 Preserve the upstream chat path, keep sampling bounded, and expose no arbitrary
 code execution. The client must reserve requests durably and stop across worker
 identity changes or uncertain transport outcomes.
+
+## Prepared implementation
+
+`18e3fd8` adds the optional worker hook, fixed-input client, preparation/guarded
+runner and local regression checks. `9d94ef7` preserves returned telemetry/model
+diagnostics before response validation can fail. The original worker bootstrap,
+endpoint entrypoint/settings and prior live attempt allowances were not modified.
+
+The [prepared-run guide](../../examples/two-reader-profile/README.md) records
+the exact local plan, read-only endpoint state, execution limits, possible
+comparison confounds and pending budget selection. The cached tokenizer
+reproduced both historical input counts (1400 and 2043). Preparation/check made
+zero model calls. After the final trace-preservation change, the complete suite
+passed: 1867 tests in 109.08 seconds, with three existing SWIG deprecation warnings
+and no skipped tests. Twelve new focused checks also passed.
+
+Live telemetry compatibility remains unverified. The only cloud operations in
+this task so far are read-only endpoint/worker/health and catalog queries. The
+user's budget question is still pending; no paid activation is authorized by
+the local tests or prepared JSON alone.

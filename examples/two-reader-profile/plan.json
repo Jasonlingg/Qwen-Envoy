@@ -1,0 +1,37 @@
+{
+  "schema_version": "reader-serving-profile-v1",
+  "endpoint": "q05pjrvguakieg",
+  "session": "52b6a331cd524989a4e5ebf8c8ada8d6",
+  "source_manifest_sha256": "02625f8cf5d6c9a70d7d0e07280900bfb6a2a93e24f54a9bc5b86950fab7ceca",
+  "payload_hashes": {
+    "historical_reader_request_2": "5eda6d4f0aae4af241c08bbee1e055f2a53468855529c57fa8685cadeb0862c6",
+    "historical_reader_request_6": "ad5ea66a4ba9e0da5c97fd4c4087cde73918cdd4b9c319271f60f633f4b02b2c"
+  },
+  "prompt_tokens": {
+    "historical_reader_request_2": 1400,
+    "historical_reader_request_6": 2043
+  },
+  "tokenizer": "Qwen/Qwen3-8B",
+  "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "limits": {
+    "model_requests": 10,
+    "telemetry_jobs": 9,
+    "tokens_reserved": 81920,
+    "session_seconds": 900,
+    "gpus": 1
+  },
+  "config": {
+    "MAX_NUM_SEQS": "2",
+    "MAX_CONCURRENCY": "2",
+    "MAX_MODEL_LEN": "8192",
+    "ENABLE_PREFIX_CACHING": "false"
+  },
+  "implementation_sha256": {
+    "scripts/profile_two_readers.py": "8d781d5a6836164973a29bf52f19b8ae8c5ebb9059e7ba7a9ee8385833aead3d",
+    "src/eval/reader_profile.py": "793cfa61271d092632248f5314804d8eda4c5970e6da9a4eee0614edc72dbed4",
+    "src/eval/reader_profile_worker.py": "ce9d2141c4f510f4bd2fa9d33192c50954efd7b146b7da0c3018872f79d3f45a",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e"
+  },
+  "paid_authorization": "not_granted_by_preparation",
+  "provider_dollar_cap": false
+}
