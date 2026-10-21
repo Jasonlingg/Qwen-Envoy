@@ -1,5 +1,10 @@
 # Two-reader serving diagnostic — blocked before inference
 
+A later, separately authorized [retry](retry-1/README.md) loaded the model and
+completed telemetry preflight, then rejected the first warmup at the input pin.
+It used an explicitly recorded manual readiness handoff; no timing comparison
+completed. The first-attempt record below remains unchanged.
+
 The user authorized one bounded attempt on October 21. It activated one worker,
 then stopped when startup-log reads timed out before the runner could verify
 the pinned model identity. **Zero model requests and zero telemetry jobs were

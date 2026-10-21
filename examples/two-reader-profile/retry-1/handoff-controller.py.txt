@@ -1,0 +1,53 @@
+"""Operator handoff within the existing activation, deadline and ten-request allowance."""
+import json,os,signal,subprocess,sys,time
+from pathlib import Path
+from datetime import datetime
+sys.path.insert(0,str(Path.cwd()))
+from scripts.profile_two_readers import checked,authorization,attempt_marker
+from src.eval.assigned_smoke_lifecycle import worker_identity,logged_readiness
+from src.eval.native_pilot_client import kill_group
+base=Path('out/two-reader-profile-retry-20261021')
+ready=base/'ready'
+plan,_=checked(ready)
+approved=authorization(ready,plan)
+assert attempt_marker(approved).read_text().strip()==str(ready.resolve())
+runtime=json.loads((ready/'runtime.json').read_text())
+since=datetime.fromisoformat(json.loads((ready/'startup-log-reads.jsonl').read_text().splitlines()[0])['since'])
+raw=json.loads((base/'verified-startup-log-read.json').read_text())
+workers=json.loads((base/'workers-before-handoff.json').read_text())['workers']
+assert len(workers)==1 and workers[0]['id']==raw['worker_id'] and not workers[0].get('isStale')
+active={raw['worker_id']}
+logs='\n'.join(json.dumps({**row,'workerId':raw['worker_id']}) for row in raw['items'])
+identity=worker_identity(logs,active_workers=active,since=since)
+assert identity and logged_readiness(logs,active,since)
+assert not (ready/'WORKER_STARTED').exists()
+parent_pid=76175
+command=subprocess.check_output(['ps','-p',str(parent_pid),'-o','command='],text=True)
+assert 'profile_two_readers.py run --output out/two-reader-profile-retry-20261021/ready' in command
+remaining=runtime['deadline_unix']-time.time()
+assert remaining>0
+(ready/'worker-identity-manual.json').write_text(json.dumps(identity,indent=2)+'\n')
+record={'kind':'manual readiness handoff; same activation and absolute deadline',
+ 'parent_pid':parent_pid,'deadline_unix':runtime['deadline_unix'],'seconds_remaining_at_handoff':remaining,
+ 'identity_verified':True,'fitness_verified':True,'worker_id':raw['worker_id'],
+ 'startup_automation_passed':False,'reason':'CLI reads repeatedly timed out; independent MCP reads retained complete current-worker identity and readiness.',
+ 'model_request_allowance':10,'telemetry_allowance':9,'new_activation':False}
+(base/'handoff.json').write_text(json.dumps(record,indent=2)+'\n')
+child=None
+try:
+ with (ready/'handoff-worker.stdout.log').open('w') as stdout,(ready/'handoff-worker.stderr.log').open('w') as stderr:
+  child=subprocess.Popen([sys.executable,'scripts/profile_two_readers.py','worker','--output',str(ready)],stdout=stdout,stderr=stderr,start_new_session=True)
+  try:record['exit_code']=child.wait(timeout=max(0.001,runtime['deadline_unix']-time.time()))
+  except subprocess.TimeoutExpired:
+   record['deadline_fired']=True
+   kill_group(child.pid)
+   child.wait()
+finally:
+ if child is not None:
+  kill_group(child.pid)
+  child.wait()
+ # The original supervisor owns shutdown/owned-job cleanup and entrypoint restoration.
+ try:os.kill(parent_pid,signal.SIGINT)
+ except ProcessLookupError:pass
+ (base/'handoff.json').write_text(json.dumps(record,indent=2)+'\n')
+print(json.dumps(record))

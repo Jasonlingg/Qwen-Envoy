@@ -1,0 +1,59 @@
+{
+  "status": "incomplete",
+  "kind": "fixed-input serving diagnostic",
+  "warmups": [],
+  "batches": [],
+  "limitations": [
+    "Two rounds, not tail latency or an independent agent benchmark.",
+    "Fixed inputs do not measure responses to feedback or useful-answer quality.",
+    "Memory snapshots are not peak device memory; gauges are sampled at 100 ms.",
+    "Telemetry sampling overhead and queue polling affect measured wall time."
+  ],
+  "preflight": {
+    "sample_id": null,
+    "client_seconds": 0.6596479578875005,
+    "queue_delay_ms": 29,
+    "execution_time_ms": 391,
+    "profile": {
+      "boot_id": "e023d0501c2b4512841ace0a9f463cb0",
+      "declared_config": {
+        "ENABLE_PREFIX_CACHING": "false",
+        "MAX_CONCURRENCY": "2",
+        "MAX_MODEL_LEN": "8192",
+        "MAX_NUM_SEQS": "2"
+      },
+      "memory_sampling": "nvidia-smi per snapshot",
+      "preflight": {
+        "memory": {
+          "total_mib": 24564,
+          "used_mib": 20783
+        },
+        "metrics": {
+          "vllm:kv_cache_usage_perc": 0,
+          "vllm:num_preemptions_total": 0,
+          "vllm:num_requests_running": 0,
+          "vllm:num_requests_waiting": 0,
+          "vllm:request_decode_time_seconds_count": 0,
+          "vllm:request_decode_time_seconds_sum": 0,
+          "vllm:request_prefill_time_seconds_count": 0,
+          "vllm:request_prefill_time_seconds_sum": 0,
+          "vllm:request_queue_time_seconds_count": 0,
+          "vllm:request_queue_time_seconds_sum": 0,
+          "vllm:time_to_first_token_seconds_count": 0,
+          "vllm:time_to_first_token_seconds_sum": 0
+        },
+        "seconds": 182247.067246666
+      }
+    }
+  },
+  "error": "RuntimeError: profile job failed",
+  "model_requests_reserved": 1,
+  "tokens_reserved": 8192,
+  "assessment": {
+    "comparable": false,
+    "reasons": [
+      "incomplete profile"
+    ],
+    "rounds": []
+  }
+}

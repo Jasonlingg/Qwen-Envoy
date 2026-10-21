@@ -1,0 +1,116 @@
+{
+  "live_code_commit": "971932c",
+  "repair_commits": [
+    "43097e1",
+    "ae8a874"
+  ],
+  "tests": {
+    "pre_activation_focused": {
+      "passed": 33,
+      "seconds": 8.23
+    },
+    "pre_activation_full": {
+      "passed": 1879,
+      "seconds": 76.12,
+      "warnings": 3,
+      "skipped": 0
+    },
+    "repair_focused": {
+      "passed": 45,
+      "seconds": 9.87
+    },
+    "repair_full": {
+      "passed": 1882,
+      "seconds": 80.37,
+      "warnings": 3,
+      "skipped": 0
+    },
+    "full_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "ruff": "passed",
+    "git_diff_check": "passed"
+  },
+  "live_implementation_hashes_verified_against_git": {
+    "scripts/profile_two_readers.py": "f38ece7baa75367b8b5ec9ad84437dfbbf77975ce809bba9610ee32b7658e9f9",
+    "src/eval/reader_profile.py": "793cfa61271d092632248f5314804d8eda4c5970e6da9a4eee0614edc72dbed4",
+    "src/eval/reader_profile_worker.py": "ce9d2141c4f510f4bd2fa9d33192c50954efd7b146b7da0c3018872f79d3f45a",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "src/eval/assigned_smoke_control.py": "48871c29b012c8778b81d2fd9511dd7e7f6e17541612d74b78ec35883fc392d1",
+    "src/eval/assigned_smoke_lifecycle.py": "fc14a89b21bd70f45c64226dbe5e4ae1c82bfd2cf4a7f36b93727d7192bfd6ad"
+  },
+  "current_implementation_sha256": {
+    "scripts/profile_two_readers.py": "3aa8ede2ff8b03b8994a2b9a8708ad6e13d26d9cef54ebd30d5fa0321c164714",
+    "src/eval/reader_profile.py": "9c76728a83e31b677cecc8ec7a115ed453a672e3f535e03b779bde7aebd207c0",
+    "src/eval/reader_profile_worker.py": "91f12696e3e8af0f7d77bfb0cba702ab2154f0973a06bb5c28b14419114f8f92",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "src/eval/assigned_smoke_control.py": "48871c29b012c8778b81d2fd9511dd7e7f6e17541612d74b78ec35883fc392d1",
+    "src/eval/assigned_smoke_lifecycle.py": "31c0c0eb429ddbcfd717ac7f88782f7964fe894597dcc00c3a1258caaf83ed9b"
+  },
+  "protected_files_unchanged_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+  },
+  "original_attempt_artifacts_unchanged_sha256": {
+    "plan.json": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+    "authorization.json": "ecb5b904a36c8c2f7f03a55753d85cca2e6e719d0fdea821328190bed50fc2fe",
+    "lifecycle.json": "6106eb31bf01c8a1c91ed860016c46825ddd70e63a1f1df9ac164204f7cc0622",
+    "entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+    "startup-log-reads.jsonl": "dddc8bf5ac7310bee3879971536abb7fcf3417bd27dd2d85caf0e4c168533c82",
+    "endpoint-after.json": "9c56a67ad40b77c5898f8409cee933bd5b8b13f3a17fb9e55ec4d6ee9286bd4e"
+  },
+  "original_attempt_bindings": {
+    "outcome_sha256": "410742ee7927eb330ed60518af0c38fc2f1c33f34949f6b099287aa0c41af0ef",
+    "marker_sha256": "eb1a42b983c80d5b1450b2afe17c5f86300c8c712b8eb06636c70f14633a8297",
+    "plan_sha256": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5"
+  },
+  "replacement_marker_sha256": "f2e1cd8044d33566a537dc44ad7e1b17996dbc664aaa81c1d46b49adb88cbe03",
+  "public_artifacts_sha256": {
+    "handoff.json": "d111e2241bf98522e2160572c0d3490b078c005b8e070187f33248a1ed83a4a7",
+    "startup-proof.json": "bc75229809587c3ab7e78a67cc8242f75a6afe81a2f1632f68331b55e311c7e1",
+    "entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+    "outcome.json": "d8b2e814cb90bf6f7676b9e5142ac0c7c5fdb6f9daaf404b2911aa73b0c8ad0b",
+    "plan.json": "05c6aa8a0327ec4f865299fbb4f0691e0faa4ee39637ddfcf0a69b651d2b0386",
+    "result.json": "9a8866ab909d4bfcb18dcfb0ef6a3bafaf0de295a95f2d4cb553c8d9452fad91",
+    "lifecycle.json": "c67c4fe63bb132113a9c6c66136003925caf27ce104414d3fcbc042180eb9230",
+    "offline-env-comparison.json": "298eb83d9034feccf9534be1eb314ba3e2494a2b39b684601c52437e12ab1bd1",
+    "failed-job.json": "ae7c9cb117eea23a4f212b5bdd34a7b11db2d84e021b829da4f5acb14947d81d",
+    "authorization.json": "1edbbc01026573a612a6b4e7b346c672c21cce5724f391ce8c59d6e3ec9efd96",
+    "handoff-controller.py.txt": "5128ce7f48f0dce6792051175efa06408812a3b44e2c0dcfb5842dc58193766c",
+    "README.md": "e52ca12ac037e22474ff2269a92eb1494b3eb4cbab70c7917d64ea6af9b4428f",
+    "worker-identity-manual.json": "0a5963e1e077b89c3dfa1e754c47fa5fee83b52fc90ffb8a128585256abcbecf",
+    "log-query-comparison.json": "2280a5d5f63716e9f5da1861713f5d93668582ae9d1fcb2570d1aa77b1e486bc",
+    "endpoint-after.json": "e1dd829deea55410519054d49019e86da5c080e3038ef1a13d20c32e68352350",
+    "startup-log-reads.jsonl": "315b8938637c64eb4711bd51b67aa84ed2980b37ac61a7ba3b169c9f3cdfeb49"
+  },
+  "private_evidence_sha256": {
+    "out/two-reader-profile-retry-20261021/focused-tests.txt": "8b75eed924c89a545bb6711004d05d46326579b15610bb9b0973a025ea051262",
+    "out/two-reader-profile-retry-20261021/full-tests.txt": "184a4c44c587e22589a197b4ea8d7053b0d13e55a53beda2e7935d7ca9e4eab8",
+    "out/two-reader-profile-retry-20261021/repair-focused.txt": "45a9d6b3a9f9b8dad46c6ce8fd1d7b6b5223793e51334a7a0c6a64fb1b0b63fd",
+    "out/two-reader-profile-retry-20261021/repair-full-tests.txt": "fe6c11012af26ffd33fe163ec56ccb5c9040ec41cfd705978acdafcf71120969",
+    "out/two-reader-profile-retry-20261021/verified-startup-log-read.json": "4aecf12b470e0cf5bd5de95fbeab99742f08f373be3029bf1fe2b1218a744265",
+    "out/two-reader-profile-retry-20261021/ready/entrypoint.py": "e82303c0b924751131f01b7b71adf37ead407ed606f51f0867ef2c4c50457670",
+    "out/two-reader-profile-retry-20261021/ready/profile.requests.jsonl": "7693c09c73c15a14ca974e9c5115d19a093787226236cf7d34e0c7583a21d5ec",
+    "out/two-reader-profile-retry-20261021/ready/runtime.json": "0e04a23cc9acad819b62293accfef6385110650cc0270ccf5be23034cb6a6cdd",
+    "out/two-reader-profile-retry-20261021/live-run.stderr.log": "905b84e04a28f684cb82f2d66dc418c78a50d5080b565837e4a010fe665454ff"
+  },
+  "outcome": "incomplete; one successful telemetry job and one failed warmup job; no timing rounds",
+  "manual_handoff": true,
+  "automated_startup_passed": false,
+  "post_repair_live_test": false,
+  "no_further_paid_request": true,
+  "shutdown_verified": true,
+  "actual_invoice_cost": null,
+  "limitations": [
+    "Received failed input was not recorded; numeric normalization is a reproduced candidate cause, not proven live cause.",
+    "Independent MCP readiness handoff differs from automated startup; no fully automated E2E pass.",
+    "No serial/concurrent speed, reader quality, MCP advantage or fine-tuning improvement measured."
+  ]
+}

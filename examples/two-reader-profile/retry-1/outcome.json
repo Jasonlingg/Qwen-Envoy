@@ -1,0 +1,61 @@
+{
+  "status": "incomplete_no_timing_comparison",
+  "live_code_commit": "971932c",
+  "post_attempt_offline_repairs": [
+    "43097e1",
+    "ae8a874"
+  ],
+  "plan_sha256": "05c6aa8a0327ec4f865299fbb4f0691e0faa4ee39637ddfcf0a69b651d2b0386",
+  "attempts_consumed": 1,
+  "new_activations": 1,
+  "manual_handoff": true,
+  "startup_automation_passed": false,
+  "independent_identity_and_fitness_verified": true,
+  "telemetry_jobs_submitted": 1,
+  "telemetry_preflight_completed": true,
+  "model_jobs_submitted": 1,
+  "model_requests_reserved": 1,
+  "tokens_reserved": 8192,
+  "model_calls_forwarded_to_vllm": 0,
+  "returned_model_usage": null,
+  "failure": "Worker rejected first warmup before upstream dispatch: profile input differs from the pinned payload.",
+  "per_sample": [
+    {
+      "sample_id": "historical_reader_request_2",
+      "prompt_tokens_recounted": 1400,
+      "outcome": "warmup rejected before generation",
+      "timed_requests": 0
+    },
+    {
+      "sample_id": "historical_reader_request_6",
+      "prompt_tokens_recounted": 2043,
+      "outcome": "unattempted",
+      "timed_requests": 0
+    }
+  ],
+  "serial_rounds_completed": 0,
+  "concurrent_rounds_completed": 0,
+  "speed_comparison": null,
+  "preflight_gpu_memory_mib": {
+    "total_mib": 24564,
+    "used_mib": 20783
+  },
+  "shutdown_verified": true,
+  "original_entrypoint_restored": true,
+  "full_endpoint_config_restored": true,
+  "budget": {
+    "allowance_usd": 0.5,
+    "maximum_seconds_including_loading": 900,
+    "catalog_gpu_hourly_usd": 0.69,
+    "maximum_window_compute_estimate_usd": 0.1725,
+    "actual_invoice_cost": null,
+    "provider_dollar_cap": false,
+    "further_paid_attempt_authorized": false
+  },
+  "interpretation": [
+    "Model loaded and telemetry preflight worked; no serving-speed or answer-quality comparison completed.",
+    "Manual readiness handoff is a deviation; automated startup did not pass.",
+    "Integer/float serialization is a reproduced local hashing hazard, not the proven received-input transformation in the failed live job.",
+    "No fine-tuning improvement, research-quality or MCP advantage measured."
+  ]
+}
