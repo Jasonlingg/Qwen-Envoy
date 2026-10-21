@@ -1,0 +1,116 @@
+{
+  "checked_at": "2026-10-21T20:55:57+00:00",
+  "endpoint": {
+    "id": "q05pjrvguakieg",
+    "name": "envoy-v5-reader-20261019",
+    "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6",
+    "workers": {
+      "idleTimeout": 60,
+      "max": 0,
+      "min": 0
+    },
+    "gpu": {
+      "allowedCudaVersions": [],
+      "count": 1,
+      "excludedTypes": [
+        "NVIDIA GeForce RTX 3090",
+        "NVIDIA L4",
+        "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+      ],
+      "minCudaVersion": "13.0",
+      "pools": [
+        "AMPERE_24"
+      ]
+    },
+    "config": {
+      "MAX_NUM_SEQS": "2",
+      "MAX_CONCURRENCY": "2",
+      "MAX_MODEL_LEN": "8192",
+      "ENABLE_PREFIX_CACHING": "false"
+    }
+  },
+  "health": {
+    "jobs": {
+      "completed": 127,
+      "failed": 1,
+      "inProgress": 0,
+      "inQueue": 0,
+      "retried": 0
+    },
+    "workers": {
+      "idle": 0,
+      "initializing": 0,
+      "ready": 0,
+      "running": 0,
+      "throttled": 0,
+      "unhealthy": 0
+    }
+  },
+  "workers": {
+    "endpointVersion": 7,
+    "summary": {
+      "idle": 0,
+      "initializing": 0,
+      "running": 0,
+      "throttled": 0,
+      "total": 0,
+      "unhealthy": 0
+    },
+    "workers": []
+  },
+  "price": {
+    "availability": "HIGH",
+    "community": true,
+    "cudaVersions": [
+      {
+        "available": false,
+        "version": "13.0"
+      },
+      {
+        "available": false,
+        "version": "13.1"
+      },
+      {
+        "available": true,
+        "version": "13.2"
+      }
+    ],
+    "dataCenters": [
+      {
+        "availability": "MEDIUM",
+        "id": "CA-MTL-1",
+        "name": "CA-MTL-1"
+      },
+      {
+        "availability": "LOW",
+        "id": "EU-SE-1",
+        "name": "EU-SE-1"
+      },
+      {
+        "availability": "LOW",
+        "id": "US-CA-2",
+        "name": "US-CA-2"
+      },
+      {
+        "availability": "LOW",
+        "id": "US-IL-1",
+        "name": "US-IL-1"
+      }
+    ],
+    "id": "NVIDIA RTX A5000",
+    "manufacturer": "NVIDIA",
+    "maxCount": {
+      "community": 10,
+      "secure": 10
+    },
+    "memory": 24,
+    "name": "RTX A5000",
+    "pool": "AMPERE_24",
+    "price": {
+      "community": 0.16,
+      "secure": 0.27,
+      "serverless": 0.69
+    },
+    "secure": true
+  }
+}

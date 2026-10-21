@@ -1,0 +1,44 @@
+{
+  "schema_version": "reader-serving-profile-v1",
+  "endpoint": "q05pjrvguakieg",
+  "session": "d47d7cc7d9c5411e9aa4e47a18bbe76a",
+  "source_manifest_sha256": "02625f8cf5d6c9a70d7d0e07280900bfb6a2a93e24f54a9bc5b86950fab7ceca",
+  "payload_hashes": {
+    "historical_reader_request_2": "5eda6d4f0aae4af241c08bbee1e055f2a53468855529c57fa8685cadeb0862c6",
+    "historical_reader_request_6": "ad5ea66a4ba9e0da5c97fd4c4087cde73918cdd4b9c319271f60f633f4b02b2c"
+  },
+  "transport_payload_hashes": {
+    "historical_reader_request_2": "dbc75e436c0fa182ab200c593e28a29e296fba138a6e942f10e7758e6e3da05b",
+    "historical_reader_request_6": "718bfe414a3b72f5b89aba6e3df671458c11000fb5155eae321911cd810a0d70"
+  },
+  "prompt_tokens": {
+    "historical_reader_request_2": 1400,
+    "historical_reader_request_6": 2043
+  },
+  "tokenizer": "Qwen/Qwen3-8B",
+  "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "limits": {
+    "model_requests": 10,
+    "telemetry_jobs": 9,
+    "tokens_reserved": 81920,
+    "session_seconds": 900,
+    "gpus": 1
+  },
+  "config": {
+    "MAX_NUM_SEQS": "2",
+    "MAX_CONCURRENCY": "2",
+    "MAX_MODEL_LEN": "8192",
+    "ENABLE_PREFIX_CACHING": "false"
+  },
+  "implementation_sha256": {
+    "scripts/profile_two_readers.py": "3577e7592255934a23c916154617c6c706faf82a2244b42e36a9dda3a4dce1ec",
+    "src/eval/reader_profile.py": "9c76728a83e31b677cecc8ec7a115ed453a672e3f535e03b779bde7aebd207c0",
+    "src/eval/reader_profile_worker.py": "91f12696e3e8af0f7d77bfb0cba702ab2154f0973a06bb5c28b14419114f8f92",
+    "scripts/runpod_qwen_bootstrap.py": "e87d085196171d7a745d897e0e1aa1d73b942396639627f2853a73a5d3d3599e",
+    "src/eval/assigned_smoke_control.py": "48871c29b012c8778b81d2fd9511dd7e7f6e17541612d74b78ec35883fc392d1",
+    "src/eval/assigned_smoke_lifecycle.py": "103bdc8fc989fbc0d7c6c50018e2fce780c4d842fa8a7707a46dff0bc7f6858d",
+    "src/eval/worker_log_reader.py": "abe720bcd3c1a721b8e07a808189ea6601541d9bfcbe3cd52fc234aadf72aa91"
+  },
+  "paid_authorization": "not_granted_by_preparation",
+  "provider_dollar_cap": false
+}
