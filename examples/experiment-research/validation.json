@@ -1,0 +1,108 @@
+{
+  "schema_version": "experiment-research-validation-v1",
+  "recorded_at": "2026-10-21T04:56:23.586879+00:00",
+  "implementation_commit": "aa8a1a1ca3d6482f3c70bd4211e444fe3d120adb",
+  "implementation_sha256": {
+    "src/product/experiment_budget.py": "97fc927073d16a4df6368e4ba012b42bd1405dd714e2904409788d420ed10e13",
+    "src/product/experiment_protocol.py": "6a9d2ce1d15952e576a4233567dfaf5af93d83e719c8a96c3f35b11bc2bc6ba8",
+    "src/product/experiment_research.py": "ad8feefe1a3d7287a62e0dbd868fedf29f48018bf1a51d3c7ff4ed50410a5565",
+    "src/product/experiment_tokenizer.py": "d5864874075d978f8921e7d121ca8b21e7c7caed37e6e70f3042ec184575752b",
+    "scripts/experiment_research_mcp.py": "b7759d007f90ef2b79e3598f7f3169e557d7433d77ed11d445766de34bbfe2ba"
+  },
+  "scope": "offline scripted component/integration checks; not live Qwen research",
+  "tests": {
+    "focused_new_tests": {
+      "passed_before_tokenizer_followup": 35,
+      "tokenizer_followup_passed": 1
+    },
+    "related_regressions_before_review_fix": {
+      "passed": 72
+    },
+    "full_suite_history": [
+      {
+        "implementation": "2a4bda5",
+        "passed": 1736,
+        "failed": 0,
+        "skipped": 0,
+        "warnings": 3,
+        "seconds": 81.39
+      },
+      {
+        "implementation": "aa8a1a1",
+        "passed": 1736,
+        "failed": 1,
+        "skipped": 0,
+        "warnings": 3,
+        "seconds": 95.54,
+        "failure": "tests/test_harness_staging.py::test_duplicate_run_is_rejected_across_processes: child FileNotFoundError opening .stage.lock; isolated rerun passed; no staging code modified"
+      },
+      {
+        "implementation": "aa8a1a1",
+        "passed": 1737,
+        "failed": 0,
+        "skipped": 0,
+        "warnings": 3,
+        "seconds": 66.46
+      }
+    ],
+    "final_full_suite_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "ruff": "passed for all new implementation and test files",
+    "git_diff_check": "passed"
+  },
+  "docker": {
+    "real_execution": true,
+    "image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+    "mcp_transport": "real SDK in-process",
+    "responses": "scripted; not model generated",
+    "sources": "synthetic fixture; not live literature",
+    "tests": [
+      "successful search/read/finish",
+      "unsafe document Python rejected before execution",
+      "exact source excerpt rebuilt",
+      "aggregate control/reader budget"
+    ]
+  },
+  "tokenizer_smoke": {
+    "actual_cached_tokenizer": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "controller_prompt_tokens": 400,
+    "socket_connect_blocked": true,
+    "transport": "local stub",
+    "real_model_calls": 0
+  },
+  "independent_review": {
+    "reviewer": "/root/qwen_live_final_review",
+    "kind": "model-assisted code review",
+    "files_edited_by_reviewer": false,
+    "finding": "Transport ValueError incorrectly treated as recoverable malformed completion",
+    "resolution": "Closed after shared failure latch and three regressions; startup loader follow-up also reviewed",
+    "outstanding_blockers": 0,
+    "semantic_answer_review": "not_performed",
+    "human_review": "not_performed"
+  },
+  "paid_inference_requests": 0,
+  "gpu_resources_activated": 0,
+  "live_research_quality": "not_evaluated",
+  "fine_tuning_improvement": "not_demonstrated",
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "limitations": [
+    "paper sources only; no GitHub/Hugging Face browsing",
+    "no Runpod queue adapter or GPU lifecycle in new entrypoint",
+    "requires an explicitly served OpenAI-compatible Qwen endpoint",
+    "no hard wall-clock or provider dollar ceiling",
+    "token bounds assume matching tokenizer and provider max_tokens enforcement",
+    "no automatic saved-brief lookup/refresh",
+    "hackathon live demo and submission remain"
+  ]
+}
