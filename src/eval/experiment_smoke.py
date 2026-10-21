@@ -59,16 +59,16 @@ def plan():
             "fine_tuning_comparison": False, "provider_dollar_cap": False}
 
 
-def checked_plan(output):
-    saved = json.loads((output / "plan.json").read_text())
+def checked_plan(output, name="plan.json"):
+    saved = json.loads((output / name).read_text())
     if saved != plan():
         raise ValueError("live question, limits, prompts or implementation differ from frozen plan")
     return saved
 
 
 def run(output, *, tokenizer, key, transport_factory=RunpodQueueTransport,
-        reader_factory=build_assigned_reader, discovery=None):
-    saved = checked_plan(output)
+        reader_factory=build_assigned_reader, discovery=None, plan_name="plan.json"):
+    saved = checked_plan(output, plan_name)
     with (output / "WORKER_STARTED").open("x"):
         pass
     audit = output / "research.requests.jsonl"
