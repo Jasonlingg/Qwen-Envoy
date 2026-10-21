@@ -1,0 +1,101 @@
+{
+  "status": "locally_verified_repair_original_provider_cause_unresolved",
+  "scope_commit": "bb2c9fd",
+  "implementation_commit": "066d0c5",
+  "verification": {
+    "focused": {
+      "passed": 67,
+      "duration_seconds": 8.54,
+      "files": [
+        "tests/test_assigned_smoke_startup.py",
+        "tests/test_assigned_smoke_worker_binding.py",
+        "tests/test_assigned_smoke_control.py",
+        "tests/test_assigned_smoke_cli_integration.py",
+        "tests/test_logged_worker_readiness.py",
+        "tests/test_startup_log_recovery.py",
+        "tests/test_assigned_smoke_run.py",
+        "tests/test_reader_profile.py"
+      ]
+    },
+    "full": {
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+      "passed": 1878,
+      "skipped": 0,
+      "duration_seconds": 77.4,
+      "warnings": 3,
+      "warning_description": "existing SWIG deprecations"
+    },
+    "ruff": "passed",
+    "git_diff_check": "passed",
+    "protected_files_unchanged_sha256": {
+      "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+      "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+      "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+      "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+      "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+      "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+      "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+      "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+      "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+      "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+      "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+    },
+    "failed_attempt_artifacts_unchanged_sha256": {
+      "plan.json": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+      "authorization.json": "ecb5b904a36c8c2f7f03a55753d85cca2e6e719d0fdea821328190bed50fc2fe",
+      "lifecycle.json": "6106eb31bf01c8a1c91ed860016c46825ddd70e63a1f1df9ac164204f7cc0622",
+      "entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+      "startup-log-reads.jsonl": "dddc8bf5ac7310bee3879971536abb7fcf3417bd27dd2d85caf0e4c168533c82",
+      "endpoint-after.json": "9c56a67ad40b77c5898f8409cee933bd5b8b13f3a17fb9e55ec4d6ee9286bd4e"
+    },
+    "consumed_marker_sha256": "eb1a42b983c80d5b1450b2afe17c5f86300c8c712b8eb06636c70f14633a8297",
+    "worker_started_marker_absent": true
+  },
+  "implementation_sha256": {
+    "src/eval/assigned_smoke_control.py": "48871c29b012c8778b81d2fd9511dd7e7f6e17541612d74b78ec35883fc392d1",
+    "src/eval/assigned_smoke_lifecycle.py": "fc14a89b21bd70f45c64226dbe5e4ae1c82bfd2cf4a7f36b93727d7192bfd6ad",
+    "scripts/profile_two_readers.py": "f9e7fc275da4839b233af461aaea19a8da97ee373571996a25db3b6708f71421",
+    "tests/assigned_smoke_cli_fixture.py": "0ed63ee351d115ff4b59c8aae4ece12ac9e5b646331c5bf610d3caf8c521f074",
+    "tests/test_assigned_smoke_cli_integration.py": "e0c0281a2a490c42e332b2878af58d6335ba92b1c72e2183df09200d90dadaed",
+    "tests/test_assigned_smoke_control.py": "5f13caa01a7f548721a6f2d06d0195eb860c0a1f4fed5eab27240d283def7341",
+    "tests/test_assigned_smoke_startup.py": "8a186df2bffc5f09207d1285570fe57c08f84d302aea3dd826719ceaa90ee52b",
+    "tests/test_assigned_smoke_worker_binding.py": "ca907853d964cb6a23459e30491de8e3cffa373423706ec71606379fddf8f258",
+    "tests/test_logged_worker_readiness.py": "f9207851e4fe10a5d61bdf061bdc1e955da3d71a753d2cf44b95edc46914c2e0",
+    "tests/test_startup_log_recovery.py": "4d837d578645d3495f13a4bcfe49e4214f12b54cbc62713c09732229ffd795ac"
+  },
+  "public_artifacts_sha256": {
+    "README.md": "93f5116b171787e65550a9eac45c5c716c84703f50c846efd20fae6140b2d273",
+    "cli-reproduction.json": "0357e59c100cd03b1e4a1408bef074622a29c756d2bc59743bf81b41ed627748",
+    "provider-read.json": "025cd2a6a7e5d65e8cd90b6ed00a41f5ede40659bcc03e99990c60206738804e"
+  },
+  "local_evidence_sha256": {
+    "out/startup-log-diagnosis-20261021/focused-final.txt": "c5ee00d8a1598dbe201655ae4eb8816865bd8826e18fe5d5fb5279fd3b11c05e",
+    "out/startup-log-diagnosis-20261021/full-tests.txt": "799dc3c0c47ac31aaf9184fee4a2a7dd2507585baf83edea1b563629217c0acf",
+    "out/startup-log-diagnosis-20261021/cli-reproduction.json": "de9a8cacc81a55e80ea438e44a411757cba708f13a3b4d4d5a81551872f56381",
+    "out/startup-log-diagnosis-20261021/internal_api_logs.go": "3689b30edeaa63fca8e19d968a9fbcb62b63b3a0f43ca7372e857c8f12ade486",
+    "out/startup-log-diagnosis-20261021/internal_logstream_logstream.go": "1a6b5eff46be536e113e06043a13a848c512f5c1a078caaddca5de54bc299f24"
+  },
+  "primary_sources": [
+    "https://github.com/runpod/runpodctl/blob/dd55bcf/internal/api/logs.go",
+    "https://github.com/runpod/runpodctl/blob/dd55bcf/internal/logstream/logstream.go",
+    "https://api.runpod.io/v2/openapi.json"
+  ],
+  "cloud_operations": {
+    "read_only": true,
+    "endpoint_mutations": 0,
+    "gpu_activations": 0,
+    "model_requests": 0,
+    "telemetry_jobs": 0,
+    "archived_system_logs": "404 worker not found",
+    "endpoint_workers_min": 0,
+    "endpoint_workers_max": 0,
+    "active_workers": 0,
+    "pending_jobs": 0
+  },
+  "limitations": [
+    "Original live provider-side reason for absent timely log headers remains unknown.",
+    "Local reproduction establishes timeout ambiguity and supervisor recovery; live repair not tested.",
+    "No new performance, answer-quality, MCP-benefit or fine-tuning measurement.",
+    "No independent human answer review."
+  ]
+}

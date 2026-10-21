@@ -12,6 +12,10 @@ startup-verification failure, not a model-quality or performance result.
 zero workers, no pending jobs, the original entrypoint and unchanged full endpoint
 configuration. The single-attempt marker remains consumed. No paid retry was made.
 
+The subsequent [local log-handling repair](log-repair/README.md) fixes premature
+abort and missing diagnostics. It was verified without another GPU activation;
+the original provider-side cause remains unknown because worker logs are gone.
+
 One startup-log read returned without a matching identity; three subsequent
 reads timed out. The existing helper saved read status but not returned log
 content, so the timeout cause and missing identity cannot be diagnosed from

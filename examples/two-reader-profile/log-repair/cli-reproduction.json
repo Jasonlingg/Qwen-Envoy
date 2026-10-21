@@ -1,0 +1,46 @@
+{
+  "kind": "installed CLI against local HTTP/SSE server; no GPU or provider inference",
+  "version": "2.14.0-dd55bcf",
+  "condition": "First three requests receive no response headers; fourth receives one identity frame.",
+  "snapshot_wait_ms": 150,
+  "reads": [
+    {
+      "attempt": 1,
+      "returncode": 1,
+      "stdout_records": 0,
+      "error": {
+        "code": "timeout",
+        "classification": "log response did not supply headers within snapshot wait"
+      }
+    },
+    {
+      "attempt": 2,
+      "returncode": 1,
+      "stdout_records": 0,
+      "error": {
+        "code": "timeout",
+        "classification": "log response did not supply headers within snapshot wait"
+      }
+    },
+    {
+      "attempt": 3,
+      "returncode": 1,
+      "stdout_records": 0,
+      "error": {
+        "code": "timeout",
+        "classification": "log response did not supply headers within snapshot wait"
+      }
+    },
+    {
+      "attempt": 4,
+      "returncode": 0,
+      "stdout_records": 1,
+      "error": null
+    }
+  ],
+  "all_http_methods": "GET",
+  "all_api_hosts": "127.0.0.1",
+  "credentials": "dummy fixture key only",
+  "requests": 4,
+  "interpretation": "Reproduces timeout without any GPU. It cannot establish why the original provider request produced no timely headers."
+}
