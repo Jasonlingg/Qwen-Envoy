@@ -10,8 +10,16 @@ import hashlib
 
 from src.env.tools import SEARCH_PROTOCOL_VERSION, TOOL_PREAMBLE
 from src.env.tools_v2 import HARNESS_V2_SHA256
+from src.product.assigned_actions import displayed_tool_call
 from src.product.assigned_guidance import BASELINE, FOCUSED, validate_guidance
 from src.product.paper_assignment import verify_assignment
+from src.product.passage_scope import (
+    PASSAGES,
+    checked_read,
+    evidence_is_inspected,
+    make_scope,
+    scope_hash,
+)
 from src.product.reader_gaps import verify_gap_reports
 
 MAX_EVIDENCE_SPANS = 5
@@ -43,7 +51,8 @@ def _check_header(packet: dict, manifest: dict, allowed_prompt_sha256s: frozense
 def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                                 allowed_prompt_sha256s: frozenset[str],
                                 expected_reader_mode: str = "discovery",
-                                expected_reader_guidance: str = BASELINE) -> dict:
+                                expected_reader_guidance: str = BASELINE,
+                                expected_passage_windows=None) -> dict:
     """Return compact model output with every quoted span rebuilt from the corpus."""
     harness = _check_header(packet, manifest, allowed_prompt_sha256s)
     mode = packet.get("reader_mode", "discovery")
@@ -55,6 +64,22 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
     validate_guidance(guidance, mode)
     if guidance != expected_reader_guidance:
         raise ValueError("packet reader guidance differs from the configured reader")
+    if guidance == PASSAGES:
+        if (not isinstance(packet.get("trajectory"), list)
+                or any(not isinstance(t, dict) or not isinstance(t.get("action"), str)
+                       for t in packet["trajectory"])):
+            raise ValueError("invalid passage reader trajectory")
+        scope = make_scope(docs, expected_passage_windows)
+        if (packet.get("passage_scope") != scope
+                or packet.get("passage_scope_sha256") != scope_hash(scope)):
+            raise ValueError("passage assignment differs from the controller scope")
+        inspected = [checked_read(displayed_tool_call(t["action"]), scope)
+                     for t in packet.get("trajectory", []) if t.get("source_inspection") is True]
+        if (packet.get("inspected_passage_windows") != inspected
+                or not evidence_is_inspected(packet.get("evidence", []), scope, inspected)):
+            raise ValueError("packet cites an uninspected or unassigned passage")
+    elif expected_passage_windows is not None:
+        raise ValueError("passage windows require passages-v1 guidance")
     assignment = None
     if mode == "assigned":
         if harness != "v2":
@@ -63,6 +88,8 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
     status = packet.get("status")
     if not isinstance(status, str) or status not in _STATUSES:
         raise ValueError("Qwen packet has an unknown status")
+    if guidance == PASSAGES and status == "no_evidence" and len(inspected) < 2:
+        raise ValueError("passage gap requires two inspected reads")
     supplied = packet.get("evidence")
     if not isinstance(supplied, list) or len(supplied) > MAX_EVIDENCE_SPANS:
         raise ValueError("Qwen packet has too many evidence spans")
@@ -123,8 +150,12 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         result.update(reader_mode="assigned", paper_assignment=assignment,
                       assignment_sha256=packet["assignment_sha256"])
         result["research_gaps"], result["gap_report_error"] = verify_gap_reports(packet)
-        if guidance == FOCUSED and status == "no_evidence" and not result["research_gaps"]:
+        if guidance in {FOCUSED, PASSAGES} and status == "no_evidence" and not result[
+                "research_gaps"]:
             raise ValueError("focused-v1 abstention requires a verified gap report")
         if guidance != BASELINE:
             result["reader_guidance"] = guidance
+        if guidance == PASSAGES:
+            result.update(passage_scope=scope, inspected_passage_windows=inspected,
+                          absence_scope="selected inspected passages only; not the whole paper")
     return result

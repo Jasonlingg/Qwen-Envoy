@@ -4,6 +4,7 @@ from __future__ import annotations
 import ast
 
 from src.product.assigned_actions import displayed_tool_call
+from src.product.passage_scope import PASSAGE_PROTOCOL, PASSAGES
 from src.product.reader_gaps import GAP_PROTOCOL
 
 BASELINE = "baseline"
@@ -31,8 +32,8 @@ reports and source access do not establish semantic support or prove absence.
 
 
 def validate_guidance(version: str, reader_mode: str) -> None:
-    if version not in {BASELINE, FOCUSED}:
-        raise ValueError("reader_guidance must be baseline or focused-v1")
+    if version not in {BASELINE, FOCUSED, PASSAGES}:
+        raise ValueError("reader_guidance must be baseline, focused-v1 or passages-v1")
     if version != BASELINE and reader_mode != "assigned":
         raise ValueError("focused-v1 guidance requires the assigned reader")
 
@@ -44,7 +45,8 @@ def guidance_prompt(base: str, version: str) -> str:
     if base.count(GAP_PROTOCOL) != 1:
         raise ValueError("focused guidance requires the known assigned gap protocol")
     required = GAP_PROTOCOL.replace("you may\nuse", "you must\nuse")
-    return base.replace(GAP_PROTOCOL, required) + FOCUSED_PROTOCOL
+    return base.replace(GAP_PROTOCOL, required) + (
+        PASSAGE_PROTOCOL if version == PASSAGES else FOCUSED_PROTOCOL)
 
 
 def action_recovery(action: str, reason: str, remaining: int) -> str:

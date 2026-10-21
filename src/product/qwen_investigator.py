@@ -46,6 +46,13 @@ from src.product.paper_assignment import (
     assignment_observation,
     paper_assignment,
 )
+from src.product.passage_scope import (
+    PASSAGES,
+    checked_read,
+    evidence_is_inspected,
+    make_scope,
+    scope_hash,
+)
 from src.product.reader_gaps import parse_gap_call, record_gap
 from src.product.submit_call import submit_call_to_line
 from src.research.agent import load_snapshot
@@ -296,7 +303,7 @@ class QwenInvestigator:
             extra_preamble=HARNESS_V2_PREAMBLE if self.harness_version == "v2" else "",
         )
 
-    def investigate(self, question: str, snapshot: Path) -> dict:
+    def investigate(self, question: str, snapshot: Path, *, passage_windows=None) -> dict:
         """Return a checked evidence packet or an explicit unavailable outcome."""
         if not isinstance(question, str) or not question.strip():
             raise ValueError("question must be non-empty text")
@@ -305,6 +312,9 @@ class QwenInvestigator:
         snapshot = Path(snapshot).expanduser().resolve(strict=True)
         manifest, docs = load_snapshot(snapshot)
         assignment = paper_assignment(manifest, docs) if self.reader_mode == "assigned" else None
+        scope = make_scope(docs, passage_windows) if self.reader_guidance == PASSAGES else None
+        if passage_windows is not None and scope is None:
+            raise ValueError("passage windows require passages-v1 guidance")
         corpus = snapshot / "corpus"
         question_prefix = "vault_" if self.source_domain == "personal_vault" else "paper_"
         question_id = question_prefix + hashlib.sha256(question.encode()).hexdigest()[:16]
@@ -344,6 +354,9 @@ class QwenInvestigator:
         }
         if self.harness_version == "v2":
             result["harness_shim_sha256"] = HARNESS_V2_SHA256
+        if scope is not None:
+            result.update(passage_scope=scope, passage_scope_sha256=scope_hash(scope),
+                          inspected_passage_windows=[])
         if assignment is not None:
             result.update(reader_mode="assigned", paper_assignment=assignment,
                           assignment_sha256=assignment_hash(assignment), research_gaps=[])
@@ -380,6 +393,9 @@ class QwenInvestigator:
             observation = f"{self.system_prompt}\nQuestion: {question}\n"
             if assignment is not None:
                 observation += assignment_observation(assignment)
+            if scope is not None:
+                import json
+                observation += "\nController passage ranges (metadata only): " + json.dumps(scope)
             seen_code: set[str] = set()
             discovered_ids = assignment is not None
             discovery = (
@@ -451,7 +467,8 @@ class QwenInvestigator:
                         ))
                         if (exact_empty_suffix and document_tool_steps >= 2
                                 and inspection_steps >= 1):
-                            if self.reader_guidance == FOCUSED and not result["research_gaps"]:
+                            if self.reader_guidance in {FOCUSED, PASSAGES} and not result[
+                                    "research_gaps"]:
                                 observation = trace["observation"] = missing_gap_feedback(
                                     self.max_steps - step)
                                 continue
@@ -484,6 +501,9 @@ class QwenInvestigator:
                         )
                     elif not inspection_steps:
                         observation = "Submission rejected: inspect source text before citing it."
+                    elif scope is not None and not evidence_is_inspected(
+                            predicted_evidence, scope, result["inspected_passage_windows"]):
+                        observation = "Submission rejected: cite only actually inspected passages."
                     elif any(not isinstance(span.get("doc_id"), str)
                              for span in predicted_evidence):
                         observation = "Submission rejected: evidence document IDs must be text."
@@ -558,6 +578,12 @@ class QwenInvestigator:
                             observation = trace["observation"] = (
                                 "Action rejected: identical tool call was already executed.")
                             continue
+                        if scope is not None:
+                            try:
+                                window = checked_read(call, scope)
+                            except (ValueError, TypeError) as exc:
+                                observation = trace["observation"] = f"Action rejected: {exc}."
+                                continue
                     seen_code.add(key)
                     output = repl.execute(action, timeout=self.code_timeout_seconds)
                     if not isinstance(output, str):
@@ -579,6 +605,8 @@ class QwenInvestigator:
                                      and source_text_visible(call, output, docs))
                     if inspected:
                         inspection_steps += 1
+                        if scope is not None:
+                            result["inspected_passage_windows"].append(window)
                         if assignment is not None:
                             trace["source_inspection"] = True
                     observation = output

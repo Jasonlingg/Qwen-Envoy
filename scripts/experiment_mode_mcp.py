@@ -54,9 +54,24 @@ Use get_experiment for full or older records if resume context is truncated.
 """
 
 
-def create_server(store, library, discovery):
+def create_server(store, library, discovery, *, passage_reader=None):
     server = MCPServer("Envoy Experiment Mode", instructions=INSTRUCTIONS + MODE)
     register_experiment_tools(server, store)
+    if passage_reader is not None:
+        @server.tool(annotations=SAVE.model_copy(update={"open_world_hint": True}))
+        @_errors
+        def read_experiment_passages(experiment_id: str, expected_revision: StrictInt,
+                                     note_id: str, question: str, arxiv_id: str,
+                                     windows: list[dict[str, StrictInt]]) -> dict[str, Any]:
+            """Delegate selected cached passages to Qwen and save unreviewed candidate evidence.
+
+            Makes bounded external model calls only when invoked. Sends the question,
+            paper metadata and selected passage text. Does not activate a GPU. Exact
+            quotes prove provenance, not meaning. A note ID is one durable attempt;
+            identical retries return its saved report without another model call.
+            """
+            return passage_reader.read(experiment_id, expected_revision, note_id,
+                                       question, arxiv_id, windows)
     sources = source_server(library, discovery, tool_profile="sources")
 
     # Delegate to the existing source implementation through the public SDK.
@@ -121,12 +136,45 @@ def main():
     parser.add_argument("--library-root", type=Path, default=Path("~/.envoy/arxiv-library"))
     parser.add_argument("--artifact-root", type=Path,
                         help="Explicit directory of selected sanitized JSON run exports")
+    parser.add_argument("--qwen-endpoint", help="Optional OpenAI-compatible reader endpoint")
+    parser.add_argument("--qwen-model")
+    parser.add_argument("--qwen-checkpoint")
+    parser.add_argument("--sandbox-image", default="rlm-sandbox")
     args = parser.parse_args()
     library = ArxivLibrary(args.library_root.expanduser())
     store = ExperimentStore(args.store_root, evidence_resolver=EvidenceResolver(
         library_root=library.root, artifact_root=args.artifact_root))
     discovery = ExperimentDiscovery(PaperDiscovery(library.root / "discovery-cache"))
-    create_server(store, library, discovery).run(transport="stdio")
+    passage_reader = None
+    if args.qwen_endpoint or args.qwen_model or args.qwen_checkpoint:
+        try:
+            from src.env.repl import PersistentREPL
+            from src.policies.bounded_http import bounded_transport, validate_endpoint
+            from src.product.assigned_reader import build_assigned_reader
+            from src.product.experiment_budget import ExperimentBudget
+            from src.product.experiment_tokenizer import load_tokenizer
+            from src.product.passage_reader_service import PassageReaderService
+            from src.product.passage_scope import PASSAGES
+            if not (args.qwen_endpoint and args.qwen_model and args.qwen_checkpoint):
+                raise ValueError("passage reader requires endpoint, model and checkpoint")
+            validate_endpoint(args.qwen_endpoint)
+            if not PersistentREPL._docker_available(args.sandbox_image):
+                raise ValueError("Docker sandbox image unavailable; no inference dispatched")
+            tokenizer = load_tokenizer("Qwen/Qwen3-8B",
+                                      "b968826d9c46dd6066d109eabc6255188de91218")
+            def factory():
+                budget = ExperimentBudget(tokenizer, bounded_transport,
+                                          requests_max=4, tokens_max=32768)
+                reader = build_assigned_reader("qwen", qwen_endpoint=args.qwen_endpoint,
+                    qwen_model=args.qwen_model, qwen_checkpoint=args.qwen_checkpoint,
+                    sandbox_image=args.sandbox_image, max_steps=4,
+                    reader_guidance=PASSAGES, policy_transport=budget)
+                return reader, budget
+            passage_reader = PassageReaderService(store, library, factory,
+                                                  library.root / "passage-reader-reports")
+        except (ValueError, OSError, ImportError) as exc:
+            parser.error(str(exc))
+    create_server(store, library, discovery, passage_reader=passage_reader).run(transport="stdio")
 
 
 if __name__ == "__main__":
