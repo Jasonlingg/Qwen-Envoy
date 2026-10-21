@@ -56,11 +56,12 @@ def identity_logs(control, endpoint, active, since, expired, *, audit=None):
     if expired.is_set():
         raise TimeoutError("watchdog expired before reading startup logs")
     event = {"worker_id": next(iter(active)), "since": since.isoformat(),
-             "max_wait_seconds": 5, "source": "both"}
+             "max_wait_seconds": 5, "source": "both", "query_kind": "tail",
+             "tail": 5000, "since_filter": "client-side"}
     logs = ""
     try:
         logs = control("logs", endpoint, "--source", "both",
-            "--worker", next(iter(active)), "--since", since.isoformat(),
+            "--worker", next(iter(active)), "--tail", "5000",
             "--max-wait", "5s", raw=True)
         event["status"] = "received"
         return logs

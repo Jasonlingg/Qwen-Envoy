@@ -26,6 +26,7 @@ def setup(monkeypatch, *, stale=False):
             assert not stale
             assert args[args.index("--worker") + 1] == "current-v2"
             assert args[args.index("--max-wait") + 1] == "5s"
+            assert "--since" not in args and args[args.index("--tail") + 1] == "5000"
             return json.dumps({"source": "container", "workerId": "current-v2",
                                "ts": "2099-01-01T00:00:00Z",
                                "line": "ENVOY_PINNED_IDENTITY " + json.dumps(identity())})
