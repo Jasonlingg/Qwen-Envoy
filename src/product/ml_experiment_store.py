@@ -18,6 +18,7 @@ from src.product.ml_experiment_models import (
     RevisionPointer,
 )
 from src.product.ml_experiment_outcomes import ExperimentOutcomes
+from src.product.ml_experiment_research_notes import ExperimentResearchNotes
 
 _ID = re.compile(r"experiment_[0-9a-f]{32}")
 
@@ -37,7 +38,7 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-class ExperimentStore(ExperimentOutcomes):
+class ExperimentStore(ExperimentOutcomes, ExperimentResearchNotes):
     def __init__(self, root: Path, *, evidence_resolver=None):
         self.files = LocalFiles(root)
         self.evidence_resolver = evidence_resolver
@@ -69,7 +70,8 @@ class ExperimentStore(ExperimentOutcomes):
                         or plan.revision_sha256 != previous or plan.brief != revisions[-1].brief
                         or plan.evidence_receipts != revisions[-1].evidence_receipts):
                     raise ValueError("Frozen plan binding mismatch")
-            return index, revisions, plan, self._read_results(directory, index, plan)
+            return (index, revisions, plan, self._read_results(directory, index, plan),
+                    self._read_research(directory, index))
         except ValueError as exc:
             raise ValueError("Experiment is missing, unsafe, or corrupt") from exc
 
@@ -79,7 +81,8 @@ class ExperimentStore(ExperimentOutcomes):
         self.files.write(directory, f"{index.experiment_id}.json",
                          encode(envelope.model_dump(mode="json")))
 
-    def _view(self, index, revisions, plan, records=(), run_id=None):
+    def _view(self, index, revisions, plan, records=(), research=(), run_id=None,
+              research_note_id=None):
         return {"experiment_id": index.experiment_id, "revision": len(revisions),
                 "status": "frozen" if plan else "draft",
                 "brief": revisions[-1].brief.model_dump(mode="json"),
@@ -92,7 +95,8 @@ class ExperimentStore(ExperimentOutcomes):
                 "evidence_receipts": [r.model_dump(mode="json")
                                       for r in revisions[-1].evidence_receipts],
                 "reference_warning": revisions[-1].reference_warning,
-                **self._result_view(records, run_id)}
+                **self._result_view(records, run_id),
+                **self._research_view(research, research_note_id)}
 
     def save_brief(self, brief: dict, experiment_id: str | None = None,
                    expected_revision: int | None = None) -> dict:
@@ -110,15 +114,16 @@ class ExperimentStore(ExperimentOutcomes):
                     pass
                 else:
                     raise ValueError("Generated experiment ID already exists; retry creation")
-                revisions, plan, pointers = [], None, []
+                revisions, plan, pointers, research, research_pointers = [], None, [], [], []
             else:
-                index, revisions, plan, _ = self._load(directory, experiment_id)
+                index, revisions, plan, _, research = self._load(directory, experiment_id)
                 _expected(expected_revision, len(revisions))
                 if plan:
                     raise ValueError("Frozen plan cannot be edited; create a successor experiment")
                 if len(revisions) >= 100:
                     raise ValueError("Experiment has reached its 100-revision limit")
                 pointers = index.revisions
+                research_pointers = index.research
             parent = parsed.supersedes_experiment_id
             if parent:
                 if parent == experiment_id:
@@ -129,20 +134,22 @@ class ExperimentStore(ExperimentOutcomes):
                                    recorded_at=_now(), brief=parsed, evidence_receipts=receipts)
             sha = self.files.object(directory, record.model_dump(mode="json"))
             index = ExperimentIndex(experiment_id=experiment_id, revisions=[*pointers,
-                RevisionPointer(revision=record.revision, sha256=sha)])
+                RevisionPointer(revision=record.revision, sha256=sha)], research=research_pointers)
             self._write_index(directory, index)
-            return self._view(index, [*revisions, record], plan)
+            return self._view(index, [*revisions, record], plan, research=research)
 
-    def get(self, experiment_id: str, run_id: str | None = None) -> dict:
+    def get(self, experiment_id: str, run_id: str | None = None,
+            research_note_id: str | None = None) -> dict:
         with self.files.locked() as directory:
-            return self._view(*self._load(directory, experiment_id), run_id=run_id)
+            return self._view(*self._load(directory, experiment_id), run_id=run_id,
+                              research_note_id=research_note_id)
 
     def freeze_plan(self, experiment_id: str, expected_revision: int) -> dict:
         with self.files.locked() as directory:
-            index, revisions, plan, records = self._load(directory, experiment_id)
+            index, revisions, plan, records, research = self._load(directory, experiment_id)
             _expected(expected_revision, len(revisions))
             if plan:
-                return self._view(index, revisions, plan, records)
+                return self._view(index, revisions, plan, records, research)
             brief = revisions[-1].brief
             if (self.evidence_resolver is not None
                     and len(revisions[-1].evidence_receipts) != len(brief.references)):
@@ -157,7 +164,7 @@ class ExperimentStore(ExperimentOutcomes):
             sha = self.files.object(directory, plan.model_dump(mode="json"))
             index = index.model_copy(update={"frozen_plan_sha256": sha})
             self._write_index(directory, index)
-            return self._view(index, revisions, plan)
+            return self._view(index, revisions, plan, research=research)
 
     def list(self, limit: int = 20) -> dict:
         if type(limit) is not int or not 1 <= limit <= 100:
@@ -168,13 +175,16 @@ class ExperimentStore(ExperimentOutcomes):
                 if not name.startswith("experiment_") or not name.endswith(".json"):
                     continue
                 experiment_id = _identifier(name[:-5])
-                index, revisions, plan, records = self._load(directory, experiment_id)
+                index, revisions, plan, records, research = self._load(directory, experiment_id)
                 summaries.append({"experiment_id": experiment_id,
                                   "question": revisions[-1].brief.question,
                                   "revision": len(revisions),
                                   "status": "frozen" if plan else "draft",
                                   "result_count": len(records),
-                                  "updated_at": (records[-1][1].recorded_at if records else
-                                      plan.frozen_at if plan else revisions[-1].recorded_at)})
+                                  "research_note_count": len(research),
+                                  "updated_at": max([revisions[-1].recorded_at,
+                                      *([plan.frozen_at] if plan else []),
+                                      *[r.recorded_at for _, r in records],
+                                      *[r.recorded_at for _, r in research]])})
         summaries.sort(key=lambda item: (item["updated_at"], item["experiment_id"]), reverse=True)
         return {"experiments": summaries[:limit], "truncated": len(summaries) > limit}

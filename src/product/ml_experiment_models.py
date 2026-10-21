@@ -154,12 +154,18 @@ class ResultPointer(RecordModel):
     sha256: Digest
 
 
+class ResearchPointer(RecordModel):
+    note_id: Key
+    sha256: Digest
+
+
 class ExperimentIndex(RecordModel):
     schema_version: Literal["ml-experiment-index-v1"] = "ml-experiment-index-v1"
     experiment_id: ExperimentID
     revisions: list[RevisionPointer] = Field(min_length=1, max_length=100)
     frozen_plan_sha256: Digest | None = None
     results: list[ResultPointer] = Field(default_factory=list, max_length=100)
+    research: list[ResearchPointer] = Field(default_factory=list, max_length=100)
 
     @model_validator(mode="after")
     def ordered_revisions(self):
@@ -169,6 +175,8 @@ class ExperimentIndex(RecordModel):
             raise ValueError("Duplicate revision digest")
         if len({p.run_id for p in self.results}) != len(self.results):
             raise ValueError("Duplicate result run ID")
+        if len({p.note_id for p in self.research}) != len(self.research):
+            raise ValueError("Duplicate research note ID")
         if self.results and self.frozen_plan_sha256 is None:
             raise ValueError("Recorded results require a frozen plan")
         return self

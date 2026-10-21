@@ -44,14 +44,14 @@ class ExperimentOutcomes:
     def record_result(self, experiment_id: str, plan_sha256: str, result: dict) -> dict:
         parsed = ExperimentResult.model_validate(decode(encode(result)))
         with self.files.locked() as directory:
-            index, revisions, plan, records = self._load(directory, experiment_id)
+            index, revisions, plan, records, research = self._load(directory, experiment_id)
             if plan is None or plan_sha256 != index.frozen_plan_sha256:
                 raise ValueError("Result must bind to this experiment's exact frozen plan SHA-256")
             existing = next((r for _, r in records if r.result.run_id == parsed.run_id), None)
             if existing:
                 if parsed != existing.result:
                     raise ValueError("Run ID already has a different immutable result")
-                return self._view(index, revisions, plan, records, parsed.run_id)
+                return self._view(index, revisions, plan, records, research, run_id=parsed.run_id)
             if len(records) >= 100:
                 raise ValueError("Experiment has reached its 100-result limit")
             if parsed.references and self.evidence_resolver is None:
@@ -65,4 +65,5 @@ class ExperimentOutcomes:
             index = index.model_copy(update={"results": [*index.results,
                 ResultPointer(run_id=parsed.run_id, sha256=sha)]})
             self._write_index(directory, index)
-            return self._view(index, revisions, plan, [*records, (sha, record)], parsed.run_id)
+            return self._view(index, revisions, plan, [*records, (sha, record)], research,
+                              run_id=parsed.run_id)
