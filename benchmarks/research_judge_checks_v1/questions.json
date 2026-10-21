@@ -1,0 +1,211 @@
+{
+  "flash-warps": {
+    "paper_version": "2307.08691v1",
+    "question": "In the forward pass, how does FlashAttention-2 split Q, K and V across warps compared with the original split-K scheme, and why does that help?",
+    "task": "answerable",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Original FlashAttention splits K and V across four warps and makes Q accessible to all."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "FlashAttention-2 splits Q across four warps and makes K and V accessible to all."
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "FA2 avoids inter-warp communication to combine these forward-pass outputs."
+      },
+      {
+        "fact_id": "f4",
+        "criterion": "This reduces shared-memory reads/writes, speeding up the forward pass."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 20313,
+        "end": 21351,
+        "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+      }
+    ]
+  },
+  "flash-triton": {
+    "paper_version": "2307.08691v1",
+    "question": "On the attention runtime benchmark, what speedups over FlashAttention in Triton are reported separately for the forward and backward passes, and on what GPU?",
+    "task": "answerable",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "FA2 forward-pass runtime speedup versus FlashAttention in Triton is around 1.3–1.5x."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "FA2 backward-pass runtime speedup versus FlashAttention in Triton is around 2x."
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "The runtime benchmark GPU is A100 80GB SXM4."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 23447,
+        "end": 24051,
+        "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+      },
+      {
+        "start": 22800,
+        "end": 23100,
+        "text": "lashAttention-2 is 1.7-3.0×\\times faster than FlashAttention, 1.3-2.5×\\times faster than FlashAttention in Triton, and 3-10×\\times faster than a standard attention implementation. FlashAttention-2 reaches up to 230 TFLOPs/s, 73% of the theoretical maximum TFLOPs/s on A100 GPUs.\n\nEnd-to-end training "
+      }
+    ]
+  },
+  "awq-profile": {
+    "paper_version": "2306.00978v6",
+    "question": "In the initial FP16 LLaMA-7B latency profile, bind each of 310 ms and 10 ms to its task and token count, and identify the GPU, batch size and implementation.",
+    "task": "answerable",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "310 ms is generation of 20 tokens."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "10 ms is the context/summarization stage for a 200-token prompt."
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "GPU is RTX 4090."
+      },
+      {
+        "fact_id": "f4",
+        "criterion": "Batch size is 1."
+      },
+      {
+        "fact_id": "f5",
+        "criterion": "Implementation is NVIDIA FasterTransformer."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 20426,
+        "end": 20993,
+        "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+      }
+    ]
+  },
+  "awq-protocol": {
+    "paper_version": "2306.00978v6",
+    "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?",
+    "task": "answerable",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Input prompt length is 4 tokens."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Generated length is 200 tokens."
+      },
+      {
+        "fact_id": "f3",
+        "criterion": "Batch size is 1."
+      },
+      {
+        "fact_id": "f4",
+        "criterion": "Reported latency statistic is the median."
+      },
+      {
+        "fact_id": "f5",
+        "criterion": "One named device is RTX 4090."
+      },
+      {
+        "fact_id": "f6",
+        "criterion": "The other named device is Jetson Orin."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 33939,
+        "end": 34439,
+        "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      }
+    ]
+  },
+  "awq-speed": {
+    "paper_version": "2306.00978v6",
+    "question": "For Llama-2, MPT and Falcon on RTX 4090, what TinyChat speedup range and comparison baseline does the paper report?",
+    "task": "answerable",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Reported speedup is 2.7–3.9x for Llama-2, MPT and Falcon on RTX 4090."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Comparison baseline is the HuggingFace FP16 implementation."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 33939,
+        "end": 34439,
+        "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      },
+      {
+        "start": 34441,
+        "end": 35619,
+        "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+      }
+    ]
+  },
+  "flash-target": {
+    "paper_version": "2307.08691v1",
+    "question": "What exact end-to-end Qwen3-8B training speedup does this extracted paper measure on a single RTX A5000 at sequence length 32768? Identify any missing target-setup evidence and a next search; keep partial attention-kernel findings qualified.",
+    "task": "target_gap",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Scope the absence of the requested Qwen3-8B end-to-end training on one RTX A5000 at sequence length 32768 measurement to this inspected extracted snapshot."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Give a useful next search retaining the target setup: Qwen3-8B end-to-end training on one RTX A5000 at sequence length 32768."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 23447,
+        "end": 24051,
+        "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+      }
+    ]
+  },
+  "awq-target": {
+    "paper_version": "2306.00978v6",
+    "question": "From this extracted paper, what measured TinyChat speedup over HuggingFace FP16 is established on an RTX A5000 at batch size 8 and an 8192-token prompt? Distinguish any partial result from the requested setup and propose a next search if missing.",
+    "task": "target_gap",
+    "requested_facts": [
+      {
+        "fact_id": "f1",
+        "criterion": "Scope the absence of the requested TinyChat versus HuggingFace FP16 on RTX A5000, batch 8, prompt length 8192 measurement to this inspected extracted snapshot."
+      },
+      {
+        "fact_id": "f2",
+        "criterion": "Give a useful next search retaining the target setup: TinyChat versus HuggingFace FP16 on RTX A5000, batch 8, prompt length 8192."
+      }
+    ],
+    "reference_contexts": [
+      {
+        "start": 33939,
+        "end": 34439,
+        "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      },
+      {
+        "start": 34441,
+        "end": 35619,
+        "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+      }
+    ]
+  }
+}

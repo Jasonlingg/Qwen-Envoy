@@ -1,0 +1,557 @@
+[
+  {
+    "case_id": "j01",
+    "question_id": "awq-target",
+    "candidate": {
+      "answer": "TinyChat achieves exactly 9.99x over HuggingFace FP16 on RTX A5000 at batch 8 with an 8192-token prompt.",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        },
+        {
+          "start": 34441,
+          "end": 35619,
+          "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j02",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "The A100 80GB SXM4 attention-runtime measurements give FA2 roughly a 1.3–1.5-fold forward speedup and a twofold backward speedup relative to the Triton FlashAttention implementation.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j03",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "On RTX 4090 with a single-item batch in NVIDIA FasterTransformer, producing 20 tokens costs 310 ms, whereas processing the 200-token prompt costs 10 ms.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j04",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Generation of 20 tokens takes 310 ms; the context/summarization stage for a 200-token prompt takes 10 ms. This FP16 LLaMA-7B profile uses RTX 4090, batch 1, and NVIDIA FasterTransformer.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j05",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "Against FlashAttention in Triton, FA2 is about 1.3–1.5x faster forward and about 2x faster backward, on A100 80GB SXM4.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j06",
+    "question_id": "flash-warps",
+    "candidate": {
+      "answer": "Original FlashAttention splits K and V across four warps, sharing Q. FA2 splits Q across four warps and shares K and V.",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j07",
+    "question_id": "awq-protocol",
+    "candidate": {
+      "answer": "A 4-token prompt is followed by 200 generated tokens. The statistic is median latency, with RTX 4090 and Jetson Orin as the named devices.",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j08",
+    "question_id": "awq-protocol",
+    "candidate": {
+      "answer": "The Figure 9 protocol uses a 4-token prompt, generates 200 tokens, runs batch 1, and reports median latency. The paragraph names RTX 4090 and Jetson Orin.",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j09",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Processing a 200-token prompt takes 310 ms; generating 20 tokens takes 10 ms. The GPU is RTX 4090, batch 1, in NVIDIA FasterTransformer.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j10",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Generation of 20 tokens takes 310 ms; the context/summarization stage for a 200-token prompt takes 10 ms. This FP16 LLaMA-7B profile uses RTX 4090, batch 1, and NVIDIA FasterTransformer.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20737,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j11",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "The Triton-relative attention runtime speedup is 73% in the forward pass and 73% in the backward pass on A100 80GB SXM4.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        },
+        {
+          "start": 22800,
+          "end": 23100,
+          "text": "lashAttention-2 is 1.7-3.0×\\times faster than FlashAttention, 1.3-2.5×\\times faster than FlashAttention in Triton, and 3-10×\\times faster than a standard attention implementation. FlashAttention-2 reaches up to 230 TFLOPs/s, 73% of the theoretical maximum TFLOPs/s on A100 GPUs.\n\nEnd-to-end training "
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j12",
+    "question_id": "flash-warps",
+    "candidate": {
+      "answer": "FA2 splits K and V across four warps, with Q accessible to all; original FlashAttention instead splits Q with K and V shared.",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j13",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Generation of 20 tokens takes 310 ms and a 200-token prompt takes 10 ms on RTX A5000, batch 1, using NVIDIA FasterTransformer.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j14",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "FA2 is around 1.3–1.5x faster forward and around 2x faster backward than FlashAttention in Triton.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j15",
+    "question_id": "flash-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish an exact end-to-end Qwen3-8B training speedup on one RTX A5000 at sequence length 32768. The cited A100 80GB SXM4 attention-kernel result is about 1.3–1.5x forward and 2x backward relative to FlashAttention in Triton; it does not establish the requested end-to-end target.",
+        "follow_up_query": "Qwen3-8B FlashAttention-2 end-to-end training speedup single RTX A5000 sequence length 32768 benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j16",
+    "question_id": "flash-warps",
+    "candidate": {
+      "answer": "In the original split-K layout, all four warps can access Q while K/V are partitioned. FA2 partitions the query rows over four warps and exposes K/V to all of them. No cross-warp combination of those forward output slices is needed; less shared-memory read/write traffic yields a faster forward pass.",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j17",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j18",
+    "question_id": "flash-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish an exact end-to-end Qwen3-8B training speedup on one RTX A5000 at sequence length 32768. Separately, the cited A100 kernel benchmark reports FA2 as exactly 12x faster than Triton in both passes.",
+        "follow_up_query": "Qwen3-8B FlashAttention-2 end-to-end training speedup single RTX A5000 sequence length 32768 benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j19",
+    "question_id": "flash-warps",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j20",
+    "question_id": "awq-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        },
+        {
+          "start": 34441,
+          "end": 35619,
+          "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish a TinyChat versus HuggingFace FP16 speedup on RTX A5000 with batch 8 and an 8192-token prompt. Separately, Figure 9 uses batch 64 and reports p95 latency on RTX 4090 and Jetson Orin.",
+        "follow_up_query": "TinyChat HuggingFace FP16 RTX A5000 batch 8 prompt length 8192 measured speedup benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j21",
+    "question_id": "awq-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        },
+        {
+          "start": 34441,
+          "end": 35619,
+          "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish a TinyChat versus HuggingFace FP16 speedup on RTX A5000 with batch 8 and an 8192-token prompt.",
+        "follow_up_query": "TinyChat HuggingFace FP16 RTX A5000 batch 8 prompt length 8192 measured speedup benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j22",
+    "question_id": "awq-speed",
+    "candidate": {
+      "answer": "TinyChat is 2.7–3.9x faster for Llama-2, MPT and Falcon on RTX 4090 than NVIDIA FasterTransformer FP16.",
+      "evidence": [
+        {
+          "start": 34441,
+          "end": 35619,
+          "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j23",
+    "question_id": "awq-protocol",
+    "candidate": {
+      "answer": "For the RTX 4090 and Jetson Orin runs, each batch contains one input of four tokens, followed by 200 generated tokens; latency is summarized by its median.",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j24",
+    "question_id": "awq-protocol",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j25",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "Against FlashAttention in Triton, FA2 is about 1.3–1.5x faster forward and about 2x faster backward, on A100 80GB SXM4.",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j26",
+    "question_id": "awq-profile",
+    "candidate": {
+      "answer": "Generating 20 tokens takes 310 ms; processing the 200-token prompt takes 10 ms.",
+      "evidence": [
+        {
+          "start": 20426,
+          "end": 20993,
+          "text": "To understand the acceleration opportunities in quantized LLMs on the edge, we start by profiling the latency breakdown of LLaMA-7B Touvron et al. (2023a) model on an RTX 4090 GPU. We adopt an inference batch size of 1, catering for edge use cases, and implement the model in FP16 with NVIDIA FasterTransformer.\n\nAs in Figure 3(a), it takes 310 ms to generate 20 tokens, while summarizing a prompt with 200 tokens only takes 10 ms. Consequently, the generation phase is substantially slower than the context stage, particularly for on-device interactive applications."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j27",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j28",
+    "question_id": "flash-triton",
+    "candidate": {
+      "answer": "FA2 is about 1.3–1.5x faster forward and 2x faster backward than FlashAttention in Triton on H100.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j29",
+    "question_id": "flash-warps",
+    "candidate": {
+      "answer": "Original FlashAttention divides K and V among four warps with Q shared. FA2 instead divides Q among four warps with K and V shared. Each warp forms its own forward output slice, avoiding inter-warp output-combining communication and reducing shared-memory reads/writes, which speeds the forward pass.",
+      "evidence": [
+        {
+          "start": 20313,
+          "end": 21351,
+          "text": "For each block, FlashAttention splits 𝐊\\mathbf{K} and 𝐕\\mathbf{V} across 4 warps while keeping 𝐐\\mathbf{Q} accessible by all warps. Each warp multiplies to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, then they need to multiply with a slice of 𝐕\\mathbf{V} and communicate to add up the result. This is referred to as the “split-K” scheme. However, this is inefficient since all warps need to write their intermediate results out to shared memory, synchronize, then add up the intermediate results. These shared memory reads/writes slow down the forward pass in FlashAttention.\n\nIn FlashAttention-2, we instead split 𝐐\\mathbf{Q} across 4 warps while keeping 𝐊\\mathbf{K} and 𝐕\\mathbf{V} accessible by all warps. After each warp performs matrix multiply to get a slice of 𝐐𝐊⊤\\mathbf{Q}\\mathbf{K}^{\\top}, they just need to multiply with their shared slice of 𝐕\\mathbf{V} to get their corresponding slice of the output. There is no need for communication between warps. The reduction in shared memory reads/writes yields speedup (Section 4)."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j30",
+    "question_id": "awq-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        },
+        {
+          "start": 34441,
+          "end": 35619,
+          "text": "As in Figure 9(a), TinyChat brings 2.7-3.9×\\times speedup to three families of LLMs (Llama-2, MPT and Falcon) on 4090 compared with the Huggingface FP16 implementation. For Llama-2-7B, we improve the inference speed from 52 tokens/s to 62 tokens/s through FP16 kernel fusion. On top of the stronger FP16 baseline, we further harvest 3.1×\\times additional speedup from the fast quantized linear kernels. For Falcon-7B, the official implementation did not support KV cache correctly during the inference time, and thus it is significantly slower than other models. In this case, our FP16 optimizations bring about a larger speedup of 1.6×\\times. On the laptop 4070 GPU with only 8GB memory, we are still able to run Llama-2-13B models at 33 tokens/s, while the FP16 implementation cannot fit 7B models. We also demonstrate visual-language model Lin et al. (2024) acceleration results in Table 10. TinyChat brings about 3×\\times speedup to both VILA-7B and VILA-13B on NVIDIA Jetson Orin. Notably, we implement the forward pass for all AWQ models using native PyTorch APIs, and this code is reused across various GPU architectures. Hence, TinyChat offers exceptional extensibility."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish a TinyChat versus HuggingFace FP16 speedup on RTX A5000 with batch 8 and an 8192-token prompt. The paper reports 2.7–3.9x versus HuggingFace FP16 for Llama-2, MPT and Falcon on RTX 4090. The Figure 9 protocol uses batch 1, a 4-token prompt, 200 generated tokens and median latency; this is not the requested target setup.",
+        "follow_up_query": "TinyChat HuggingFace FP16 RTX A5000 batch 8 prompt length 8192 measured speedup benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j31",
+    "question_id": "flash-target",
+    "candidate": {
+      "answer": "The exact end-to-end Qwen3-8B training speedup on one RTX A5000 at sequence length 32768 is 7.77x.",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": null
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  },
+  {
+    "case_id": "j32",
+    "question_id": "flash-target",
+    "candidate": {
+      "answer": "Unanswerable",
+      "evidence": [
+        {
+          "start": 23447,
+          "end": 24051,
+          "text": "We measure the runtime of different attention methods on an A100 80GB SXM4 GPU for different settings (without / with causal mask, head dimension 64 or 128). We report the results in Fig. 4, Fig. 5 and Fig. 6, showing that FlashAttention-2 is around 2×\\times faster than FlashAttention and FlashAttention in xformers (the “cutlass” implementation). FlashAttention-2 is around 1.3-1.5×\\times faster than FlashAttention in Triton in the forward pass and around 2×\\times faster in the backward pass. Compared to a standard attention implementation in PyTorch, FlashAttention-2 can be up to 10×\\times faster."
+        }
+      ],
+      "gap_report": {
+        "missing": "This inspected extracted snapshot does not establish an exact end-to-end Qwen3-8B training speedup on one RTX A5000 at sequence length 32768.",
+        "follow_up_query": "Qwen3-8B FlashAttention-2 end-to-end training speedup single RTX A5000 sequence length 32768 benchmark"
+      }
+    },
+    "inspection_precondition": "assumed_complete_inspection_for_synthetic_fixture_not_an_executed_trace"
+  }
+]

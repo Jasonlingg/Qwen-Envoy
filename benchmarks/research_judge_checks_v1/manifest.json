@@ -1,0 +1,40 @@
+{
+  "schema_version": "research-judge-checks-v1",
+  "status": "fixtures_only_judge_not_run",
+  "label_provenance": "implementing_assistant_authored_independently_model_assisted_source_reviewed_not_human_gold",
+  "purpose": "Development-only sentinel for a future semantic judging process; not agent trajectories, reward implementation, statistical reliability or evidence of model improvement.",
+  "sources": {
+    "2307.08691v1": {
+      "path": "sources/2307.08691v1.json",
+      "sha256": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641"
+    },
+    "2306.00978v6": {
+      "path": "sources/2306.00978v6.json",
+      "sha256": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f"
+    }
+  },
+  "prior_contracts": {
+    "examples/reader-learning-diagnosis/judge-validation-plan.json": "6a0ea572fd9f85eb9555787543dc22be10af6d9d76dfbb728ec5ce96a292d42a",
+    "examples/reader-learning-diagnosis/reward-proposal.json": "0464bf2d3b58ff8d94dfcaf0cbbc5bb33d998a6298c262cbfc7e3e9025920b86"
+  },
+  "reader_bundle_lock_sha256": "dd44858a0ec792cafad7f13ca3e10666c089576bf98acf2dea15ff37ed9205a2",
+  "partition": "already_inspected_development_judge_validation_only",
+  "construction_notes": [
+    "Question facts authored from literal questions before candidates; equal weights within question, no extra unasked clauses.",
+    "The unrelated-valid-quote category includes one strictly clipped citation. Quote bytes are valid but do not support the answer; this is distinct from fabrication.",
+    "All source inspection records are explicitly assumed counterfactual preconditions, not genuine execution logs. Gaps require real recorded inspection when used in a future agent evaluation.",
+    "References may help a judge check correctness but cannot substitute for support in the candidates own citations.",
+    "Labels remain provisional model-assisted; no independent human review.",
+    "No ambiguous derivations included; none excluded after judge scoring because no judge has run.",
+    "Validation labels/categories/expected scores must never be judge examples or prompt tuning inputs; public file separation is not access control.",
+    "Any tuning informed by later judge failures retires this set into design and requires fresh development checks; reserved reader evaluation stays unused.",
+    "Fact correctness includes binding each measurement to its asserted conditions and baseline. A true raw number attached to incompatible hardware/baseline is not a supported measurement fact. The all-material gate also covers optional assertions outside the requested facts."
+  ],
+  "excluded_cases": [],
+  "judge_identity": null,
+  "actual_results": null,
+  "human_review": "not_performed",
+  "model_inference_requests": 0,
+  "gpu_activations": 0,
+  "training_approved": false
+}
