@@ -76,6 +76,8 @@ class ProfileQueueClient:
                 time.sleep(0.2)
                 job = self.http("GET", "/status/" + job_id)
             if job.get("status") != "COMPLETED":
+                self.append({"event": "terminal_failure", "job_id": job_id,
+                             "kind": "model" if model else "telemetry", "job": job})
                 raise RuntimeError("profile job failed")
             output = job.get("output")
             if isinstance(output, list) and len(output) == 1:

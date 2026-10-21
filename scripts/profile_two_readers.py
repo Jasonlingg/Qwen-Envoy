@@ -21,7 +21,7 @@ from scripts.runpod_qwen_bootstrap import BASE, BASE_REVISION
 from src.eval.assigned_smoke_control import cli
 from src.eval.assigned_smoke_lifecycle import supervise
 from src.eval.reader_profile import ProfileQueueClient, assess_profile, run_profile
-from src.eval.reader_profile_worker import canonical_hash
+from src.eval.reader_profile_worker import canonical_hash, transport_hash
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.experiment_tokenizer import load_tokenizer
 
@@ -82,6 +82,7 @@ def prepare(output, tokenizer):
     plan = {"schema_version": "reader-serving-profile-v1", "endpoint": ENDPOINT,
             "session": uuid4().hex, "source_manifest_sha256": sha(INPUT_MANIFEST),
             "payload_hashes": {name: canonical_hash(p) for name, p in payloads.items()},
+            "transport_payload_hashes": {name: transport_hash(p) for name, p in payloads.items()},
             "prompt_tokens": counts, "tokenizer": BASE, "tokenizer_revision": BASE_REVISION,
             "limits": LIMITS, "config": CONFIG,
             "implementation_sha256": {p: sha(ROOT / p) for p in IMPLEMENTATION},
@@ -107,7 +108,8 @@ def bootstrap_source(plan):
         "cuda_runtime=torch.version.cuda, gpu=torch.cuda.get_device_name(0), "
         "gpu_memory_bytes=torch.cuda.get_device_properties(0).total_memory)\n"
         "print('ENVOY_PINNED_IDENTITY ' + json.dumps(identity, sort_keys=True), flush=True)\n"
-        f"monitor = hook['ProfileHook']({plan['session']!r}, {plan['payload_hashes']!r})\n"
+        f"monitor = hook['ProfileHook']({plan['session']!r}, "
+        f"{plan['transport_payload_hashes']!r})\n"
         "original_start = runpod.serverless.start\n"
         "def monitored_start(config):\n"
         "    config = dict(config)\n"
@@ -124,6 +126,8 @@ def checked(output):
             or plan["limits"] != LIMITS or plan["config"] != CONFIG
             or plan["implementation_sha256"] != {p: sha(ROOT / p) for p in IMPLEMENTATION}
             or plan["payload_hashes"] != {name: canonical_hash(p) for name, p in payloads.items()}
+            or plan["transport_payload_hashes"] != {
+                name: transport_hash(p) for name, p in payloads.items()}
             or (output / "entrypoint.py").read_text() != bootstrap_source(plan)):
         raise ValueError("prepared profile inputs, code or entrypoint changed")
     return plan, payloads

@@ -26,6 +26,19 @@ def canonical_hash(payload):
         allow_nan=False, separators=(",", ":")).encode()).hexdigest()
 
 
+def transport_hash(payload):
+    """Treat safe integral JSON numbers equally across language serializers."""
+    def normalize(value):
+        if type(value) is float and value.is_integer() and abs(value) <= 2 ** 53:
+            return int(value)
+        if isinstance(value, dict):
+            return {key: normalize(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [normalize(item) for item in value]
+        return value
+    return canonical_hash(normalize(payload))
+
+
 def parse_metrics(body):
     values = {}
     wanted = GAUGES | COUNTERS | {p + suffix for p in PHASES for suffix in ("_sum", "_count")}
@@ -151,9 +164,12 @@ class ProfileHook:
                 if set(data) != {"envoy_profile", "openai_route", "openai_input"}:
                     raise ValueError("invalid inference envelope")
                 payload = data["openai_input"]
-                if (data["openai_route"] != "/v1/chat/completions"
-                        or canonical_hash(payload) != self.hashes.get(profile.get("sample_id"))):
-                    raise ValueError("profile input differs from the pinned payload")
+                if data["openai_route"] != "/v1/chat/completions":
+                    raise ValueError("profile route differs from the pinned route")
+                received = transport_hash(payload)
+                if received != self.hashes.get(profile.get("sample_id")):
+                    raise ValueError("profile input differs from pinned payload; received="
+                                     + received)
                 with self.lock:
                     if self.failed or self.admin_calls == 0 or self.reserved >= 10:
                         raise ValueError("profile request budget or state invalid")

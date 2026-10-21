@@ -18,6 +18,7 @@ from src.eval.reader_profile_worker import (
     ProfileHook,
     canonical_hash,
     parse_metrics,
+    transport_hash,
 )
 
 
@@ -46,6 +47,56 @@ def test_metric_parser_sums_labels_and_rejects_missing_or_nonfinite_values():
     for body in ("", "\n".join(lines).replace('engine="1"} 2', 'engine="1"} NaN')):
         with pytest.raises(ValueError):
             parse_metrics(body)
+
+
+def test_transport_hash_preserves_original_pin_but_accepts_integral_number_encoding():
+    original = {**inputs()["sample_a"], "temperature": 0.0, "top_p": 1.0}
+    transported = {**original, "temperature": 0, "top_p": 1}
+    assert canonical_hash(original) != canonical_hash(transported)
+    assert transport_hash(original) == transport_hash(transported)
+    assert transport_hash(original) != transport_hash({**original, "temperature": 0.1})
+    assert transport_hash(original) != transport_hash({**original, "temperature": False})
+    assert transport_hash(original) != transport_hash({**original, "messages": []})
+
+
+def test_worker_accepts_numeric_transport_without_loosening_content_or_decoding():
+    payloads = {k: {**v, "temperature": 0.0, "top_p": 1.0} for k, v in inputs().items()}
+    hook = ProfileHook("a" * 32, {k: transport_hash(v) for k, v in payloads.items()},
+        metrics=lambda: metrics(), memory=lambda: {"used_mib": 1, "total_mib": 2})
+    forwarded = []
+    async def original(job):
+        forwarded.append(job["input"]["openai_input"])
+        yield {"model": "envoy"}
+    handler = hook.wrap(original)
+    async def invoke(operation, body=None):
+        data = {"envoy_profile": {"session": "a" * 32, "operation": operation}}
+        if body is not None:
+            data["envoy_profile"]["sample_id"] = "sample_a"
+            data.update(openai_route="/v1/chat/completions", openai_input=body)
+        return [r async for r in handler({"input": data})][0]
+    asyncio.run(invoke("preflight"))
+    transported = {**payloads["sample_a"], "temperature": 0, "top_p": 1}
+    assert "response" in asyncio.run(invoke("infer", transported))
+    assert "error" in asyncio.run(invoke("infer", {**transported, "temperature": 0.2}))
+    assert len(forwarded) == 1
+
+
+def test_terminal_job_failure_preserves_provider_diagnostics(tmp_path):
+    payloads = inputs()
+    calls = []
+    def http(method, path, body=None):
+        calls.append((method, path))
+        return {"id": "failed-job", "status": "FAILED", "error": "input pin rejected"}
+    client = ProfileQueueClient("test", "dummy", plan(payloads), payloads,
+        tmp_path / "audit.jsonl", http=http)
+    try:
+        with pytest.raises(RuntimeError, match="job failed"):
+            client.call("infer", "sample_a")
+        rows = [json.loads(x) for x in (tmp_path / "audit.jsonl").read_text().splitlines()]
+        assert any(r.get("job", {}).get("error") == "input pin rejected" for r in rows)
+        assert client.model_calls == 1
+    finally:
+        client.audit.close()
 
 
 def fixture_hook():
