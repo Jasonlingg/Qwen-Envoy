@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-10-21 23:12:15 UTC",
+  "endpoint": {
+    "id": "q05pjrvguakieg",
+    "name": "envoy-v5-reader-20261019",
+    "workers": {
+      "idleTimeout": 60,
+      "max": 0,
+      "min": 0
+    },
+    "gpu": {
+      "allowedCudaVersions": [],
+      "count": 1,
+      "excludedTypes": [
+        "NVIDIA GeForce RTX 3090",
+        "NVIDIA L4",
+        "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+      ],
+      "minCudaVersion": "13.0",
+      "pools": [
+        "AMPERE_24"
+      ]
+    },
+    "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"
+  },
+  "health": {
+    "jobs": {
+      "completed": 156,
+      "failed": 1,
+      "inProgress": 0,
+      "inQueue": 0,
+      "retried": 0
+    },
+    "workers": {
+      "idle": 0,
+      "initializing": 0,
+      "ready": 0,
+      "running": 0,
+      "throttled": 0,
+      "unhealthy": 0
+    }
+  },
+  "workers": {
+    "endpointVersion": 9,
+    "summary": {
+      "idle": 0,
+      "initializing": 0,
+      "running": 0,
+      "throttled": 0,
+      "total": 0,
+      "unhealthy": 0
+    },
+    "workers": []
+  },
+  "price": {
+    "community": true,
+    "id": "NVIDIA RTX A5000",
+    "manufacturer": "NVIDIA",
+    "maxCount": {
+      "community": 10,
+      "secure": 10
+    },
+    "memory": 24,
+    "name": "RTX A5000",
+    "pool": "AMPERE_24",
+    "price": {
+      "community": 0.16,
+      "secure": 0.27,
+      "serverless": 0.69
+    },
+    "secure": true
+  }
+}

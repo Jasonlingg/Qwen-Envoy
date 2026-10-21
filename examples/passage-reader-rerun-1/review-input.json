@@ -1,0 +1,60 @@
+{
+  "data_kind": "exposed_development",
+  "human_review": null,
+  "sent_to_model": false,
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "requirements": [
+        "Storage usually 4-bit NF4; computation BFloat16/16-bit BrainFloat after dequantization.",
+        "Base quantized weights are frozen; LoRA adapter parameters receive weight gradients."
+      ],
+      "source_contexts": [
+        {
+          "start": 12848,
+          "end": 13131,
+          "text": "QLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit."
+        },
+        {
+          "start": 19416,
+          "end": 19735,
+          "text": "To summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat."
+        }
+      ]
+    },
+    {
+      "case_id": "awq-protocol",
+      "requirements": [
+        "Fixed prompt4 tokens, generate200 tokens, batch1; median latency.",
+        "Named benchmark devices are RTX4090 and JetsonOrin; do not substitute the initial profiling setup or median with p95."
+      ],
+      "source_contexts": [
+        {
+          "start": 33939,
+          "end": 34439,
+          "text": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+        }
+      ]
+    },
+    {
+      "case_id": "paged-target",
+      "requirements": [
+        "No measured p95 latency is established for this target setup by the inspected extracted text.",
+        "Partial findings must retain OPT/LLaMA model identities and A100/GCP setup; normalized mean latency is not p95.",
+        "Return a valid unresolved gap report and a useful next query; do not infer zero speedup or universal absence."
+      ],
+      "source_contexts": [
+        {
+          "start": 44228,
+          "end": 44730,
+          "text": "Model and server configurations. We use OPT (Zhang et al., 2022) models with 13B, 66B, and 175B parameters and LLaMA (Touvron et al., 2023) with 13B parameters for our evaluation. 13B and 66B are popular sizes for LLMs as shown in an LLM leaderboard (ORG, 2023), while 175B is the size of the famous GPT-3 (Brown et al., 2020) model. For all of our experiments, we use A2 instances with NVIDIA A100 GPUs on Google Cloud Platform. The detailed model sizes and server configurations are shown in Table 1."
+        },
+        {
+          "start": 47000,
+          "end": 47512,
+          "text": "Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request’s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit."
+        }
+      ]
+    }
+  ]
+}

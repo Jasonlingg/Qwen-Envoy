@@ -1,0 +1,26 @@
+{
+  "plan_sha256": "e353bc3336ffdcf590c1dba532bbd43dcaf1e0f194b2f7d288a008e6b01de3fc",
+  "model": {
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "thinking": false
+  },
+  "hardware": "one NVIDIA RTX A5000",
+  "first_prompt_tokens": {
+    "qlora-dtypes": 2628,
+    "awq-protocol": 2588,
+    "paged-target": 2670
+  },
+  "prompt_sha256": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+  "cases": "three familiar exposed development examples; host-selected reference-context windows",
+  "training_or_reward": "none",
+  "source_selection": "source windows deliberately chosen from exposed source review; not retrieval or held-out evaluation",
+  "comparison": "same three exposed development cases and checkpoint; arithmetic normalization and exact read examples changed; no causal isolation"
+}
