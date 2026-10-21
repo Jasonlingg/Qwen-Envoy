@@ -25,3 +25,27 @@ plan and marker hashes. Changing output directories cannot grant another run.
 Prepare using the pinned cached tokenizer, run focused and full checks before
 activation, and record results separately. This is a serving diagnostic with
 two short historical inputs, not answer-quality or fine-tuning evaluation.
+
+## Outcome
+
+Implementation `10607e1`, preparation record `85bd051`. Focused checks: 38
+passed in 23.01 seconds. Full suite: 1904 passed in 98.79 seconds, no skips,
+three existing SWIG warnings. Ruff and whitespace checks passed.
+
+The automatic live path completed all ten model and nine telemetry jobs. Both
+inputs produced matching outputs, usage and finish reasons on all five calls;
+both concurrent windows sampled two engine requests running. All fifteen native
+startup reads returned records and no manual handoff was needed. Returned usage
+was 17,350 total tokens. No model-generated code was executed.
+
+Performance remains inconclusive: round 1 was 3.423 seconds serial versus 3.355
+concurrent, within the 0.4-second margin; round 2 was 3.829 versus 2.850. The
+runner deliberately exited 1 rather than accept an incomparable result. No
+retry ran. Device-memory snapshots were 21,045 / 24,564 MiB in each batch.
+
+Shutdown and full original configuration restoration were verified. Fresh reads
+at 21:03:54 UTC show workers 0/0, zero active workers and zero pending jobs.
+The allowance is consumed; actual invoice cost is unknown. See the
+[saved live evidence](../../examples/two-reader-profile/automatic-live-1/README.md).
+These results verify this bounded serving path, not research usefulness or
+fine-tuning improvement.

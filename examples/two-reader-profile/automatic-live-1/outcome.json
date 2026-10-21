@@ -1,0 +1,239 @@
+{
+  "status": "automatic_execution_complete_performance_inconclusive",
+  "live_implementation_commit": "10607e1",
+  "prepared_record_commit": "85bd051",
+  "plan_sha256": "b9c43f68058f75793b74ae774fb5de1e4a356c8345575b2c5113272d249313d3",
+  "attempts_consumed": 1,
+  "manual_handoff": false,
+  "startup_automation_passed": true,
+  "startup_native_reads_received": 15,
+  "model_jobs_completed": 10,
+  "telemetry_jobs_completed": 9,
+  "new_failed_jobs": 0,
+  "tokens_reserved": 81920,
+  "returned_usage": {
+    "prompt_tokens": 17215,
+    "completion_tokens": 135,
+    "total_tokens": 17350
+  },
+  "per_sample": [
+    {
+      "sample_id": "historical_reader_request_2",
+      "calls_completed": 5,
+      "warmup_calls": 1,
+      "timed_calls": 4,
+      "prompt_tokens_each": 1400,
+      "completion_tokens_each": 14,
+      "finish_reasons": [
+        "stop"
+      ],
+      "output": "search(\"Qwen3-8B speculative decoding speedup\")",
+      "all_serial_and_concurrent_outputs_usage_finish_reasons_match": true
+    },
+    {
+      "sample_id": "historical_reader_request_6",
+      "calls_completed": 5,
+      "warmup_calls": 1,
+      "timed_calls": 4,
+      "prompt_tokens_each": 2043,
+      "completion_tokens_each": 13,
+      "finish_reasons": [
+        "stop"
+      ],
+      "output": "submit(answer=\"Unanswerable\", citations=[], evidence=[])",
+      "all_serial_and_concurrent_outputs_usage_finish_reasons_match": true
+    }
+  ],
+  "serial_rounds_completed": 2,
+  "concurrent_rounds_completed": 2,
+  "assessment": {
+    "comparable": false,
+    "reasons": [
+      "difference does not exceed the 0.4-second polling uncertainty margin"
+    ],
+    "rounds": [
+      {
+        "repeat": 1,
+        "serial": 3.423087624832988,
+        "concurrent": 3.355291415937245,
+        "serial_over_concurrent": 1.0202057587527924,
+        "absolute_difference_seconds": 0.0677962088957429
+      },
+      {
+        "repeat": 2,
+        "concurrent": 2.850205041002482,
+        "serial": 3.82918966608122,
+        "serial_over_concurrent": 1.3434786659188585,
+        "absolute_difference_seconds": 0.9789846250787377
+      }
+    ]
+  },
+  "batches": [
+    {
+      "mode": "serial",
+      "repeat": 1,
+      "pair_seconds": 3.423087624832988,
+      "phase_metrics": {
+        "vllm:request_decode_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 1.5167543390125502
+        },
+        "vllm:request_prefill_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.6835421519936062
+        },
+        "vllm:request_queue_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 5.460000829771161e-05
+        },
+        "vllm:time_to_first_token_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.7017335891723633
+        }
+      },
+      "gauge_max_sampled": {
+        "vllm:kv_cache_usage_perc": 0.06462925851703405,
+        "vllm:num_requests_running": 1,
+        "vllm:num_requests_waiting": 0
+      },
+      "gpu_memory_snapshot_before_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      },
+      "gpu_memory_snapshot_after_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      }
+    },
+    {
+      "mode": "concurrent",
+      "repeat": 1,
+      "pair_seconds": 3.355291415937245,
+      "phase_metrics": {
+        "vllm:request_decode_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 3.068799080007011
+        },
+        "vllm:request_prefill_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.7540050979878288
+        },
+        "vllm:request_queue_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 4.268101474735886e-05
+        },
+        "vllm:time_to_first_token_seconds": {
+          "requests": 2,
+          "sum_seconds": 1.1801762580871582
+        }
+      },
+      "gauge_max_sampled": {
+        "vllm:kv_cache_usage_perc": 0.10921843687374755,
+        "vllm:num_requests_running": 2,
+        "vllm:num_requests_waiting": 0
+      },
+      "gpu_memory_snapshot_before_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      },
+      "gpu_memory_snapshot_after_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      }
+    },
+    {
+      "mode": "concurrent",
+      "repeat": 2,
+      "pair_seconds": 2.850205041002482,
+      "phase_metrics": {
+        "vllm:request_decode_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 2.0415081739920424
+        },
+        "vllm:request_prefill_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.7505811450100737
+        },
+        "vllm:request_queue_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 3.8489990402013063e-05
+        },
+        "vllm:time_to_first_token_seconds": {
+          "requests": 2,
+          "sum_seconds": 1.0506277084350586
+        }
+      },
+      "gauge_max_sampled": {
+        "vllm:kv_cache_usage_perc": 0.10921843687374755,
+        "vllm:num_requests_running": 2,
+        "vllm:num_requests_waiting": 0
+      },
+      "gpu_memory_snapshot_before_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      },
+      "gpu_memory_snapshot_after_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      }
+    },
+    {
+      "mode": "serial",
+      "repeat": 2,
+      "pair_seconds": 3.82918966608122,
+      "phase_metrics": {
+        "vllm:request_decode_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 1.6794706710061291
+        },
+        "vllm:request_prefill_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.689341705001425
+        },
+        "vllm:request_queue_time_seconds": {
+          "requests": 2,
+          "sum_seconds": 8.783998782746494e-05
+        },
+        "vllm:time_to_first_token_seconds": {
+          "requests": 2,
+          "sum_seconds": 0.7049760818481445
+        }
+      },
+      "gauge_max_sampled": {
+        "vllm:kv_cache_usage_perc": 0.06462925851703405,
+        "vllm:num_requests_running": 1,
+        "vllm:num_requests_waiting": 0
+      },
+      "gpu_memory_snapshot_before_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      },
+      "gpu_memory_snapshot_after_mib": {
+        "total_mib": 24564,
+        "used_mib": 21045
+      }
+    }
+  ],
+  "session_seconds_before_cleanup": 257.46470912499353,
+  "process_exit_code": 1,
+  "process_exit_explanation": "Runner rejects an incomparable performance result; all 19 jobs completed. Round 1 failed the predeclared uncertainty margin. No retry.",
+  "shutdown_verified": true,
+  "full_endpoint_configuration_restored": true,
+  "budget": {
+    "allowance_usd": 0.5,
+    "catalog_gpu_hourly_usd": 0.69,
+    "maximum_window_compute_estimate_usd": 0.1725,
+    "maximum_seconds_including_loading": 900,
+    "actual_invoice_cost": null,
+    "provider_dollar_cap": false,
+    "further_paid_attempt_authorized": false
+  },
+  "limitations": [
+    "Two short fixed next-action inputs, not representative long reader answers or end-to-end MCP research.",
+    "Only two timing rounds; one is within polling uncertainty. No established serving speedup.",
+    "No semantic support review or research usefulness evaluation. Outputs are preserved, not executed.",
+    "No trained-versus-base model comparison or fine-tuning improvement claim.",
+    "Original prior rejected-input transformation remains unknown; repaired guards accepted these live inputs.",
+    "Brief Runpod rescheduling/throttling occurred before usable startup. At most one worker observed at a time."
+  ]
+}

@@ -21,5 +21,51 @@ reasons agree and telemetry confirms overlap. Differences within 0.4 seconds
 are inconclusive. These two short inputs cannot establish tail latency, useful
 answer quality, adaptive agent behavior or a fine-tuning benefit.
 
-See `plan.json`, `authorization.json` and `preflight.json` for the fixed scope.
-Results will be recorded separately after this attempt and verified shutdown.
+The automatic execution completed: 10/10 model jobs and 9/9 telemetry jobs,
+zero new failed jobs, no manual handoff. All 15 native startup-log reads
+returned records. The live identity matched the pinned base and v5 adapter.
+Returned usage totals 17,215 input and 135 output tokens; reservations stayed
+at 81,920. Each input completed five times with identical output, token counts
+and finish reason across warmup, serial and concurrent runs.
+
+| Round | Serial pair | Concurrent pair | Observed difference |
+| --- | ---: | ---: | ---: |
+| 1 | 3.423 s | 3.355 s | 0.068 s |
+| 2 | 3.829 s | 2.850 s | 0.979 s |
+
+**Performance is inconclusive.** Round 1 is within the predeclared 0.4-second
+polling margin. The runner deliberately exited 1 for this rejected comparison;
+all jobs had completed. No retry ran. Both concurrent windows sampled two
+requests running in the same engine. Device-memory snapshots around all four
+batches were 21,045 / 24,564 MiB; these are snapshots, not peak-memory estimates.
+This establishes that two reader requests can overlap on one loaded model in
+this configuration. It does not establish a reliable speedup.
+
+The outputs were a search action and an unanswerable submission, preserved in
+`outcome.json`; they were not executed or graded for research usefulness. This
+is not an end-to-end research MCP answer test. The original prior rejection's
+received-input transformation remains unknown, although both repaired input
+guards accepted this run.
+
+The watchdog did not fire. Supervisor time before cleanup was 257.465 seconds.
+Runpod briefly rescheduled/throttled workers before usable startup. Final reads
+at 21:03:54 UTC confirmed workers 0/0, zero active workers or pending jobs,
+and the full original endpoint configuration restored. No further paid attempt
+is authorized by this record. Actual invoice cost remains unknown.
+
+See `plan.json`, `authorization.json` and `preflight.json` for the fixed scope;
+`result.json` and `profile.requests.jsonl` preserve all responses and telemetry.
+`outcome.json` summarizes per-input/per-batch results, and `validation.json`
+records checksums and verification. To reproduce the saved assessment locally:
+
+```bash
+python - <<'PY'
+import json
+from pathlib import Path
+from src.eval.reader_profile import assess_profile
+path = Path('examples/two-reader-profile/automatic-live-1/result.json')
+result = json.loads(path.read_text())
+assert assess_profile(result) == result['assessment']
+print(result['assessment'])
+PY
+```
