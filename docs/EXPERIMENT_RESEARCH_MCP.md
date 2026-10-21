@@ -42,9 +42,11 @@ This is a stdio MCP server: configure your MCP host to launch that command with
 the repository as its working directory. For a remote endpoint, use HTTPS and
 `ENVOY_MODEL_API_KEY` in the host's environment. Keep credentials out of arguments
 and committed configuration. The script never provisions or activates compute.
-The existing Runpod queue URL is not an OpenAI-compatible endpoint; this entry
-point does not yet adapt that queue transport or manage scale-to-zero lifecycle.
-Do not send requests to a parked endpoint expecting this script to activate it.
+The existing Runpod queue URL is not an OpenAI-compatible endpoint. This ordinary
+server entry point does not manage its lifecycle. A separate one-attempt runner,
+`scripts/run_experiment_research_smoke.py`, uses the existing durable Runpod queue
+adapter and guarded startup/shutdown for the explicitly authorized live smoke.
+Do not send ordinary server requests to a parked queue URL expecting activation.
 
 The default tokenizer is locally cached
 `Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218`. Override `--tokenizer`
@@ -103,6 +105,14 @@ GitHub repositories, Hugging Face model cards, arbitrary websites, or local
 hardware. HTML/PDF extraction may miss tables, figures and equations; coverage
 is recorded. Discovery caches may be stale. Two papers cannot establish a
 comprehensive survey or reliable absence of a method.
+When Semantic Scholar is unavailable, experiment discovery explicitly falls back
+to arXiv over the full arXiv date range. The response records the provider failure
+and warns that fallback results are newest first, not ranked by relevance. Each
+logical search can therefore make up to two provider queries, within the existing
+network bounds and throttles. This fallback does not change the older MCP servers.
+Lower request/token limits appear in the effective controller prompt and the
+remaining shared request count is supplied on each control turn. The live runner
+also checkpoints partial progress before further control inference.
 
 ## Verify without inference charges
 
@@ -147,7 +157,15 @@ over host-only research. That comparison needs matched questions and access to
 sources, explicit budgets, review of both outputs, and measured host rework.
 It also would not prove fine-tuned Qwen improved over base Qwen.
 
-For a submission, demonstrate one actual bounded live investigation and its
-trace, alongside the clearly labeled offline failure tests and existing saved
-QASPER results. GPU activation, another paid run, sponsor integration checks,
-video recording and submission are separate remaining steps.
+The [October 21 live smoke](implementation/2026-10-21-experiment-research-live-smoke.md)
+did not meet this rule: 8 requests and 17,505 reported tokens produced no accepted
+brief or verified evidence. Poor fallback matches, repeated searches and a
+truncated attempted finish preceded watchdog shutdown. The GPU was verified off.
+This is a prototype with a negative live result, not a demonstrated useful
+research assistant. The later validation also records a separately reviewed
+staging-concurrency fix after that failure reproduced again.
+
+For a submission, a useful live investigation and trace still need to be
+demonstrated, alongside clearly labeled offline failure tests and existing saved
+QASPER results. Another paid test needs fresh approval; sponsor integration
+checks, video recording and submission remain separate steps.

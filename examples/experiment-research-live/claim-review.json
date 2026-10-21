@@ -1,0 +1,37 @@
+{
+  "review_kind": "independent_model_assisted",
+  "reviewer": "/root/paired_claim_review",
+  "human_review": "not_performed",
+  "scope": "One incomplete live smoke; artifact review without external or paid calls",
+  "outcome": "success_decision_rule_not_met",
+  "evidence_before_attempted_finish": "Two metadata-only search responses and two duplicate-search errors; no read-paper results, inspected passages, or returned evidence IDs",
+  "claims": [
+    {
+      "claim": "PagedAttention uses page-based KV-cache allocation, improves cross-sequence reuse, and reduces fragmentation",
+      "grade": "unsupported_in_this_run",
+      "reason": "No inspected PagedAttention source supported these clauses; E1 was never returned. This does not establish that the general mechanism claim is false."
+    },
+    {
+      "claim": "The target setup needs concurrency, sequence-length, and page-table memory measurements",
+      "grade": "relevant_unverified_inference",
+      "reason": "Reasonable local measurement topics, but E2 was never returned and page-table overhead was emphasized without evidence that it is decisive."
+    },
+    {
+      "claim": "Measure two readers at maximum input/output limits and compare VRAM use with A5000 capacity",
+      "grade": "relevant_but_incomplete_proposal",
+      "reason": "E3 was never returned. No experiment ran and no required structured proposed_test was supplied. Missing a one-reader control, fixed configuration, warm-up, stop rule, memory breakdown, and latency/completion measurements."
+    },
+    {
+      "claim": "Two-reader compatibility and page-table memory use are not established by the evidence",
+      "grade": "appropriately_cautious_within_run",
+      "reason": "True about this run's missing evidence. Repetition does not establish universal absence or repair unsupported findings."
+    }
+  ],
+  "failure_attribution": {
+    "discovery": "Semantic Scholar rate limiting triggered date-sorted arXiv fallback with largely irrelevant metadata; sole opened paper concerns multi-node CPU decoding of ternary LLMs",
+    "model": "Repeated identical searches, attempted findings before reading, invented E1/E2/E3, off-target paper selection, and repetitive uncertainty exhausting output limit",
+    "actual_rejection": "Request 5 ended with finish_reason=length at 1024 tokens and incomplete literal syntax. Its rejection was a parser rejection before citation or semantic validation.",
+    "harness": "Watchdog interrupted the paper reader. Last checkpoint covers 5 requests; ledger covers 8. Eighth completion was recovered separately, never consumed, and contains only a passage-call action."
+  },
+  "limitations": "One incomplete development smoke cannot establish general Qwen incapability, useful research performance, or fine-tuning improvement. No human review."
+}

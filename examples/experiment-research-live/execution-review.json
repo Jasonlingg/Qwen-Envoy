@@ -1,0 +1,43 @@
+{
+  "review_kind": "independent_model_assisted_code_and_artifact_audit",
+  "reviewer": "/root/qwen_live_final_review",
+  "human_review": "not_performed",
+  "reviewer_external_calls": 0,
+  "outstanding_budget_or_shutdown_findings": 0,
+  "requests": "8 unique reservations/submissions, no resubmissions; 7 captured completions and one separately recovered provider completion",
+  "tokens_reserved": 65536,
+  "max_prompt_tokens": 3305,
+  "captured_usage": {
+    "input": 13642,
+    "output": 1167
+  },
+  "usage_with_separate_posthoc_completion": {
+    "input": 16309,
+    "output": 1196,
+    "total": 17505
+  },
+  "shutdown": "All 8 owned jobs read back COMPLETED; zero workers and pending jobs; endpoint min/max 0/0 verified independently",
+  "interpretation": [
+    "The resumed timer was 233.807 seconds; measured elapsed before cleanup was 235.037 seconds",
+    "The last progress checkpoint stops at 5 requests and is not whole-session accounting",
+    "The resumed worker passed the ready=1 branch, so the new running-plus-logs branch was not exercised by this live continuation",
+    "No final MCP result, completed reader packet or verified evidence exists; the run failed at the original watchdog",
+    "Empty billing records do not establish zero spend",
+    "All 157 amended source hashes matched at the live audit before the separate post-live staging fix d5b5c16; as-run reproduction requires 2c225ae plus the two pinned pre-existing changes in scripts/arxiv_research_mcp.py and src/product/arxiv_mcp_config.py"
+  ],
+  "post_live_staging_review": {
+    "commit": "d5b5c16",
+    "kind": "independent model-assisted code review",
+    "finding": "no safety blocker",
+    "scope": "exclusive lock creation preserves no-follow/fstat/flock and propagates missing boundaries; fork/spawn same-inode, symlink and missing-boundary regressions",
+    "reviewer_tests": "not_run",
+    "human_review": "not_performed"
+  },
+  "report_review": {
+    "material_finding": "Container removal assertion lacked saved readback",
+    "resolution": "Successful fresh docker ps -a read found no owned IDs; run/independent-docker-absence.json",
+    "other_material_findings": 0,
+    "kind": "independent model-assisted review",
+    "human_review": "not_performed"
+  }
+}

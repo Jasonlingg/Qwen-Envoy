@@ -1,0 +1,114 @@
+{
+  "schema_version": "experiment-research-live-validation-v1",
+  "recorded_at": "2026-10-21T05:49:54.608199+00:00",
+  "tested_commit": "c3c5d80ffa0bdd5fa52e43616599aa50c0838d04",
+  "as_run_commit": "2c225ae",
+  "as_run_additional_uncommitted_source": [
+    "scripts/arxiv_research_mcp.py",
+    "src/product/arxiv_mcp_config.py"
+  ],
+  "as_run_frozen_source_count": 157,
+  "post_live_source_deltas": {
+    "src/harness/staging.py": {
+      "commit": "d5b5c16",
+      "sha256": "06f8dc5c50b0540d9b13e82aeba6530390028207fd398b6189ea78aa32d44eaf"
+    }
+  },
+  "tests": {
+    "pre_live_full_suite": {
+      "passed": 1743,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 69.34
+    },
+    "post_readiness_focused": {
+      "passed": 28,
+      "seconds": 1.7
+    },
+    "post_live_full_suite_before_staging_fix": {
+      "passed": 1749,
+      "failed": 1,
+      "failure": "Existing concurrent staging test child FileNotFoundError opening .stage.lock; reproduced in 13/15 spawn trials; fixed separately after live test"
+    },
+    "staging_and_logged_readiness_focused": {
+      "passed": 38,
+      "seconds": 2.02
+    },
+    "final_full_suite": {
+      "passed": 1753,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 89.98,
+      "warnings_note": "Existing SWIG deprecation warnings"
+    },
+    "full_suite_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "ruff": "passed for experiment implementation, smoke/lifecycle, staging and changed tests",
+    "git_diff_check": "passed for implementation/docs/structured artifacts; raw worker.stderr.log retains one original trailing space and is excluded from whitespace check",
+    "packaged_json_jsonl": "valid",
+    "credential_pattern_scan": "no matches; not a general secret-scanner guarantee"
+  },
+  "live_result": "failed_incomplete_at_original_watchdog",
+  "accepted_brief": false,
+  "verified_evidence_count": 0,
+  "inference_requests": 8,
+  "reported_tokens_including_unconsumed_posthoc_completion": 17505,
+  "shutdown_verified": true,
+  "actual_spend_usd": null,
+  "semantic_review": "independent model-assisted; claim-review.json",
+  "execution_review": "independent model-assisted; execution-review.json",
+  "human_review": "not_performed",
+  "fine_tuning_improvement": "not_evaluated",
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "artifact_sha256": {
+    "claim-review.json": "ccf30ef28db8b9f204814bef2bdf512a2c51b69b69f219983cb4485462a173aa",
+    "execution-review.json": "fc26744fb1ecbad8a4cd4ed2f6b3ff2ddcf381254b28c496da1207bb13d95509",
+    "prepared/approval.json": "5ca092694523166937c10c035e2400ed688c38a21aaa6eed7fc8467154f67bf8",
+    "prepared/arxiv-preflight.json": "6a7b7bf4b693843970eb0cd232ecf9386ad6eddb2a0ca4f2a0386acefeeb5fa3",
+    "prepared/plan.json": "284d5d647c53c085f7090f9806660118ce9008cc98e8da842e75cb5ef3d1427b",
+    "prepared/runpod-preflight.json": "d3bdbe8a79043b666f6015e083a6c7421705295695d75451507a74622ca8812e",
+    "prepared/source-preflight.json": "4075e966f6be9b9a6128706e60cfef14b2a2fc42b83e706212fbcd06ea96f899",
+    "run/billing-check.json": "213e9acbb93933aee915b12b4a8bde861d8d0eaa67843cc2f489674a06697e9c",
+    "run/containers.jsonl": "2d1b94771fafeed596f1e3a9e428ba06c4fbfd893e19e0ade37f04c65863fd96",
+    "run/endpoint-activated.json": "1a497f328e8bae6b4a8684d16df38f4223e08dab465196a484a56683d2955679",
+    "run/endpoint-before.json": "aed8c18e822e382ee4eaa56e59fd69886e5f8405b52a188fbdd1725249f31449",
+    "run/health-latest.json": "0b53ef767d712c2a7212e48fb5784096c5c68871f111c15db7859788574cb9cf",
+    "run/independent-docker-absence.json": "f1c5e1677497bd0a5d9018b1182d4639e2e03ef49c6920edb278c6f21d53f051",
+    "run/independent-shutdown-read.json": "14300e0e58a3f7c2a256fa0130daa2f221164faaa1802f2f56bcb124132c8dfd",
+    "run/library/discovery-cache/arxiv-67d6f7cf78b02d122fa50f5ad6b1efda20a816dc64810e65e11855168e6a42b6.json": "ed3f2ce7c3422d57b2c57e3a1e810b2162ef8ca48c59651552df1adad675a6a0",
+    "run/library/discovery-cache/arxiv-6ca766e420e7522bb8d70f16736db06550c78b87cd611e57eb26e199855055f3.json": "9c236a308c8370f079ec6398b1de90170c94dbdf513e1352b1d952fb0c83b1a5",
+    "run/library/discovery-cache/arxiv-b3cc732bcccd58aee52fd005128274724be54e06943bc35974292f3719e6927c.json": "c95d3ba2ed4afba7ef8c261bf23e70673290e46771231ad9fa377effcf2e465c",
+    "run/library/papers/2610.28620v1/document.json": "16eb97c4500fbe5c74a3b97ce7bc871c5dfb88eb7a04f96754725dedf3355e2d",
+    "run/library/papers/2610.28620v1/notes.json": "3dc4b69320dbf30bbe1a6e5679c0e85fcc38d2ee5a3acdf5076b565bb1fb7cdc",
+    "run/library/views/e3fccd3e40f428837a81ef6e/corpus/arxiv_2610_28620v1.json": "16eb97c4500fbe5c74a3b97ce7bc871c5dfb88eb7a04f96754725dedf3355e2d",
+    "run/library/views/e3fccd3e40f428837a81ef6e/manifest.json": "dd2f171024d8e399c6d7cb82bd0dd9cc23b19f6a53fe828088e12c5f87152c9d",
+    "run/lifecycle.json": "74b99ea68115c27a415328aa7c4320ddd6fa6742f6084a30d8aaea3262f7a701",
+    "run/posthoc-last-job-status.json": "a0bbc0c13af2629287a411ffcae0ba59a07ba4bccf12083ebe508c51c2fb7405",
+    "run/progress.json": "002bc9c4cf4587525b8410887017cf274b8ef0af2cd108936b3a015990848b80",
+    "run/research.requests.jsonl": "c85803356948c8ff12c7cd220683c3ee520041a9bfd15910782a16c035d39580",
+    "run/runtime-resumed.json": "a70c0d3b5b0a75c1ade4b0d2a62b82486f8a11468a695013260c17b309eaf58d",
+    "run/startup-log-reads.jsonl": "d167bcd2d027d66990bd06c4db846894153f0dd80dd4ff92a9ce0d53fb34233f",
+    "run/startup-readiness-evidence.json": "5b945fbf783de056ba65ab9d8ab949abb617daf70359b8845d7a6b5df70492ee",
+    "run/worker-identity.json": "03efa1c9d7e3b9a13161e19b762e38295670f853390eb2ab4f4a9503f5b9de97",
+    "run/worker.stderr.log": "0b2679568ded7f2d7770f762ccde327741883aad7669d1007779af4428d5bf1c",
+    "run/workers-latest.json": "09205c2fea117cfafcaea3d9443c4c8f1a33f14dfb35d40a2ac0143d80c55589",
+    "startup-continuation/lifecycle.json": "34ef63957708c57d26332e677b5af71e1301c891d0c743871a9c4a0dd00b6bfc",
+    "startup-continuation/plan-amended.json": "340a48b3303ae8ddde732644da9db7451586a9ee1b1ef5daa9861aab936800ee",
+    "startup-continuation/runtime.json": "7a81e34d0e2d26d41855ff17d7129da32e17c75615241e87f55a1f57d9eef95c",
+    "startup-continuation/startup-amendment.json": "9dac38bfbe8d31672fe787a7c24c775234fc1783c466347e756c2dffbd2edfe6",
+    "startup-continuation/startup-interruption.json": "089a319d04919f766edff3cbd099de54127252acfaf98b66c402721f81768379",
+    "summary.json": "59f27ded96de0bd615c3b886f19e09e6cd39260593e0d0050ab672afe8702a07"
+  },
+  "docker_owned_container_absence_verified": true
+}
