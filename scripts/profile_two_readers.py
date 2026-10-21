@@ -35,6 +35,8 @@ LIMITS = {"model_requests": 10, "telemetry_jobs": 9, "tokens_reserved": 81920,
 CONFIG = {"MAX_NUM_SEQS": "2", "MAX_CONCURRENCY": "2", "MAX_MODEL_LEN": "8192",
           "ENABLE_PREFIX_CACHING": "false"}
 MARKER = ROOT / "out/two-reader-profile-LIVE_ATTEMPT"
+REPLACEMENT_MARKER = ROOT / "out/two-reader-profile-REPLACEMENT-1"
+PRIOR_OUTCOME = ROOT / "examples/two-reader-profile/outcome.json"
 
 
 def sha(path):
@@ -143,7 +145,24 @@ def authorization(output, plan):
         raise ValueError("current GPU price read is stale")
     if record["catalog_gpu_hourly_usd"] * LIMITS["session_seconds"] / 3600 > record["budget_usd"]:
         raise ValueError("GPU time guard exceeds selected budget")
+    attempt_marker(record)
     return record
+
+
+def attempt_marker(approved):
+    """One explicitly approved replacement; never reset the original allowance."""
+    if "replacement_of" not in approved:
+        return MARKER
+    prior = json.loads(PRIOR_OUTCOME.read_text())
+    original = Path(MARKER.read_text().strip())
+    expected = {"outcome_sha256": sha(PRIOR_OUTCOME), "marker_sha256": sha(MARKER),
+                "plan_sha256": prior["plan_sha256"]}
+    if (approved["replacement_of"] != expected
+            or approved.get("replacement_attempts") != 1
+            or prior.get("shutdown_verified") is not True
+            or sha(original / "plan.json") != prior["plan_sha256"]):
+        raise ValueError("replacement approval does not bind the consumed original attempt")
+    return REPLACEMENT_MARKER
 
 
 def guarded_run(output, plan, approved, *, control=cli, supervisor=supervise, key=None):
@@ -162,7 +181,8 @@ def guarded_run(output, plan, approved, *, control=cli, supervisor=supervise, ke
             or before.get("image") !=
             "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"):
         raise ValueError("parked endpoint image, entrypoint or serving configuration differs")
-    with MARKER.open("x") as stream:
+    marker = attempt_marker(approved)
+    with marker.open("x") as stream:
         stream.write(str(output.resolve()) + "\n")
     deadline = time.time() + LIMITS["session_seconds"]
     write(output / "runtime.json", {"approved_live": True,
@@ -214,7 +234,7 @@ def main():
         guarded_run(args.output, plan, approved)
     if args.phase == "worker":
         runtime = json.loads((args.output / "runtime.json").read_text())
-        if (MARKER.read_text().strip() != str(args.output.resolve())
+        if (attempt_marker(approved).read_text().strip() != str(args.output.resolve())
                 or runtime.get("plan_sha256") != sha(args.output / "plan.json")
                 or runtime.get("approved_live") is not True
                 or runtime["deadline_unix"] <= time.time()):

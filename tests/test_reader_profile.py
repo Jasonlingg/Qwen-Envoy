@@ -219,6 +219,38 @@ def test_missing_budget_or_stale_price_cannot_authorize_gpu(tmp_path):
         cli.authorization(tmp_path, {})
 
 
+def test_one_replacement_binds_original_without_resetting_its_marker(tmp_path, monkeypatch):
+    original = tmp_path / "original"
+    original.mkdir()
+    (original / "plan.json").write_text('{"original":true}')
+    marker = tmp_path / "consumed"
+    marker.write_text(str(original) + "\n")
+    outcome = tmp_path / "outcome.json"
+    outcome.write_text(json.dumps({"shutdown_verified": True,
+                                   "plan_sha256": cli.sha(original / "plan.json")}))
+    replacement = tmp_path / "replacement"
+    monkeypatch.setattr(cli, "MARKER", marker)
+    monkeypatch.setattr(cli, "PRIOR_OUTCOME", outcome)
+    monkeypatch.setattr(cli, "REPLACEMENT_MARKER", replacement)
+    saved = marker.read_bytes()
+    approved = {"replacement_attempts": 1, "replacement_of": {
+        "outcome_sha256": cli.sha(outcome), "marker_sha256": cli.sha(marker),
+        "plan_sha256": cli.sha(original / "plan.json")}}
+    assert cli.attempt_marker({}) == marker
+    with cli.attempt_marker(approved).open("x") as stream:
+        stream.write("one newly authorized attempt")
+    with pytest.raises(FileExistsError):
+        cli.attempt_marker(approved).open("x")
+    assert marker.read_bytes() == saved
+    approved["replacement_attempts"] = 2
+    with pytest.raises(ValueError, match="replacement"):
+        cli.attempt_marker(approved)
+    approved["replacement_attempts"] = 1
+    (original / "plan.json").write_text("changed")
+    with pytest.raises(ValueError, match="replacement"):
+        cli.attempt_marker(approved)
+
+
 def test_telemetry_failure_stops_before_more_model_requests():
     class Client:
         model_calls = 0
