@@ -18,6 +18,7 @@ from src.product.passage_scope import (
     checked_read,
     evidence_is_inspected,
     make_scope,
+    normalize_read_arithmetic,
     scope_hash,
 )
 from src.product.reader_gaps import verify_gap_reports
@@ -73,8 +74,14 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         if (packet.get("passage_scope") != scope
                 or packet.get("passage_scope_sha256") != scope_hash(scope)):
             raise ValueError("passage assignment differs from the controller scope")
-        inspected = [checked_read(displayed_tool_call(t["action"]), scope)
-                     for t in packet.get("trajectory", []) if t.get("source_inspection") is True]
+        inspected = []
+        for trace in packet["trajectory"]:
+            if trace.get("source_inspection") is not True:
+                continue
+            normalized = normalize_read_arithmetic(trace["action"])
+            if trace.get("executed_action", trace["action"]) != normalized:
+                raise ValueError("normalized passage trace differs from authored action")
+            inspected.append(checked_read(displayed_tool_call(normalized), scope))
         if (packet.get("inspected_passage_windows") != inspected
                 or not evidence_is_inspected(packet.get("evidence", []), scope, inspected)):
             raise ValueError("packet cites an uninspected or unassigned passage")

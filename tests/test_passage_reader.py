@@ -14,7 +14,12 @@ from src.product.ml_experiment_evidence import EvidenceResolver
 from src.product.ml_experiment_store import ExperimentStore
 from src.product.packet_verifier import verify_investigation_packet
 from src.product.passage_reader_service import PassageReaderService
-from src.product.passage_scope import PASSAGES, checked_read, make_scope
+from src.product.passage_scope import (
+    PASSAGES,
+    checked_read,
+    make_scope,
+    normalize_read_arithmetic,
+)
 from src.product.qwen_investigator import QwenInvestigator
 from src.research.agent import load_snapshot
 from tests.arxiv_fakes import article_page, make_library
@@ -164,10 +169,40 @@ def test_interrupted_attempt_cannot_dispatch_again(tmp_path):
     assert result["status"] == "previous_attempt_incomplete" and count == 1
 
 
+def test_recorded_end_minus_start_read_is_accepted_without_an_extra_model_turn(tmp_path):
+    library, _, _, reader, _, windows, read, submit, repl = fixture(tmp_path)
+    w = windows[0]
+    authored = f'print(passage("{ID}", {w["start"]}, {w["end"]} - {w["start"]}))'
+    reader.policy_factory = lambda: FakePolicy([authored, submit])
+    snapshot = library.view(["2609.12345v2"])
+    packet = reader.investigate("Memory?", snapshot, passage_windows=windows)
+    assert packet["status"] == "evidence_found" and len(packet["trajectory"]) == 2
+    assert packet["trajectory"][0]["action"] == authored
+    assert packet["trajectory"][0]["executed_action"] == normalize_read_arithmetic(authored)
+    assert repl.executed == [normalize_read_arithmetic(authored)]
+    assert packet["passage_scope"]["read_calls"] == [read]
+    manifest, docs = load_snapshot(snapshot)
+    assert verify_investigation_packet(packet, manifest, docs,
+        allowed_prompt_sha256s=frozenset({hashlib.sha256(reader.system_prompt.encode()).hexdigest()}),
+        expected_reader_mode="assigned", expected_reader_guidance=PASSAGES,
+        expected_passage_windows=windows)["evidence"]
+
+
+@pytest.mark.parametrize("expression", ["2 ** 10000000", "1 << 10000000",
+    '__import__("os").system("echo unsafe") + 1', "True + 1", "2147483647 + 1"])
+def test_arithmetic_normalization_rejects_nonconstant_or_unbounded_work(expression):
+    with pytest.raises(ValueError):
+        normalize_read_arithmetic(f'print(passage("{ID}", 0, {expression}))')
+
+
 @pytest.mark.skipif(not os.environ.get("ENVOY_ASSIGNED_TEST_DOCKER_IMAGE"),
                     reason="set ENVOY_ASSIGNED_TEST_DOCKER_IMAGE")
-def test_real_docker_read_and_submission_use_the_same_effective_prompt(tmp_path):
+@pytest.mark.parametrize("arithmetic", [False, True])
+def test_real_docker_read_and_submission_use_the_same_effective_prompt(tmp_path, arithmetic):
     library, _, _, _, _, windows, read, submit, _ = fixture(tmp_path)
+    if arithmetic:
+        start, end = windows[0]["start"], windows[0]["end"]
+        read = f'print(passage("{ID}", {start}, {end} - {start}))'
     actions, sent = iter([read, submit]), []
     def transport(url, payload, headers, timeout):
         sent.append(payload)

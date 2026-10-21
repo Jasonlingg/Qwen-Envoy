@@ -51,6 +51,7 @@ from src.product.passage_scope import (
     checked_read,
     evidence_is_inspected,
     make_scope,
+    normalize_read_arithmetic,
     scope_hash,
 )
 from src.product.reader_gaps import parse_gap_call, record_gap
@@ -564,9 +565,15 @@ class QwenInvestigator:
                 else:
                     call = None
                     key = action
+                    execution_action = action
                     if assignment is not None:
                         try:
-                            call = displayed_tool_call(action)
+                            if scope is not None:
+                                execution_action = normalize_read_arithmetic(action)
+                                if execution_action != action:
+                                    trace["executed_action"] = execution_action
+                                    trace["normalization"] = "bounded-integer-add-sub-v1"
+                            call = displayed_tool_call(execution_action)
                         except ValueError as exc:
                             observation = trace["observation"] = (
                                 action_recovery(action, str(exc), self.max_steps - step)
@@ -585,7 +592,7 @@ class QwenInvestigator:
                                 observation = trace["observation"] = f"Action rejected: {exc}."
                                 continue
                     seen_code.add(key)
-                    output = repl.execute(action, timeout=self.code_timeout_seconds)
+                    output = repl.execute(execution_action, timeout=self.code_timeout_seconds)
                     if not isinstance(output, str):
                         raise ValueError("sandbox returned a non-text observation")
                     if discovery(action) and not _failed_document_observation(

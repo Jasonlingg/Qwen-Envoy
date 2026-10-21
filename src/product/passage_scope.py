@@ -13,7 +13,9 @@ only the facts explicitly requested by the question, including their stated
 conditions. The host handles discovery and synthesis. Do not search, read the
 whole paper, infer a new hardware result, or propose an experiment here.
 Only passage(doc_id, start, length) reads contained in a supplied range are
-allowed. Start with print(passage(...)) using a supplied range. Inspect source
+allowed. Use the controller's read_calls verbatim; their last argument is a
+length, not an end offset. Bounded integer addition/subtraction in read arguments
+is normalized as data before execution. Start with one supplied read call. Inspect source
 text before submitting. Cite exact spans inside text you actually inspected.
 Keep the answer compact; bind numbers to the paper's hardware, baseline, task
 and workload. A genuine quote may not support your answer. If the requested
@@ -40,6 +42,8 @@ def make_scope(docs, windows):
     if total > 4000:
         raise ValueError("assigned passages exceed 4000 characters")
     return {"version": PASSAGES, "doc_id": doc_id, "windows": checked,
+            "read_calls": [f'print(passage("{doc_id}", {w["start"]}, '
+                           f'{w["end"] - w["start"]}))' for w in checked],
             "source_text_sha256": hashlib.sha256(doc["text"].encode()).hexdigest(),
             "counts_as_source_inspection": False}
 
@@ -75,3 +79,50 @@ def checked_read(call, scope):
 def evidence_is_inspected(spans, scope, inspected):
     return all(isinstance(span, dict) and span.get("doc_id") == scope["doc_id"]
                and contains(inspected, span.get("start"), span.get("end")) for span in spans)
+
+
+def normalize_read_arithmetic(action):
+    """Fold bounded integer +/- AST data only; never eval/exec model Python."""
+    try:
+        tree = ast.parse(action)
+    except (SyntaxError, TypeError, RecursionError) as exc:
+        raise ValueError("invalid passage Python syntax") from exc
+    if sum(1 for _ in ast.walk(tree)) > 1000:
+        raise ValueError("passage action AST is oversized")
+    changed = False
+
+    def integer(node, depth=0):
+        if depth > 8:
+            raise ValueError("passage arithmetic is too deep")
+        if isinstance(node, ast.Constant) and type(node.value) is int:
+            value = node.value
+        elif isinstance(node, ast.BinOp) and isinstance(node.op, (ast.Add, ast.Sub)):
+            left, right = integer(node.left, depth + 1), integer(node.right, depth + 1)
+            value = left + right if isinstance(node.op, ast.Add) else left - right
+        elif isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub)):
+            value = integer(node.operand, depth + 1)
+            if isinstance(node.op, ast.USub):
+                value = -value
+        else:
+            raise ValueError("only constant integer addition/subtraction is allowed")
+        if abs(value) > 2 ** 31 - 1:
+            raise ValueError("passage integer exceeds its bound")
+        return value
+
+    def fold(node):
+        nonlocal changed
+        if isinstance(node, (ast.BinOp, ast.UnaryOp)):
+            changed = True
+            return ast.copy_location(ast.Constant(value=integer(node)), node)
+        return node
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == (
+                "passage"):
+            node.args = [fold(arg) for arg in node.args]
+            for keyword in node.keywords:
+                keyword.value = fold(keyword.value)
+    try:
+        return ast.unparse(tree) if changed else action
+    except RecursionError as exc:
+        raise ValueError("passage action is too deep") from exc
