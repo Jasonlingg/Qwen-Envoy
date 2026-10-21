@@ -1,0 +1,71 @@
+{
+  "schema_version": "research-judge-alias-diagnostic-validation-v1",
+  "recorded_at": "2026-10-21T15:20:14.456317+00:00",
+  "implementation_commit": "b611a8b",
+  "pre_inference_freeze_commit": "7257aa9",
+  "actual_outcome": "No usable judgments: finish_reason length; all completion tokens reported as reasoning; visible content empty.",
+  "model_requests": 1,
+  "retries": 0,
+  "qwen_inference_requests": 0,
+  "training_jobs": 0,
+  "runpod_launches": 0,
+  "catalog_cost_usd": "0.0275694",
+  "invoice_cost_usd": null,
+  "conservative_local_bound_usd": "0.0933888",
+  "original_immutable_judge_readiness_condition_met": false,
+  "human_review": "not_performed",
+  "training_approved": false,
+  "tests": {
+    "focused": {
+      "passed": 61,
+      "seconds": 7.15,
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_research_judge_run.py tests/test_research_judge_checks.py tests/test_reward.py"
+    },
+    "full_final": {
+      "passed": 1830,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 101.98,
+      "warning_note": "Existing SWIG deprecation warnings",
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+    },
+    "saved_comparison_reproduced_exactly": true,
+    "ruff": "passed",
+    "git_diff_check": "passed"
+  },
+  "preservation": {
+    "all10_protected_hashes_match": true,
+    "active_musique_reward_unchanged": true,
+    "frozen_reader_pack_unchanged": true,
+    "fixture_pack_unchanged": true,
+    "prior_judge_plan_unchanged": true,
+    "historical_grades_unchanged": true,
+    "reserved_reader_evaluation_used_for_design": false
+  },
+  "artifact_sha256": {
+    "README.md": "b28214e31dcc3537752844d9e566bf4a6d5c067452eb4ff23cf905a74fd3564b",
+    "RESULTS.md": "c07445b72bf25e189bec2b3c744bae87ac7677380fe1636e238f4747cb5c308c",
+    "paid-allowance-consumed.json": "6fcd5a52846da6f2a8ccc9f5d96e50b1aeb9de60cdef32f9c7d95d8adba3d28f",
+    "pre-dispatch-amendment.json": "0bc4a0a730e1d94f3db9e57f9e2e6b4d80c798593c095f72853aede39a70b722",
+    "pre-dispatch-review.json": "81bbd1ac75133b7f50c3ad9ded546aa8a258429b6cf2a026586bbc592ee0f195",
+    "run/comparison.json": "f6704457fed0f4315e9b719a4a43ee8b5c57b1a5e5cf271aa85d14119ff721a0",
+    "run/dispatch.json": "8390080059a1e7d6eb05023c10dfad442ca95e60ca23d6449617f15105c569ae",
+    "run/manifest.json": "a4c49dc04ff8ee9b9444d40b1066648a7d229364b75dd6441c763bc776a5e09c",
+    "run/receipt.json": "25bc432d3688635dd1f597457539eadee59fb7a626800ad4b3783c66ae4b7e0b",
+    "run/request.json": "302e35d5282cf501e592b6340a6fdacc9fda965ace3139b9ecf4c43228a16ead",
+    "run/response.json": "cc5ee74a1256acc2625e3e428674e47491daf83027443b9533ecf954cece0a7c"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  }
+}
