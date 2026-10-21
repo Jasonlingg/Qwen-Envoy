@@ -1,0 +1,607 @@
+{
+  "reviewer_kind": "model_assisted",
+  "human_review": "not_performed",
+  "rows": [
+    {
+      "case_id": "paged-blocks",
+      "kind": "supported",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports the logical-to-physical block table, filled-position entries, and dynamic growth without reserving all future positions. The answer omits the frozen fixed-size-block and logical-contiguous/physical-noncontiguous clauses; E1 also does not establish those clauses. No false reservation claim.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 20.637581291841343,
+      "input_tokens": 9979,
+      "output_tokens": 168,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 24400,
+          "end": 25400
+        }
+      ]
+    },
+    {
+      "case_id": "paged-blocks",
+      "kind": "supported",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The answer omits fixed-size blocks and the possibility of physically noncontiguous blocks. E1 contains the OS-page analogy, dynamic allocation, and fixed-size KV-block introduction, but no block-table statement; the answer's block-table claim is not established by its own citation. Full-source/reference context cannot repair that missing support.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 15.266644624993205,
+      "input_tokens": 9971,
+      "output_tokens": 180,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 23600,
+          "end": 24100
+        }
+      ]
+    },
+    {
+      "case_id": "paged-traces",
+      "kind": "condition_binding",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 explicitly binds most experiments to 1-hour traces and OPT-175B to 15-minute traces because of the cost limit. All required conditions and durations are correct.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 18.26674212515354,
+      "input_tokens": 10241,
+      "output_tokens": 163,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 47200,
+          "end": 48200
+        }
+      ]
+    },
+    {
+      "case_id": "paged-traces",
+      "kind": "condition_binding",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 explicitly supports 1-hour traces for most experiments and the cost-limited 15-minute OPT-175B exception. No duration swap or generalization of the exception.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 16.29823475005105,
+      "input_tokens": 10112,
+      "output_tokens": 164,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2309_06180v1",
+          "start": 47200,
+          "end": 47700
+        }
+      ]
+    },
+    {
+      "case_id": "paged-target",
+      "kind": "target_gap",
+      "arm": "base",
+      "blind_slot": "A",
+      "verdict": "fail",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The sample is incomplete with no candidate claims, evidence, unresolved research_gaps, or follow-up query. It supplies none of the required target-gap response.",
+      "status": "incomplete",
+      "action_steps": 6,
+      "requests": 6,
+      "seconds": 25.460234874859452,
+      "input_tokens": 23407,
+      "output_tokens": 175,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        6
+      ],
+      "inspection_steps": 5,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "paged-target",
+      "kind": "target_gap",
+      "arm": "v5",
+      "blind_slot": "B",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The unresolved research_gaps entry accurately identifies the exact missing p95 measurement for Llama-3.1-8B/one RTX A5000/32 simultaneous users and supplies an exact-target next query. The complete pinned extraction has no target-model, A5000, or p95 occurrence, and its stated evaluation is OPT/LLaMA on A100/GCP with normalized mean latency. No partial numeric result is asserted or transferred. Rubric interpretation: the partial-findings qualification is conditional on offering a partial finding; a valid target gap plus query suffices.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 27.006707708118483,
+      "input_tokens": 18522,
+      "output_tokens": 189,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "kind": "supported",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports 4-bit NormalFloat storage, 16-bit BrainFloat computation, and weight gradients only for LoRA parameters (hence frozen base weights). The response omits the frozen requirement that computation follows dequantization of the stored weights, although E1 explicitly contains that mechanism. Treating a supporting quote as a substitute for an omitted requested explanation would be a rubric ambiguity; this strict review requires the answer itself to state it.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 18.393404457950965,
+      "input_tokens": 10426,
+      "output_tokens": 159,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 19200,
+          "end": 20200
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "kind": "supported",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The dtype distinction and LoRA-only weight gradients are supported by E1; its ending 'LoRA para' is an intelligible clipped reference to LoRA parameters. Only-LoRA gradients implies no base-weight update. The answer omits dequantization from storage to computation dtype, a frozen clause present in its evidence. Same strict completeness interpretation as slot A; omission, not an erroneous dtype or number.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 17.479421334108338,
+      "input_tokens": 10443,
+      "output_tokens": 166,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 19200,
+          "end": 19700
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dq",
+      "kind": "condition_binding",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": true,
+      "notes": "Correctly identifies quantization-constant overhead, blocksize-64 weights, and second blocksize 256. E1 explicitly supplies 0.5 overhead bits and 8-bit Floats/blocksize 256, but ends before the 0.127 result/formula; that claimed result is not explicitly established by the submitted excerpt or an answer-provided calculation. The full pinned source confirms 0.127 and 0.373, so this is missing submitted numeric support, not a false source value. The answer also omits the required approximately 0.373 saving and 8-bit second-stage datatype. Ambiguity flagged: accepting an unstated nested-overhead derivation from FP8/FP32 and block sizes could change the numeric-support flag, but would not cure the completeness omissions.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 18.87012350000441,
+      "input_tokens": 10642,
+      "output_tokens": 179,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 16400,
+          "end": 17400
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-dq",
+      "kind": "condition_binding",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": true,
+      "notes": "E1 supports second-stage 8-bit Floats and blocksize 256; E2 supports initial 0.5 overhead bits for blocksize-64 weights. Neither cited excerpt reaches the resulting 0.127 overhead or 0.373 saving, and the answer gives no calculation; the about-0.37 saving lacks explicit submitted numeric support despite being correct in the complete source. The answer omits the required 0.5-to-0.127 endpoints, weight blocksize 64, and second-stage 8-bit datatype. Same possible arithmetic-inference ambiguity as slot A, without changing the partial verdict.",
+      "status": "evidence_found",
+      "action_steps": 4,
+      "requests": 4,
+      "seconds": 29.343938292004168,
+      "input_tokens": 14768,
+      "output_tokens": 228,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 3,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 17000,
+          "end": 17500
+        },
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 16600,
+          "end": 17100
+        }
+      ]
+    },
+    {
+      "case_id": "qlora-target",
+      "kind": "target_gap",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "A valid unresolved gap names the exact missing Qwen3-8B/32768/RTX A5000 peak-training-VRAM measurement and provides an exact-target follow-up query. The complete extraction has no Qwen3, A5000, or 32768 occurrence; its 65B/single-48GB statement supplies no target measurement. No target estimate or transferred 65B figure is asserted. Partial findings are treated as conditional, not mandatory when no such finding is offered.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 28.99677783297375,
+      "input_tokens": 18407,
+      "output_tokens": 193,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "qlora-target",
+      "kind": "target_gap",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The gap accurately states that the extracted paper supplies no peak-training-VRAM measurement for Qwen3-8B/32768/RTX A5000, and the follow-up query retains all target conditions. Complete-source inspection supports that limitation. No 65B/48GB result is transferred and no target estimate is fabricated. As for slot A, no partial numerical finding is offered to qualify.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 20.636765250004828,
+      "input_tokens": 18683,
+      "output_tokens": 202,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "flash-warps",
+      "kind": "supported",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The claimed Q-vs-K/V partition matches the complete forward-pass source, and E1 supports the original split-K plus the start of FA2's split-Q sentence. However E1 ends after 'keeping K and V' and does not establish their accessibility to all warps or the elimination of inter-warp combination. It never reaches the claimed FA2 benefit. 'Avoids ... shared memory reads/writes' is also too broad unless restricted to the intermediate-output communication: the frozen source says reduction, not elimination of all shared-memory traffic. No backward no-synchronization claim is made.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 20.70092770899646,
+      "input_tokens": 10610,
+      "output_tokens": 181,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 20000,
+          "end": 21000
+        }
+      ]
+    },
+    {
+      "case_id": "flash-warps",
+      "kind": "supported",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "fail",
+      "condition_error": true,
+      "unsupported_numeric": true,
+      "notes": "Attributes the original FlashAttention split-K arrangement (K/V across 4 warps, shared Q) to FlashAttention-2. E1 explicitly labels that arrangement FlashAttention and describes it as inefficient, so it contradicts the claimed FA2 speed rationale. FA2 instead splits Q with shared K/V. The numeric 4-warps arrangement is attached to the wrong algorithm/operands; the claimed performance improvement is not supported by E1.",
+      "status": "evidence_found",
+      "action_steps": 4,
+      "requests": 4,
+      "seconds": 21.06996600003913,
+      "input_tokens": 15010,
+      "output_tokens": 214,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 3,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 20200,
+          "end": 20700
+        }
+      ]
+    },
+    {
+      "case_id": "flash-triton",
+      "kind": "condition_binding",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports the general approximately 2x FlashAttention comparison and 73% forward/63% backward throughput ceilings, but these do not answer the requested Triton forward-versus-backward speedup. The answer supplies neither approximately 1.3-1.5x Triton forward nor approximately 2x Triton backward, and omits A100 80GB SXM4. Its A100 attribution for those throughput ceilings is not established by E1's separate end-to-end A100 clause. The displayed numeric values themselves occur in E1; no explicit reversal or false Triton attribution is made.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 22.255096582928672,
+      "input_tokens": 10212,
+      "output_tokens": 173,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 7000,
+          "end": 8000
+        }
+      ]
+    },
+    {
+      "case_id": "flash-triton",
+      "kind": "condition_binding",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "The 1.3-1.5x forward and approximately 2x backward Triton mappings are correct and explicitly supported by E1. The answer gives only A100, omitting the frozen 80GB SXM4 configuration; its E1 starts after the GPU sentence and therefore supplies no GPU support at all. The preceding complete-source sentence confirms the hardware, but cannot repair the submitted citation.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 60.24896249989979,
+      "input_tokens": 10012,
+      "output_tokens": 170,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2307_08691v1",
+          "start": 23600,
+          "end": 24100
+        }
+      ]
+    },
+    {
+      "case_id": "flash-target",
+      "kind": "target_gap",
+      "arm": "base",
+      "blind_slot": "A",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "Valid unresolved gap and useful exact-target Qwen3-8B/single RTX A5000/32768 next query. Complete pinned text has no target model/device/length occurrence, describes A100 kernel benchmarks and 8x A100 GPT-style end-to-end training instead, and contains the apparent self-comparison typo. No A100 speedup is transferred and no typo is silently repaired into a target result.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 21.929986416827887,
+      "input_tokens": 18144,
+      "output_tokens": 181,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "flash-target",
+      "kind": "target_gap",
+      "arm": "v5",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "Provides an unresolved device/length-specific FlashAttention-2 training-speedup gap and a useful next query, but both omit the requested Qwen3-8B identity. Thus it does not identify the complete model/device/length target or seek that model-specific end-to-end result. No fabricated speedup, A100 transfer, or repair of the extracted self-comparison typo is asserted.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 28.708098290953785,
+      "input_tokens": 18481,
+      "output_tokens": 183,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "awq-profile",
+      "kind": "condition_binding",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports 310 ms to generate 20 tokens and 10 ms to summarize/process a 200-token prompt on RTX 4090, batch 1, FP16 NVIDIA FasterTransformer. The answer correctly supplies generation/20 tokens and device/batch/FP16, but leaves the 10 ms task as merely 'latency for 200 tokens', and omits LLaMA-7B and NVIDIA FasterTransformer. These missing frozen conditions prevent pass; no swapped timings or false TinyChat attribution.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 20.514777125092223,
+      "input_tokens": 10309,
+      "output_tokens": 182,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 20400,
+          "end": 20900
+        }
+      ]
+    },
+    {
+      "case_id": "awq-profile",
+      "kind": "condition_binding",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports both task/token/time mappings and RTX 4090/batch 1/NVIDIA FasterTransformer, all correctly reported. The answer omits the frozen LLaMA-7B and FP16 conditions. They appear in the question/source but are not explicitly retained in the submitted answer under the strict every-requirement rule. No false task mapping or TinyChat attribution.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 16.354795665945858,
+      "input_tokens": 10309,
+      "output_tokens": 194,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 20400,
+          "end": 20900
+        }
+      ]
+    },
+    {
+      "case_id": "awq-protocol",
+      "kind": "supported",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "partial",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 supports fixed input length 4, generated length 200, median latency, RTX 4090 and Jetson Orin, all correctly reported. The answer omits the explicitly requested/frozen batch size 1, despite E1 containing it. No p95 or initial-profile substitution.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 20.84493116592057,
+      "input_tokens": 10603,
+      "output_tokens": 179,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 33800,
+          "end": 34800
+        }
+      ]
+    },
+    {
+      "case_id": "awq-protocol",
+      "kind": "supported",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "E1 explicitly supports all requested Figure 9 conditions: prompt 4 tokens, generate 200, batch 1, median latency, RTX 4090 and Jetson Orin. Every frozen requirement is retained; no task/count/statistic swap.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 16.798150499816984,
+      "input_tokens": 10402,
+      "output_tokens": 175,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 34000,
+          "end": 34500
+        }
+      ]
+    },
+    {
+      "case_id": "awq-target",
+      "kind": "target_gap",
+      "arm": "v5",
+      "blind_slot": "A",
+      "verdict": "pass",
+      "condition_error": false,
+      "unsupported_numeric": false,
+      "notes": "Valid unresolved research_gaps entry names TinyChat versus HuggingFace FP16 on RTX A5000/batch 8/8192-token prompt and provides the same exact-target next query. Complete pinned source has no A5000 or 8192 occurrence and binds its reported RTX4090 speedup to a different protocol. No partial speedup is offered or transferred; qualifying partial findings is conditional here.",
+      "status": "no_evidence",
+      "action_steps": 5,
+      "requests": 5,
+      "seconds": 27.382911750115454,
+      "input_tokens": 19892,
+      "output_tokens": 200,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [
+        3
+      ],
+      "inspection_steps": 2,
+      "source_quote_spans": []
+    },
+    {
+      "case_id": "awq-target",
+      "kind": "target_gap",
+      "arm": "base",
+      "blind_slot": "B",
+      "verdict": "fail",
+      "condition_error": true,
+      "unsupported_numeric": true,
+      "notes": "The bare '2.7-3.9x speedup' answers the requested RTX A5000/batch 8/8192-prompt setup without qualification. E1 explicitly binds that range to 4090/Llama-2,MPT,Falcon, and does not establish the target conditions; the complete source binds the benchmark to batch 1/prompt 4/generated 200. This is an unsupported target numeric result and a condition-transfer error. No unresolved gap or next query is supplied.",
+      "status": "evidence_found",
+      "action_steps": 3,
+      "requests": 3,
+      "seconds": 14.256712417118251,
+      "input_tokens": 10217,
+      "output_tokens": 142,
+      "execution_error_steps": [],
+      "submission_rejection_steps": [],
+      "inspection_steps": 2,
+      "source_quote_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 34400,
+          "end": 34900
+        }
+      ]
+    }
+  ]
+}

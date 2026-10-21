@@ -1,6 +1,7 @@
 # Base versus v5: matched assigned-paper development comparison
 
-Status: prepared locally; **no new model inference, GPU activation or training**.
+Status: preparation frozen; the separately approved live run is complete.
+See [the live result](2026-10-20-base-v5-reader-live-result.md). No training was run.
 This compares the existing base and adapter, rather than treating the preceding
 prompt experiment as evidence that training helped. The preceding live result
 was one pass and one fail, including a temperature/speedup reversal.
@@ -91,7 +92,8 @@ One new session, 12 questions × 2 models = 24 cells, one attempt per cell:
 
 The earlier two-case live allowance was consumed. A **new plan-bound activation
 record** must explicitly approve these larger limits and record a freshly checked
-GPU rate before running. No approval record has been created. This requirement
+GPU rate before running. This was subsequently recorded in `live-approval.json`
+(commit `e679c62`) after the user said “ok do it.” This requirement
 comes from the existing task-by-task approval workflow and the earlier bounded
 allowance, not a new training or infrastructure requirement.
 At the previous $0.69/hour quote, 15 minutes is about $0.17; that is conditional
@@ -144,5 +146,6 @@ fixes. Initial prompts range from 2,472 to 2,516 tokens, identical across the
 paired arms. The preparation pins 150 implementation files. Full evidence is in
 [validation.json](../../examples/base-v5-reader-comparison/validation.json) and
 [independent-review.json](../../examples/base-v5-reader-comparison/independent-review.json).
-There are **no new live comparison results**. Scripted responses do not show
-whether base or v5 is better. The live-attempt marker has not been created.
+These readiness checks preceded live activation. The later live run and its
+claim-level findings are recorded in the linked live result; the original
+preparation and readiness artifacts remain unchanged.
