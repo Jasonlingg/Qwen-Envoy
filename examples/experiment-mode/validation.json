@@ -1,0 +1,68 @@
+{
+  "schema_version": "experiment-mode-task1-validation-v1",
+  "date": "2026-10-21",
+  "scope": "Local connected experiment context; not a live model or optimization evaluation",
+  "implementation_commits": [
+    "2e42ef4",
+    "3e12664",
+    "443c033"
+  ],
+  "focused_tests": {
+    "passed": 112,
+    "failed": 0,
+    "duration_seconds": 20.2
+  },
+  "full_tests": {
+    "passed": 1850,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 3,
+    "warning_kind": "Existing SWIG deprecations",
+    "duration_seconds": 114.61,
+    "log_path": "out/experiment-mode-task1/full-tests.txt",
+    "log_sha256": "3a5aaeaef8e9bf0ffb0f0d7dfbedce8495d3b1e3647e02893a5bb52ac537d65e",
+    "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+  },
+  "ruff": "passed on all ten changed implementation and test files",
+  "git_diff_check": "passed",
+  "implementation_sha256": {
+    "scripts/experiment_mode_mcp.py": "b12392acb8b5c2ddc3a24b1ff1a14661c6f003811b02cf16ffb9b76eae1cc079",
+    "scripts/ml_experiment_mcp.py": "bc8b4bcc546b6b254f1f9356bf4737c59f3c7cdbb04762cc4f4a9884a74f103f",
+    "src/product/experiment_context.py": "f7fd6c47f1f64554919414e40e9da66da8ac44ae1502471a2a9be91f3d54c620",
+    "src/product/ml_experiment_models.py": "b023e2375824982cdeb9bdf47af09302569ab4718131ee2c47cfa3eabaa65dfc",
+    "src/product/ml_experiment_store.py": "389d0185f696157caab90269a0999fe906878bbe010806e476caab6d64f25655",
+    "src/product/ml_experiment_outcomes.py": "aeb4261d98ebe6428ed7b8f26266920e9bd8cd5c8104e4c93f14ce2525a3225f",
+    "src/product/ml_experiment_research_notes.py": "dc047f06056aca3237c192341d98c0b93578b77f8a63a54acd0eae3ed8c2b1f9",
+    "src/product/ml_experiment_markdown.py": "57c5c1119c622ecb7549a5ca2e0ca49a9241f6dba77cea0345052b01ed49ac04",
+    "tests/test_experiment_mode_mcp.py": "06b38c44d09277b8a72217be2610db4c62f10e75a14915b8776bd681cb511921",
+    "tests/test_ml_experiment_research_notes.py": "40b6c222ba8f70b43be09b4773fb0d649ebc31517e33293fa7a5a6970d64b941"
+  },
+  "protected_files_unchanged_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+  },
+  "model_requests": 0,
+  "paid_model_calls": 0,
+  "gpu_resources_provisioned": 0,
+  "optimization_experiments_executed": 0,
+  "real_mcp_integration": "Fixture source inspection, note attachment, revision/freeze, synthetic supplied result, source removal, restart and resumption passed",
+  "real_stdio_integration": "Two server launches from another working directory; save, source-checked note and resume passed without endpoint/tokenizer/Docker startup",
+  "human_review": null,
+  "limitations": [
+    "No live native-assistant experiment walkthrough",
+    "No new live Qwen investigation",
+    "No benchmark performance or productivity result",
+    "Quote and artifact checks establish provenance, not semantic support",
+    "Qwen report attachment is an explicit host summary, not automatic import",
+    "Context recap can be truncated; full and older records remain available by ID"
+  ]
+}
