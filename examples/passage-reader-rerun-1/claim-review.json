@@ -1,0 +1,85 @@
+{
+  "reviewer": "implementing assistant; source-based claim review, not independent human or calibrated judge",
+  "human_review": null,
+  "training_reward": false,
+  "quality_rule": "not_met",
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "judgment": "requested facts supported by submitted evidence",
+      "answer": "QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. Gradients are computed only for LoRA parameters, which are stored in 16-bit BrainFloat.",
+      "claims": [
+        {
+          "claim": "Usual weight storage: 4-bit NormalFloat",
+          "supported": true,
+          "source": "E2, 19416..19735: usually 4-bit NormalFloat"
+        },
+        {
+          "claim": "Computation: 16-bit BrainFloat/BFloat16",
+          "supported": true,
+          "source": "E1 and E2: dequantization to BFloat16 and 16-bit computation"
+        },
+        {
+          "claim": "Weight gradients only for LoRA parameters; those parameters use 16-bit BrainFloat",
+          "supported": true,
+          "source": "E2: only compute weight gradients for LoRA parameters which use 16-bit BrainFloat"
+        }
+      ],
+      "caveat": "Answer omits the word usually, but the question asks for usual dtypes; do not generalize to every possible QLoRA configuration."
+    },
+    {
+      "case_id": "awq-protocol",
+      "judgment": "all six requested benchmark fields supported by its submitted E1, 33939..34439",
+      "answer": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+      "claims": [
+        {
+          "claim": "Prompt length 4 tokens",
+          "supported": true,
+          "source": "submitted E1"
+        },
+        {
+          "claim": "Generated length 200 tokens",
+          "supported": true,
+          "source": "submitted E1"
+        },
+        {
+          "claim": "Batch size 1",
+          "supported": true,
+          "source": "submitted E1"
+        },
+        {
+          "claim": "Median latency, not p95",
+          "supported": true,
+          "source": "submitted E1"
+        },
+        {
+          "claim": "RTX 4090",
+          "supported": true,
+          "source": "submitted E1"
+        },
+        {
+          "claim": "Jetson Orin",
+          "supported": true,
+          "source": "submitted E1"
+        }
+      ]
+    },
+    {
+      "case_id": "paged-target",
+      "judgment": "incomplete; not an accepted abstention or useful partial-findings answer",
+      "accepted_answer": null,
+      "missing_measurement_invented": false,
+      "read_two_windows": true,
+      "gap_recorded": [
+        {
+          "missing": "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users",
+          "follow_up_query": "What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?",
+          "reported_at_step": 4
+        }
+      ],
+      "analysis": "The inspected windows cover OPT 13B/66B/175B and LLaMA 13B on A100/GCP, and normalized mean per-token latency. They do not establish the requested Llama-3.1-8B/A5000/32-user p95. Qwen abstained at step 3 without report_gap, then recorded the gap after feedback at step 4, with no step left for required final abstention. It returned no substantive partial findings about the actual models, hardware or latency definition. Its next query repeats the target setup; no next search was executed or verified.",
+      "scope": "Absence in these two inspected windows only; not proof of absence across the full paper or literature."
+    }
+  ],
+  "interpretation": "Two narrow evidence extractions succeeded with the unchanged v5 model. The gap case still missed the action-order contract. This does not establish a general reading capability, useful autonomous discovery, fine-tuning gain, or benefit over ordinary host research. Both cases are familiar exposed development inputs with relevant windows supplied by the host."
+}

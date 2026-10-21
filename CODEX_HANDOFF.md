@@ -1,5 +1,23 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 21: repaired-harness live rerun completed.** User said “ok rerun it”.
+> One new allowance and `out/passage-reader-three-case-RERUN-1` marker were consumed;
+> the first attempt remains frozen. [Actual rerun](examples/passage-reader-rerun-1/README.md):
+> QLoRA 3 calls and AWQ 2 calls produced source-supported requested facts under
+> implementing-assistant review. PagedAttention's missing target remained incomplete
+> after 4 calls: two successful reads, premature abstention, then a gap report at
+> the last step. No target p95 was invented, but no substantive partial findings
+> were returned and the overall acceptance rule failed. All live reads used literal
+> lengths, so arithmetic normalization itself was not exercised. Exact read examples
+> also changed; no causal isolation or model-weight improvement is claimed.
+> Nine actual requests, 25,784 input + 518 output = 26,302 reported tokens, no
+> inference resubmissions. Full suite: 1925 passed in 160.61 seconds. Fresh reads
+> at 23:19:41 UTC verified full endpoint configuration restored, workers 0/0,
+> no workers/pending jobs; all six owned Docker containers were absent. No new
+> training/reward work, reserved evaluation access or further paid attempt is
+> authorized by this rerun. Keep the remaining gap-protocol issue separate from
+> factual extraction ability. Both original product gates remain unproven.
+
 > **October 21: real Qwen passage trial, partial success.** The combined
 > experiment MCP now has an opt-in `read_experiment_passages` tool; default mode
 > still makes no model calls. [Configure it explicitly](docs/PASSAGE_READER.md).

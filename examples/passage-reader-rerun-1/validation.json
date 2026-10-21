@@ -1,0 +1,139 @@
+{
+  "status": "two_supported_answerable_cases_one_incomplete_gap",
+  "quality_rule": "not_met",
+  "human_review": null,
+  "scope_commit": "2ffb7d9",
+  "frozen_preparation_and_live_commit": "df8f243",
+  "post_live_implementation_changes": false,
+  "focused_tests": {
+    "passed": 25,
+    "seconds": 12.48
+  },
+  "full_tests": {
+    "passed": 1925,
+    "seconds": 160.61,
+    "skipped": 0,
+    "warnings": 3
+  },
+  "full_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+  "artifact_checks": {
+    "actual_first_requests_match_frozen": true,
+    "all_nine_local_prompt_counts_equal_provider_usage": true,
+    "all_nine_completions_finish_stop": true,
+    "all_submitted_quotes_equal_cached_source": true,
+    "all_reports_attached_as_notes": true,
+    "identical_MCP_retries_dispatch_zero_additional_requests": true,
+    "V1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "effective_prompt_sha256": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "public_secret_pattern_scan": "passed",
+    "owned_containers_absent": 6,
+    "protected_file_hashes_unchanged": 11,
+    "prior_artifact_hashes_unchanged": 381
+  },
+  "shutdown": {
+    "checked_at": "2026-10-21 23:19:41 UTC",
+    "endpoint": {
+      "id": "q05pjrvguakieg",
+      "workers": {
+        "idleTimeout": 60,
+        "max": 0,
+        "min": 0
+      },
+      "gpu": {
+        "allowedCudaVersions": [],
+        "count": 1,
+        "excludedTypes": [
+          "NVIDIA GeForce RTX 3090",
+          "NVIDIA L4",
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+        ],
+        "minCudaVersion": "13.0",
+        "pools": [
+          "AMPERE_24"
+        ]
+      },
+      "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"
+    },
+    "health": {
+      "jobs": {
+        "completed": 165,
+        "failed": 1,
+        "inProgress": 0,
+        "inQueue": 0,
+        "retried": 0
+      },
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      }
+    },
+    "workers": {
+      "endpointVersion": 9,
+      "summary": {
+        "idle": 0,
+        "initializing": 0,
+        "running": 0,
+        "throttled": 0,
+        "total": 0,
+        "unhealthy": 0
+      },
+      "workers": []
+    },
+    "full_configuration_matches_before": true
+  },
+  "limitations": [
+    "Three exposed development cases with host-selected relevant windows; not held-out retrieval or generalization.",
+    "Implementing-assistant semantic review; independent human review remains blank.",
+    "Arithmetic normalization and literal hints both changed; all live reads used literals, so arithmetic itself was not exercised.",
+    "Same checkpoint; no training, reward or RL change.",
+    "One gap action-order failure; no substantive partial findings returned.",
+    "No host-only effort, cost or answer-quality comparison.",
+    "In-process real MCP plus remote Qwen and Docker; not a native-host install or new optional stdio deployment test.",
+    "Runtime/request/token guards are local; provider invoice unknown and no dollar ceiling enforced."
+  ],
+  "artifact_sha256": {
+    "README.md": "7297b81cb8c2828fabfa0732e0045bc728ee97b0d6e13884c4ac1eacfb538e57",
+    "authorization.json": "859267f1231188a502a4ca96b484bf20f5773669264cee524501abaf4dd438f4",
+    "cases.json": "bd9fcfb13de98b85e29fd79528630c7ee342154c4f2280bd04cf924c6b5b18e5",
+    "claim-review.json": "d99771e46536ce5c94b93dd7eda1a48f62729ae66420209209a3a572241201b9",
+    "configuration-restoration.json": "d926492f8a041f486ec8589ea480198d7b5f4444b08233961404ebbf222fcdf9",
+    "docker-proof.json": "5ab72dda55b79861571784e62e83f61830f543588bfdd2fcb14d7ebabaa11bc1",
+    "endpoint-final.json": "0d91f9bf8910693d39bb117a345b3feee5cadf263e4be60d97e600bb85a27615",
+    "experiment-config.json": "70939167073bb4a2bb3131d19743cd871dbf9e24fe257f0806672b4cf6212f34",
+    "lifecycle.json": "cee4fcbc177e6ebdcadac0b9a80231e82a6d60f610a6a52e308f06d494a315b5",
+    "live/awq-protocol.json": "a1e7118fd2b4ad09dbc38946f9968dd9a8c898e122bd47d2582c96274cb56222",
+    "live/awq-protocol.resume.json": "254f90f6461e48b7d9ddca3cd350d2a9b9421af56b0ba07d0ee0de22dc08ae64",
+    "live/paged-target.json": "0b2565fe8cee72ab315363dd9c57df7063bfedbb4b2c8319a60f09e6b2250a42",
+    "live/paged-target.resume.json": "49a65421a7e02d466147a9be10d0c68fbea796e21a4fec16ffccb057c100aed1",
+    "live/qlora-dtypes.json": "72d6bd426400861b6cfdb2ce2178f06b8a1476ce9a85bfaf1c43e341478410b4",
+    "live/qlora-dtypes.resume.json": "31f935764e8616b3d8c2d8fab82e9dcddc830b5b15827bc552b338197046470f",
+    "live/records/experiment_56c272aa0e3d4f969eeab339e997081f.json": "f79de119ab0d2b9bf1b5d8cf449e80cb8c828f263c90c0029dd2d93032bea233",
+    "live/records/experiment_88d01833eb2f44a19e48d23f5cc94b0a.json": "5ad582fd2bd0855a4af04bf702e84cc20ad96d2f112f38c29a01601fc7030c6d",
+    "live/records/experiment_a633de21c3184bec8cae57a548086ce4.json": "37d3e917c6b67c9f01ffcac632e1ed8c9ecf1890d7ae9b1028c42191eb6e67f3",
+    "live/records/object_09869971c486df3e3b93ce766c50593d2dd1b1f165573075472aeb0adb532ddf.json": "09869971c486df3e3b93ce766c50593d2dd1b1f165573075472aeb0adb532ddf",
+    "live/records/object_2862c7913b284fd1a208fb326ef5f2a56043db7ae6b1bec3ae2e2f353727665f.json": "2862c7913b284fd1a208fb326ef5f2a56043db7ae6b1bec3ae2e2f353727665f",
+    "live/records/object_61ea4b732afbb8168aa1548a352c18ed078fbe517499ae528590d628c455cf5f.json": "61ea4b732afbb8168aa1548a352c18ed078fbe517499ae528590d628c455cf5f",
+    "live/records/object_743c1fec522cee483dc31bdc1f519e39786c0f749ea20318996d024e44b8f84e.json": "743c1fec522cee483dc31bdc1f519e39786c0f749ea20318996d024e44b8f84e",
+    "live/records/object_7846da47034861fa961cc886e6506d798f282b27dc045258e11319e8f659ba7e.json": "7846da47034861fa961cc886e6506d798f282b27dc045258e11319e8f659ba7e",
+    "live/records/object_ab7a1c3082583c742c78416ad4698397f1bd8b8e2365c711db707138128e5283.json": "ab7a1c3082583c742c78416ad4698397f1bd8b8e2365c711db707138128e5283",
+    "live/reports/experiment_982ee33d17c5f491049c1640abda2630.json": "4b633562c61d8d8caed9464af38521289c620cfe663f945d0671e4acf0010f81",
+    "live/reports/experiment_ac5ba540c68a108dfc005d0a94f6c98b.json": "9aaf67b0ec0c4d98e2581ababfa08393b735db3cddfca0027e36aec524eae00b",
+    "live/reports/experiment_ca508754cf608ca0190696000f56b3ce.json": "bdf64a8fdded0d794716a977146deef3330f0d5ef2a01c74e0e21d3060526ef1",
+    "live/reports/object_37a4851ae71cc06edba745c65a2caa7f6c1e17607a9fd28dfd7fda17cf6d07d6.json": "37a4851ae71cc06edba745c65a2caa7f6c1e17607a9fd28dfd7fda17cf6d07d6",
+    "live/reports/object_5bbfe2068695b83662b1c0976b4a73e5afbfd923c67fe310c50d50280bc26af7.json": "5bbfe2068695b83662b1c0976b4a73e5afbfd923c67fe310c50d50280bc26af7",
+    "live/reports/object_b1990a24b9424f99b3d5936fefa1acd178ba8125caaab620cdbe3f8a72122e00.json": "b1990a24b9424f99b3d5936fefa1acd178ba8125caaab620cdbe3f8a72122e00",
+    "live/summary.json": "a402f902384cee12c8e399aa0b4beef815f459f2fa80c519ac182650ead0abf3",
+    "outcome.json": "982468e6b477289d34ff07fb82e666e467eb01ff2cb0ab967bafcef4812eb5b2",
+    "plan.json": "e353bc3336ffdcf590c1dba532bbd43dcaf1e0f194b2f7d288a008e6b01de3fc",
+    "preflight.json": "f945932f854065bb5dd523cb387665a43ca9175843c8823b6bf4d9b69a86ade4",
+    "review-input.json": "91d0eb113ed4259f67ba7b94e49020bc609fc6d20e5c6f62260050863e271384",
+    "session.requests.jsonl": "09ebabab514a791f2bb9780a38ef5c8ae94c4eba4c3b12832e91627940f864bf",
+    "startup-log-reads.jsonl": "3a6f09815bbcfe733e7abae74cb93a4add45f6dc808e591397893bfa65ec74cb",
+    "system-prompt.txt": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "worker-identity.json": "b8c0c3e9086f758bf60a8badc55f4ac56753c89e89aa2ae8c035f4899542cef5"
+  }
+}

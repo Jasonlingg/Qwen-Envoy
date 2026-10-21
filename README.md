@@ -56,8 +56,9 @@ out/my-experiment-demo`; it needs the repository dependencies with `mcp` and
 `vault` extras, and makes no model calls or GPU launches. This personal tooling
 does not change the QASPER study's results or establish a research-quality win.
 An optional [Qwen passage reader](docs/PASSAGE_READER.md) now connects selected
-source windows to saved experiment notes. Its first live trial returned one
-supported answer and two incomplete cases; the overall test did not pass.
+source windows to saved experiment notes. A [repaired-harness live rerun](examples/passage-reader-rerun-1/README.md)
+returned two supported answers under assistant source review and one incomplete
+gap case; the overall test still did not pass. This is not a model-training gain.
 
 **No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
 It includes the saved runs and makes no model calls; no GPU, Docker, login,

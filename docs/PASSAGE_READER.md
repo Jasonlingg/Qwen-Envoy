@@ -105,10 +105,20 @@ Focused local checks exercise source bounds, unread citation rejection, durable
 attempts, stale revisions, MCP save/resume, prompt identity and actual Docker with
 scripted model replies. A scripted success is never a live-Qwen quality result.
 
-The live attempt returned one supported AWQ answer and two incomplete cases.
+The first live attempt returned one supported AWQ answer and two incomplete cases.
 The literal-only controller rejected valid end-minus-start read lengths, wasting
 limited actions; one replacement also exceeded its source window. The arithmetic
-normalization and explicit read-call metadata were added afterward and verified
-locally. They have not been live retested. The complete three-case acceptance
-rule was not met; serving success and one good extraction do not establish
-reliable research quality or an advantage over ordinary assistant reading.
+normalization and explicit read-call metadata were added afterward.
+
+The separately authorized [live rerun](../examples/passage-reader-rerun-1/README.md)
+then returned supported QLoRA and AWQ answers under implementing-assistant source
+review. All five passage reads succeeded with literal lengths. The missing-target
+case read both windows, attempted abstention before reporting its gap, and used
+its last action to record the gap after feedback. It remained incomplete and
+returned no substantive partial findings. No target latency was invented.
+The overall three-case rule still failed. Nine requests used 26,302 reported
+tokens; full configuration restoration and zero workers/jobs were verified.
+The same exposed inputs and unchanged model do not establish generalization,
+fine-tuning improvement or an advantage over ordinary assistant reading. Live
+literal reads did not exercise arithmetic normalization; both it and the new
+read examples changed between attempts, so their effects are not isolated.

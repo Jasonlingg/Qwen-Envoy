@@ -1,0 +1,298 @@
+{
+  "schema_version": "qwen-passage-read-v1",
+  "experiment_id": "experiment_56c272aa0e3d4f969eeab339e997081f",
+  "brief_revision": 1,
+  "note_id": "passage_read",
+  "request_sha256": "8a784eae4e26a0abf3edfd75f20d5397145420ffcada0b40db3d06019b2813c2",
+  "source_scope": {
+    "version": "passages-v1",
+    "doc_id": "arxiv_2309_06180v1",
+    "windows": [
+      {
+        "start": 44228,
+        "end": 44730
+      },
+      {
+        "start": 47000,
+        "end": 47512
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+      "print(passage(\"arxiv_2309_06180v1\", 47000, 512))"
+    ],
+    "source_text_sha256": "e4c82d34b67ddb361c3282c342476ba61ec19e5b7c381895c137e90b7bce6add",
+    "counts_as_source_inspection": false
+  },
+  "note_attached": true,
+  "semantic_support": "not_reviewed",
+  "data_kind": "recorded",
+  "warning": "Candidate evidence from selected passages; host semantic review required.",
+  "packet": {
+    "schema_version": "research-evidence-packet-v1",
+    "investigator_version": "qwen-product-investigator-v1",
+    "retriever_protocol": "code-execution",
+    "retriever": "qwen_investigator",
+    "retriever_run_id": "cbd0e057-6047-4ab2-a6ac-89e91068b46d",
+    "question_id": "paper_c6758ae8fd111977",
+    "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search.",
+    "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+    "source_domain": "public_papers",
+    "protocol_variant": "default",
+    "system_prompt_sha256": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "status": "incomplete",
+    "candidate_claims": [],
+    "evidence": [],
+    "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "execution": "docker_only",
+    "max_steps": 4,
+    "trajectory": [
+      {
+        "step": 1,
+        "action": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+        "source_inspection": true,
+        "observation": "{'doc_id': 'arxiv_2309_06180v1', 'start': 44228, 'end': 44730, 'text': 'Model and server configurations. We use OPT (Zhang et al., 2022) models with 13B, 66B, and 175B parameters and LLaMA (Touvron et al., 2023) with 13B parameters for our evaluation. 13B and 66B are popular sizes for LLMs as shown in an LLM leaderboard (ORG, 2023), while 175B is the size of the famous GPT-3 (Brown et al., 2020) model. For all of our experiments, we use A2 instances with NVIDIA A100 GPUs on Google Cloud Platform. The detailed model sizes and server configurations are shown in Table 1.'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+      },
+      {
+        "step": 2,
+        "action": "print(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+        "source_inspection": true,
+        "observation": "{'doc_id': 'arxiv_2309_06180v1', 'start': 47000, 'end': 47512, 'text': 'Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request’s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+      },
+      {
+        "step": 3,
+        "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+        "observation": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [1 steps left.]"
+      },
+      {
+        "step": 4,
+        "action": "report_gap(missing=\"No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users\", follow_up_query=\"What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?\")",
+        "research_gap": {
+          "missing": "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users",
+          "follow_up_query": "What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?",
+          "reported_at_step": 4
+        },
+        "observation": "Gap recorded for host review; this is not proof of absence. No search was launched. Continue inspecting or submit using the existing evidence/abstention rules. [0 steps left.]"
+      }
+    ],
+    "model_requests_attempted": 4,
+    "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2309_06180v1",
+      "windows": [
+        {
+          "start": 44228,
+          "end": 44730
+        },
+        {
+          "start": 47000,
+          "end": 47512
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+        "print(passage(\"arxiv_2309_06180v1\", 47000, 512))"
+      ],
+      "source_text_sha256": "e4c82d34b67ddb361c3282c342476ba61ec19e5b7c381895c137e90b7bce6add",
+      "counts_as_source_inspection": false
+    },
+    "passage_scope_sha256": "fc01394e77ed045203741058e82ab98ac46bc2b6af4fd6dd94ffe4b183b3122e",
+    "inspected_passage_windows": [
+      {
+        "start": 44228,
+        "end": 44730
+      },
+      {
+        "start": 47000,
+        "end": 47512
+      }
+    ],
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+      "doc_id": "arxiv_2309_06180v1",
+      "arxiv_id": "2309.06180v1",
+      "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "04ea91c7aceb63af3d117a1954693467e3826c5b064e03a4e5968f8860e88a7f",
+    "research_gaps": [
+      {
+        "missing": "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users",
+        "follow_up_query": "What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?",
+        "reported_at_step": 4
+      }
+    ],
+    "reader_guidance": "passages-v1",
+    "document_tool_steps": 2,
+    "inspection_steps": 2
+  },
+  "status": "incomplete",
+  "evidence": [],
+  "candidate_answer": null,
+  "verified": {
+    "status": "incomplete",
+    "source_domain": "public_papers",
+    "retriever": "qwen_code_execution",
+    "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+    "candidate_answer": null,
+    "evidence": [],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+    "uncertainty": null,
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "model_requests_attempted": 4,
+    "trajectory_steps": 4,
+    "prompt_hash": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "4474ff786e1792468c31ee2d3cf41f31b6ac131e41a527c194a77dc8d3069c3f",
+      "doc_id": "arxiv_2309_06180v1",
+      "arxiv_id": "2309.06180v1",
+      "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "04ea91c7aceb63af3d117a1954693467e3826c5b064e03a4e5968f8860e88a7f",
+    "research_gaps": [
+      {
+        "missing": "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users",
+        "follow_up_query": "What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?",
+        "reported_at_step": 4,
+        "review_status": "unreviewed_model_report",
+        "absence_proven": false
+      }
+    ],
+    "gap_report_error": null,
+    "reader_guidance": "passages-v1",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2309_06180v1",
+      "windows": [
+        {
+          "start": 44228,
+          "end": 44730
+        },
+        {
+          "start": 47000,
+          "end": 47512
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+        "print(passage(\"arxiv_2309_06180v1\", 47000, 512))"
+      ],
+      "source_text_sha256": "e4c82d34b67ddb361c3282c342476ba61ec19e5b7c381895c137e90b7bce6add",
+      "counts_as_source_inspection": false
+    },
+    "inspected_passage_windows": [
+      {
+        "start": 44228,
+        "end": 44730
+      },
+      {
+        "start": 47000,
+        "end": 47512
+      }
+    ],
+    "absence_scope": "selected inspected passages only; not the whole paper"
+  },
+  "research_note_input": {
+    "note_id": "passage_read",
+    "question": "From this extracted paper, what measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 simultaneous users? If unavailable, distinguish the missing measurement from any relevant partial findings and suggest a next search.",
+    "findings": [],
+    "references": [],
+    "origin": "qwen_research",
+    "data_kind": "recorded",
+    "uncertainties": [
+      "Host semantic review is pending; selected passages only.",
+      "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users"
+    ]
+  },
+  "research_note_sha256": "61ea4b732afbb8168aa1548a352c18ed078fbe517499ae528590d628c455cf5f",
+  "budget": {
+    "requests_max": 4,
+    "tokens_max": 32768,
+    "requests_dispatched": 4,
+    "requests_remaining": 0,
+    "tokens_reserved": 32768,
+    "usage_complete": true,
+    "records": [
+      {
+        "request": 1,
+        "prompt_tokens_local": 2670,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2670,
+          "completion_tokens": 33
+        }
+      },
+      {
+        "request": 2,
+        "prompt_tokens_local": 2934,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2934,
+          "completion_tokens": 33
+        }
+      },
+      {
+        "request": 3,
+        "prompt_tokens_local": 3149,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 3149,
+          "completion_tokens": 16
+        }
+      },
+      {
+        "request": 4,
+        "prompt_tokens_local": 3236,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 3236,
+          "completion_tokens": 82
+        }
+      }
+    ],
+    "transport_failed": false,
+    "provider_dollar_cap": false
+  }
+}

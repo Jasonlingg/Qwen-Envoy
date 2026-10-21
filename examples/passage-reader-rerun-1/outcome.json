@@ -1,0 +1,198 @@
+{
+  "schema_version": "passage-reader-rerun-result-v1",
+  "data_kind": "recorded_live_model",
+  "quality_rule": "not_met",
+  "human_review": null,
+  "assistant_review_supported_answerable_cases": 2,
+  "incomplete_cases": 1,
+  "prior_attempt_supported_answerable_cases": 1,
+  "actual_requests": 9,
+  "usage": {
+    "prompt_tokens": 25784,
+    "completion_tokens": 518,
+    "total_tokens": 26302
+  },
+  "tokens_reserved": 73728,
+  "max_requests": 12,
+  "max_tokens_reserved": 98304,
+  "max_seconds": 900,
+  "live_implementation_commit": "df8f243d6618dd5222273b8eb1ac56ddd2629f16",
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "status": "evidence_found",
+      "requests": 3,
+      "candidate_answer": "QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. Gradients are computed only for LoRA parameters, which are stored in 16-bit BrainFloat.",
+      "experiment_id": "experiment_88d01833eb2f44a19e48d23f5cc94b0a",
+      "note_attached": true,
+      "source_spans": [
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 12848,
+          "end": 13131
+        },
+        {
+          "doc_id": "arxiv_2305_14314v1",
+          "start": 19416,
+          "end": 19735
+        }
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2305_14314v1', 'start': 12848, 'end': 13131, 'text': 'QLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit.'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2305_14314v1', 'start': 19416, 'end': 19735, 'text': 'To summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: QLoRA stores weights in 4-bit NormalFloat and computes in 16-bit BrainFloat. Gradients are computed only for LoRA parameters, which are stored in 16-bit BrainFloat. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":12848,\"end\":13131},{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19416,\"end\":19735}]",
+          "source_inspection": false,
+          "result": "Exact spans accepted; semantic support unreviewed."
+        }
+      ],
+      "research_gaps": []
+    },
+    {
+      "case_id": "awq-protocol",
+      "status": "evidence_found",
+      "requests": 2,
+      "candidate_answer": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+      "experiment_id": "experiment_a633de21c3184bec8cae57a548086ce4",
+      "note_attached": true,
+      "source_spans": [
+        {
+          "doc_id": "arxiv_2306_00978v6",
+          "start": 33939,
+          "end": 34439
+        }
+      ],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2306_00978v6\", 33939, 500))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2306_00978v6', 'start': 33939, 'end': 34439, 'text': 'In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama \u2021\u2021 \u2021 https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 2,
+          "action": "SUBMIT: The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":33939,\"end\":34439}]",
+          "source_inspection": false,
+          "result": "Exact spans accepted; semantic support unreviewed."
+        }
+      ],
+      "research_gaps": []
+    },
+    {
+      "case_id": "paged-target",
+      "status": "incomplete",
+      "requests": 4,
+      "candidate_answer": null,
+      "experiment_id": "experiment_56c272aa0e3d4f969eeab339e997081f",
+      "note_attached": true,
+      "source_spans": [],
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2309_06180v1', 'start': 44228, 'end': 44730, 'text': 'Model and server configurations. We use OPT (Zhang et al., 2022) models with 13B, 66B, and 175B parameters and LLaMA (Touvron et al., 2023) with 13B parameters for our evaluation. 13B and 66B are popular sizes for LLMs as shown in an LLM leaderboard (ORG, 2023), while 175B is the size of the famous GPT-3 (Brown et al., 2020) model. For all of our experiments, we use A2 instances with NVIDIA A100 GPUs on Google Cloud Platform. The detailed model sizes and server configurations are shown in Table 1.'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2309_06180v1', 'start': 47000, 'end': 47512, 'text': 'Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request\u2019s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [1 steps left.]"
+        },
+        {
+          "step": 4,
+          "action": "report_gap(missing=\"No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users\", follow_up_query=\"What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?\")",
+          "source_inspection": false,
+          "result": "Gap recorded for host review; this is not proof of absence. No search was launched. Continue inspecting or submit using the existing evidence/abstention rules. [0 steps left.]"
+        }
+      ],
+      "research_gaps": [
+        {
+          "missing": "No measured p95 latency for vLLM and Llama-3.1-8B on one RTX A5000 with 32 users",
+          "follow_up_query": "What measured p95 latency does vLLM establish for Llama-3.1-8B on one RTX A5000 with 32 users?",
+          "reported_at_step": 4
+        }
+      ]
+    }
+  ],
+  "changed_between_attempts": [
+    "bounded constant read arithmetic normalization",
+    "exact literal read-call examples"
+  ],
+  "attribution": "Descriptive exposed-development comparison; live calls used literal lengths, so arithmetic normalization was not exercised by this rerun. Not isolated causality or model training improvement.",
+  "hardware_shutdown": {
+    "checked_at": "2026-10-21 23:19:41 UTC",
+    "endpoint": {
+      "id": "q05pjrvguakieg",
+      "workers": {
+        "idleTimeout": 60,
+        "max": 0,
+        "min": 0
+      },
+      "gpu": {
+        "allowedCudaVersions": [],
+        "count": 1,
+        "excludedTypes": [
+          "NVIDIA GeForce RTX 3090",
+          "NVIDIA L4",
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+        ],
+        "minCudaVersion": "13.0",
+        "pools": [
+          "AMPERE_24"
+        ]
+      },
+      "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"
+    },
+    "health": {
+      "jobs": {
+        "completed": 165,
+        "failed": 1,
+        "inProgress": 0,
+        "inQueue": 0,
+        "retried": 0
+      },
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      }
+    },
+    "workers": {
+      "endpointVersion": 9,
+      "summary": {
+        "idle": 0,
+        "initializing": 0,
+        "running": 0,
+        "throttled": 0,
+        "total": 0,
+        "unhealthy": 0
+      },
+      "workers": []
+    },
+    "full_configuration_matches_before": true
+  },
+  "local_dollar_allowance": 0.5,
+  "provider_dollar_cap": false,
+  "actual_invoice_usd": null
+}
