@@ -1,0 +1,278 @@
+{
+  "schema_version": "qwen-passage-read-v1",
+  "experiment_id": "experiment_a0729b9a4fc44a1a9fa552120a6e24d5",
+  "brief_revision": 1,
+  "note_id": "passage_read",
+  "request_sha256": "ddb0fbd5250c7c6590e791aee89f1c1e3647d39487f32bf9a9da38661563811a",
+  "source_scope": {
+    "version": "passages-v1",
+    "doc_id": "arxiv_2306_00978v6",
+    "windows": [
+      {
+        "start": 33939,
+        "end": 34439
+      }
+    ],
+    "source_text_sha256": "64d224d8417cf39b5921841427a14cbcb42569c33caafbd2d89e62c2bc4e44f5",
+    "counts_as_source_inspection": false
+  },
+  "note_attached": true,
+  "semantic_support": "not_reviewed",
+  "data_kind": "recorded",
+  "warning": "Candidate evidence from selected passages; host semantic review required.",
+  "packet": {
+    "schema_version": "research-evidence-packet-v1",
+    "investigator_version": "qwen-product-investigator-v1",
+    "retriever_protocol": "code-execution",
+    "retriever": "qwen_investigator",
+    "retriever_run_id": "50e8db3d-71de-4cb7-bcd3-ef6baf14ff4e",
+    "question_id": "paper_fa1b0e1ac73593c4",
+    "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "source_domain": "public_papers",
+    "protocol_variant": "default",
+    "system_prompt_sha256": "010f755b4f07f90e897c06409b64c66dd3d54b0e1bcafdcbbc9667b6de5bdf35",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "status": "evidence_found",
+    "candidate_claims": [
+      {
+        "text": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+        "evidence_ids": [
+          "E1"
+        ]
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "E1",
+        "doc_id": "arxiv_2306_00978v6",
+        "start": 33939,
+        "end": 34439,
+        "quote": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.",
+        "quote_truncated": false,
+        "source_url": "https://arxiv.org/abs/2306.00978v6",
+        "coverage": "html_paragraphs",
+        "source_kind": "paper",
+        "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+        "source_path": null,
+        "record": {}
+      }
+    ],
+    "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "execution": "docker_only",
+    "max_steps": 4,
+    "trajectory": [
+      {
+        "step": 1,
+        "action": "print(passage(\"arxiv_2306_00978v6\", 33939, 500))",
+        "source_inspection": true,
+        "observation": "{'doc_id': 'arxiv_2306_00978v6', 'start': 33939, 'end': 34439, 'text': 'In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+      },
+      {
+        "step": 2,
+        "action": "SUBMIT: The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin. CITATIONS: [\"arxiv_2306_00978v6\"] EVIDENCE: [{\"doc_id\":\"arxiv_2306_00978v6\",\"start\":33939,\"end\":34439}]",
+        "observation": "Exact spans accepted; semantic support unreviewed."
+      }
+    ],
+    "model_requests_attempted": 2,
+    "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2306_00978v6",
+      "windows": [
+        {
+          "start": 33939,
+          "end": 34439
+        }
+      ],
+      "source_text_sha256": "64d224d8417cf39b5921841427a14cbcb42569c33caafbd2d89e62c2bc4e44f5",
+      "counts_as_source_inspection": false
+    },
+    "passage_scope_sha256": "88e66d51616a7f8e863b84beeaa78693333f05b71bf8af0e1399916e837a61e2",
+    "inspected_passage_windows": [
+      {
+        "start": 33939,
+        "end": 34439
+      }
+    ],
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+      "doc_id": "arxiv_2306_00978v6",
+      "arxiv_id": "2306.00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+    "research_gaps": [],
+    "reader_guidance": "passages-v1",
+    "omitted_predicted_spans": 0,
+    "document_tool_steps": 1,
+    "inspection_steps": 1
+  },
+  "status": "evidence_found",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "arxiv_2306_00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "start": 33939,
+      "end": 34439,
+      "quote": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.",
+      "arxiv_id": "2306.00978v6",
+      "source_url": "https://arxiv.org/abs/2306.00978v6",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "candidate_answer": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+  "verified": {
+    "status": "evidence_found",
+    "source_domain": "public_papers",
+    "retriever": "qwen_code_execution",
+    "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+    "candidate_answer": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+    "evidence": [
+      {
+        "evidence_id": "E1",
+        "doc_id": "arxiv_2306_00978v6",
+        "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+        "start": 33939,
+        "end": 34439,
+        "quote": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result.",
+        "arxiv_id": "2306.00978v6",
+        "source_url": "https://arxiv.org/abs/2306.00978v6",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+    "uncertainty": null,
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "model_requests_attempted": 2,
+    "trajectory_steps": 2,
+    "prompt_hash": "010f755b4f07f90e897c06409b64c66dd3d54b0e1bcafdcbbc9667b6de5bdf35",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "6aec34a7802bf7b3214c8daa3bd5b47c0d4aba27d58bb0214ef5c5ad23e3b637",
+      "doc_id": "arxiv_2306_00978v6",
+      "arxiv_id": "2306.00978v6",
+      "title": "AWQ: Activation-aware Weight Quantization for LLM Compression and Acceleration",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "d2f0e61298ec794c75561fa3bd2e4bd3e05cbbe60b1403941d5ee5346652e3a7",
+    "research_gaps": [],
+    "gap_report_error": null,
+    "reader_guidance": "passages-v1",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2306_00978v6",
+      "windows": [
+        {
+          "start": 33939,
+          "end": 34439
+        }
+      ],
+      "source_text_sha256": "64d224d8417cf39b5921841427a14cbcb42569c33caafbd2d89e62c2bc4e44f5",
+      "counts_as_source_inspection": false
+    },
+    "inspected_passage_windows": [
+      {
+        "start": 33939,
+        "end": 34439
+      }
+    ],
+    "absence_scope": "selected inspected passages only; not the whole paper"
+  },
+  "research_note_input": {
+    "note_id": "passage_read",
+    "question": "In the Figure 9 TinyChat benchmark-protocol paragraph, what input length, generated length, batch size and latency statistic are specified, and which two devices are named there?",
+    "findings": [
+      {
+        "claim": "The TinyChat benchmark uses a fixed prompt length of 4 tokens, generates 200 tokens per inference run, and reports median latency. It runs batch size = 1 on RTX 4090 and Jetson Orin.",
+        "reference_ids": [
+          "span_1"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "kind": "paper_span",
+        "reference_id": "span_1",
+        "arxiv_id": "2306.00978v6",
+        "start": 33939,
+        "end": 34439,
+        "quote": "In Figure 9, we demonstrate the system acceleration results from TinyChat. TinyChat optimizes both linear layers and layers that do not have quantized weights. We conduct benchmarking experiments on RTX 4090 and Jetson Orin following the protocol described in exllama ‡‡ ‡ https://github.com/turboderp/exllama. We perform batch size = 1 inference for all LLMs using a fixed prompt length of 4 tokens. We generate 200 tokens for each inference run and calculate the median latency as the final result."
+      }
+    ],
+    "origin": "qwen_research",
+    "data_kind": "recorded",
+    "uncertainties": [
+      "Host semantic review is pending; selected passages only."
+    ]
+  },
+  "research_note_sha256": "34342dbbbc8672532b8db0bbb983fcb081dd29cf84c8e545f96a3eead228faa8",
+  "budget": {
+    "requests_max": 4,
+    "tokens_max": 32768,
+    "requests_dispatched": 2,
+    "requests_remaining": 2,
+    "tokens_reserved": 16384,
+    "usage_complete": true,
+    "records": [
+      {
+        "request": 1,
+        "prompt_tokens_local": 2482,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2482,
+          "completion_tokens": 33
+        }
+      },
+      {
+        "request": 2,
+        "prompt_tokens_local": 2701,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2701,
+          "completion_tokens": 114
+        }
+      }
+    ],
+    "transport_failed": false,
+    "provider_dollar_cap": false
+  }
+}

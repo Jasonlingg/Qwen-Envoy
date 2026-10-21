@@ -1,0 +1,77 @@
+{
+  "status": "mixed_development_result_predeclared_rule_not_met",
+  "live_implementation_commit": "fe3a5a5",
+  "prepared_record_commit": "0b6bdda",
+  "model_jobs_completed": 10,
+  "failed_provider_jobs": 0,
+  "reserved_tokens": 81920,
+  "reported_usage": {
+    "prompt_tokens": 26505,
+    "completion_tokens": 421,
+    "total_tokens": 26926
+  },
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "status": "incomplete",
+      "note_attached": true,
+      "requests": 4,
+      "experiment_id": "experiment_05ac7ba9495b4c3e84150a6ed8d6a01a",
+      "retry_without_inference_verified": true
+    },
+    {
+      "case_id": "awq-protocol",
+      "status": "evidence_found",
+      "note_attached": true,
+      "requests": 2,
+      "experiment_id": "experiment_a0729b9a4fc44a1a9fa552120a6e24d5",
+      "retry_without_inference_verified": true
+    },
+    {
+      "case_id": "paged-target",
+      "status": "incomplete",
+      "note_attached": true,
+      "requests": 4,
+      "experiment_id": "experiment_a5bea69b67cd473a8bfdb62a178752e9",
+      "retry_without_inference_verified": true
+    }
+  ],
+  "supported_answer_cases_under_assistant_source_review": [
+    "awq-protocol"
+  ],
+  "incomplete_cases": [
+    "qlora-dtypes",
+    "paged-target"
+  ],
+  "accepted_gap_cases": [],
+  "human_review": null,
+  "reward_computed": false,
+  "startup_automated": true,
+  "manual_handoff": false,
+  "shutdown_verified": true,
+  "full_configuration_restored": true,
+  "owned_docker_containers_remaining": 0,
+  "watchdog_fired": false,
+  "supervisor_seconds_before_cleanup": 184.78244283399545,
+  "allowance": {
+    "budget_usd": 0.5,
+    "maximum_gpu_window_seconds": 900,
+    "catalog_hourly_usd": 0.69,
+    "maximum_window_compute_estimate_usd": 0.1725,
+    "actual_invoice_cost": null,
+    "provider_dollar_cap": false,
+    "attempts_consumed": 1,
+    "further_paid_attempt_authorized": false
+  },
+  "finding": "Qwen supplied a complete source-supported AWQ protocol answer. The other cases remained incomplete; literal-only parsing rejected valid integer subtraction, with one additional out-of-window length and premature abstention. This run does not isolate semantic capability on those cases.",
+  "post_live_repair": "Bounded integer addition/subtraction is parsed as AST data and normalized to a literal read before Docker; exact read-call examples are supplied in metadata. Source bounds and citation/inspection checks stay enforced. Not live retested.",
+  "limitations": [
+    "Three familiar development examples with deliberately supplied relevant passages; not held-out retrieval or model comparison.",
+    "Assistant source review is not independent human review.",
+    "No reduction in host reading effort, cost, latency or productivity demonstrated.",
+    "No new-feedback live run after the controller repair; scripted regressions cannot predict Qwen behavior.",
+    "No fine-tuning or RL improvement established."
+  ],
+  "post_live_fix_commit": "9161aab",
+  "execution_path": "real in-process MCP client/server, remote Qwen queue, local Docker; not native-host installation"
+}

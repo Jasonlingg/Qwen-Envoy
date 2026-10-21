@@ -1,5 +1,20 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 21: real Qwen passage trial, partial success.** The combined
+> experiment MCP now has an opt-in `read_experiment_passages` tool; default mode
+> still makes no model calls. [Configure it explicitly](docs/PASSAGE_READER.md).
+> The [three-case live attempt](examples/passage-reader-three-case/README.md)
+> used ten Qwen v5 requests: AWQ returned all requested benchmark conditions
+> with sufficient source support under assistant review; QLoRA and the missing
+> target measurement remained incomplete. The overall rule was not met. A
+> literal-only guard rejected valid read-length subtraction; `9161aab` repairs
+> this with bounded AST-data normalization and exact read-call hints. That fix
+> has not been live retested. Final checks: 1925 tests passed. GPU shutdown and
+> full configuration restoration were verified; no allowance was reset or paid
+> retry made. Preserve the frozen pre-fix plan/prompt and the negative cases.
+> No general researcher, productivity advantage, human-reviewed model gain or RL
+> result is established. Any new paid experiment must have its own scoped plan.
+
 > **October 21: personal research-to-result MCP loop completed.** Separate from
 > the published QASPER study, [experiment mode](docs/EXPERIMENT_MODE.md) now has a
 > one-command real-stdio example connecting earlier paper research to recorded

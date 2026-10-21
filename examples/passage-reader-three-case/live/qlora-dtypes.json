@@ -1,0 +1,266 @@
+{
+  "schema_version": "qwen-passage-read-v1",
+  "experiment_id": "experiment_05ac7ba9495b4c3e84150a6ed8d6a01a",
+  "brief_revision": 1,
+  "note_id": "passage_read",
+  "request_sha256": "113a6b262102c63e4ba8e2a88838514eccd6cd855438642612db04f37b315c0d",
+  "source_scope": {
+    "version": "passages-v1",
+    "doc_id": "arxiv_2305_14314v1",
+    "windows": [
+      {
+        "start": 12848,
+        "end": 13131
+      },
+      {
+        "start": 19416,
+        "end": 19735
+      }
+    ],
+    "source_text_sha256": "bfae02429f330b154f1496b296c38824ce7502063289d4700dc635cdb039f104",
+    "counts_as_source_inspection": false
+  },
+  "note_attached": true,
+  "semantic_support": "not_reviewed",
+  "data_kind": "recorded",
+  "warning": "Candidate evidence from selected passages; host semantic review required.",
+  "packet": {
+    "schema_version": "research-evidence-packet-v1",
+    "investigator_version": "qwen-product-investigator-v1",
+    "retriever_protocol": "code-execution",
+    "retriever": "qwen_investigator",
+    "retriever_run_id": "3dbf72f7-b2a8-4df1-8e22-0934747b21a0",
+    "question_id": "paper_af0ba1d8f7353509",
+    "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients.",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "source_domain": "public_papers",
+    "protocol_variant": "default",
+    "system_prompt_sha256": "010f755b4f07f90e897c06409b64c66dd3d54b0e1bcafdcbbc9667b6de5bdf35",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "status": "incomplete",
+    "candidate_claims": [],
+    "evidence": [],
+    "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "execution": "docker_only",
+    "max_steps": 4,
+    "trajectory": [
+      {
+        "step": 1,
+        "action": "print(passage(\"arxiv_2305_14314v1\", 12848, 13131 - 12848))",
+        "observation": "Action rejected: assigned readers use one literal document-tool call, optionally print(tool(...)), or result = tool(...); print(result). Other Python forms are rejected."
+      },
+      {
+        "step": 2,
+        "action": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))",
+        "source_inspection": true,
+        "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 12848, 'end': 13131, 'text': 'QLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+      },
+      {
+        "step": 3,
+        "action": "print(passage(\"arxiv_2305_14314v1\", 19416, 19735 - 19416))",
+        "observation": "Action rejected: assigned readers use one literal document-tool call, optionally print(tool(...)), or result = tool(...); print(result). Other Python forms are rejected."
+      },
+      {
+        "step": 4,
+        "action": "print(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+        "source_inspection": true,
+        "observation": "{'doc_id': 'arxiv_2305_14314v1', 'start': 19416, 'end': 19735, 'text': 'To summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.'}\n"
+      }
+    ],
+    "model_requests_attempted": 4,
+    "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2305_14314v1",
+      "windows": [
+        {
+          "start": 12848,
+          "end": 13131
+        },
+        {
+          "start": 19416,
+          "end": 19735
+        }
+      ],
+      "source_text_sha256": "bfae02429f330b154f1496b296c38824ce7502063289d4700dc635cdb039f104",
+      "counts_as_source_inspection": false
+    },
+    "passage_scope_sha256": "8542faaff0bf418f6495f3051a58ae682a2e971339cdc34356d11997484ce6d9",
+    "inspected_passage_windows": [
+      {
+        "start": 12848,
+        "end": 13131
+      },
+      {
+        "start": 19416,
+        "end": 19735
+      }
+    ],
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+      "doc_id": "arxiv_2305_14314v1",
+      "arxiv_id": "2305.14314v1",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+    "research_gaps": [],
+    "reader_guidance": "passages-v1",
+    "document_tool_steps": 2,
+    "inspection_steps": 2
+  },
+  "status": "incomplete",
+  "evidence": [],
+  "candidate_answer": null,
+  "verified": {
+    "status": "incomplete",
+    "source_domain": "public_papers",
+    "retriever": "qwen_code_execution",
+    "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+    "candidate_answer": null,
+    "evidence": [],
+    "semantic_support": "not_reviewed",
+    "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+    "uncertainty": null,
+    "model_identity": {
+      "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+      "served_model": "envoy",
+      "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+      "seed": 42,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "thinking": false,
+      "harness_version": "v2",
+      "max_tokens": 1024,
+      "reader_mode": "assigned"
+    },
+    "model_requests_attempted": 4,
+    "trajectory_steps": 4,
+    "prompt_hash": "010f755b4f07f90e897c06409b64c66dd3d54b0e1bcafdcbbc9667b6de5bdf35",
+    "tool_search_version": "passage-bm25-okapi-v1",
+    "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "harness_version": "v2",
+    "reader_mode": "assigned",
+    "paper_assignment": {
+      "version": "assigned-paper-v1",
+      "corpus_hash": "08dbc7da91d46ba12e856fcd510a819cd45cc087545da02e279b4bdb98eefd64",
+      "doc_id": "arxiv_2305_14314v1",
+      "arxiv_id": "2305.14314v1",
+      "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+      "coverage": "html_paragraphs",
+      "counts_as_source_inspection": false
+    },
+    "assignment_sha256": "e2eaf50f1bafe933b940776d48fd8105b565c699c1331db7705c7115d01df08f",
+    "research_gaps": [],
+    "gap_report_error": null,
+    "reader_guidance": "passages-v1",
+    "passage_scope": {
+      "version": "passages-v1",
+      "doc_id": "arxiv_2305_14314v1",
+      "windows": [
+        {
+          "start": 12848,
+          "end": 13131
+        },
+        {
+          "start": 19416,
+          "end": 19735
+        }
+      ],
+      "source_text_sha256": "bfae02429f330b154f1496b296c38824ce7502063289d4700dc635cdb039f104",
+      "counts_as_source_inspection": false
+    },
+    "inspected_passage_windows": [
+      {
+        "start": 12848,
+        "end": 13131
+      },
+      {
+        "start": 19416,
+        "end": 19735
+      }
+    ],
+    "absence_scope": "selected inspected passages only; not the whole paper"
+  },
+  "research_note_input": {
+    "note_id": "passage_read",
+    "question": "In QLoRA, distinguish the usual weight storage dtype, computation dtype, and which parameters receive weight gradients.",
+    "findings": [],
+    "references": [],
+    "origin": "qwen_research",
+    "data_kind": "recorded",
+    "uncertainties": [
+      "Reader returned no verified evidence. This is not proof of absence."
+    ]
+  },
+  "research_note_sha256": "13b5a8a7f9494dd6d892f7f6a12ea602c610f25a6103e1b1fd8aad22f47ce9d8",
+  "budget": {
+    "requests_max": 4,
+    "tokens_max": 32768,
+    "requests_dispatched": 4,
+    "requests_remaining": 0,
+    "tokens_reserved": 32768,
+    "usage_complete": true,
+    "records": [
+      {
+        "request": 1,
+        "prompt_tokens_local": 2488,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2488,
+          "completion_tokens": 42
+        }
+      },
+      {
+        "request": 2,
+        "prompt_tokens_local": 2571,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2571,
+          "completion_tokens": 33
+        }
+      },
+      {
+        "request": 3,
+        "prompt_tokens_local": 2743,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2743,
+          "completion_tokens": 42
+        }
+      },
+      {
+        "request": 4,
+        "prompt_tokens_local": 2826,
+        "tokens_reserved": 8192,
+        "status": "returned",
+        "usage": {
+          "prompt_tokens": 2826,
+          "completion_tokens": 33
+        }
+      }
+    ],
+    "transport_failed": false,
+    "provider_dollar_cap": false
+  }
+}

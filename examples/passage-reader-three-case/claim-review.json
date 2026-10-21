@@ -1,0 +1,39 @@
+{
+  "review_kind": "Implementation-assistant source and requested-fact review; not independent human review",
+  "human_reviewer": null,
+  "overall": "predeclared_three_case_rule_not_met",
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "outcome": "incomplete_no_answer",
+      "requested_fact_review": "No candidate answer to grade. Two mathematically valid end-minus-start arguments were rejected by the literal-only controller. Qwen corrected both, read both relevant windows, then exhausted four actions.",
+      "supported_answer": null,
+      "interpretation": "This run does not isolate factual reading ability; the controller consumed answer opportunities on a format mismatch."
+    },
+    {
+      "case_id": "awq-protocol",
+      "outcome": "supported_answer_in_this_development_example",
+      "requested_facts": {
+        "prompt_length": "4 tokens",
+        "generated_length": "200 tokens",
+        "batch_size": "1",
+        "statistic": "median latency",
+        "devices": ["RTX 4090", "Jetson Orin"]
+      },
+      "source": "2306.00978v6:33939..34439",
+      "basis": "The actual candidate states all requested fields. Its own 500-character citation contains every field and the named devices. No target-hardware extrapolation or contradictory addition was found.",
+      "supported_answer": true,
+      "limitations": "One familiar, deliberately selected paragraph. This is host/model-assisted checking, not human review, independent model evaluation or measured reading-effort savings."
+    },
+    {
+      "case_id": "paged-target",
+      "outcome": "incomplete_no_accepted_gap",
+      "requested_fact_review": "One end-minus-start call was rejected. Its replacement asked for 504 rather than the allowed 502 characters and was correctly blocked. After one successful read the model attempted Unanswerable, which did not meet the two-read and gap-report protocol.",
+      "supported_answer": null,
+      "invented_target_latency_observed": false,
+      "interpretation": "No fabricated latency was submitted, but no completed scoped-gap response passed the controller. This is not a successful gap case."
+    }
+  ],
+  "semantic_review_in_saved_notes": "not_reviewed; this separate assistant review does not fill a human-review field",
+  "training_reward_computed": false
+}
