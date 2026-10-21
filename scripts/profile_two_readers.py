@@ -22,6 +22,7 @@ from src.eval.assigned_smoke_control import cli
 from src.eval.assigned_smoke_lifecycle import supervise
 from src.eval.reader_profile import ProfileQueueClient, assess_profile, run_profile
 from src.eval.reader_profile_worker import canonical_hash, transport_hash
+from src.eval.worker_log_reader import WorkerLogReader
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.experiment_tokenizer import load_tokenizer
 
@@ -29,7 +30,8 @@ ENDPOINT = "q05pjrvguakieg"
 INPUT_MANIFEST = ROOT / "examples/experiment-mode-walkthrough/profile-input-manifest.json"
 IMPLEMENTATION = ("scripts/profile_two_readers.py", "src/eval/reader_profile.py",
                   "src/eval/reader_profile_worker.py", "scripts/runpod_qwen_bootstrap.py",
-                  "src/eval/assigned_smoke_control.py", "src/eval/assigned_smoke_lifecycle.py")
+                  "src/eval/assigned_smoke_control.py", "src/eval/assigned_smoke_lifecycle.py",
+                  "src/eval/worker_log_reader.py")
 LIMITS = {"model_requests": 10, "telemetry_jobs": 9, "tokens_reserved": 81920,
           "session_seconds": 900, "gpus": 1}
 CONFIG = {"MAX_NUM_SEQS": "2", "MAX_CONCURRENCY": "2", "MAX_MODEL_LEN": "8192",
@@ -207,7 +209,8 @@ def guarded_run(output, plan, approved, *, control=cli, supervisor=supervise, ke
         command = [sys.executable, str(Path(__file__).resolve()), "worker", "--output",
                    str(output.resolve())]
         supervisor(ENDPOINT, output, command, key=key, seconds=900,
-                   logged_running_ready=True, deadline_unix=deadline)
+                   logged_running_ready=True, deadline_unix=deadline,
+                   log_reader=WorkerLogReader(ENDPOINT, key))
     finally:
         if changed:
             control("update", ENDPOINT, "--workers-min", "0", "--workers-max", "0")

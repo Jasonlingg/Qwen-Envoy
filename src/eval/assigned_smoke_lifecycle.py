@@ -51,18 +51,22 @@ def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> 
     return found
 
 
-def identity_logs(control, endpoint, active, since, expired, *, audit=None):
+def identity_logs(control, endpoint, active, since, expired, *, audit=None, reader=None):
     """One bounded observation; the outer watchdog owns transient-read retries."""
     if expired.is_set():
         raise TimeoutError("watchdog expired before reading startup logs")
     event = {"worker_id": next(iter(active)), "since": since.isoformat(),
              "max_wait_seconds": 5, "source": "both", "query_kind": "tail",
-             "tail": 5000, "since_filter": "client-side"}
+             "tail": 5000, "since_filter": "client-side",
+             "reader": "https_sse" if reader is not None else "cli"}
     logs = ""
     try:
-        logs = control("logs", endpoint, "--source", "both",
-            "--worker", next(iter(active)), "--tail", "5000",
-            "--max-wait", "5s", raw=True)
+        if reader is not None:
+            logs = reader.read(next(iter(active)))
+        else:
+            logs = control("logs", endpoint, "--source", "both",
+                "--worker", next(iter(active)), "--tail", "5000",
+                "--max-wait", "5s", raw=True)
         event["status"] = "received"
         return logs
     except ControlError as exc:
@@ -111,7 +115,7 @@ def logged_readiness(logs, active, since):
 
 def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
               control=cli, popen=subprocess.Popen, seconds=900, worker_reader=None,
-              logged_running_ready=False, deadline_unix=None) -> dict:
+              logged_running_ready=False, deadline_unix=None, log_reader=None) -> dict:
     worker_reader = worker_reader or WorkerCatalog(endpoint, key).list
     before = configuration(control("get", endpoint))
     health = control("health", endpoint)
@@ -191,7 +195,7 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
             ready = health["workers"].get("ready", 0)
             if active and usable and (ready or running):
                 logs = identity_logs(control, endpoint, active, evidence_since, expired,
-                                     audit=output / "startup-log-reads.jsonl")
+                                     audit=output / "startup-log-reads.jsonl", reader=log_reader)
                 for line in logs.splitlines():
                     startup_lines.setdefault(line, None)
                 if sum(len(line.encode()) + 1 for line in startup_lines) > 4_000_000:
