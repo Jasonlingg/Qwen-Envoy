@@ -1,7 +1,9 @@
 """One-worker live-session guard; control CLI calls never submit inference."""
 from __future__ import annotations
 
+import hashlib
 import json
+import os
 import subprocess
 import threading
 import time
@@ -13,6 +15,8 @@ from src.eval.assigned_smoke_control import ControlError, WorkerCatalog, cli
 from src.eval.assigned_smoke_plan import MODEL_IDENTITY, ROOT, write_json
 from src.eval.native_pilot_client import kill_group
 
+STARTUP_POLL_SECONDS = 5
+
 
 def configuration(endpoint: dict) -> dict:
     # Deliberately exclude environment/worker records, which may contain secrets.
@@ -22,11 +26,13 @@ def configuration(endpoint: dict) -> dict:
 
 
 def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> dict | None:
+    found = None
     for line in logs.splitlines():
         item = json.loads(line)
         worker = item.get("workerId")
         stamp = item.get("ts")
-        if (worker not in active_workers or not isinstance(stamp, str)
+        if (item.get("source") != "container" or worker not in active_workers
+                or not isinstance(stamp, str)
                 or datetime.fromisoformat(stamp.replace("Z", "+00:00")) < since):
             continue
         text = item.get("line", "")
@@ -41,32 +47,51 @@ def worker_identity(logs: str, *, active_workers: set[str], since: datetime) -> 
             if (any(identity.get(k) != v for k, v in expected.items())
                     or identity.get("gpu") != "NVIDIA RTX A5000"):
                 raise ValueError("live worker identity differs from the approved pins")
-            return {**identity, "worker_id": worker, "identity_log_ts": stamp}
-    return None
+            found = {**identity, "worker_id": worker, "identity_log_ts": stamp}
+    return found
 
 
 def identity_logs(control, endpoint, active, since, expired, *, audit=None):
-    for attempt in range(3):
-        event = {"attempt": attempt + 1, "worker_id": next(iter(active)),
-                 "since": since.isoformat(), "max_wait_seconds": 5}
-        try:
-            logs = control("logs", endpoint, "--source", "container",
-                "--worker", next(iter(active)), "--since", since.isoformat(),
-                "--max-wait", "5s", raw=True)
-            event["status"] = "received"
-            return logs
-        except ControlError as exc:
-            event.update(status="error", error=exc.details)
-            if (attempt == 2 or exc.details["code"] not in
-                    {"not_found", "network_error", "server_error", "rate_limited", "timeout"}):
-                raise
-            if expired.wait(1):
-                raise TimeoutError("watchdog expired while reading startup logs") from None
-        finally:
-            if audit is not None:
-                with audit.open("a") as stream:
-                    stream.write(json.dumps(event) + "\n")
-    raise AssertionError("unreachable")
+    """One bounded observation; the outer watchdog owns transient-read retries."""
+    if expired.is_set():
+        raise TimeoutError("watchdog expired before reading startup logs")
+    event = {"worker_id": next(iter(active)), "since": since.isoformat(),
+             "max_wait_seconds": 5, "source": "both"}
+    logs = ""
+    try:
+        logs = control("logs", endpoint, "--source", "both",
+            "--worker", next(iter(active)), "--since", since.isoformat(),
+            "--max-wait", "5s", raw=True)
+        event["status"] = "received"
+        return logs
+    except ControlError as exc:
+        logs = exc.log_output
+        transient = exc.details["code"] in {
+            "not_found", "network_error", "server_error", "rate_limited", "timeout"}
+        event.update(status="pending" if transient else "error", error=exc.details)
+        if not transient:
+            raise
+        # A killed CLI may end mid-JSON-line. Preserve all bytes privately, but
+        # only complete records may contribute to identity/readiness.
+        return logs[:logs.rfind("\n") + 1]
+    finally:
+        if audit is not None:
+            # Raw logs stay private under out/, separate from safe public read metadata.
+            if logs:
+                raw = (json.dumps({"worker_id": event["worker_id"], "output": logs})
+                       + "\n").encode()
+                private = audit.with_name("startup-log-output.jsonl")
+                if (private.stat().st_size if private.exists() else 0) + len(raw) > 8_000_000:
+                    raise ValueError("startup log diagnostics exceeded 8 MB")
+                fd = os.open(private, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+                with os.fdopen(fd, "ab") as stream:
+                    stream.write(raw)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                event.update(output_sha256=hashlib.sha256(logs.encode()).hexdigest(),
+                             output_bytes=len(logs.encode()))
+            with audit.open("a") as stream:
+                stream.write(json.dumps(event) + "\n")
 
 
 def logged_readiness(logs, active, since):
@@ -75,7 +100,8 @@ def logged_readiness(logs, active, since):
     for raw in logs.splitlines():
         item = json.loads(raw)
         stamp = item.get("ts")
-        if (item.get("workerId") in active and isinstance(stamp, str)
+        if (item.get("source") == "container" and item.get("workerId") in active
+                and isinstance(stamp, str)
                 and datetime.fromisoformat(stamp.replace("Z", "+00:00")) >= since):
             text.append(item.get("line", ""))
     return (any("vLLM is healthy" in line for line in text)
@@ -133,6 +159,9 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
             raise ValueError("activation read-back changed unexpected settings")
         write_json(output / "endpoint-activated.json", after)
         identity = None
+        log_worker = None
+        evidence_since = since
+        startup_lines = {}
         while not expired.is_set():
             health = control("health", endpoint)
             write_json(output / "health-latest.json", health)
@@ -142,24 +171,39 @@ def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
             outcome["startup_worker_ids"] = sorted(active)
             if len(active) > 1:
                 raise ValueError("more than one active worker; refusing inference")
+            current = next(iter(active), None)
+            if current != log_worker:
+                startup_lines.clear()
+                log_worker = current
+                evidence_since = since
             identity = None
             # A newly scheduled worker can be listed before its log service exists.
             usable = all(w["status"] in {"IDLE", "RUNNING"} and not w.get("isStale")
                          for w in workers)
+            if not usable:
+                startup_lines.clear()
+                evidence_since = datetime.now(timezone.utc)
             running = (logged_running_ready and len(workers) == 1
                        and workers[0]["status"] == "RUNNING"
                        and health["workers"].get("running", 0)
                        and not health["jobs"]["inQueue"] and not health["jobs"]["inProgress"])
             ready = health["workers"].get("ready", 0)
             if active and usable and (ready or running):
-                logs = identity_logs(control, endpoint, active, since, expired,
+                logs = identity_logs(control, endpoint, active, evidence_since, expired,
                                      audit=output / "startup-log-reads.jsonl")
-                identity = worker_identity(logs, active_workers=active, since=since)
-                ready = ready or (running and logged_readiness(logs, active, since))
+                for line in logs.splitlines():
+                    startup_lines.setdefault(line, None)
+                if sum(len(line.encode()) + 1 for line in startup_lines) > 4_000_000:
+                    raise ValueError("startup evidence exceeded 4 MB")
+                accumulated = "\n".join(startup_lines)
+                identity = worker_identity(accumulated, active_workers=active, since=evidence_since)
+                if logged_running_ready:
+                    ready = (ready or running) and logged_readiness(
+                        accumulated, active, evidence_since)
             if identity and ready:
                 write_json(output / "worker-identity.json", identity)
                 break
-            expired.wait(5)
+            expired.wait(STARTUP_POLL_SECONDS)
         if expired.is_set():
             raise TimeoutError("watchdog expired during worker warmup")
         with mutation_lock:

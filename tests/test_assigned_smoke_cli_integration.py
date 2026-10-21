@@ -8,6 +8,7 @@ from urllib.request import Request, urlopen
 import pytest
 
 from src.eval import assigned_smoke_control as control
+from src.eval import assigned_smoke_lifecycle as lifecycle
 from src.eval.assigned_smoke_lifecycle import worker_identity
 from tests.assigned_smoke_cli_fixture import LocalLogs, identity
 
@@ -53,3 +54,58 @@ def test_real_cli_one_second_read_times_out_but_five_second_read_succeeds(monkey
         logs = control.cli(*args, "5s", raw=True)
         assert json.loads(logs)["workerId"] == "current-v2"
         assert all(method == "GET" for method, _, _ in fixture.events)
+
+
+def test_real_cli_quiet_startup_then_split_identity_and_readiness(tmp_path, monkeypatch):
+    """Three no-header timeouts must not kill startup or lose earlier identity."""
+    with LocalLogs() as fixture:
+        fixture.silent_reads = 3
+        def line(text):
+            return {"source": "container", "ts": "2099-01-01T00:00:00Z", "line": text}
+        fixture.payload_batches = [
+            [line("ENVOY_PINNED_IDENTITY " + json.dumps(identity()))],
+            [line("vLLM is healthy")], [line("All fitness checks passed.")]]
+        run = subprocess.run
+        binary = shutil.which("runpodctl")
+        def isolated(command, **kwargs):
+            assert command[0] == "runpodctl" and command[2] == "logs"
+            command = [binary, *command[1:]]
+            command[command.index("--max-wait") + 1] = "150ms"
+            return run(command, env=fixture.environment(), **kwargs)
+        monkeypatch.setattr(control.subprocess, "run", isolated)
+        monkeypatch.setattr(lifecycle, "STARTUP_POLL_SECONDS", 0.001)
+        monkeypatch.setattr(lifecycle, "kill_group", lambda _: None)
+        state = {"id": "fixture", "workersMin": 0, "workersMax": 0,
+                 "gpuCount": 1, "gpuIds": ["NVIDIA RTX A5000"]}
+        def commands(command, endpoint, *args, **kwargs):
+            if command == "get":
+                return dict(state)
+            if command == "update":
+                state.update(workersMin=int(args[1]), workersMax=int(args[3]))
+                return dict(state)
+            if command == "health":
+                return {"jobs": {"inQueue": 0, "inProgress": 0},
+                        "workers": {"running": state["workersMin"], "ready": 0}}
+            return control.cli(command, endpoint, *args, **kwargs)
+        def workers():
+            return ([{"id": "current-v2", "status": "RUNNING"}]
+                    if state["workersMin"] else [])
+        started = []
+        class Child:
+            pid = 123
+            def wait(self):
+                return 0
+        def launch(*args, **kwargs):
+            assert fixture.payload_batches == []  # All three conditions have arrived.
+            started.append(True)
+            return Child()
+        outcome = lifecycle.supervise("fixture", tmp_path, [], key="dummy-only",
+            control=commands, worker_reader=workers, popen=launch, seconds=5,
+            logged_running_ready=True)
+        reads = [json.loads(x) for x in
+                 (tmp_path / "startup-log-reads.jsonl").read_text().splitlines()]
+        assert [r["status"] for r in reads] == ["pending"] * 3 + ["received"] * 3
+        assert all("source=" not in path for _, path, _ in fixture.events)
+        assert started == [True] and outcome["shutdown_verified"]
+        assert all(method == "GET" and key == "Bearer fixture-only-key"
+                   for method, _, key in fixture.events)

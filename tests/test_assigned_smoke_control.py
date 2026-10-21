@@ -61,7 +61,8 @@ def test_worker_identity_rejects_unpinned_adapter():
         "adapter_subfolder": MODEL_IDENTITY["subfolder"],
         "served_adapter": "envoy", "gpu": "NVIDIA RTX A5000"}
     def logs():
-        return json.dumps({"line": "ENVOY_PINNED_IDENTITY " + json.dumps(identity),
+        return json.dumps({"source": "container",
+                           "line": "ENVOY_PINNED_IDENTITY " + json.dumps(identity),
                            "workerId": "current", "ts": "2026-10-20T12:00:00Z"})
     kwargs = {"active_workers": {"current"}, "since": datetime(2026, 10, 20, tzinfo=timezone.utc)}
     observed = lifecycle.worker_identity(logs(), **kwargs)

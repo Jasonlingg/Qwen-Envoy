@@ -9,14 +9,27 @@ from src.policies.runpod_queue import RunpodQueueTransport
 
 
 class ControlError(RuntimeError):
-    def __init__(self, command: str, code: str, status):
+    def __init__(self, command: str, code: str, status, *, log_output=""):
         self.details = {"command": command, "code": code, "status": status}
+        # Private diagnostics, deliberately excluded from printable/public details.
+        self.log_output = log_output
         super().__init__(f"Runpod {command} failed ({code}, HTTP {status})")
 
 
 def cli(*args, raw=False):
-    result = subprocess.run(["runpodctl", "serverless", *args], capture_output=True,
-                            text=True, timeout=30)
+    try:
+        result = subprocess.run(["runpodctl", "serverless", *args], capture_output=True,
+                                text=True, timeout=30)
+    except subprocess.TimeoutExpired as exc:
+        output = exc.stdout or ""
+        if isinstance(output, bytes):
+            output = output.decode("utf-8", errors="replace")
+        if len(output.encode()) > 1_000_000:
+            raise ValueError("control CLI output too large") from None
+        raise ControlError(args[0], "timeout", None,
+            log_output=output if raw and args[0] == "logs" else "") from None
+    if len(result.stdout.encode()) > 1_000_000:
+        raise ValueError("control CLI output too large")
     if result.returncode:
         error = {}
         for line in reversed(result.stderr.splitlines()):
@@ -27,9 +40,8 @@ def cli(*args, raw=False):
             if isinstance(candidate, dict) and "code" in candidate:
                 error = candidate
                 break
-        raise ControlError(args[0], error.get("code", "unknown"), error.get("status"))
-    if len(result.stdout) > 1_000_000:
-        raise ValueError("control CLI output too large")
+        raise ControlError(args[0], error.get("code", "unknown"), error.get("status"),
+            log_output=result.stdout if raw and args[0] == "logs" else "")
     return result.stdout if raw else json.loads(result.stdout)
 
 

@@ -20,6 +20,8 @@ def identity():
 class LocalLogs:
     def __init__(self):
         self.events, self.delay = [], 0
+        self.silent_reads, self.payload_batches = 0, None
+        self.release = threading.Event()
         fixture = self
         class Handler(BaseHTTPRequestHandler):
             def log_message(self, *args):
@@ -34,14 +36,21 @@ class LocalLogs:
                     self.end_headers()
                     self.wfile.write(body)
                 elif self.path.startswith("/v2/serverless/fixture/workers/current-v2/logs?"):
+                    if fixture.silent_reads:
+                        fixture.silent_reads -= 1
+                        fixture.release.wait(5)  # No headers: same observable CLI timeout as prod.
+                        return
                     time.sleep(fixture.delay)
                     payload = {"source": "container", "ts": "2026-10-20T12:00:00Z",
                                "line": "ENVOY_PINNED_IDENTITY " + json.dumps(identity())}
+                    payloads = (fixture.payload_batches.pop(0)
+                                if fixture.payload_batches is not None else [payload])
                     try:
                         self.send_response(200)
                         self.send_header("Content-Type", "text/event-stream")
                         self.end_headers()
-                        self.wfile.write(("data: " + json.dumps(payload) + "\n\n").encode())
+                        for payload in payloads:
+                            self.wfile.write(("data: " + json.dumps(payload) + "\n\n").encode())
                         self.wfile.flush()
                     except (BrokenPipeError, ConnectionResetError):
                         pass  # Expected when the short-read reproduction times out.
@@ -57,6 +66,7 @@ class LocalLogs:
         return self
 
     def __exit__(self, *args):
+        self.release.set()
         self.server.shutdown()
         self.server.server_close()
         self.thread.join(timeout=5)

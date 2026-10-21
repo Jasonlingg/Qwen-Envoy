@@ -15,7 +15,8 @@ def test_both_current_readiness_events_required(worker, age, fitness, expected):
     since = datetime.now(timezone.utc)
     stamp = (since + timedelta(seconds=age)).isoformat()
     lines = ["vLLM is healthy"] + (["All fitness checks passed."] if fitness else [])
-    logs = "\n".join(json.dumps({"workerId": worker, "ts": stamp, "line": line})
+    logs = "\n".join(json.dumps({"source": "container", "workerId": worker,
+                                "ts": stamp, "line": line})
                      for line in lines)
     assert logged_readiness(logs, {"current"}, since) is expected
 
@@ -49,7 +50,8 @@ def test_running_rollup_needs_explicit_opt_in_and_logged_readiness(tmp_path, mon
                     "jobs": {"inQueue": 0, "inProgress": 0}}
         assert command == "logs"
         stamp = (datetime.now(timezone.utc) + timedelta(seconds=1)).isoformat()
-        return "\n".join(json.dumps({"workerId": "current", "ts": stamp, "line": line})
+        return "\n".join(json.dumps({"source": "container", "workerId": "current",
+                                    "ts": stamp, "line": line})
                          for line in ["vLLM is healthy", "All fitness checks passed."])
     class Child:
         pid = 1
