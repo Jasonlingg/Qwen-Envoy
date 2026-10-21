@@ -126,6 +126,8 @@ class ExperimentResearcher:
                             "title": str(paper.get("title", ""))[:300],
                             "abstract": str(paper.get("abstract") or "")[:500]})
                     entry.update(source=found.get("source"), papers=candidates,
+                                 status=found.get("status", "candidates" if candidates
+                                                  else "no_candidates"),
                                  fallback=found.get("fallback"),
                                  coverage_note=found.get("coverage_note"))
                     feedback = {**entry, "note": "Metadata only; read to inspect."}

@@ -14,6 +14,7 @@ from urllib.parse import urlencode
 from uuid import uuid4
 
 from src.product.arxiv_ids import validate_arxiv_id
+from src.product.arxiv_relevance import search_relevance
 from src.product.net import HttpGet, SourceUnavailable, Throttle, http_get
 from src.research.papers import discover
 
@@ -154,6 +155,10 @@ class PaperDiscovery:
                     "coverage_note": found["coverage_note"]}
 
         return self._cached("arxiv", [query, start.isoformat(), end.isoformat(), limit], build)
+
+    def search_arxiv_relevance(self, query: str, *, limit: int = 5) -> dict:
+        """Opt-in plain-text fallback; leaves existing recency searches unchanged."""
+        return search_relevance(query, limit, get=self._get, cached=self._cached)
 
     def citations(self, arxiv_id: str, direction: str = "references", limit: int = 20) -> dict:
         validate_arxiv_id(arxiv_id)

@@ -52,6 +52,20 @@ def test_search_failure_counts_and_query_can_be_refined(tmp_path):
     assert "rate limited" in result["searches"][0]["error"]
 
 
+def test_empty_screened_discovery_is_visible_to_controller_and_saved_trace(tmp_path):
+    class Discovery(FakeDiscovery):
+        def search(self, query, **kwargs):
+            return {"source": "arxiv", "status": "no_candidates", "papers": [],
+                    "coverage_note": "Refine query; not evidence that no papers exist."}
+    worker, transport = researcher(library(tmp_path), Discovery(), [SEARCH,
+        'finish(findings=[], uncertainties=["Discovery gap"], proposed_test={})'])
+    result = worker.run("Memory?")
+    assert result["status"] == "no_evidence" and result["evidence"] == []
+    assert result["searches"][0]["status"] == "no_candidates"
+    feedback = transport.calls[1]["messages"][-1]["content"]
+    assert '"status": "no_candidates"' in feedback and "not evidence" in feedback
+
+
 @pytest.mark.parametrize("ending", [TimeoutError("outcome unknown"), FINISH])
 def test_partial_evidence_survives_budget_or_inference_failure(tmp_path, ending):
     limit = 4 if ending == FINISH else 18
