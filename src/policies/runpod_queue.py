@@ -24,13 +24,16 @@ class _NoRedirect(request.HTTPRedirectHandler):
 
 class RunpodQueueTransport:
     def __init__(self, endpoint_id, api_key, tokenizer, audit_path: Path, *,
-                 requests_max=12, wait_seconds=900, http=None):
+                 requests_max=12, wait_seconds=900, http=None, served_model="envoy"):
         if not re.fullmatch(r"[a-z0-9]+", endpoint_id) or not api_key:
             raise ValueError("Runpod endpoint id and credential required")
         if type(requests_max) is not int or not 1 <= requests_max <= 12:
             raise ValueError("request budget must be 1..12")
         if not 1 <= wait_seconds <= 900:
             raise ValueError("queue deadline must be 1..900 seconds")
+        if served_model not in {"envoy", "envoy-base-only"}:
+            raise ValueError("unknown served model")
+        self.served_model = served_model
         self.base = f"https://api.runpod.ai/v2/{endpoint_id}"
         self._key, self.tokenizer = api_key, tokenizer
         self.audit = audit_path.open("a+", buffering=1)
@@ -42,6 +45,8 @@ class RunpodQueueTransport:
                         "requests": requests_max,
                         "input_tokens_reserved_max": requests_max * 7168,
                         "output_tokens_reserved_max": requests_max * 1024}
+        if served_model != "envoy":  # Keep existing adapter ledgers compatible.
+            self._budget["served_model"] = served_model
         with self._locked():
             self.audit.seek(0, 2)
             if self.audit.tell() == 0:
@@ -122,7 +127,7 @@ class RunpodQueueTransport:
         # The caller's URL and auth cannot redirect this transport elsewhere.
         allowed = {"model", "messages", "max_tokens", "temperature", "top_p", "seed",
                    "chat_template_kwargs", "stream", "n"}
-        if (set(payload) - allowed or payload.get("model") != "envoy"
+        if (set(payload) - allowed or payload.get("model") != self.served_model
                 or payload.get("stream", False) is not False
                 or payload.get("n", 1) != 1 or payload.get("max_tokens") != 1024
                 or payload.get("chat_template_kwargs") != {"enable_thinking": False}):
@@ -163,7 +168,7 @@ class RunpodQueueTransport:
             if isinstance(output, list) and len(output) == 1:
                 output = output[0]
             if (not isinstance(output, dict) or "error" in output
-                    or output.get("model") != "envoy" or not output.get("choices")):
+                    or output.get("model") != self.served_model or not output.get("choices")):
                 raise ValueError("Runpod returned invalid adapter chat output")
             with self.lock:
                 self._write({"event": "completed", "request": number, "job_id": job_id,
