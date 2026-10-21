@@ -1,0 +1,58 @@
+{
+  "review_kind": "Unblinded host-authored claim and applicability review; not independent human review",
+  "human_reviewer": null,
+  "items": [
+    {
+      "finding": 1,
+      "assessment": "Supported within stated scope",
+      "source": "2309.06180v1",
+      "start": 24052,
+      "end": 24100,
+      "basis": "Exact short excerpt checked by get_passage; larger paragraph inspected at 6992..7955. Mechanism explains fixed-size KV blocks; no Qwen/A5000 speedup inferred."
+    },
+    {
+      "finding": 2,
+      "assessment": "Supported by selected historical artifact",
+      "basis": "Original observed.json separates startup/sequential fit from two-reader load, which was not run. Historical reader returned incomplete with no evidence."
+    },
+    {
+      "finding": 3,
+      "assessment": "Historical descriptive statistics only",
+      "basis": "All eight exported queue/execution/output-count rows were checked against the original observed artifact. First delay is not independently attributed to cold start; serial variable-length requests are not controlled arms."
+    },
+    {
+      "finding": 4,
+      "assessment": "Supported as documented capability and local transport limitation",
+      "sources": [
+        "https://docs.vllm.ai/en/v0.31.0/usage/metrics/",
+        "src/policies/runpod_queue.py"
+      ],
+      "basis": "Host inspected official phase metrics and local non-streaming transport code. Current worker metrics accessibility was not tested; external references remain reference_only in MCP receipts."
+    },
+    {
+      "finding": 5,
+      "assessment": "Supported as a conditional recommendation and launcher mismatch",
+      "sources": [
+        "https://docs.vllm.ai/en/v0.31.0/features/automatic_prefix_caching/",
+        "scripts/serve_vllm.sh"
+      ],
+      "basis": "Official APC scope is reusable prefill. Local explicit cache-comparison branch requires 0.30.0/max sequences 1; historical setup was 0.31.0/max sequences 2. No current runtime compatibility or performance claim."
+    }
+  ],
+  "proposal_review": {
+    "useful_next_step": "Host judgment: localize queue/engine/concurrency and memory before selecting an optimization. User usefulness judgment remains pending.",
+    "bounded_future_shape": "2 historical input payloads, 2 warmups, 2 counterbalanced measured rounds per mode: 10 total inference requests, 81920 reserved tokens. Not executed or authorized by this walkthrough.",
+    "preconditions": [
+      "A current authorized endpoint/lifecycle and compute allowance",
+      "Matching tokenizer/weights/runtime/flags",
+      "Same-engine concurrent admission and phase/memory telemetry",
+      "A supported consistent per-batch cache-state policy",
+      "Future metrics, criteria and resource budget before freeze/dispatch"
+    ],
+    "limits": [
+      "Fixed inputs do not measure adaptive feedback, complete agent tasks or answer quality.",
+      "Two repeated rounds cannot estimate tail latency or establish a general advantage.",
+      "A later MCP versus ordinary-assistant optimization comparison is a separate study."
+    ]
+  }
+}

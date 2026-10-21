@@ -1,0 +1,100 @@
+{
+  "source": {
+    "path": "examples/qwen-runpod-24gb-live/observed.json",
+    "sha256": "fc88ea47ddeeb3262bc0e1147682b6df6f96b90f64352004ea5210ff8b45bd3f",
+    "selection": "hardware; gpu_model_memory_report; kv_cache_token_capacity; configured_max_sequences; configured_context_tokens; decision_rule_result; qwen_usage; queue_delay_ms/execution_time_ms/completion_tokens for each qwen_actions entry"
+  },
+  "hardware": {
+    "adapter_rank": 4,
+    "adapter_repo": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_subfolder": "artifacts/full/checkpoint-50",
+    "base_repo": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "cuda_runtime": "13.0",
+    "gpu": "NVIDIA RTX A5000",
+    "gpu_memory_bytes": 25285623808,
+    "served_adapter": "envoy",
+    "torch_version": "2.13.0+cu130",
+    "vllm_version": "0.31.0"
+  },
+  "startup_and_test_scope": {
+    "gpu_model_memory_report": "15.31 GiB weights, 15.42 GiB weights/non-torch, 0.20 GiB peak activation, 4.39 GiB KV cache; startup profiling, not a concurrent load measurement",
+    "kv_cache_token_capacity": 31952,
+    "configured_max_sequences": 2,
+    "configured_context_tokens": 8192,
+    "decision_rule_result": {
+      "hardware_fit": "passed for sequential reader requests",
+      "native_MCP_and_record_flow": "passed using host passage fallback",
+      "qwen_evidence_extraction": "failed: incomplete, no evidence or candidate answer",
+      "two_reader_load_test": "not_run",
+      "model_quality_comparison": "not_run"
+    }
+  },
+  "historical_serial_usage": {
+    "requests": 8,
+    "prompt_tokens": 14643,
+    "completion_tokens": 133,
+    "failed_provider_requests": 0
+  },
+  "historical_serial_requests": [
+    {
+      "action": 1,
+      "queue_delay_ms": 87748,
+      "execution_time_ms": 8301,
+      "output_tokens": 20
+    },
+    {
+      "action": 2,
+      "queue_delay_ms": 138,
+      "execution_time_ms": 3281,
+      "output_tokens": 14
+    },
+    {
+      "action": 3,
+      "queue_delay_ms": 128,
+      "execution_time_ms": 1800,
+      "output_tokens": 20
+    },
+    {
+      "action": 4,
+      "queue_delay_ms": 146,
+      "execution_time_ms": 1402,
+      "output_tokens": 13
+    },
+    {
+      "action": 5,
+      "queue_delay_ms": 137,
+      "execution_time_ms": 1852,
+      "output_tokens": 20
+    },
+    {
+      "action": 6,
+      "queue_delay_ms": 137,
+      "execution_time_ms": 1482,
+      "output_tokens": 13
+    },
+    {
+      "action": 7,
+      "queue_delay_ms": 132,
+      "execution_time_ms": 2980,
+      "output_tokens": 20
+    },
+    {
+      "action": 8,
+      "queue_delay_ms": 135,
+      "execution_time_ms": 1455,
+      "output_tokens": 13
+    }
+  ],
+  "limits": {
+    "two_reader_measurement": null,
+    "ttft_seconds": null,
+    "prefill_seconds": null,
+    "decode_seconds": null,
+    "end_to_end_answer_quality": "Historical reader incomplete; zero evidence. Not a useful-answer latency baseline.",
+    "endpoint_current_state": "Not queried; historical setup only.",
+    "billing": "Not queried; no new compute authorized."
+  }
+}

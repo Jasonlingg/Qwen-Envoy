@@ -32,3 +32,28 @@ adapter accepts `search(query, *, limit)`, but the delegated source tool calls
 `search(query, since, until, limit)`. The task-1 unit flow supplied a fake directly
 and its real stdio flow never searched. Correct the adapter contract and test the
 wrapped composition, including dated searches, before continuing the walkthrough.
+
+## Outcome
+
+The [saved walkthrough](../../examples/experiment-mode-walkthrough/README.md)
+contains the exact host-authored inputs, selected historical observations,
+claim/applicability review and twelve actual MCP call receipts. A real relevance
+search returned the original paper through arXiv fallback after a primary rate
+limit. The host opened/inspected it, attached five findings and saved revision 2.
+After restarting the server, the full research note and proposal were recovered
+unchanged without source calls. The recap correctly flagged note truncation;
+the host fetched the full note by ID.
+
+The walkthrough decision rule was met for the local research/planning flow,
+with user usefulness still unreviewed. This is an unblinded host-driven example,
+not an independent native assistant or an optimization/model benchmark. It
+records no GPU inference, new candidate results or performance improvement.
+The future diagnostic remains an unfrozen draft. Its fixed saved inputs cannot
+measure adaptive policy behavior or complete research-answer quality.
+
+The production adapter bug was fixed in `b2f9e94`; 37 focused checks passed.
+The full offline suite passed 1855 tests with zero failures/skips and three
+existing SWIG warnings in 144.47 seconds. All eleven protected-file hashes match
+the pre-task values, including the active MuSiQue reward and original dirt.
+Historical evaluations, training/reward code and reserved reader questions were
+not changed. No new automated judge or benchmark framework was added.

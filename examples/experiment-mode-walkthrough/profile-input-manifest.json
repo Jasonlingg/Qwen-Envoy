@@ -1,0 +1,33 @@
+{
+  "purpose": "Proposed fixed-input warm serving diagnostic only; not a closed-loop reader or semantic-quality evaluation. No inference dispatched.",
+  "source": {
+    "path": "out/qwen-live-cheaper-20261019/native-v3/qwen-requests.jsonl",
+    "sha256": "84837d33835012b61a6662cb0cee2bf7951d82dc14a6cb0433fe51d70d80bc84",
+    "selection": "Unchanged payloads from reserved request 2 and 6 in the same historical paper-reader episode; canonical JSON SHA-256 uses sorted keys, UTF-8, compact separators."
+  },
+  "samples": [
+    {
+      "sample_id": "historical_reader_request_2",
+      "parent_request": 2,
+      "payload_sha256": "5eda6d4f0aae4af241c08bbee1e055f2a53468855529c57fa8685cadeb0862c6",
+      "historical_recomputed_prompt_tokens": 1400,
+      "requested_output_limit": 1024,
+      "historical_output_tokens": 14
+    },
+    {
+      "sample_id": "historical_reader_request_6",
+      "parent_request": 6,
+      "payload_sha256": "ad5ea66a4ba9e0da5c97fd4c4087cde73918cdd4b9c319271f60f633f4b02b2c",
+      "historical_recomputed_prompt_tokens": 2043,
+      "requested_output_limit": 1024,
+      "historical_output_tokens": 13
+    }
+  ],
+  "limitations": [
+    "Historical weak/failed tool-use context is retained; do not interpret output validity or speed as useful-answer quality.",
+    "Exact payloads remain in ignored local profile-payloads.json; no paper text is redistributed here.",
+    "Match the local tokenizer/chat template before any future dispatch. Old raw local token counts were wrong; use the separately recomputed values here only as historical observations.",
+    "Reserve 7168 input plus 1024 output per dispatch; proposed total 10 requests includes 2 warmups and 8 measured requests.",
+    "Fixed saved inputs cannot measure how an agent responds to new feedback or finishes a research task."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-21",
+  "scope": "Actual source-MCP and local planning walkthrough, not a model or performance benchmark",
+  "commits_before_artifact_export": [
+    "8498c72",
+    "b2f9e94"
+  ],
+  "focused_tests": {
+    "passed": 37,
+    "failed": 0,
+    "seconds": 26.89
+  },
+  "full_tests": {
+    "passed": 1855,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 3,
+    "seconds": 144.47,
+    "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "log_path": "out/experiment-mode-walkthrough-20261021/full-tests.txt",
+    "log_sha256": "4746014ec2d530662ec304bb834697c801f62ca51988fe1c4069fc349b2ccfef"
+  },
+  "ruff": "passed",
+  "git_diff_check": "passed",
+  "historical_export_derivation": "Parent digest, selected fields and all eight serial request summaries matched original observed.json. MCP itself verifies selected export only.",
+  "profile_input_derivation": "Both canonical payload digests match the unchanged historical reservation payloads. No inference dispatched.",
+  "implementation_sha256": {
+    "scripts/experiment_mode_mcp.py": "b12392acb8b5c2ddc3a24b1ff1a14661c6f003811b02cf16ffb9b76eae1cc079",
+    "src/product/experiment_discovery.py": "08b9fe387819de075854aae661a680ff116c0a220f933f16953050766a97e8df",
+    "tests/test_experiment_discovery.py": "3f5ee691c9f74d68467b56f0d81cfdab869f9af1a607ab796c9ec5ab2d9e1af0",
+    "tests/test_experiment_mode_mcp.py": "8ec5bfaa2ff5db5545527de2641e578d3d14193ddff20ab2cdc41f5a11f33710"
+  },
+  "artifact_sha256": {
+    "examples/experiment-mode-walkthrough/README.md": "a3a442176cd35bdba2882b4757ba4763ce2cf63d55d3bd53c03f2de2613e6402",
+    "examples/experiment-mode-walkthrough/claim-review.json": "2e897217513a94dd6c5c5c085006a98714908de4f2a40fafe5e16178c92e68ae",
+    "examples/experiment-mode-walkthrough/historical-setup.json": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+    "examples/experiment-mode-walkthrough/implementation-constraints.json": "63af4bfe1498390696e06abb2f2c38a62bf7ce4fc2cdcaed6825b048388e97bc",
+    "examples/experiment-mode-walkthrough/initial-brief.json": "85de88eba30f8a268dec859193e789225276e4a8b687faa4dbd2ff459bbeea79",
+    "examples/experiment-mode-walkthrough/profile-input-manifest.json": "02625f8cf5d6c9a70d7d0e07280900bfb6a2a93e24f54a9bc5b86950fab7ceca",
+    "examples/experiment-mode-walkthrough/research-note.json": "480adc2c7a2c0eb998dddda089b61e6b02f00c6c41cf3f56b21763ed96763001",
+    "examples/experiment-mode-walkthrough/researched-brief.json": "b728f34206cd7860ccf0e31bb13017d99c027111f876ab8b1d7277cee7da0181",
+    "examples/experiment-mode-walkthrough/walkthrough.json": "7302d13e818e404bf74ae1f4c7fedc1266f93ab5e5fb5054f355c7beb70d0b9a"
+  },
+  "protected_files_unchanged_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+    "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+  },
+  "worker_inference_requests": 0,
+  "gpu_resources_provisioned": 0,
+  "optimization_experiments_executed": 0,
+  "human_review": null,
+  "remaining": [
+    "User usefulness review",
+    "A separately authorized, instrumented compute session and complete frozen plan before a serving diagnostic",
+    "Matched ordinary-assistant versus experiment-mode optimization comparison",
+    "Separate model evaluation before any fine-tuning improvement claim"
+  ]
+}

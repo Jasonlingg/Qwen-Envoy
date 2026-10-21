@@ -1,0 +1,218 @@
+{
+  "question": "What should we measure first to reduce latency for two concurrent Qwen3-8B v5 research readers on the previously used 24 GB A5000 setup?",
+  "goal": "latency",
+  "current_setup": {
+    "task": {
+      "value": "Bounded multi-step paper research with Python document-tool actions executed in network-disabled Docker."
+    },
+    "model": {
+      "value": "Qwen/Qwen3-8B"
+    },
+    "checkpoint": {
+      "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50"
+    },
+    "revision": {
+      "value": "Base b968826d9c46dd6066d109eabc6255188de91218; adapter SHA-256 7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+    },
+    "hardware": {
+      "value": "Historical RTX A5000, 25285623808 reported bytes; no current hardware activated or attested."
+    },
+    "workload": {
+      "value": "Fixed-input serving diagnostic: historical_reader_request_2 (1400 recomputed input tokens) and historical_reader_request_6 (2043); exact saved payload hashes in profile-input-manifest.json. Not full reader episodes or an answer-quality benchmark."
+    },
+    "software": {
+      "vllm": {
+        "value": "Historical 0.31.0"
+      },
+      "torch": {
+        "value": "Historical 2.13.0+cu130"
+      }
+    }
+  },
+  "constraints": [
+    "This walkthrough permits public source retrieval and local records only: zero new Qwen/Nemotron calls or GPU provisioning.",
+    "Preserve checkpoints, decoding and prompt/corpus identity for any future controlled test.",
+    "Two readers are a target; historical configured max sequences is not a concurrent load measurement."
+  ],
+  "observations": [
+    {
+      "text": "Historical startup reported 15.31 GiB weights, 4.39 GiB KV cache, 31952 cache-token slots, context limit 8192 and max sequences 2. These are startup/serial observations only.",
+      "reference_ids": [
+        "historical_hardware",
+        "historical_scope"
+      ],
+      "basis": "artifact_reported"
+    },
+    {
+      "text": "The historical reader returned incomplete with no evidence; no two-reader, TTFT, prefill or decode baseline is available in this selected export.",
+      "reference_ids": [
+        "historical_scope",
+        "missing_phase_baseline"
+      ],
+      "basis": "artifact_reported"
+    }
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_hardware",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/hardware"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_scope",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/startup_and_test_scope"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "missing_phase_baseline",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/limits"
+    },
+    {
+      "kind": "paper_span",
+      "reference_id": "pagedattention_blocks",
+      "arxiv_id": "2309.06180v1",
+      "start": 24052,
+      "end": 24100,
+      "quote": "we organize the KV cache as fixed-size KV blocks"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_serial_jobs",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/historical_serial_requests"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "launcher_constraints",
+      "relative_path": "implementation-constraints.json",
+      "sha256": "63af4bfe1498390696e06abb2f2c38a62bf7ce4fc2cdcaed6825b048388e97bc",
+      "json_pointer": "/launcher"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "transport_constraints",
+      "relative_path": "implementation-constraints.json",
+      "sha256": "63af4bfe1498390696e06abb2f2c38a62bf7ce4fc2cdcaed6825b048388e97bc",
+      "json_pointer": "/transport"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "profile_inputs",
+      "relative_path": "profile-input-manifest.json",
+      "sha256": "02625f8cf5d6c9a70d7d0e07280900bfb6a2a93e24f54a9bc5b86950fab7ceca",
+      "json_pointer": "/samples"
+    },
+    {
+      "kind": "external_reference",
+      "reference_id": "vllm_metrics_031",
+      "url": "https://docs.vllm.ai/en/v0.31.0/usage/metrics/",
+      "description": "Host inspected official versioned metrics documentation: engine queue/prefill/decode/TTFT, KV usage, preemptions and running requests. Availability on the actual worker is not yet verified."
+    },
+    {
+      "kind": "external_reference",
+      "reference_id": "vllm_prefix_031",
+      "url": "https://docs.vllm.ai/en/v0.31.0/features/automatic_prefix_caching/",
+      "description": "Host inspected official versioned APC docs: reusable prefix computation affects prefill, not generation of new tokens; applicability requires matching prefixes."
+    }
+  ],
+  "unknowns": [
+    "Current hardware, exact engine/queue-worker configuration and engine metrics access are unverified.",
+    "Configured max_num_seqs=2 does not prove the queue worker admits concurrent jobs into one engine.",
+    "The short saved requests do not represent full research answers; no long-output or tail-latency conclusion is possible.",
+    "Caching defaults and cache-state control must be recorded before the diagnostic; otherwise ordering may confound timing.",
+    "No independent human judgment or paired ordinary-assistant comparison has been collected.",
+    "Future compute/time/dollar allowance and an enforceable lifecycle/request budget are not approved or configured.",
+    "The profiling code and runtime-specific telemetry/cache controls are not implemented by this walkthrough."
+  ],
+  "limitations": [
+    "Historical setup only; no endpoint was queried or activated.",
+    "Host-authored plan and source review; independent human usefulness review remains pending.",
+    "No optimization or ordinary-assistant comparison was run; this is a draft diagnostic."
+  ],
+  "alternatives": [
+    "First localize serving/queue overhead with fixed inputs.",
+    "Consider prefix caching only if reusable prefill is material; verify actual runtime support/configuration.",
+    "Consider decode methods only after identifying decode cost; do not infer benefit from paper speedups."
+  ],
+  "proposed_change": "Dispatch the same pinned pair of historical reader inputs concurrently rather than serially on one unchanged serving engine. First validate instrumentation, same-engine overlap and cache-state control.",
+  "hypothesis": "Concurrent dispatch may reduce pair completion time if the serving path admits overlapping inference; scheduler serialization, KV pressure or additional waiting can erase the benefit. No speedup is assumed.",
+  "expected_signal": "Two counterbalanced measured rounds expose pair makespan, all eight measured completions, actual token counts, engine overlap, phase timing and memory. A serialized route or missing phase telemetry identifies an instrumentation/transport prerequisite instead of a model optimization win.",
+  "applicability": "A tiny warm fixed-input serving diagnostic for the previously used Qwen3-8B/v5 setup. It does not estimate two complete agents, long-output performance, supported-answer quality, changes in response to new feedback, or the benefit of MCP over ordinary research.",
+  "baseline": {
+    "description": "The fixed two-payload batch sent serially to one unchanged engine."
+  },
+  "candidate": {
+    "description": "The same fixed two-payload batch sent simultaneously to the same unchanged engine."
+  },
+  "evaluation": {
+    "population": "Two pinned historical development reader input payloads; two measured rounds per dispatch mode, not independent task trials.",
+    "purpose": "development",
+    "expected_cases": 2,
+    "sample_ids": [
+      "historical_reader_request_2",
+      "historical_reader_request_6"
+    ],
+    "dataset_revision": {
+      "value": "Payload SHA-256s 5eda6d4f0aae4af241c08bbee1e055f2a53468855529c57fa8685cadeb0862c6 and ad5ea66a4ba9e0da5c97fd4c4087cde73918cdd4b9c319271f60f633f4b02b2c"
+    }
+  },
+  "conditions": [
+    {
+      "name": "dispatch_mode",
+      "role": "proposed_change",
+      "baseline": {
+        "value": "Serial pair"
+      },
+      "candidate": {
+        "value": "Concurrent pair"
+      }
+    },
+    {
+      "name": "server_runtime_and_capacity",
+      "role": "held_constant",
+      "baseline": {
+        "value": "Same attested runtime and startup flags, one shared engine, max_num_seqs=2, context=8192; actual identity must be checked before dispatch."
+      },
+      "candidate": {
+        "value": "Same attested runtime and startup flags, one shared engine, max_num_seqs=2, context=8192; actual identity must be checked before dispatch."
+      }
+    },
+    {
+      "name": "model_and_decoding",
+      "role": "held_constant",
+      "baseline": {
+        "value": "Pinned base and v5 adapter, exact saved messages, temperature=0, top_p=1, seed=42, thinking off, max_tokens=1024; matching tokenizer."
+      },
+      "candidate": {
+        "value": "Pinned base and v5 adapter, exact saved messages, temperature=0, top_p=1, seed=42, thinking off, max_tokens=1024; matching tokenizer."
+      }
+    },
+    {
+      "name": "cache_state_policy",
+      "role": "held_constant",
+      "baseline": {
+        "unknown_reason": "Must define and verify a consistent supported cache reset/reuse policy before each batch; do not borrow the incompatible old launcher comparison branch."
+      },
+      "candidate": {
+        "unknown_reason": "Must define and verify a consistent supported cache reset/reuse policy before each batch; do not borrow the incompatible old launcher comparison branch."
+      }
+    }
+  ],
+  "procedure": [
+    "Preflight only after separate authorization: verify payload hashes, current weights/adapter/runtime, one engine, admission overlap, matching tokenizer, engine metrics access, cache-state control and a durable request/token/lifecycle budget. Stop before paid dispatch if a prerequisite is missing.",
+    "Use two unmeasured warmup requests (one per payload). Reset or otherwise equalize the declared cache state per measured batch while keeping the engine loaded; include any extra generation warmups in the same request cap or stop.",
+    "Round 1: run the pair serially, then concurrently. Round 2: concurrently, then serially. Preserve failed/missing cases and per-request timestamps; 8 measured plus 2 warmup requests total.",
+    "Capture pair makespan and each request completion latency at the client, actual input/output token counts and finish reasons; collect engine queue/prefill/decode timing, same-engine concurrency, KV usage/preemptions and GPU memory separately. Provider delay/execution time is not a substitute for engine phases.",
+    "Stop at 10 total model requests, 7168 input/1024 output reservation each (81920 tokens total), or on identity mismatch, missing telemetry, OOM, timeout or uncertain submission; never resubmit an uncertain inference. Future compute duration/spending limits still require approval and lifecycle enforcement.",
+    "Treat any apparent latency change as inconclusive if output lengths/finish reasons or cache state differ materially. Two measured rounds are diagnostic only: no p95/p99, useful-answer or general speedup claim. Do not record results until an actual authorized run exists."
+  ],
+  "candidate_outcomes_already_seen": "no"
+}

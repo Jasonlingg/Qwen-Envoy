@@ -1,0 +1,87 @@
+{
+  "question": "What should we measure first to reduce latency for two concurrent Qwen3-8B v5 research readers on the previously used 24 GB A5000 setup?",
+  "goal": "latency",
+  "current_setup": {
+    "task": {
+      "value": "Bounded multi-step paper research with Python document-tool actions executed in network-disabled Docker."
+    },
+    "model": {
+      "value": "Qwen/Qwen3-8B"
+    },
+    "checkpoint": {
+      "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50"
+    },
+    "revision": {
+      "value": "Base b968826d9c46dd6066d109eabc6255188de91218; adapter SHA-256 7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+    },
+    "hardware": {
+      "value": "Historical RTX A5000, 25285623808 reported bytes; no current hardware activated or attested."
+    },
+    "workload": {
+      "unknown_reason": "Two-reader profiling payloads have not been selected and frozen; previous measurements were serial only."
+    },
+    "software": {
+      "vllm": {
+        "value": "Historical 0.31.0"
+      },
+      "torch": {
+        "value": "Historical 2.13.0+cu130"
+      }
+    }
+  },
+  "constraints": [
+    "This walkthrough permits public source retrieval and local records only: zero new Qwen/Nemotron calls or GPU provisioning.",
+    "Preserve checkpoints, decoding and prompt/corpus identity for any future controlled test.",
+    "Two readers are a target; historical configured max sequences is not a concurrent load measurement."
+  ],
+  "observations": [
+    {
+      "text": "Historical startup reported 15.31 GiB weights, 4.39 GiB KV cache, 31952 cache-token slots, context limit 8192 and max sequences 2. These are startup/serial observations only.",
+      "reference_ids": [
+        "historical_hardware",
+        "historical_scope"
+      ],
+      "basis": "artifact_reported"
+    },
+    {
+      "text": "The historical reader returned incomplete with no evidence; no two-reader, TTFT, prefill or decode baseline is available in this selected export.",
+      "reference_ids": [
+        "historical_scope",
+        "missing_phase_baseline"
+      ],
+      "basis": "artifact_reported"
+    }
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_hardware",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/hardware"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_scope",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/startup_and_test_scope"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "missing_phase_baseline",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/limits"
+    }
+  ],
+  "unknowns": [
+    "Current available hardware/runtime and inference route are unverified.",
+    "No matched one-reader versus two-reader timings, memory traces, phase timings or useful-answer latency baseline.",
+    "The old queue transport is non-streaming; provider job duration cannot identify TTFT/prefill/decode by itself."
+  ],
+  "limitations": [
+    "Historical setup information, not a live endpoint inventory.",
+    "Host-selected development question; no independent usefulness review."
+  ]
+}

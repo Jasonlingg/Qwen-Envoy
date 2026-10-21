@@ -1,0 +1,121 @@
+{
+  "note_id": "latency_measurement_first",
+  "question": "What should we measure first to reduce latency for two concurrent Qwen3-8B v5 research readers on the previously used 24 GB A5000 setup?",
+  "findings": [
+    {
+      "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+      "reference_ids": [
+        "pagedattention_blocks",
+        "historical_scope"
+      ]
+    },
+    {
+      "claim": "Historical configuration allowed two active sequences, but the recorded load used serial requests only and the reader was incomplete. Startup capacity is not a two-reader or useful-answer performance result.",
+      "reference_ids": [
+        "historical_scope",
+        "missing_phase_baseline"
+      ]
+    },
+    {
+      "claim": "Historical provider queue delay was 87748 ms for the first request and 128\u2013146 ms for later requests; outputs were 13\u201320 tokens. These heterogeneous serial jobs are not controlled warm/cold comparisons or a long-generation baseline.",
+      "reference_ids": [
+        "historical_serial_jobs"
+      ]
+    },
+    {
+      "claim": "Official vLLM 0.31 metrics distinguish engine queue, prefill, decode and TTFT. Our existing queued client rejects streaming and records job-level delay/execution fields, so those fields alone cannot localize the bottleneck.",
+      "reference_ids": [
+        "vllm_metrics_031",
+        "transport_constraints"
+      ]
+    },
+    {
+      "claim": "Prefix caching is relevant to reusable prefill, not directly to new-token decoding. The existing launcher cache-comparison branch pins vLLM 0.30.0 and one sequence, so it cannot be used unchanged for the historical 0.31.0/two-sequence setup.",
+      "reference_ids": [
+        "vllm_prefix_031",
+        "launcher_constraints"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_hardware",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/hardware"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_scope",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/startup_and_test_scope"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "missing_phase_baseline",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/limits"
+    },
+    {
+      "kind": "paper_span",
+      "reference_id": "pagedattention_blocks",
+      "arxiv_id": "2309.06180v1",
+      "start": 24052,
+      "end": 24100,
+      "quote": "we organize the KV cache as fixed-size KV blocks"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "historical_serial_jobs",
+      "relative_path": "historical-setup.json",
+      "sha256": "e791385d19de4702d59fc952429efb6f2a185b6c5590fdc2dad9819359f889b6",
+      "json_pointer": "/historical_serial_requests"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "launcher_constraints",
+      "relative_path": "implementation-constraints.json",
+      "sha256": "63af4bfe1498390696e06abb2f2c38a62bf7ce4fc2cdcaed6825b048388e97bc",
+      "json_pointer": "/launcher"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "transport_constraints",
+      "relative_path": "implementation-constraints.json",
+      "sha256": "63af4bfe1498390696e06abb2f2c38a62bf7ce4fc2cdcaed6825b048388e97bc",
+      "json_pointer": "/transport"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "profile_inputs",
+      "relative_path": "profile-input-manifest.json",
+      "sha256": "02625f8cf5d6c9a70d7d0e07280900bfb6a2a93e24f54a9bc5b86950fab7ceca",
+      "json_pointer": "/samples"
+    },
+    {
+      "kind": "external_reference",
+      "reference_id": "vllm_metrics_031",
+      "url": "https://docs.vllm.ai/en/v0.31.0/usage/metrics/",
+      "description": "Host inspected official versioned metrics documentation: engine queue/prefill/decode/TTFT, KV usage, preemptions and running requests. Availability on the actual worker is not yet verified."
+    },
+    {
+      "kind": "external_reference",
+      "reference_id": "vllm_prefix_031",
+      "url": "https://docs.vllm.ai/en/v0.31.0/features/automatic_prefix_caching/",
+      "description": "Host inspected official versioned APC docs: reusable prefix computation affects prefill, not generation of new tokens; applicability requires matching prefixes."
+    }
+  ],
+  "uncertainties": [
+    "Current hardware, exact engine/queue-worker configuration and engine metrics access are unverified.",
+    "Configured max_num_seqs=2 does not prove the queue worker admits concurrent jobs into one engine.",
+    "The short saved requests do not represent full research answers; no long-output or tail-latency conclusion is possible.",
+    "Caching defaults and cache-state control must be recorded before the diagnostic; otherwise ordering may confound timing.",
+    "No independent human judgment or paired ordinary-assistant comparison has been collected."
+  ],
+  "proposed_test": "First measure the unchanged serving path with the two pinned historical reader payloads. Keep one model/adapter and one engine with max_num_seqs=2, context=8192, exact runtime/flags/decoding/tokenizer pinned. After confirming phase telemetry is available and same-engine concurrency is supported, run 2 unmeasured warmups then two measured rounds of the same pair: round 1 serial then concurrent, round 2 concurrent then serial (10 inference requests total). Use a consistent recorded cache-state policy per batch; do not credit incidental prefix warming as a concurrency improvement. Capture pair makespan, each completion time, actual input/output counts, GPU memory, engine concurrency/queue/prefill/decode, KV usage and preemptions. Compare pair makespan, not individual request latency alone. No speculative decoding, quantization or cache toggle in this diagnostic. Abort on missing telemetry, unavailable payloads, mismatch, OOM, timeout or uncertain inference outcome. Stop at 10 requests / 81920 reserved input+output tokens; no automatic retries. This is a proposed serving diagnostic, not an agent-quality or MCP-benefit benchmark; no dispatch or compute is authorized.",
+  "origin": "host_research",
+  "data_kind": "recorded"
+}

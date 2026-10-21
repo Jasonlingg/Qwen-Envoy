@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "path": "scripts/serve_vllm.sh",
+      "sha256": "3bc73d2d42b5c17af6cd7daa55315e0f93e69e764481ff8ba02024167c0612e4"
+    },
+    {
+      "path": "src/policies/runpod_queue.py",
+      "sha256": "efd0ac37b390bcf455233f0b1947e1bf2aa60f2525aea1b47aa2896c1e25bca2"
+    }
+  ],
+  "review_kind": "Host code inspection; local artifact receipt checks this export, not independent derivation",
+  "launcher": {
+    "cache_comparison_required_vllm": "0.30.0",
+    "cache_comparison_required_max_num_seqs": 1,
+    "cache_comparison_required_max_model_len": 8192,
+    "applies_when": "PREFIX_CACHING is explicitly on or off; default does not take this comparison branch.",
+    "implication": "Do not apply that comparison branch unchanged to the historical vLLM 0.31.0/max sequences 2 setup."
+  },
+  "transport": {
+    "file": "src/policies/runpod_queue.py",
+    "streaming": "Only stream=false is accepted.",
+    "existing_request_limits": {
+      "max_tokens": 1024,
+      "max_prompt_tokens": 7168
+    },
+    "observed_fields": [
+      "execution_time_ms",
+      "delay_time_ms",
+      "response usage"
+    ],
+    "missing_direct_fields": [
+      "TTFT",
+      "prefill time",
+      "decode time",
+      "GPU memory traces"
+    ],
+    "implication": "Job duration and queue delay are not vLLM phase timings. Need authorized engine-local metrics or a separately supported instrumented route."
+  }
+}
