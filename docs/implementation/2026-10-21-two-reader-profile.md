@@ -1,8 +1,8 @@
 # Two-reader serving diagnostic
 
 The user asked to continue after the real experiment-mode walkthrough. Prepare
-and verify the fixed-input diagnostic. A GPU budget question is pending; no
-paid activation is permitted until its answer is available. Do not reuse any
+and verify the fixed-input diagnostic. During preparation, a GPU budget question
+was pending; no paid activation was permitted until authorization arrived. Do not reuse any
 consumed reader/research live-attempt marker or previous paid allowance.
 
 Hypothesis: the existing single-engine queue worker can overlap two fixed Qwen
@@ -53,6 +53,22 @@ passed: 1867 tests in 109.08 seconds, with three existing SWIG deprecation warni
 and no skipped tests. Twelve new focused checks also passed.
 
 Live telemetry compatibility remains unverified. The only cloud operations in
-this task so far are read-only endpoint/worker/health and catalog queries. The
-user's budget question is still pending; no paid activation is authorized by
-the local tests or prepared JSON alone.
+the preparation phase were read-only endpoint/worker/health and catalog queries;
+the local tests and prepared JSON did not authorize activation.
+
+## Authorized attempt outcome
+
+After the user said “ok go,” one attempt used the smaller $0.50 allowance with
+the original 900-second/ten-request limits. It stopped during startup identity
+verification: one log read returned without a matching identity, then three
+reads timed out. No model or telemetry requests were submitted. The model's
+speed, concurrent fit, output quality and task usefulness remain unmeasured.
+
+Shutdown was verified, the original entrypoint restored, and a fresh full
+endpoint read matched the pre-attempt configuration. No worker or pending job
+remained. The attempt marker is consumed and no paid retry was made. The
+[attempt record](../../examples/two-reader-profile/outcome.json) preserves the
+failure, authorization and shutdown evidence. Startup log contents were not
+saved by the existing lifecycle helper; preserve those diagnostics and verify
+log access before a separately authorized attempt. No implementation code was
+changed in this attempt, and all eleven protected file hashes still match.

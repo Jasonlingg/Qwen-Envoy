@@ -1,0 +1,89 @@
+{
+  "status": "blocked_before_inference",
+  "run_date": "2026-10-21",
+  "code_commit": "9d94ef7",
+  "preparation_record_commit": "9ad90f3",
+  "plan_sha256": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+  "attempts_consumed": 1,
+  "inference_requests_submitted": 0,
+  "telemetry_jobs_submitted": 0,
+  "generated_tokens": 0,
+  "warmups_completed": 0,
+  "serial_rounds_completed": 0,
+  "concurrent_rounds_completed": 0,
+  "performance_comparison": null,
+  "model_quality_assessment": null,
+  "failure": {
+    "stage": "startup identity verification",
+    "type": "ControlError",
+    "control_error": {
+      "command": "logs",
+      "code": "timeout",
+      "status": null
+    },
+    "observed_startup_log_reads": 4,
+    "successful_reads": 1,
+    "timed_out_reads": 3,
+    "identity_verified": false,
+    "cause_of_log_timeouts": "unknown",
+    "received_log_content_preserved": false
+  },
+  "shutdown_verified": true,
+  "original_entrypoint_restored": true,
+  "full_endpoint_config_unchanged": true,
+  "job_counters_unchanged": true,
+  "budget": {
+    "allowance_usd": 0.5,
+    "catalog_gpu_hourly_usd": 0.69,
+    "maximum_session_seconds": 900,
+    "maximum_compute_estimate_usd": 0.1725,
+    "actual_invoice_cost": null,
+    "provider_dollar_cap": false,
+    "supervised_seconds_excluding_cleanup": 80.63291733409278,
+    "watchdog_fired": false,
+    "paid_retry_authorized": false
+  },
+  "interpretation": "The attempt tested activation and safe shutdown but never reached model inference. It provides no evidence for speed, concurrency fit, model quality, MCP benefit, or fine-tuning improvement.",
+  "limitations": [
+    "Returned content from the first successful startup-log read was not saved by the existing lifecycle helper; only its success event survives.",
+    "A later read-only MCP log query found the worker already removed (404), so it could not recover the log.",
+    "The consumed one-attempt marker remains; no additional paid run was made."
+  ],
+  "verification": {
+    "prepared_plan_check_passed": true,
+    "protected_files_unchanged_sha256": {
+      "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+      "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+      "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+      "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+      "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+      "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+      "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+      "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+      "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+      "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311",
+      "src/env/reward.py": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7"
+    },
+    "unchanged_code_full_suite": {
+      "passed": 1867,
+      "duration_seconds": 109.08,
+      "warnings": 3,
+      "skipped": 0,
+      "record": "validation.json"
+    },
+    "new_code_changes_in_this_attempt": false
+  },
+  "artifacts_sha256": {
+    "plan.json": "06e9e0224dab5c650f7566f6fc9608f99d41d139d51c86070a14a5736b4321d5",
+    "authorization.json": "ecb5b904a36c8c2f7f03a55753d85cca2e6e719d0fdea821328190bed50fc2fe",
+    "lifecycle.json": "6106eb31bf01c8a1c91ed860016c46825ddd70e63a1f1df9ac164204f7cc0622",
+    "entrypoint-restoration.json": "b69721aa26454fb26105aa959b0dd3061f47e5f8b8a2ba799ff5e27b7dea37bf",
+    "startup-log-reads.jsonl": "dddc8bf5ac7310bee3879971536abb7fcf3417bd27dd2d85caf0e4c168533c82",
+    "endpoint-after.json": "9c56a67ad40b77c5898f8409cee933bd5b8b13f3a17fb9e55ec4d6ee9286bd4e"
+  },
+  "local_trace_sha256": {
+    "out/two-reader-profile-preparation-20261021/live-run.stderr.log": "cab26bdfafa6dbd7cd52565da36ababcbaed8ad8051359674870505cde23c41f",
+    "out/two-reader-profile-preparation-20261021/live-run.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "out/two-reader-profile-preparation-20261021/ready/runtime.json": "4ce40a66be67e26ca7f4bdd5daeab5f7804c3cfe24981e24572c4c0bf0b73a84"
+  }
+}

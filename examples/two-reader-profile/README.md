@@ -1,4 +1,22 @@
-# Prepared two-reader serving diagnostic — no paid run yet
+# Two-reader serving diagnostic — blocked before inference
+
+The user authorized one bounded attempt on October 21. It activated one worker,
+then stopped when startup-log reads timed out before the runner could verify
+the pinned model identity. **Zero model requests and zero telemetry jobs were
+submitted; neither serial nor concurrent timings were measured.** This is a
+startup-verification failure, not a model-quality or performance result.
+
+[outcome.json](outcome.json) records the attempt and its limitations.
+[lifecycle.json](lifecycle.json) confirms shutdown without cleanup errors;
+[endpoint-after.json](endpoint-after.json) independently records min/max 0/0,
+zero workers, no pending jobs, the original entrypoint and unchanged full endpoint
+configuration. The single-attempt marker remains consumed. No paid retry was made.
+
+One startup-log read returned without a matching identity; three subsequent
+reads timed out. The existing helper saved read status but not returned log
+content, so the timeout cause and missing identity cannot be diagnosed from
+those logs. A later read found the worker already removed. Preserve returned
+startup logs and verify log access before another authorized paid attempt.
 
 This prepares the next measurement proposed by the
 [experiment-mode walkthrough](../experiment-mode-walkthrough/README.md).
@@ -28,7 +46,7 @@ uncertainty margin is reported as inconclusive. Two rounds cannot estimate tails
 or establish a general speedup. Changed outputs/token counts also make the
 comparison inconclusive; temperature zero is not a determinism guarantee.
 
-## Current state and authorization
+## Pre-run state and authorization
 
 [preflight.json](preflight.json) records read-only Runpod observations: endpoint
 `q05pjrvguakieg` is parked at min/max 0/0, with zero workers and zero pending jobs.
@@ -36,10 +54,12 @@ Its image/entrypoint and serving configuration were left unchanged. The current
 A5000 catalog rate is $0.69/GPU-hour; 900 seconds at that rate is $0.1725 of GPU
 compute. That estimate is not an invoice or a provider dollar cap.
 
-The user was asked to choose a total session allowance of $0.50 or $1, or local
-preparation only. **No answer has arrived, no authorization file was created,
-and no endpoint mutation, inference submission or GPU activation occurred.**
-The old research/reader test budgets and consumed attempt markers are untouched.
+Preparation initially waited for a budget selection. The user's later “ok go”
+was recorded in [authorization.json](authorization.json), using the smaller $0.50
+allowance. The 900-second price/time guard was armed before activation. The
+supervised portion lasted 80.63 seconds before cleanup; that is not billed GPU
+time. Actual invoice cost was not obtained. The old research/reader budgets and
+their consumed attempt markers are untouched.
 
 The prepared plan is [plan.json](plan.json). Its task-owned local directory is
 `out/two-reader-profile-preparation-20261021/ready/`. Exact input payloads and the
@@ -55,13 +75,14 @@ To prepare a separate local copy, run `prepare --output <new-directory>` with
 the cached tokenizer and original saved input ledger available. A fresh copy
 has a fresh session/plan digest; it does not grant another paid attempt.
 
-After a budget answer, the operator must record the actual instruction and a
-fresh price read in a plan-bound authorization before running. The `run` phase
+For any separately authorized future attempt, the operator must record the actual
+instruction and a fresh price read in a plan-bound authorization. The `run` phase
 consumes one experiment-wide attempt marker, installs only the telemetry
 entrypoint on the parked endpoint, verifies its read-back, and uses the existing
 absolute-deadline supervisor for startup, identity checks, execution and shutdown.
 It then restores/read-checks the original entrypoint. Do not bypass the supervisor,
-delete the marker, or create new directories to repeat paid work.
+delete the marker, or create new directories to repeat paid work. The existing
+authorization grants no further attempt.
 
 ## Implementation and local checks
 
@@ -83,8 +104,12 @@ as GPU performance.
 The final full suite passed **1867 tests in 109.08 seconds**, with no skips and
 three existing SWIG deprecation warnings. Ruff and `git diff --check` passed.
 The final prepared-plan check reproduced its pinned hashes and made zero model
-calls. [validation.json](validation.json) records the checks and protected-file
-hashes.
+calls. [validation.json](validation.json) is the immutable preparation snapshot
+from commit `9ad90f3`; its artifact hashes bind that commit's files. The later
+[outcome.json](outcome.json) records the live attempt, final endpoint reads and
+another verification that all eleven protected files are unchanged. No
+implementation code changed during the attempt; the full-suite result applies
+to the exact code used.
 
 Actual serving results and any ordinary-assistant versus experiment-mode
 benchmark remain unmeasured. Human review is absent. No fine-tuning improvement
