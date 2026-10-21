@@ -1,0 +1,341 @@
+[
+  {
+    "case": {
+      "query": "paged attention kv cache allocation concurrent readers memory measurements",
+      "expected_top5_id": "2309.06180",
+      "purpose": "recorded failure; foundational PagedAttention"
+    },
+    "result": {
+      "source": "arxiv",
+      "mode": "relevance",
+      "status": "candidates",
+      "query": "paged attention kv cache allocation concurrent readers memory measurements",
+      "query_terms": [
+        "paged",
+        "attention",
+        "kv",
+        "cache",
+        "allocation",
+        "concurrent",
+        "readers",
+        "memory",
+        "measurements"
+      ],
+      "query_url": "https://export.arxiv.org/api/query?search_query=%28ti%3A%22paged%22+OR+abs%3A%22paged%22%29+OR+%28ti%3A%22attention%22+OR+abs%3A%22attention%22%29+OR+%28ti%3A%22kv%22+OR+abs%3A%22kv%22%29+OR+%28ti%3A%22cache%22+OR+abs%3A%22cache%22%29+OR+%28ti%3A%22allocation%22+OR+abs%3A%22allocation%22%29+OR+%28ti%3A%22concurrent%22+OR+abs%3A%22concurrent%22%29+OR+%28ti%3A%22readers%22+OR+abs%3A%22readers%22%29+OR+%28ti%3A%22memory%22+OR+abs%3A%22memory%22%29+OR+%28ti%3A%22measurements%22+OR+abs%3A%22measurements%22%29+OR+%28ti%3A%22pagedattention%22+OR+abs%3A%22pagedattention%22%29+OR+%28ti%3A%22attentionkv%22+OR+abs%3A%22attentionkv%22%29+OR+%28ti%3A%22kvcache%22+OR+abs%3A%22kvcache%22%29+OR+%28ti%3A%22cacheallocation%22+OR+abs%3A%22cacheallocation%22%29+OR+%28ti%3A%22allocationconcurrent%22+OR+abs%3A%22allocationconcurrent%22%29+OR+%28ti%3A%22concurrentreaders%22+OR+abs%3A%22concurrentreaders%22%29+OR+%28ti%3A%22readersmemory%22+OR+abs%3A%22readersmemory%22%29+OR+%28ti%3A%22memorymeasurements%22+OR+abs%3A%22memorymeasurements%22%29&sortBy=relevance&sortOrder=descending&start=0&max_results=50",
+      "papers": [
+        {
+          "arxiv_id": "2405.04437v3",
+          "title": "vAttention: Dynamic Memory Management for Serving LLMs without PagedAttention",
+          "abstract": "PagedAttention is a popular approach for dynamic memory allocation in LLM serving systems. It enables on-demand allocation of GPU memory to mitigate KV cache fragmentation -- a phenomenon that crippled the batch size (and consequently throughput) in prior systems. However, in trying to allocate physical memory at runtime, PagedAttention ends up changing the virtual memory layout of the KV cache from contiguous to non-contiguous. Such a design leads to non-trivial programming and performance overheads. We present vAttention -- an approach that mitigates fragmentation in physical memory while retaining the contiguity of KV cache in virtual memory. We achieve this by decoupling the allocation of virtual and physical memory using CUDA virtual memory management APIs. We also introduce various LLM-specific optimizations to address the limitations of CUDA virtual memory support. Overall, vAttention is a simpler, portable, and performant alternative to PagedAttention: it supports various attention kernels out-of-the-box and improves LLM serving throughput by up to 1.23x compared to the use of PagedAttention-based kernels of FlashAttention and FlashInfer.",
+          "citation_count": null,
+          "year": 2024,
+          "url": "https://arxiv.org/abs/2405.04437v3",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2604.19157v1",
+          "title": "SAW-INT4: System-Aware 4-Bit KV-Cache Quantization for Real-World LLM Serving",
+          "abstract": "KV-cache memory is a major bottleneck in real-world LLM serving, where systems must simultaneously support latency-sensitive small-batch requests and high-throughput concurrent workloads. Although many KV-cache compression methods improve offline accuracy or compression ratio, they often violate practical serving constraints such as paged memory layouts, regular memory access, and fused attention execution, limiting their effectiveness in deployment. In this work, we identify the minimal set of 4-bit KV-cache quantization methods that remain viable under these constraints. Our central finding is that a simple design--token-wise INT4 quantization with block-diagonal Hadamard rotation--consistently achieves the best accuracy-efficiency trade-off. Across multiple models and benchmarks, this approach recovers nearly all of the accuracy lost by naive INT4, while more complex methods such as vector quantization and Hessian-aware quantization provide only marginal additional gains once serving compatibility is taken into account. To make this practical, we implement a fused rotation-quantization kernel that integrates directly into paged KV-cache layouts and introduces zero measurable end-to-end overhead, matching plain INT4 throughput across concurrency levels. Our results show that effective KV-cache compression is fundamentally a systems co-design problem: under real serving constraints, lightweight block-diagonal Hadamard rotation is a viable method that delivers near-lossless accuracy without sacrificing serving efficiency.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2604.19157v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2608.15584v2",
+          "title": "GraniKV: Asymmetric Granularity KV-Cache Paging for Multi-Agent Systems with Long Shared Prefix",
+          "abstract": "Production paged-serving engines apply uniform paging granularity to the KV cache, even though the two regions of a multi-agent workload have opposite storage requirements: a long shared prefix demands contiguity, while the per-request suffix demands fine-grained allocation. We present \\textbf{GraniKV}, a KV-cache layer that allocates the shared prefix in a contiguous HOT pool and the suffix in a token-level COLD pool, combined with a per-step dispatcher which selects the appropriate backend among dual backends for each regime (compute-, memory-, or communication-bound). To the best of our knowledge, GraniKV is the first system to apply asymmetric paging granularity to the KV cache of a production paged-serving engine. At $L_p{=}16$\\,K shared tokens GraniKV reaches $\\mathbf{2.16\\times}$, $\\mathbf{1.98\\times}$, and $\\mathbf{1.57\\times}$ output-token throughput over the production baseline on Llama-3.1-8B/TP=1, Qwen-2.5-14B/TP=2, and Qwen-2.5-32B/TP=4. The gain decomposes: cascade attention integration contributes the majority at saturation; the asymmetric storage layer adds $1.05$--$1.15\\times$ end-to-end while being what makes the batched-GEMM prefix backend possible at all. Under heterogeneous multi-agent serving with \\emph{distinct} prompts of different lengths, the attribution inverts: GraniKV sustains $\\mathbf{1.95\\times}$ while batch-global cascade collapses to parity --- the storage layer alone carries the win in the regime that motivates the paper.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2608.15584v2",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2609.03494v1",
+          "title": "GrowPage: On-Demand KV Budgeting for Efficient LLM Reasoning Serving",
+          "abstract": "Long-output reasoning has made the key--value (KV) cache a critical memory bottleneck for efficient LLM serving. Existing KV compression methods usually rely on a predefined per-request budget and adjust only which KV states are retained, leaving the total capacity fixed throughout decoding. However, reasoning workloads exhibit substantial demand variation: different requests require different KV capacities, and the attention demand of an individual request evolves during generation. We introduce \\textbf{GrowPage}, an on-demand KV budgeting framework that treats KV capacity as a runtime resource. GrowPage maintains lightweight dual-timescale query summaries to capture recent and long-term attention behaviors, and uses their relative attention working sets to estimate demand evolution. At each capacity boundary, GrowPage either compresses KV states within the current allocation or acquires an additional physical page when broader demand emerges. By integrating with PagedAttention's page-level memory abstraction, GrowPage preserves continuous batching and prefix caching. Experiments on reasoning benchmarks across multiple models show that GrowPage achieves a superior performance--throughput trade-off over existing approaches.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2609.03494v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2410.00161v2",
+          "title": "KV-Compress: Paged KV-Cache Compression with Variable Compression Rates per Attention Head",
+          "abstract": "Context lengths of Large Language Models (LLMs) have exploded in recent years, with 128k-token context becoming a standard and million-token context becoming a reality. Efficiently supporting long-context inference remains challenging as the memory that must be allocated in key-value (KV) cache for a generation scales with its context length, limiting the number of long-context requests that can be served concurrently under a given memory budget. KV cache compression can mitigate this issue by removing under-utilized KVs from each attention head's cache and reducing its memory footprint. Higher theoretical compression rates can be achieved when the number of removed KVs varies across attention heads, but application of such a strategy within existing inference frameworks adds fragmentation and cannot realize the theoretical compression rates in physical memory. We introduce KV-Compress, a novel compression method that evicts contiguous KV blocks within a PagedAttention framework, reducing the memory footprint of the KV cache proportionally to this theoretical compression rate. Our method achieves state-of-the-art performance on LongBench for both Mistral-7B-Instruct-v0.2 and Llama-3.1-8B-Instruct while lowering the total number of compressed KVs by 4x compared with prior methods. Evaluations on Llama-3.1-8B-Instruct and Llama-3.1-70B-Instruct-FP8 achieve compression rates up to 8x with negligible impact on performance, and up to 64x while retaining over 90% of full-cache performance for all but three of the suite's subsets. We benchmark an integration of our method with vLLM that increases total throughput by up to 5.18x by enabling larger decoding batches.",
+          "citation_count": null,
+          "year": 2024,
+          "url": "https://arxiv.org/abs/2410.00161v2",
+          "openable": true
+        }
+      ],
+      "candidates_examined": 50,
+      "candidates_after_screen": 50,
+      "retrieved_at": "2026-10-21T06:11:02.423155+00:00",
+      "coverage_note": "arXiv relevance fallback: up to 50 title/abstract candidates, ordered by lexical term coverage, then title coverage, then provider rank. Lexical matches are not semantic support; search is not exhaustive. No candidates means refine the query or report the discovery gap.",
+      "fallback": {
+        "from": "semantic_scholar",
+        "detail": "rate limited (injected for fallback check)"
+      }
+    },
+    "gate_passed": false
+  },
+  {
+    "case": {
+      "query": "kv cache allocation concurrent readers memory measurements",
+      "expected": "at least one metadata-relevant KV-cache memory candidate; manually inspect titles/abstracts, no semantic-answer claim",
+      "purpose": "second recorded query"
+    },
+    "result": {
+      "source": "arxiv",
+      "mode": "relevance",
+      "status": "candidates",
+      "query": "kv cache allocation concurrent readers memory measurements",
+      "query_terms": [
+        "kv",
+        "cache",
+        "allocation",
+        "concurrent",
+        "readers",
+        "memory",
+        "measurements"
+      ],
+      "query_url": "https://export.arxiv.org/api/query?search_query=%28ti%3A%22kv%22+OR+abs%3A%22kv%22%29+OR+%28ti%3A%22cache%22+OR+abs%3A%22cache%22%29+OR+%28ti%3A%22allocation%22+OR+abs%3A%22allocation%22%29+OR+%28ti%3A%22concurrent%22+OR+abs%3A%22concurrent%22%29+OR+%28ti%3A%22readers%22+OR+abs%3A%22readers%22%29+OR+%28ti%3A%22memory%22+OR+abs%3A%22memory%22%29+OR+%28ti%3A%22measurements%22+OR+abs%3A%22measurements%22%29+OR+%28ti%3A%22kvcache%22+OR+abs%3A%22kvcache%22%29+OR+%28ti%3A%22cacheallocation%22+OR+abs%3A%22cacheallocation%22%29+OR+%28ti%3A%22allocationconcurrent%22+OR+abs%3A%22allocationconcurrent%22%29+OR+%28ti%3A%22concurrentreaders%22+OR+abs%3A%22concurrentreaders%22%29+OR+%28ti%3A%22readersmemory%22+OR+abs%3A%22readersmemory%22%29+OR+%28ti%3A%22memorymeasurements%22+OR+abs%3A%22memorymeasurements%22%29&sortBy=relevance&sortOrder=descending&start=0&max_results=50",
+      "papers": [
+        {
+          "arxiv_id": "2610.18642v1",
+          "title": "MultiAlloc: Budget-Aware Precision Allocation for KV Cache Quantization",
+          "abstract": "The Key-Value (KV) cache constitutes a dominant source of memory consumption during large language model (LLM) inference, particularly in long-context and complex reasoning scenarios. Existing KV cache quantization methods have explored different compression granularities, including layer-wise precision adjustment and token-level information preservation. In practical deployment, however, the key challenge is not merely compression, but how to allocate limited quantization resources among heterogeneous precision preservation strategies under a fixed KV cache memory budget. We propose MultiAlloc, a profiling-guided precision allocation framework for KV cache quantization that adaptively distributes limited quantization resources between layer-wise precision enhancement and token-wise preservation. MultiAlloc employs lightweight offline profiling to characterize layer sensitivity and token importance, enabling adaptive precision allocation under a fixed memory constraint. Guided by the profiled memory--accuracy trade-off, it automatically derives an effective precision allocation strategy without online allocation search, and applies the resulting policy during inference. Extensive experiments on reasoning and long-context benchmarks demonstrate that MultiAlloc consistently improves over layer-wise, token-wise, and recent multi-granularity KV cache quantization methods under matched memory budgets across diverse models, including Mistral, Llama, DeepSeek-Qwen, and QwQ.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2610.18642v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2608.08684v1",
+          "title": "RippleKV: Cross-Layer KV Cache Allocation via Perturbation Propagation",
+          "abstract": "Long-context LLM inference is bottlenecked by KV cache memory, yet distributing a limited cache budget across layers remains challenging. Existing methods rely on proxies such as layer depth, attention statistics, or representation change. These proxies do not measure how perturbations at each layer propagate to the output and may therefore cause sensitive layers to be underallocated while tolerant layers are overallocated. To address this issue, we propose RippleKV, which allocates cache across layers by estimating how perturbations to each layer's value cache affect the final predictive distribution. RippleKV independently injects norm-adaptive perturbations into each layer's value cache and measures the induced KL divergence at the model output over a small calibration set. Averaging these responses yields a sensitivity profile specific to the model that need not vary monotonically with depth. RippleKV then converts the sensitivity profile into layer budget multipliers by normalizing the sensitivity scores and applying an exponential mapping. A ratio parameter controls the allocation disparity between sensitive and tolerant layers, while a final normalization preserves the KV cache budget. Experiments on LongBench demonstrate that RippleKV achieves the highest average performance among the evaluated KV cache compression methods under matched cache budgets.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2608.08684v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2502.13176v2",
+          "title": "BaKlaVa -- Budgeted Allocation of KV cache for Long-context Inference",
+          "abstract": "In Large Language Model (LLM) inference, Key-Value (KV) caches (KV-caches) are essential for reducing time complexity. However, they result in a linear increase in GPU memory as the context length grows. While recent work explores KV-cache eviction and compression policies to reduce memory usage, they often consider uniform KV-caches across all attention heads, leading to suboptimal performance. We introduce BaKlaVa, a method to allocate optimal memory for individual KV-caches across the model by estimating the importance of each KV-cache. Our empirical analysis demonstrates that not all KV-caches are equally critical for LLM performance. Using a one-time profiling approach, BaKlaVa assigns optimal memory budgets to each KV-cache. We evaluated our method on LLaMA-3-8B, and Qwen2.5-7B models, achieving up to a 70\\% compression ratio while keeping baseline performance and delivering up to an order-of-magnitude accuracy improvement at higher compression levels.",
+          "citation_count": null,
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2502.13176v2",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2502.17599v2",
+          "title": "MEDA: Dynamic KV Cache Allocation for Efficient Multimodal Long-Context Inference",
+          "abstract": "Long-context Multimodal Large Language Models (MLLMs) that incorporate long text-image and text-video modalities, demand substantial resources as their multimodal Key-Value (KV) caches grow with increasing input lengths, challenging inference efficiency. Existing methods for KV cache compression, in both text-only and multimodal LLMs, have neglected attention density variations across layers, thus often adopting uniform or progressive reduction strategies for layer-wise cache allocation. In this work, we propose MEDA, a dynamic layer-wise KV cache allocation method for efficient multimodal long-context inference. As its core, MEDA utilizes cross-modal attention entropy to determine the KV cache size at each MLLMs layer. Given the dynamically allocated KV cache size at each layer, MEDA also employs a KV pair selection scheme to identify which KV pairs to select and a KV pair merging strategy that merges the selected and non-selected ones to preserve information from the entire context. MEDA achieves up to 72% KV cache memory reduction and 2.82 times faster decoding speed, while maintaining or enhancing performance on various multimodal tasks in long-context settings, including multi-images and long-video scenarios. Our code is released at https://github.com/AIoT-MLSys-Lab/MEDA.",
+          "citation_count": null,
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2502.17599v2",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2603.20616v1",
+          "title": "Beyond Token Eviction: Mixed-Dimension Budget Allocation for Efficient KV Cache Compression",
+          "abstract": "Key-value (KV) caching is widely used to accelerate transformer inference, but its memory cost grows linearly with input length, limiting long-context deployment. Existing token eviction methods reduce memory by discarding less important tokens, which can be viewed as a coarse form of dimensionality reduction that assigns each token either zero or full dimension. We propose MixedDimKV, a mixed-dimension KV cache compression method that allocates dimensions to tokens at a more granular level, and MixedDimKV-H, which further integrates head-level importance information. Experiments on long-context benchmarks show that MixedDimKV outperforms prior KV cache compression methods that do not rely on head-level importance profiling. When equipped with the same head-level importance information, MixedDimKV-H consistently outperforms HeadKV. Notably, our approach achieves comparable performance to full attention on LongBench with only 6.25% of the KV cache. Furthermore, in the Needle-in-a-Haystack test, our solution maintains 100% accuracy at a 50K context length while using as little as 0.26% of the cache.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2603.20616v1",
+          "openable": true
+        }
+      ],
+      "candidates_examined": 50,
+      "candidates_after_screen": 50,
+      "retrieved_at": "2026-10-21T06:11:05.620505+00:00",
+      "coverage_note": "arXiv relevance fallback: up to 50 title/abstract candidates, ordered by lexical term coverage, then title coverage, then provider rank. Lexical matches are not semantic support; search is not exhaustive. No candidates means refine the query or report the discovery gap.",
+      "fallback": {
+        "from": "semantic_scholar",
+        "detail": "rate limited (injected for fallback check)"
+      }
+    },
+    "gate_passed": null
+  },
+  {
+    "case": {
+      "query": "FlashAttention exact attention IO-aware",
+      "expected_top5_id": "2205.14135",
+      "purpose": "different method"
+    },
+    "result": {
+      "source": "arxiv",
+      "mode": "relevance",
+      "status": "candidates",
+      "query": "FlashAttention exact attention IO-aware",
+      "query_terms": [
+        "flashattention",
+        "exact",
+        "attention",
+        "io",
+        "aware"
+      ],
+      "query_url": "https://export.arxiv.org/api/query?search_query=%28ti%3A%22flashattention%22+OR+abs%3A%22flashattention%22%29+OR+%28ti%3A%22exact%22+OR+abs%3A%22exact%22%29+OR+%28ti%3A%22attention%22+OR+abs%3A%22attention%22%29+OR+%28ti%3A%22io%22+OR+abs%3A%22io%22%29+OR+%28ti%3A%22aware%22+OR+abs%3A%22aware%22%29+OR+%28ti%3A%22flashattentionexact%22+OR+abs%3A%22flashattentionexact%22%29+OR+%28ti%3A%22exactattention%22+OR+abs%3A%22exactattention%22%29+OR+%28ti%3A%22attentionio%22+OR+abs%3A%22attentionio%22%29+OR+%28ti%3A%22ioaware%22+OR+abs%3A%22ioaware%22%29&sortBy=relevance&sortOrder=descending&start=0&max_results=50",
+      "papers": [
+        {
+          "arxiv_id": "2205.14135v2",
+          "title": "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness",
+          "abstract": "Transformers are slow and memory-hungry on long sequences, since the time and memory complexity of self-attention are quadratic in sequence length. Approximate attention methods have attempted to address this problem by trading off model quality to reduce the compute complexity, but often do not achieve wall-clock speedup. We argue that a missing principle is making attention algorithms IO-aware -- accounting for reads and writes between levels of GPU memory. We propose FlashAttention, an IO-aware exact attention algorithm that uses tiling to reduce the number of memory reads/writes between GPU high bandwidth memory (HBM) and GPU on-chip SRAM. We analyze the IO complexity of FlashAttention, showing that it requires fewer HBM accesses than standard attention, and is optimal for a range of SRAM sizes. We also extend FlashAttention to block-sparse attention, yielding an approximate attention algorithm that is faster than any existing approximate attention method. FlashAttention trains Transformers faster than existing baselines: 15% end-to-end wall-clock speedup on BERT-large (seq. length 512) compared to the MLPerf 1.1 training speed record, 3$\\times$ speedup on GPT-2 (seq. length 1K), and 2.4$\\times$ speedup on long-range arena (seq. length 1K-4K). FlashAttention and block-sparse FlashAttention enable longer context in Transformers, yielding higher quality models (0.7 better perplexity on GPT-2 and 6.4 points of lift on long-document classification) and entirely new capabilities: the first Transformers to achieve better-than-chance performance on the Path-X challenge (seq. length 16K, 61.4% accuracy) and Path-256 (seq. length 64K, 63.1% accuracy).",
+          "citation_count": null,
+          "year": 2022,
+          "url": "https://arxiv.org/abs/2205.14135v2",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2608.15459v1",
+          "title": "Not All Attention Is Equal: A Quantitative Survey of the EEI Trade-off",
+          "abstract": "Attention mechanisms have driven machine learning for a decade, from neural machine translation to language models that do general-purpose reasoning. This survey covers four connected threads: their formulation for sequence-to-sequence tasks, adaptation to computer vision, efficiency innovations that address the quadratic bottleneck, and advances in interpretability. We define three criteria: efficiency, expressiveness, and interpretability, and compare twenty-one methods using an EEI scoring framework. Scores come from a single rater with an assumed +/-1-point perturbation range. A deterministic Monte Carlo analysis with 200,000 samples shows that, under this perturbation model, rank changes of more than one position occur in 67-70% of samples on average. A rank-matched null model reproduces a similar stability profile, so the results support coarse tier-level comparisons rather than fine-grained rankings. The survey traces attention from Bahdanau-Luong alignment through the Transformer and into vision architectures. It reviews fixed and learned sparse attention, linear attention, IO-aware exact algorithms including FlashAttention, and state-space alternatives including Mamba. It also covers induction heads, superposition, and the attention-SSM duality. We further provide a structured narrative review, a benchmark synthesis with cross-study caveats, a five-problem research gap analysis, and a 2015-2026 evolution timeline. We conclude by framing attention research as an expansion of the efficiency-expressiveness-interpretability frontier and identifying future directions including unified efficiency benchmarks, learned routing for hybrid architectures, length generalization, and scalable mechanistic interpretability.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2608.15459v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2510.01718v2",
+          "title": "Accelerating Attention with Basis Decomposition",
+          "abstract": "Attention is a core operation in large language models (LLMs). We present BD Attention (BDA), a lossless algorithmic reformulation of attention. BDA is enabled by a simple matrix identity from Basis Decomposition (BD), which restructures multi-head projections into a compact form while preserving exact outputs. Unlike I/O-aware system optimizations such as FlashAttention, BDA provides a mathematically guaranteed acceleration that is architecture-agnostic. On DeepSeek-V2-Lite (16B, FP16), BDA requires only 4s of offline preparation with no retraining required and, on modern GPUs, achieves 34% faster key/value projections and 25% smaller weights, while increasing perplexity (PPL) by just 0.02% (FP16) or 0.0004% (FP32), a negligible effect on model performance. These results position BDA as a theoretically exact method for lossless attention acceleration that is complementary to existing engineering-level optimizations. Our code is available at https://github.com/abcbdf/basis-decomposition-official.",
+          "citation_count": null,
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2510.01718v2",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2609.24089v1",
+          "title": "FlashBoB: I/O-Efficient Exact Backward-over-Backward for Softmax Attention",
+          "abstract": "Transformer models built on the attention mechanism have become a central building block in modern deep learning, yet softmax attention remains a major bottleneck for long-context workloads. While FlashAttention makes the forward and first backward passes I/O-efficient, it does not support backward-over-backward (BoB), which enables exact differentiation through the backward pass for applications such as second-order optimization, test-time training, gradient-based memory, and meta-learning. Existing BoB implementations either materialize large intermediate tensors or exhaust GPU memory at long sequence lengths. We present FlashBoB, an exact, I/O-efficient algorithm for BoB in softmax attention that keeps computation within on-chip tiles and avoids all $N \\times N$ intermediate tensors, where $N$ is the sequence length. The key insight is a hierarchical affine structure in the softmax double backward: two row-wise scalars determine all outputs through affine transformations. This yields a two-pass schedule with bounded on-chip static random-access memory (SRAM) usage and minimal off-chip high-bandwidth memory (HBM) traffic. FlashBoB achieves $\u0398(N^2 d^2/M)$ HBM traffic ($d$ is the head dimension and $M$ is the memory size) and, within the standard FlashAttention-style score-recomputation model, matches the inherited large-cache lower bound for exact forward attention. Empirically, it scales exact attention BoB to $N=262\\text{K}$ on a single A100 80GB GPU, where prior PyTorch exact baselines fail by $N=16\\text{K}$, and is up to $6.3\\times$ faster than FlashBack. These results make exact second-order attention practical at long-context sequence lengths where prior implementations cannot run efficiently.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2609.24089v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2602.03067v3",
+          "title": "FlashSinkhorn: IO-Aware Entropic Optimal Transport on GPU",
+          "abstract": "Entropic optimal transport (EOT) via Sinkhorn iterations is widely used in modern machine learning, yet GPU solvers remain inefficient at scale. Tensorized implementations suffer quadratic HBM traffic from dense $n\\times m$ interactions, while existing online backends avoid storing dense matrices but still rely on generic tiled map-reduce reduction kernels with limited fusion. We present \\textbf{FlashSinkhorn}, an IO-aware EOT solver for squared Euclidean cost that rewrites stabilized log-domain Sinkhorn updates as row-wise LogSumExp reductions of biased dot-product scores, the same normalization as transformer attention. This enables FlashAttention-style fusion and tiling: fused Triton kernels stream tiles through on-chip SRAM and update dual potentials in a single pass, substantially reducing HBM IO per iteration while retaining linear-memory operations. We further provide streaming kernels for transport application, enabling scalable first- and second-order optimization. On A100 GPUs, FlashSinkhorn achieves up to $32\\times$ forward-pass and $161\\times$ end-to-end speedups over state-of-the-art online baselines on point-cloud OT, improves scalability on OT-based downstream tasks. For reproducibility, we release an open-source implementation at https://github.com/ot-triton-lab/flash-sinkhorn .",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2602.03067v3",
+          "openable": true
+        }
+      ],
+      "candidates_examined": 50,
+      "candidates_after_screen": 47,
+      "retrieved_at": "2026-10-21T06:11:08.588582+00:00",
+      "coverage_note": "arXiv relevance fallback: up to 50 title/abstract candidates, ordered by lexical term coverage, then title coverage, then provider rank. Lexical matches are not semantic support; search is not exhaustive. No candidates means refine the query or report the discovery gap.",
+      "fallback": {
+        "from": "semantic_scholar",
+        "detail": "rate limited (injected for fallback check)"
+      }
+    },
+    "gate_passed": true
+  },
+  {
+    "case": {
+      "query": "QLoRA quantization memory",
+      "expected_top5_id": "2305.14314",
+      "purpose": "different method"
+    },
+    "result": {
+      "source": "arxiv",
+      "mode": "relevance",
+      "status": "candidates",
+      "query": "QLoRA quantization memory",
+      "query_terms": [
+        "qlora",
+        "quantization",
+        "memory"
+      ],
+      "query_url": "https://export.arxiv.org/api/query?search_query=%28ti%3A%22qlora%22+OR+abs%3A%22qlora%22%29+OR+%28ti%3A%22quantization%22+OR+abs%3A%22quantization%22%29+OR+%28ti%3A%22memory%22+OR+abs%3A%22memory%22%29+OR+%28ti%3A%22qloraquantization%22+OR+abs%3A%22qloraquantization%22%29+OR+%28ti%3A%22quantizationmemory%22+OR+abs%3A%22quantizationmemory%22%29&sortBy=relevance&sortOrder=descending&start=0&max_results=50",
+      "papers": [
+        {
+          "arxiv_id": "2609.33927v1",
+          "title": "Optimizing the Phi-2 Small Language Model for Real-time Chatbot Applications Using Parameter-Efficient Fine-Tuning (PEFT) with QLoRA Quantization",
+          "abstract": "This study explores the optimization of the Phi-2 Small Language Models (SLMs) for real-time chatbot applications through Parameter-Efficient Fine-Tuning (PEFT) and Quantized Low-Rank Adaptation (QLoRA). QLoRA specifically refers to the integration of PEFT with LoRA alongside a 4-bit quantization process, aimed at enhancing computational efficiency. These models, initially designed for high performance with minimal computational overhead, are further refined to address the constraints of mobile and edge computing environments. By integrating PEFT with QLoRA, the research aims to reduce memory usage significantly while maintaining, or potentially improving, the accuracy of model responses in real-time interactions. The effectiveness of these techniques was evaluated using the ROUGE metric system, which showed notable improvements in the summarization tasks performed by the models. This approach not only confirms the feasibility of using SLMs in resource-restricted environments but also opens up new avenues for deploying advanced AI-driven applications in real-time settings. The study's findings have significant implications for the development of efficient, scalable, and accessible AI technologies, paving the way for broader adoption in various industries.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2609.33927v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2602.15836v1",
+          "title": "EdgeNav-QE: QLoRA Quantization and Dynamic Early Exit for LAM-based Navigation on Edge Devices",
+          "abstract": "Large Action Models (LAMs) have shown immense potential in autonomous navigation by bridging high-level reasoning with low-level control. However, deploying these multi-billion parameter models on edge devices remains a significant challenge due to memory constraints and latency requirements. In this paper, we propose EdgeNav-QE, a novel framework that integrates Quantized Low-Rank Adaptation (QLoRA) with a dynamic early-exit (DEE) mechanism to optimize LAMs for real-time edge navigation. By quantizing the backbone to 4-bit precision and strategically placing early-exit branches, we enable the model to terminate inference early for simple navigation tasks while retaining full depth for complex decision-making. Experimental results on the Habitat-Sim environment with Matterport3D dataset using OpenVLA-7B backbone, demonstrate that EdgeNav-QE reduces inference latency by 82.7% and memory footprint by 66.7% compared to full-precision baselines, while maintaining 81.8% navigation success rate. Furthermore, it outperforms state-of-the-art static early-exit method by 17.9% in latency, demonstrating the superiority of content-aware adaptive computation for safety-critical applications.",
+          "citation_count": null,
+          "year": 2026,
+          "url": "https://arxiv.org/abs/2602.15836v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2305.14314v1",
+          "title": "QLoRA: Efficient Finetuning of Quantized LLMs",
+          "abstract": "We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.",
+          "citation_count": null,
+          "year": 2023,
+          "url": "https://arxiv.org/abs/2305.14314v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2511.19493v1",
+          "title": "RFX: High-Performance Random Forests with GPU Acceleration and QLORA Compression",
+          "abstract": "RFX (Random Forests X), where X stands for compression or quantization, presents a production-ready implementation of Breiman and Cutler's Random Forest classification methodology in Python. RFX v1.0 provides complete classification: out-of-bag error estimation, overall and local importance measures, proximity matrices with QLORA compression, case-wise analysis, and interactive visualization (rfviz)--all with CPU and GPU acceleration. Regression, unsupervised learning, CLIQUE importance, and RF-GAP proximity are planned for v2.0. This work introduces four solutions addressing the proximity matrix memory bottleneck limiting Random Forest analysis to ~60,000 samples: (1) QLORA (Quantized Low-Rank Adaptation) compression for GPU proximity matrices, reducing memory from 80GB to 6.4MB for 100k samples (12,500x compression with INT8 quantization) while maintaining 99% geometric structure preservation, (2) CPU TriBlock proximity--combining upper-triangle storage with block-sparse thresholding--achieving 2.7x memory reduction with lossless quality, (3) SM-aware GPU batch sizing achieving 95% GPU utilization, and (4) GPU-accelerated 3D MDS visualization computing embeddings directly from low-rank factors using power iteration. Validation across four implementation modes (GPU/CPU x case-wise/non-case-wise) demonstrates correct implementation. GPU achieves 1.4x speedup over CPU for overall importance with 500+ trees. Proximity computation scales from 1,000 to 200,000+ samples (requiring GPU QLORA), with CPU TriBlock filling the gap for medium-scale datasets (10K-50K samples). RFX v1.0 eliminates the proximity memory bottleneck, enabling proximity-based Random Forest analysis on datasets orders of magnitude larger than previously feasible. Open-source production-ready classification following Breiman and Cutler's original methodology.",
+          "citation_count": null,
+          "year": 2025,
+          "url": "https://arxiv.org/abs/2511.19493v1",
+          "openable": true
+        },
+        {
+          "arxiv_id": "2410.14713v1",
+          "title": "QuAILoRA: Quantization-Aware Initialization for LoRA",
+          "abstract": "QLoRA reduces the memory-cost of fine-tuning a large language model (LLM) with LoRA by quantizing the base LLM. However, quantization introduces quantization errors that negatively impact model performance after fine-tuning. In this paper we introduce QuAILoRA, a quantization-aware initialization for LoRA that mitigates this negative impact by decreasing quantization errors at initialization. Our method spends a small amount of computational overhead to compute this quantization-aware initialization, without increasing the memory-cost of fine-tuning. We evaluate our method on several causal language modeling and downstream evaluation tasks using several different model sizes and families. We observe that almost all LLMs fined-tuned with QuAILoRA achieve better validation perplexity. When evaluated on downstream tasks, we find that QuAILoRA yields improvements proportional to the negative effect of quantization error. On average, applying QuAILoRA to 4-bit QLoRA models yields 75% of the validation perplexity decrease and 86% of the downstream task accuracy increase as doubling the quantization precision to 8-bit, without increasing GPU memory utilization during fine-tuning.",
+          "citation_count": null,
+          "year": 2024,
+          "url": "https://arxiv.org/abs/2410.14713v1",
+          "openable": true
+        }
+      ],
+      "candidates_examined": 50,
+      "candidates_after_screen": 48,
+      "retrieved_at": "2026-10-21T06:11:11.784553+00:00",
+      "coverage_note": "arXiv relevance fallback: up to 50 title/abstract candidates, ordered by lexical term coverage, then title coverage, then provider rank. Lexical matches are not semantic support; search is not exhaustive. No candidates means refine the query or report the discovery gap.",
+      "fallback": {
+        "from": "semantic_scholar",
+        "detail": "rate limited (injected for fallback check)"
+      }
+    },
+    "gate_passed": true
+  },
+  {
+    "case": {
+      "query": "zzenvoyunfindabletopicqzx",
+      "expected": "no_candidates",
+      "purpose": "negative query"
+    },
+    "result": {
+      "source": "arxiv",
+      "mode": "relevance",
+      "status": "no_candidates",
+      "query": "zzenvoyunfindabletopicqzx",
+      "query_terms": [
+        "zzenvoyunfindabletopicqzx"
+      ],
+      "query_url": "https://export.arxiv.org/api/query?search_query=%28ti%3A%22zzenvoyunfindabletopicqzx%22+OR+abs%3A%22zzenvoyunfindabletopicqzx%22%29&sortBy=relevance&sortOrder=descending&start=0&max_results=50",
+      "papers": [],
+      "candidates_examined": 0,
+      "candidates_after_screen": 0,
+      "retrieved_at": "2026-10-21T06:11:14.429986+00:00",
+      "coverage_note": "arXiv relevance fallback: up to 50 title/abstract candidates, ordered by lexical term coverage, then title coverage, then provider rank. Lexical matches are not semantic support; search is not exhaustive. No candidates means refine the query or report the discovery gap.",
+      "fallback": {
+        "from": "semantic_scholar",
+        "detail": "rate limited (injected for fallback check)"
+      }
+    },
+    "gate_passed": true
+  }
+]

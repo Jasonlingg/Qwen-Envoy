@@ -1,0 +1,1407 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/voHUi4Y8NkO3TWza/+MGu+vi880</id>
+  <title>arXiv Query: search_query=(ti:"kv" OR abs:"kv") OR (ti:"cache" OR abs:"cache") OR (ti:"allocation" OR abs:"allocation") OR (ti:"concurrent" OR abs:"concurrent") OR (ti:"readers" OR abs:"readers") OR (ti:"memory" OR abs:"memory") OR (ti:"measurements" OR abs:"measurements") OR (ti:"kvcache" OR abs:"kvcache") OR (ti:"cacheallocation" OR abs:"cacheallocation") OR (ti:"allocationconcurrent" OR abs:"allocationconcurrent") OR (ti:"concurrentreaders" OR abs:"concurrentreaders") OR (ti:"readersmemory" OR abs:"readersmemory") OR (ti:"memorymeasurements" OR abs:"memorymeasurements")&amp;id_list=&amp;start=0&amp;max_results=50</title>
+  <updated>2026-10-21T06:11:05Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(ti:%22kv%22+OR+abs:%22kv%22)+OR+((ti:%22cache%22+OR+abs:%22cache%22)+OR+((ti:%22allocation%22+OR+abs:%22allocation%22)+OR+((ti:%22concurrent%22+OR+abs:%22concurrent%22)+OR+((ti:%22readers%22+OR+abs:%22readers%22)+OR+((ti:%22memory%22+OR+abs:%22memory%22)+OR+((ti:%22measurements%22+OR+abs:%22measurements%22)+OR+((ti:%22kvcache%22+OR+abs:%22kvcache%22)+OR+((ti:%22cacheallocation%22+OR+abs:%22cacheallocation%22)+OR+((ti:%22allocationconcurrent%22+OR+abs:%22allocationconcurrent%22)+OR+((ti:%22concurrentreaders%22+OR+abs:%22concurrentreaders%22)+OR+((ti:%22readersmemory%22+OR+abs:%22readersmemory%22)+OR+(ti:%22memorymeasurements%22+OR+abs:%22memorymeasurements%22))))))))))))&amp;start=0&amp;max_results=50&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>50</opensearch:itemsPerPage>
+  <opensearch:totalResults>573313</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2609.11744v1</id>
+    <title>Building py-kvcache: A Performance Characterization of External KV Caching for vLLM with NVMe SSDs</title>
+    <updated>2026-09-10T16:00:35Z</updated>
+    <link href="https://arxiv.org/abs/2609.11744v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.11744v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prefix caching can reduce the time to first token (TTFT) of long-context LLM requests by reusing previously computed key-value (KV) states, but for short prefixes or fast GPUs, recomputation can be faster than loading from an external cache. We characterize this tradeoff in vLLM across GPU, CPU, and NVMe tiers using synthetic workloads, long-context benchmarks, production traces, and find that cache performance depends on transfer granularity, intermediate memory use, and when transfers enter the request schedule, not only on device bandwidth. These findings motivate py-kvcache, a vLLM KV Offload connector with asynchronous direct I/O, bounded shared staging, and scheduler-aware preloading, which starts disk reads while requests are still waiting, overlapping with compute. At 80k tokens, py-kvcache loading from disk is 2.0x faster than LMCache, with preloading contributing 1.34x. With GPU, CPU, and disk caching enabled, it is 1.23x faster than LMCache and within approximately 4% of the native vLLM KV Offload implementation. LongBench and SCBench show that these benefits extend to irregular prefix chains and multi-turn workloads. Bailian trace replays improve TTFT on a weaker GPU, but on an H100 the average request falls below the break-even point and GPU memory alone retains enough prefixes. External KV caching should therefore be treated as a setup specific admission decision. The py-kvcacheimplementation is available at: https://github.com/atlarge-research/py-kvcache.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-10T16:00:35Z</published>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Joseph Kanichai</name>
+    </author>
+    <author>
+      <name>Tiziano De Matteis</name>
+    </author>
+    <author>
+      <name>Animesh Trivedi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.18642v1</id>
+    <title>MultiAlloc: Budget-Aware Precision Allocation for KV Cache Quantization</title>
+    <updated>2026-10-13T16:10:45Z</updated>
+    <link href="https://arxiv.org/abs/2610.18642v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.18642v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The Key-Value (KV) cache constitutes a dominant source of memory consumption during large language model (LLM) inference, particularly in long-context and complex reasoning scenarios. Existing KV cache quantization methods have explored different compression granularities, including layer-wise precision adjustment and token-level information preservation. In practical deployment, however, the key challenge is not merely compression, but how to allocate limited quantization resources among heterogeneous precision preservation strategies under a fixed KV cache memory budget. We propose MultiAlloc, a profiling-guided precision allocation framework for KV cache quantization that adaptively distributes limited quantization resources between layer-wise precision enhancement and token-wise preservation. MultiAlloc employs lightweight offline profiling to characterize layer sensitivity and token importance, enabling adaptive precision allocation under a fixed memory constraint. Guided by the profiled memory--accuracy trade-off, it automatically derives an effective precision allocation strategy without online allocation search, and applies the resulting policy during inference. Extensive experiments on reasoning and long-context benchmarks demonstrate that MultiAlloc consistently improves over layer-wise, token-wise, and recent multi-granularity KV cache quantization methods under matched memory budgets across diverse models, including Mistral, Llama, DeepSeek-Qwen, and QwQ.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-13T16:10:45Z</published>
+    <arxiv:comment>Code: https://github.com/RL-MIND/MultiAlloc</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yangchengyu Zhou</name>
+    </author>
+    <author>
+      <name>Zhiping Wu</name>
+    </author>
+    <author>
+      <name>Runchang Jiang</name>
+    </author>
+    <author>
+      <name>Dongdong Ren</name>
+    </author>
+    <author>
+      <name>Youfang Han</name>
+    </author>
+    <author>
+      <name>Wei Zhao</name>
+    </author>
+    <author>
+      <name>Dongqi Cai</name>
+    </author>
+    <author>
+      <name>Wenbin Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.24506v2</id>
+    <title>CrossPool: Efficient Multi-LLM Serving for Cold MoE Models through KV-Cache and Weight Disaggregation</title>
+    <updated>2026-06-26T08:52:25Z</updated>
+    <link href="https://arxiv.org/abs/2606.24506v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.24506v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Emerging LLM services increasingly host many sparse MoE models, yet most models receive sparse requests and remain cold. This creates a GPU memory problem: model weights are stable and model-determined, while KV-cache is transient and demand-determined. Because cold models rarely reach peak KV-cache demand at the same time, reserving worst-case KV capacity per model wastes memory; a shared KV-cache pool can instead provision aggregate active demand. However, KV-cache sharing is not sufficient when weights and KV-cache remain in a monolithic GPU memory pool. Static weights compete with dynamic KV-cache, and KV-head-limited attention under cold, low-concurrency traffic exposes only a fraction of replicated KV capacity, leading to low GPU memory utilization and weak long-context support. We present CrossPool, a serving engine for cold MoE models that separates FFN weights and KV-cache into two GPU memory pools: a weights pool that consolidates FFN weights across cold models, and a KV-cache pool that dynamically serves active requests while keeping attention local to KV-cache. CrossPool combines a KV-cache planner and virtualizer, a layer-wise pipeline scheduler that hides hidden-state transfers, and persistent kernels with control lowering to reduce CPU-GPU control overhead. With efficient GPU memory pooling, CrossPool underpins bursty long-context requests and outperforms the state-of-the-art kvcached-based multi-LLM serving system, reducing P99 TBT by up to 10.4x.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-23T12:34:09Z</published>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Zhuoren Ye</name>
+    </author>
+    <author>
+      <name>Tianyu Wo</name>
+    </author>
+    <author>
+      <name>Dinghao Xue</name>
+    </author>
+    <author>
+      <name>Mingming Zhang</name>
+    </author>
+    <author>
+      <name>Yuchen Teng</name>
+    </author>
+    <author>
+      <name>Chunming Hu</name>
+    </author>
+    <author>
+      <name>Renyu Yang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.08684v1</id>
+    <title>RippleKV: Cross-Layer KV Cache Allocation via Perturbation Propagation</title>
+    <updated>2026-08-09T13:01:11Z</updated>
+    <link href="https://arxiv.org/abs/2608.08684v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.08684v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context LLM inference is bottlenecked by KV cache memory, yet distributing a limited cache budget across layers remains challenging. Existing methods rely on proxies such as layer depth, attention statistics, or representation change. These proxies do not measure how perturbations at each layer propagate to the output and may therefore cause sensitive layers to be underallocated while tolerant layers are overallocated. To address this issue, we propose RippleKV, which allocates cache across layers by estimating how perturbations to each layer's value cache affect the final predictive distribution. RippleKV independently injects norm-adaptive perturbations into each layer's value cache and measures the induced KL divergence at the model output over a small calibration set. Averaging these responses yields a sensitivity profile specific to the model that need not vary monotonically with depth. RippleKV then converts the sensitivity profile into layer budget multipliers by normalizing the sensitivity scores and applying an exponential mapping. A ratio parameter controls the allocation disparity between sensitive and tolerant layers, while a final normalization preserves the KV cache budget. Experiments on LongBench demonstrate that RippleKV achieves the highest average performance among the evaluated KV cache compression methods under matched cache budgets.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-09T13:01:11Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dongjie Xu</name>
+    </author>
+    <author>
+      <name>Kai Qian</name>
+    </author>
+    <author>
+      <name> Julius</name>
+    </author>
+    <author>
+      <name>Weijie Shi</name>
+    </author>
+    <author>
+      <name>Yuxuan Sun</name>
+    </author>
+    <author>
+      <name>Minghua Tang</name>
+    </author>
+    <author>
+      <name>Fenglei Jin</name>
+    </author>
+    <author>
+      <name>Hanchi Dong</name>
+    </author>
+    <author>
+      <name>Jiajie Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.13176v2</id>
+    <title>BaKlaVa -- Budgeted Allocation of KV cache for Long-context Inference</title>
+    <updated>2025-02-24T01:28:27Z</updated>
+    <link href="https://arxiv.org/abs/2502.13176v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.13176v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In Large Language Model (LLM) inference, Key-Value (KV) caches (KV-caches) are essential for reducing time complexity. However, they result in a linear increase in GPU memory as the context length grows. While recent work explores KV-cache eviction and compression policies to reduce memory usage, they often consider uniform KV-caches across all attention heads, leading to suboptimal performance. We introduce BaKlaVa, a method to allocate optimal memory for individual KV-caches across the model by estimating the importance of each KV-cache. Our empirical analysis demonstrates that not all KV-caches are equally critical for LLM performance. Using a one-time profiling approach, BaKlaVa assigns optimal memory budgets to each KV-cache. We evaluated our method on LLaMA-3-8B, and Qwen2.5-7B models, achieving up to a 70\% compression ratio while keeping baseline performance and delivering up to an order-of-magnitude accuracy improvement at higher compression levels.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-18T04:08:29Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ahmed Burak Gulhan</name>
+    </author>
+    <author>
+      <name>Krishna Teja Chitty-Venkata</name>
+    </author>
+    <author>
+      <name>Murali Emani</name>
+    </author>
+    <author>
+      <name>Mahmut Kandemir</name>
+    </author>
+    <author>
+      <name>Venkatram Vishwanath</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.17599v2</id>
+    <title>MEDA: Dynamic KV Cache Allocation for Efficient Multimodal Long-Context Inference</title>
+    <updated>2025-03-13T04:04:08Z</updated>
+    <link href="https://arxiv.org/abs/2502.17599v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.17599v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context Multimodal Large Language Models (MLLMs) that incorporate long text-image and text-video modalities, demand substantial resources as their multimodal Key-Value (KV) caches grow with increasing input lengths, challenging inference efficiency. Existing methods for KV cache compression, in both text-only and multimodal LLMs, have neglected attention density variations across layers, thus often adopting uniform or progressive reduction strategies for layer-wise cache allocation. In this work, we propose MEDA, a dynamic layer-wise KV cache allocation method for efficient multimodal long-context inference. As its core, MEDA utilizes cross-modal attention entropy to determine the KV cache size at each MLLMs layer. Given the dynamically allocated KV cache size at each layer, MEDA also employs a KV pair selection scheme to identify which KV pairs to select and a KV pair merging strategy that merges the selected and non-selected ones to preserve information from the entire context. MEDA achieves up to 72% KV cache memory reduction and 2.82 times faster decoding speed, while maintaining or enhancing performance on various multimodal tasks in long-context settings, including multi-images and long-video scenarios. Our code is released at https://github.com/AIoT-MLSys-Lab/MEDA.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-24T19:34:52Z</published>
+    <arxiv:comment>NAACL 2025 Main</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Zhongwei Wan</name>
+    </author>
+    <author>
+      <name>Hui Shen</name>
+    </author>
+    <author>
+      <name>Xin Wang</name>
+    </author>
+    <author>
+      <name>Che Liu</name>
+    </author>
+    <author>
+      <name>Zheda Mai</name>
+    </author>
+    <author>
+      <name>Mi Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24971v1</id>
+    <title>PolyKV: A Shared Asymmetrically-Compressed KV Cache Pool for Multi-Agent LLM Inference</title>
+    <updated>2026-04-27T20:10:21Z</updated>
+    <link href="https://arxiv.org/abs/2604.24971v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24971v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present PolyKV, a system in which multiple concurrent inference agents share a single, asymmetrically compressed KV cache pool. Rather than allocating a separate KV cache per agent -- the standard paradigm -- PolyKV writes a compressed cache once and injects it into N independent agent contexts via HuggingFace DynamicCache objects. Compression is asymmetric: Keys are quantized at int8 (q8_0) to preserve softmax stability, while Values are compressed using TurboQuant MSE -- a Fast Walsh-Hadamard Transform (FWHT) rotation followed by 3-bit Lloyd-Max quantization with centroids tuned to N(0,1). We evaluate across two model scales (SmolLM2-1.7B-Instruct and Llama-3-8B-Instruct), three context lengths (600-7,194 tokens), and up to 15 concurrent agents. PolyKV achieves a stable 2.91x compression ratio across all configurations. On Llama-3-8B with 15 agents sharing a 4K-token context, PolyKV reduces KV cache memory from 19.8 GB to 0.45 GB -- a 97.7% reduction -- while maintaining only +0.57% perplexity degradation and a mean BERTScore F1 of 0.928. PPL delta does not grow with agent count and improves as context length increases, inverting to -0.26% at 1,851 coherent tokens. To our knowledge, no prior work combines a single shared, lossy-compressed KV pool with multi-reader concurrent agent access.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T20:10:21Z</published>
+    <arxiv:comment>10 pages, 6 tables. Code: https://github.com/ishan1410/PolyKV Keywords: KV cache compression, multi-agent LLM inference, asymmetric quantization, FWHT, TurboQuant, shared memory</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ishan Patel</name>
+    </author>
+    <author>
+      <name>Ishan Joshi</name>
+    </author>
+    <arxiv:doi>10.5281/zenodo.19686729</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.5281/zenodo.19686729" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.03184v1</id>
+    <title>DynSplit-KV: Dynamic Semantic Splitting for KVCache Compression in Efficient Long-Context LLM Inference</title>
+    <updated>2026-02-03T06:54:56Z</updated>
+    <link href="https://arxiv.org/abs/2602.03184v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.03184v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Although Key-Value (KV) Cache is essential for efficient large language models (LLMs) inference, its growing memory footprint in long-context scenarios poses a significant bottleneck, making KVCache compression crucial. Current compression methods rely on rigid splitting strategies, such as fixed intervals or pre-defined delimiters. We observe that rigid splitting suffers from significant accuracy degradation (ranging from 5.5% to 55.1%) across different scenarios, owing to the scenario-dependent nature of the semantic boundaries. This highlights the necessity of dynamic semantic splitting to match semantics. To achieve this, we face two challenges. (1) Improper delimiter selection misaligns semantics with the KVCache, resulting in 28.6% accuracy loss. (2) Variable-length blocks after splitting introduce over 73.1% additional inference overhead. To address the above challenges, we propose DynSplit-KV, a KVCache compression method that dynamically identifies delimiters for splitting. We propose: (1) a dynamic importance-aware delimiter selection strategy, improving accuracy by 49.9%. (2) A uniform mapping strategy that transforms variable-length semantic blocks into a fixed-length format, reducing inference overhead by 4.9x. Experiments show that DynSplit-KV achieves the highest accuracy, 2.2x speedup compared with FlashAttention and 2.6x peak memory reduction in long-context scenarios.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-03T06:54:56Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jiancai Ye</name>
+    </author>
+    <author>
+      <name>Jun Liu</name>
+    </author>
+    <author>
+      <name>Qingchen Li</name>
+    </author>
+    <author>
+      <name>Tianlang Zhao</name>
+    </author>
+    <author>
+      <name>Hanbin Zhang</name>
+    </author>
+    <author>
+      <name>Jiayi Pan</name>
+    </author>
+    <author>
+      <name>Ningyi Xu</name>
+    </author>
+    <author>
+      <name>Guohao Dai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2410.00161v2</id>
+    <title>KV-Compress: Paged KV-Cache Compression with Variable Compression Rates per Attention Head</title>
+    <updated>2024-10-07T15:07:09Z</updated>
+    <link href="https://arxiv.org/abs/2410.00161v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.00161v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Context lengths of Large Language Models (LLMs) have exploded in recent years, with 128k-token context becoming a standard and million-token context becoming a reality. Efficiently supporting long-context inference remains challenging as the memory that must be allocated in key-value (KV) cache for a generation scales with its context length, limiting the number of long-context requests that can be served concurrently under a given memory budget. KV cache compression can mitigate this issue by removing under-utilized KVs from each attention head's cache and reducing its memory footprint. Higher theoretical compression rates can be achieved when the number of removed KVs varies across attention heads, but application of such a strategy within existing inference frameworks adds fragmentation and cannot realize the theoretical compression rates in physical memory. We introduce KV-Compress, a novel compression method that evicts contiguous KV blocks within a PagedAttention framework, reducing the memory footprint of the KV cache proportionally to this theoretical compression rate. Our method achieves state-of-the-art performance on LongBench for both Mistral-7B-Instruct-v0.2 and Llama-3.1-8B-Instruct while lowering the total number of compressed KVs by 4x compared with prior methods. Evaluations on Llama-3.1-8B-Instruct and Llama-3.1-70B-Instruct-FP8 achieve compression rates up to 8x with negligible impact on performance, and up to 64x while retaining over 90% of full-cache performance for all but three of the suite's subsets. We benchmark an integration of our method with vLLM that increases total throughput by up to 5.18x by enabling larger decoding batches.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-09-30T19:09:13Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Isaac Rehg</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.03235v1</id>
+    <title>SGD-KV: Summarization Guided KV Cache Compression</title>
+    <updated>2026-09-03T00:31:11Z</updated>
+    <link href="https://arxiv.org/abs/2609.03235v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.03235v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) face severe memory bottlenecks in long-context inference due to the linearly growing size of key-value (KV) caches. Existing KV cache compression techniques typically rely on simple heuristics, overlooking the distinct functional roles of different attention heads. We present SGD-KV (Summarization-Guided KV Cache Compression), a head-aware framework that leverages a novel chunk-summarization diagnostic task to systematically identify and prioritize attention heads specialized in hierarchical information aggregation. Experiments on Qwen2.5-7B-1M and Qwen3-32B across diverse long-context benchmarks demonstrate that SGD-KV achieves state-of-the-art performance with contexts up to 1M tokens, while reducing KV cache memory usage by up to 75%. Our findings show that strategically allocating the KV cache budget based on the summarization score distribution of attention heads yields a superior efficiency-accuracy trade-off for long-context inference.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-03T00:31:11Z</published>
+    <arxiv:comment>Accepted in NeurIPS2026 Efficient Reasoning Workshop</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Zeyu Liu</name>
+    </author>
+    <author>
+      <name>Woomin Song</name>
+    </author>
+    <author>
+      <name>Xuandi Fu</name>
+    </author>
+    <author>
+      <name>Sai Muralidhar Jayanthi</name>
+    </author>
+    <author>
+      <name>Vivek Govindan</name>
+    </author>
+    <author>
+      <name>Aram Galstyan</name>
+    </author>
+    <author>
+      <name>Sravan Babu Bodapati</name>
+    </author>
+    <author>
+      <name>Srikanth Ronanki</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.17803v1</id>
+    <title>Swarm: Co-Activation Aware KVCache Offloading Across Multiple SSDs</title>
+    <updated>2026-03-18T14:59:16Z</updated>
+    <link href="https://arxiv.org/abs/2603.17803v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.17803v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The key-value (KV) cache has become the dominant contributor to memory consumption in large language model (LLM) inference. Although offloading KVCache from GPU high-bandwidth memory (HBM) to CPU DRAM alleviates device memory pressure, DRAM remains capacity-limited and costly for large, persistent workloads. Solid-state drives (SSDs) provide a cost-effective alternative, but naive SSD-based paging is fundamentally bandwidth-bound due to limited PCIe throughput and per-device bandwidth constraints.
+  In this paper, we observe that KVCache activations in real-world workloads exhibit strong and stable correlations. We term this phenomenon KVCache Co-Activation, where accessing a KV entry is often accompanied by a stable and recurring set of other KV entries. Leveraging this property, we present Swarm, an SSD-based KVCache offloading system that converts bandwidth-bound single-device access into parallel I/O across multiple SSDs. Specifically, Swarm clusters co-activated KV entries offline and distributes the resulting clusters across SSDs using graph-based placement with selective replication to maximize parallel I/O bandwidth. At runtime, Swarm performs load-balanced cluster retrieval and dynamically adapts clustering and caching decisions to sustain high bandwidth utilization under evolving access patterns. Evaluations show that Swarm reduces I/O time by 2.41x and improves effective bandwidth utilization by 2.72x.</summary>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-18T14:59:16Z</published>
+    <arxiv:primary_category term="cs.PF"/>
+    <author>
+      <name>Tuowei Wang</name>
+    </author>
+    <author>
+      <name>Liyun Chu</name>
+    </author>
+    <author>
+      <name>Ruwen Fan</name>
+    </author>
+    <author>
+      <name>Ju Ren</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2509.08315v1</id>
+    <title>EvolKV: Evolutionary KV Cache Compression for LLM Inference</title>
+    <updated>2025-09-10T06:32:49Z</updated>
+    <link href="https://arxiv.org/abs/2509.08315v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2509.08315v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Existing key-value (KV) cache compression methods typically rely on heuristics, such as uniform cache allocation across layers or static eviction policies, however, they ignore the critical interplays among layer-specific feature patterns and task performance, which can lead to degraded generalization. In this paper, we propose EvolKV, an adaptive framework for layer-wise, task-driven KV cache compression that jointly optimizes the memory efficiency and task performance. By reformulating cache allocation as a multi-objective optimization problem, EvolKV leverages evolutionary search to dynamically configure layer budgets while directly maximizing downstream performance. Extensive experiments on 11 tasks demonstrate that our approach outperforms all baseline methods across a wide range of KV cache budgets on long-context tasks and surpasses heuristic baselines by up to 7 percentage points on GSM8K. Notably, EvolKV achieves superior performance over the full KV cache setting on code completion while utilizing only 1.5% of the original budget, suggesting the untapped potential in learned compression strategies for KV cache budget allocation.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.NE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-09-10T06:32:49Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Bohan Yu</name>
+    </author>
+    <author>
+      <name>Yekun Chai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.20616v1</id>
+    <title>Beyond Token Eviction: Mixed-Dimension Budget Allocation for Efficient KV Cache Compression</title>
+    <updated>2026-03-21T03:21:43Z</updated>
+    <link href="https://arxiv.org/abs/2603.20616v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.20616v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Key-value (KV) caching is widely used to accelerate transformer inference, but its memory cost grows linearly with input length, limiting long-context deployment. Existing token eviction methods reduce memory by discarding less important tokens, which can be viewed as a coarse form of dimensionality reduction that assigns each token either zero or full dimension. We propose MixedDimKV, a mixed-dimension KV cache compression method that allocates dimensions to tokens at a more granular level, and MixedDimKV-H, which further integrates head-level importance information. Experiments on long-context benchmarks show that MixedDimKV outperforms prior KV cache compression methods that do not rely on head-level importance profiling. When equipped with the same head-level importance information, MixedDimKV-H consistently outperforms HeadKV. Notably, our approach achieves comparable performance to full attention on LongBench with only 6.25% of the KV cache. Furthermore, in the Needle-in-a-Haystack test, our solution maintains 100% accuracy at a 50K context length while using as little as 0.26% of the cache.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-21T03:21:43Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ruijie Miao</name>
+    </author>
+    <author>
+      <name>Zhiming Wang</name>
+    </author>
+    <author>
+      <name>Wang Li</name>
+    </author>
+    <author>
+      <name>Shiwei Wu</name>
+    </author>
+    <author>
+      <name>Shufan Liu</name>
+    </author>
+    <author>
+      <name>Yanbing Jiang</name>
+    </author>
+    <author>
+      <name>Tong Yang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.17501v1</id>
+    <title>CoKV: Optimizing KV Cache Allocation via Cooperative Game</title>
+    <updated>2025-02-21T12:03:07Z</updated>
+    <link href="https://arxiv.org/abs/2502.17501v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.17501v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) have achieved remarkable success on various aspects of human life. However, one of the major challenges in deploying these models is the substantial memory consumption required to store key-value pairs (KV), which imposes significant resource demands. Recent research has focused on KV cache budget allocation, with several approaches proposing head-level budget distribution by evaluating the importance of individual attention heads. These methods, however, assess the importance of heads independently, overlooking their cooperative contributions within the model, which may result in a deviation from their true impact on model performance. In light of this limitation, we propose CoKV, a novel method that models the cooperation between heads in model inference as a cooperative game. By evaluating the contribution of each head within the cooperative game, CoKV can allocate the cache budget more effectively. Extensive experiments show that CoKV achieves state-of-the-art performance on the LongBench benchmark using LLama-3-8B-Instruct and Mistral-7B models.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-21T12:03:07Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Qiheng Sun</name>
+    </author>
+    <author>
+      <name>Hongwei Zhang</name>
+    </author>
+    <author>
+      <name>Haocheng Xia</name>
+    </author>
+    <author>
+      <name>Jiayao Zhang</name>
+    </author>
+    <author>
+      <name>Jinfei Liu</name>
+    </author>
+    <author>
+      <name>Kui Ren</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.24033v1</id>
+    <title>RoPE-Aware Bit Allocation for KV-Cache Quantization</title>
+    <updated>2026-06-23T00:17:48Z</updated>
+    <link href="https://arxiv.org/abs/2606.24033v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.24033v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Existing low-bit KV-cache quantizers often treat each cached key as a flat vector. Under RoPE, however, a key's contribution to a future attention logit decomposes into a position-dependent sum over two-dimensional frequency blocks. This makes key-cache quantization a block-wise bit-allocation problem: high-energy RoPE blocks are more sensitive to quantization error and should receive more bits. We introduce Block-GTQ, a RoPE-aware bit allocator for key-cache quantization built on TurboQuant-MSE(TQ-MSE). For each layer and KV head, Block-GTQ computes a label-free energy score for each RoPE block and greedily allocates integer bit widths by marginal gain. Under matched K/V bit budgets, Block-GTQ better preserves RoPE query-key logits on a ten-model diagnostic panel, cutting per-layer MAE by 32-80% at 2 and 3 b/dim K-only quantization and winning all 367/367 layer comparisons against uniform TQ-MSE. These fidelity gains translate to stronger downstream long-context retrieval, understanding, and reasoning. At K2V2 on Llama-3.1-8B-Instruct, Block-GTQ raises the six-task NIAH average from 70.6 to 97.4, and the LongBench-EN average from 36.87 to 53.31. On AIME 2024/2025 with DeepSeek-R1-Distill-Qwen-7B, without an fp16 recent-key buffer, Block-GTQ at K3V2 scores 51.7/37.5, close to fp16's 54.2/37.9, whereas uniform TQ-MSE collapses to 0.0/0.0. We further implement a packed-cache serving path. On a single H800 GPU with Qwen2.5-3B-Instruct, packed K3V3 achieves 3.24x KV-cache compression with fp16-comparable quality, runs 1.34x faster than fp16 FlashAttention2 at 128K context, reduces peak memory from 56.31 GB to 19.85 GB, and remains feasible at 256K and 512K where fp16 OOMs. Code is available at https://github.com/JIA-Lab-research/blockgtq.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-23T00:17:48Z</published>
+    <arxiv:comment>Preprint. Code available at https://github.com/JIA-Lab-research/blockgtq</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Fengfeng Liang</name>
+    </author>
+    <author>
+      <name>Yuechen Zhang</name>
+    </author>
+    <author>
+      <name>Jiaya Jia</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.14877v2</id>
+    <title>HeatKV: Head-tuned KV-cache Compression for Visual Autoregressive Modeling</title>
+    <updated>2026-06-17T14:04:11Z</updated>
+    <link href="https://arxiv.org/abs/2605.14877v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.14877v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Visual Autoregressive (VAR) models have recently demonstrated impressive image generation quality while maintaining low latency. However, they suffer from severe KV-cache memory constraints, often requiring gigabytes of memory per generated image. We introduce HeatKV, a novel compression method that adapts cache allocation in each head based on its attention to previously generated scales. Using a small offline calibration set, the attention heads are ranked according to their attention scores over prior scales. Based on this ranking, we construct a static pruning schedule tailored to a given memory budget. Applied to the Infinity-2B model, HeatKV achieves $2 \times$ higher compression ratio in memory allocation for KV cache compared to existing methods, while maintaining similar or better image fidelity, prompt alignment and human perception score. Our method achieves a new state-of-the-art (SOTA) for VAR model KV-cache compression, showcasing the effectiveness of fine-grained, head-specific cache allocation. Code and calibration script available at https://github.com/arm-research/heatkv.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-14T14:22:34Z</published>
+    <arxiv:comment>18 pages total including appendix; 6 main-paper figures, 2 appendix figures; 4 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Jonathan Cederlund</name>
+    </author>
+    <author>
+      <name>Axel Berg</name>
+    </author>
+    <author>
+      <name>William Isaksson</name>
+    </author>
+    <author>
+      <name>Durmus Alp Emre Acar</name>
+    </author>
+    <author>
+      <name>Chuteng Zhou</name>
+    </author>
+    <author>
+      <name>Pontus Giselsson</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2412.05896v1</id>
+    <title>XKV: Personalized KV Cache Memory Reduction for Long-Context LLM Inference</title>
+    <updated>2024-12-08T11:32:08Z</updated>
+    <link href="https://arxiv.org/abs/2412.05896v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2412.05896v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recently the generative Large Language Model (LLM) has achieved remarkable success in numerous applications. Notably its inference generates output tokens one-by-one, leading to many redundant computations. The widely-used KV-Cache framework makes a compromise between time and space complexities. However, caching data generates the increasingly growing memory demand, that can quickly exhaust the limited memory capacity of the modern accelerator like GPUs, particularly in long-context inference tasks. Existing studies reduce memory consumption by evicting some of cached data that have less important impact on inference accuracy. But the benefit in practice is far from ideal due to the static cache allocation across different LLM network layers. This paper observes that the layer-specific cached data have very different impacts on accuracy. We quantify this difference, and give experimental and theoretical validation. We accordingly make a formal analysis and shows that customizing the cache size for each layer in a personalized manner can yield a significant memory reduction, while still providing comparable accuracy. We simulate the cache allocation as a combinatorial optimization problem and give a global optimal solution. In particular, we devise a mini- and sampling-based inference over a lightweight variant of the LLM model, so as to quickly capture the difference and then feed it into the personalized algorithms. Extensive experiments on real-world datasets demonstrate that our proposals can reduce KV cache memory consumption by 61.6% on average, improve computational efficiency by 2.1x and then increase the throughput by up to 5.5x.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-12-08T11:32:08Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Weizhuo Li</name>
+    </author>
+    <author>
+      <name>Zhigang Wang</name>
+    </author>
+    <author>
+      <name>Yu Gu</name>
+    </author>
+    <author>
+      <name>Ge Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2407.11550v5</id>
+    <title>Ada-KV: Optimizing KV Cache Eviction by Adaptive Budget Allocation for Efficient LLM Inference</title>
+    <updated>2025-10-16T13:25:38Z</updated>
+    <link href="https://arxiv.org/abs/2407.11550v5" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2407.11550v5" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models have excelled in various domains but face efficiency challenges due to the growing Key-Value (KV) cache required for long-sequence inference. Recent efforts aim to reduce KV cache size by evicting vast non-critical cache elements during runtime while preserving generation quality. However, these methods typically allocate compression budgets uniformly across all attention heads, ignoring the unique attention patterns of each head. In this paper, we establish a theoretical loss upper bound between pre- and post-eviction attention output, explaining the optimization target of prior cache eviction methods, while guiding the optimization of adaptive budget allocation. Base on this, we propose {\it Ada-KV}, the first head-wise adaptive budget allocation strategy. It offers plug-and-play benefits, enabling seamless integration with prior cache eviction methods. Extensive evaluations on 13 datasets from Ruler and 16 datasets from LongBench, all conducted under both question-aware and question-agnostic scenarios, demonstrate substantial quality improvements over existing methods. Our code is available at https://github.com/FFY0/AdaKV.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-07-16T09:53:32Z</published>
+    <arxiv:comment>NeurIPS 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yuan Feng</name>
+    </author>
+    <author>
+      <name>Junlin Lv</name>
+    </author>
+    <author>
+      <name>Yukun Cao</name>
+    </author>
+    <author>
+      <name>Xike Xie</name>
+    </author>
+    <author>
+      <name>S. Kevin Zhou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.10714v3</id>
+    <title>ZSMerge: Zero-Shot KV Cache Compression for Memory-Efficient Long-Context LLMs</title>
+    <updated>2025-10-05T08:34:30Z</updated>
+    <link href="https://arxiv.org/abs/2503.10714v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.10714v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The linear growth of key-value (KV) cache memory and quadratic computational in attention mechanisms complexity pose significant bottlenecks for large language models (LLMs) in long-context processing. While existing KV cache optimization methods address these challenges through token pruning or feature merging, they often incur irreversible information loss or require costly parameter retraining. To this end, we propose ZSMerge, a dynamic KV cache compression framework designed for efficient cache management, featuring three key operations: (1) fine-grained memory allocation guided by multi-dimensional token importance metrics at head-level granularity, (2) a residual merging mechanism that preserves critical context through compensated attention scoring, and (3) a zero-shot adaptation mechanism compatible with diverse LLM architectures without requiring retraining. ZSMerge significantly enhances memory efficiency and inference speed with negligible performance degradation across LLMs. When applied to LLaMA2-7B, it demonstrates a 20:1 compression ratio for key-value cache retention (reducing memory footprint to 5\% of baseline) while sustaining comparable generation quality, coupled with triple throughput gains at extreme 54k-token contexts that eliminate out-of-memory failures. The code is available at https://github.com/SusCom-Lab/ZSMerge.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-03-13T03:36:03Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Xin Liu</name>
+    </author>
+    <author>
+      <name>Xudong Wang</name>
+    </author>
+    <author>
+      <name>Pei Liu</name>
+    </author>
+    <author>
+      <name>Guoming Tang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.06727v1</id>
+    <title>KV-CAR: KV Cache Compression using Autoencoders and KV Reuse in Large Language Models</title>
+    <updated>2025-12-07T08:40:52Z</updated>
+    <link href="https://arxiv.org/abs/2512.06727v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.06727v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As Large Language Models (LLMs) scale in size and context length, the memory requirements of the key value (KV) cache have emerged as a major bottleneck during autoregressive decoding. The KV cache grows with sequence length and embedding dimension, often exceeding the memory footprint of the model itself and limiting achievable batch sizes and context windows. To address this challenge, we present KV CAR, a unified and architecture agnostic framework that significantly reduces KV cache storage while maintaining model fidelity. KV CAR combines two complementary techniques. First, a lightweight autoencoder learns compact representations of key and value tensors along the embedding dimension, compressing them before they are stored in the KV cache and restoring them upon retrieval. Second, a similarity driven reuse mechanism identifies opportunities to reuse KV tensors of specific attention heads across adjacent layers. Together, these methods reduce the dimensional and structural redundancy in KV tensors without requiring changes to the transformer architecture. Evaluations on GPT 2 and TinyLLaMA models across Wikitext, C4, PIQA, and Winogrande datasets demonstrate that KV CAR achieves up to 47.85 percent KV cache memory reduction with minimal impact on perplexity and zero shot accuracy. System level measurements on an NVIDIA A40 GPU show that the reduced KV footprint directly translates into longer sequence lengths and larger batch sizes during inference. These results highlight the effectiveness of KV CAR in enabling memory efficient LLM inference.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-07T08:40:52Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sourjya Roy</name>
+    </author>
+    <author>
+      <name>Shrihari Sridharan</name>
+    </author>
+    <author>
+      <name>Surya Selvam</name>
+    </author>
+    <author>
+      <name>Anand Raghunathan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.08317v1</id>
+    <title>RDKV: Rate-Distortion Bit Allocation for Joint Eviction and Quantization of the KV Cache</title>
+    <updated>2026-05-08T15:15:06Z</updated>
+    <link href="https://arxiv.org/abs/2605.08317v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.08317v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) have shown strong performance across diverse tasks, but their inference with long input contexts is bottlenecked by memory size and bandwidth. The Key-Value (KV) cache size grows linearly with sequence length and needs to be re-read from off-chip high-bandwidth memory (HBM) to on-chip memory at every decoding step, resulting in memory-bound inference. Existing methods reduce the cache by either eviction or quantization, but typically treat the two in isolation. In this paper, we cast KV cache compression as a rate-distortion problem, under which eviction and quantization are two end-points of the same bit allocation scheme. This exposes the need to optimize them jointly, motivating our method, RDKV (Rate-Distortion KV cache compression). RDKV derives the weight of each token or channel from the distortion that compression induces on the attention computation. Based on these weights, it assigns each token or channel a bit-width ranging from full precision down to zero bits guided by reverse water-filling, applied once after the prefilling stage. Experiments on LongBench, RULER, and InfiniteBench show that RDKV outperforms the best evaluated baseline by 9.1% on average. On LongBench it recovers 97.81% of full-cache accuracy with only 2.48% cache retention. Compared with full-cache FlashAttention-2 decoding, it achieves 4.5x decode speedup and 1.9x peak memory reduction with 128K context length, while maintaining comparable performance.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-08T15:15:06Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Junkai Zhang</name>
+    </author>
+    <author>
+      <name>Hang Guo</name>
+    </author>
+    <author>
+      <name>Luca Benini</name>
+    </author>
+    <author>
+      <name>Yawei Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.12491v2</id>
+    <title>CAKE: Cascading and Adaptive KV Cache Eviction with Layer Preferences</title>
+    <updated>2025-12-24T13:21:40Z</updated>
+    <link href="https://arxiv.org/abs/2503.12491v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.12491v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) excel at processing long sequences, boosting demand for key-value (KV) caching. While recent efforts to evict KV cache have alleviated the inference burden, they often fail to allocate resources rationally across layers with different attention patterns. In this paper, we introduce Cascading and Adaptive KV cache Eviction (CAKE), a novel approach that frames KV cache eviction as a "cake-slicing problem." CAKE assesses layer-specific preferences by considering attention dynamics in both spatial and temporal dimensions, allocates rational cache size for layers accordingly, and manages memory constraints in a cascading manner. This approach enables a global view of cache allocation, adaptively distributing resources across diverse attention mechanisms while maintaining memory budgets. CAKE also employs a new eviction indicator that considers the shifting importance of tokens over time, addressing limitations in existing methods that overlook temporal dynamics. Comprehensive experiments on LongBench and NeedleBench show that CAKE maintains model performance with only 3.2% of the KV cache and consistently outperforms current baselines across various models and memory constraints, particularly in low-memory settings. Additionally, CAKE achieves over 10x speedup in decoding latency compared to full cache when processing contexts of 128K tokens with FlashAttention-2. Our code is available at https://github.com/antgroup/cakekv.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-03-16T12:49:44Z</published>
+    <arxiv:comment>Accepted by ICLR 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Ziran Qin</name>
+    </author>
+    <author>
+      <name>Yuchen Cao</name>
+    </author>
+    <author>
+      <name>Mingbao Lin</name>
+    </author>
+    <author>
+      <name>Wen Hu</name>
+    </author>
+    <author>
+      <name>Shixuan Fan</name>
+    </author>
+    <author>
+      <name>Ke Cheng</name>
+    </author>
+    <author>
+      <name>Weiyao Lin</name>
+    </author>
+    <author>
+      <name>Jianguo Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.26678v2</id>
+    <title>NestedKV: Nested Memory Routing for Long-Context KV Cache Compression</title>
+    <updated>2026-08-27T09:52:00Z</updated>
+    <link href="https://arxiv.org/abs/2605.26678v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.26678v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context language models are limited by the memory footprint of the key-value (KV) cache. Existing training-free KV compression methods usually rank tokens by one importance signal -- attention, recency, layer-wise allocation, or key distinctiveness -- which becomes brittle when useful context is globally distinctive, locally episodic, or immediately relevant. We introduce NestedKV, a key-only KV cache compression method inspired by the Continuum Memory System in Nested Learning. NestedKV maintains global, block-level, and sliding-window key anchors, scores tokens by multi-time-scale cosine anomaly, and combines the resulting rankings with a training-free outer learner using head-adaptive mixing and surprise-gated token routing. The score is paired with adaptive per-head budgets and requires no training or LLM modification. Across RULER (4k--32k), LooGLE, LongBench, LongBench-E, InfiniteBench, and MMLU-Pro on Qwen3 and Llama-3.2 models, NestedKV is strongest when the retained cache is small. On Qwen3-4B, it improves over KeyDiff by up to 19.10 points on RULER and 19.29 on LongBench at $r=0.75$; at $r=0.95$, it retains 37.32 on LongBench versus 17.55 for KeyDiff.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-26T08:14:39Z</published>
+    <arxiv:comment>EMNLP 2026 Main</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Hong Chen</name>
+    </author>
+    <author>
+      <name>Xiang Liu</name>
+    </author>
+    <author>
+      <name>Yubo Gao</name>
+    </author>
+    <author>
+      <name>Yuxuan Fan</name>
+    </author>
+    <author>
+      <name>Bo Wang</name>
+    </author>
+    <author>
+      <name>Yuanlin Chu</name>
+    </author>
+    <author>
+      <name>Yuanguo Lin</name>
+    </author>
+    <author>
+      <name>Xuming Hu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.03067v1</id>
+    <title>Joint Encoding of KV-Cache Blocks for Scalable LLM Serving</title>
+    <updated>2026-01-06T14:50:58Z</updated>
+    <link href="https://arxiv.org/abs/2601.03067v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.03067v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Modern large language models (LLMs) drive interactive AI systems but are bottlenecked by the memory-heavy growth of key-value (KV) caches, which limits real-time throughput under concurrent loads. Existing KV-cache compression methods rely on rigid heuristics, disrupt tensor layouts, or require specialized compute, hindering scalability and deployment.
+  We propose joint encoding of KV-cache blocks, which fuses similar blocks across requests and input chunks into shared representations while preserving standard cache structure. This alleviates the KV-cache memory bottleneck, supporting high-concurrency serving without specialized hardware. Theoretically, we analyze the rate-distortion tradeoff of fused cache blocks under a Poisson process model. Empirically, our method achieves up to 4.38 $\times$ KV-cache compression with negligible accuracy loss across diverse LLMs and benchmarks, outperforming recent structured and adaptive compression baselines. In real LLM serving, joint encoding improves the token throughput by $\sim$40\% on a single-machine vLLM benchmark, demonstrating substantial gains in inference throughput. Code is available at https://github.com/sef1/kv_fast_fusion  kv_joint_encoding.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-06T14:50:58Z</published>
+    <arxiv:comment>12 pages, 16 figures, 2 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Joseph Kampeas</name>
+    </author>
+    <author>
+      <name>Emir Haleva</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.12550v4</id>
+    <title>A JoLT for the KV cache: Near-Lossless KV Cache Compression via Joint Rank-bit Allocation</title>
+    <updated>2026-09-24T15:49:22Z</updated>
+    <link href="https://arxiv.org/abs/2607.12550v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.12550v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The key-value (KV) cache is the dominant memory bottleneck in long-context language model inference. Existing compression methods apply low-rank factorization or quantization independently, without jointly allocating rank and precision under a shared storage budget. We introduce JoLT, a training-free compressor that treats grouped prefill caches as fourth-order tensors and applies partial Tucker decomposition along the token and feature modes, the two axes that carry low-rank structure, while leaving the head and layer modes intact. A rotated low-bit quantizer captures the truncation residual, and a single Lagrangian dual allocates per-group Tucker ranks and residual bit-widths under a global byte constraint. FlashJoLT replaces the exact token-mode SVD with a randomized approximation that matches JoLT within the free zone at a fraction of the compression cost, and a fused Triton decode kernel evaluates attention directly over the stored factors without materializing dense KV tensors. Across five models from four architecture families, covering multi-head attention, grouped-query attention, and mixture-of-experts architecture, JoLT achieves 2 - 3x compression with less than 0.2% perplexity degradation, without retraining. On RULER at 64K context with LLaMA-3.1-8B, retrieval accuracy remains near-lossless through 3x and declines by only 0.90 and 2.40pp at 4x and 5x, respectively. JoLT demonstrates that tensor-aware low-rank decomposition and quantized residuals, unified under a single storage budget, achieve near-lossless KV-cache compression across diverse model architectures without retraining.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.OC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-14T09:23:20Z</published>
+    <arxiv:comment>9 pages, 5 figures, 16 tables. Under review at ICLR 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Rahul Krishnan</name>
+    </author>
+    <author>
+      <name>Volker Schulz</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.07001v2</id>
+    <title>Every Cache Entry Earns Its Place: Global Allocation of Resolution and Coverage for KV Cache Compression</title>
+    <updated>2026-10-10T08:01:36Z</updated>
+    <link href="https://arxiv.org/abs/2608.07001v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.07001v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As large language models (LLMs) process increasingly long contexts, KV cache storage and repeated access have become a major bottleneck. Existing KV cache compression methods rely on predefined, fixed compression rules and are typically developed around either token eviction or merging. As a result, cache resources can neither flow freely across layers, heads, and context slots, nor be jointly allocated to balance local resolution and information coverage. Therefore, we propose GraceKV, a global approach for the allocation of resolution and coverage in KV cache compression, and formulate the compression process as a global resource allocation problem under a fixed cache budget. GraceKV treats each layer-KV-head-slot combination as an atomic unit and builds a prototype tree. Leaf nodes correspond to token-level KV entries, while each internal node uses a single prototype to compress the KV space covered by its children. A set of non-overlapping nodes in the tree forms the representation of an atomic unit. Adding the root of a new tree expands information coverage, whereas splitting a selected node improves local resolution. All candidate actions compete globally for a shared cache budget. Finally, the nodes retained across all trees form the compressed KV cache. This process adaptively determines the allocation of cache resources among atomic units globally and the balance between resolution and coverage. GraceKV requires no additional training, and the entire compression and inference process is performed on the GPU. Systematic experiments across diverse long-context tasks and compression ratios show that GraceKV ranks first in 25 of 32 settings and remains robust up to 128-fold compression. These results validate the effectiveness of global budget allocation in coordinating information coverage and local resolution.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-07T09:18:42Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Haolin Tian</name>
+    </author>
+    <author>
+      <name>Yuzhe Liu</name>
+    </author>
+    <author>
+      <name>Tonghan Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.08878v1</id>
+    <title>DistillCache: KL-Guided Adaptive KV-Cache Eviction for Memory-Efficient LLM Inference</title>
+    <updated>2026-08-09T19:33:43Z</updated>
+    <link href="https://arxiv.org/abs/2608.08878v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.08878v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformer-based large language models (LLMs) achieve strong performance across many tasks, but their Key-Value (KV) cache grows linearly with sequence length, creating a severe memory bottleneck for long-context inference. Existing heuristic eviction methods (e.g., H$_2$O and SnapKV) rely on static attention or positional signals that often fail to capture a token's future predictive influence. We propose DistillCache, a reinforcement learning framework that formulates KV-cache eviction as a sequential decision problem. DistillCache learns a lightweight policy network using rich internal model signals (attention statistics, value norms, entropy, and position) and trains it with REINFORCE via a per-step KL-divergence reward to preserve the full-cache output distribution. On a 7B-parameter instruction-tuned Transformer (Mistral-7B-Instruct-v0.3), DistillCache retains 94.2% of full-cache accuracy on LongBench at a 25% cache budget, outperforming both strong heuristic baselines (H$_2$O, SnapKV) by up to 2.7 absolute points and, under our re-implementations, concurrent RL-based methods (ForesightKV, RLKV) by up to 1.4 points on long-context tasks. On reasoning benchmarks, DistillCache is competitive with the best concurrent method and surpasses it under aggressive compression. It also delivers up to 2.1x full-cache throughput while maintaining competitive practical efficiency. These results highlight the effectiveness of learned, distribution-aware policies for memory-efficient long-context LLM inference.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-09T19:33:43Z</published>
+    <arxiv:comment>20 pages, 5 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Asaad Althoubi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.13263v1</id>
+    <title>vToken: Token-Level Virtualization for Reclaimable KV Caches</title>
+    <updated>2026-08-13T14:01:21Z</updated>
+    <link href="https://arxiv.org/abs/2608.13263v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.13263v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language model serving faces a critical memory bottleneck: the KV cache grows with sequence length and batch size. PagedAttention uses fixed-size memory blocks to reduce allocator-level fragmentation, but recent KV eviction algorithms operate at a token granularity finer than block-level management. This mismatch causes intra-block fragmentation, leaving a large fraction of allocated KV memory unreclaimable. We present vToken, a lightweight token-level virtualization layer that decouples logical token liveness from physical block placement. vToken maintains a stable logical token view through token-table indirection and realizes physical reclamation by repacking live tokens asynchronously. The design preserves PagedAttention kernels and CUDA Graph compatibility. We implement vToken in vLLM and evaluate it with H2O, Random, and Scissorhands across models. Compared with a paired Naive-Evict baseline, vToken reduces retained KV blocks per request by 27.2\%--72.3\% and improves SLA-constrained throughput by up to 1.37$\times$. Under a constrained active-KV budget, it extends the maximum feasible concurrency by up to 2$\times$, while reducing the per-policy integration footprint from 500+ lines to under 50.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.OS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-13T14:01:21Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yuanhang Gao</name>
+    </author>
+    <author>
+      <name>Xiangrui Yang</name>
+    </author>
+    <author>
+      <name>Yuanfeng Chen</name>
+    </author>
+    <author>
+      <name>Hongjia Chen</name>
+    </author>
+    <author>
+      <name>Qianru Lv</name>
+    </author>
+    <author>
+      <name>Wenfei Wu</name>
+    </author>
+    <author>
+      <name>Dongsheng Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.31395v1</id>
+    <title>ActKV: Efficient LLM Agents through Action-Guided KV Cache Management</title>
+    <updated>2026-09-25T15:24:30Z</updated>
+    <link href="https://arxiv.org/abs/2609.31395v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.31395v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic LLM inference accumulates long KV caches across iterative observation-reasoning-action loops, imposing substantial memory overhead and limiting serving throughput. Existing compression methods emphasize overall output quality, overlooking the asymmetric importance of actions in driving task progress. Our key idea is to establish a compression criterion that values KV entries by their contribution to action generation and prioritizes action quality. However, iterative execution, dynamic memory demands, and scattered action-critical entries pose challenges to eviction policies, budget allocation, and paged memory integration. To this end, we propose ActKV, the first KV cache compression framework tailored for agentic LLM inference. (i) Action-oriented KV cache eviction exploits stable action access patterns to retain entries critical to future actions, supporting reliable task progress under compression. (ii) Confidence-driven adaptive budget allocation uses LLM's intrinsic confidence to adapt the budget to evolving action-critical memory demands. (iii) Page-aware compression management standardizes compression into three primitives with customized kernels, realizing practical throughput gains. On long-trace tasks, ActKV retains an average of 98.53% of FullKV's accuracy with only 25.98% of its peak KV cache memory. It also achieves 3.97 times and 3.58 times FullKV's token and task throughput, delivering state-of-the-art performance.</summary>
+    <category term="cs.OS" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-25T15:24:30Z</published>
+    <arxiv:primary_category term="cs.OS"/>
+    <author>
+      <name>Zihan Wang</name>
+    </author>
+    <author>
+      <name>Cheng Tang</name>
+    </author>
+    <author>
+      <name>Lei Gong</name>
+    </author>
+    <author>
+      <name>Chao Wang</name>
+    </author>
+    <author>
+      <name>Wenqi Lou</name>
+    </author>
+    <author>
+      <name>Teng Wang</name>
+    </author>
+    <author>
+      <name>Xuehai Zhou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.10539v1</id>
+    <title>IceCache: Memory-efficient KV-cache Management for Long-Sequence LLMs</title>
+    <updated>2026-04-12T09:02:20Z</updated>
+    <link href="https://arxiv.org/abs/2604.10539v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.10539v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Key-Value (KV) cache plays a crucial role in accelerating inference in large language models (LLMs) by storing intermediate attention states and avoiding redundant computation during autoregressive generation. However, its memory footprint scales linearly with sequence length, often leading to severe memory bottlenecks on resource-constrained hardware. Prior work has explored offloading KV cache to the CPU while retaining only a subset on the GPU, but these approaches often rely on imprecise token selection and suffer performance degradation in long-generation tasks such as chain-of-thought reasoning. In this paper, we propose a novel KV cache management strategy, IceCache, which integrates semantic token clustering with PagedAttention. By organizing semantically related tokens into contiguous memory regions managed by a hierarchical, dynamically updatable data structure, our method enables more efficient token selection and better utilization of memory bandwidth during CPU-GPU transfers. Experimental results on LongBench show that, with a 256-token budget, IceCache maintains 99% of the original accuracy achieved by the full KV cache model. Moreover, compared to other offloading-based methods, IceCache attains competitive or even superior latency and accuracy while using only 25% of the KV cache token budget, demonstrating its effectiveness in long-sequence scenarios. The code is available on our project website at https://yuzhenmao.github.io/IceCache/.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-12T09:02:20Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yuzhen Mao</name>
+    </author>
+    <author>
+      <name>Qitong Wang</name>
+    </author>
+    <author>
+      <name>Martin Ester</name>
+    </author>
+    <author>
+      <name>Ke Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2501.15113v1</id>
+    <title>Task-KV: Task-aware KV Cache Optimization via Semantic Differentiation of Attention Heads</title>
+    <updated>2025-01-25T07:28:13Z</updated>
+    <link href="https://arxiv.org/abs/2501.15113v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2501.15113v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>KV cache is a widely used acceleration technique for large language models (LLMs) inference. However, its memory requirement grows rapidly with input length. Previous studies have reduced the size of KV cache by either removing the same number of unimportant tokens for all attention heads or by allocating differentiated KV cache budgets for pre-identified attention heads. However, due to the importance of attention heads varies across different tasks, the pre-identified attention heads fail to adapt effectively to various downstream tasks. To address this issue, we propose Task-KV, a method that leverages the semantic differentiation of attention heads to allocate differentiated KV cache budgets across various tasks. We demonstrate that attention heads far from the semantic center (called heterogeneous heads) make an significant contribution to task outputs and semantic understanding. In contrast, other attention heads play the role of aggregating important information and focusing reasoning. Task-KV allocates full KV cache budget to heterogeneous heads to preserve comprehensive semantic information, while reserving a small number of recent tokens and attention sinks for non-heterogeneous heads. Furthermore, we innovatively introduce middle activations to preserve key contextual information aggregated from non-heterogeneous heads. To dynamically perceive semantic differences among attention heads, we design a semantic separator to distinguish heterogeneous heads from non-heterogeneous ones based on their distances from the semantic center. Experimental results on multiple benchmarks and different model architectures demonstrate that Task-KV significantly outperforms existing baseline methods.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-01-25T07:28:13Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Xingyang He</name>
+    </author>
+    <author>
+      <name>Jie Liu</name>
+    </author>
+    <author>
+      <name>Shaowei Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.17966v1</id>
+    <title>BELT : BEhavior-Aligned Low-Rank KV Cache Compression with Learned Top-k Rank Allocation</title>
+    <updated>2026-10-13T08:42:38Z</updated>
+    <link href="https://arxiv.org/abs/2610.17966v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.17966v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context inference makes the key-value (KV) cache a major memory bottleneck for large language models. We propose BELT, a low-rank KV cache compression framework. Its key-side objective targets attention distributions rather than raw keys or pre-softmax logits, yielding a quadratic surrogate with a closed-form low-rank solution. A learned global rank allocator uses differentiable soft selection during training and hard selection at deployment to meet a user-specified component budget. Experiments demonstrate improved model quality under aggressive compression and increased decoding throughput at comparable accuracy. Evaluated across three LLMs and multiple benchmarks, BELT achieves up to 70% low-rank KV cache compression while outperforming the strongest baseline by up to 23.3 points on LongBench, and up to 17.8x overall KV cache reduction when combined with quantization. With Triton-based GPU kernels and a quantized cache, BELT delivers up to 2.7x speedup for the attention module and 3.3x end-to-end decoding throughput.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-13T08:42:38Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yaoyang Liu</name>
+    </author>
+    <author>
+      <name>Shuwei Shen</name>
+    </author>
+    <author>
+      <name>Jincheng Tang</name>
+    </author>
+    <author>
+      <name>Jinguang Liu</name>
+    </author>
+    <author>
+      <name>Jinbao Xue</name>
+    </author>
+    <author>
+      <name>Hailong Yang</name>
+    </author>
+    <author>
+      <name>Ke Zhang</name>
+    </author>
+    <author>
+      <name>Yinjun Wu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.04428v1</id>
+    <title>Agent Memory Below the Prompt: Persistent Q4 KV Cache for Multi-Agent LLM Inference on Edge Devices</title>
+    <updated>2026-02-17T05:46:20Z</updated>
+    <link href="https://arxiv.org/abs/2603.04428v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.04428v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-agent LLM systems on edge devices face a memory management problem: device RAM is too small to hold every agent's KV cache simultaneously. On Apple M4 Pro with 10.2 GB of cache budget, only 3 agents fit at 8K context in FP16. A 10-agent workflow must constantly evict and reload caches. Without persistence, every eviction forces a full re-prefill through the model -- 15.7 seconds per agent at 4K context. We address this by persisting each agent's KV cache to disk in 4-bit quantized format and reloading it directly into the attention layer, eliminating redundant O(n) prefill computation via direct cache restoration. The system comprises three components: a block pool providing per-agent isolated Q4 KV caches in safetensors format, a BatchQuantizedKVCache for concurrent inference over multiple agents' quantized caches, and cross-phase context injection that accumulates attention state across conversation phases without re-computation. Evaluated on three architectures (Gemma 3 12B, dense GQA, 48 layers; DeepSeek-Coder-V2-Lite 16B, MoE MLA, 27 layers; Llama 3.1 8B, dense GQA, 32 layers), cache restoration reduces time-to-first-token by up to 136x (Gemma: 22--136x at 4K--32K; DeepSeek: 11--76x at 4K--32K; Llama: 24--111x at 4K--16K; 3--10x at 1K). Q4 quantization fits 4x more agent contexts into fixed device memory than FP16. Perplexity measured with actual Q4 KV caches shows -0.7% for Gemma, +2.8% for Llama, and +3.0% for DeepSeek. Open-source at https://github.com/yshk-mxim/agent-memory</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-17T05:46:20Z</published>
+    <arxiv:comment>24 pages, 6 figures, 16 tables. Open-source implementation at https://github.com/yshk-mxim/agent-memory</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yakov Pyotr Shkolnikov</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.08461v1</id>
+    <title>FastCache: Optimizing Multimodal LLM Serving through Lightweight KV-Cache Compression Framework</title>
+    <updated>2025-03-11T14:10:58Z</updated>
+    <link href="https://arxiv.org/abs/2503.08461v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.08461v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-modal Large Language Models (MLLMs) serving systems commonly employ KV-cache compression to reduce memory footprint. However, existing compression methods introduce significant processing overhead and queuing delays, particularly in concurrent serving scenarios. We present \texttt{FastCache}, a novel serving framework that effectively addresses these challenges through two key innovations: (1) a dynamic batching strategy that optimizes request scheduling across prefill, compression, and decode stages, and (2) an efficient KV-cache memory pool mechanism that eliminates memory fragmentation while maintaining high GPU utilization. Our comprehensive experiments on the GQA and MileBench datasets demonstrate that \texttt{FastCache} achieves up to 19.3$\times$ reduction in Time-To-First-Token (TTFT) and 12.1$\times$ improvement in throughput compared to state-of-the-art baselines. The system maintains stable performance under high-concurrency scenarios (up to 40 req/s) while reducing average memory consumption by 20\%. These results establish \texttt{FastCache} as an efficient solution for real-world LLM serving systems with KV-cache compression.</summary>
+    <category term="cs.MM" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-03-11T14:10:58Z</published>
+    <arxiv:comment>14 pages, 14 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.MM"/>
+    <author>
+      <name>Jianian Zhu</name>
+    </author>
+    <author>
+      <name>Hang Wu</name>
+    </author>
+    <author>
+      <name>Haojie Wang</name>
+    </author>
+    <author>
+      <name>Yinghui Li</name>
+    </author>
+    <author>
+      <name>Biao Hou</name>
+    </author>
+    <author>
+      <name>Ruixuan Li</name>
+    </author>
+    <author>
+      <name>Jidong Zhai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2508.13231v2</id>
+    <title>Accelerating LLM Inference via Dynamic KV Cache Placement in Heterogeneous Memory System</title>
+    <updated>2025-09-15T14:40:16Z</updated>
+    <link href="https://arxiv.org/abs/2508.13231v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2508.13231v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Model (LLM) inference is increasingly constrained by memory bandwidth, with frequent access to the key-value (KV) cache dominating data movement. While attention sparsity reduces some memory traffic, the relevance of past tokens varies over time, requiring the full KV cache to remain accessible and sustaining pressure on both bandwidth and capacity. With advances in interconnects such as NVLink and LPDDR5X, modern AI hardware now integrates high-bandwidth memory (HBM) with high-speed off-package DRAM, making heterogeneous memory systems a practical solution. This work investigates dynamic KV cache placement across such systems to maximize aggregated bandwidth utilization under capacity constraints. Rather than proposing a specific scheduling policy, we formulate the placement problem mathematically and derive a theoretical upper bound, revealing substantial headroom for runtime optimization. To our knowledge, this is the first formal treatment of dynamic KV cache scheduling in heterogeneous memory systems for LLM inference.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-08-17T19:07:08Z</published>
+    <arxiv:comment>IEEE Computer Architecture Letter</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Yunhua Fang</name>
+    </author>
+    <author>
+      <name>Rui Xie</name>
+    </author>
+    <author>
+      <name>Asad Ul Haq</name>
+    </author>
+    <author>
+      <name>Linsen Ma</name>
+    </author>
+    <author>
+      <name>Kaoutar El Maghraoui</name>
+    </author>
+    <author>
+      <name>Naigang Wang</name>
+    </author>
+    <author>
+      <name>Meng Wang</name>
+    </author>
+    <author>
+      <name>Liu Liu</name>
+    </author>
+    <author>
+      <name>Tong Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2507.11507v2</id>
+    <title>Oneiros: KV Cache Optimization through Parameter Remapping for Multi-tenant LLM Serving</title>
+    <updated>2025-10-29T21:56:19Z</updated>
+    <link href="https://arxiv.org/abs/2507.11507v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2507.11507v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>KV cache accelerates LLM inference by avoiding redundant computation, at the expense of memory. To support larger KV caches, prior work extends GPU memory with CPU memory via CPU-offloading. This involves swapping KV cache between GPU and CPU memory. However, because the cache updates dynamically, such swapping incurs high CPU memory traffic. We make a key observation that model parameters remain constant during runtime, unlike the dynamically updated KV cache. Building on this, we introduce Oneiros, which avoids KV cache swapping by remapping, and thereby repurposing, the memory allocated to model parameters for KV cache. This parameter remapping is especially beneficial in multi-tenant environments, where the memory used for the parameters of the inactive models can be more aggressively reclaimed. Exploiting the high CPU-GPU bandwidth offered by the modern hardware, such as the NVIDIA Grace Hopper Superchip, we show that Oneiros significantly outperforms state-of-the-art solutions, achieving a reduction of 44.8%-82.5% in tail time-between-token latency, 20.7%-99.3% in tail time-to-first-token latency, and 6.6%-86.7% higher throughput compared to vLLM. Source code of Oneiros is available at https://github.com/UT-SysML/Oneiros/.</summary>
+    <category term="cs.OS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-07-15T17:23:22Z</published>
+    <arxiv:primary_category term="cs.OS"/>
+    <author>
+      <name>Ruihao Li</name>
+    </author>
+    <author>
+      <name>Shagnik Pal</name>
+    </author>
+    <author>
+      <name>Vineeth Narayan Pullu</name>
+    </author>
+    <author>
+      <name>Prasoon Sinha</name>
+    </author>
+    <author>
+      <name>Jeeho Ryoo</name>
+    </author>
+    <author>
+      <name>Lizy K. John</name>
+    </author>
+    <author>
+      <name>Neeraja J. Yadwadkar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24647v1</id>
+    <title>DepthKV: Layer-Dependent KV Cache Pruning for Long-Context LLM Inference</title>
+    <updated>2026-04-27T16:15:37Z</updated>
+    <link href="https://arxiv.org/abs/2604.24647v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24647v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context reasoning is a critical capability of large language models (LLMs), enabling applications such as long-document understanding, summarization, and code generation. However, efficient autoregressive inference relies on the key-value (KV) cache, whose memory footprint grows linearly with sequence length, leading to a major memory bottleneck. To mitigate this overhead, KV cache pruning methods discard cached tokens with low attention scores during inference. Most existing methods apply a uniform pruning ratio across layers, implicitly assuming that all layers contribute equally to overall model performance. We show that this assumption is suboptimal, as layers differ significantly in their sensitivity to pruning. We propose DepthKV, a layer-dependent pruning framework that allocates a fixed global KV budget across layers based on their sensitivity, rather than using a uniform allocation. Across multiple models and tasks, DepthKV consistently outperforms uniform pruning at the same global pruning ratio, demonstrating more effective utilization of the KV cache budget through layer-dependent allocation.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T16:15:37Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Zahra Dehghanighobadi</name>
+    </author>
+    <author>
+      <name>Asja Fischer</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.16047v1</id>
+    <title>AMS-KV: Adaptive KV Caching in Multi-Scale Visual Autoregressive Transformers</title>
+    <updated>2025-11-20T05:10:12Z</updated>
+    <link href="https://arxiv.org/abs/2511.16047v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.16047v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Visual autoregressive modeling (VAR) via next-scale prediction has emerged as a scalable image generation paradigm. While Key and Value (KV) caching in large language models (LLMs) has been extensively studied, next-scale prediction presents unique challenges, and KV caching design for next-scale based VAR transformers remains largely unexplored. A major bottleneck is the excessive KV memory growth with the increasing number of scales-severely limiting scalability. Our systematic investigation reveals that: (1) Attending to tokens from local scales significantly contributes to generation quality (2) Allocating a small amount of memory for the coarsest scales, termed as condensed scales, stabilizes multi-scale image generation (3) Strong KV similarity across finer scales is predominantly observed in cache-efficient layers, whereas cache-demanding layers exhibit weaker inter-scale similarity. Based on the observations, we introduce AMS-KV, a scale-adaptive KV caching policy for next-scale prediction in VAR models. AMS-KV prioritizes storing KVs from condensed and local scales, preserving the most relevant tokens to maintain generation quality. It further optimizes KV cache utilization and computational efficiency identifying cache-demanding layers through inter-scale similarity analysis. Compared to the vanilla next-scale prediction-based VAR models, AMS-KV reduces KV cache usage by up to 84.83% and self-attention latency by 60.48%. Moreover, when the baseline VAR-d30 model encounters out-of-memory failures at a batch size of 128, AMS-KV enables stable scaling to a batch size of 256 with improved throughput.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-20T05:10:12Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Boxun Xu</name>
+    </author>
+    <author>
+      <name>Yu Wang</name>
+    </author>
+    <author>
+      <name>Zihu Wang</name>
+    </author>
+    <author>
+      <name>Peng Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.20474v3</id>
+    <title>UltraQuant: 4-bit KV Caching for Context-Heavy Agents</title>
+    <updated>2026-09-11T02:54:47Z</updated>
+    <link href="https://arxiv.org/abs/2606.20474v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.20474v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Context-heavy agents place substantial pressure on the key-value (KV) cache: long prefixes are reused across many short turns, while concurrency determines whether the serving system can keep GPUs utilized. We study 4-bit KV-cache compression for this setting, using TurboQuant-style rotation and codebook quantization as a quality anchor and vLLM FP8 KV caching as the deployment anchor. We report three contributions. First, we frame 4-bit KV caching around multi-round agent workloads where task quality, cache residency, and serving throughput must be measured jointly. Second, we describe the practical design choices needed to make the 4-bit path robust, including asymmetric K/V treatment, Walsh-Hadamard rotation, QJL removal, and block-scale variants. Third, we present serving optimizations on AMD GPUs, including optimized decode-attention kernels and UltraQuant, an FP4 approximation path that uses FP8 queries, FP4 KV tensors, UE8M0 group scales, and native scaled-MFMA support on CDNA4. On an adaptive-SLO replay of production Claude Code traces, UltraQuant sustains 2.71x (MiniMax-M2.5) and 4.38x (Qwen3-235B) the qualified-request throughput of the BF16 baseline, matching or exceeding hardware FP8 KV while using half the KV bytes. UltraQuant delivers its largest gains in long-context, high-concurrency, memory-constrained serving regimes.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-18T16:54:07Z</published>
+    <arxiv:comment>EMNLP 2026 Industry Track, 11 pages, 9 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Inesh Chakrabarti</name>
+    </author>
+    <author>
+      <name>David Limpus</name>
+    </author>
+    <author>
+      <name>Aditi Ghai Rana</name>
+    </author>
+    <author>
+      <name>Bowen Bao</name>
+    </author>
+    <author>
+      <name>Spandan Tiwari</name>
+    </author>
+    <author>
+      <name>Thiago Crepaldi</name>
+    </author>
+    <author>
+      <name>Ashish Sirasao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.04450v2</id>
+    <title>When KV Meets Embeddings: Dynamic GPU Memory Allocation for Accelerating Generative Recommender Serving</title>
+    <updated>2026-08-24T14:26:06Z</updated>
+    <link href="https://arxiv.org/abs/2605.04450v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.04450v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Generative Recommender (GR) inference places embedding hot caches (EMB) and KV caches in direct competition for limited GPU HBM: allocating more memory to one improves its efficiency but degrades the other. Existing systems optimize them in isolation, overlooking that the optimal EMB-KV allocation ratio can shift by up to 0.35 across workload regimes, leaving 20-30\% latency improvement unrealized. While online reallocation is required to close this gap, naive approaches introduce H2D refill traffic on the critical path, causing P99 SLO violations.
+  To address this, we present RACER, which jointly manages HBM allocation and request routing at runtime through two key components: (1) Adaptive Memory Allocation, a three-layer PPO-based controller (frozen base policy, online residual adapter, and burst-aware recovery controller) that achieves $32\,\mathrm{μs}$ decision latency while staying within 0.024-0.029 of the offline-optimal ratio; and (2) EMB-KV-Aware Scheduling, which routes requests by jointly considering KV residency, embedding locality, and node load to avoid routing inefficiencies under heterogeneous allocations. Evaluations on three production-scale datasets over a 32-node A100 cluster show that RACER reduces P99 latency by 24-38\% over the best static policy and achieves 93.5-99.6\% SLO satisfaction across Steady, Trend, and Burst workloads, significantly outperforming state-of-the-art baselines without sacrificing throughput.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-06T03:25:22Z</published>
+    <arxiv:comment>Accepted by SC 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Wenjun Yu</name>
+    </author>
+    <author>
+      <name>Shuguang Han</name>
+    </author>
+    <author>
+      <name>Amelie Chi Zhou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.23592v2</id>
+    <title>KEEP: A KV-Cache-Centric Memory Management System for Efficient Embodied Planning</title>
+    <updated>2026-03-17T07:20:39Z</updated>
+    <link href="https://arxiv.org/abs/2602.23592v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.23592v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory-augmented Large Language Models (LLMs) have demonstrated remarkable capability for complex and long-horizon embodied planning. By keeping track of past experiences and environmental states, memory enables LLMs to maintain a global view, thereby avoiding repetitive exploration. However, existing approaches often store the memory as raw text, leading to excessively long prompts and high prefill latency. While it is possible to store and reuse the KV caches, the efficiency benefits are greatly undermined due to frequent KV cache updates. In this paper, we propose KEEP, a KV-cache-centric memory management system for efficient embodied planning. KEEP features 3 key innovations: (1) a Static-Dynamic Memory Construction algorithm that reduces KV cache recomputation by mixed-granularity memory group; (2) a Multi-hop Memory Re-computation algorithm that dynamically identifies important cross-attention among different memory groups and reconstructs memory interactions iteratively; (3) a Layer-balanced Memory Loading that eliminates unbalanced KV cache loading and cross-attention computation across different layers. Extensive experimental results have demonstrated that KEEP achieves 2.68x speedup with negligible accuracy loss compared with text-based memory methods on ALFRED dataset. Compared with the KV re-computation method CacheBlend (EuroSys'25), KEEP shows 4.13% success rate improvement and 1.90x time-to-first-token (TTFT) reduction. Our code is available on https://github.com/PKU-SEC-Lab/KEEP_Embodied_Memory.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-27T01:48:07Z</published>
+    <arxiv:comment>DAC 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Zebin Yang</name>
+    </author>
+    <author>
+      <name>Tong Xie</name>
+    </author>
+    <author>
+      <name>Baotong Lu</name>
+    </author>
+    <author>
+      <name>Shaoshan Liu</name>
+    </author>
+    <author>
+      <name>Bo Yu</name>
+    </author>
+    <author>
+      <name>Meng Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2508.15717v1</id>
+    <title>StreamMem: Query-Agnostic KV Cache Memory for Streaming Video Understanding</title>
+    <updated>2025-08-21T16:56:29Z</updated>
+    <link href="https://arxiv.org/abs/2508.15717v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2508.15717v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multimodal large language models (MLLMs) have made significant progress in visual-language reasoning, but their ability to efficiently handle long videos remains limited. Despite recent advances in long-context MLLMs, storing and attending to the key-value (KV) cache for long visual contexts incurs substantial memory and computational overhead. Existing visual compression methods require either encoding the entire visual context before compression or having access to the questions in advance, which is impractical for long video understanding and multi-turn conversational settings. In this work, we propose StreamMem, a query-agnostic KV cache memory mechanism for streaming video understanding. Specifically, StreamMem encodes new video frames in a streaming manner, compressing the KV cache using attention scores between visual tokens and generic query tokens, while maintaining a fixed-size KV memory to enable efficient question answering (QA) in memory-constrained, long-video scenarios. Evaluation on three long video understanding and two streaming video question answering benchmarks shows that StreamMem achieves state-of-the-art performance in query-agnostic KV cache compression and is competitive with query-aware compression approaches.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-08-21T16:56:29Z</published>
+    <arxiv:comment>15 pages, 3 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Yanlai Yang</name>
+    </author>
+    <author>
+      <name>Zhuokai Zhao</name>
+    </author>
+    <author>
+      <name>Satya Narayan Shukla</name>
+    </author>
+    <author>
+      <name>Aashu Singh</name>
+    </author>
+    <author>
+      <name>Shlok Kumar Mishra</name>
+    </author>
+    <author>
+      <name>Lizhu Zhang</name>
+    </author>
+    <author>
+      <name>Mengye Ren</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.15804v2</id>
+    <title>FairKV: Balancing Per-Head KV Cache for Fast Multi-GPU Inference</title>
+    <updated>2025-05-17T12:22:59Z</updated>
+    <link href="https://arxiv.org/abs/2502.15804v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.15804v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>KV cache techniques in Transformer models aim to reduce redundant computations at the expense of substantially increased memory usage, making KV cache compression an important and popular research topic. Recently, state-of-the-art KV cache compression methods implement imbalanced, per-head allocation algorithms that dynamically adjust the KV cache budget for each attention head, achieving excellent performance in single-GPU scenarios. However, we observe that such imbalanced compression leads to significant load imbalance when deploying multi-GPU inference, as some GPUs become overburdened while others remain underutilized. In this paper, we propose FairKV, a method designed to ensure fair memory usage among attention heads in systems employing imbalanced KV cache compression. The core technique of FairKV is Fair-Copying, which replicates a small subset of memory-intensive attention heads across GPUs using data parallelism to mitigate load imbalance. Our experiments on popular models, including LLaMA 70b and Mistral 24b model, demonstrate that FairKV increases throughput by 1.66x compared to standard tensor parallelism inference. Our code will be released as open source upon acceptance.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-19T06:14:27Z</published>
+    <arxiv:comment>11 pages, 6 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Bingzhe Zhao</name>
+    </author>
+    <author>
+      <name>Ke Cheng</name>
+    </author>
+    <author>
+      <name>Aomufei Yuan</name>
+    </author>
+    <author>
+      <name>Yuxuan Tian</name>
+    </author>
+    <author>
+      <name>Ruiguang Zhong</name>
+    </author>
+    <author>
+      <name>Chengchen Hu</name>
+    </author>
+    <author>
+      <name>Tong Yang</name>
+    </author>
+    <author>
+      <name>Lian Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.03324v2</id>
+    <title>Cache What Lasts: Token Retention for Memory-Bounded KV Cache in LLMs</title>
+    <updated>2026-03-01T03:46:03Z</updated>
+    <link href="https://arxiv.org/abs/2512.03324v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.03324v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory and computation remain core bottlenecks in long-horizon LLM inference due to the quadratic cost of self-attention and the ever-growing key-value (KV) cache. Existing strategies for memory-bounded inference, such as quantization, offloading, or heuristic KV eviction, either incur high orchestration costs or rely on unreliable attention-based proxies of importance. We propose TRIM-KV, a novel approach that learns each token's intrinsic importance at creation time via a lightweight retention gate. Each gate predicts a scalar retention score that decays over time, reflecting the long-term utility of the token for a specific layer and head. Tokens with low scores are evicted when the memory budget is exceeded, ensuring that the cache always contains the most critical tokens. TRIM-KV is trained efficiently through distillation from a frozen LLM combined with a capacity loss, requiring only gate fine-tuning and adding negligible inference overhead. Across mathematical reasoning (GSM8K, MATH-500, AIME24), procedural generation (LongProc), conversational long-memory benchmarks (LongMemEval), and long-context understanding (LongBenchV2 and SCBench), TRIM-KV consistently outperforms strong eviction and learnable retrieval baselines, especially in low-memory regimes. Remarkably, it even surpasses full-cache models in some settings, showing that selective retention can serve as a form of regularization, suppressing noise from uninformative tokens. Qualitative analyses further reveal that learned retention scores align with human intuition, naturally recovering heuristics such as sink tokens, sliding windows, and gist compression without explicit design. Beyond efficiency, retention scores provide insights into layer- and head-specific roles, suggesting a new path toward LLM interpretability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-03T00:20:35Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ngoc Bui</name>
+    </author>
+    <author>
+      <name>Shubham Sharma</name>
+    </author>
+    <author>
+      <name>Simran Lamba</name>
+    </author>
+    <author>
+      <name>Saumitra Mishra</name>
+    </author>
+    <author>
+      <name>Rex Ying</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.05012v2</id>
+    <title>Comparative Characterization of KV Cache Management Strategies for LLM Inference</title>
+    <updated>2026-09-15T16:46:36Z</updated>
+    <link href="https://arxiv.org/abs/2604.05012v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.05012v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Efficient inference with Large Language Models (LLMs) increasingly relies on Key-Value (KV) caches to store previously computed key and value vectors at each layer. These caches are essential to minimize redundant computation during autoregressive token generation, lowering computational complexity from quadratic to linear. However, the growth of KV caches has posed significant system-level challenges, particularly as model sizes increase, context lengths grow, and concurrent requests compete for limited memory resources. Even though several recent frameworks for KV cache management have emerged, their comparative trade-offs in memory consumption and inference performance have not been fully understood, especially under varying request sizes and model configurations. In this work, we conduct an empirical study of three state-of-the-art KV cache management frameworks: vLLM, InfiniGen, and H2O. These frameworks employ techniques such as tensor offloading, token eviction heuristics, and speculative scheduling to balance memory usage and performance. We evaluate their performance in terms of a range of metrics such as latency, throughput, and memory usage across a spectrum of key parameters including request rates, model sizes, and sparsity levels. Our results pinpoint the conditions for each framework to perform the best, revealing the most suitable selection and configuration of KV cache strategies under memory and performance constraints.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-06T16:00:39Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Oteo Mamo</name>
+    </author>
+    <author>
+      <name>Olga Kogiou</name>
+    </author>
+    <author>
+      <name>Hyunjin Yi</name>
+    </author>
+    <author>
+      <name>Weikuan Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.21604v1</id>
+    <title>AgentKVShift: Efficient KV Cache Reuse for Agentic Memory Systems</title>
+    <updated>2026-05-15T16:29:36Z</updated>
+    <link href="https://arxiv.org/abs/2607.21604v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.21604v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory-augmented LLM agents maintain context across hundreds of interactions through agentic memory systems that actively curate retrieved content with LLM-generated metadata such as summaries, keywords, and tags. From an inference cost standpoint, every retrieval triggers a full re-encoding of these structured memory units into Key-Value (KV) states, which dominates prefill latency. Existing training-free KV reuse methods mitigate this by selectively recomputing a small fraction of tokens, but were designed for RAG-style raw passages and degrade on structured agentic memories. We present AgentKVShift, a training-free, probe-guided KV residual correction method that operates per retrieved memory unit. One of the crucial insights we demonstrate is that the per-memory KV reuse residual decomposes into a shared memory-level offset plus small token-wise fluctuations. Estimating this offset from a small probe set allows us to correct every reused token by a single weighted correction. Unlike prior reuse methods which decide which tokens to recompute and leave the rest of the cache stale, AgentKVShift also corrects the tokens it does not recompute, turning the refresh budget into useful signal across the entire chunk. Across four open-source LLMs spanning 3B to 32B parameters and two long-horizon agentic memory benchmarks (long-term dialogue and agentic applications), AgentKVShift achieves near full recompute performance while refreshing only 10-30% of the cache, outperforming baselines at the same recompute ratio. It requires up to 5x lower recompute to reach this near-full performance, which prior reuse methods only attain at 45-55% refresh. In this regime, AgentKVShift delivers prefill speedups of 2-3.5x over no-KV-reuse on a single A100. AgentKVShift orthogonally composes with KV cache quantization, retaining over 2x the F1 of prior reuse methods under aggressive 2- and 4-bit settings.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-15T16:29:36Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Nilesh Prasad Pandey</name>
+    </author>
+    <author>
+      <name>Jason Kong</name>
+    </author>
+    <author>
+      <name>Lanxiang Hu</name>
+    </author>
+    <author>
+      <name>Quanling Zhao</name>
+    </author>
+    <author>
+      <name>Yujie Zhao</name>
+    </author>
+    <author>
+      <name>Onat Gungor</name>
+    </author>
+    <author>
+      <name>Hao Zhang</name>
+    </author>
+    <author>
+      <name>Tajana Rosing</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.16786v2</id>
+    <title>Revisiting Multimodal KV Cache Compression: A Frequency-Domain-Guided Outlier-KV-Aware Approach</title>
+    <updated>2026-03-05T16:43:51Z</updated>
+    <link href="https://arxiv.org/abs/2511.16786v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.16786v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multimodal large language models suffer from substantial inference overhead since multimodal KV Cache grows proportionally with the visual input length. Existing multimodal KV Cache compression methods mostly rely on attention score to reduce cache size, which makes them are incompatible with established efficient attention kernels (e.g., FlashAttention) and ignores the contribution of value vectors to the attention output. In this work, we revisit multimodal KV Cache compression from the perspective of the KV matrices' distribution. First, we observe that frequency-domain energy of multimodal KV matrices is predominantly concentrated in low-frequency and extract this principal energy via a low-pass filter. Further, we find that removing KV pairs that deviate substantially from this principal energy leads to a pronounced performance drop, which we define as Outlier KVs. Considering Outlier KVs are more likely to encode features critical for inference, we propose FlashCache, a frequency-domain-guided, Outlier-KV-aware KV Cache compression framework. First, we introduce an Outlier KV Recognition Module that models the principal component of multimodal KV matrices in the frequency domain and preferentially retains KV pairs that significantly deviate from it. Furthermore, Dynamic Budget Allocation Module is designed to adaptively determine the per-layer KV Cache size to retain more Outlier KVs. Experiments on multiple MLLMs and benchmarks demonstrate that FlashCache outperforms state-of-the-art multimoal KV compression methods, achieving up to 1.69 times faster decoding with 80% lower KV memory usage while maintaining task performance.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-20T20:25:34Z</published>
+    <arxiv:comment>CVPR2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yaoxin Yang</name>
+    </author>
+    <author>
+      <name>Peng Ye</name>
+    </author>
+    <author>
+      <name>Xudong Tan</name>
+    </author>
+    <author>
+      <name>Chongjun Tu</name>
+    </author>
+    <author>
+      <name>Maosen Zhao</name>
+    </author>
+    <author>
+      <name>Jia Hao</name>
+    </author>
+    <author>
+      <name>Tao Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2509.09754v1</id>
+    <title>LAVa: Layer-wise KV Cache Eviction with Dynamic Budget Allocation</title>
+    <updated>2025-09-11T16:48:24Z</updated>
+    <link href="https://arxiv.org/abs/2509.09754v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2509.09754v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>KV Cache is commonly used to accelerate LLM inference with long contexts, yet its high memory demand drives the need for cache compression. Existing compression methods, however, are largely heuristic and lack dynamic budget allocation. To address this limitation, we introduce a unified framework for cache compression by minimizing information loss in Transformer residual streams. Building on it, we analyze the layer attention output loss and derive a new metric to compare cache entries across heads, enabling layer-wise compression with dynamic head budgets. Additionally, by contrasting cross-layer information, we also achieve dynamic layer budgets. LAVa is the first unified strategy for cache eviction and dynamic budget allocation that, unlike prior methods, does not rely on training or the combination of multiple strategies. Experiments with benchmarks (LongBench, Needle-In-A-Haystack, Ruler, and InfiniteBench) demonstrate its superiority. Moreover, our experiments reveal a new insight: dynamic layer budgets are crucial for generation tasks (e.g., code completion), while dynamic head budgets play a key role in extraction tasks (e.g., extractive QA). As a fully dynamic compression method, LAVa consistently maintains top performance across task types. Our code is available at https://github.com/MGDDestiny/Lava.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-09-11T16:48:24Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yiqun Shen</name>
+    </author>
+    <author>
+      <name>Song Yuan</name>
+    </author>
+    <author>
+      <name>Zhengze Zhang</name>
+    </author>
+    <author>
+      <name>Xiaoliang Wang</name>
+    </author>
+    <author>
+      <name>Daxin Jiang</name>
+    </author>
+    <author>
+      <name>Nguyen Cam-Tu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.34060v2</id>
+    <title>KVCMAS: Efficient KV cache Correction for Shared Context in Multi-Agent Systems</title>
+    <updated>2026-10-06T04:25:12Z</updated>
+    <link href="https://arxiv.org/abs/2609.34060v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.34060v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prompt-specialized multi-agent systems enable multiple agents to share a model while performing complementary roles to solve complex tasks. However, agent-specific prefixes change the KV cache generated for the same shared context, causing each agent to repeatedly prefill the growing context and construct a separate cache with high computation and memory overhead. Selective recomputation reduces this redundancy but still retains substantial model execution, while existing delta correction methods either support only recurring context relations or maintain memory-intensive online correction states for dynamically changing context. For first seen shared context, these methods also construct a reference cache outside the agent workflow, and an approximate correction at the first agent affects the outputs passed to subsequent agents. We present KVCMAS, an online KV cache correction framework that represents cross-agent cache deviations using compact low-rank states and seamlessly chains corrections along the agent workflow without an additional reference prefill. This design supports dynamically changing shared context while preserving an exact first-agent cache. Across multiple language and vision-language workloads, KVCMAS matches or improves the accuracy of prior KV cache sharing methods while achieving the lowest TTFT under highly concurrent serving. Under controlled serving traces, it provides a 2.0x TTFT speedup over inference without KV cache sharing and reduces peak GPU memory by up to 3.7x relative to a prior KV cache correction method. These results establish KVCMAS as an accurate and scalable KV cache sharing approach for prompt-specialized multi-agent serving.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-28T00:39:50Z</published>
+    <arxiv:comment>29 pages, 13 figures, 15 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Hyesung Jeon</name>
+    </author>
+    <author>
+      <name>Hyeongju Ha</name>
+    </author>
+    <author>
+      <name>Seoyoung Lee</name>
+    </author>
+    <author>
+      <name>Beomseok Kang</name>
+    </author>
+    <author>
+      <name>Jae-Joon Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.03198v2</id>
+    <title>KV$^2$: A Self-Refining KV Cache</title>
+    <updated>2026-10-15T11:16:05Z</updated>
+    <link href="https://arxiv.org/abs/2610.03198v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.03198v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The memory footprint of the key-value (KV) cache constrains the practical use of long-context models, and it dominates cost when one prefilled context must later serve many different queries. In this reusable setting, query-agnostic compression trades cost against quality: lightweight estimators are cheap but less accurate, whereas full-context reconstruction scoring is more accurate yet reprocesses the entire prompt. We introduce KV$^2$, a query-agnostic KV-cache compression method based on selective reconstruction. KV$^2$ first uses a lightweight proxy scorer to identify informative in-context tokens, then reprocesses only this subset to compute final eviction scores. On RULER, Needle-in-a-Haystack, and LongBench, KV$^2$'s margin over baselines widens as the budget tightens: on RULER 16K at a 2% KV-cache budget it improves the average score over the next-best baseline by more than 40 percentage points, and on LongBench it attains the highest average across 2%-10% budgets at lower compression-stage runtime and peak memory than full-context reconstruction. Reusable KV-cache compression thus does not require reprocessing the full context. Our code is available at https://anonymous.4open.science/r/KVsquared-0B97.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-02T12:11:35Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Johannes Wesch</name>
+    </author>
+    <author>
+      <name>Danni Liu</name>
+    </author>
+    <author>
+      <name>Jan Niehues</name>
+    </author>
+  </entry>
+</feed>

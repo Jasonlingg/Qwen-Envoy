@@ -1,0 +1,1347 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/hncYENVqQPcZDwJqPgY+jBVfnSc</id>
+  <title>arXiv Query: search_query=(ti:"flashattention" OR abs:"flashattention") OR (ti:"exact" OR abs:"exact") OR (ti:"attention" OR abs:"attention") OR (ti:"io" OR abs:"io") OR (ti:"aware" OR abs:"aware") OR (ti:"flashattentionexact" OR abs:"flashattentionexact") OR (ti:"exactattention" OR abs:"exactattention") OR (ti:"attentionio" OR abs:"attentionio") OR (ti:"ioaware" OR abs:"ioaware")&amp;id_list=&amp;start=0&amp;max_results=50</title>
+  <updated>2026-10-21T06:11:08Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(ti:%22flashattention%22+OR+abs:%22flashattention%22)+OR+((ti:%22exact%22+OR+abs:%22exact%22)+OR+((ti:%22attention%22+OR+abs:%22attention%22)+OR+((ti:%22io%22+OR+abs:%22io%22)+OR+((ti:%22aware%22+OR+abs:%22aware%22)+OR+((ti:%22flashattentionexact%22+OR+abs:%22flashattentionexact%22)+OR+((ti:%22exactattention%22+OR+abs:%22exactattention%22)+OR+((ti:%22attentionio%22+OR+abs:%22attentionio%22)+OR+(ti:%22ioaware%22+OR+abs:%22ioaware%22))))))))&amp;start=0&amp;max_results=50&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>50</opensearch:itemsPerPage>
+  <opensearch:totalResults>272453</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2205.14135v2</id>
+    <title>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness</title>
+    <updated>2022-06-23T17:53:32Z</updated>
+    <link href="https://arxiv.org/abs/2205.14135v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2205.14135v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformers are slow and memory-hungry on long sequences, since the time and memory complexity of self-attention are quadratic in sequence length. Approximate attention methods have attempted to address this problem by trading off model quality to reduce the compute complexity, but often do not achieve wall-clock speedup. We argue that a missing principle is making attention algorithms IO-aware -- accounting for reads and writes between levels of GPU memory. We propose FlashAttention, an IO-aware exact attention algorithm that uses tiling to reduce the number of memory reads/writes between GPU high bandwidth memory (HBM) and GPU on-chip SRAM. We analyze the IO complexity of FlashAttention, showing that it requires fewer HBM accesses than standard attention, and is optimal for a range of SRAM sizes. We also extend FlashAttention to block-sparse attention, yielding an approximate attention algorithm that is faster than any existing approximate attention method. FlashAttention trains Transformers faster than existing baselines: 15% end-to-end wall-clock speedup on BERT-large (seq. length 512) compared to the MLPerf 1.1 training speed record, 3$\times$ speedup on GPT-2 (seq. length 1K), and 2.4$\times$ speedup on long-range arena (seq. length 1K-4K). FlashAttention and block-sparse FlashAttention enable longer context in Transformers, yielding higher quality models (0.7 better perplexity on GPT-2 and 6.4 points of lift on long-document classification) and entirely new capabilities: the first Transformers to achieve better-than-chance performance on the Path-X challenge (seq. length 16K, 61.4% accuracy) and Path-256 (seq. length 64K, 63.1% accuracy).</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2022-05-27T17:53:09Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Tri Dao</name>
+    </author>
+    <author>
+      <name>Daniel Y. Fu</name>
+    </author>
+    <author>
+      <name>Stefano Ermon</name>
+    </author>
+    <author>
+      <name>Atri Rudra</name>
+    </author>
+    <author>
+      <name>Christopher Ré</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2409.16997v2</id>
+    <title>INT-FlashAttention: Enabling Flash Attention for INT8 Quantization</title>
+    <updated>2024-09-26T06:13:04Z</updated>
+    <link href="https://arxiv.org/abs/2409.16997v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2409.16997v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As the foundation of large language models (LLMs), self-attention module faces the challenge of quadratic time and memory complexity with respect to sequence length. FlashAttention accelerates attention computation and reduces its memory usage by leveraging the GPU memory hierarchy. A promising research direction is to integrate FlashAttention with quantization methods. This paper introduces INT-FlashAttention, the first INT8 quantization architecture compatible with the forward workflow of FlashAttention, which significantly improves the inference speed of FlashAttention on Ampere GPUs. We implement our INT-FlashAttention prototype with fully INT8 activations and general matrix-multiplication (GEMM) kernels, making it the first attention operator with fully INT8 input. As a general token-level post-training quantization framework, INT-FlashAttention is also compatible with other data formats like INT4, etc. Experimental results show INT-FlashAttention achieves 72% faster inference speed and 82% smaller quantization error compared to standard FlashAttention with FP16 and FP8 data format.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-09-25T15:02:25Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Shimao Chen</name>
+    </author>
+    <author>
+      <name>Zirui Liu</name>
+    </author>
+    <author>
+      <name>Zhiying Wu</name>
+    </author>
+    <author>
+      <name>Ce Zheng</name>
+    </author>
+    <author>
+      <name>Peizhuang Cong</name>
+    </author>
+    <author>
+      <name>Zihan Jiang</name>
+    </author>
+    <author>
+      <name>Yuhan Wu</name>
+    </author>
+    <author>
+      <name>Lei Su</name>
+    </author>
+    <author>
+      <name>Tong Yang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.03067v3</id>
+    <title>FlashSinkhorn: IO-Aware Entropic Optimal Transport on GPU</title>
+    <updated>2026-05-21T03:12:51Z</updated>
+    <link href="https://arxiv.org/abs/2602.03067v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.03067v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Entropic optimal transport (EOT) via Sinkhorn iterations is widely used in modern machine learning, yet GPU solvers remain inefficient at scale. Tensorized implementations suffer quadratic HBM traffic from dense $n\times m$ interactions, while existing online backends avoid storing dense matrices but still rely on generic tiled map-reduce reduction kernels with limited fusion. We present \textbf{FlashSinkhorn}, an IO-aware EOT solver for squared Euclidean cost that rewrites stabilized log-domain Sinkhorn updates as row-wise LogSumExp reductions of biased dot-product scores, the same normalization as transformer attention. This enables FlashAttention-style fusion and tiling: fused Triton kernels stream tiles through on-chip SRAM and update dual potentials in a single pass, substantially reducing HBM IO per iteration while retaining linear-memory operations. We further provide streaming kernels for transport application, enabling scalable first- and second-order optimization. On A100 GPUs, FlashSinkhorn achieves up to $32\times$ forward-pass and $161\times$ end-to-end speedups over state-of-the-art online baselines on point-cloud OT, improves scalability on OT-based downstream tasks. For reproducibility, we release an open-source implementation at https://github.com/ot-triton-lab/flash-sinkhorn .</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.NA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-03T03:52:20Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Felix X. -F. Ye</name>
+    </author>
+    <author>
+      <name>Xingjie Li</name>
+    </author>
+    <author>
+      <name>An Yu</name>
+    </author>
+    <author>
+      <name>Ming-Ching Chang</name>
+    </author>
+    <author>
+      <name>Linsong Chu</name>
+    </author>
+    <author>
+      <name>Davis Wertheimer</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2412.03317v2</id>
+    <title>FlashAttention on a Napkin: A Diagrammatic Approach to Deep Learning IO-Awareness</title>
+    <updated>2025-01-19T08:31:39Z</updated>
+    <link href="https://arxiv.org/abs/2412.03317v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2412.03317v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Optimizing deep learning algorithms currently requires slow, manual derivation, potentially leaving much performance untapped. Methods like FlashAttention have achieved a x6 performance improvement over native PyTorch by avoiding unnecessary data transfers, but required three iterations over three years to be developed. Automated compiled methods have consistently lagged behind. This paper extends Neural Circuit Diagrams for deep learning models to consider resource usage and the distribution of tasks across a GPU hierarchy. We show how diagrams can use simple relabellings to derive high-level streaming and tiling optimization strategies along with performance models. We show how this high-level performance model allows the effects of quantization and multi-level GPU hierarchies to be readily considered. We develop a methodology for representing intermediate-level pseudocode with diagrams, allowing hardware-aware algorithms to be derived step-by-step. Finally, we show how our methodology can be used to better understand existing techniques like FlashAttention. This work uses a theoretical framework to link assumptions about GPU behaviour to claims about performance. We aim to lay the groundwork for a scientific approach to GPU optimization where experiments can address clear hypotheses rather than post-hoc rationalizations.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-12-04T13:52:04Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Vincent Abbott</name>
+    </author>
+    <author>
+      <name>Gioele Zardini</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.19049v1</id>
+    <title>KVBuffer: IO-aware Serving for Linear Attention</title>
+    <updated>2026-05-18T19:14:52Z</updated>
+    <link href="https://arxiv.org/abs/2605.19049v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.19049v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Linear attention has recently gained significant attention for long-context inference due to its constant decoding cost with respect to context length. However, existing serving systems typically serve linear attention by recurrently computing and updating a large linear attention state in every decoding step. Since the state is much larger than the per-token key and value, recurrent decoding incurs substantial memory access and becomes inefficient for serving linear attention. In this paper, we propose KVBuffer, an IO-aware serving mechanism for linear attention. By buffering recent keys and values, KVBuffer enables serving systems to compute linear attention outputs in more flexible and memory-efficient ways. For decoding, KVBuffer enables chunkwise computation, which reduces average memory access and decoding latency by deferring state updates and applying them in batch. For speculative decoding, KVBuffer verifies draft tokens in parallel and avoids storing temporary states. For short contexts, KVBuffer computes attention outputs directly from buffered keys and values, without creating or updating the linear attention state. We implement KVBuffer in SGLang for Qwen3-Next. Our evaluations show that KVBuffer can reduce linear attention decoding latency by up to 45.17% and increase the maximum number of serving requests by 5x for speculative decoding when verifying four draft tokens.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-18T19:14:52Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Longwei Zou</name>
+    </author>
+    <author>
+      <name>Lin Zhong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2410.01359v2</id>
+    <title>FlashMask: Efficient and Rich Mask Extension of FlashAttention</title>
+    <updated>2025-03-01T10:33:37Z</updated>
+    <link href="https://arxiv.org/abs/2410.01359v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.01359v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The computational and memory demands of vanilla attention scale quadratically with the sequence length $N$, posing significant challenges for processing long sequences in Transformer models. FlashAttention alleviates these challenges by eliminating the $O(N^2)$ memory dependency and reducing attention latency through IO-aware memory optimizations. However, its native support for certain attention mask types is limited, and it does not inherently accommodate more complex masking requirements. Previous approaches resort to using dense masks with $O(N^2)$ memory complexity, leading to inefficiencies. In this paper, we propose FlashMask, an extension of FlashAttention that introduces a column-wise sparse representation of attention masks. This approach efficiently represents a wide range of mask types and facilitates the development of optimized kernel implementations. By adopting this novel representation, FlashMask achieves linear memory complexity $O(N)$, suitable for modeling long-context sequences. Moreover, this representation enables kernel optimizations that eliminate unnecessary computations by leveraging sparsity in the attention mask, without sacrificing computational accuracy, resulting in higher computational efficiency. We evaluate FlashMask's performance in fine-tuning and alignment training of LLMs such as SFT, LoRA, DPO, and RM. FlashMask achieves significant throughput improvements, with end-to-end speedups ranging from 1.65x to 3.22x compared to existing FlashAttention dense method. Additionally, our kernel-level comparisons demonstrate that FlashMask surpasses the latest counterpart, FlexAttention, by 12.1% to 60.7% in terms of kernel TFLOPs/s, achieving 37.8% to 62.3% of the theoretical maximum FLOPs/s on the A100 GPU. The code is open-sourced on PaddlePaddle and integrated into PaddleNLP, supporting models with over 100 billion parameters for contexts up to 128K tokens.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-10-02T09:17:26Z</published>
+    <arxiv:comment>Published as a conference paper at ICLR 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Guoxia Wang</name>
+    </author>
+    <author>
+      <name>Jinle Zeng</name>
+    </author>
+    <author>
+      <name>Xiyuan Xiao</name>
+    </author>
+    <author>
+      <name>Siming Wu</name>
+    </author>
+    <author>
+      <name>Jiabin Yang</name>
+    </author>
+    <author>
+      <name>Lujing Zheng</name>
+    </author>
+    <author>
+      <name>Zeyu Chen</name>
+    </author>
+    <author>
+      <name>Jiang Bian</name>
+    </author>
+    <author>
+      <name>Dianhai Yu</name>
+    </author>
+    <author>
+      <name>Haifeng Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2407.17678v7</id>
+    <title>S2-Attention: Hardware-Aware Context Sharding Among Attention Heads</title>
+    <updated>2025-02-05T18:39:43Z</updated>
+    <link href="https://arxiv.org/abs/2407.17678v7" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2407.17678v7" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Sparse attention, which selectively attends to a subset of tokens in the context was supposed to be efficient. However, its theoretical reduction in FLOPs has rarely translated into wall-clock speed-up over its dense attention counterparts due to the lack of hardware-aware optimizations like FlashAttention. Meanwhile, it remains unclear whether sparse attention can maintain the model's quality at a scale of today's large language models (LLMs) and how. This paper presents Sparsely-Sharded(S2) Attention, a Triton library that provides kernel optimization for sparse attention customizable at both per-head and per-context-range levels. S2-Attention enables the exploration of novel and high-performance sparse attention techniques, which we demonstrate through extensive ablations across a wide range of sparse attention designs at various model scales. From these insights, we present several basic guidelines to design sparse attention that can achieve not only practical efficiency improvements, but also strong downstream performance. To achieve high parallelization and optimized memory IO, sparse attention should shard the context heterogeneously across attention heads, where each head attends to a different subset of tokens while collectively covering the full context. Meanwhile, we find hybrid architectures combining sparse and dense attention particularly beneficial in practice. S2-Attention achieves wall-clock speedup of 8.79X, 15.87X, 25.3X compared to the strong FlashAttention-2 baseline with strong downstream performance on-par with full attention and perfect retrieval performance at a 128k context length. At inference, for 7B models, our model, with the help of our S2-Attention kernel, achieves 4.5x speed-up compared to dense counterparts. S2-Attention is released with easy-to-customize APIs for direct usage in Megatron and vLLM.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-07-25T00:27:07Z</published>
+    <arxiv:comment>10 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Xihui Lin</name>
+    </author>
+    <author>
+      <name>Yunan Zhang</name>
+    </author>
+    <author>
+      <name>Suyu Ge</name>
+    </author>
+    <author>
+      <name>Liliang Ren</name>
+    </author>
+    <author>
+      <name>Barun Patra</name>
+    </author>
+    <author>
+      <name>Vishrav Chaudhary</name>
+    </author>
+    <author>
+      <name>Hao Peng</name>
+    </author>
+    <author>
+      <name>Xia Song</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2407.08608v2</id>
+    <title>FlashAttention-3: Fast and Accurate Attention with Asynchrony and Low-precision</title>
+    <updated>2024-07-12T22:15:02Z</updated>
+    <link href="https://arxiv.org/abs/2407.08608v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2407.08608v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention, as a core layer of the ubiquitous Transformer architecture, is the bottleneck for large language models and long-context applications. FlashAttention elaborated an approach to speed up attention on GPUs through minimizing memory reads/writes. However, it has yet to take advantage of new capabilities present in recent hardware, with FlashAttention-2 achieving only 35% utilization on the H100 GPU. We develop three main techniques to speed up attention on Hopper GPUs: exploiting asynchrony of the Tensor Cores and TMA to (1) overlap overall computation and data movement via warp-specialization and (2) interleave block-wise matmul and softmax operations, and (3) block quantization and incoherent processing that leverages hardware support for FP8 low-precision. We demonstrate that our method, FlashAttention-3, achieves speedup on H100 GPUs by 1.5-2.0$\times$ with FP16 reaching up to 740 TFLOPs/s (75% utilization), and with FP8 reaching close to 1.2 PFLOPs/s. We validate that FP8 FlashAttention-3 achieves 2.6$\times$ lower numerical error than a baseline FP8 attention.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-07-11T15:44:48Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jay Shah</name>
+    </author>
+    <author>
+      <name>Ganesh Bikshandi</name>
+    </author>
+    <author>
+      <name>Ying Zhang</name>
+    </author>
+    <author>
+      <name>Vijay Thakkar</name>
+    </author>
+    <author>
+      <name>Pradeep Ramani</name>
+    </author>
+    <author>
+      <name>Tri Dao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2510.05175v3</id>
+    <title>Exact Causal Attention with 10% Fewer Operations</title>
+    <updated>2025-10-11T06:44:12Z</updated>
+    <link href="https://arxiv.org/abs/2510.05175v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2510.05175v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present Exact Causal Attention (ECA), a Strassen-style algorithm that computes exact Causal Attention using 10\% fewer operations. ECA improves a special class of matrix multiplications where either one operand or the output matrix is upper- or lower-triangular. This includes all matrix multiplication operations in the forward and backward pass of Causal Attention, such as masked product $\mathrm{Mask}(QK^{T})$. ECA is built upon algebraic identities discovered via machine learning and combinatorial search. We note that ECA cannot accelerate fused kernels such as FlashAttention on GPU. This is because ECA requires materialization of large intermediate expressions in the memory, while FlashAttention does not. However, it provides an alternative approach for compute-bound applications and can potentially be useful in scenarios with FLOPs considerations.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DM" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-05T11:53:58Z</published>
+    <arxiv:comment>Withdrawn to further refine claims about experiments and applications</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dmitry Rybin</name>
+    </author>
+    <author>
+      <name>Yushun Zhang</name>
+    </author>
+    <author>
+      <name>Ding Tian</name>
+    </author>
+    <author>
+      <name>Zhihang Lin</name>
+    </author>
+    <author>
+      <name>Zhi-Quan Luo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2307.08691v1</id>
+    <title>FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning</title>
+    <updated>2023-07-17T17:50:36Z</updated>
+    <link href="https://arxiv.org/abs/2307.08691v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2307.08691v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Scaling Transformers to longer sequence lengths has been a major problem in the last several years, promising to improve performance in language modeling and high-resolution image understanding, as well as to unlock new applications in code, audio, and video generation. The attention layer is the main bottleneck in scaling to longer sequences, as its runtime and memory increase quadratically in the sequence length. FlashAttention exploits the asymmetric GPU memory hierarchy to bring significant memory saving (linear instead of quadratic) and runtime speedup (2-4$\times$ compared to optimized baselines), with no approximation. However, FlashAttention is still not nearly as fast as optimized matrix-multiply (GEMM) operations, reaching only 25-40\% of the theoretical maximum FLOPs/s. We observe that the inefficiency is due to suboptimal work partitioning between different thread blocks and warps on the GPU, causing either low-occupancy or unnecessary shared memory reads/writes. We propose FlashAttention-2, with better work partitioning to address these issues. In particular, we (1) tweak the algorithm to reduce the number of non-matmul FLOPs (2) parallelize the attention computation, even for a single head, across different thread blocks to increase occupancy, and (3) within each thread block, distribute the work between warps to reduce communication through shared memory. These yield around 2$\times$ speedup compared to FlashAttention, reaching 50-73\% of the theoretical maximum FLOPs/s on A100 and getting close to the efficiency of GEMM operations. We empirically validate that when used end-to-end to train GPT-style models, FlashAttention-2 reaches training speed of up to 225 TFLOPs/s per A100 GPU (72\% model FLOPs utilization).</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-07-17T17:50:36Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Tri Dao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.20819v2</id>
+    <title>Stream-CQSA: Exact Out-of-Memory Recovery for Attention</title>
+    <updated>2026-09-01T21:12:45Z</updated>
+    <link href="https://arxiv.org/abs/2604.20819v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.20819v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context large language models are limited not only by attention cost but also by out-of-memory (OOM) failures. A selected attention call may not fit in available device memory even when the kernel is optimized. Exact and approximate attention methods reduce memory use, but every fixed implementation still has a device-specific capacity boundary. We introduce Stream-CQSA, an attention-level OOM recovery framework based on CQS decomposition, derived from the theory of cyclic quorum sets (CQS). Stream-CQSA recursively partitions an infeasible attention call into independent subsequence tasks, executes each with a compatible inner kernel, and recomposes the local statistics to recover the full attention output. This recovery is exact relative to the wrapped attention kernel, whether that kernel is exact or approximate. Compared with FlashAttention-2, the major baseline, our native Stream-CQSA kernel improves 16-bit forward-output error relative to a dense float64 reference and matches 16-bit backward-gradient error where FlashAttention-2 fits in the GPU memory. At the longest feasible baseline length, it costs $1.5$--$1.9\times$ the forward runtime and $2.1$--$2.4\times$ the forward--backward runtime. Beyond that sequence length boundary, our method continues to return an output while FlashAttention-2 OOMs. Stream-CQSA is therefore not a faster attention method. Instead, it converts memory-capacity failure into a recoverable execution path by trading extra compute, host-device transfer, and recomposition for completion.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-22T17:46:09Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yiming Bian</name>
+    </author>
+    <author>
+      <name>Joshua M. Akey</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.34272v1</id>
+    <title>Broken Symmetry in BF16 Attention: Why FlashAttention Gradients Blow Up Late in Training</title>
+    <updated>2026-09-28T04:21:07Z</updated>
+    <link href="https://arxiv.org/abs/2609.34272v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.34272v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>BF16 is now standard in large-scale pretraining, including in fused attention kernels such as FlashAttention, and these kernels are widely trusted. When we used FlashAttention-3 to pretrain a 450M-parameter transformer on 50B tokens, however, we ran into a problem: training was healthy for 25B tokens, then the gradient norm grew a thousandfold and the loss ended 0.2 nats above FP32 attention, without a single NaN. Recomputing the attention backward of just two layers in FP32 removes almost all of the excess gradient. Part of the cause is known: a fused multiply-add in the forward softmax, so far treated as an extreme-input NaN case and never fixed in FlashAttention-3. Repairing it stops the blow-up, but the query gradient is still wrong by more than its own size, and training still drives attention logits to thousands of times their size under accurate gradients. The remaining error comes from a broken conservation law. The softmax score gradient sums to zero along every row, which makes the query gradient blind to where the keys sit as a group; rounding it to BF16 leaves a small nonzero sum that leaks the mean key into the gradient, and the leak grows exactly as late training makes keys large and attention sharp. We introduce GProj (gauge projection), which restores the zero sum after the cast with two rank-one corrections per row. It cuts the remaining median query/key gradient errors from 219%/13% to 0.34%/0.37%, on par with FP32 attention, for 4.7% more time per training step. In matched from-scratch runs it trains to the same loss as FP32 attention, while FlashAttention-3 and key smoothing both destabilize.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.NA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-28T04:21:07Z</published>
+    <arxiv:comment>28 pages, 10 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Junlin Chen</name>
+    </author>
+    <author>
+      <name>Daize Dong</name>
+    </author>
+    <author>
+      <name>Huanwei Di</name>
+    </author>
+    <author>
+      <name>Haolong Jia</name>
+    </author>
+    <author>
+      <name>Jiawei Wu</name>
+    </author>
+    <author>
+      <name>Haotian Xie</name>
+    </author>
+    <author>
+      <name>Mingkai Zheng</name>
+    </author>
+    <author>
+      <name>Yang Li</name>
+    </author>
+    <author>
+      <name>Leshang Chen</name>
+    </author>
+    <author>
+      <name>Huishu Wang</name>
+    </author>
+    <author>
+      <name>Eric P. Xing</name>
+    </author>
+    <author>
+      <name>Hongyi Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.18656v1</id>
+    <title>FlashAttention for Scalable Vector Architectures</title>
+    <updated>2026-08-19T08:02:17Z</updated>
+    <link href="https://arxiv.org/abs/2608.18656v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.18656v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Inference with transformer models on CPUs is increasingly important, especially for Small Language Models (SLMs), where vector architectures are emerging as a promising execution substrate. The attention module is a major bottleneck due to high memory bandwidth requirements; FlashAttention mitigates this by fusing operations to improve data locality and reduce intermediate memory traffic. In this paper, we present FlashAttention-V, a blocked FlashAttention for scalable vector architectures that adapts efficiently from short to very long vectors by exploiting parallelism across attention heads, inter-head packing to enable efficient utilization of vector lengths beyond the head dimension, and improving vector register utilization and memory access locality. We integrate FlashAttention-V into ggml within llama.cpp and evaluate it on TinyLlama, Llama 3.2, Qwen2.5, and Pythia-410M using gem5 and a Banana Pi BPI-F3. On the Banana Pi BPI-F3, we confirm that loop reordering and loop unrolling across attention heads are effective optimization principles, scaling performance gains with larger models and most pronounced with short contexts and during decoding. Simulation-based analysis shows that FlashAttention-V achieves 22x-42x speedup over scalar FlashAttention at 512-bit VL in prefill, with an additional 2x-2.5x gain scaling to 64 lanes and 4096-bit VL. During decode, FlashAttention-V achieves 8x-11x speedup using 512-bit vector lengths over scalar FlashAttention, with performance showing diminishing sensitivity to vector width and lane count due to single-token, memory-bound execution. We further identify structural bottlenecks in Q8_0 quantized linear layers that limit arithmetic amortization under long-vector execution, consistent across RVV and Arm SVE, indicating that current quantization formats pose a fundamental challenge to long-vector scalability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-19T08:02:17Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Sonia Rani Gupta</name>
+    </author>
+    <author>
+      <name>Nikela Papadopoulou</name>
+    </author>
+    <author>
+      <name>Miquel Pericàs</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2505.14201v1</id>
+    <title>FLASH-D: FlashAttention with Hidden Softmax Division</title>
+    <updated>2025-05-20T11:01:33Z</updated>
+    <link href="https://arxiv.org/abs/2505.14201v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2505.14201v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The transformer's attention mechanism has revolutionized AI and machine learning, with its efficient computation being crucial to its performance. However, calculating attention involves matrix operations interspersed with softmax rescaling, which inherently slows down computation and requires processing the entire input sequence. Building on online softmax computation, FlashAttention integrates softmax calculation with matrix arithmetic, enabling tiled computation independent of sequence length. While optimized for GPUs, FlashAttention's simplicity makes it amenable to direct hardware acceleration. This work re-evaluates the core FlashAttention kernel, presenting FLASH-D a mathematically equivalent, yet simplified, formulation that achieves: (a) hiding softmax division within other non-linear function evaluations; (b) inherently numerically stable computation of exponentials, eliminating the need for maximum value subtraction; and (c) a reduction in computational cost without introducing numerical approximations to the FlashAttention kernel. Importantly, the essential FlashAttention properties that facilitate efficient tiled implementation are fully preserved. Hardware implementation results at 28nm demonstrate that this proposed formulation achieves a 22.8% reduction in area and a 20.3% reduction in power, on average, compared to state-of-the-art parallel hardware architectures without any performance penalty.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-05-20T11:01:33Z</published>
+    <arxiv:comment>IEEE/ACM International Symposium on Low Power Electronics and Design (ISLPED) 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Kosmas Alexandridis</name>
+    </author>
+    <author>
+      <name>Vasileios Titopoulos</name>
+    </author>
+    <author>
+      <name>Giorgos Dimitrakopoulos</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2507.11331v4</id>
+    <title>SystolicAttention: Fusing FlashAttention within a Single Systolic Array</title>
+    <updated>2025-12-08T14:57:05Z</updated>
+    <link href="https://arxiv.org/abs/2507.11331v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2507.11331v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformer models rely heavily on the scaled dot-product attention (SDPA) operation, typically implemented as FlashAttention. Characterized by its frequent interleaving of matrix multiplications and softmax operations, FlashAttention fails to fully utilize the compute resources of modern systolic-array-based accelerators designed for consecutive and large matrix multiplications.
+  To fully unleash the performance potential of systolic arrays for FlashAttention, we propose FSA, an enhanced systolic array architecture that runs the entire FlashAttention on the array without external vector units. Combined with SystolicAttention, an optimized kernel for FSA that achieves fine-grained and element-wise overlapping of FlashAttention operations, FSA maximizes array utilization while preserving the original floating-point operation order of FlashAttention. We implement FSA in synthesizable RTL and evaluate its performance against state-of-the-art systolic-array-based accelerators. Our results show that FSA achieves 1.77x and 4.83x higher attention FLOPs/s utilization compared to AWS Neuron-v2 and Google TPUv5e, respectively. We synthesize FSA in a 16 nm technology at 1.5 GHz, and results indicate only a 12% area overhead compared to a standard weight-stationary systolic array.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-07-15T14:04:17Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Jiawei Lin</name>
+    </author>
+    <author>
+      <name>Yuanlong Li</name>
+    </author>
+    <author>
+      <name>Guokai Chen</name>
+    </author>
+    <author>
+      <name>Thomas Bourgeat</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.15408v2</id>
+    <title>Dispatch-Aware Ragged Attention for Pruned Vision Transformers</title>
+    <updated>2026-05-12T17:43:19Z</updated>
+    <link href="https://arxiv.org/abs/2604.15408v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.15408v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Token pruning methods for Vision Transformers (ViTs) promise quadratic reductions in attention FLOPs by dropping uninformative patches. Yet standard variable-length attention APIs -- including FlashAttention-2's varlen and PyTorch's NestedTensor SDPA -- fail to translate these savings into proportional wall-clock gains at the short post-pruning sequence lengths typical of ViTs ($\leq$197 tokens). We identify a dispatch-overhead bottleneck: at these lengths, host-side kernel dispatch consumes ${\sim}$50\,$μ$s regardless of workload, exceeding the actual GPU compute time at moderate-to-high pruning rates. We present a lightweight bidirectional Triton attention kernel whose dispatch floor is ${\sim}$24\,$μ$s -- roughly 2.17$\times$ lower than FlashAttention-2 varlen -- allowing pruning savings to become visible in wall-clock time. Integrated into a complete pack-attend-unpack pipeline and evaluated on an NVIDIA RTX 4000 Ada Generation GPU, our system achieves 1.88$\times$ end-to-end throughput over padded PyTorch SDPA at standard 224$\times$224 inputs, scaling to 2.51$\times$ at 384$\times$384. Against FlashAttention-2 varlen -- the strongest baseline -- our kernel delivers 9-12\% higher throughput at serving batch sizes (BS=1-4), and 2.17$\times$ lower kernel latency at 80\% token pruning. Numerical correctness is verified with max absolute logit difference $&lt;$0.004 and bit-exact top-1 predictions.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-16T15:48:44Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Seifeldin Abdellatif</name>
+    </author>
+    <author>
+      <name>Ahmad Almasri</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2508.00367v1</id>
+    <title>Representation Shift: Unifying Token Compression with FlashAttention</title>
+    <updated>2025-08-01T06:53:55Z</updated>
+    <link href="https://arxiv.org/abs/2508.00367v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2508.00367v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformers have demonstrated remarkable success across vision, language, and video. Yet, increasing task complexity has led to larger models and more tokens, raising the quadratic cost of self-attention and the overhead of GPU memory access. To reduce the computation cost of self-attention, prior work has proposed token compression techniques that drop redundant or less informative tokens. Meanwhile, fused attention kernels such as FlashAttention have been developed to alleviate memory overhead by avoiding attention map construction and its associated I/O to HBM. This, however, makes it incompatible with most training-free token compression methods, which rely on attention maps to determine token importance. Here, we propose Representation Shift, a training-free, model-agnostic metric that measures the degree of change in each token's representation. This seamlessly integrates token compression with FlashAttention, without attention maps or retraining. Our method further generalizes beyond Transformers to CNNs and state space models. Extensive experiments show that Representation Shift enables effective token compression compatible with FlashAttention, yielding significant speedups of up to 5.5% and 4.4% in video-text retrieval and video QA, respectively. Code is available at https://github.com/mlvlab/Representation-Shift.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-08-01T06:53:55Z</published>
+    <arxiv:comment>International Conference on Computer Vision (ICCV), 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Joonmyung Choi</name>
+    </author>
+    <author>
+      <name>Sanghyeok Lee</name>
+    </author>
+    <author>
+      <name>Byungoh Ko</name>
+    </author>
+    <author>
+      <name>Eunseo Kim</name>
+    </author>
+    <author>
+      <name>Jihyung Kil</name>
+    </author>
+    <author>
+      <name>Hyunwoo J. Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.24089v1</id>
+    <title>FlashBoB: I/O-Efficient Exact Backward-over-Backward for Softmax Attention</title>
+    <updated>2026-09-21T04:20:19Z</updated>
+    <link href="https://arxiv.org/abs/2609.24089v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.24089v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformer models built on the attention mechanism have become a central building block in modern deep learning, yet softmax attention remains a major bottleneck for long-context workloads. While FlashAttention makes the forward and first backward passes I/O-efficient, it does not support backward-over-backward (BoB), which enables exact differentiation through the backward pass for applications such as second-order optimization, test-time training, gradient-based memory, and meta-learning. Existing BoB implementations either materialize large intermediate tensors or exhaust GPU memory at long sequence lengths. We present FlashBoB, an exact, I/O-efficient algorithm for BoB in softmax attention that keeps computation within on-chip tiles and avoids all $N \times N$ intermediate tensors, where $N$ is the sequence length. The key insight is a hierarchical affine structure in the softmax double backward: two row-wise scalars determine all outputs through affine transformations. This yields a two-pass schedule with bounded on-chip static random-access memory (SRAM) usage and minimal off-chip high-bandwidth memory (HBM) traffic. FlashBoB achieves $Θ(N^2 d^2/M)$ HBM traffic ($d$ is the head dimension and $M$ is the memory size) and, within the standard FlashAttention-style score-recomputation model, matches the inherited large-cache lower bound for exact forward attention. Empirically, it scales exact attention BoB to $N=262\text{K}$ on a single A100 80GB GPU, where prior PyTorch exact baselines fail by $N=16\text{K}$, and is up to $6.3\times$ faster than FlashBack. These results make exact second-order attention practical at long-context sequence lengths where prior implementations cannot run efficiently.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-21T04:20:19Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Anthony Givans</name>
+    </author>
+    <author>
+      <name>Michael Crawshaw</name>
+    </author>
+    <author>
+      <name>Mingrui Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.15459v1</id>
+    <title>Not All Attention Is Equal: A Quantitative Survey of the EEI Trade-off</title>
+    <updated>2026-08-16T00:37:38Z</updated>
+    <link href="https://arxiv.org/abs/2608.15459v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.15459v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention mechanisms have driven machine learning for a decade, from neural machine translation to language models that do general-purpose reasoning. This survey covers four connected threads: their formulation for sequence-to-sequence tasks, adaptation to computer vision, efficiency innovations that address the quadratic bottleneck, and advances in interpretability. We define three criteria: efficiency, expressiveness, and interpretability, and compare twenty-one methods using an EEI scoring framework. Scores come from a single rater with an assumed +/-1-point perturbation range. A deterministic Monte Carlo analysis with 200,000 samples shows that, under this perturbation model, rank changes of more than one position occur in 67-70% of samples on average. A rank-matched null model reproduces a similar stability profile, so the results support coarse tier-level comparisons rather than fine-grained rankings. The survey traces attention from Bahdanau-Luong alignment through the Transformer and into vision architectures. It reviews fixed and learned sparse attention, linear attention, IO-aware exact algorithms including FlashAttention, and state-space alternatives including Mamba. It also covers induction heads, superposition, and the attention-SSM duality. We further provide a structured narrative review, a benchmark synthesis with cross-study caveats, a five-problem research gap analysis, and a 2015-2026 evolution timeline. We conclude by framing attention research as an expansion of the efficiency-expressiveness-interpretability frontier and identifying future directions including unified efficiency benchmarks, learned routing for hybrid architectures, length generalization, and scalable mechanistic interpretability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-16T00:37:38Z</published>
+    <arxiv:comment>53 pages, 8 figures, 16 tables. Code and analysis artifacts: https://github.com/Nixon-H/not-all-attention-is-equal</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Aditya Singh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2505.14314v2</id>
+    <title>Low-Cost FlashAttention with Fused Exponential and Multiplication Hardware Operators</title>
+    <updated>2025-05-30T10:32:39Z</updated>
+    <link href="https://arxiv.org/abs/2505.14314v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2505.14314v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention mechanisms, particularly within Transformer architectures and large language models (LLMs), have revolutionized sequence modeling in machine learning and artificial intelligence applications. To compute attention for increasingly long sequences, specialized accelerators have been proposed to execute key attention steps directly in hardware. Among the various recently proposed architectures, those based on variants of the FlashAttention algorithm, originally designed for GPUs, stand out due to their optimized computation, tiling capabilities, and reduced memory traffic. In this work, we focus on optimizing the kernel of floating-point-based FlashAttention using new hardware operators that fuse the computation of exponentials and vector multiplications, e.g., e^x, V. The proposed ExpMul hardware operators significantly reduce the area and power costs of FlashAttention-based hardware accelerators. When implemented in a 28nm ASIC technology, they achieve improvements of 28.8% in area and 17.6% in power, on average, compared to state-of-the-art hardware architectures with separate exponentials and vector multiplications hardware operators.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-05-20T13:00:59Z</published>
+    <arxiv:comment>IEEE Computer Society Annual Symposium on VLSI (ISVLSI 2025)</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Kosmas Alexandridis</name>
+    </author>
+    <author>
+      <name>Vasileios Titopoulos</name>
+    </author>
+    <author>
+      <name>Giorgos Dimitrakopoulos</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2505.18698v2</id>
+    <title>MonarchAttention: Zero-Shot Conversion to Fast, Hardware-Aware Structured Attention</title>
+    <updated>2025-10-25T17:57:42Z</updated>
+    <link href="https://arxiv.org/abs/2505.18698v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2505.18698v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformers have achieved state-of-the-art performance across various tasks, but suffer from a notable quadratic complexity in sequence length due to the attention mechanism. In this work, we propose MonarchAttention -- a novel approach to sub-quadratic attention approximation via Monarch matrices, an expressive class of structured matrices. Based on the variational form of softmax, we describe an efficient optimization-based algorithm to compute an approximate projection of softmax attention onto the class of Monarch matrices with $Θ(N\sqrt{N} d)$ computational complexity and $Θ(Nd)$ memory/IO complexity. Unlike previous approaches, MonarchAttention is both (1) transferable, yielding minimal performance loss with no additional training, even when replacing every attention layer of the Transformer, and (2) hardware-efficient, utilizing the highest-throughput tensor core units on modern GPUs. With optimized kernels, MonarchAttention achieves substantial speed-ups in wall-time over FlashAttention-2: $1.4\times$ for shorter sequences $(N=256)$, $4.5\times$ for medium-length sequences $(N=4K)$, and $8.2\times$ for longer sequences $(N=16K)$. We demonstrate the quality of MonarchAttention on diverse tasks and architectures in vision and language problems, showing that it flexibly and accurately approximates softmax attention in a variety of contexts. Our code is available at https://github.com/cjyaras/monarch-attention.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-05-24T13:44:44Z</published>
+    <arxiv:comment>NeurIPS 2025 Spotlight</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Can Yaras</name>
+    </author>
+    <author>
+      <name>Alec S. Xu</name>
+    </author>
+    <author>
+      <name>Pierre Abillama</name>
+    </author>
+    <author>
+      <name>Changwoo Lee</name>
+    </author>
+    <author>
+      <name>Laura Balzano</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.00028v1</id>
+    <title>Sequence-Aware Split Heuristic to Mitigate SM Underutilization in FlashAttention-3 Low-Head-Count Decoding</title>
+    <updated>2026-03-19T11:44:20Z</updated>
+    <link href="https://arxiv.org/abs/2604.00028v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.00028v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The standard FlashAttention-3 heuristic exhibits a GPU occupancy bottleneck in low-head-count decoding configurations because it disables sequence splitting based on sequence length alone, underutilizing the Streaming Multiprocessors of Hopper GPUs. Our proposed sequence-aware split policy mitigates this by allowing sequence-level parallelism in low-head-count regimes, improving hardware utilization to deliver roughly a 21 to 24% improvement in decoder kernel efficiency on metadata-enabled inference paths, with no observed regressions.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-19T11:44:20Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Martí Llopart Font</name>
+    </author>
+    <author>
+      <name>Javier Hernando</name>
+    </author>
+    <author>
+      <name>Cristina España-Bonet</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.22300v2</id>
+    <title>Scaling Attention via Feature Sparsity</title>
+    <updated>2026-03-30T12:28:48Z</updated>
+    <link href="https://arxiv.org/abs/2603.22300v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.22300v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Scaling Transformers to ultra-long contexts is bottlenecked by the $O(n^2 d)$ cost of self-attention. Existing methods reduce this cost along the sequence axis through local windows, kernel approximations, or token-level sparsity, but these approaches consistently degrade accuracy. In this paper, we instead explore an orthogonal axis: feature sparsity. We propose Sparse Feature Attention (SFA), where queries and keys are represented as $k$-sparse codes that preserve high-dimensional expressivity while reducing the cost of attention from $Θ(n^2 d)$ to $Θ(n^2 k^2/d)$. To make this efficient at scale, we introduce FlashSFA, an IO-aware kernel that extends FlashAttention to operate directly on sparse overlaps without materializing dense score matrices. Across GPT-2 and Qwen3 pretraining, SFA matches dense baselines while improving speed by up to $2.5\times$ and reducing FLOPs and KV-cache by nearly 50\%. On synthetic and downstream benchmarks, SFA preserves retrieval accuracy and robustness at long contexts, outperforming short-embedding baselines that collapse feature diversity. These results establish feature-level sparsity as a complementary and underexplored axis for efficient attention, enabling Transformers to scale to orders-of-magnitude longer contexts with minimal quality loss. Code is available at https://github.com/YannX1e/Sparse-Feature-Attention.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-17T08:41:50Z</published>
+    <arxiv:comment>26 pages, 11 figures; Accepted at ICLR 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yan Xie</name>
+    </author>
+    <author>
+      <name>Tiansheng Wen</name>
+    </author>
+    <author>
+      <name>Tangda Huang</name>
+    </author>
+    <author>
+      <name>Bo Chen</name>
+    </author>
+    <author>
+      <name>Chenyu You</name>
+    </author>
+    <author>
+      <name>Stefanie Jegelka</name>
+    </author>
+    <author>
+      <name>Yifei Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.21483v1</id>
+    <title>FlashAttention with Statistics: Low-Overhead Attention Features for Compact Hallucination Detectors</title>
+    <updated>2026-10-15T08:23:42Z</updated>
+    <link href="https://arxiv.org/abs/2610.21483v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.21483v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models can produce fluent answers that the supplied context does not support. A compact frozen proxy model can detect such answers by reading the context and another model's response, even from a proprietary generator. Attention-based detectors use summary statistics of the proxy's attention weights, but standard pipelines materialize the attention matrix, whose memory grows quadratically with sequence length. We compute these statistics without materializing attention, by accumulation in the FlashAttention pass, sparse lookups after it, or a second tiled pass over the scores, and classify them by this path into nearly free and costlier ones. On an H100, the statistics of five published detectors add 16% to the latency of a Qwen3-8B forward at 2K tokens, falling to 1.4% at 35K, and store 22.5 KiB per response token. On three benchmarks, probes trained on frozen Qwen3 proxies of 0.6B to 8B parameters prove strong detectors: a 4B proxy outperforms the strongest of nine zero-shot 4-9B LLM judges in F1 on two of the three, the proxies match or outperform specialized grounding checkers of up to 7B parameters, probing each proxy beats prompting it as a judge, and adding attention features significantly improves F1 in half of the 12 benchmark-proxy pairs, never significantly lowering it.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-15T08:23:42Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Andrei Volodichev</name>
+    </author>
+    <author>
+      <name>Maksim Savichev</name>
+    </author>
+    <author>
+      <name>Nikita Sviridov</name>
+    </author>
+    <author>
+      <name>Artem Yuliy</name>
+    </author>
+    <author>
+      <name>Dmitry Simakov</name>
+    </author>
+    <author>
+      <name>Alexey Zaytsev</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.17901v1</id>
+    <title>FlashMask-3: Efficient and Expressive Mask-Aware Distributed Attention</title>
+    <updated>2026-10-13T07:55:51Z</updated>
+    <link href="https://arxiv.org/abs/2610.17901v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.17901v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-context training of large language and multimodal models couples structured attention masks (document, prefix-LM, share-question, sliding-window, block-sparse) with multi-node context parallelism, making the mask a dominant bottleneck. FlashMask's column-wise sparse mask compresses them from $O(n^2)$ to $O(n)$ via four query-axis boundary vectors, covering broad structured patterns. Implemented for Ampere GPUs, it neither exploits FlashAttention-3's TMA/WGMMA warp-specialized pipeline on Hopper nor supports distribution. The column-wise sparse mask is indexed by key positions but stores query-axis interval boundaries. Under any multi-chunk context-parallel assignment, it reduces per-rank mask localization to a provably zero-communication \emph{clip--shift--max} on the boundary vectors, compatible with the single-GPU kernel. FlashMask-3 introduces a mask-aware Hopper kernel with three-role warp specialization atop FlashAttention-3's TMA/WGMMA pipeline, plus a mask-aware distributed extension: zero-communication mask localization, a sparsity-aware load balancer (HCC-IPO), and a mask-aware compute-communication overlap with mask-driven communication pruning, whose forward all-gather uses topology-aware hierarchical routing. On a single H100 across 12 masks at 4K--128K context, it improves achieved TFLOPs over FlashMask, FlexAttention, and MagiAttention by 45--141%, 34--71%, and 2--44%. At context-parallel degrees 4--32 with 8K sequence per device, it attains 31--75% compute-communication overlap efficiency and improves throughput over Megatron-Core CP ring, Megatron-Core CP all-gather, and MagiAttention by $1.80\times$--$3.71\times$, $1.71\times$--$2.92\times$, and $1.09\times$--$1.46\times$. In end-to-end training of a 118B-A14B MoE at 128K on 128 H100 GPUs, it raises throughput by 7.3--11.0% over a Dual Chunk all-gather baseline, with attention forward+backward 24.5--44.9% faster.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-13T07:55:51Z</published>
+    <arxiv:comment>Published as a main conference paper at NeurIPS 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Guoxia Wang</name>
+    </author>
+    <author>
+      <name>Qianyue He</name>
+    </author>
+    <author>
+      <name>Siming Wu</name>
+    </author>
+    <author>
+      <name>Haoyang Xie</name>
+    </author>
+    <author>
+      <name>Qiwen Bao</name>
+    </author>
+    <author>
+      <name>Jinle Zeng</name>
+    </author>
+    <author>
+      <name>Jiabin Yang</name>
+    </author>
+    <author>
+      <name>Tian Wu</name>
+    </author>
+    <author>
+      <name>Dianhai Yu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2510.01718v2</id>
+    <title>Accelerating Attention with Basis Decomposition</title>
+    <updated>2026-06-26T05:02:54Z</updated>
+    <link href="https://arxiv.org/abs/2510.01718v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2510.01718v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention is a core operation in large language models (LLMs). We present BD Attention (BDA), a lossless algorithmic reformulation of attention. BDA is enabled by a simple matrix identity from Basis Decomposition (BD), which restructures multi-head projections into a compact form while preserving exact outputs. Unlike I/O-aware system optimizations such as FlashAttention, BDA provides a mathematically guaranteed acceleration that is architecture-agnostic. On DeepSeek-V2-Lite (16B, FP16), BDA requires only 4s of offline preparation with no retraining required and, on modern GPUs, achieves 34% faster key/value projections and 25% smaller weights, while increasing perplexity (PPL) by just 0.02% (FP16) or 0.0004% (FP32), a negligible effect on model performance. These results position BDA as a theoretically exact method for lossless attention acceleration that is complementary to existing engineering-level optimizations. Our code is available at https://github.com/abcbdf/basis-decomposition-official.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-02T06:58:10Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jialin Zhao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2510.06834v1</id>
+    <title>Vectorized FlashAttention with Low-cost Exponential Computation in RISC-V Vector Processors</title>
+    <updated>2025-10-08T09:55:32Z</updated>
+    <link href="https://arxiv.org/abs/2510.06834v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2510.06834v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention is a core operation in numerous machine learning and artificial intelligence models. This work focuses on the acceleration of attention kernel using FlashAttention algorithm, in vector processors, particularly those based on the RISC-V instruction set architecture (ISA). This work represents the first effort to vectorize FlashAttention, minimizing scalar code and simplifying the computational complexity of evaluating exponentials needed by softmax used in attention. By utilizing a low-cost approximation for exponentials in floating-point arithmetic, we reduce the cost of computing the exponential function without the need to extend baseline vector ISA with new custom instructions. Also, appropriate tiling strategies are explored with the goal to improve memory locality. Experimental results highlight the scalability of our approach, demonstrating significant performance gains with the vectorized implementations when processing attention layers in practical applications.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-08T09:55:32Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Vasileios Titopoulos</name>
+    </author>
+    <author>
+      <name>Kosmas Alexandridis</name>
+    </author>
+    <author>
+      <name>Giorgos Dimitrakopoulos</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.29517v3</id>
+    <title>FLASH-MAXSIM: IO-Aware Fused Kernels for Late-Interaction Retrieval</title>
+    <updated>2026-09-27T09:26:00Z</updated>
+    <link href="https://arxiv.org/abs/2605.29517v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.29517v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Late-interaction retrieval (ColBERT, ColPali) scores a query against a document via the MaxSim operator. The standard PyTorch implementation materialises the full query-token $\times$ document-token similarity tensor only to reduce it away. At ColPali scale this is the single largest tensor in the pipeline (e.g. 21 GB in FP16 for 10K documents) and limits both candidate set size at inference and batch size during contrastive training. We present FLASH-MAXSIM (FM), an IO-aware fused GPU kernel that computes the same MaxSim scores without ever materialising the tensor, and extends the same principle to the training backward. At ColPali scale on A100, FM reduces inference peak memory by 1.4-2.6$\times$ relative to the deployed chunked baseline (4.9-8.9$\times$ relative to unchunked eager execution) and reduces MaxSim-operator training memory by two orders of magnitude, enabling exact reranking over larger resident candidate pools and contrastive batch sizes that vanilla autograd cannot fit on a single GPU. The kernel is a drop-in replacement, exact up to floating-point evaluation order under its stated FP32-accumulation protocol: nDCG@10 differs from the FP32 reference by at most $5\times10^{-4}$ on BEIR and REAL-MM-RAG. A separate INT8 path trades exactness for halved index storage at high fidelity. Code, benchmark scripts, and raw results: https://github.com/roipony/flash-maxsim</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-28T07:38:27Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Roi Pony</name>
+    </author>
+    <author>
+      <name>Daniel Ezer</name>
+    </author>
+    <author>
+      <name>Adi Raz Goldfarb</name>
+    </author>
+    <author>
+      <name>Idan Friedman</name>
+    </author>
+    <author>
+      <name>Oshri Naparstek</name>
+    </author>
+    <author>
+      <name>Udi Barzelay</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2312.11918v1</id>
+    <title>A Case Study in CUDA Kernel Fusion: Implementing FlashAttention-2 on NVIDIA Hopper Architecture using the CUTLASS Library</title>
+    <updated>2023-12-19T07:56:25Z</updated>
+    <link href="https://arxiv.org/abs/2312.11918v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2312.11918v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We provide an optimized implementation of the forward pass of FlashAttention-2, a popular memory-aware scaled dot-product attention algorithm, as a custom fused CUDA kernel targeting NVIDIA Hopper architecture and written using the open-source CUTLASS library. In doing so, we explain the challenges and techniques involved in fusing online-softmax with back-to-back GEMM kernels, utilizing the Hopper-specific Tensor Memory Accelerator (TMA) and Warpgroup Matrix-Multiply-Accumulate (WGMMA) instructions, defining and transforming CUTLASS Layouts and Tensors, overlapping copy and GEMM operations, and choosing optimal tile sizes for the Q, K and V attention matrices while balancing the register pressure and shared memory utilization. In head-to-head benchmarks on a single H100 PCIe GPU for some common choices of hyperparameters, we observe 20-50% higher FLOPs/s over a version of FlashAttention-2 optimized for last-generation NVIDIA Ampere architecture.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-12-19T07:56:25Z</published>
+    <arxiv:comment>13 pages, comments welcome</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ganesh Bikshandi</name>
+    </author>
+    <author>
+      <name>Jay Shah</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2606.26439v1</id>
+    <title>TileMaxSim: IO-Aware GPU MaxSim Scoring with Dimension Tiling and Fused Product Quantization</title>
+    <updated>2026-06-24T23:03:56Z</updated>
+    <link href="https://arxiv.org/abs/2606.26439v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2606.26439v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-vector retrieval models such as ColBERT achieve state-of-the-art accuracy through fine-grained token-level MaxSim scoring, yet existing GPU implementations leave most hardware performance unused. We give a roofline analysis of MaxSim on modern GPUs and identify a severe bandwidth gap: naive implementations reach only 5-18% of peak HBM bandwidth because they materialize the Nq x Nd similarity matrix, wasting memory traffic on data that is consumed once and discarded. We present TileMaxSim, a family of IO-aware Triton kernels that close this gap via (1) multi-query SRAM tiling that streams document embeddings through shared memory while accumulating per-query-token maxima in registers, reading each embedding from HBM exactly once; (2) dimension tiling that partitions the embedding dimension into 128-wide chunks, enabling scoring for d &gt; 128 embeddings that overflow shared memory; and (3) fused product-quantization scoring via shared-memory lookup tables, cutting HBM I/O by up to ~31x. On NVIDIA H100 GPUs, TileMaxSim reaches 80.2% of peak HBM bandwidth and scores 82M documents/second (71.6M/s on real MS MARCO passages), a 220x speedup over loop-based scoring, 6.5x over fused PyTorch, 6.6-8.5x over torch.compile, and 469x the scoring throughput of WARP's CPU engine on the same node. TileMaxSim preserves exact retrieval quality: on MS MARCO and three BEIR benchmarks, rankings match reference MaxSim. As a drop-in replacement in ColBERTv2/PLAID, it cuts scoring latency at 100K candidates from 268 ms to 1.2 ms (98% lower end-to-end latency). We further show constant throughput from 100K to 500K documents, data-parallel multi-GPU sharding, robustness across dimensions 64-768, and FP16/BF16/FP32 support. Concurrent work independently develops an IO-aware fused MaxSim kernel; we differ in dimension tiling for d &gt; 128 and fused product-quantization scoring.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-06-24T23:03:56Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Ashutosh Sharma</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2310.03294v2</id>
+    <title>DISTFLASHATTN: Distributed Memory-efficient Attention for Long-context LLMs Training</title>
+    <updated>2024-03-31T21:11:08Z</updated>
+    <link href="https://arxiv.org/abs/2310.03294v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2310.03294v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>FlashAttention (Dao, 2023) effectively reduces the quadratic peak memory usage to linear in training transformer-based large language models (LLMs) on a single GPU. In this paper, we introduce DISTFLASHATTN, a distributed memory-efficient attention mechanism optimized for long-context LLMs training. We propose three key techniques: token-level workload balancing, overlapping key-value communication, and a rematerialization-aware gradient checkpointing algorithm. We evaluate DISTFLASHATTN on Llama-7B and variants with sequence lengths from 32K to 512K. DISTFLASHATTN achieves 8x longer sequences, 4.45 - 5.64x speedup compared to Ring Self-Attention, 2 - 8x longer sequences, 1.24 - 2.01x speedup compared to Megatron-LM with FlashAttention. It achieves 1.67x and 1.26 - 1.88x speedup compared to recent Ring Attention and DeepSpeed-Ulysses. Code is available at https://github.com/RulinShao/LightSeq.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-10-05T03:47:57Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dacheng Li</name>
+    </author>
+    <author>
+      <name>Rulin Shao</name>
+    </author>
+    <author>
+      <name>Anze Xie</name>
+    </author>
+    <author>
+      <name>Eric P. Xing</name>
+    </author>
+    <author>
+      <name>Xuezhe Ma</name>
+    </author>
+    <author>
+      <name>Ion Stoica</name>
+    </author>
+    <author>
+      <name>Joseph E. Gonzalez</name>
+    </author>
+    <author>
+      <name>Hao Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.06738v2</id>
+    <title>Rank-Factorized Implicit Neural Bias: Scaling Super-Resolution Transformer with FlashAttention</title>
+    <updated>2026-05-29T09:56:48Z</updated>
+    <link href="https://arxiv.org/abs/2603.06738v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.06738v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent Super-Resolution~(SR) methods mainly adopt Transformers for their strong long-range modeling capability and exceptional representational capacity. However, most SR Transformers rely heavily on relative positional bias~(RPB), which prevents them from leveraging hardware-efficient attention kernels such as FlashAttention. This limitation imposes a prohibitive computational burden during both training and inference, severely restricting attempts to scale SR Transformers by enlarging the training patch size or the self-attention window. Consequently, unlike other domains that actively exploit the inherent scalability of Transformers, SR Transformers remain heavily focused on effectively utilizing limited receptive fields. In this paper, we propose Rank-factorized Implicit Neural Bias~(RIB), an alternative to RPB that enables FlashAttention in SR Transformers. Specifically, RIB approximates positional bias using low-rank implicit neural representations and concatenates them with pixel content tokens in a channel-wise manner, turning the element-wise bias addition in attention score computation into a dot-product operation. Further, we introduce a convolutional local attention and a cyclic window strategy to fully leverage the advantages of long-range interactions enabled by RIB and FlashAttention. We enlarge the window size up to \textbf{96$\times$96} while jointly scaling the training patch size and the dataset size, maximizing the benefits of Transformers in the SR task. As a result, our network achieves \textbf{35.63\,dB PSNR} on Urban100$\times$2, while reducing training and inference time by \textbf{2.1$\times$} and \textbf{2.9$\times$}, respectively, compared to the RPB-based SR Transformer~(PFT).</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-06T07:47:52Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dongheon Lee</name>
+    </author>
+    <author>
+      <name>Seokju Yun</name>
+    </author>
+    <author>
+      <name>Jaegyun Im</name>
+    </author>
+    <author>
+      <name>Youngmin Ro</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2506.12355v1</id>
+    <title>QiMeng-Attention: SOTA Attention Operator is generated by SOTA Attention Algorithm</title>
+    <updated>2025-06-14T05:38:19Z</updated>
+    <link href="https://arxiv.org/abs/2506.12355v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2506.12355v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The attention operator remains a critical performance bottleneck in large language models (LLMs), particularly for long-context scenarios. While FlashAttention is the most widely used and effective GPU-aware acceleration algorithm, it must require time-consuming and hardware-specific manual implementation, limiting adaptability across GPU architectures. Existing LLMs have shown a lot of promise in code generation tasks, but struggle to generate high-performance attention code. The key challenge is it cannot comprehend the complex data flow and computation process of the attention operator and utilize low-level primitive to exploit GPU performance.
+  To address the above challenge, we propose an LLM-friendly Thinking Language (LLM-TL) to help LLMs decouple the generation of high-level optimization logic and low-level implementation on GPU, and enhance LLMs' understanding of attention operator. Along with a 2-stage reasoning workflow, TL-Code generation and translation, the LLMs can automatically generate FlashAttention implementation on diverse GPUs, establishing a self-optimizing paradigm for generating high-performance attention operators in attention-centric algorithms. Verified on A100, RTX8000, and T4 GPUs, the performance of our methods significantly outshines that of vanilla LLMs, achieving a speed-up of up to 35.16x. Besides, our method not only surpasses human-optimized libraries (cuDNN and official library) in most scenarios but also extends support to unsupported hardware and data types, reducing development time from months to minutes compared with human experts.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-06-14T05:38:19Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Qirui Zhou</name>
+    </author>
+    <author>
+      <name>Shaohui Peng</name>
+    </author>
+    <author>
+      <name>Weiqiang Xiong</name>
+    </author>
+    <author>
+      <name>Haixin Chen</name>
+    </author>
+    <author>
+      <name>Yuanbo Wen</name>
+    </author>
+    <author>
+      <name>Haochen Li</name>
+    </author>
+    <author>
+      <name>Ling Li</name>
+    </author>
+    <author>
+      <name>Qi Guo</name>
+    </author>
+    <author>
+      <name>Yongwei Zhao</name>
+    </author>
+    <author>
+      <name>Ke Gao</name>
+    </author>
+    <author>
+      <name>Ruizhi Chen</name>
+    </author>
+    <author>
+      <name>Yanjun Wu</name>
+    </author>
+    <author>
+      <name>Chen Zhao</name>
+    </author>
+    <author>
+      <name>Yunji Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2402.18668v2</id>
+    <title>Simple linear attention language models balance the recall-throughput tradeoff</title>
+    <updated>2025-03-07T18:57:52Z</updated>
+    <link href="https://arxiv.org/abs/2402.18668v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2402.18668v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent work has shown that attention-based language models excel at recall, the ability to ground generations in tokens previously seen in context. However, the efficiency of attention-based models is bottle-necked during inference by the KV-cache's aggressive memory consumption. In this work, we explore whether we can improve language model efficiency (e.g. by reducing memory consumption) without compromising on recall. By applying experiments and theory to a broad set of architectures, we identify a key tradeoff between a model's state size and recall ability. We show that efficient alternatives to attention (e.g. H3, Mamba, RWKV) maintain a fixed-size recurrent state, but struggle at recall. We propose BASED a simple architecture combining linear and sliding window attention. By varying BASED window size and linear attention feature dimension, we can dial the state size and traverse the pareto frontier of the recall-memory tradeoff curve, recovering the full quality of attention on one end and the small state size of attention-alternatives on the other. We train language models up to 1.3b parameters and show that BASED matches the strongest sub-quadratic models (e.g. Mamba) in perplexity and outperforms them on real-world recall-intensive tasks by 6.22 accuracy points. Implementations of linear attention are often less efficient than optimized standard attention implementations. To make BASED competitive, we develop IO-aware algorithms that enable 24x higher throughput on language generation than FlashAttention-2, when generating 1024 tokens using 1.3b parameter models. Code for this work is provided at: https://github.com/HazyResearch/based.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-02-28T19:28:27Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Simran Arora</name>
+    </author>
+    <author>
+      <name>Sabri Eyuboglu</name>
+    </author>
+    <author>
+      <name>Michael Zhang</name>
+    </author>
+    <author>
+      <name>Aman Timalsina</name>
+    </author>
+    <author>
+      <name>Silas Alberti</name>
+    </author>
+    <author>
+      <name>Dylan Zinsley</name>
+    </author>
+    <author>
+      <name>James Zou</name>
+    </author>
+    <author>
+      <name>Atri Rudra</name>
+    </author>
+    <author>
+      <name>Christopher Ré</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.10071v1</id>
+    <title>FlashBEV: Fast and Memory-Efficient Exact BEV Transformation with IO-Awareness</title>
+    <updated>2026-07-11T01:51:17Z</updated>
+    <link href="https://arxiv.org/abs/2607.10071v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.10071v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Bird's-eye-view (BEV) perception is a core component of camera-based 3D understanding in autonomous driving, where view transformation (VT) maps multi-camera image features into a unified BEV representation. Sampling-based view transformation (Sampling-VT) is attractive because it supports dense and continuous BEV aggregation for high-resolution and long-range perception. Its deployment bottleneck, however, is systems-level: standard tensorized implementations of Sampling-VT -- which we refer to as Tensorized Sampling-VT -- explicitly materialize large height-dependent intermediate tensors, causing memory and latency costs that scale poorly with vertical resolution and the number of cameras. We revisit Tensorized Sampling-VT from an operator-execution perspective and show that it follows a gather-reduction pattern: each BEV query independently accumulates contributions across cameras and height bins, enabling thread-local accumulation with on-the-fly recomputation that eliminates the need to materialize height- and camera-dependent intermediates. Based on this insight, we propose FlashBEV, a fully fused and IO-aware execution strategy mathematically equivalent to Tensorized Sampling-VT (same operator output) while substantially reducing global memory traffic and kernel-launch overhead. Experiments show that FlashBEV achieves more than an order of magnitude lower peak GPU memory and significant inference-latency speedups, with memory effectively independent of the number of height bins, reducing the operator's peak memory to O(BCXY) (output only). This unlocks higher BEV range/resolution and vertical discretization within fixed deployment budgets on memory-constrained devices. Our contribution is an execution redesign -- same math, different execution -- that removes a key scalability barrier for deployment-ready Sampling-VT. Code available at https://github.com/yokosyun/FlashBEV</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-11T01:51:17Z</published>
+    <arxiv:comment>Accepted to ECCV 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Shunsuke Yokokawa</name>
+    </author>
+    <author>
+      <name>Hironori Kasahara</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.04507v3</id>
+    <title>Fast Video Generation with Sliding Tile Attention</title>
+    <updated>2025-06-04T23:21:39Z</updated>
+    <link href="https://arxiv.org/abs/2502.04507v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.04507v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Diffusion Transformers (DiTs) with 3D full attention power state-of-the-art video generation, but suffer from prohibitive compute cost -- when generating just a 5-second 720P video, attention alone takes 800 out of 945 seconds of total inference time. This paper introduces sliding tile attention (STA) to address this challenge. STA leverages the observation that attention scores in pretrained video diffusion models predominantly concentrate within localized 3D windows. By sliding and attending over the local spatial-temporal region, STA eliminates redundancy from full attention. Unlike traditional token-wise sliding window attention (SWA), STA operates tile-by-tile with a novel hardware-aware sliding window design, preserving expressiveness while being hardware-efficient. With careful kernel-level optimizations, STA offers the first efficient 2D/3D sliding-window-like attention implementation, achieving 58.79% MFU. Precisely, STA accelerates attention by 2.8-17x over FlashAttention-2 (FA2) and 1.6-10x over FlashAttention-3 (FA3). On the leading video DiT, HunyuanVideo, STA reduces end-to-end latency from 945s (FA3) to 685s without quality degradation, requiring no training. Enabling finetuning further lowers latency to 268s with only a 0.09% drop on VBench. We make our codebase public at https://github.com/hao-ai-lab/FastVideo.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-06T21:17:09Z</published>
+    <arxiv:comment>Accepted by ICML 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Peiyuan Zhang</name>
+    </author>
+    <author>
+      <name>Yongqi Chen</name>
+    </author>
+    <author>
+      <name>Runlong Su</name>
+    </author>
+    <author>
+      <name>Hangliang Ding</name>
+    </author>
+    <author>
+      <name>Ion Stoica</name>
+    </author>
+    <author>
+      <name>Zhengzhong Liu</name>
+    </author>
+    <author>
+      <name>Hao Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.06072v1</id>
+    <title>PackInfer: Compute- and I/O-Efficient Attention for Batched LLM Inference</title>
+    <updated>2026-02-03T01:46:34Z</updated>
+    <link href="https://arxiv.org/abs/2602.06072v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.06072v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention efficiency is critical to large language model (LLM) inference. While prior advances optimize attention execution for individual requests (e.g., FlashAttention), production LLM serving relies on batching requests with highly heterogeneous sequence lengths for high serving throughput. This mismatch induces severe computation and I/O imbalance, exacerbates stragglers, and underutilizes GPU resources. We present PackInfer, a kernel-level attention framework that enables compute- and I/O-aware execution for heterogeneous batched inference. PackInfer orchestrates batched requests into load-balanced execution groups, effectively saturating GPU utilization by packing multiple requests into unified kernel launches. By constructing attention kernels directly over packed query-key regions, PackInfer eliminates redundant computation and balances thread-block execution. It then incorporates I/O-aware grouping that co-locates shared-prefix requests and reorganizes KV caches into group-contiguous layouts, reducing memory fragmentation and redundant data movement as generation evolves. Evaluations on real-world workloads show that PackInfer reduces inference latency by 13.0-20.1%, and improves throughput by 20% compared to the state-of-the-art FlashAttention.</summary>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-03T01:46:34Z</published>
+    <arxiv:primary_category term="cs.DC"/>
+    <author>
+      <name>Rui Ning</name>
+    </author>
+    <author>
+      <name>Wei Zhang</name>
+    </author>
+    <author>
+      <name>Fan Lai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.00295v3</id>
+    <title>H-FA: A Hybrid Floating-Point and Logarithmic Approach to Hardware Accelerated FlashAttention</title>
+    <updated>2026-02-09T08:25:09Z</updated>
+    <link href="https://arxiv.org/abs/2511.00295v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.00295v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformers have significantly advanced AI and machine learning through their powerful attention mechanism. However, computing attention on long sequences can become a computational bottleneck. FlashAttention mitigates this by fusing the softmax and matrix operations into a tiled computation pattern that decouples performance from sequence length. Though designed for GPUs, its simplicity also makes it well suited for direct hardware acceleration. To improve hardware implementation, we compute FlashAttention using a mixture of floating-point and fixed-point logarithm domain representations. Floating-point is used to compute attention scores from query and key matrices, while logarithmic computation simplifies the fused computation of softmax normalization and the multiplication with the value matrix. This transformation, called H-FA, replaces vector-wide floating-point multiplication and division operations by additions and subtractions implemented efficiently with fixed-point arithmetic in the logarithm domain. Exponential function evaluations are effectively omitted and fused with the rest operations, and the final result is directly returned to floating-point arithmetic without any additional hardware overhead. Hardware implementation results at 28nm demonstrate that H-FA achieves a 26.5% reduction in area and a 23.4% reduction in power, on average, compared to FlashAttention parallel hardware architectures built solely with floating-point datapaths, without hindering performance.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-31T22:30:33Z</published>
+    <arxiv:comment>Accepted for publication at IEEE Transactions on Circuits and Systems for Artificial Intelligence</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Kosmas Alexandridis</name>
+    </author>
+    <author>
+      <name>Giorgos Dimitrakopoulos</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2405.10480v2</id>
+    <title>Lean Attention: Hardware-Aware Scalable Attention Mechanism for the Decode-Phase of Transformers</title>
+    <updated>2025-01-14T05:00:34Z</updated>
+    <link href="https://arxiv.org/abs/2405.10480v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2405.10480v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Transformer-based models have emerged as one of the most widely used architectures for natural language processing, natural language generation, and image generation. The size of the state-of-the-art models has increased steadily reaching billions of parameters. These huge models are memory hungry and incur significant inference latency even on cutting edge AI-accelerators, such as GPUs. Specifically, the time and memory complexity of the attention operation is quadratic in terms of the total context length, i.e., prompt and output tokens. Thus, several optimizations such as key-value tensor caching and FlashAttention computation have been proposed to deliver the low latency demands of applications relying on such large models. However, these techniques do not cater to the computationally distinct nature of different phases during inference.
+  To that end, we propose LeanAttention, a scalable technique of computing self-attention for the token-generation phase (decode-phase) of decoder-only transformer models. LeanAttention enables scaling the attention mechanism implementation for the challenging case of long context lengths by re-designing the execution flow for the decode-phase. We identify that the associative property of online softmax can be treated as a reduction operation thus allowing us to parallelize the attention computation over these large context lengths. We extend the "stream-K" style reduction of tiled calculation to self-attention to enable parallel computation resulting in an average of 2.6x attention execution speedup over FlashAttention-2 and up to 8.33x speedup for 512k context lengths.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-05-17T00:52:39Z</published>
+    <arxiv:comment>13 pages, 10 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Rya Sanovar</name>
+    </author>
+    <author>
+      <name>Srikant Bharadwaj</name>
+    </author>
+    <author>
+      <name>Renee St. Amant</name>
+    </author>
+    <author>
+      <name>Victor Rühle</name>
+    </author>
+    <author>
+      <name>Saravan Rajmohan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1906.07124v1</id>
+    <title>Slicing the IO execution with ReLayTracer</title>
+    <updated>2019-06-17T16:49:56Z</updated>
+    <link href="https://arxiv.org/abs/1906.07124v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1906.07124v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Analyzing IO performance anomalies is a crucial task in various computing environments, ranging from large-scale cloud applications to desktop applications. However, the IO stack of modern operating systems is complicated, making it hard to understand the performance anomalies with existing tools. Kernel IO executions are frequently interrupted by internal kernel activities, requiring a sophisticated IO profile tool to deal with the noises. Furthermore, complicated interactions of concurrent IO requests cause different sources of tail latencies in kernel IO stack. As a consequence, developers want to know fine-grained latency profile across IO layers, which may differ in each IO requests. To meet the requirements, this paper suggests ReLayTracer, a per-request, per-layer IO profiler. ReLayTracer enables a detailed analysis to identify root causes of IO performance anomalies by providing per-layer latency distributions of each IO request, hardware performance behavior, and time spent by kernel activities such as an interrupt.</summary>
+    <category term="cs.OS" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2019-06-17T16:49:56Z</published>
+    <arxiv:comment>8 pages, 7 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.OS"/>
+    <author>
+      <name>Ganguk Lee</name>
+    </author>
+    <author>
+      <name>Yeaseul Park</name>
+    </author>
+    <author>
+      <name>Jeongseob Ahn</name>
+    </author>
+    <author>
+      <name>Youngjin Kwon</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.05451v1</id>
+    <title>FlashAttention-4: Algorithm and Kernel Pipelining Co-Design for Asymmetric Hardware Scaling</title>
+    <updated>2026-03-05T18:24:49Z</updated>
+    <link href="https://arxiv.org/abs/2603.05451v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.05451v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention, as a core layer of the ubiquitous Transformer architecture, is the bottleneck for large language models and long-context applications. While FlashAttention-3 optimized attention for Hopper GPUs through asynchronous execution and warp specialization, it primarily targets the H100 architecture. The AI industry has rapidly transitioned to deploying Blackwell-based systems such as the B200 and GB200, which exhibit fundamentally different performance characteristics due to asymmetric hardware scaling: tensor core throughput doubles while other functional units (shared memory bandwidth, exponential units) scale more slowly or remain unchanged. We develop several techniques to address these shifting bottlenecks on Blackwell GPUs: (1) redesigned pipelines that exploit fully asynchronous MMA operations and larger tile sizes, (2) software-emulated exponential and conditional softmax rescaling that reduces non-matmul operations, and (3) leveraging tensor memory and the 2-CTA MMA mode to reduce shared memory traffic and atomic adds in the backward pass. We demonstrate that our method, FlashAttention-4, achieves up to 1.3$\times$ speedup over cuDNN 9.13 and 2.7$\times$ over Triton on B200 GPUs with BF16, reaching up to 1613 TFLOPs/s (71% utilization). Beyond algorithmic innovations, we implement FlashAttention-4 entirely in CuTe-DSL embedded in Python, achieving 20-30$\times$ faster compile times compared to traditional C++ template-based approaches while maintaining full expressivity.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-05T18:24:49Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Ted Zadouri</name>
+    </author>
+    <author>
+      <name>Markus Hoehnerbach</name>
+    </author>
+    <author>
+      <name>Jay Shah</name>
+    </author>
+    <author>
+      <name>Timmy Liu</name>
+    </author>
+    <author>
+      <name>Vijay Thakkar</name>
+    </author>
+    <author>
+      <name>Tri Dao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2305.16829v2</id>
+    <title>BEV-IO: Enhancing Bird's-Eye-View 3D Detection with Instance Occupancy</title>
+    <updated>2024-01-11T03:13:31Z</updated>
+    <link href="https://arxiv.org/abs/2305.16829v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2305.16829v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>A popular approach for constructing bird's-eye-view (BEV) representation in 3D detection is to lift 2D image features onto the viewing frustum space based on explicitly predicted depth distribution. However, depth distribution can only characterize the 3D geometry of visible object surfaces but fails to capture their internal space and overall geometric structure, leading to sparse and unsatisfactory 3D representations. To mitigate this issue, we present BEV-IO, a new 3D detection paradigm to enhance BEV representation with instance occupancy information. At the core of our method is the newly-designed instance occupancy prediction (IOP) module, which aims to infer point-level occupancy status for each instance in the frustum space. To ensure training efficiency while maintaining representational flexibility, it is trained using the combination of both explicit and implicit supervision. With the predicted occupancy, we further design a geometry-aware feature propagation mechanism (GFP), which performs self-attention based on occupancy distribution along each ray in frustum and is able to enforce instance-level feature consistency. By integrating the IOP module with GFP mechanism, our BEV-IO detector is able to render highly informative 3D scene structures with more comprehensive BEV representations. Experimental results demonstrate that BEV-IO can outperform state-of-the-art methods while only adding a negligible increase in parameters (0.2%) and computational overhead (0.24%in GFLOPs).</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-05-26T11:16:12Z</published>
+    <arxiv:comment>v2</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Zaibin Zhang</name>
+    </author>
+    <author>
+      <name>Yuanhang Zhang</name>
+    </author>
+    <author>
+      <name>Lijun Wang</name>
+    </author>
+    <author>
+      <name>Yifan Wang</name>
+    </author>
+    <author>
+      <name>Huchuan Lu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.03110v2</id>
+    <title>Exploiting Polarization Domain of the IOS for Enhanced Full-Dimensional Transmission</title>
+    <updated>2025-07-17T08:56:24Z</updated>
+    <link href="https://arxiv.org/abs/2502.03110v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.03110v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Intelligent omni-surface (IOS), capable of providing service coverage to mobile users (MUs) in a reflective and refractive manner, has recently attracted widespread attention. However, the performance of power-domain IOS-assisted systems is limited by the intimate coupling between the refraction and reflection behavior of IOS elements. In this paper, we introduce the concept of dual-polarized IOS-assisted communication to overcome this challenge. By employing the polarization domain in the design of IOS, full independent refraction and reflection modes can be delivered. We consider a downlink dual-polarized IOS-aided system while also accounting for the leakage between different polarizations. To maximize the sum rate, we formulated a joint base station (BS) digital and IOS analog beamforming problem and proposed an iterative algorithm to solve the nonconvex program. Simulation results validate that dual-polarized IOS significantly enhances the performance than that of the power-domain one.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-05T12:14:22Z</published>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Weiqiao Zhu</name>
+    </author>
+    <author>
+      <name>Zizhou Zheng</name>
+    </author>
+    <author>
+      <name>Yang Yang</name>
+    </author>
+    <author>
+      <name>Huan Huang</name>
+    </author>
+    <author>
+      <name>Weijun Hao</name>
+    </author>
+    <author>
+      <name>Xiaofei Jia</name>
+    </author>
+    <author>
+      <name>Hongliang Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.21613v1</id>
+    <title>AMS-IO-Bench and AMS-IO-Agent: Benchmarking and Structured Reasoning for Analog and Mixed-Signal Integrated Circuit Input/Output Design</title>
+    <updated>2025-12-25T10:20:55Z</updated>
+    <link href="https://arxiv.org/abs/2512.21613v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.21613v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In this paper, we propose AMS-IO-Agent, a domain-specialized LLM-based agent for structure-aware input/output (I/O) subsystem generation in analog and mixed-signal (AMS) integrated circuits (ICs). The central contribution of this work is a framework that connects natural language design intent with industrial-level AMS IC design deliverables. AMS-IO-Agent integrates two key capabilities: (1) a structured domain knowledge base that captures reusable constraints and design conventions; (2) design intent structuring, which converts ambiguous user intent into verifiable logic steps using JSON and Python as intermediate formats. We further introduce AMS-IO-Bench, a benchmark for wirebond-packaged AMS I/O ring automation. On this benchmark, AMS-IO-Agent achieves over 70\% DRC+LVS pass rate and reduces design turnaround time from hours to minutes, outperforming the baseline LLM. Furthermore, an agent-generated I/O ring was fabricated and validated in a 28 nm CMOS tape-out, demonstrating the practical effectiveness of the approach in real AMS IC design flows. To our knowledge, this is the first reported human-agent collaborative AMS IC design in which an LLM-based agent completes a nontrivial subtask with outputs directly used in silicon.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-25T10:20:55Z</published>
+    <arxiv:comment>8 pages, 5 figures. Accepted to AAAI 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Zhishuai Zhang</name>
+    </author>
+    <author>
+      <name>Xintian Li</name>
+    </author>
+    <author>
+      <name>Shilong Liu</name>
+    </author>
+    <author>
+      <name>Aodong Zhang</name>
+    </author>
+    <author>
+      <name>Lu Jie</name>
+    </author>
+    <author>
+      <name>Nan Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2404.00242v4</id>
+    <title>DeFT: Decoding with Flash Tree-attention for Efficient Tree-structured LLM Inference</title>
+    <updated>2025-03-07T17:47:42Z</updated>
+    <link href="https://arxiv.org/abs/2404.00242v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2404.00242v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) are increasingly employed for complex tasks that process multiple generation calls in a tree structure with shared prefixes of tokens, including few-shot prompting, multi-step reasoning, speculative decoding, etc. However, existing inference systems for tree-based applications are inefficient due to improper partitioning of queries and KV cache during attention calculation. This leads to two main issues: (1) a lack of memory access (IO) reuse for KV cache of shared prefixes, and (2) poor load balancing.As a result, there is redundant KV cache IO between GPU global memory and shared memory, along with low GPU utilization. To address these challenges, we propose DeFT(Decoding with Flash Tree-Attention), a hardware-efficient attention algorithm with prefix-aware and load-balanced KV cache partitions. DeFT reduces the number of read/write operations of KV cache during attention calculation through KV-Guided Grouping, a method that avoids repeatedly loading KV cache of shared prefixes in attention computation. Additionally, we propose Flattened Tree KV Splitting, a mechanism that ensures even distribution of the KV cache across partitions with little computation redundancy, enhancing GPU utilization during attention computations. By reducing 73-99% KV cache IO and nearly 100% IO for partial results during attention calculation, DeFT achieves up to 2.23/3.59x speedup in the end-to-end/attention latency across three practical tree-based workloads compared to state-of-the-art attention algorithms. Our code is available at https://github.com/LINs-lab/DeFT.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-03-30T04:34:54Z</published>
+    <arxiv:comment>Update DeFT-v4, accepted by ICLR'25 (https://openreview.net/forum?id=2c7pfOqu9k). Our code is available at https://github.com/LINs-lab/DeFT</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Jinwei Yao</name>
+    </author>
+    <author>
+      <name>Kaiqi Chen</name>
+    </author>
+    <author>
+      <name>Kexun Zhang</name>
+    </author>
+    <author>
+      <name>Jiaxuan You</name>
+    </author>
+    <author>
+      <name>Binhang Yuan</name>
+    </author>
+    <author>
+      <name>Zeke Wang</name>
+    </author>
+    <author>
+      <name>Tao Lin</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2508.20407v1</id>
+    <title>Rethinking Transformer Connectivity: TLinFormer, A Path to Exact, Full Context-Aware Linear Attention</title>
+    <updated>2025-08-28T04:10:19Z</updated>
+    <link href="https://arxiv.org/abs/2508.20407v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2508.20407v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The Transformer architecture has become a cornerstone of modern artificial intelligence, but its core self-attention mechanism suffers from a complexity bottleneck that scales quadratically with sequence length, severely limiting its application in long-sequence tasks. To address this challenge, existing linear attention methods typically sacrifice model performance by relying on data-agnostic kernel approximations or restrictive context selection. This paper returns to the first principles of connectionism, starting from the topological structure of information flow, to introduce a novel linear attention architecture-\textbf{TLinFormer}. By reconfiguring neuron connection patterns, TLinFormer achieves strict linear complexity while computing exact attention scores and ensuring information flow remains aware of the full historical context. This design aims to bridge the performance gap prevalent between existing efficient attention methods and standard attention. Through a series of experiments, we systematically evaluate the performance of TLinFormer against a standard Transformer baseline on long-sequence inference tasks. The results demonstrate that TLinFormer exhibits overwhelming advantages in key metrics such as \textbf{inference latency}, \textbf{KV cache efficiency}, \textbf{memory footprint}, and \textbf{overall speedup}.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-08-28T04:10:19Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Zhongpan Tang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2001.06636v1</id>
+    <title>On the Relation of IOS-Gains and Asymptotic Gains For Linear Systems</title>
+    <updated>2020-01-18T09:40:09Z</updated>
+    <link href="https://arxiv.org/abs/2001.06636v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2001.06636v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper presents a fundamental relation between Output Asymptotic Gains (OAG) and Input-to-Output Stability (IOS) gains for linear systems. For any Input-to-State Stable, strictly causal linear system the minimum OAG is equal to the minimum IOS-gain. Moreover, both quantities can be computed by solving a specific optimal control problem and by considering only periodic inputs. The result is valid for wide classes of linear systems (involving delay systems or systems described by PDEs). The characterization of the minimum IOS-gain is important because it allows the non-conservative computation of the IOS-gains, which can be used in a small-gain analysis. The paper also presents a number of cases for finite-dimensional linear systems, where exact computation of the minimum IOS gain can be performed.</summary>
+    <category term="math.OC" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2020-01-18T09:40:09Z</published>
+    <arxiv:comment>23 pages, submitted for possible publication to Systems &amp; Control Letters</arxiv:comment>
+    <arxiv:primary_category term="math.OC"/>
+    <author>
+      <name>Iasson Karafyllis</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.16391v2</id>
+    <title>Kascade: A Practical Sparse Attention Method for Long-Context LLM Inference</title>
+    <updated>2026-08-31T05:08:11Z</updated>
+    <link href="https://arxiv.org/abs/2512.16391v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.16391v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Attention is the dominant source of latency during long-context LLM inference, an increasingly popular workload with reasoning models and RAG. We propose Kascade, a training-free sparse attention method that leverages known observations such as 1) post-softmax attention is intrinsically sparse, and 2) the identity of high-weight keys is stable across nearby layers. Kascade computes exact Top-k indices in a small set of anchor layers, then reuses those indices in intermediate reuse layers. The anchor layers are selected algorithmically, via a dynamic-programming objective that maximizes cross-layer similarity over a development set, allowing easy deployment across models. The method incorporates efficient implementation constraints (e.g. tile-level operations), across both prefill and decode attention. The Top-k selection and reuse in Kascade is head-aware and we show in our experiments that this is critical for high accuracy. Kascade achieves up to 4.1x speedup in decode attention and 2.2x speedup in prefill attention over FlashAttention-3 baseline on H100 GPUs while closely matching dense attention accuracy on long-context benchmarks such as LongBench and AIME-24.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-18T10:37:14Z</published>
+    <arxiv:comment>11 pages, 8 figures, 3 tables and 1 algorithm</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dhruv Deshmukh</name>
+    </author>
+    <author>
+      <name>Saurabh Goyal</name>
+    </author>
+    <author>
+      <name>Nipun Kwatra</name>
+    </author>
+    <author>
+      <name>Ramachandran Ramjee</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.14080v2</id>
+    <title>SonicMoE: Accelerating MoE with IO and Tile-aware Optimizations</title>
+    <updated>2026-03-26T20:21:59Z</updated>
+    <link href="https://arxiv.org/abs/2512.14080v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.14080v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Mixture of Experts (MoE) models have emerged as the de facto architecture for scaling up language models without significantly increasing the computational cost. Recent MoE models demonstrate a clear trend towards high expert granularity (smaller expert intermediate dimension) and higher sparsity (constant number of activated experts with a higher number of total experts), which improve model quality per FLOP. However, fine-grained MoEs suffer from increased activation memory footprint and reduced hardware efficiency due to higher IO costs, while sparser MoEs suffer from wasted computations due to padding in Grouped GEMM kernels. In response, we propose a memory-efficient algorithm to compute the forward and backward passes of MoEs with minimal activation caching for the backward pass. We also design GPU kernels that overlap memory IO with computation, benefiting all MoE architectures. Finally, we propose a novel "token rounding" method that minimizes the wasted compute due to padding in Grouped GEMM kernels. As a result, our method SonicMoE reduces activation memory by 45% and achieves a 1.86x compute throughput improvement on Hopper GPUs compared to ScatterMoE's BF16 MoE kernel for a fine-grained 7B MoE. Concretely, SonicMoE on 64 H100s achieves a training throughput of 213 billion tokens per day, comparable to ScatterMoE's 225 billion tokens per day on 96 H100s for a 7B MoE model training with FSDP-2 using the lm-engine codebase. On Blackwell GPUs, SonicMoE also achieves a 25% and 15% relative speedup on the forward and backward pass respectively compared to a highly optimized DeepGEMM baseline on OLMoE-sized 7B MoE models. Under high MoE sparsity settings, our tile-aware token rounding algorithm yields an additional 1.16x speedup on kernel execution time compared to vanilla top-K routing while maintaining similar downstream performance on Hopper GPUs. We open-source all our kernels.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-16T04:39:10Z</published>
+    <arxiv:comment>Include the new Blackwell benchmark results</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Wentao Guo</name>
+    </author>
+    <author>
+      <name>Mayank Mishra</name>
+    </author>
+    <author>
+      <name>Xinle Cheng</name>
+    </author>
+    <author>
+      <name>Ion Stoica</name>
+    </author>
+    <author>
+      <name>Tri Dao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.15626v1</id>
+    <title>IO-SVD: Input-Output Whitened SVD for Adaptive-Rank LLM Compression</title>
+    <updated>2026-05-15T05:19:10Z</updated>
+    <link href="https://arxiv.org/abs/2605.15626v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.15626v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models deliver strong performance across language and reasoning tasks, but their storage and compute costs remain major barriers to deployment in resource-constrained and latency-sensitive settings. SVD-based post-training compression offers a hardware-agnostic way to reduce model size and improve inference efficiency through low-rank factorization. However, existing methods often rely on input-only whitening spaces, homogeneous rank allocation, or loss-agnostic allocation heuristics, limiting their ability to preserve model quality under aggressive compression. We propose Input-Output Whitened SVD (IO-SVD), a post-training compression method that forms a KL-aware double-sided whitening space for model weights. Using a second-order expansion of the KL loss over the top-K token probabilities, IO-SVD constructs an output-side metric that captures predictive sensitivity, while input whitening captures activation statistics. We further introduce an efficient heterogeneous rank-allocation strategy that scores whitened singular components using first-order calibration loss estimates and prunes the least sensitive components under a global budget. Inspired by prior work that combines SVD truncation with quantization, we improve hybrid SVD-quantization compression through loss-aware remapping, which selects low-rank factor rows for 8-bit quantization based on the predicted loss change incurred by quantizing them. Extensive experiments across diverse LLM and VLM families, and inference-time analysis shows that IO-SVD compresses LLMs with minimal performance degradation while delivering practical inference speedups. Code is available at https://github.com/mint-vu/IO-SVD.git</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-15T05:19:10Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ali Abbasi</name>
+    </author>
+    <author>
+      <name>Chayne Thrash</name>
+    </author>
+    <author>
+      <name>Haoran Qin</name>
+    </author>
+    <author>
+      <name>Hamed Pirsiavash</name>
+    </author>
+    <author>
+      <name>Soheil Kolouri</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,50 @@
+import hashlib,json,sys,time
+from pathlib import Path
+from datetime import datetime,timezone
+from src.product.paper_discovery import PaperDiscovery
+from src.product.experiment_discovery import ExperimentDiscovery
+from src.product.net import http_get,SourceUnavailable
+root=Path("examples/experiment-discovery-repair")
+plan=json.loads((root/"plan.json").read_text())
+output=root/"live-v2"
+output.mkdir(exist_ok=False)
+requests=[]
+def transport(url,headers):
+    if url.startswith("https://api.semanticscholar.org/"):
+        raise SourceUnavailable("semantic_scholar","rate limited (injected for fallback check)")
+    index=len(requests)+1
+    assert index<=plan["limits"]["live_arxiv_searches_max"]
+    event={"url":url,"started_at":datetime.now(timezone.utc).isoformat()}
+    requests.append(event)
+    start=time.monotonic()
+    try:
+        body=http_get(url,headers)
+        raw=output/f"response-{index}.atom.xml"
+        raw.write_bytes(body)
+        event.update(status="returned",sha256=hashlib.sha256(body).hexdigest(),bytes=len(body),raw_path=raw.name)
+        return body
+    except Exception as exc:
+        event.update(status="failed",error=str(exc))
+        raise
+    finally:
+        event["seconds"]=time.monotonic()-start
+        (output/"http-requests.json").write_text(json.dumps(requests,indent=2)+"\n")
+researcher=ExperimentDiscovery(PaperDiscovery(output/"cache",http=transport))
+results=[]
+for case in plan["queries"]:
+    item={"case":case}
+    try:
+        result=researcher.search(case["query"],limit=5)
+        item["result"]=result
+        ids=[p["arxiv_id"].split("v")[0] for p in result["papers"]]
+        if "expected_top5_id" in case:
+            item["gate_passed"]=case["expected_top5_id"] in ids
+        elif case["expected"]=="no_candidates":
+            item["gate_passed"]=result["status"]=="no_candidates"
+        else:
+            item["gate_passed"]=None
+    except Exception as exc:
+        item.update(error=f"{type(exc).__name__}: {exc}",gate_passed=False)
+    results.append(item)
+    (output/"results.json").write_text(json.dumps(results,indent=2)+"\n")
+    print(json.dumps({"query":case["query"],"gate_passed":item["gate_passed"],"error":item.get("error"),"papers":[(p["arxiv_id"],p["title"]) for p in item.get("result",{}).get("papers",[])]}),flush=True)

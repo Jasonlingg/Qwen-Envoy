@@ -1,0 +1,41 @@
+{
+  "hypothesis": "An explicit title/abstract relevance fallback with lexical screening improves source candidates after primary-provider failure, without model inference.",
+  "scope": "experiment MCP fallback only; legacy recency/default search unchanged",
+  "queries": [
+    {
+      "query": "paged attention kv cache allocation concurrent readers memory measurements",
+      "expected_top5_id": "2309.06180",
+      "purpose": "recorded failure; foundational PagedAttention"
+    },
+    {
+      "query": "kv cache allocation concurrent readers memory measurements",
+      "expected": "at least one metadata-relevant KV-cache memory candidate; manually inspect titles/abstracts, no semantic-answer claim",
+      "purpose": "second recorded query"
+    },
+    {
+      "query": "FlashAttention exact attention IO-aware",
+      "expected_top5_id": "2205.14135",
+      "purpose": "different method"
+    },
+    {
+      "query": "QLoRA quantization memory",
+      "expected_top5_id": "2305.14314",
+      "purpose": "different method"
+    },
+    {
+      "query": "zzenvoyunfindabletopicqzx",
+      "expected": "no_candidates",
+      "purpose": "negative query"
+    }
+  ],
+  "decision_rule": "All three named foundational sources in top5 and negative query returns no_candidates; separately inspect short recorded query. Otherwise report the live gate as not met and diagnose; no paid calls follow automatically.",
+  "limits": {
+    "model_requests": 0,
+    "gpu_activations": 0,
+    "live_arxiv_searches_max": 5,
+    "primary_provider_attempts_max": 5,
+    "max_candidates_per_search": 50,
+    "automatic_transport_retries": 0
+  },
+  "review": "independent model-assisted code review, not human semantic validation"
+}

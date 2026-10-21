@@ -1,0 +1,1367 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/MqgP3SXlUpREFLTrajKGROKE6zE</id>
+  <title>arXiv Query: search_query=(ti:"qlora" OR abs:"qlora") OR (ti:"quantization" OR abs:"quantization") OR (ti:"memory" OR abs:"memory") OR (ti:"qloraquantization" OR abs:"qloraquantization") OR (ti:"quantizationmemory" OR abs:"quantizationmemory")&amp;id_list=&amp;start=0&amp;max_results=50</title>
+  <updated>2026-10-21T06:11:11Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(ti:%22qlora%22+OR+abs:%22qlora%22)+OR+((ti:%22quantization%22+OR+abs:%22quantization%22)+OR+((ti:%22memory%22+OR+abs:%22memory%22)+OR+((ti:%22qloraquantization%22+OR+abs:%22qloraquantization%22)+OR+(ti:%22quantizationmemory%22+OR+abs:%22quantizationmemory%22))))&amp;start=0&amp;max_results=50&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>50</opensearch:itemsPerPage>
+  <opensearch:totalResults>112572</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2305.14314v1</id>
+    <title>QLoRA: Efficient Finetuning of Quantized LLMs</title>
+    <updated>2023-05-23T17:50:33Z</updated>
+    <link href="https://arxiv.org/abs/2305.14314v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2305.14314v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We present QLoRA, an efficient finetuning approach that reduces memory usage enough to finetune a 65B parameter model on a single 48GB GPU while preserving full 16-bit finetuning task performance. QLoRA backpropagates gradients through a frozen, 4-bit quantized pretrained language model into Low Rank Adapters~(LoRA). Our best model family, which we name Guanaco, outperforms all previous openly released models on the Vicuna benchmark, reaching 99.3% of the performance level of ChatGPT while only requiring 24 hours of finetuning on a single GPU. QLoRA introduces a number of innovations to save memory without sacrificing performance: (a) 4-bit NormalFloat (NF4), a new data type that is information theoretically optimal for normally distributed weights (b) double quantization to reduce the average memory footprint by quantizing the quantization constants, and (c) paged optimziers to manage memory spikes. We use QLoRA to finetune more than 1,000 models, providing a detailed analysis of instruction following and chatbot performance across 8 instruction datasets, multiple model types (LLaMA, T5), and model scales that would be infeasible to run with regular finetuning (e.g. 33B and 65B parameter models). Our results show that QLoRA finetuning on a small high-quality dataset leads to state-of-the-art results, even when using smaller models than the previous SoTA. We provide a detailed analysis of chatbot performance based on both human and GPT-4 evaluations showing that GPT-4 evaluations are a cheap and reasonable alternative to human evaluation. Furthermore, we find that current chatbot benchmarks are not trustworthy to accurately evaluate the performance levels of chatbots. A lemon-picked analysis demonstrates where Guanaco fails compared to ChatGPT. We release all of our models and code, including CUDA kernels for 4-bit training.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-05-23T17:50:33Z</published>
+    <arxiv:comment>Extended NeurIPS submission</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Tim Dettmers</name>
+    </author>
+    <author>
+      <name>Artidoro Pagnoni</name>
+    </author>
+    <author>
+      <name>Ari Holtzman</name>
+    </author>
+    <author>
+      <name>Luke Zettlemoyer</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.12988v2</id>
+    <title>ROMA: a Read-Only-Memory-based Accelerator for QLoRA-based On-Device LLM</title>
+    <updated>2026-03-02T03:26:31Z</updated>
+    <link href="https://arxiv.org/abs/2503.12988v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.12988v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As large language models (LLMs) demonstrate powerful capabilities, deploying them on edge devices has become increasingly crucial, offering advantages in privacy and real-time interaction. QLoRA has emerged as the standard approach for on-device LLMs, leveraging quantized models to reduce memory and computational costs while utilizing LoRA for task-specific adaptability. In this work, we propose ROMA, a QLoRA accelerator with a hybrid storage architecture that uses ROM for quantized base models and SRAM for LoRA weights and KV cache. Our insight is that the quantized base model is stable and converged, making it well-suited for ROM storage. Meanwhile, LoRA modules offer the flexibility to adapt to new data without requiring updates to the base model. To further reduce the area cost of ROM, we introduce a novel B-ROM design and integrate it with the compute unit to form a fused cell for efficient use of chip resources. ROMA can effectively store both a 4-bit 3B and a 2-bit 8B LLaMA model entirely on-chip, achieving a notable generation speed exceeding 20,000 tokens/s without requiring external memory.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-03-17T09:44:17Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Wenqiang Wang</name>
+    </author>
+    <author>
+      <name>Yijia Zhang</name>
+    </author>
+    <author>
+      <name>Zikai Zhang</name>
+    </author>
+    <author>
+      <name>Guanting Huo</name>
+    </author>
+    <author>
+      <name>Hao Liang</name>
+    </author>
+    <author>
+      <name>Shijie Cao</name>
+    </author>
+    <author>
+      <name>Ningyi Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2502.10202v1</id>
+    <title>Can Post-Training Quantization Benefit from an Additional QLoRA Integration?</title>
+    <updated>2025-02-14T14:56:19Z</updated>
+    <link href="https://arxiv.org/abs/2502.10202v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2502.10202v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) have transformed natural language processing but pose significant challenges for real-world deployment. These models necessitate considerable computing resources, which can be costly and frequently unavailable. Model compression techniques such as quantization are often leveraged to alleviate resource demand, but they may have a negative impact on the generation quality. In this study, we explore the integration of 4-bit Post-training Quantization (PTQ) with QLoRA to address these issues. We demonstrate through extensive experiments that this integration outperforms standard PTQ, and in some cases even 16-bit full-parameter fine-tuning on LLMs, validated across proprietary and public datasets with different quantization algorithms. The results demonstrate the efficacy of PTQ-QLoRA integration, offering a viable solution for deploying powerful LLMs in resource-constrained environments without compromising on performance.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-14T14:56:19Z</published>
+    <arxiv:comment>Accepted to NAACL 2025 Industry Track</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Xiliang Zhu</name>
+    </author>
+    <author>
+      <name>Elena Khasanova</name>
+    </author>
+    <author>
+      <name>Cheng Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.19493v1</id>
+    <title>RFX: High-Performance Random Forests with GPU Acceleration and QLORA Compression</title>
+    <updated>2025-11-23T12:00:33Z</updated>
+    <link href="https://arxiv.org/abs/2511.19493v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.19493v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>RFX (Random Forests X), where X stands for compression or quantization, presents a production-ready implementation of Breiman and Cutler's Random Forest classification methodology in Python. RFX v1.0 provides complete classification: out-of-bag error estimation, overall and local importance measures, proximity matrices with QLORA compression, case-wise analysis, and interactive visualization (rfviz)--all with CPU and GPU acceleration. Regression, unsupervised learning, CLIQUE importance, and RF-GAP proximity are planned for v2.0.
+  This work introduces four solutions addressing the proximity matrix memory bottleneck limiting Random Forest analysis to ~60,000 samples: (1) QLORA (Quantized Low-Rank Adaptation) compression for GPU proximity matrices, reducing memory from 80GB to 6.4MB for 100k samples (12,500x compression with INT8 quantization) while maintaining 99% geometric structure preservation, (2) CPU TriBlock proximity--combining upper-triangle storage with block-sparse thresholding--achieving 2.7x memory reduction with lossless quality, (3) SM-aware GPU batch sizing achieving 95% GPU utilization, and (4) GPU-accelerated 3D MDS visualization computing embeddings directly from low-rank factors using power iteration.
+  Validation across four implementation modes (GPU/CPU x case-wise/non-case-wise) demonstrates correct implementation. GPU achieves 1.4x speedup over CPU for overall importance with 500+ trees. Proximity computation scales from 1,000 to 200,000+ samples (requiring GPU QLORA), with CPU TriBlock filling the gap for medium-scale datasets (10K-50K samples). RFX v1.0 eliminates the proximity memory bottleneck, enabling proximity-based Random Forest analysis on datasets orders of magnitude larger than previously feasible. Open-source production-ready classification following Breiman and Cutler's original methodology.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ME" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-23T12:00:33Z</published>
+    <arxiv:comment>39 pages, 9 tables, 4 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Chris Kuchar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.33927v1</id>
+    <title>Optimizing the Phi-2 Small Language Model for Real-time Chatbot Applications Using Parameter-Efficient Fine-Tuning (PEFT) with QLoRA Quantization</title>
+    <updated>2026-09-27T21:12:40Z</updated>
+    <link href="https://arxiv.org/abs/2609.33927v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.33927v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This study explores the optimization of the Phi-2 Small Language Models (SLMs) for real-time chatbot applications through Parameter-Efficient Fine-Tuning (PEFT) and Quantized Low-Rank Adaptation (QLoRA). QLoRA specifically refers to the integration of PEFT with LoRA alongside a 4-bit quantization process, aimed at enhancing computational efficiency. These models, initially designed for high performance with minimal computational overhead, are further refined to address the constraints of mobile and edge computing environments. By integrating PEFT with QLoRA, the research aims to reduce memory usage significantly while maintaining, or potentially improving, the accuracy of model responses in real-time interactions. The effectiveness of these techniques was evaluated using the ROUGE metric system, which showed notable improvements in the summarization tasks performed by the models. This approach not only confirms the feasibility of using SLMs in resource-restricted environments but also opens up new avenues for deploying advanced AI-driven applications in real-time settings. The study's findings have significant implications for the development of efficient, scalable, and accessible AI technologies, paving the way for broader adoption in various industries.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-27T21:12:40Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>PhanTan Khanh Nguyen</name>
+    </author>
+    <author>
+      <name>Ashfaq Ali Shafin</name>
+    </author>
+    <author>
+      <name>Khandaker Mamun Ahmed</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.15836v1</id>
+    <title>EdgeNav-QE: QLoRA Quantization and Dynamic Early Exit for LAM-based Navigation on Edge Devices</title>
+    <updated>2026-01-12T09:20:53Z</updated>
+    <link href="https://arxiv.org/abs/2602.15836v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.15836v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Action Models (LAMs) have shown immense potential in autonomous navigation by bridging high-level reasoning with low-level control. However, deploying these multi-billion parameter models on edge devices remains a significant challenge due to memory constraints and latency requirements. In this paper, we propose EdgeNav-QE, a novel framework that integrates Quantized Low-Rank Adaptation (QLoRA) with a dynamic early-exit (DEE) mechanism to optimize LAMs for real-time edge navigation. By quantizing the backbone to 4-bit precision and strategically placing early-exit branches, we enable the model to terminate inference early for simple navigation tasks while retaining full depth for complex decision-making. Experimental results on the Habitat-Sim environment with Matterport3D dataset using OpenVLA-7B backbone, demonstrate that EdgeNav-QE reduces inference latency by 82.7% and memory footprint by 66.7% compared to full-precision baselines, while maintaining 81.8% navigation success rate. Furthermore, it outperforms state-of-the-art static early-exit method by 17.9% in latency, demonstrating the superiority of content-aware adaptive computation for safety-critical applications.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-12T09:20:53Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Mengyun Liu</name>
+    </author>
+    <author>
+      <name>Shanshan Huang</name>
+    </author>
+    <author>
+      <name>Jianan Jiang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2410.14713v1</id>
+    <title>QuAILoRA: Quantization-Aware Initialization for LoRA</title>
+    <updated>2024-10-09T19:06:37Z</updated>
+    <link href="https://arxiv.org/abs/2410.14713v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2410.14713v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>QLoRA reduces the memory-cost of fine-tuning a large language model (LLM) with LoRA by quantizing the base LLM. However, quantization introduces quantization errors that negatively impact model performance after fine-tuning. In this paper we introduce QuAILoRA, a quantization-aware initialization for LoRA that mitigates this negative impact by decreasing quantization errors at initialization. Our method spends a small amount of computational overhead to compute this quantization-aware initialization, without increasing the memory-cost of fine-tuning. We evaluate our method on several causal language modeling and downstream evaluation tasks using several different model sizes and families. We observe that almost all LLMs fined-tuned with QuAILoRA achieve better validation perplexity. When evaluated on downstream tasks, we find that QuAILoRA yields improvements proportional to the negative effect of quantization error. On average, applying QuAILoRA to 4-bit QLoRA models yields 75% of the validation perplexity decrease and 86% of the downstream task accuracy increase as doubling the quantization precision to 8-bit, without increasing GPU memory utilization during fine-tuning.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-10-09T19:06:37Z</published>
+    <arxiv:comment>12 pages, 7 figures. Submitted to the 4th NeurIPS Workshop on Efficient Natural Language and Speech Processing (ENLSP-IV)</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Neal Lawton</name>
+    </author>
+    <author>
+      <name>Aishwarya Padmakumar</name>
+    </author>
+    <author>
+      <name>Judith Gaspers</name>
+    </author>
+    <author>
+      <name>Jack FitzGerald</name>
+    </author>
+    <author>
+      <name>Anoop Kumar</name>
+    </author>
+    <author>
+      <name>Greg Ver Steeg</name>
+    </author>
+    <author>
+      <name>Aram Galstyan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.00665v1</id>
+    <title>Analysis of Quantized and Efficiently Adapted Protein Language Models</title>
+    <updated>2026-09-30T20:02:41Z</updated>
+    <link href="https://arxiv.org/abs/2610.00665v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.00665v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Background: Protein language models (PLMs) are increasingly used for sequence generation and property prediction, but their size makes fine-tuning and deployment expensive. The effects of quantization and parameter efficient fine-tuning on performance, representations and generation remain insufficiently characterized. Results: We evaluated 4-bit quantization and low-rank adapter fine-tuning (QLoRA) across ESM-2, ESMC, ProtBERT, ProtT5, Ankh, Ankh3 and Profluent-E1. Across protein prediction tasks, many model-task pairs retained more than 90% of full fine-tuning performance. Peak GPU memory savings approached 90% for the largest models, although performance and efficiency varied by model, dataset and training configuration. QLoRA often preserved early-layer representations while inducing task-specific adaptations in middle and late layers, resembling full fine-tuning with smaller representational changes. Training speed and power effects were more varied. For unconditional generation with ProLLaMA, ProtGPT2, ProGen2, ProteinGLM and ESM3, 4-bit quantization largely preserved predicted structural and sequence-level properties, but token-level analysis revealed model-dependent shifts in autoregressive output distributions. Conclusion: QLoRA and 4-bit quantization reduce PLM computational requirements, particularly GPU memory usage. Our results support QLoRA as a first-pass strategy for memory limited adaptation, reserving full fine-tuning for challenging tasks, unstable architectures or low validation recovery. For generative PLMs, sequence-level and structural metrics should be complemented with distributional analysis, since downstream predictions alone may miss quantization-induced shifts. These approaches can broaden access to large-scale protein modelling while requiring model- and task-specific validation.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-bio.QM" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-30T20:02:41Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ilan Yaniv Zeisler</name>
+    </author>
+    <author>
+      <name>Sebastian Clancy</name>
+    </author>
+    <author>
+      <name>Pouriya Bayat</name>
+    </author>
+    <author>
+      <name>Saaim Raad</name>
+    </author>
+    <author>
+      <name>Ivan Kraskov</name>
+    </author>
+    <author>
+      <name>Matthew Xie</name>
+    </author>
+    <author>
+      <name>Vivian White</name>
+    </author>
+    <author>
+      <name>Spencer Perkins</name>
+    </author>
+    <author>
+      <name>Serena Singh</name>
+    </author>
+    <author>
+      <name>Sepehr Bayat</name>
+    </author>
+    <author>
+      <name>Keith Pardee</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.17983v1</id>
+    <title>Parameter-Efficient Fine-Tuning for HAR: Integrating LoRA and QLoRA into Transformer Models</title>
+    <updated>2025-12-19T14:12:43Z</updated>
+    <link href="https://arxiv.org/abs/2512.17983v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.17983v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Human Activity Recognition is a foundational task in pervasive computing. While recent advances in self-supervised learning and transformer-based architectures have significantly improved HAR performance, adapting large pretrained models to new domains remains a practical challenge due to limited computational resources on target devices. This papers investigates parameter-efficient fine-tuning techniques, specifically Low-Rank Adaptation (LoRA) and Quantized LoRA, as scalable alternatives to full model fine-tuning for HAR. We propose an adaptation framework built upon a Masked Autoencoder backbone and evaluate its performance under a Leave-One-Dataset-Out validation protocol across five open HAR datasets. Our experiments demonstrate that both LoRA and QLoRA can match the recognition performance of full fine-tuning while significantly reducing the number of trainable parameters, memory usage, and training time. Further analyses reveal that LoRA maintains robust performance even under limited supervision and that the adapter rank provides a controllable trade-off between accuracy and efficiency. QLoRA extends these benefits by reducing the memory footprint of frozen weights through quantization, with minimal impact on classification quality.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-19T14:12:43Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Irina Seregina</name>
+    </author>
+    <author>
+      <name>Philippe Lalanda</name>
+    </author>
+    <author>
+      <name>German Vega</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2505.03406v1</id>
+    <title>Lightweight Clinical Decision Support System using QLoRA-Fine-Tuned LLMs and Retrieval-Augmented Generation</title>
+    <updated>2025-05-06T10:31:54Z</updated>
+    <link href="https://arxiv.org/abs/2505.03406v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2505.03406v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This research paper investigates the application of Large Language Models (LLMs) in healthcare, specifically focusing on enhancing medical decision support through Retrieval-Augmented Generation (RAG) integrated with hospital-specific data and fine-tuning using Quantized Low-Rank Adaptation (QLoRA). The system utilizes Llama 3.2-3B-Instruct as its foundation model. By embedding and retrieving context-relevant healthcare information, the system significantly improves response accuracy. QLoRA facilitates notable parameter efficiency and memory optimization, preserving the integrity of medical information through specialized quantization techniques. Our research also shows that our model performs relatively well on various medical benchmarks, indicating that it can be used to make basic medical suggestions. This paper details the system's technical components, including its architecture, quantization methods, and key healthcare applications such as enhanced disease prediction from patient symptoms and medical history, treatment suggestions, and efficient summarization of complex medical reports. We touch on the ethical considerations-patient privacy, data security, and the need for rigorous clinical validation-as well as the practical challenges of integrating such systems into real-world healthcare workflows. Furthermore, the lightweight quantized weights ensure scalability and ease of deployment even in low-resource hospital environments. Finally, the paper concludes with an analysis of the broader impact of LLMs on healthcare and outlines future directions for LLMs in medical settings.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-05-06T10:31:54Z</published>
+    <arxiv:comment>12 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Mohammad Shoaib Ansari</name>
+    </author>
+    <author>
+      <name>Mohd Sohail Ali Khan</name>
+    </author>
+    <author>
+      <name>Shubham Revankar</name>
+    </author>
+    <author>
+      <name>Aditya Varma</name>
+    </author>
+    <author>
+      <name>Anil S. Mokhade</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2402.05445v2</id>
+    <title>Accurate LoRA-Finetuning Quantization of LLMs via Information Retention</title>
+    <updated>2024-05-27T09:20:35Z</updated>
+    <link href="https://arxiv.org/abs/2402.05445v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2402.05445v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The LoRA-finetuning quantization of LLMs has been extensively studied to obtain accurate yet compact LLMs for deployment on resource-constrained hardware. However, existing methods cause the quantized LLM to severely degrade and even fail to benefit from the finetuning of LoRA. This paper proposes a novel IR-QLoRA for pushing quantized LLMs with LoRA to be highly accurate through information retention. The proposed IR-QLoRA mainly relies on two technologies derived from the perspective of unified information: (1) statistics-based Information Calibration Quantization allows the quantized parameters of LLM to retain original information accurately; (2) finetuning-based Information Elastic Connection makes LoRA utilizes elastic representation transformation with diverse information. Comprehensive experiments show that IR-QLoRA can significantly improve accuracy across LLaMA and LLaMA2 families under 2-4 bit-widths, e.g., 4- bit LLaMA-7B achieves 1.4% improvement on MMLU compared with the state-of-the-art methods. The significant performance gain requires only a tiny 0.31% additional time consumption, revealing the satisfactory efficiency of our IR-QLoRA. We highlight that IR-QLoRA enjoys excellent versatility, compatible with various frameworks (e.g., NormalFloat and Integer quantization) and brings general accuracy gains. The code is available at https://github.com/htqin/ir-qlora.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-02-08T06:53:31Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Haotong Qin</name>
+    </author>
+    <author>
+      <name>Xudong Ma</name>
+    </author>
+    <author>
+      <name>Xingyu Zheng</name>
+    </author>
+    <author>
+      <name>Xiaoyang Li</name>
+    </author>
+    <author>
+      <name>Yang Zhang</name>
+    </author>
+    <author>
+      <name>Shouda Liu</name>
+    </author>
+    <author>
+      <name>Jie Luo</name>
+    </author>
+    <author>
+      <name>Xianglong Liu</name>
+    </author>
+    <author>
+      <name>Michele Magno</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2402.10462v1</id>
+    <title>QDyLoRA: Quantized Dynamic Low-Rank Adaptation for Efficient Large Language Model Tuning</title>
+    <updated>2024-02-16T05:42:17Z</updated>
+    <link href="https://arxiv.org/abs/2402.10462v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2402.10462v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Finetuning large language models requires huge GPU memory, restricting the choice to acquire Larger models. While the quantized version of the Low-Rank Adaptation technique, named QLoRA, significantly alleviates this issue, finding the efficient LoRA rank is still challenging. Moreover, QLoRA is trained on a pre-defined rank and, therefore, cannot be reconfigured for its lower ranks without requiring further fine-tuning steps. This paper proposes QDyLoRA -Quantized Dynamic Low-Rank Adaptation-, as an efficient quantization approach for dynamic low-rank adaptation. Motivated by Dynamic LoRA, QDyLoRA is able to efficiently finetune LLMs on a set of pre-defined LoRA ranks. QDyLoRA enables fine-tuning Falcon-40b for ranks 1 to 64 on a single 32 GB V100-GPU through one round of fine-tuning. Experimental results show that QDyLoRA is competitive to QLoRA and outperforms when employing its optimal rank.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-02-16T05:42:17Z</published>
+    <arxiv:comment>Best Paper Award AAAI EIW Workshop</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <arxiv:journal_ref>https://aclanthology.org/2024.emnlp-industry.53.pdf</arxiv:journal_ref>
+    <author>
+      <name>Hossein Rajabzadeh</name>
+    </author>
+    <author>
+      <name>Mojtaba Valipour</name>
+    </author>
+    <author>
+      <name>Tianshu Zhu</name>
+    </author>
+    <author>
+      <name>Marzieh Tahaei</name>
+    </author>
+    <author>
+      <name>Hyock Ju Kwon</name>
+    </author>
+    <author>
+      <name>Ali Ghodsi</name>
+    </author>
+    <author>
+      <name>Boxing Chen</name>
+    </author>
+    <author>
+      <name>Mehdi Rezagholizadeh</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.24538v1</id>
+    <title>QLoRA Fine-Tuning of Ministral LLM for Sequence-to-Function Protein Annotation</title>
+    <updated>2026-09-21T13:09:59Z</updated>
+    <link href="https://arxiv.org/abs/2609.24538v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.24538v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Functional annotation of newly sequenced proteins remains a bottleneck in molecular biology: the number of sequences in public repositories grows far faster than the capacity for manual curation. Most computational approaches consider annotation as multi-label classification over a fixed ontology, which constrains predictions to a predefined label set. In this work we study the the protein annotation as a sequence-to-text generation problem. We fine-tune the 3B-parameter Ministral 3 base model with QLoRA (4-bit NF4 quantization with low-rank adapters) on sequence annotation pairs. We assess predictions with an LLM-as-expert protocol: a GPT model prompted as a senior molecular-biology curator scores organism identification as binary and function annotation quality. We conclude that QLoRA-fine-tuned compact LLMs can generate curator-style annotations with genuine biological value for a substantial subset of proteins. We also discuss future directions in data quality, model scaling, and evidence grounding that are needed to make the approach sufficiently reliable for practical use.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.NE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-bio.QM" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-21T13:09:59Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Demian Pavlyshenko</name>
+    </author>
+    <author>
+      <name>Bohdan Pavlyshenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.25677v2</id>
+    <title>Learning New Facts with QLoRA: An Acquisition-Retention Frontier</title>
+    <updated>2026-08-27T14:10:56Z</updated>
+    <link href="https://arxiv.org/abs/2608.25677v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.25677v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Parameter-efficient fine-tuning is often assumed to preserve pretrained capabilities because it updates only a small number of parameters. We show that this assumption depends strongly on adapter capacity. We study factual acquisition in a controlled OpenStreetMap-derived benchmark where Qwen3-4B must acquire anonymized geographic associations while retaining unrelated capabilities. Comparing full fine-tuning (FFT) with quantized low-rank adaptation (QLoRA) at ranks 8, 16, 32, and 64, we find that rank induces a clear acquisition--retention frontier. Low-rank QLoRA preserves out-of-domain (OOD) performance but acquires fewer facts, whereas higher ranks improve same-fact paraphrase generalization at an increasing cost in performance on unrelated benchmarks. FFT behaves as a conservative baseline: it retains general capabilities well, but does not reach the highest factual-acquisition regime. Distributional, weight-space, and spectral diagnostics mirror this behavioral trade-off, with higher-rank QLoRA moving farther from the pretrained model. A separate math adaptation experiment shows a weaker frontier, suggesting that the effect is most pronounced when adaptation must install new factual associations rather than reinforce skills already supported by pretraining. Code and data are available at https://github.com/zhngstl/new_facts_forgetting.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-26T11:54:58Z</published>
+    <arxiv:comment>accepted EMNLP 2026 Findings</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Estelle Zheng</name>
+    </author>
+    <author>
+      <name>Sébastien Warichet</name>
+    </author>
+    <author>
+      <name>Emmanuel Helbert</name>
+    </author>
+    <author>
+      <name>Christophe Cerisara</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.04526v1</id>
+    <title>Scale-QLoRA: Code-Invariant Adapter Merging for Native 4-bit Microscaling LLMs</title>
+    <updated>2026-09-03T22:29:37Z</updated>
+    <link href="https://arxiv.org/abs/2609.04526v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.04526v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Merging a LoRA adapter into its base model is standard deployment practice: it removes the runtime adapter's per-forward overhead and leaves a single standalone checkpoint any serving stack can load. On a native 4-bit microscaling checkpoint (NVFP4, MXFP4) that step stops being free. The merged weights must be written back through a quantizer, which re-derives the checkpoint's discrete E2M1 code plane (roughly 90% of the artifact's bytes), so the deployed artifact becomes coupled to one quantization convention, and every later code-touching event in its lifecycle can move it. Done naively the step is worse than fragile: it deletes the adaptation, by up to 39 pp, because against an already-on-grid base the reconstruction optimum is that base. Scale-QLoRA instead adapts only the native per-block scale field, trains those scales on the deployment grid, and freezes every E2M1 code. Within a fixed native format, scale grid, block layout and code plane, merging is then a bit-exact identity and the merged artifact is code-invariant. Across four models and four tasks, Scale-QLoRA and merge-aware QAT-LoRA are both accuracy-lossless, so we claim no accuracy ordering between them; they differ structurally, in that QAT-LoRA re-derives the code plane through a quantizer while Scale-QLoRA preserves it exactly. That difference is what the lifecycle prices: nearest-rounding implementations disagree by about a point on the measured task, and more extreme rule mismatches can drive the weight-space artifact to ~0%, which we report as a sensitivity bound rather than a deployment frequency. Preserving the code plane also drops the weight-space straight-through estimator from training (3.9x per step on the dense 8B model) and enables exact rollback, code-plane deduplication, and a ~125x faster scale-only task swap.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-03T22:29:37Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Tung-Ling Li</name>
+    </author>
+    <author>
+      <name>Jiale Huang</name>
+    </author>
+    <author>
+      <name>Lee-Chi Wang</name>
+    </author>
+    <author>
+      <name>Janaki Ram Gotei</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.20662v1</id>
+    <title>TOM: A Ternary Read-only Memory Accelerator for LLM-powered Edge Intelligence</title>
+    <updated>2026-02-24T08:08:41Z</updated>
+    <link href="https://arxiv.org/abs/2602.20662v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.20662v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The deployment of Large Language Models (LLMs) for real-time intelligence on edge devices is rapidly growing. However, conventional hardware architectures face a fundamental memory wall challenge, where limited on-device memory capacity and bandwidth severely constrain the size of deployable models and their inference speed, while also limiting on-device adaptation. To address this challenge, we propose TOM, a hybrid ROM-SRAM accelerator co-designed with ternary quantization, which balances extreme density with on-device tunability. TOM exploits the synergy between ternary quantization and ROM to achieve extreme memory density and bandwidth, while preserving flexibility through a hybrid ROM-SRAM architecture designed for QLoRA-based tunability. Specifically, we introduce: (1) a sparsity-aware ROM architecture that synthesizes ternary weights as standard-cell logic, eliminating area overhead from zero-valued bits; (2) a distributed processing architecture that co-locates high-density ROM banks with flexible SRAM-based QLoRA adapters and compute units; and (3) a workload-aware dynamic power gating scheme that exploits the logic-based nature of ROM to power down inactive banks, minimizing dynamic energy consumption. TOM achieves an inference throughput of 3,306 TPS using BitNet-2B model, demonstrating its effectiveness in delivering real-time, energy-efficient edge intelligence.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-24T08:08:41Z</published>
+    <arxiv:comment>13 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Hongyi Guan</name>
+    </author>
+    <author>
+      <name>Yijia Zhang</name>
+    </author>
+    <author>
+      <name>Wenqiang Wang</name>
+    </author>
+    <author>
+      <name>Yizhao Gao</name>
+    </author>
+    <author>
+      <name>Shijie Cao</name>
+    </author>
+    <author>
+      <name>Chen Zhang</name>
+    </author>
+    <author>
+      <name>Ningyi Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.14237v2</id>
+    <title>Ladder Up, Memory Down: Low-Cost Fine-Tuning With Side Nets</title>
+    <updated>2026-08-25T20:01:46Z</updated>
+    <link href="https://arxiv.org/abs/2512.14237v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.14237v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Fine-tuning large language models (LLMs) is often limited by the memory available on commodity GPUs. Parameter-efficient fine-tuning (PEFT) methods such as QLoRA reduce the number of trainable parameters, yet still incur high memory usage induced by the backward pass in the full model. We revisit Ladder Side Tuning (LST), a rarely explored PEFT technique that adds a lightweight side network, and show that it matches QLoRA's compute scaling slope while cutting peak memory by 50\%. Across different downstream benchmarks spanning natural language understanding, mathematical and LLM-critic tasks, LST has competitive performance with QLoRA's accuracy on average while being much more memory-efficient. This efficiency enables fine-tuning of 7B-parameter models on a single 12 GB consumer GPU with 2k-token contexts, requiring no gradient checkpointing\textemdash conditions under which QLoRA exhausts memory. Beyond memory efficiency, we also establish scaling laws showing that LST scales similarly to QLoRA. We exploit Ladder's architectural flexibility by introducing xLadder, a depth-extended variant that increases effective depth via cross-connections and shortens chain-of-thought (CoT) at fixed parameter count. Ladder is strong when memory is the bottleneck; xLadder builds on this by enabling deeper reasoning without additional memory overhead.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-16T09:47:34Z</published>
+    <arxiv:comment>24 pages, 20 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Estelle Zheng</name>
+    </author>
+    <author>
+      <name>Nathan Cerisara</name>
+    </author>
+    <author>
+      <name>Sébastien Warichet</name>
+    </author>
+    <author>
+      <name>Emmanuel Helbert</name>
+    </author>
+    <author>
+      <name>Christophe Cerisara</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2402.05147v3</id>
+    <title>ApiQ: Finetuning of 2-Bit Quantized Large Language Model</title>
+    <updated>2024-06-21T14:03:48Z</updated>
+    <link href="https://arxiv.org/abs/2402.05147v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2402.05147v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory-efficient finetuning of large language models (LLMs) has recently attracted huge attention with the increasing size of LLMs, primarily due to the constraints posed by GPU memory limitations and the effectiveness of these methods compared to full finetuning. Despite the advancements, current strategies for memory-efficient finetuning, such as QLoRA, exhibit inconsistent performance across diverse bit-width quantizations and multifaceted tasks. This inconsistency largely stems from the detrimental impact of the quantization process on preserved knowledge, leading to catastrophic forgetting and undermining the utilization of pretrained models for finetuning purposes. In this work, we introduce a novel quantization framework, ApiQ, designed to restore the lost information from quantization by concurrently initializing the LoRA components and quantizing the weights of LLMs. This approach ensures the maintenance of the original LLM's activation precision while mitigating the error propagation from shallower into deeper layers. Through comprehensive evaluations conducted on a spectrum of language tasks with various LLMs, ApiQ demonstrably minimizes activation error during quantization. Consequently, it consistently achieves superior finetuning results across various bit-widths.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-02-07T09:36:54Z</published>
+    <arxiv:comment>more benchmarks and new method, block-wise ApiQ. code: https://github.com/BaohaoLiao/ApiQ</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Baohao Liao</name>
+    </author>
+    <author>
+      <name>Christian Herold</name>
+    </author>
+    <author>
+      <name>Shahram Khadivi</name>
+    </author>
+    <author>
+      <name>Christof Monz</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.23816v2</id>
+    <title>AQLoRA: A Zero-Search Recipe for Fast Quantized LoRA Fine-Tuning</title>
+    <updated>2026-10-11T01:44:49Z</updated>
+    <link href="https://arxiv.org/abs/2608.23816v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.23816v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Quantized fine-tuning (QLoRA) saves memory but not time. It dequantizes every 4-bit weight on the fly, so it trains more slowly than fp16 LoRA. We present AQLoRA (Adaptive-Quantization LoRA), a recipe that buys part of that time back. One CPU pass ranks layers by NF4 reconstruction error, with no search and no calibration data, and keeps a fixed fraction of them in fp16. Those layers skip dequantization, which is where the speed comes from. A quality setting adapts every layer. A speed setting adapts only the top blocks, so the backward pass stops early. The selection matches the accuracy of Unsloth's hand-curated dynamic-4bit list.
+  We evaluate on Commonsense-170K across six models and four architecture families, from 1.4B to 14B. The speed setting trains 11.3 +/- 2.3% faster than well-tuned QLoRA and gives up 0.1 to 1.5 accuracy points. It was faster in all thirteen independent timing sessions, at worst by 7%. The quality setting trains 4.8 +/- 2.0% faster, matches QLoRA's accuracy on every model, and is within a point of fp16 LoRA. The memory premium depends on the architecture: 0.06 to 0.8 GiB on the 1-4B models, 0.5 GiB at 7B, 1.9 GiB at 14B. These error bars are measured between independent sessions, not within one. Timing on shared hardware needs three rules: fix the measurement duration, not the step count; measure the noise floor from a duplicated arm; and repeat whole sessions, since on one model three sessions that each passed the floor test spread over 8.2 points.
+  We validate the recipe with controls and report the two that failed. Choosing adapter layers by weight density is no better than random. Choosing protected layers by quantization error is not either, on five models at three budgets with memory-matched controls and downstream on two. The number of protected layers sets the speed; which layers they are does not measurably change accuracy.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-24T20:47:40Z</published>
+    <arxiv:comment>24 pages, 5 figures, 20 tables. Code and experimental artifacts: https://github.com/Romyull-Islam/AQLoRA</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Md Romyull Islam</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1711.03712v1</id>
+    <title>Quantized Memory-Augmented Neural Networks</title>
+    <updated>2017-11-10T06:54:45Z</updated>
+    <link href="https://arxiv.org/abs/1711.03712v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1711.03712v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Memory-augmented neural networks (MANNs) refer to a class of neural network models equipped with external memory (such as neural Turing machines and memory networks). These neural networks outperform conventional recurrent neural networks (RNNs) in terms of learning long-term dependency, allowing them to solve intriguing AI tasks that would otherwise be hard to address. This paper concerns the problem of quantizing MANNs. Quantization is known to be effective when we deploy deep models on embedded systems with limited resources. Furthermore, quantization can substantially reduce the energy consumption of the inference procedure. These benefits justify recent developments of quantized multi layer perceptrons, convolutional networks, and RNNs. However, no prior work has reported the successful quantization of MANNs. The in-depth analysis presented here reveals various challenges that do not appear in the quantization of the other networks. Without addressing them properly, quantized MANNs would normally suffer from excessive quantization error which leads to degraded performance. In this paper, we identify memory addressing (specifically, content-based addressing) as the main reason for the performance degradation and propose a robust quantization method for MANNs to address the challenge. In our experiments, we achieved a computation-energy gain of 22x with 8-bit fixed-point and binary quantization compared to the floating-point implementation. Measured on the bAbI dataset, the resulting model, named the quantized MANN (Q-MANN), improved the error rate by 46% and 30% with 8-bit fixed-point and binary quantization, respectively, compared to the MANN quantized using conventional techniques.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2017-11-10T06:54:45Z</published>
+    <arxiv:comment>AAAI 2018</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Seongsik Park</name>
+    </author>
+    <author>
+      <name>Seijoon Kim</name>
+    </author>
+    <author>
+      <name>Seil Lee</name>
+    </author>
+    <author>
+      <name>Ho Bae</name>
+    </author>
+    <author>
+      <name>Sungroh Yoon</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2510.11696v1</id>
+    <title>QeRL: Beyond Efficiency -- Quantization-enhanced Reinforcement Learning for LLMs</title>
+    <updated>2025-10-13T17:55:09Z</updated>
+    <link href="https://arxiv.org/abs/2510.11696v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2510.11696v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We propose QeRL, a Quantization-enhanced Reinforcement Learning framework for large language models (LLMs). While RL is essential for LLMs' reasoning capabilities, it is resource-intensive, requiring substantial GPU memory and long rollout durations. QeRL addresses these issues by combining NVFP4 quantization with Low-Rank Adaptation (LoRA), accelerating rollout phase of RL while reducing memory overhead. Beyond efficiency, our findings show that quantization noise increases policy entropy, enhancing exploration, and enabling the discovery of better strategies during RL. To further optimize exploration, QeRL introduces an Adaptive Quantization Noise (AQN) mechanism, which dynamically adjusts noise during training. Experiments demonstrate that QeRL delivers over 1.5 times speedup in the rollout phase. Moreover, this is the first framework to enable RL training of a 32B LLM on a single H100 80GB GPU, while delivering overall speedups for RL training. It also achieves faster reward growth and higher final accuracy than 16-bit LoRA and QLoRA, while matching the performance of full-parameter fine-tuning on mathematical benchmarks such as GSM8K (90.8%) and MATH 500 (77.4%) in the 7B model. These results establish QeRL as an efficient and effective framework for RL training in LLMs.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-13T17:55:09Z</published>
+    <arxiv:comment>Code is available at https://github.com/NVlabs/QeRL</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Wei Huang</name>
+    </author>
+    <author>
+      <name>Yi Ge</name>
+    </author>
+    <author>
+      <name>Shuai Yang</name>
+    </author>
+    <author>
+      <name>Yicheng Xiao</name>
+    </author>
+    <author>
+      <name>Huizi Mao</name>
+    </author>
+    <author>
+      <name>Yujun Lin</name>
+    </author>
+    <author>
+      <name>Hanrong Ye</name>
+    </author>
+    <author>
+      <name>Sifei Liu</name>
+    </author>
+    <author>
+      <name>Ka Chun Cheung</name>
+    </author>
+    <author>
+      <name>Hongxu Yin</name>
+    </author>
+    <author>
+      <name>Yao Lu</name>
+    </author>
+    <author>
+      <name>Xiaojuan Qi</name>
+    </author>
+    <author>
+      <name>Song Han</name>
+    </author>
+    <author>
+      <name>Yukang Chen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2607.21680v1</id>
+    <title>Encoding Invisible Causation for Bridge Diagnostic Agents: Triple-Guided Retrieval-Augmented Fine-Tuning with QLoRA</title>
+    <updated>2026-07-23T13:18:57Z</updated>
+    <link href="https://arxiv.org/abs/2607.21680v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2607.21680v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Bridge infrastructure deteriorates gradually, yet its root causes---salt intrusion, freezing, fatigue cracking, and others---remain invisible to the naked eye. Expert diagnosis relies on tacit knowledge built over years of practice. We address the challenge of automating this latent causal reasoning by proposing a Damage Cause Encoder that classifies 10-class damage causes from visible damage descriptions $S_i$ for use in autonomous bridge diagnostic agents. Our approach chains three components: (i)Knowledge Triple Extraction---a large language model extracts causal triples of the form (damage $\xrightarrow{\mathtt{caused\_by}}$ cause) from 15--35 diagnostic PDF manuals and indexes them in a FAISS vector store; (ii)Retrieval-Augmented Context---at training and inference time, relevant causal triples $\mathcal{C}_i$ are retrieved and concatenated with $S_i$, converting implicit domain knowledge into explicit Encoder context; (iii)Systematic Fine-tuning Comparison---we conduct a rigorous comparison of LoRA, QLoRA, and QA-LoRA on a fixed Golden Testset (116 stratified samples), demonstrating that QLoRA achieves the optimal trade-off: identical test accuracy (87.07%) to full-precision LoRA, 11% faster inference, 72% lower GPU memory, and superior generalization across diverse unseen inputs. A controlled Golden Testset---stratified, deduplicated, and difficulty-tagged---is introduced as a reusable benchmark contribution. QLoRA further outperforms LoRA by 13 percentage points on a 100-sample diverse evaluation spanning all 10 damage cause classes.These findings enable memory-efficient, high-accuracy diagnostic agents on consumer-grade hardware for edge deployment.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-07-23T13:18:57Z</published>
+    <arxiv:comment>13 pages, 7 figures, 6 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Takato Yasuno</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2408.07437v3</id>
+    <title>Memory-Assisted Quantized LDPC Decoding</title>
+    <updated>2025-01-21T17:17:10Z</updated>
+    <link href="https://arxiv.org/abs/2408.07437v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2408.07437v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We enhance coarsely quantized LDPC decoding by reusing computed check node messages from previous iterations. Typically, variable and check nodes update and replace old messages every iteration. We show that, under coarse quantization, discarding old messages entails a significant loss of mutual information. The loss is avoided with additional memory, improving performance by up to 0.23 dB. We optimize quantization with a modified information bottleneck algorithm that considers the statistics of old messages. A simple merge operation reduces memory requirements. Depending on channel conditions and code rate, memory assistance enables up to 32 % better area efficiency for 2-bit decoding.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-08-14T10:14:12Z</published>
+    <arxiv:comment>The paper has been submitted to IEEE Communications Letters and is currently under review</arxiv:comment>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Philipp Mohr</name>
+    </author>
+    <author>
+      <name>Gerhard Bauch</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2407.15540v2</id>
+    <title>Differentiable Product Quantization for Memory Efficient Camera Relocalization</title>
+    <updated>2024-07-23T18:34:55Z</updated>
+    <link href="https://arxiv.org/abs/2407.15540v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2407.15540v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Camera relocalization relies on 3D models of the scene with a large memory footprint that is incompatible with the memory budget of several applications. One solution to reduce the scene memory size is map compression by removing certain 3D points and descriptor quantization. This achieves high compression but leads to performance drop due to information loss. To address the memory performance trade-off, we train a light-weight scene-specific auto-encoder network that performs descriptor quantization-dequantization in an end-to-end differentiable manner updating both product quantization centroids and network parameters through back-propagation. In addition to optimizing the network for descriptor reconstruction, we encourage it to preserve the descriptor-matching performance with margin-based metric loss functions. Results show that for a local descriptor memory of only 1MB, the synergistic combination of the proposed network and map compression achieves the best performance on the Aachen Day-Night compared to existing compression methods.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-07-22T11:05:58Z</published>
+    <arxiv:comment>Accepted to the European Conference on Computer Vision (ECCV) 2024</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Zakaria Laskar</name>
+    </author>
+    <author>
+      <name>Iaroslav Melekhov</name>
+    </author>
+    <author>
+      <name>Assia Benbihi</name>
+    </author>
+    <author>
+      <name>Shuzhe Wang</name>
+    </author>
+    <author>
+      <name>Juho Kannala</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2311.12023v4</id>
+    <title>LQ-LoRA: Low-rank Plus Quantized Matrix Decomposition for Efficient Language Model Finetuning</title>
+    <updated>2024-08-27T00:48:35Z</updated>
+    <link href="https://arxiv.org/abs/2311.12023v4" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2311.12023v4" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We propose a simple approach for memory-efficient adaptation of pretrained language models. Our approach uses an iterative algorithm to decompose each pretrained matrix into a high-precision low-rank component and a memory-efficient quantized component. During finetuning, the quantized component remains fixed and only the low-rank component is updated. We present an integer linear programming formulation of the quantization component which enables dynamic configuration of quantization parameters (e.g., bit-width, block size) for each matrix given an overall target memory budget. We further explore a data-aware version of the algorithm which uses an approximation of the Fisher information matrix to weight the reconstruction objective during matrix decomposition. Experiments on finetuning RoBERTa and LLaMA-2 (7B and 70B) demonstrate that our low-rank plus quantized matrix decomposition approach (LQ-LoRA) outperforms strong QLoRA and GPTQ-LoRA baselines and enables aggressive quantization to sub-3 bits with only minor performance degradations. When finetuned on a language modeling calibration dataset, LQ-LoRA can also be used for model compression; in this setting our 2.75-bit LLaMA-2-70B model (which has 2.85 bits on average when including the low-rank components and requires 27GB of GPU memory) performs respectably compared to the 16-bit baseline.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-11-20T18:57:41Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Han Guo</name>
+    </author>
+    <author>
+      <name>Philip Greengard</name>
+    </author>
+    <author>
+      <name>Eric P. Xing</name>
+    </author>
+    <author>
+      <name>Yoon Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2506.17646v1</id>
+    <title>Quantizing for Noisy Flash Memory Channels</title>
+    <updated>2025-06-21T09:01:24Z</updated>
+    <link href="https://arxiv.org/abs/2506.17646v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2506.17646v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Flash memory-based processing-in-memory (flash-based PIM) offers high storage capacity and computational efficiency but faces significant reliability challenges due to noise in high-density multi-level cell (MLC) flash memories. Existing verify level optimization methods are designed for general storage scenarios and fail to address the unique requirements of flash-based PIM systems, where metrics such as mean squared error (MSE) and peak signal-to-noise ratio (PSNR) are critical. This paper introduces an integrated framework that jointly optimizes quantization and verify levels to minimize the MSE, considering both quantization and flash memory channel errors. We develop an iterative algorithm to solve the joint optimization problem. Experimental results on quantized images and SwinIR model parameters stored in flash memory show that the proposed method significantly improves the reliability of flash-based PIM systems.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-06-21T09:01:24Z</published>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Juyun Oh</name>
+    </author>
+    <author>
+      <name>Taewoo Park</name>
+    </author>
+    <author>
+      <name>Jiwoong Im</name>
+    </author>
+    <author>
+      <name>Yuval Cassuto</name>
+    </author>
+    <author>
+      <name>Yongjune Kim</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2412.11378v2</id>
+    <title>FinLoRA: Finetuning Quantized Financial Large Language Models Using Low-Rank Adaptation</title>
+    <updated>2025-01-20T15:39:58Z</updated>
+    <link href="https://arxiv.org/abs/2412.11378v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2412.11378v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Finetuned large language models (LLMs) have shown remarkable performance in financial tasks, such as sentiment analysis and information retrieval. Due to privacy concerns, finetuning and deploying Financial LLMs (FinLLMs) locally are crucial for institutions. However, finetuning FinLLMs poses challenges including GPU memory constraints and long input sequences. In this paper, we employ quantized low-rank adaptation (QLoRA) to finetune FinLLMs, which leverage low-rank matrix decomposition and quantization techniques to significantly reduce computational requirements while maintaining high model performance. We also employ data and pipeline parallelism to enable local finetuning using cost-effective, widely accessible GPUs. Experiments on financial datasets demonstrate that our method achieves substantial improvements in accuracy, GPU memory usage, and time efficiency, underscoring the potential of lowrank methods for scalable and resource-efficient LLM finetuning.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-12-16T02:05:49Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dannong Wang</name>
+    </author>
+    <author>
+      <name>Daniel Kim</name>
+    </author>
+    <author>
+      <name>Bo Jin</name>
+    </author>
+    <author>
+      <name>Xingjian Zhao</name>
+    </author>
+    <author>
+      <name>Tianfan Fu</name>
+    </author>
+    <author>
+      <name>Steve Yang</name>
+    </author>
+    <author>
+      <name>Xiao-Yang Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2109.05205v2</id>
+    <title>Contrastive Quantization with Code Memory for Unsupervised Image Retrieval</title>
+    <updated>2022-03-08T05:41:45Z</updated>
+    <link href="https://arxiv.org/abs/2109.05205v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2109.05205v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The high efficiency in computation and storage makes hashing (including binary hashing and quantization) a common strategy in large-scale retrieval systems. To alleviate the reliance on expensive annotations, unsupervised deep hashing becomes an important research problem. This paper provides a novel solution to unsupervised deep quantization, namely Contrastive Quantization with Code Memory (MeCoQ). Different from existing reconstruction-based strategies, we learn unsupervised binary descriptors by contrastive learning, which can better capture discriminative visual semantics. Besides, we uncover that codeword diversity regularization is critical to prevent contrastive learning-based quantization from model degeneration. Moreover, we introduce a novel quantization code memory module that boosts contrastive learning with lower feature drift than conventional feature memories. Extensive experiments on benchmark datasets show that MeCoQ outperforms state-of-the-art methods. Code and configurations are publicly available at https://github.com/gimpong/AAAI22-MeCoQ.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2021-09-11T07:16:18Z</published>
+    <arxiv:comment>Accepted for AAAI'22 (Oral). 9 pages, 4 figures, 3 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Jinpeng Wang</name>
+    </author>
+    <author>
+      <name>Ziyun Zeng</name>
+    </author>
+    <author>
+      <name>Bin Chen</name>
+    </author>
+    <author>
+      <name>Tao Dai</name>
+    </author>
+    <author>
+      <name>Shu-Tao Xia</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.04488v1</id>
+    <title>Energy- and Memory-Efficient PEFT Methods for Personalized On-Device SLMs on Consumer GPUs</title>
+    <updated>2026-08-05T06:20:57Z</updated>
+    <link href="https://arxiv.org/abs/2608.04488v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.04488v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Despite rapid advances in large language models (LLMs), deploying and personalizing them on resource-constrained devices remains impractical due to high VRAM, time, and energy costs. Parameter-Efficient Fine-Tuning (PEFT) of Small Language Models (SLMs) offers a promising alternative, yet few studies compare PEFT methods across architectures using both general and personalization benchmarks while accounting for energy consumption. We compare five fine-tuning approaches (Full Fine-Tuning, LoRA, LoRA+, QLoRA, and BitFit) on four SLMs from two families (Transformer-based: TinyLlama-1.1B, Qwen3-1.7B; SSM-based: Mamba-1.4B, Mamba-2-1.3B) across three GLUE tasks (SST-2, QNLI, STS-B) and three LaMP personalization tasks (LaMP-1, LaMP-2, LaMP-3). Each configuration is evaluated with the energy-focused NetScore-E and the memory-focused NetScore-M, the two variants that reflect the constraints binding on-device deployment. Methods are selected with a strict energy-first rule (highest NetScore-E, ties broken by NetScore#). LoRA+ achieves the highest NetScore-E in 19 of 24 configurations and the highest NetScore-M in 13 of 24, and is the selected method in 18 of 24. QLoRA, available only for the Transformer models, cuts peak finetuning VRAM by up to 3.9x relative to LoRA and therefore takes the best NetScore-M in 5 of the 12 Transformer configurations, although its de-quantization overhead leaves it selected in only one of them once energy decides. BitFit and full fine-tuning are almost never competitive on either variant, and TinyLlama-1.1B leads the energy-focused NetScore-E on five of the six benchmarks and the memory-focused NetScore-M on four. These results show that compact SLMs paired with PEFT provide a practical, energy-aware path to personalized on-device deployment, with the optimal method set by the dominant constraint: LoRA+ for energy and QLoRA for memory.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-05T06:20:57Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Kuanysh Akhmetzhanov</name>
+    </author>
+    <author>
+      <name>Jurn-Gyu Park</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.06921v2</id>
+    <title>Task Vector Quantization for Memory-Efficient Model Merging</title>
+    <updated>2025-08-07T10:57:05Z</updated>
+    <link href="https://arxiv.org/abs/2503.06921v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.06921v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Model merging enables efficient multi-task models by combining task-specific fine-tuned checkpoints. However, storing multiple task-specific checkpoints requires significant memory, limiting scalability and restricting model merging to larger models and diverse tasks. In this paper, we propose quantizing task vectors (i.e., the difference between pre-trained and fine-tuned checkpoints) instead of quantizing fine-tuned checkpoints. We observe that task vectors exhibit a narrow weight range, enabling low precision quantization (e.g., 4 bit) within existing task vector merging frameworks. To further mitigate quantization errors within ultra-low bit precision (e.g., 2 bit), we introduce Residual Task Vector Quantization, which decomposes the task vector into a base vector and offset component. We allocate bits based on quantization sensitivity, ensuring precision while minimizing error within a memory budget. Experiments on image classification and dense prediction show our method maintains or improves model merging performance while using only 8% of the memory required for full-precision checkpoints.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-03-10T05:00:24Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Youngeun Kim</name>
+    </author>
+    <author>
+      <name>Seunghwan Lee</name>
+    </author>
+    <author>
+      <name>Aecheon Jung</name>
+    </author>
+    <author>
+      <name>Bogon Ryu</name>
+    </author>
+    <author>
+      <name>Sungeun Hong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2507.22349v1</id>
+    <title>MSQ: Memory-Efficient Bit Sparsification Quantization</title>
+    <updated>2025-07-30T03:21:29Z</updated>
+    <link href="https://arxiv.org/abs/2507.22349v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2507.22349v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As deep neural networks (DNNs) see increased deployment on mobile and edge devices, optimizing model efficiency has become crucial. Mixed-precision quantization is widely favored, as it offers a superior balance between efficiency and accuracy compared to uniform quantization. However, finding the optimal precision for each layer is challenging. Recent studies utilizing bit-level sparsity have shown promise, yet they often introduce substantial training complexity and high GPU memory requirements. In this paper, we propose Memory-Efficient Bit Sparsification Quantization (MSQ), a novel approach that addresses these limitations. MSQ applies a round-clamp quantizer to enable differentiable computation of the least significant bits (LSBs) from model weights. It further employs regularization to induce sparsity in these LSBs, enabling effective precision reduction without explicit bit-level parameter splitting. Additionally, MSQ incorporates Hessian information, allowing the simultaneous pruning of multiple LSBs to further enhance training efficiency. Experimental results show that MSQ achieves up to 8.00x reduction in trainable parameters and up to 86% reduction in training time compared to previous bit-level quantization, while maintaining competitive accuracy and compression rates. This makes it a practical solution for training efficient DNNs on resource-constrained devices.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-07-30T03:21:29Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Seokho Han</name>
+    </author>
+    <author>
+      <name>Seoyeon Yoon</name>
+    </author>
+    <author>
+      <name>Jinhee Kim</name>
+    </author>
+    <author>
+      <name>Dongwei Wang</name>
+    </author>
+    <author>
+      <name>Kang Eun Jeon</name>
+    </author>
+    <author>
+      <name>Huanrui Yang</name>
+    </author>
+    <author>
+      <name>Jong Hwan Ko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2603.10540v1</id>
+    <title>In-Memory ADC-Based Nonlinear Activation Quantization for Efficient In-Memory Computing</title>
+    <updated>2026-03-11T08:43:52Z</updated>
+    <link href="https://arxiv.org/abs/2603.10540v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2603.10540v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In deep networks, operations such as ReLU and hardware-driven clamping often cause activations to accumulate near the edges of the distribution, leading to biased clustering and suboptimal quantization in existing nonlinear (NL) quantization methods. This paper introduces Boundary Suppressed K-Means Quantization (BS-KMQ), a novel NL quantization approach designed to reduce the resolution requirements of analog-to-digital converters (ADCs) in in-memory computing (IMC) systems. By suppressing boundary outliers before clustering, BS-KMQ achieves more balanced and informative NL quantization levels. The resulting NL references are implemented using a reconfigurable in-memory NL-ADC, achieving a 7x area improvement over prior NL-ADC designs. When evaluated on ResNet-18, VGG-16, Inception-V3, and DistilBERT, BS-KMQ achieves at least 3x lower quantization error compared to linear, Lloyd-Max, cumulative distribution function (CDF), and K-means methods. It also improves post-training quantization accuracy by up to 66.8%, 25.4%, 66.6%, and 67.7%, respectively, compared to linear quantization. After low-bit fine-tuning, BS-KMQ maintains competitive accuracy with significantly fewer NL-ADC levels (3/3/4/4b). System-level simulations on ResNet-18 (6/2/3b) demonstrate up to a 4x speedup and 24x energy efficiency improvement over existing IMC accelerators.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-11T08:43:52Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Shuai Dong</name>
+    </author>
+    <author>
+      <name>Junyi Yang</name>
+    </author>
+    <author>
+      <name>Biyan Zhou</name>
+    </author>
+    <author>
+      <name>Hongyang Shang</name>
+    </author>
+    <author>
+      <name>Gourav Datta</name>
+    </author>
+    <author>
+      <name>Arindam Basu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2401.00503v1</id>
+    <title>Viz: A QLoRA-based Copyright Marketplace for Legally Compliant Generative AI</title>
+    <updated>2023-12-31T13:53:06Z</updated>
+    <link href="https://arxiv.org/abs/2401.00503v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2401.00503v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper aims to introduce and analyze the Viz system in a comprehensive way, a novel system architecture that integrates Quantized Low-Rank Adapters (QLoRA) to fine-tune large language models (LLM) within a legally compliant and resource efficient marketplace. Viz represents a significant contribution to the field of artificial intelligence, particularly in addressing the challenges of computational efficiency, legal compliance, and economic sustainability in the utilization and monetization of LLMs. The paper delineates the scholarly discourse and developments that have informed the creation of Viz, focusing primarily on the advancements in LLM models, copyright issues in AI training (NYT case, 2023), and the evolution of model fine-tuning techniques, particularly low-rank adapters and quantized low-rank adapters, to create a sustainable and economically compliant framework for LLM utilization. The economic model it proposes benefits content creators, AI developers, and end-users, delineating a harmonious integration of technology, economy, and law, offering a comprehensive solution to the complex challenges of today's AI landscape.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-12-31T13:53:06Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Dipankar Sarkar</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.15694v1</id>
+    <title>The Impact of Quantization on Large Reasoning Model Reinforcement Learning</title>
+    <updated>2025-11-19T18:50:58Z</updated>
+    <link href="https://arxiv.org/abs/2511.15694v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.15694v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Strong reasoning capabilities can now be achieved by large-scale reinforcement learning (RL) without any supervised fine-tuning. Although post-training quantization (PTQ) and quantization-aware training (QAT) are well studied in the context of fine-tuning, how quantization impacts RL in large reasoning models (LRMs) remains an open question. To answer this question, we conducted systematic experiments and discovered a significant gap in reasoning performance on mathematical benchmarks between post-RL quantized models and their quantization-aware RL optimized counterparts. Our findings suggest that quantization-aware RL training negatively impacted the learning process, whereas PTQ and QLoRA led to greater performance.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-19T18:50:58Z</published>
+    <arxiv:comment>Accepted to the NeurIPS 2025 Efficient Reasoning Workshop</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Medha Kumar</name>
+    </author>
+    <author>
+      <name>Zifei Xu</name>
+    </author>
+    <author>
+      <name>Xin Wang</name>
+    </author>
+    <author>
+      <name>Tristan Webb</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2311.05034v1</id>
+    <title>Just-in-time Quantization with Processing-In-Memory for Efficient ML Training</title>
+    <updated>2023-11-08T21:44:37Z</updated>
+    <link href="https://arxiv.org/abs/2311.05034v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2311.05034v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Data format innovations have been critical for machine learning (ML) scaling, which in turn fuels ground-breaking ML capabilities. However, even in the presence of low-precision formats, model weights are often stored in both high-precision and low-precision during training. Furthermore, with emerging directional data formats (e.g., MX9, MX6, etc.) multiple low-precision weight copies can be required. To lower memory capacity needs of weights, we explore just-in-time quantization (JIT-Q) where we only store high-precision weights in memory and generate low-precision weights only when needed. To perform JIT-Q efficiently, in this work, we evaluate emerging processing-in-memory (PIM) technology to execute quantization. With PIM, we can offload quantization to in-memory compute units enabling quantization to be performed without incurring costly data movement while allowing quantization to be concurrent with accelerator computation. Our proposed PIM-offloaded quantization keeps up with GPU compute and delivers considerable capacity savings (up to 24\%) at marginal throughput loss (up to 2.4\%). Said memory capacity savings can unlock several benefits such as fitting larger model in the same system, reducing model parallelism requirement, and improving overall ML training efficiency.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DC" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2023-11-08T21:44:37Z</published>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Mohamed Assem Ibrahim</name>
+    </author>
+    <author>
+      <name>Shaizeen Aga</name>
+    </author>
+    <author>
+      <name>Ada Li</name>
+    </author>
+    <author>
+      <name>Suchita Pati</name>
+    </author>
+    <author>
+      <name>Mahzabeen Islam</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2506.03178v2</id>
+    <title>LLaMA-XR: A Novel Framework for Radiology Report Generation using LLaMA and QLoRA Fine Tuning</title>
+    <updated>2026-04-20T11:40:17Z</updated>
+    <link href="https://arxiv.org/abs/2506.03178v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2506.03178v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Automated radiology report generation holds significant potential to reduce radiologists' workload and enhance diagnostic accuracy. However, generating precise and clinically meaningful reports from chest radiographs remains challenging due to the complexity of medical language and the need for contextual understanding. Existing models often struggle with maintaining both accuracy and contextual relevance. In this paper, we present LLaMA-XR, a novel framework that integrates LLaMA 3.1 with DenseNet-121-based image embeddings and Quantized Low-Rank Adaptation (QLoRA) fine-tuning. LLaMA-XR achieves improved coherence and clinical accuracy while maintaining computational efficiency. This efficiency is driven by an optimization strategy that enhances parameter utilization and reduces memory overhead, enabling faster report generation with lower computational resource demands. Extensive experiments conducted on the IU X-ray benchmark dataset demonstrate that LLaMA-XR outperforms a range of state-of-the-art methods. Our model achieves a ROUGE-L score of 0.433 and a METEOR score of 0.336, establishing new performance benchmarks in the domain. These results underscore LLaMA-XR's potential as an effective and efficient AI system for automated radiology reporting, offering enhanced clinical utility and reliability.</summary>
+    <category term="eess.IV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-05-29T12:21:18Z</published>
+    <arxiv:comment>25 pages</arxiv:comment>
+    <arxiv:primary_category term="eess.IV"/>
+    <arxiv:journal_ref>Bioengineering 2026, 13(5), 493</arxiv:journal_ref>
+    <author>
+      <name>Md. Zihad Bin Jahangir</name>
+    </author>
+    <author>
+      <name>Muhammad Ashad Kabir</name>
+    </author>
+    <author>
+      <name>Sumaiya Akter</name>
+    </author>
+    <author>
+      <name>Israt Jahan</name>
+    </author>
+    <author>
+      <name>Minh Chau</name>
+    </author>
+    <arxiv:doi>10.3390/bioengineering13050493</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.3390/bioengineering13050493" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1307.6051v1</id>
+    <title>Path-memory induced quantization of classical orbits</title>
+    <updated>2013-07-23T12:58:23Z</updated>
+    <link href="https://arxiv.org/abs/1307.6051v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1307.6051v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>A droplet bouncing on a liquid bath can self-propel due to its interaction with the waves it generates. The resulting "walker" is a dynamical association where, at a macroscopic scale, a particle (the droplet) is driven by a pilot-wave field. A specificity of this system is that the wave field itself results from the superposition of the waves generated at the points of space recently visited by the particle. It thus contains a memory of the past trajectory of the particle. Here, we investigate the response of this object to forces orthogonal to its motion. We find that the resulting closed orbits present a spontaneous quantization. This is observed only when the memory of the system is long enough for the particle to interact with the wave sources distributed along the whole orbit. An additional force then limits the possible orbits to a discrete set. The wave-sustained path memory is thus demonstrated to generate a quantization of angular momentum. Because a quantum-like uncertainty was also observed recently in these systems, the nonlocality generated by path memory opens new perspectives.</summary>
+    <category term="cond-mat.soft" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="physics.flu-dyn" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2013-07-23T12:58:23Z</published>
+    <arxiv:primary_category term="cond-mat.soft"/>
+    <arxiv:journal_ref>PNAS 2010 107 (41) 17515-17520</arxiv:journal_ref>
+    <author>
+      <name>Emmanuel Fort</name>
+    </author>
+    <author>
+      <name>Antonin Eddi</name>
+    </author>
+    <author>
+      <name>Arezki Boudaoud</name>
+    </author>
+    <author>
+      <name>Julien Moukhtar</name>
+    </author>
+    <author>
+      <name>Yves Couder</name>
+    </author>
+    <arxiv:doi>10.1073/pnas.1007386107</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1073/pnas.1007386107" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.18137v1</id>
+    <title>AQPIM: Breaking the PIM Capacity Wall for LLMs with In-Memory Activation Quantization</title>
+    <updated>2026-04-20T12:04:51Z</updated>
+    <link href="https://arxiv.org/abs/2604.18137v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.18137v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Processing-in-Memory (PIM) architectures offer a promising solution to the memory bottlenecks in data-intensive machine learning, yet often overlook the growing challenge of activation memory footprint. Conventional PIM approaches struggle with massive KV cache sizes generated in long-context scenarios by Transformer-based models, frequently exceeding PIM's limited memory capacity, while techniques like sparse attention can conflict with PIM's need for data locality. Existing PIM approaches and quantization methods are often insufficient or poorly suited for leveraging the unique characteristics of activations. This work identifies an opportunity for PIM-specialized activation quantization to enhance bandwidth and compute efficiency.
+  We explore clustering-based vector quantization approaches, which align well with activation characteristics and PIM's internal bandwidth capabilities. Building on this, we introduce AQPIM, a novel PIM-aware activation quantization framework based on Product Quantization (PQ), optimizing it for modern Large Language Models (LLMs). By performing quantization directly within memory, AQPIM leverages PIM's high internal bandwidth and enables direct computation on compressed data, significantly reducing both memory footprint and computational overhead for attention computation. AQPIM addresses PQ's accuracy challenges by introducing several algorithmic optimizations. Evaluations demonstrate that AQPIM achieves significant performance improvements, drastically reducing of GPU-CPU communication that can account for 90$\sim$98.5\% of decoding latency, together with 3.4$\times$ speedup over a SOTA PIM approach.</summary>
+    <category term="cs.AR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-20T12:04:51Z</published>
+    <arxiv:comment>Accepted to HPCA 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AR"/>
+    <author>
+      <name>Kosuke Matsushima</name>
+    </author>
+    <author>
+      <name>Yasuyuki Okoshi</name>
+    </author>
+    <author>
+      <name>Masato Motomura</name>
+    </author>
+    <author>
+      <name>Daichi Fujiki</name>
+    </author>
+    <arxiv:doi>10.1109/HPCA68181.2026.11408452</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1109/HPCA68181.2026.11408452" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2510.03683v2</id>
+    <title>Fine-Tuning Large Language Models with QLoRA for Offensive Language Detection in Roman Urdu-English Code-Mixed Text</title>
+    <updated>2025-10-10T05:42:06Z</updated>
+    <link href="https://arxiv.org/abs/2510.03683v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2510.03683v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The use of derogatory terms in languages that employ code mixing, such as Roman Urdu, presents challenges for Natural Language Processing systems due to unstated grammar, inconsistent spelling, and a scarcity of labeled data. In this work, we propose a QLoRA based fine tuning framework to improve offensive language detection in Roman Urdu-English text. We translated the Roman Urdu-English code mixed dataset into English using Google Translate to leverage English LLMs, while acknowledging that this translation reduces direct engagement with code mixing features. Our focus is on classification performance using English translated low resource inputs. We fine tuned several transformers and large language models, including Meta LLaMA 3 8B, Mistral 7B v0.1, LLaMA 2 7B, ModernBERT, and RoBERTa, with QLoRA for memory efficient adaptation. Models were trained and evaluated on a manually annotated Roman Urdu dataset for offensive vs non offensive content. Of all tested models, the highest F1 score of 91.45 was attained by Meta LLaMA 3 8B, followed by Mistral 7B at 89.66, surpassing traditional transformer baselines. These results demonstrate the efficacy of QLoRA in fine tuning high performing models for low resource environments such as code mixed offensive language detection, and confirm the potential of LLMs for this task. This work advances a scalable approach to Roman Urdu moderation and paves the way for future multilingual offensive detection systems based on LLMs.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-10-04T05:38:46Z</published>
+    <arxiv:comment>25 pages, 22 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Nisar Hussain</name>
+    </author>
+    <author>
+      <name>Amna Qasim</name>
+    </author>
+    <author>
+      <name>Gull Mehak</name>
+    </author>
+    <author>
+      <name>Muhammad Zain</name>
+    </author>
+    <author>
+      <name>Momina Hafeez</name>
+    </author>
+    <author>
+      <name>Grigori Sidorov</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2409.16546v2</id>
+    <title>AlignedKV: Reducing Memory Access of KV-Cache with Precision-Aligned Quantization</title>
+    <updated>2024-10-21T05:06:01Z</updated>
+    <link href="https://arxiv.org/abs/2409.16546v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2409.16546v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Model quantization has become a crucial technique to address the issues of large memory consumption and long inference times associated with LLMs. Mixed-precision quantization, which distinguishes between important and unimportant parameters, stands out among numerous quantization schemes as it achieves a balance between precision and compression rate. However, existing approaches can only identify important parameters through qualitative analysis and manual experiments without quantitatively analyzing how their importance is determined. We propose a new criterion, so-called 'precision alignment', to build a quantitative framework to holistically evaluate the importance of parameters in mixed-precision quantization. Our observations on floating point addition under various real-world scenarios suggest that two addends should have identical precision, otherwise the information in the higher-precision number will be wasted. Such an observation offers an essential principle to determine the precision of each parameter in matrix multiplication operation. As the first step towards applying the above discovery to large model inference, we develop a dynamic KV-Cache quantization technique to effectively reduce memory access latency. Different from existing quantization approaches that focus on memory saving, this work directly aims to accelerate LLM inference through quantifying floating numbers. The proposed technique attains a 25% saving of memory access and delivers up to 1.3x speedup in the computation of attention in the decoding phase of LLM, with almost no loss of precision.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-09-25T01:39:02Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Yifan Tan</name>
+    </author>
+    <author>
+      <name>Haoze Wang</name>
+    </author>
+    <author>
+      <name>Chao Yan</name>
+    </author>
+    <author>
+      <name>Yangdong Deng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2411.13814v1</id>
+    <title>AutoMixQ: Self-Adjusting Quantization for High Performance Memory-Efficient Fine-Tuning</title>
+    <updated>2024-11-21T03:35:07Z</updated>
+    <link href="https://arxiv.org/abs/2411.13814v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2411.13814v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Fine-tuning large language models (LLMs) under resource constraints is a significant challenge in deep learning. Low-Rank Adaptation (LoRA), pruning, and quantization are all effective methods for improving resource efficiency. However, combining them directly often results in suboptimal performance, especially with uniform quantization across all model layers. This is due to the complex, uneven interlayer relationships introduced by pruning, necessitating more refined quantization strategies. To address this, we propose AutoMixQ, an end-to-end optimization framework that selects optimal quantization configurations for each LLM layer. AutoMixQ leverages lightweight performance models to guide the selection process, significantly reducing time and computational resources compared to exhaustive search methods. By incorporating Pareto optimality, AutoMixQ balances memory usage and performance, approaching the upper bounds of model capability under strict resource constraints. Our experiments on widely used benchmarks show that AutoMixQ reduces memory consumption while achieving superior performance. For example, at a 30\% pruning rate in LLaMA-7B, AutoMixQ achieved 66.21\% on BoolQ compared to 62.45\% for LoRA and 58.96\% for LoftQ, while reducing memory consumption by 35.5\% compared to LoRA and 27.5\% compared to LoftQ.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-11-21T03:35:07Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Changhai Zhou</name>
+    </author>
+    <author>
+      <name>Shiyang Zhang</name>
+    </author>
+    <author>
+      <name>Yuhua Zhou</name>
+    </author>
+    <author>
+      <name>Zekai Liu</name>
+    </author>
+    <author>
+      <name>Shichao Weng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.17774v2</id>
+    <title>Internalizing Tool Knowledge in Small Language Models via QLoRA Fine-Tuning</title>
+    <updated>2026-05-26T01:46:08Z</updated>
+    <link href="https://arxiv.org/abs/2605.17774v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.17774v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models are increasingly used as planning components in agentic systems, but current tool-use pipelines often require full tool schemas to be included in every prompt, creating substantial token overhead and limiting the practicality of smaller models. This paper investigates whether tool-use knowledge can be internalized into small language models through parameter-efficient fine-tuning, enabling structured planning without explicit tool descriptions at inference time. Using AssetOpsBench as the primary benchmark, we fine-tune Gemma 4 E4B and Qwen3-4B with 8-bit QLoRA on approximately 1,700 tool-use examples spanning tool knowledge, question-to-plan mappings, and execution-style traces. We evaluate the resulting models under description-free inference, where the prompt omits the tool catalog entirely. The fine-tuned models outperform an informed unfine-tuned baseline that receives full tool descriptions, reducing input length by 82.6\% while improving structural and LLM-judge planning scores. In the best Gemma run, the model achieves an AT-F1 of 0.65 and an overall judge score of 3.88, compared with 0.47 and 2.88 for the informed baseline. Qwen3-4B achieves a strong overall judge score of 3.78 while using 62\% less memory and running 2.5$\times$ faster than Gemma, though it also exhibits greater catastrophic forgetting on general multiple-choice benchmarks. Additional ablations show that LoRA rank controls a quality--retention trade-off, with $r=32$ maximizing planning quality and smaller ranks preserving more general knowledge. These results suggest that, for fixed tool catalogs, QLoRA fine-tuning can shift tool knowledge from prompt context into model weights, substantially reducing inference overhead while maintaining or improving tool-planning quality.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-18T02:48:46Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yuval Shemla</name>
+    </author>
+    <author>
+      <name>Ayal Yakobe</name>
+    </author>
+    <author>
+      <name>Tanmay Agarwal</name>
+    </author>
+    <author>
+      <name>Dhaval Patel</name>
+    </author>
+    <author>
+      <name>Kaoutar El Maghraoui</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1811.03832v1</id>
+    <title>Information Theoretic Bounds Based Channel Quantization Design for Emerging Memories</title>
+    <updated>2018-11-09T09:45:05Z</updated>
+    <link href="https://arxiv.org/abs/1811.03832v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1811.03832v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Channel output quantization plays a vital role in high-speed emerging memories such as the spin-torque transfer magnetic random access memory (STT-MRAM), where high-precision analog-to-digital converters (ADCs) are not applicable. In this paper, we investigate the design of the 1-bit quantizer which is highly suitable for practical applications. We first propose a quantized channel model for STT-MRAM. We then analyze various information theoretic bounds for the quantized channel, including the channel capacity, cutoff rate, and the Polyanskiy-Poor-Verdú (PPV) finite-length performance bound. By using these channel measurements as criteria, we design and optimize the 1-bit quantizer numerically for the STT-MRAM channel. Simulation results show that the proposed quantizers significantly outperform the conventional minimum mean-squared error (MMSE) based Lloyd-Max quantizer, and can approach the performance of the 1-bit quantizer optimized by error rate simulations.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2018-11-09T09:45:05Z</published>
+    <arxiv:comment>This paper is accepted by ITW 2018</arxiv:comment>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Zhen Mei</name>
+    </author>
+    <author>
+      <name>Kui Cai</name>
+    </author>
+    <author>
+      <name>Long Shi</name>
+    </author>
+    <arxiv:doi>10.1109/ITW.2018.8613421</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1109/ITW.2018.8613421" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.22716v1</id>
+    <title>Breaking the Blocks: Continuous Low-Rank Decomposed Scaling for Unified LLM Quantization and Adaptation</title>
+    <updated>2026-01-30T08:46:02Z</updated>
+    <link href="https://arxiv.org/abs/2601.22716v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.22716v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Current quantization methods for LLMs predominantly rely on block-wise structures to maintain efficiency, often at the cost of representational flexibility. In this work, we demonstrate that element-wise quantization can be made as efficient as block-wise scaling while providing strictly superior expressive power by modeling the scaling manifold as continuous low-rank matrices ($S = BA$). We propose Low-Rank Decomposed Scaling (LoRDS), a unified framework that rethinks quantization granularity through this low-rank decomposition. By "breaking the blocks" of spatial constraints, LoRDS establishes a seamless efficiency lifecycle: it provides high-fidelity PTQ initialization refined via iterative optimization, enables joint QAT of weights and scaling factors, and facilitates high-rank multiplicative PEFT adaptation. Unlike additive PEFT approaches such as QLoRA, LoRDS enables high-rank weight updates within a low-rank budget while incurring no additional inference overhead. Supported by highly optimized Triton kernels, LoRDS consistently outperforms state-of-the-art baselines across various model families in both quantization and downstream fine-tuning tasks. Notably, on Llama3-8B, our method achieves up to a 27.0% accuracy improvement at 3 bits over NormalFloat quantization and delivers a 1.5x inference speedup on NVIDIA RTX 4090 while enhancing PEFT performance by 9.6% on downstream tasks over 4bit QLoRA, offering a robust and integrated solution for unified compression and adaptation of LLMs.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-30T08:46:02Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Pingzhi Tang</name>
+    </author>
+    <author>
+      <name>Ruijie Zhou</name>
+    </author>
+    <author>
+      <name>Fanxu Meng</name>
+    </author>
+    <author>
+      <name>Wenjie Pei</name>
+    </author>
+    <author>
+      <name>Muhan Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.16396v1</id>
+    <title>QU-NLP at QIAS 2026: Multi-Stage QLoRA Fine-Tuning for Arabic Islamic Inheritance Reasoning</title>
+    <updated>2026-03-29T09:11:17Z</updated>
+    <link href="https://arxiv.org/abs/2604.16396v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.16396v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Islamic inheritance law (ilm al-mawarıth) presents a challenging domain for evaluating large language models' structured reasoning capabilities, requiring multi-step legal analysis, rule-based blocking decisions, and precise fractional calculations. We present QU-NLP's submission to the QIAS 2026 shared task on Arabic Islamic inheritance reasoning. Our approach employs a multi-stage Quantized Low-Rank Adaptation (QLoRA) fine-tuning strategy on Qwen3-4B: (1) domain adaptation on 3,166 Islamic fatwa records to acquire inheritance terminology and jurisprudential reasoning patterns, followed by (2) task-specific training on 12,000 structured inheritance cases to optimize JSON-formatted output generation. Using 4-bit NF4 quantization with rank-128 LoRA adapters, our model achieves 90% MIR-E (Mawarith Inheritance Reasoning Evaluation) score on the test set, demonstrating competitive performance while requiring minimal computational resources. Our results show that domain-specific pre-adaptation combined with structured output training enables small language models to perform complex legal reasoning tasks effectively comparing to commercial systems such as Gemini-2.5-flash.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-03-29T09:11:17Z</published>
+    <arxiv:comment>Accepted for publication, The 7th Workshop on Open-Source Arabic Corpora and Processing Tools, LREC26 conference</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Mohammad AL-Smadi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2503.00040v1</id>
+    <title>Memory-Free and Parallel Computation for Quantized Spiking Neural Networks</title>
+    <updated>2025-02-25T10:34:25Z</updated>
+    <link href="https://arxiv.org/abs/2503.00040v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2503.00040v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Quantized Spiking Neural Networks (QSNNs) offer superior energy efficiency and are well-suited for deployment on resource-limited edge devices. However, limited bit-width weight and membrane potential result in a notable performance decline. In this study, we first identify a new underlying cause for this decline: the loss of historical information due to the quantized membrane potential. To tackle this issue, we introduce a memory-free quantization method that captures all historical information without directly storing membrane potentials, resulting in better performance with less memory requirements. To further improve the computational efficiency, we propose a parallel training and asynchronous inference framework that greatly increases training speed and energy efficiency. We combine the proposed memory-free quantization and parallel computation methods to develop a high-performance and efficient QSNN, named MFP-QSNN. Extensive experiments show that our MFP-QSNN achieves state-of-the-art performance on various static and neuromorphic image datasets, requiring less memory and faster training speeds. The efficiency and efficacy of the MFP-QSNN highlight its potential for energy-efficient neuromorphic computing.</summary>
+    <category term="cs.NE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-02-25T10:34:25Z</published>
+    <arxiv:primary_category term="cs.NE"/>
+    <author>
+      <name>Dehao Zhang</name>
+    </author>
+    <author>
+      <name>Shuai Wang</name>
+    </author>
+    <author>
+      <name>Yichen Xiao</name>
+    </author>
+    <author>
+      <name>Wenjie Wei</name>
+    </author>
+    <author>
+      <name>Yimeng Shan</name>
+    </author>
+    <author>
+      <name>Malu Zhang</name>
+    </author>
+    <author>
+      <name>Yang Yang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2208.13571v1</id>
+    <title>PECAN: A Product-Quantized Content Addressable Memory Network</title>
+    <updated>2022-08-13T08:33:56Z</updated>
+    <link href="https://arxiv.org/abs/2208.13571v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2208.13571v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>A novel deep neural network (DNN) architecture is proposed wherein the filtering and linear transform are realized solely with product quantization (PQ). This results in a natural implementation via content addressable memory (CAM), which transcends regular DNN layer operations and requires only simple table lookup. Two schemes are developed for the end-to-end PQ prototype training, namely, through angle- and distance-based similarities, which differ in their multiplicative and additive natures with different complexity-accuracy tradeoffs. Even more, the distance-based scheme constitutes a truly multiplier-free DNN solution. Experiments confirm the feasibility of such Product-Quantized Content Addressable Memory Network (PECAN), which has strong implication on hardware-efficient deployments especially for in-memory computing.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2022-08-13T08:33:56Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jie Ran</name>
+    </author>
+    <author>
+      <name>Rui Lin</name>
+    </author>
+    <author>
+      <name>Jason Chun Lok Li</name>
+    </author>
+    <author>
+      <name>Jiajun Zhou</name>
+    </author>
+    <author>
+      <name>Ngai Wong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2404.02947v1</id>
+    <title>DNN Memory Footprint Reduction via Post-Training Intra-Layer Multi-Precision Quantization</title>
+    <updated>2024-04-03T15:06:09Z</updated>
+    <link href="https://arxiv.org/abs/2404.02947v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2404.02947v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The imperative to deploy Deep Neural Network (DNN) models on resource-constrained edge devices, spurred by privacy concerns, has become increasingly apparent. To facilitate the transition from cloud to edge computing, this paper introduces a technique that effectively reduces the memory footprint of DNNs, accommodating the limitations of resource-constrained edge devices while preserving model accuracy. Our proposed technique, named Post-Training Intra-Layer Multi-Precision Quantization (PTILMPQ), employs a post-training quantization approach, eliminating the need for extensive training data. By estimating the importance of layers and channels within the network, the proposed method enables precise bit allocation throughout the quantization process. Experimental results demonstrate that PTILMPQ offers a promising solution for deploying DNNs on edge devices with restricted memory resources. For instance, in the case of ResNet50, it achieves an accuracy of 74.57\% with a memory footprint of 9.5 MB, representing a 25.49\% reduction compared to previous similar methods, with only a minor 1.08\% decrease in accuracy.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-04-03T15:06:09Z</published>
+    <arxiv:comment>The 25th International Symposium on Quality Electronic Design (ISQED'24)</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Behnam Ghavami</name>
+    </author>
+    <author>
+      <name>Amin Kamjoo</name>
+    </author>
+    <author>
+      <name>Lesley Shannon</name>
+    </author>
+    <author>
+      <name>Steve Wilton</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/1911.00527v1</id>
+    <title>Memory Requirement Reduction of Deep Neural Networks Using Low-bit Quantization of Parameters</title>
+    <updated>2019-11-01T18:03:12Z</updated>
+    <link href="https://arxiv.org/abs/1911.00527v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/1911.00527v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Effective employment of deep neural networks (DNNs) in mobile devices and embedded systems is hampered by requirements for memory and computational power. This paper presents a non-uniform quantization approach which allows for dynamic quantization of DNN parameters for different layers and within the same layer. A virtual bit shift (VBS) scheme is also proposed to improve the accuracy of the proposed scheme. Our method reduces the memory requirements, preserving the performance of the network. The performance of our method is validated in a speech enhancement application, where a fully connected DNN is used to predict the clean speech spectrum from the input noisy speech spectrum. A DNN is optimized and its memory footprint and performance are evaluated using the short-time objective intelligibility, STOI, metric. The application of the low-bit quantization allows a 50% reduction of the DNN memory footprint while the STOI performance drops only by 2.7%.</summary>
+    <category term="eess.AS" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.PF" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SD" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2019-11-01T18:03:12Z</published>
+    <arxiv:primary_category term="eess.AS"/>
+    <author>
+      <name>Niccoló Nicodemo</name>
+    </author>
+    <author>
+      <name>Gaurav Naithani</name>
+    </author>
+    <author>
+      <name>Konstantinos Drossos</name>
+    </author>
+    <author>
+      <name>Tuomas Virtanen</name>
+    </author>
+    <author>
+      <name>Roberto Saletti</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2405.17873v2</id>
+    <title>MixDQ: Memory-Efficient Few-Step Text-to-Image Diffusion Models with Metric-Decoupled Mixed Precision Quantization</title>
+    <updated>2024-05-30T01:51:10Z</updated>
+    <link href="https://arxiv.org/abs/2405.17873v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2405.17873v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Diffusion models have achieved significant visual generation quality. However, their significant computational and memory costs pose challenge for their application on resource-constrained mobile devices or even desktop GPUs. Recent few-step diffusion models reduces the inference time by reducing the denoising steps. However, their memory consumptions are still excessive. The Post Training Quantization (PTQ) replaces high bit-width FP representation with low-bit integer values (INT4/8) , which is an effective and efficient technique to reduce the memory cost. However, when applying to few-step diffusion models, existing quantization methods face challenges in preserving both the image quality and text alignment. To address this issue, we propose an mixed-precision quantization framework - MixDQ. Firstly, We design specialized BOS-aware quantization method for highly sensitive text embedding quantization. Then, we conduct metric-decoupled sensitivity analysis to measure the sensitivity of each layer. Finally, we develop an integer-programming-based method to conduct bit-width allocation. While existing quantization methods fall short at W8A8, MixDQ could achieve W8A8 without performance loss, and W4A8 with negligible visual degradation. Compared with FP16, we achieve 3-4x reduction in model size and memory cost, and 1.45x latency speedup.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2024-05-28T06:50:58Z</published>
+    <arxiv:comment>Project Page: https://a-suozhang.xyz/mixdq.github.io/</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Tianchen Zhao</name>
+    </author>
+    <author>
+      <name>Xuefei Ning</name>
+    </author>
+    <author>
+      <name>Tongcheng Fang</name>
+    </author>
+    <author>
+      <name>Enshu Liu</name>
+    </author>
+    <author>
+      <name>Guyue Huang</name>
+    </author>
+    <author>
+      <name>Zinan Lin</name>
+    </author>
+    <author>
+      <name>Shengen Yan</name>
+    </author>
+    <author>
+      <name>Guohao Dai</name>
+    </author>
+    <author>
+      <name>Yu Wang</name>
+    </author>
+  </entry>
+</feed>

@@ -105,11 +105,18 @@ GitHub repositories, Hugging Face model cards, arbitrary websites, or local
 hardware. HTML/PDF extraction may miss tables, figures and equations; coverage
 is recorded. Discovery caches may be stale. Two papers cannot establish a
 comprehensive survey or reliable absence of a method.
-When Semantic Scholar is unavailable, experiment discovery explicitly falls back
-to arXiv over the full arXiv date range. The response records the provider failure
-and warns that fallback results are newest first, not ranked by relevance. Each
-logical search can therefore make up to two provider queries, within the existing
-network bounds and throttles. This fallback does not change the older MCP servers.
+When Semantic Scholar is unavailable, experiment discovery falls back to arXiv
+relevance search over titles/abstracts, without a date restriction. Plain-text
+words and generic joined-word variants form the query. Up to 50 provider-ranked
+candidates are screened for lexical matches; a leading two-word phrase/compound
+in the title takes priority, followed by term coverage, title coverage and provider
+order. This heuristic depends on query wording and cannot establish semantic
+relevance. At most five candidates reach the default controller. With no matches,
+`no_candidates` tells it to refine the query or report a discovery gap. Unsupported
+legacy arXiv identifiers are skipped and listed; the reader accepts modern IDs.
+Every fallback retains the primary provider's failure. Each logical search makes
+at most two provider queries, within the existing network bounds and throttles.
+The older MCP servers' default relevance and date-sorted recency paths are unchanged.
 Lower request/token limits appear in the effective controller prompt and the
 remaining shared request count is supplied on each control turn. The live runner
 also checkpoints partial progress before further control inference.
@@ -164,6 +171,12 @@ truncated attempted finish preceded watchdog shutdown. The GPU was verified off.
 This is a prototype with a negative live result, not a demonstrated useful
 research assistant. The later validation also records a separately reviewed
 staging-concurrency fix after that failure reproduced again.
+
+The [discovery repair](implementation/2026-10-21-experiment-discovery-repair.md)
+subsequently found the three named foundational papers within the top five in
+live arXiv source checks after an injected primary-provider failure. These were
+development queries, including ones used to refine ranking. This improves the
+tested discovery path; no Qwen research episode or training run was repeated.
 
 For a submission, a useful live investigation and trace still need to be
 demonstrated, alongside clearly labeled offline failure tests and existing saved
