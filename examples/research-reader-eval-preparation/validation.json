@@ -1,0 +1,69 @@
+{
+  "schema_version": "reader-eval-preparation-validation-v1",
+  "recorded_at": "2026-10-21T13:43:08.009823+00:00",
+  "dataset_commit": "772ee51",
+  "implementation_commit": "8005c6c5c82c122bf08ad7920bec0de74c6f5ad0",
+  "bundle_check": {
+    "status": "mechanical_checks_passed_not_semantic_grades",
+    "split_counts": {
+      "development": 12,
+      "evaluation": 12
+    },
+    "source_count": 8,
+    "human_review": "not_performed",
+    "lock_sha256": "dd44858a0ec792cafad7f13ca3e10666c089576bf98acf2dea15ff37ed9205a2"
+  },
+  "implementation_sha256": {
+    "src/eval/reader_eval_bundle.py": "501abe6e2af4b11f3376d47af34e5e076ebd5e729e40eb6010b47a690bc5b996",
+    "scripts/check_research_reader_eval.py": "3834cb8d4644fb3e4e6f0ac11be130102ffeff11896fb228a7b7b4e1e7f4c1e2",
+    "tests/test_reader_eval_bundle.py": "d755c7000d717b9157415c4b4813fe80f93615e46850673a459e164a8a23486d"
+  },
+  "source_review_sha256": "27e9db734f8290f172fe31eeb5ce614482c2da4232b7bab822c7a08fde815687",
+  "reviewed_evaluation_cases": 12,
+  "source_review_kind": "independent_model_assisted; provisional; no human validation",
+  "human_answer_review": "not_performed; template all null",
+  "baseline_inference": "not_run_on_new_evaluation_questions",
+  "training_approved": false,
+  "reward": "not_defined",
+  "model_requests": 0,
+  "gpu_activations": 0,
+  "paid_api_calls": 0,
+  "tests": {
+    "focused": {
+      "passed": 22,
+      "seconds": 4.1
+    },
+    "full_suite": {
+      "passed": 1784,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 71.49,
+      "warning_note": "Existing SWIG deprecation warnings"
+    },
+    "focused_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_reader_eval_bundle.py tests/test_reader_comparison_review.py",
+    "full_suite_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "ruff": "passed for all new code/test files",
+    "git_diff_check": "passed"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  },
+  "limitations": [
+    "Public reserved questions, not certified absent from training or pretraining",
+    "Source review is model-assisted; human review pending",
+    "Assigned-paper reading only; not discovery or full research synthesis",
+    "No model outputs, no measured training improvement, no RL reward",
+    "Historical development references retain inherited strictness and extraction limitations",
+    "No new baseline runner/paid authorization supplied; existing runner remains bound to its previous dataset"
+  ]
+}

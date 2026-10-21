@@ -178,6 +178,13 @@ live arXiv source checks after an injected primary-provider failure. These were
 development queries, including ones used to refine ranking. This improves the
 tested discovery path; no Qwen research episode or training run was repeated.
 
+The [reader evaluation preparation](../benchmarks/research_reader_v1/README.md)
+now freezes 12 exposed development questions and 12 reserved questions on four
+different paper IDs, with exact sources, expected facts and provisional
+model-assisted source review. It measures assigned-paper reading, separately
+from discovery and research synthesis. Human answer review and baseline inference
+remain pending; the pack defines no RL reward and authorizes no paid execution.
+
 For a submission, a useful live investigation and trace still need to be
 demonstrated, alongside clearly labeled offline failure tests and existing saved
 QASPER results. Another paid test needs fresh approval; sponsor integration
