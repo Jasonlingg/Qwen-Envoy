@@ -39,7 +39,8 @@ from src.product.passage_scope import PASSAGES
 
 ENDPOINT = "q05pjrvguakieg"
 IMAGE = "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382"
-MARKER = ROOT / "out/passage-reader-three-case-LIVE_ATTEMPT"
+# One newly authorized rerun; the original attempt marker remains consumed.
+MARKER = ROOT / "out/passage-reader-three-case-RERUN-1"
 LIMITS = {"model_requests": 12, "tokens_reserved": 98304, "seconds": 900, "gpus": 1}
 FILES = ["scripts/try_passage_reader.py", "scripts/experiment_mode_mcp.py",
     "src/product/passage_reader_service.py", "src/product/passage_scope.py",
