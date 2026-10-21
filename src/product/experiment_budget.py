@@ -33,7 +33,13 @@ class ExperimentBudget:
     def remaining(self):
         return min(self.requests_max, self.tokens_max // 8192) - len(self.records)
 
+    @property
+    def transport_failed(self):
+        return any(record["status"] == "failed_or_uncertain" for record in self.records)
+
     def __call__(self, url, payload, headers, timeout):
+        if self.transport_failed and self.remaining > 0:
+            raise RuntimeError("previous inference outcome uncertain; no further dispatch")
         if (payload.get("max_tokens") != self.OUTPUT_MAX
                 or payload.get("chat_template_kwargs") != {"enable_thinking": False}
                 or payload.get("stream", False) is not False or payload.get("n", 1) != 1):
@@ -72,4 +78,5 @@ class ExperimentBudget:
         return {"requests_max": self.requests_max, "tokens_max": self.tokens_max,
                 "requests_dispatched": len(records), "requests_remaining": self.remaining,
                 "tokens_reserved": len(records) * 8192, "usage_complete": complete,
-                "records": records, "provider_dollar_cap": False}
+                "records": records, "transport_failed": self.transport_failed,
+                "provider_dollar_cap": False}
