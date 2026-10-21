@@ -123,13 +123,16 @@ def test_real_hook_client_schedule_and_durable_request_reservations(tmp_path, mo
     assert "secret" not in (tmp_path / "profile.requests.jsonl").read_text()
 
 
-@pytest.mark.parametrize("failure", ["uncertain", "changed_worker", "bad_usage"])
+@pytest.mark.parametrize("failure", ["uncertain", "changed_worker", "bad_usage", "worker_error"])
 def test_uncertain_or_invalid_response_consumes_allowance_and_stops(tmp_path, failure):
     payloads, calls = inputs(), []
     def http(method, path, body=None):
         calls.append((method, path))
         if failure == "uncertain":
             raise TimeoutError("uncertain POST outcome")
+        if failure == "worker_error":
+            return {"id": "job-1", "status": "COMPLETED",
+                    "output": {"error": {"message": "required engine telemetry missing"}}}
         response = {"model": "envoy", "choices": [{}],
                     "usage": {"prompt_tokens": 5, "completion_tokens": 2048}}
         return {"id": "job-1", "status": "COMPLETED", "output": {
@@ -145,6 +148,10 @@ def test_uncertain_or_invalid_response_consumes_allowance_and_stops(tmp_path, fa
             client.call("infer", "sample_a")
         assert client.model_calls == 1
         assert sum(method == "POST" and path == "/run" for method, path in calls) == 1
+        if failure != "uncertain":
+            rows = [json.loads(line) for line in
+                    (tmp_path / "audit.jsonl").read_text().splitlines()]
+            assert any(row["event"] == "returned" and "output" in row for row in rows)
     finally:
         client.audit.close()
 

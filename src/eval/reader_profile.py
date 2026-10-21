@@ -80,6 +80,8 @@ class ProfileQueueClient:
             output = job.get("output")
             if isinstance(output, list) and len(output) == 1:
                 output = output[0]
+            self.append({"event": "returned", "job_id": job_id,
+                         "kind": "model" if model else "telemetry", "output": output})
             if not isinstance(output, dict) or "error" in output:
                 raise ValueError("profile worker rejected request")
             boot = output.get("profile", {}).get("boot_id")
