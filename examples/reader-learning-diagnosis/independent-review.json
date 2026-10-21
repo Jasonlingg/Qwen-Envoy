@@ -1,0 +1,263 @@
+{
+  "review_kind": "model_assisted",
+  "human_review": "not_performed",
+  "reviewer_identity": "Codex independent paired_claim_review agent",
+  "reviewed_at": "2026-10-21T14:31:37.041252Z",
+  "scope": "All 24 saved DEVELOPMENT rows and proposed reward only. No reserved evaluation questions/references read for this task; no external calls, candidate inference, training, active reward changes, historical edits, or scalar reward computation.",
+  "verdict": "accepted_as_development_diagnosis_and_unimplemented_reward_proposal; not_ready_or_authorized_for_training",
+  "checks": {
+    "analysis_reproduced_exactly": true,
+    "all_recorded_input_hashes_match": true,
+    "all_24_original_cases_packets_reviews_match": true,
+    "all_submitted_source_spans_match_pinned_development_sources": true,
+    "all_24_candidate_evidence_ids_resolve": true,
+    "requests": {
+      "base": 45,
+      "v5": 44,
+      "total": 89
+    },
+    "historical_passes": {
+      "base_answerable": 2,
+      "v5_answerable": 1,
+      "base_gap": 2,
+      "v5_gap": 3
+    },
+    "recorded_python_execution_error_episodes": 0,
+    "overlapping_diagnostic_counts": {
+      "citation_scope_missing": 4,
+      "citation_boundary_derivation_ambiguity": 2,
+      "wrong_measurement": 1,
+      "condition_swap": 2,
+      "requested_fact_missing": 3,
+      "rubric_scope_ambiguity": 8
+    }
+  },
+  "row_diagnosis_review": [
+    {
+      "case_id": "paged-blocks",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "rubric_scope_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "paged-blocks",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "citation_scope_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "historical_supported_pass",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "paged-traces",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "historical_supported_pass",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "policy_budget_exhaustion",
+      "historical_verdict_preserved": "fail"
+    },
+    {
+      "case_id": "paged-target",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "appropriately_scoped_gap",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "rubric_scope_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "qlora-dtypes",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "rubric_scope_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "citation_boundary_derivation_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "qlora-dq",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "citation_boundary_derivation_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "appropriately_scoped_gap",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "qlora-target",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "appropriately_scoped_gap",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "citation_scope_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "flash-warps",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "condition_swap",
+      "historical_verdict_preserved": "fail"
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "wrong_measurement",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "flash-triton",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "citation_scope_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "appropriately_scoped_gap",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "flash-target",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "gap_target_condition_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "requested_fact_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "awq-profile",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "rubric_scope_ambiguity",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "requested_fact_missing",
+      "historical_verdict_preserved": "partial"
+    },
+    {
+      "case_id": "awq-protocol",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "historical_supported_pass",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "v5",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "appropriately_scoped_gap",
+      "historical_verdict_preserved": "pass"
+    },
+    {
+      "case_id": "awq-target",
+      "arm": "base",
+      "diagnosis_review": "supported_as_provisional_diagnosis",
+      "primary_tag": "condition_swap",
+      "historical_verdict_preserved": "fail"
+    }
+  ],
+  "material_findings": [
+    {
+      "id": "gap-addition-gate",
+      "status": "resolved",
+      "location": "reward-proposal.json target_gap_formula.R; docs Proposed terminal reward",
+      "finding": "The gap reward currently bans unsupported target assertions only. A valid scoped gap and next query plus an invented or contradicted partial literature finding about another model/device could still satisfy that literal formula.",
+      "resolution": "The final target_gap_formula.R applies the same all-material-assertion support/condition gate as answerable cases and explicitly zeros fabricated/contradicted partial literature findings. The validation critical types include a valid target gap plus an unsupported partial literature claim. The report states the same rule.",
+      "original_required_change": "Apply the same correctness, own-citation support and condition-binding gate to every material assertion in a gap episode, including optional partial findings and mechanism explanations. Missing/disputed judgments must use the existing halt rule. Add a contrast case pairing an otherwise valid gap with a false non-target partial finding."
+    },
+    {
+      "id": "judge-readiness-decision",
+      "status": "resolved",
+      "location": "reward-proposal.json readiness_gates and decision_rule; docs What must happen before RL",
+      "finding": "The requirement that contrast cases reliably separate answers is not an operational acceptance rule. Reporting critical-error acceptance/false-rejection results without thresholds fixed before validation leaves readiness movable; evaluating only calibration examples would not establish judge generalization even within development.",
+      "resolution": "judge-validation-plan.json predeclares 32 fixtures with exact expected scores and zero accepted critical errors, incorrect positive/partial/gap/refusal scores, unknowns or missing cases. Judge and label contracts freeze before calls. Design uses PagedAttention/QLoRA and validation uses already-inspected FlashAttention-2/AWQ development sources; failures that inform changes retire the check into design. The report and proposal limit this to a sentinel implementation-readiness gate, not untouched generalization, population reliability or training authorization.",
+      "original_required_change": "Before any implementation or optimization proposal, define a source-reviewed development-only judge-validation partition distinct from calibration examples, denominators and precommitted critical-false-accept and false-reject/unknown decision rules. State that inspecting validation failures for changes retires that validation partition. Do not imply this 24-row audit supplies judge reliability or human gold."
+    }
+  ],
+  "confirmed_distinctions": [
+    "No quiet historical regrading: original verdicts and notes are preserved; supported_requested_core and rubric_scope_ambiguity are explicitly diagnostic tags, not new pass labels.",
+    "Both QLoRA overhead values are correct in the complete cached source. Their submitted excerpts stop before the final result; whether unstated arithmetic suffices is an unresolved citation/derivation policy, not evidence of fabricated values.",
+    "The rubric-scope ambiguity tags are defensible as provisional: some historical requirements add unasked detail or require prompt-context repetition. Genuine citation gaps remain separately tagged; these rows are not automatically valid answers.",
+    "The incomplete base PagedAttention target episode has six returned model actions and ends with a rejected abstention lacking a gap report at zero actions left. This is observable policy/protocol exhaustion rather than an uncertain provider outcome.",
+    "Zero recorded Python execution-error episodes is correctly narrower than zero policy failures: the missing-gap rejection is retained separately.",
+    "The two condition swaps and wrong-measurement diagnosis are supported by the saved claims and source conditions, without claiming general model incapability or validated fine-tuning benefit.",
+    "The answerable completeness fraction, fixed requested facts, semantic support gate, explicit derivation policy, separate gap reporting, and group-level halt for external/unknown judgments are sensible proposal safeguards. They are not implemented or validated semantic labels."
+  ],
+  "limits": [
+    "Equal requested-fact weighting and atomization remain to be adjudicated before candidate scoring; no scalar reward was computed.",
+    "A terminal semantic judge can itself become a reward-hacking target; direct contrast-set checks are necessary but cannot alone certify reliability under future optimized policy outputs.",
+    "No untouched evaluation artifacts were reopened for this diagnosis review. This is model-assisted source/diagnostic review, not independent human validation.",
+    "The 32-fixture validation plan is predeclared but unconstructed and unrun. This review resolves the proposal-contract findings; it does not pass that future gate, certify a semantic judge or authorize calls/training."
+  ],
+  "reviewed_artifact_sha256": {
+    "examples/reader-learning-diagnosis/annotations.json": "00a866b8162d8f6eaf00972e6afd79220dcbffe775434d4f3e8977474f68bfad",
+    "examples/reader-learning-diagnosis/analysis.json": "46cbaa363789186471bd5bf054df08c0453b18540fe2828391013d445925672a",
+    "examples/reader-learning-diagnosis/analyze_saved.py": "516aa0c74f463f2bd43997b900242a8ceeabea3736098881db240efbadac99ad",
+    "examples/reader-learning-diagnosis/reward-proposal.json": "0464bf2d3b58ff8d94dfcaf0cbbc5bb33d998a6298c262cbfc7e3e9025920b86",
+    "examples/reader-learning-diagnosis/judge-validation-plan.json": "6a0ea572fd9f85eb9555787543dc22be10af6d9d76dfbb728ec5ce96a292d42a",
+    "docs/implementation/2026-10-21-reader-learning-target.md": "d6e237ca2e626c81fccec56df503df8d2014953fbbcac274ed0ef817d5abf76b"
+  },
+  "open_material_findings": [],
+  "revision_checks": {
+    "gap_gate_covers_all_material_assertions": true,
+    "validation_total": 32,
+    "validation_critical_negatives": 12,
+    "validation_complete": 8,
+    "validation_partials": 4,
+    "validation_gaps": 4,
+    "validation_blanket_refusals": 4,
+    "all_acceptance_error_limits_zero": true,
+    "paper_id_partitions_disjoint_within_development": true,
+    "validation_labels_and_judge_not_yet_constructed_or_run": true,
+    "retirement_rule_explicit": true,
+    "initial_learning_scope": "answerables; gaps separate nonregression until later mixture frozen with abstention baseline",
+    "diagnosis_annotations_analyzer_unchanged": true
+  },
+  "construction_note": "When constructing the declared support-failure contrasts, include a correct value whose own citation clips off decisive support; keep this distinct from a fabricated value and quarantine genuinely disputed derivations before label lock. No fixture labels or judge scores are supplied by this review."
+}

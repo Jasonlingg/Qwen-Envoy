@@ -185,6 +185,12 @@ model-assisted source review. It measures assigned-paper reading, separately
 from discovery and research synthesis. Human answer review and baseline inference
 remain pending; the pack defines no RL reward and authorizes no paid execution.
 
+The [development learning diagnosis](implementation/2026-10-21-reader-learning-target.md)
+identifies citation coverage, requested-fact completeness and condition binding
+as candidate learning targets. Its correctness-reward proposal remains
+unimplemented and unvalidated; no research reward or training job was added.
+The reserved reader evaluation remains outside reward design.
+
 For a submission, a useful live investigation and trace still need to be
 demonstrated, alongside clearly labeled offline failure tests and existing saved
 QASPER results. Another paid test needs fresh approval; sponsor integration

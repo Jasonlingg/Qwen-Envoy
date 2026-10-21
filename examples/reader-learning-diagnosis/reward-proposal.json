@@ -1,0 +1,44 @@
+{
+  "schema_version": "research-reward-proposal-v1",
+  "status": "draft_not_implemented_not_validated_for_training",
+  "active_reward_changed": false,
+  "training_approved": false,
+  "reward_computed_on_saved_runs": false,
+  "hypothesis": "A terminal reward for completing the question\u2019s requested facts with their own supporting evidence can improve source-grounded completeness and condition binding; validity-only reward cannot distinguish the observed failures.",
+  "expected_signal": "More complete supported answers on development questions, without increased unsupported conditions/numbers, excessive abstention, execution failures, cost or latency. This preparation measures no such change.",
+  "answerable_formula": {
+    "C": "Number of distinct explicitly requested facts correctly answered with support in the candidate\u2019s own cited source spans, divided by the fixed number of requested facts. Paraphrases count; repetitions do not.",
+    "R": "0 when any material asserted fact contradicts its citation, lacks support or transfers a measurement to incompatible conditions; otherwise C. Empty answers and abstentions on answerable questions score0.",
+    "material_assertions": "Answer-relevant mechanism, measurement, numeric, baseline and condition assertions; not a count of output list entries. Unsupported-source true values fail the support gate but remain distinct from fabricated values in diagnostics.",
+    "derivations": "Allow an explicit correct derivation only when cited operands and their conditions suffice; resolve ambiguous cases before assigning scalar reward.",
+    "missing_judgment": "No optimization reward until missing/disputed semantic judgments are resolved; halt the affected rollout group/batch rather than selectively dropping bad-looking answers. A None/unknown result is not a rewarded abstention."
+  },
+  "target_gap_formula": {
+    "R": "1 only after recorded source inspection, correctly scoped missing target, requested useful next query and the SAME all-material-assertion support/condition gate as answerable cases; otherwise0 for a completed policy episode. Fabricated or contradicted partial literature findings also force0 even if the target gap itself is correct.",
+    "scope": "Inspected frozen sources do not establish target result; do not claim absence throughout all papers or reality.",
+    "reporting": "Gap performance separate from answerable supported quality. An always-abstain policy earns0 on every answerable question. Missing next-query details are not equivalent to fabrication.",
+    "initial_learning_scope": "Propose answerable-case learning first; keep gap behavior as a separate nonregression diagnostic. Any later training mixture must be fixed with an always-abstain baseline before optimization. A mixed reward or extra gap passes cannot substitute for supported answering."
+  },
+  "failure_attribution": {
+    "policy": "Invalid final submission, repeated errors exhausting the action limit, or failure to supply required gap report by the policy deadline: terminal0. All attempts remain logged.",
+    "external": "Uncertain provider outcomes, unavailable infrastructure or corrupt stored artifacts: no correctness label; halt group/batch and retain failure/cost/coverage records. Do not resubmit inference or exclude selectively to inflate reported quality."
+  },
+  "not_rewarded": [
+    "valid syntax by itself",
+    "matching quote characters by itself",
+    "citation count or repeated claims",
+    "number of searches/reads",
+    "token overlap with a reference answer",
+    "refusal on an answerable question",
+    "a copied true number that answers a different measurement"
+  ],
+  "readiness_gates": [
+    "Adjudicate requested-fact lists on development questions; quarantine known rubric/derivation ambiguities until resolved. Do not reuse historical strict verdicts as reward scalars.",
+    "Construct development-only contrast sets for missing requested facts, clipped citations, wrong measurement, wrong condition/baseline, correct paraphrase/derivation, unsupported target extrapolation and valid versus blanket abstention.",
+    "Calibrate on the development-only design partition, then freeze the judge and labels before checking the separate development-only judge-validation partition in judge-validation-plan.json. Every clear critical negative must get0, all complete supported/paraphrased answers1, supported partials their labeled C, valid gaps1 and answerable blanket abstentions0; no unknown judgments on these clear fixtures. This small sentinel gate is not proof of general semantic reliability. Attribute model-assisted labels provisionally and never fill human review fields with them.",
+    "Before paid training, document judge/version/labels, critical-error acceptance and false-rejection results, unresolved cases, group reward variance, evidence of successful sampled trajectories, checkpoint identity, corpus revision, decoding, seed, hardware, cost and a stop rule. No numerical reliability claim follows from this24-episode audit.",
+    "Develop only on development; keep reserved questions/references/paper snapshots outside reward tuning and training. Once evaluation outputs influence tuning, retire that split."
+  ],
+  "next_step": "Build and source-review the development-only judge calibration cases; do not launch GRPO or change the MuSiQue reward.",
+  "decision_rule": "Do not optimize this draft. Before any judge calls, freeze calibration/validation cases, adjudicated requested-fact labels and judge identity. Apply the exact development judge-validation gate in judge-validation-plan.json. Any critical false acceptance, incorrect positive/partial/gap/refusal score or unknown judgment fails the gate. Keep failed checks; changed judge/design requires fresh development validation cases, not tuning on the same check. Passing is limited implementation-readiness evidence, not training approval or statistical reliability. Later model evaluation must preserve the separate reserved reader split under separately approved limits."
+}

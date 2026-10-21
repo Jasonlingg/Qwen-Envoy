@@ -1,0 +1,56 @@
+{
+  "schema_version": "development-judge-validation-plan-v1",
+  "status": "predeclared_not_constructed_not_run",
+  "hypothesis": "A candidate semantic scoring process can distinguish source-supported requested facts from clear support/condition/measurement failures.",
+  "design_partition_paper_ids": [
+    "2309.06180",
+    "2305.14314"
+  ],
+  "judge_validation_partition_paper_ids": [
+    "2307.08691",
+    "2306.00978"
+  ],
+  "partition_scope": "Both partitions use already-inspected development material. Distinct from each other for future judge-example/prompt fitting; not an untouched population test and not the reserved reader evaluation split.",
+  "case_requirements": {
+    "clear_critical_negatives": 12,
+    "critical_types_with_two_examples_each": [
+      "wrong hardware or workload transfer",
+      "wrong baseline or algorithm",
+      "true number for wrong measurement",
+      "invented target result",
+      "unrelated valid quote",
+      "valid target gap plus unsupported partial literature claim"
+    ],
+    "complete_supported_including_paraphrases": 8,
+    "supported_partials_with_fixed_C": 4,
+    "valid_scoped_gaps_with_requested_query": 4,
+    "blanket_abstentions_on_answerable_questions": 4,
+    "total": 32
+  },
+  "label_contract": "Review requested-fact lists, candidate assertions and own evidence before judge calls. Bind source bytes and distinguish fabricated values from support failures. Quarantine disputed cases before lock; report exclusions. Model-assisted labels are provisional, human fields remain unfilled until person reviews.",
+  "judge_contract": "Freeze judge model/revision, prompt, tools, token/request limits and decoding before validation. Labels from the validation partition never become in-context examples or judge prompt-tuning inputs. Grade facts, not string overlap.",
+  "acceptance": {
+    "critical_false_acceptances_max": 0,
+    "incorrect_complete_or_paraphrase_scores_max": 0,
+    "incorrect_partial_C_scores_max": 0,
+    "incorrect_valid_gap_scores_max": 0,
+    "rewarded_answerable_blanket_abstentions_max": 0,
+    "unknown_labels_or_judgments_on_clear_validation_cases_max": 0,
+    "missing_cases_max": 0
+  },
+  "expected_scores": {
+    "critical_negative": 0,
+    "complete_supported_or_supported_paraphrase": 1,
+    "supported_partial": "C from the frozen requested-fact labels",
+    "valid_gap": 1,
+    "blanket_abstention_answerable": 0
+  },
+  "failure_rule": "Any threshold breach fails the gate. Stop before optimization. Record failure; any prompt/reward/judge change informed by this check makes it design data, requiring fresh development-only validation cases. Never use the reserved reader questions/papers to repair this judge.",
+  "interpretation": "Zero observed errors among32 deliberately clear fixtures is only a sentinel gate; do not claim a population false-positive rate, validated automatic semantic correctness or improvement from training.",
+  "judge_identity": null,
+  "actual_results": null,
+  "human_review": "not_performed",
+  "model_requests_approved": 0,
+  "gpu_activations_approved": 0,
+  "training_approved": false
+}
