@@ -1,0 +1,100 @@
+{
+  "schema_version": "research-judge-fixture-validation-v1",
+  "recorded_at": "2026-10-21T14:53:37.007236+00:00",
+  "fixtures_commit": "2b0a469",
+  "status": "fixture_integrity_verified_semantic_judge_not_run",
+  "cases": 32,
+  "groups": {
+    "critical_negative": 12,
+    "complete": 8,
+    "partial": 4,
+    "valid_gap": 4,
+    "blanket_abstention": 4
+  },
+  "source_versions": [
+    "2307.08691v1",
+    "2306.00978v6"
+  ],
+  "scope": "Authored synthetic development-only cases with provisional model-assisted source-reviewed expectations; no genuine agent trajectories or human gold.",
+  "reserved_reader_evaluation_used_for_design": false,
+  "judge_identity": null,
+  "actual_judge_results": null,
+  "candidate_model_requests": 0,
+  "paid_api_calls": 0,
+  "gpu_activations": 0,
+  "training_jobs": 0,
+  "active_musique_reward_unchanged": true,
+  "active_reward_sha256": "6940b133d926557172765eac1d16cd23a96675f950511044a90095d1413671d7",
+  "historical_grades_changed": false,
+  "frozen_reader_bundle_unchanged": true,
+  "frozen_reader_bundle_lock_sha256": "dd44858a0ec792cafad7f13ca3e10666c089576bf98acf2dea15ff37ed9205a2",
+  "all_10_protected_file_hashes_match": true,
+  "human_review": "not_performed",
+  "reviews": {
+    "source": "reviews/source-review.json",
+    "code": "reviews/code-review.json",
+    "kind": "Independent model-assisted, not human review",
+    "resolved_findings": [
+      "Condition-bound per-fact labels must reject misbound true raw numbers.",
+      "Nested export dictionaries and structured text values must not carry expected-label metadata."
+    ],
+    "open_material_findings": []
+  },
+  "tests": {
+    "focused": {
+      "passed": 33,
+      "seconds": 0.49,
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_research_judge_checks.py tests/test_reward.py"
+    },
+    "full_suite": {
+      "passed": 1802,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 100.0,
+      "warning_note": "Existing SWIG deprecation warnings",
+      "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+    },
+    "offline_integrity_checker": "passed; not a semantic-judge validation result",
+    "exclusive_export_guard": "passed; existing output bytes preserved on second invocation",
+    "ruff": "passed on checker, CLI and new tests",
+    "git_diff_check": "passed"
+  },
+  "limitations": [
+    "No judge has been selected or evaluated; no acceptance gate has passed.",
+    "Labels are provisional model-assisted, not independent human judgments.",
+    "Static source-inspection preconditions do not validate actual agent inspection or multi-step behavior.",
+    "Only deliberately clear cases from already-inspected development sources; no population reliability or fine-tuning benefit claim.",
+    "Validation-informed tuning retires this check into design; fresh development checks required, never repair with reserved reader evaluation."
+  ],
+  "artifact_sha256": {
+    "README.md": "c9f13f93b6e0b6198b20220597392de1ef8d32612c57acbd143adc7f2592c9c2",
+    "cases.json": "f0994f68d65db8de8fc69c2db27f8dbffe6dfb1a5bf38c607427ebd23448847b",
+    "freeze-lock.json": "0d2f79c1e2e9a1e712830bd3d4981e51748c9b08ae71310bb50a8f054051f768",
+    "labels.json": "6073cf1e6b5151924fe66b6ef9f40170998f210ee9155b6893880c1f9fef597d",
+    "manifest.json": "4bd910b8bc4b69b251d4c71627367ebed8e694244572f8aed15432b12d35b917",
+    "questions.json": "36f6121ad5678d2afafa6e60cf5ac1eb3a888e648b2a8f4a2c0207b9e4cfbef1",
+    "reviews/code-review.json": "f045c75186ce90c55619484827acc2f6a5ab2127dd0ca597086db8bf97b594d2",
+    "reviews/human-template.json": "83296a65e7b05a669db1a975258d4d8010fdef47a9d888afe543e04a6edd08b9",
+    "reviews/source-review.json": "9577753c82ee16f8009a5b2f64a1ee0caa0b3f7ebf8670069dd7fec4bf467dd5",
+    "sources/2306.00978v6.json": "6445fc9db359839a74851a6e9b268812aba27530b8952040c236eb0616cb443f",
+    "sources/2307.08691v1.json": "2a313de6f439f07d09218dc3381bb53ce944d8ff82b053623237c98ea2153641"
+  },
+  "implementation_sha256": {
+    "src/eval/research_judge_checks.py": "29656a6045f3f9210065c11c57b1b2b63b18f612378f1c05f92d00f2a489bfcb",
+    "scripts/check_research_judge_cases.py": "4034feff3f3910cfe8e3f556ad5fa475ed84637a408610f8984a63b19bf6cad1",
+    "tests/test_research_judge_checks.py": "6ec0870abc1c547883d7e5f4d360ba4c273d643f91008626de9432315c3651d2"
+  },
+  "protected_file_sha256": {
+    "docs/ARXIV_RESEARCH_MCP.md": "a7325691de197f09617ff944cd911d559b13e22e50dcf20c268c97ce97b99107",
+    "scripts/arxiv_research_mcp.py": "9fe54b917384879958d885666e39ec2083933f6555eedcaf0a03fdd801390fec",
+    "scripts/run_research_workflow_pilot.py": "481465e3eb351e794c14cbe23a756c82ae02804561fe59265e802eb7e305e817",
+    "src/product/arxiv_mcp_config.py": "0208926379d2656e34a7e45579e51d21f73e5fb639ac323eba4bc70b773e5f2a",
+    "docs/superpowers/plans/2026-10-16-arxiv-research-mcp.md": "deafd7b4d5777b09b46692677cb7246a2d502e971171e486451420bb5d4ad607",
+    "docs/superpowers/plans/2026-10-16-harness-v2.md": "84dd44e9561bccc44f6f03ba71a83106ae4f92b89c4322a4cbeda6aca9503493",
+    "docs/superpowers/specs/2026-10-16-arxiv-research-mcp-design.md": "3b8158288d9e9d5ccc38427d902865f37811e6c2b50bf375a62be4a7aa4e9260",
+    "scripts/train_grpo_custom.py": "d268ab0282fad794c474740bd3ae83093a2eab361d9e5e5cf1df3fb84d4e3fb9",
+    "tests/test_grpo_loss.py": "a3599f5e0dd03419f1c8e97760f220394a9559e452e94ae4848daaddb796da81",
+    "docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md": "f6238c98d281315f3fbf579f8fe071cfb8f6fdb3f69e4e6031d889013fddf311"
+  }
+}
