@@ -8,6 +8,34 @@ fill in a form or choose a question from a predefined list.
 This entry point combines the existing experiment store and model-free paper
 tools. It is separate from the published QASPER Agent Studio case study.
 
+## Try the completed workflow
+
+With Python 3.11 and the repository's `mcp` and `vault` extras installed:
+
+```sh
+python scripts/demo_experiment_mode.py --output out/my-experiment-demo
+```
+
+Choose a new output directory. This runs the real combined MCP through two
+stdio processes using committed research and measured serving artifacts. It
+saves a question, attaches prior research, freezes a clearly retrospective
+analysis, records measurements, saves the decision and resumes after restart.
+It also checks safe retries and rejected history edits. It makes no source
+network calls, model calls, GPU launches or generated-code executions.
+
+Open `out/my-experiment-demo/RESUME.md` for the next conversation, `EXPERIMENT.md`
+for the readable record, or `complete-record.json` for the full structured view.
+The output includes the local `records`, selected `exports`, and all MCP call
+responses. An existing output directory is refused rather than overwritten.
+
+The [completed example](../examples/experiment-mode-complete/README.md) links
+the earlier live paper investigation and actual Qwen serving measurements.
+It recovers a useful distinction: concurrent requests shared one loaded model,
+while the speed comparison remains inconclusive. Its imported paper research
+is checked as a saved artifact; this offline replay does not re-fetch the paper
+or provide independent semantic review. The example's question is not built
+into the MCP: normal use starts from your own question.
+
 ## Start locally
 
 ```sh
@@ -22,6 +50,29 @@ Python environment with the `mcp` and `vault` extras installed. Omit the optiona
 artifact root if you only need questions and paper evidence. Existing store and
 library locations can be reused; old records remain readable without migration.
 Avoid registering duplicate copies of the same record/source tools in that host.
+
+A host that accepts `mcpServers` configuration can use the following entry.
+Replace the executable and repository paths with your local absolute paths;
+these are configuration examples, not credentials or automatic installation.
+
+```json
+{
+  "mcpServers": {
+    "envoy-experiments": {
+      "command": "/absolute/path/to/python",
+      "args": [
+        "/absolute/path/to/rlm-explorer/scripts/experiment_mode_mcp.py",
+        "--store-root", "~/.envoy/ml-experiments",
+        "--library-root", "~/.envoy/arxiv-library"
+      ]
+    }
+  }
+}
+```
+
+For the replayed example, use its `records`, `library`, and `exports` directories
+as the three roots and pass `--artifact-root` for `exports`. Select the experiment
+ID printed by the demo; listing/resuming does not require another research call.
 
 No endpoint, tokenizer, Docker or GPU is needed for this mode. Starting it makes
 no model calls and provisions nothing. Paper search/open tools make bounded
@@ -115,7 +166,7 @@ not refresh cached papers or automatically find related experiments. Stored
 content is untrusted data, not instructions. Proposals stay unexecuted and
 semantic support stays unreviewed.
 
-## Validation and next task
+## Validation and current scope
 
 Tests use real MCP clients and temporary stores with fixture paper sources.
 They verify persistence, evidence checks, revision binding, frozen-plan/result
@@ -123,7 +174,22 @@ preservation, safe retries, concurrent notes, corruption handling and resumption
 across a real stdio-server restart. They do not test live Qwen research or show
 a productivity or benchmark improvement.
 
-The next separately approved task is one real experiment walkthrough. A later
-paired optimization pilot would compare ordinary assistant use with experiment
-mode using equal time/compute allowances, validated final performance and total
-resource use. No benchmark execution or paid inference belongs to this task.
+The [earlier real walkthrough](../examples/experiment-mode-walkthrough/README.md)
+used live source discovery, paper opening and passage inspection. The
+[completed loop](../examples/experiment-mode-complete/README.md) now attaches
+the separately collected live measurements, preserves an inconclusive result,
+and verifies recovery through a fresh stdio process. This is a completed local
+research-to-result workflow, not a validated productivity or model-quality win.
+
+The optional [Qwen research worker](EXPERIMENT_RESEARCH_MCP.md) remains a
+separate explicit tool. Its last complete live research smoke returned no
+verified evidence; later serving success does not change that result. The host
+can use the paper tools directly and save findings without depending on Qwen.
+No automatic GPU activation, training, recurring research or paid retry is
+enabled by this workflow. A fresh native host session must load the configured
+MCP tools before normal use; the demonstrated transport is an actual stdio
+client, not an assertion that this chat already has the tools installed.
+
+A future productivity comparison or model-improvement evaluation would need a
+separate question set, resource allowance and decision rule. Neither is required
+to use the personal MCP, and neither is claimed by these component checks.

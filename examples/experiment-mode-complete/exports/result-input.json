@@ -1,0 +1,255 @@
+{
+  "run_id": "recorded_automatic_profile",
+  "timing": "retrospective",
+  "data_kind": "recorded",
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "baseline_completed_calls",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/baseline/completed_calls"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "baseline_engine_overlap",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/baseline/engine_overlap"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "baseline_pair_seconds",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/baseline/pair_seconds"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "candidate_completed_calls",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/candidate/completed_calls"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "candidate_engine_overlap",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/candidate/engine_overlap"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "candidate_pair_seconds",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/measurements/candidate/pair_seconds"
+    }
+  ],
+  "interpretation": "Keep one shared model with up to two requests; concurrent admission worked. Do not claim a speedup or choose another latency optimization from these two short-output rounds. The next useful decision needs representative reader evidence and answer checks, not more serving changes or automatic training.",
+  "limitations": [
+    "Two short fixed next-action inputs, not representative long reader answers or end-to-end MCP research.",
+    "Only two timing rounds; one is within polling uncertainty. No established serving speedup.",
+    "No semantic support review or research usefulness evaluation. Outputs are preserved, not executed.",
+    "No trained-versus-base model comparison or fine-tuning improvement claim.",
+    "Original prior rejected-input transformation remains unknown; repaired guards accepted these live inputs.",
+    "Brief Runpod rescheduling/throttling occurred before usable startup. At most one worker observed at a time.",
+    "This MCP record was reconstructed after observing the original run."
+  ],
+  "baseline": {
+    "identity": {
+      "model_revision": {
+        "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+      },
+      "workload": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      },
+      "hardware": {
+        "value": "NVIDIA RTX A5000"
+      },
+      "software_revision": {
+        "value": "vLLM 0.31.0; torch 2.13.0+cu130"
+      }
+    },
+    "evaluation": {
+      "population": "Two measured rounds over the same pinned historical input pair",
+      "purpose": "historical",
+      "expected_cases": 2,
+      "sample_ids": [
+        "pair_round_1",
+        "pair_round_2"
+      ],
+      "dataset_revision": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      }
+    },
+    "conditions": {
+      "dispatch_mode": {
+        "value": "serial"
+      },
+      "runtime_config": {
+        "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}"
+      }
+    },
+    "measurements": [
+      {
+        "value": 4.0,
+        "unknown_reason": null,
+        "metric_id": "completed_calls",
+        "unit": "count",
+        "aggregation": "total",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null,
+        "reference_id": "baseline_completed_calls"
+      },
+      {
+        "value": 1.0,
+        "unknown_reason": null,
+        "metric_id": "engine_overlap",
+        "unit": "count",
+        "aggregation": "minimum round peak",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null,
+        "reference_id": "baseline_engine_overlap"
+      },
+      {
+        "value": null,
+        "unknown_reason": "No admissible latency comparison: one round is within the predeclared 0.4-second polling margin. Raw timings retained.",
+        "metric_id": "pair_seconds",
+        "unit": "seconds",
+        "aggregation": "mean",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "unknown",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": "warm",
+        "cost_breakdown": null,
+        "reference_id": "baseline_pair_seconds"
+      }
+    ]
+  },
+  "candidate": {
+    "identity": {
+      "model_revision": {
+        "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+      },
+      "workload": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      },
+      "hardware": {
+        "value": "NVIDIA RTX A5000"
+      },
+      "software_revision": {
+        "value": "vLLM 0.31.0; torch 2.13.0+cu130"
+      }
+    },
+    "evaluation": {
+      "population": "Two measured rounds over the same pinned historical input pair",
+      "purpose": "historical",
+      "expected_cases": 2,
+      "sample_ids": [
+        "pair_round_1",
+        "pair_round_2"
+      ],
+      "dataset_revision": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      }
+    },
+    "conditions": {
+      "dispatch_mode": {
+        "value": "concurrent"
+      },
+      "runtime_config": {
+        "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}"
+      }
+    },
+    "measurements": [
+      {
+        "value": 4.0,
+        "unknown_reason": null,
+        "metric_id": "completed_calls",
+        "unit": "count",
+        "aggregation": "total",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null,
+        "reference_id": "candidate_completed_calls"
+      },
+      {
+        "value": 2.0,
+        "unknown_reason": null,
+        "metric_id": "engine_overlap",
+        "unit": "count",
+        "aggregation": "minimum round peak",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null,
+        "reference_id": "candidate_engine_overlap"
+      },
+      {
+        "value": null,
+        "unknown_reason": "No admissible latency comparison: one round is within the predeclared 0.4-second polling margin. Raw timings retained.",
+        "metric_id": "pair_seconds",
+        "unit": "seconds",
+        "aggregation": "mean",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "unknown",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": "warm",
+        "cost_breakdown": null,
+        "reference_id": "candidate_pair_seconds"
+      }
+    ]
+  }
+}

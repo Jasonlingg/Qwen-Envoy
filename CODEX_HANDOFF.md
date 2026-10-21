@@ -1,5 +1,20 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 21: personal research-to-result MCP loop completed.** Separate from
+> the published QASPER study, [experiment mode](docs/EXPERIMENT_MODE.md) now has a
+> one-command real-stdio example connecting earlier paper research to recorded
+> serving measurements, a retrospective frozen analysis and restart/resume.
+> Run `python scripts/demo_experiment_mode.py --output out/my-experiment-demo`
+> with a new directory. It makes no source/model calls or GPU launches. The
+> [completed example](examples/experiment-mode-complete/README.md) preserves
+> matching responses and same-engine overlap while keeping the speed comparison
+> inconclusive. Do not reopen infrastructure or training merely to finish this
+> local workflow. Qwen's separate last full research smoke still produced no
+> verified evidence; serving success does not prove useful paper reading,
+> fine-tuning improvement, or advantage over ordinary assistant research. New
+> GPU/paid runs or RL require separately scoped work. Earlier study artifacts
+> and protected uncommitted files remain unchanged.
+
 > **October 9: QASPER attribution and official scoring added.** The visible name
 > is **QASPER Agent Studio — a Qwen Envoy case study**, with Ai2/Dasigi et al.
 > attribution and no claim that the questions are original. Existing repository,

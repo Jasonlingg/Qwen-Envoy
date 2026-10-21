@@ -48,6 +48,14 @@ QASPER answer scoring from provisional support judgments.
 
 ## Open the demo
 
+For the separate **personal ML research and experiment workflow**, see
+[experiment mode](docs/EXPERIMENT_MODE.md). It connects paper research, saved
+experiment context and measured outcomes through a local MCP. Run the complete
+recorded-data example with `python scripts/demo_experiment_mode.py --output
+out/my-experiment-demo`; it needs the repository dependencies with `mcp` and
+`vault` extras, and makes no model calls or GPU launches. This personal tooling
+does not change the QASPER study's results or establish a research-quality win.
+
 **No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
 It includes the saved runs and makes no model calls; no GPU, Docker, login,
 or API key is needed. You can also download [the standalone HTML](release/qasper-agent-study/studio.html)

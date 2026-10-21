@@ -1,0 +1,433 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "Envoy Experiment Mode",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"experiment_id\": \"experiment_00bb7ec56e354c9493e5a98c87b688f9\",\n  \"revision\": 2,\n  \"status\": \"frozen\",\n  \"brief\": {\n    \"schema_version\": \"ml-experiment-brief-v1\",\n    \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n    \"goal\": \"latency\",\n    \"current_setup\": {\n      \"task\": {\n        \"value\": \"Retrospective review of a fixed-input serving diagnostic; not full agents\",\n        \"unknown_reason\": null\n      },\n      \"model\": {\n        \"value\": \"Qwen/Qwen3-8B\",\n        \"unknown_reason\": null\n      },\n      \"checkpoint\": {\n        \"value\": \"jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5/artifacts/full/checkpoint-50\",\n        \"unknown_reason\": null\n      },\n      \"revision\": {\n        \"value\": \"b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\",\n        \"unknown_reason\": null\n      },\n      \"hardware\": {\n        \"value\": \"NVIDIA RTX A5000\",\n        \"unknown_reason\": null\n      },\n      \"workload\": {\n        \"value\": \"Two measured rounds over the same pinned historical input pair\",\n        \"unknown_reason\": null\n      },\n      \"software\": {\n        \"serving\": {\n          \"value\": \"vLLM 0.31.0; torch 2.13.0+cu130\",\n          \"unknown_reason\": null\n        }\n      }\n    },\n    \"constraints\": [],\n    \"observations\": [],\n    \"alternatives\": [],\n    \"proposed_change\": \"Compare previously recorded concurrent dispatch with serial dispatch.\",\n    \"hypothesis\": \"Concurrent requests can share one engine; latency benefit is uncertain.\",\n    \"expected_signal\": \"Complete matched outputs and two-request overlap; admit latency only when the original uncertainty/comparability check allows it.\",\n    \"applicability\": \"Two short fixed inputs only; reconstruction after results were seen.\",\n    \"differences\": [],\n    \"baseline\": {\n      \"description\": \"Recorded serial pair\",\n      \"identity\": {\n        \"hardware\": {\n          \"value\": \"NVIDIA RTX A5000\",\n          \"unknown_reason\": null\n        },\n        \"model_revision\": {\n          \"value\": \"b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\",\n          \"unknown_reason\": null\n        },\n        \"software_revision\": {\n          \"value\": \"vLLM 0.31.0; torch 2.13.0+cu130\",\n          \"unknown_reason\": null\n        },\n        \"workload\": {\n          \"value\": \"5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\",\n          \"unknown_reason\": null\n        }\n      }\n    },\n    \"candidate\": {\n      \"description\": \"Recorded concurrent pair\",\n      \"identity\": {\n        \"hardware\": {\n          \"value\": \"NVIDIA RTX A5000\",\n          \"unknown_reason\": null\n        },\n        \"model_revision\": {\n          \"value\": \"b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\",\n          \"unknown_reason\": null\n        },\n        \"software_revision\": {\n          \"value\": \"vLLM 0.31.0; torch 2.13.0+cu130\",\n          \"unknown_reason\": null\n        },\n        \"workload\": {\n          \"value\": \"5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\",\n          \"unknown_reason\": null\n        }\n      }\n    },\n    \"evaluation\": {\n      \"population\": \"Two measured rounds over the same pinned historical input pair\",\n      \"purpose\": \"historical\",\n      \"expected_cases\": 2,\n      \"sample_ids\": [\n        \"pair_round_1\",\n        \"pair_round_2\"\n      ],\n      \"sample_set_sha256\": null,\n      \"dataset_revision\": {\n        \"value\": \"5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\",\n        \"unknown_reason\": null\n      }\n    },\n    \"conditions\": [\n      {\n        \"name\": \"dispatch_mode\",\n        \"role\": \"proposed_change\",\n        \"baseline\": {\n          \"value\": \"serial\",\n          \"unknown_reason\": null\n        },\n        \"candidate\": {\n          \"value\": \"concurrent\",\n          \"unknown_reason\": null\n        }\n      },\n      {\n        \"name\": \"runtime_config\",\n        \"role\": \"held_constant\",\n        \"baseline\": {\n          \"value\": \"{\\\"ENABLE_PREFIX_CACHING\\\": \\\"false\\\", \\\"MAX_CONCURRENCY\\\": \\\"2\\\", \\\"MAX_MODEL_LEN\\\": \\\"8192\\\", \\\"MAX_NUM_SEQS\\\": \\\"2\\\"}\",\n          \"unknown_reason\": null\n        },\n        \"candidate\": {\n          \"value\": \"{\\\"ENABLE_PREFIX_CACHING\\\": \\\"false\\\", \\\"MAX_CONCURRENCY\\\": \\\"2\\\", \\\"MAX_MODEL_LEN\\\": \\\"8192\\\", \\\"MAX_NUM_SEQS\\\": \\\"2\\\"}\",\n          \"unknown_reason\": null\n        }\n      }\n    ],\n    \"metrics\": [\n      {\n        \"metric_id\": \"completed_calls\",\n        \"unit\": \"count\",\n        \"aggregation\": \"total\",\n        \"population\": \"Two measured rounds over the same pinned historical input pair\",\n        \"direction\": \"higher\",\n        \"measurement_kind\": \"other\",\n        \"timing_scope\": null,\n        \"failure_policy\": \"unspecified\",\n        \"requires_semantic_review\": false\n      },\n      {\n        \"metric_id\": \"engine_overlap\",\n        \"unit\": \"count\",\n        \"aggregation\": \"minimum round peak\",\n        \"population\": \"Two measured rounds over the same pinned historical input pair\",\n        \"direction\": \"higher\",\n        \"measurement_kind\": \"other\",\n        \"timing_scope\": null,\n        \"failure_policy\": \"unspecified\",\n        \"requires_semantic_review\": false\n      },\n      {\n        \"metric_id\": \"pair_seconds\",\n        \"unit\": \"seconds\",\n        \"aggregation\": \"mean\",\n        \"population\": \"Two measured rounds over the same pinned historical input pair\",\n        \"direction\": \"lower\",\n        \"measurement_kind\": \"latency\",\n        \"timing_scope\": \"warm\",\n        \"failure_policy\": \"unspecified\",\n        \"requires_semantic_review\": false\n      }\n    ],\n    \"criteria\": [\n      {\n        \"criterion_id\": \"all_timed_calls_completed\",\n        \"metric_id\": \"completed_calls\",\n        \"operation\": \"absolute_gte\",\n        \"threshold\": 4.0,\n        \"required\": true\n      },\n      {\n        \"criterion_id\": \"same_engine_overlap\",\n        \"metric_id\": \"engine_overlap\",\n        \"operation\": \"absolute_gte\",\n        \"threshold\": 2.0,\n        \"required\": true\n      },\n      {\n        \"criterion_id\": \"resolved_pair_time_nonregression\",\n        \"metric_id\": \"pair_seconds\",\n        \"operation\": \"delta_lte\",\n        \"threshold\": 0.0,\n        \"required\": true\n      }\n    ],\n    \"budget\": {\n      \"max_model_requests\": 0,\n      \"max_input_tokens\": 0,\n      \"max_output_tokens\": 0,\n      \"max_gpu_seconds\": 0.0,\n      \"max_elapsed_seconds\": 120.0,\n      \"max_cost_usd\": 0.0,\n      \"cost_unknown_reason\": null,\n      \"stop_conditions\": [\n        \"Source hash mismatch or MCP error; never dispatch inference.\"\n      ]\n    },\n    \"procedure\": [\n      \"Verify original saved-source checksums and derive selected observations.\",\n      \"Import prior research, freeze this retrospective analysis, and record measurements.\",\n      \"Restart MCP and recover the same result, evidence and unresolved performance gate.\"\n    ],\n    \"references\": [\n      {\n        \"kind\": \"local_artifact\",\n        \"reference_id\": \"observed_runtime\",\n        \"relative_path\": \"serving-observations.json\",\n        \"sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n        \"json_pointer\": \"/live_identity\"\n      },\n      {\n        \"kind\": \"local_artifact\",\n        \"reference_id\": \"original_comparability\",\n        \"relative_path\": \"serving-observations.json\",\n        \"sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n        \"json_pointer\": \"/original_assessment\"\n      }\n    ],\n    \"unknowns\": [\n      \"Representative reader evidence quality remains unmeasured.\",\n      \"Reliable latency benefit and all-in invoice cost remain unknown.\"\n    ],\n    \"limitations\": [\n      \"Reconstruction, not preregistration or a new model/optimization run.\",\n      \"No human usefulness review or fine-tuning improvement demonstrated.\"\n    ],\n    \"candidate_outcomes_already_seen\": \"yes\",\n    \"author_kind\": \"agent_authored\",\n    \"supersedes_experiment_id\": null\n  },\n  \"missing_fields\": [],\n  \"revisions\": [\n    {\n      \"revision\": 1,\n      \"sha256\": \"8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335\",\n      \"recorded_at\": \"2026-10-21T21:26:16.297597+00:00\"\n    },\n    {\n      \"revision\": 2,\n      \"sha256\": \"de498fc8aa517a9a2160b1ca718f6baa511cb97bce00c9ee7029232dc6dfed5a\",\n      \"recorded_at\": \"2026-10-21T21:26:16.306388+00:00\"\n    }\n  ],\n  \"plan_sha256\": \"e0400b688e26407a7ccbe9e54c60507391d7db5845e9d57107473e5b70cda27c\",\n  \"frozen_plan\": {\n    \"schema_version\": \"ml-experiment-plan-v1\",\n    \"experiment_id\": \"experiment_00bb7ec56e354c9493e5a98c87b688f9\",\n    \"revision\": 2,\n    \"revision_sha256\": \"de498fc8aa517a9a2160b1ca718f6baa511cb97bce00c9ee7029232dc6dfed5a\",\n    \"frozen_at\": \"2026-10-21T21:26:16.312342+00:00\",\n    \"warning\": \"Freezing records a plan; it proves neither execution permission nor preregistration.\"\n  },\n  \"evidence_receipts\": [\n    {\n      \"reference_id\": \"observed_runtime\",\n      \"reference_sha256\": \"6726d880b25b975392b8d79e38b9de3e639702c8d213b638770e304cb3912e8f\",\n      \"kind\": \"local_artifact\",\n      \"verification\": \"artifact_value_verified\",\n      \"source_sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n      \"value\": {\n        \"adapter_rank\": 4,\n        \"adapter_repo\": \"jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5\",\n        \"adapter_revision\": \"27b912a863ff914ad45baa03624d8911dc1e17fb\",\n        \"adapter_sha256\": \"7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\",\n        \"adapter_subfolder\": \"artifacts/full/checkpoint-50\",\n        \"base_repo\": \"Qwen/Qwen3-8B\",\n        \"base_revision\": \"b968826d9c46dd6066d109eabc6255188de91218\",\n        \"cuda_runtime\": \"13.0\",\n        \"gpu\": \"NVIDIA RTX A5000\",\n        \"gpu_memory_bytes\": 25285623808,\n        \"identity_log_ts\": \"2026-10-21T21:01:20.479741192Z\",\n        \"served_adapter\": \"envoy\",\n        \"torch_version\": \"2.13.0+cu130\",\n        \"vllm_version\": \"0.31.0\",\n        \"worker_id\": \"w0771kah7ysaxu\"\n      },\n      \"metadata\": {\n        \"json_pointer\": \"/live_identity\",\n        \"relative_path\": \"serving-observations.json\"\n      },\n      \"semantic_support\": \"not_reviewed\"\n    },\n    {\n      \"reference_id\": \"original_comparability\",\n      \"reference_sha256\": \"a1b0c9b5161b0d51f2b6e4eb1732c5b778c9f7de84df67d899807e89f09ed59d\",\n      \"kind\": \"local_artifact\",\n      \"verification\": \"artifact_value_verified\",\n      \"source_sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n      \"value\": {\n        \"comparable\": false,\n        \"reasons\": [\n          \"difference does not exceed the 0.4-second polling uncertainty margin\"\n        ],\n        \"rounds\": [\n          {\n            \"absolute_difference_seconds\": 0.0677962088957429,\n            \"concurrent\": 3.355291415937245,\n            \"repeat\": 1,\n            \"serial\": 3.423087624832988,\n            \"serial_over_concurrent\": 1.0202057587527924\n          },\n          {\n            \"absolute_difference_seconds\": 0.9789846250787377,\n            \"concurrent\": 2.850205041002482,\n            \"repeat\": 2,\n            \"serial\": 3.82918966608122,\n            \"serial_over_concurrent\": 1.3434786659188585\n          }\n        ]\n      },\n      \"metadata\": {\n        \"json_pointer\": \"/original_assessment\",\n        \"relative_path\": \"serving-observations.json\"\n      },\n      \"semantic_support\": \"not_reviewed\"\n    }\n  ],\n  \"reference_warning\": \"References are declarations; source and semantic verification are separate.\",\n  \"results\": [],\n  \"selected_result\": null,\n  \"research_notes\": [\n    {\n      \"note_id\": \"prior_research_context\",\n      \"sha256\": \"8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\",\n      \"brief_revision\": 1,\n      \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n      \"recorded_at\": \"2026-10-21T21:26:16.301909+00:00\",\n      \"data_kind\": \"recorded\"\n    }\n  ],\n  \"selected_research_note\": {\n    \"schema_version\": \"ml-experiment-research-v1\",\n    \"experiment_id\": \"experiment_00bb7ec56e354c9493e5a98c87b688f9\",\n    \"brief_revision\": 1,\n    \"brief_sha256\": \"8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335\",\n    \"recorded_at\": \"2026-10-21T21:26:16.301909+00:00\",\n    \"note\": {\n      \"note_id\": \"prior_research_context\",\n      \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n      \"findings\": [\n        {\n          \"claim\": \"The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\",\n          \"reference_ids\": [\n            \"prior_paper_research\",\n            \"original_paper\"\n          ]\n        }\n      ],\n      \"references\": [\n        {\n          \"kind\": \"local_artifact\",\n          \"reference_id\": \"prior_paper_research\",\n          \"relative_path\": \"serving-observations.json\",\n          \"sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n          \"json_pointer\": \"/saved_paper_research\"\n        },\n        {\n          \"kind\": \"external_reference\",\n          \"reference_id\": \"original_paper\",\n          \"url\": \"https://arxiv.org/abs/2309.06180v1\",\n          \"description\": \"Original paper from earlier live discovery; not fetched by this replay.\"\n        }\n      ],\n      \"uncertainties\": [\n        \"Paper mechanisms do not establish local speed or useful evidence extraction.\"\n      ],\n      \"proposed_test\": null,\n      \"origin\": \"host_research\",\n      \"data_kind\": \"recorded\",\n      \"semantic_support\": \"not_reviewed\",\n      \"proposal_status\": \"not_executed_or_validated\"\n    },\n    \"evidence_receipts\": [\n      {\n        \"reference_id\": \"prior_paper_research\",\n        \"reference_sha256\": \"e74743da2cb95e00530a9a916512f937d949bea654cf9e266e909be509e30428\",\n        \"kind\": \"local_artifact\",\n        \"verification\": \"artifact_value_verified\",\n        \"source_sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n        \"value\": {\n          \"arxiv_id\": \"2309.06180v1\",\n          \"claim\": \"The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\",\n          \"end\": 24100,\n          \"provenance\": \"Imported earlier research artifact; not a fresh paper-span verification or independent semantic review.\",\n          \"quote\": \"we organize the KV cache as fixed-size KV blocks\",\n          \"start\": 24052\n        },\n        \"metadata\": {\n          \"json_pointer\": \"/saved_paper_research\",\n          \"relative_path\": \"serving-observations.json\"\n        },\n        \"semantic_support\": \"not_reviewed\"\n      },\n      {\n        \"reference_id\": \"original_paper\",\n        \"reference_sha256\": \"5c55b5584fba0e35eb750f86d9f6678440b033933e3e8b80513afa7da862828b\",\n        \"kind\": \"external_reference\",\n        \"verification\": \"reference_only\",\n        \"source_sha256\": null,\n        \"value\": null,\n        \"metadata\": {\n          \"description\": \"Original paper from earlier live discovery; not fetched by this replay.\",\n          \"url\": \"https://arxiv.org/abs/2309.06180v1\"\n        },\n        \"semantic_support\": \"not_reviewed\"\n      }\n    ],\n    \"sha256\": \"8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\"\n  },\n  \"markdown\": \"# Experiment brief\\n\\nCan two Qwen v5 reader requests share one A5000, and should we claim a latency win?\\n\\nStatus: frozen · revision 2\\n\\n## Current setup\\n\\n- task: Retrospective review of a fixed-input serving diagnostic; not full agents\\n- model: Qwen/Qwen3-8B\\n- checkpoint: jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5/artifacts/full/checkpoint-50\\n- revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\\n- hardware: NVIDIA RTX A5000\\n- workload: Two measured rounds over the same pinned historical input pair\\n- serving: vLLM 0.31.0; torch 2.13.0+cu130\\n\\n## Goal\\n\\nlatency\\n\\n## Proposed change\\n\\nCompare previously recorded concurrent dispatch with serial dispatch.\\n\\n## Hypothesis\\n\\nConcurrent requests can share one engine; latency benefit is uncertain.\\n\\n## Expected signal\\n\\nComplete matched outputs and two-request overlap; admit latency only when the original uncertainty/comparability check allows it.\\n\\n## Applicability\\n\\nTwo short fixed inputs only; reconstruction after results were seen.\\n\\n## Constraints\\n\\nNot established yet\\n\\n## Alternatives considered\\n\\nNot established yet\\n\\n## Differences from source settings\\n\\nNot established yet\\n\\n## Procedure\\n\\n- Verify original saved-source checksums and derive selected observations.\\n- Import prior research, freeze this retrospective analysis, and record measurements.\\n- Restart MCP and recover the same result, evidence and unresolved performance gate.\\n\\n## Unknowns\\n\\n- Representative reader evidence quality remains unmeasured.\\n- Reliable latency benefit and all-in invoice cost remain unknown.\\n\\n## Limitations\\n\\n- Reconstruction, not preregistration or a new model/optimization run.\\n- No human usefulness review or fine-tuning improvement demonstrated.\\n\\n## Observations\\n\\n\\n## Baseline\\n\\n- description: Recorded serial pair\\n- identity:\\n  - hardware: NVIDIA RTX A5000\\n  - model revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\\n  - software revision: vLLM 0.31.0; torch 2.13.0+cu130\\n  - workload: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\\n\\n## Candidate\\n\\n- description: Recorded concurrent pair\\n- identity:\\n  - hardware: NVIDIA RTX A5000\\n  - model revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\\n  - software revision: vLLM 0.31.0; torch 2.13.0+cu130\\n  - workload: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\\n\\n## Evaluation sample\\n\\n- population: Two measured rounds over the same pinned historical input pair\\n- purpose: historical\\n- expected cases: 2\\n- sample ids:\\n  - pair\\\\_round\\\\_1\\n  - pair\\\\_round\\\\_2\\n- sample set sha256: Unknown\\n- dataset revision: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\\n\\n## Controlled conditions\\n\\n- Item 1:\\n  - name: dispatch\\\\_mode\\n  - role: proposed\\\\_change\\n  - baseline: serial\\n  - candidate: concurrent\\n- Item 2:\\n  - name: runtime\\\\_config\\n  - role: held\\\\_constant\\n  - baseline: \\\\{&quot;ENABLE\\\\_PREFIX\\\\_CACHING&quot;: &quot;false&quot;, &quot;MAX\\\\_CONCURRENCY&quot;: &quot;2&quot;, &quot;MAX\\\\_MODEL\\\\_LEN&quot;: &quot;8192&quot;, &quot;MAX\\\\_NUM\\\\_SEQS&quot;: &quot;2&quot;\\\\}\\n  - candidate: \\\\{&quot;ENABLE\\\\_PREFIX\\\\_CACHING&quot;: &quot;false&quot;, &quot;MAX\\\\_CONCURRENCY&quot;: &quot;2&quot;, &quot;MAX\\\\_MODEL\\\\_LEN&quot;: &quot;8192&quot;, &quot;MAX\\\\_NUM\\\\_SEQS&quot;: &quot;2&quot;\\\\}\\n\\n## Metrics\\n\\n- Item 1:\\n  - metric id: completed\\\\_calls\\n  - unit: count\\n  - aggregation: total\\n  - population: Two measured rounds over the same pinned historical input pair\\n  - direction: higher\\n  - measurement kind: other\\n  - timing scope: Unknown\\n  - failure policy: unspecified\\n  - requires semantic review: False\\n- Item 2:\\n  - metric id: engine\\\\_overlap\\n  - unit: count\\n  - aggregation: minimum round peak\\n  - population: Two measured rounds over the same pinned historical input pair\\n  - direction: higher\\n  - measurement kind: other\\n  - timing scope: Unknown\\n  - failure policy: unspecified\\n  - requires semantic review: False\\n- Item 3:\\n  - metric id: pair\\\\_seconds\\n  - unit: seconds\\n  - aggregation: mean\\n  - population: Two measured rounds over the same pinned historical input pair\\n  - direction: lower\\n  - measurement kind: latency\\n  - timing scope: warm\\n  - failure policy: unspecified\\n  - requires semantic review: False\\n\\n## Decision criteria\\n\\n- Item 1:\\n  - criterion id: all\\\\_timed\\\\_calls\\\\_completed\\n  - metric id: completed\\\\_calls\\n  - operation: absolute\\\\_gte\\n  - threshold: 4.0\\n  - required: True\\n- Item 2:\\n  - criterion id: same\\\\_engine\\\\_overlap\\n  - metric id: engine\\\\_overlap\\n  - operation: absolute\\\\_gte\\n  - threshold: 2.0\\n  - required: True\\n- Item 3:\\n  - criterion id: resolved\\\\_pair\\\\_time\\\\_nonregression\\n  - metric id: pair\\\\_seconds\\n  - operation: delta\\\\_lte\\n  - threshold: 0.0\\n  - required: True\\n\\n## Resource ceilings (recorded, not enforced)\\n\\n- max model requests: 0\\n- max input tokens: 0\\n- max output tokens: 0\\n- max gpu seconds: 0.0\\n- max elapsed seconds: 120.0\\n- max cost usd: 0.0\\n- cost unknown reason: Unknown\\n- stop conditions:\\n  - Source hash mismatch or MCP error; never dispatch inference.\\n\\n## Evidence\\n\\nSource checks establish provenance; semantic support remains unreviewed.\\n\\n### observed\\\\_runtime\\n\\nVerification: artifact_value_verified\\nSource SHA-256: 6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\\nReference: \\\\{&quot;json\\\\_pointer&quot;: &quot;/live\\\\_identity&quot;, &quot;relative\\\\_path&quot;: &quot;serving-observations.json&quot;\\\\}\\n> \\\\{&quot;adapter\\\\_rank&quot;: 4, &quot;adapter\\\\_repo&quot;: &quot;jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5&quot;, &quot;adapter\\\\_revision&quot;: &quot;27b912a863ff914ad45baa03624d8911dc1e17fb&quot;, &quot;adapter\\\\_sha256&quot;: &quot;7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3&quot;, &quot;adapter\\\\_subfolder&quot;: &quot;artifacts/full/checkpoint-50&quot;, &quot;base\\\\_repo&quot;: &quot;Qwen/Qwen3-8B&quot;, &quot;base\\\\_revision&quot;: &quot;b968826d9c46dd6066d109eabc6255188de91218&quot;, &quot;cuda\\\\_runtime&quot;: &quot;13.0&quot;, &quot;gpu&quot;: &quot;NVIDIA RTX A5000&quot;, &quot;gpu\\\\_memory\\\\_bytes&quot;: 25285623808, &quot;identity\\\\_log\\\\_ts&quot;: &quot;2026-10-21T21:01:20.479741192Z&quot;, &quot;served\\\\_adapter&quot;: &quot;envoy&quot;, &quot;torch\\\\_version&quot;: &quot;2.13.0+cu130&quot;, &quot;vllm\\\\_version&quot;: &quot;0.31.0&quot;, &quot;worker\\\\_id&quot;: &quot;w0771kah7ysaxu&quot;\\\\}\\n\\n### original\\\\_comparability\\n\\nVerification: artifact_value_verified\\nSource SHA-256: 6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\\nReference: \\\\{&quot;json\\\\_pointer&quot;: &quot;/original\\\\_assessment&quot;, &quot;relative\\\\_path&quot;: &quot;serving-observations.json&quot;\\\\}\\n> \\\\{&quot;comparable&quot;: false, &quot;reasons&quot;: \\\\[&quot;difference does not exceed the 0.4-second polling uncertainty margin&quot;\\\\], &quot;rounds&quot;: \\\\[\\\\{&quot;absolute\\\\_difference\\\\_seconds&quot;: 0.0677962088957429, &quot;concurrent&quot;: 3.355291415937245, &quot;repeat&quot;: 1, &quot;serial&quot;: 3.423087624832988, &quot;serial\\\\_over\\\\_concurrent&quot;: 1.0202057587527924\\\\}, \\\\{&quot;absolute\\\\_difference\\\\_seconds&quot;: 0.9789846250787377, &quot;concurrent&quot;: 2.850205041002482, &quot;repeat&quot;: 2, &quot;serial&quot;: 3.82918966608122, &quot;serial\\\\_over\\\\_concurrent&quot;: 1.3434786659188585\\\\}\\\\]\\\\}\\n\\n## Linked research (unreviewed)\\n\\nNote: prior\\\\_research\\\\_context\\nWritten against brief revision: 1\\nQuestion: Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\\nData: recorded\\nSource checks prove provenance, not semantic support.\\n- Item 1:\\n  - claim: The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\\n  - reference ids:\\n    - prior\\\\_paper\\\\_research\\n    - original\\\\_paper\\nUncertainties:\\n- Paper mechanisms do not establish local speed or useful evidence extraction.\\nProposed test (not executed): None\\nResearch record SHA-256: 8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\\n\\n## Planning status\\n\\nMissing: No structural fields missing\\nCandidate outcomes already seen: yes\\nAuthor: agent_authored\\nFreezing records intent and grants no permission to execute or spend.\\nFrozen plan SHA-256: e0400b688e26407a7ccbe9e54c60507391d7db5845e9d57107473e5b70cda27c\\n\",\n  \"markdown_truncated\": false\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "experiment_id": "experiment_00bb7ec56e354c9493e5a98c87b688f9",
+    "revision": 2,
+    "status": "frozen",
+    "brief": {
+      "schema_version": "ml-experiment-brief-v1",
+      "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+      "goal": "latency",
+      "current_setup": {
+        "task": {
+          "value": "Retrospective review of a fixed-input serving diagnostic; not full agents",
+          "unknown_reason": null
+        },
+        "model": {
+          "value": "Qwen/Qwen3-8B",
+          "unknown_reason": null
+        },
+        "checkpoint": {
+          "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5/artifacts/full/checkpoint-50",
+          "unknown_reason": null
+        },
+        "revision": {
+          "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+          "unknown_reason": null
+        },
+        "hardware": {
+          "value": "NVIDIA RTX A5000",
+          "unknown_reason": null
+        },
+        "workload": {
+          "value": "Two measured rounds over the same pinned historical input pair",
+          "unknown_reason": null
+        },
+        "software": {
+          "serving": {
+            "value": "vLLM 0.31.0; torch 2.13.0+cu130",
+            "unknown_reason": null
+          }
+        }
+      },
+      "constraints": [],
+      "observations": [],
+      "alternatives": [],
+      "proposed_change": "Compare previously recorded concurrent dispatch with serial dispatch.",
+      "hypothesis": "Concurrent requests can share one engine; latency benefit is uncertain.",
+      "expected_signal": "Complete matched outputs and two-request overlap; admit latency only when the original uncertainty/comparability check allows it.",
+      "applicability": "Two short fixed inputs only; reconstruction after results were seen.",
+      "differences": [],
+      "baseline": {
+        "description": "Recorded serial pair",
+        "identity": {
+          "hardware": {
+            "value": "NVIDIA RTX A5000",
+            "unknown_reason": null
+          },
+          "model_revision": {
+            "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+            "unknown_reason": null
+          },
+          "software_revision": {
+            "value": "vLLM 0.31.0; torch 2.13.0+cu130",
+            "unknown_reason": null
+          },
+          "workload": {
+            "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e",
+            "unknown_reason": null
+          }
+        }
+      },
+      "candidate": {
+        "description": "Recorded concurrent pair",
+        "identity": {
+          "hardware": {
+            "value": "NVIDIA RTX A5000",
+            "unknown_reason": null
+          },
+          "model_revision": {
+            "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+            "unknown_reason": null
+          },
+          "software_revision": {
+            "value": "vLLM 0.31.0; torch 2.13.0+cu130",
+            "unknown_reason": null
+          },
+          "workload": {
+            "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e",
+            "unknown_reason": null
+          }
+        }
+      },
+      "evaluation": {
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "purpose": "historical",
+        "expected_cases": 2,
+        "sample_ids": [
+          "pair_round_1",
+          "pair_round_2"
+        ],
+        "sample_set_sha256": null,
+        "dataset_revision": {
+          "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e",
+          "unknown_reason": null
+        }
+      },
+      "conditions": [
+        {
+          "name": "dispatch_mode",
+          "role": "proposed_change",
+          "baseline": {
+            "value": "serial",
+            "unknown_reason": null
+          },
+          "candidate": {
+            "value": "concurrent",
+            "unknown_reason": null
+          }
+        },
+        {
+          "name": "runtime_config",
+          "role": "held_constant",
+          "baseline": {
+            "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}",
+            "unknown_reason": null
+          },
+          "candidate": {
+            "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}",
+            "unknown_reason": null
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "metric_id": "completed_calls",
+          "unit": "count",
+          "aggregation": "total",
+          "population": "Two measured rounds over the same pinned historical input pair",
+          "direction": "higher",
+          "measurement_kind": "other",
+          "timing_scope": null,
+          "failure_policy": "unspecified",
+          "requires_semantic_review": false
+        },
+        {
+          "metric_id": "engine_overlap",
+          "unit": "count",
+          "aggregation": "minimum round peak",
+          "population": "Two measured rounds over the same pinned historical input pair",
+          "direction": "higher",
+          "measurement_kind": "other",
+          "timing_scope": null,
+          "failure_policy": "unspecified",
+          "requires_semantic_review": false
+        },
+        {
+          "metric_id": "pair_seconds",
+          "unit": "seconds",
+          "aggregation": "mean",
+          "population": "Two measured rounds over the same pinned historical input pair",
+          "direction": "lower",
+          "measurement_kind": "latency",
+          "timing_scope": "warm",
+          "failure_policy": "unspecified",
+          "requires_semantic_review": false
+        }
+      ],
+      "criteria": [
+        {
+          "criterion_id": "all_timed_calls_completed",
+          "metric_id": "completed_calls",
+          "operation": "absolute_gte",
+          "threshold": 4.0,
+          "required": true
+        },
+        {
+          "criterion_id": "same_engine_overlap",
+          "metric_id": "engine_overlap",
+          "operation": "absolute_gte",
+          "threshold": 2.0,
+          "required": true
+        },
+        {
+          "criterion_id": "resolved_pair_time_nonregression",
+          "metric_id": "pair_seconds",
+          "operation": "delta_lte",
+          "threshold": 0.0,
+          "required": true
+        }
+      ],
+      "budget": {
+        "max_model_requests": 0,
+        "max_input_tokens": 0,
+        "max_output_tokens": 0,
+        "max_gpu_seconds": 0.0,
+        "max_elapsed_seconds": 120.0,
+        "max_cost_usd": 0.0,
+        "cost_unknown_reason": null,
+        "stop_conditions": [
+          "Source hash mismatch or MCP error; never dispatch inference."
+        ]
+      },
+      "procedure": [
+        "Verify original saved-source checksums and derive selected observations.",
+        "Import prior research, freeze this retrospective analysis, and record measurements.",
+        "Restart MCP and recover the same result, evidence and unresolved performance gate."
+      ],
+      "references": [
+        {
+          "kind": "local_artifact",
+          "reference_id": "observed_runtime",
+          "relative_path": "serving-observations.json",
+          "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+          "json_pointer": "/live_identity"
+        },
+        {
+          "kind": "local_artifact",
+          "reference_id": "original_comparability",
+          "relative_path": "serving-observations.json",
+          "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+          "json_pointer": "/original_assessment"
+        }
+      ],
+      "unknowns": [
+        "Representative reader evidence quality remains unmeasured.",
+        "Reliable latency benefit and all-in invoice cost remain unknown."
+      ],
+      "limitations": [
+        "Reconstruction, not preregistration or a new model/optimization run.",
+        "No human usefulness review or fine-tuning improvement demonstrated."
+      ],
+      "candidate_outcomes_already_seen": "yes",
+      "author_kind": "agent_authored",
+      "supersedes_experiment_id": null
+    },
+    "missing_fields": [],
+    "revisions": [
+      {
+        "revision": 1,
+        "sha256": "8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335",
+        "recorded_at": "2026-10-21T21:26:16.297597+00:00"
+      },
+      {
+        "revision": 2,
+        "sha256": "de498fc8aa517a9a2160b1ca718f6baa511cb97bce00c9ee7029232dc6dfed5a",
+        "recorded_at": "2026-10-21T21:26:16.306388+00:00"
+      }
+    ],
+    "plan_sha256": "e0400b688e26407a7ccbe9e54c60507391d7db5845e9d57107473e5b70cda27c",
+    "frozen_plan": {
+      "schema_version": "ml-experiment-plan-v1",
+      "experiment_id": "experiment_00bb7ec56e354c9493e5a98c87b688f9",
+      "revision": 2,
+      "revision_sha256": "de498fc8aa517a9a2160b1ca718f6baa511cb97bce00c9ee7029232dc6dfed5a",
+      "frozen_at": "2026-10-21T21:26:16.312342+00:00",
+      "warning": "Freezing records a plan; it proves neither execution permission nor preregistration."
+    },
+    "evidence_receipts": [
+      {
+        "reference_id": "observed_runtime",
+        "reference_sha256": "6726d880b25b975392b8d79e38b9de3e639702c8d213b638770e304cb3912e8f",
+        "kind": "local_artifact",
+        "verification": "artifact_value_verified",
+        "source_sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+        "value": {
+          "adapter_rank": 4,
+          "adapter_repo": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+          "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+          "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+          "adapter_subfolder": "artifacts/full/checkpoint-50",
+          "base_repo": "Qwen/Qwen3-8B",
+          "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+          "cuda_runtime": "13.0",
+          "gpu": "NVIDIA RTX A5000",
+          "gpu_memory_bytes": 25285623808,
+          "identity_log_ts": "2026-10-21T21:01:20.479741192Z",
+          "served_adapter": "envoy",
+          "torch_version": "2.13.0+cu130",
+          "vllm_version": "0.31.0",
+          "worker_id": "w0771kah7ysaxu"
+        },
+        "metadata": {
+          "json_pointer": "/live_identity",
+          "relative_path": "serving-observations.json"
+        },
+        "semantic_support": "not_reviewed"
+      },
+      {
+        "reference_id": "original_comparability",
+        "reference_sha256": "a1b0c9b5161b0d51f2b6e4eb1732c5b778c9f7de84df67d899807e89f09ed59d",
+        "kind": "local_artifact",
+        "verification": "artifact_value_verified",
+        "source_sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+        "value": {
+          "comparable": false,
+          "reasons": [
+            "difference does not exceed the 0.4-second polling uncertainty margin"
+          ],
+          "rounds": [
+            {
+              "absolute_difference_seconds": 0.0677962088957429,
+              "concurrent": 3.355291415937245,
+              "repeat": 1,
+              "serial": 3.423087624832988,
+              "serial_over_concurrent": 1.0202057587527924
+            },
+            {
+              "absolute_difference_seconds": 0.9789846250787377,
+              "concurrent": 2.850205041002482,
+              "repeat": 2,
+              "serial": 3.82918966608122,
+              "serial_over_concurrent": 1.3434786659188585
+            }
+          ]
+        },
+        "metadata": {
+          "json_pointer": "/original_assessment",
+          "relative_path": "serving-observations.json"
+        },
+        "semantic_support": "not_reviewed"
+      }
+    ],
+    "reference_warning": "References are declarations; source and semantic verification are separate.",
+    "results": [],
+    "selected_result": null,
+    "research_notes": [
+      {
+        "note_id": "prior_research_context",
+        "sha256": "8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3",
+        "brief_revision": 1,
+        "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+        "recorded_at": "2026-10-21T21:26:16.301909+00:00",
+        "data_kind": "recorded"
+      }
+    ],
+    "selected_research_note": {
+      "schema_version": "ml-experiment-research-v1",
+      "experiment_id": "experiment_00bb7ec56e354c9493e5a98c87b688f9",
+      "brief_revision": 1,
+      "brief_sha256": "8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335",
+      "recorded_at": "2026-10-21T21:26:16.301909+00:00",
+      "note": {
+        "note_id": "prior_research_context",
+        "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+        "findings": [
+          {
+            "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+            "reference_ids": [
+              "prior_paper_research",
+              "original_paper"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "kind": "local_artifact",
+            "reference_id": "prior_paper_research",
+            "relative_path": "serving-observations.json",
+            "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+            "json_pointer": "/saved_paper_research"
+          },
+          {
+            "kind": "external_reference",
+            "reference_id": "original_paper",
+            "url": "https://arxiv.org/abs/2309.06180v1",
+            "description": "Original paper from earlier live discovery; not fetched by this replay."
+          }
+        ],
+        "uncertainties": [
+          "Paper mechanisms do not establish local speed or useful evidence extraction."
+        ],
+        "proposed_test": null,
+        "origin": "host_research",
+        "data_kind": "recorded",
+        "semantic_support": "not_reviewed",
+        "proposal_status": "not_executed_or_validated"
+      },
+      "evidence_receipts": [
+        {
+          "reference_id": "prior_paper_research",
+          "reference_sha256": "e74743da2cb95e00530a9a916512f937d949bea654cf9e266e909be509e30428",
+          "kind": "local_artifact",
+          "verification": "artifact_value_verified",
+          "source_sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+          "value": {
+            "arxiv_id": "2309.06180v1",
+            "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+            "end": 24100,
+            "provenance": "Imported earlier research artifact; not a fresh paper-span verification or independent semantic review.",
+            "quote": "we organize the KV cache as fixed-size KV blocks",
+            "start": 24052
+          },
+          "metadata": {
+            "json_pointer": "/saved_paper_research",
+            "relative_path": "serving-observations.json"
+          },
+          "semantic_support": "not_reviewed"
+        },
+        {
+          "reference_id": "original_paper",
+          "reference_sha256": "5c55b5584fba0e35eb750f86d9f6678440b033933e3e8b80513afa7da862828b",
+          "kind": "external_reference",
+          "verification": "reference_only",
+          "source_sha256": null,
+          "value": null,
+          "metadata": {
+            "description": "Original paper from earlier live discovery; not fetched by this replay.",
+            "url": "https://arxiv.org/abs/2309.06180v1"
+          },
+          "semantic_support": "not_reviewed"
+        }
+      ],
+      "sha256": "8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3"
+    },
+    "markdown": "# Experiment brief\n\nCan two Qwen v5 reader requests share one A5000, and should we claim a latency win?\n\nStatus: frozen · revision 2\n\n## Current setup\n\n- task: Retrospective review of a fixed-input serving diagnostic; not full agents\n- model: Qwen/Qwen3-8B\n- checkpoint: jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5/artifacts/full/checkpoint-50\n- revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\n- hardware: NVIDIA RTX A5000\n- workload: Two measured rounds over the same pinned historical input pair\n- serving: vLLM 0.31.0; torch 2.13.0+cu130\n\n## Goal\n\nlatency\n\n## Proposed change\n\nCompare previously recorded concurrent dispatch with serial dispatch.\n\n## Hypothesis\n\nConcurrent requests can share one engine; latency benefit is uncertain.\n\n## Expected signal\n\nComplete matched outputs and two-request overlap; admit latency only when the original uncertainty/comparability check allows it.\n\n## Applicability\n\nTwo short fixed inputs only; reconstruction after results were seen.\n\n## Constraints\n\nNot established yet\n\n## Alternatives considered\n\nNot established yet\n\n## Differences from source settings\n\nNot established yet\n\n## Procedure\n\n- Verify original saved-source checksums and derive selected observations.\n- Import prior research, freeze this retrospective analysis, and record measurements.\n- Restart MCP and recover the same result, evidence and unresolved performance gate.\n\n## Unknowns\n\n- Representative reader evidence quality remains unmeasured.\n- Reliable latency benefit and all-in invoice cost remain unknown.\n\n## Limitations\n\n- Reconstruction, not preregistration or a new model/optimization run.\n- No human usefulness review or fine-tuning improvement demonstrated.\n\n## Observations\n\n\n## Baseline\n\n- description: Recorded serial pair\n- identity:\n  - hardware: NVIDIA RTX A5000\n  - model revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\n  - software revision: vLLM 0.31.0; torch 2.13.0+cu130\n  - workload: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\n\n## Candidate\n\n- description: Recorded concurrent pair\n- identity:\n  - hardware: NVIDIA RTX A5000\n  - model revision: b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3\n  - software revision: vLLM 0.31.0; torch 2.13.0+cu130\n  - workload: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\n\n## Evaluation sample\n\n- population: Two measured rounds over the same pinned historical input pair\n- purpose: historical\n- expected cases: 2\n- sample ids:\n  - pair\\_round\\_1\n  - pair\\_round\\_2\n- sample set sha256: Unknown\n- dataset revision: 5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e\n\n## Controlled conditions\n\n- Item 1:\n  - name: dispatch\\_mode\n  - role: proposed\\_change\n  - baseline: serial\n  - candidate: concurrent\n- Item 2:\n  - name: runtime\\_config\n  - role: held\\_constant\n  - baseline: \\{&quot;ENABLE\\_PREFIX\\_CACHING&quot;: &quot;false&quot;, &quot;MAX\\_CONCURRENCY&quot;: &quot;2&quot;, &quot;MAX\\_MODEL\\_LEN&quot;: &quot;8192&quot;, &quot;MAX\\_NUM\\_SEQS&quot;: &quot;2&quot;\\}\n  - candidate: \\{&quot;ENABLE\\_PREFIX\\_CACHING&quot;: &quot;false&quot;, &quot;MAX\\_CONCURRENCY&quot;: &quot;2&quot;, &quot;MAX\\_MODEL\\_LEN&quot;: &quot;8192&quot;, &quot;MAX\\_NUM\\_SEQS&quot;: &quot;2&quot;\\}\n\n## Metrics\n\n- Item 1:\n  - metric id: completed\\_calls\n  - unit: count\n  - aggregation: total\n  - population: Two measured rounds over the same pinned historical input pair\n  - direction: higher\n  - measurement kind: other\n  - timing scope: Unknown\n  - failure policy: unspecified\n  - requires semantic review: False\n- Item 2:\n  - metric id: engine\\_overlap\n  - unit: count\n  - aggregation: minimum round peak\n  - population: Two measured rounds over the same pinned historical input pair\n  - direction: higher\n  - measurement kind: other\n  - timing scope: Unknown\n  - failure policy: unspecified\n  - requires semantic review: False\n- Item 3:\n  - metric id: pair\\_seconds\n  - unit: seconds\n  - aggregation: mean\n  - population: Two measured rounds over the same pinned historical input pair\n  - direction: lower\n  - measurement kind: latency\n  - timing scope: warm\n  - failure policy: unspecified\n  - requires semantic review: False\n\n## Decision criteria\n\n- Item 1:\n  - criterion id: all\\_timed\\_calls\\_completed\n  - metric id: completed\\_calls\n  - operation: absolute\\_gte\n  - threshold: 4.0\n  - required: True\n- Item 2:\n  - criterion id: same\\_engine\\_overlap\n  - metric id: engine\\_overlap\n  - operation: absolute\\_gte\n  - threshold: 2.0\n  - required: True\n- Item 3:\n  - criterion id: resolved\\_pair\\_time\\_nonregression\n  - metric id: pair\\_seconds\n  - operation: delta\\_lte\n  - threshold: 0.0\n  - required: True\n\n## Resource ceilings (recorded, not enforced)\n\n- max model requests: 0\n- max input tokens: 0\n- max output tokens: 0\n- max gpu seconds: 0.0\n- max elapsed seconds: 120.0\n- max cost usd: 0.0\n- cost unknown reason: Unknown\n- stop conditions:\n  - Source hash mismatch or MCP error; never dispatch inference.\n\n## Evidence\n\nSource checks establish provenance; semantic support remains unreviewed.\n\n### observed\\_runtime\n\nVerification: artifact_value_verified\nSource SHA-256: 6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\nReference: \\{&quot;json\\_pointer&quot;: &quot;/live\\_identity&quot;, &quot;relative\\_path&quot;: &quot;serving-observations.json&quot;\\}\n> \\{&quot;adapter\\_rank&quot;: 4, &quot;adapter\\_repo&quot;: &quot;jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5&quot;, &quot;adapter\\_revision&quot;: &quot;27b912a863ff914ad45baa03624d8911dc1e17fb&quot;, &quot;adapter\\_sha256&quot;: &quot;7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3&quot;, &quot;adapter\\_subfolder&quot;: &quot;artifacts/full/checkpoint-50&quot;, &quot;base\\_repo&quot;: &quot;Qwen/Qwen3-8B&quot;, &quot;base\\_revision&quot;: &quot;b968826d9c46dd6066d109eabc6255188de91218&quot;, &quot;cuda\\_runtime&quot;: &quot;13.0&quot;, &quot;gpu&quot;: &quot;NVIDIA RTX A5000&quot;, &quot;gpu\\_memory\\_bytes&quot;: 25285623808, &quot;identity\\_log\\_ts&quot;: &quot;2026-10-21T21:01:20.479741192Z&quot;, &quot;served\\_adapter&quot;: &quot;envoy&quot;, &quot;torch\\_version&quot;: &quot;2.13.0+cu130&quot;, &quot;vllm\\_version&quot;: &quot;0.31.0&quot;, &quot;worker\\_id&quot;: &quot;w0771kah7ysaxu&quot;\\}\n\n### original\\_comparability\n\nVerification: artifact_value_verified\nSource SHA-256: 6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\nReference: \\{&quot;json\\_pointer&quot;: &quot;/original\\_assessment&quot;, &quot;relative\\_path&quot;: &quot;serving-observations.json&quot;\\}\n> \\{&quot;comparable&quot;: false, &quot;reasons&quot;: \\[&quot;difference does not exceed the 0.4-second polling uncertainty margin&quot;\\], &quot;rounds&quot;: \\[\\{&quot;absolute\\_difference\\_seconds&quot;: 0.0677962088957429, &quot;concurrent&quot;: 3.355291415937245, &quot;repeat&quot;: 1, &quot;serial&quot;: 3.423087624832988, &quot;serial\\_over\\_concurrent&quot;: 1.0202057587527924\\}, \\{&quot;absolute\\_difference\\_seconds&quot;: 0.9789846250787377, &quot;concurrent&quot;: 2.850205041002482, &quot;repeat&quot;: 2, &quot;serial&quot;: 3.82918966608122, &quot;serial\\_over\\_concurrent&quot;: 1.3434786659188585\\}\\]\\}\n\n## Linked research (unreviewed)\n\nNote: prior\\_research\\_context\nWritten against brief revision: 1\nQuestion: Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\nData: recorded\nSource checks prove provenance, not semantic support.\n- Item 1:\n  - claim: The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\n  - reference ids:\n    - prior\\_paper\\_research\n    - original\\_paper\nUncertainties:\n- Paper mechanisms do not establish local speed or useful evidence extraction.\nProposed test (not executed): None\nResearch record SHA-256: 8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\n\n## Planning status\n\nMissing: No structural fields missing\nCandidate outcomes already seen: yes\nAuthor: agent_authored\nFreezing records intent and grants no permission to execute or spend.\nFrozen plan SHA-256: e0400b688e26407a7ccbe9e54c60507391d7db5845e9d57107473e5b70cda27c\n",
+    "markdown_truncated": false
+  },
+  "isError": false,
+  "resultType": "complete"
+}

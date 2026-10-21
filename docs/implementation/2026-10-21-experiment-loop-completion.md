@@ -34,3 +34,33 @@ host-led research and experiment-record workflow. It does not establish that
 the current Qwen reader extracts useful evidence, that MCP beats ordinary web
 research, or that further SFT/RL is justified. No additional evaluation framework
 or model promotion is part of this finish pass.
+
+## Completed
+
+Implementation `4452809` adds the checked saved-data exporter, the one-command
+combined MCP walkthrough, and five meaningful new checks. `54132a4` normalizes
+the Markdown ending after the final staged-file check found an extra blank line.
+Final checks: nine focused tests passed in 8.11 seconds; the full repository
+suite passed 1909 tests in 99.49 seconds, with no skips and three existing SWIG
+deprecation warnings. The earlier pre-format full run also passed 1909 tests
+in 122.90 seconds. Ruff and staged whitespace checks passed.
+
+The final run made fifteen real MCP calls over two stdio processes. It saved
+two research notes, froze a retrospective revision-2 analysis, attached one
+artifact-bound result and recovered it after restart. Identical note/result
+retries preserved content; conflicting results and frozen-plan edits were
+rejected. All six measurement receipts were fully artifact-bound, including
+the two explicitly unknown latency measurements. Completion and overlap gates
+were met; latency remained unknown, so the overall assessment was inconclusive.
+
+The [complete example](../../examples/experiment-mode-complete/README.md)
+preserves every call response, source hashes, small claim review, readable
+resume and full record. The normal setup guide and handoff now point to this
+finished local flow instead of an unperformed next task. This example imports
+earlier paper research rather than fabricating a fresh source check.
+
+All eleven protected file hashes and fifty-eight prior artifacts/consumed
+markers matched the initial baseline. No source retrieval, reader inference,
+GPU activation, reward change or training occurred. The host-led local workflow
+is complete; user usefulness, optional Qwen research quality and broader model
+improvement remain separate evidence questions.

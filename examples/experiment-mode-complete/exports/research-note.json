@@ -1,0 +1,33 @@
+{
+  "note_id": "prior_research_context",
+  "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+  "findings": [
+    {
+      "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+      "reference_ids": [
+        "prior_paper_research",
+        "original_paper"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "prior_paper_research",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/saved_paper_research"
+    },
+    {
+      "kind": "external_reference",
+      "reference_id": "original_paper",
+      "url": "https://arxiv.org/abs/2309.06180v1",
+      "description": "Original paper from earlier live discovery; not fetched by this replay."
+    }
+  ],
+  "uncertainties": [
+    "Paper mechanisms do not establish local speed or useful evidence extraction."
+  ],
+  "origin": "host_research",
+  "data_kind": "recorded"
+}

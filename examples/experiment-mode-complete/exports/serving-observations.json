@@ -1,0 +1,239 @@
+{
+  "schema_version": "recorded-serving-experiment-export-v1",
+  "source_sha256": {
+    "examples/two-reader-profile/automatic-live-1/validation.json": "20dca40fdb61883c3d2ba019cf304a6cb1a5766e67c455db1234b7c9f1b5c10a",
+    "examples/experiment-mode-walkthrough/validation.json": "e1dfe3058f8511f40db5b781230214c666a8e6c41a390c7f5a40766d731e851f",
+    "examples/experiment-mode-walkthrough/research-note.json": "480adc2c7a2c0eb998dddda089b61e6b02f00c6c41cf3f56b21763ed96763001",
+    "examples/two-reader-profile/automatic-live-1/result.json": "195ef95a1ba1d5f6335dc1939212d7a41111b0327b6c77da258346cad1122d11",
+    "examples/two-reader-profile/automatic-live-1/outcome.json": "d2bff62278182fd35e21a341efb90beaab91b1d731f848830cf38210f34d0d96",
+    "examples/two-reader-profile/automatic-live-1/plan.json": "b9c43f68058f75793b74ae774fb5de1e4a356c8345575b2c5113272d249313d3",
+    "examples/two-reader-profile/automatic-live-1/worker-identity.json": "a5bde2a8f379b1f11464046520019a3ee4d279d26e52d9398114b93ad783cd4e"
+  },
+  "measurement_derivation": "Counts and minimum sampled round peaks from original batches; latency stays unknown because the original comparability check failed. Raw pair timings are not erased.",
+  "saved_paper_research": {
+    "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+    "arxiv_id": "2309.06180v1",
+    "start": 24052,
+    "end": 24100,
+    "quote": "we organize the KV cache as fixed-size KV blocks",
+    "provenance": "Imported earlier research artifact; not a fresh paper-span verification or independent semantic review."
+  },
+  "raw_rounds": [
+    {
+      "repeat": 1,
+      "serial": 3.423087624832988,
+      "concurrent": 3.355291415937245,
+      "serial_over_concurrent": 1.0202057587527924,
+      "absolute_difference_seconds": 0.0677962088957429
+    },
+    {
+      "repeat": 2,
+      "concurrent": 2.850205041002482,
+      "serial": 3.82918966608122,
+      "serial_over_concurrent": 1.3434786659188585,
+      "absolute_difference_seconds": 0.9789846250787377
+    }
+  ],
+  "per_sample": [
+    {
+      "sample_id": "historical_reader_request_2",
+      "calls_completed": 5,
+      "warmup_calls": 1,
+      "timed_calls": 4,
+      "prompt_tokens_each": 1400,
+      "completion_tokens_each": 14,
+      "finish_reasons": [
+        "stop"
+      ],
+      "output": "search(\"Qwen3-8B speculative decoding speedup\")",
+      "all_serial_and_concurrent_outputs_usage_finish_reasons_match": true
+    },
+    {
+      "sample_id": "historical_reader_request_6",
+      "calls_completed": 5,
+      "warmup_calls": 1,
+      "timed_calls": 4,
+      "prompt_tokens_each": 2043,
+      "completion_tokens_each": 13,
+      "finish_reasons": [
+        "stop"
+      ],
+      "output": "submit(answer=\"Unanswerable\", citations=[], evidence=[])",
+      "all_serial_and_concurrent_outputs_usage_finish_reasons_match": true
+    }
+  ],
+  "live_identity": {
+    "adapter_rank": 4,
+    "adapter_repo": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_subfolder": "artifacts/full/checkpoint-50",
+    "base_repo": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "cuda_runtime": "13.0",
+    "gpu": "NVIDIA RTX A5000",
+    "gpu_memory_bytes": 25285623808,
+    "served_adapter": "envoy",
+    "torch_version": "2.13.0+cu130",
+    "vllm_version": "0.31.0",
+    "worker_id": "w0771kah7ysaxu",
+    "identity_log_ts": "2026-10-21T21:01:20.479741192Z"
+  },
+  "config": {
+    "MAX_NUM_SEQS": "2",
+    "MAX_CONCURRENCY": "2",
+    "MAX_MODEL_LEN": "8192",
+    "ENABLE_PREFIX_CACHING": "false"
+  },
+  "measurements": {
+    "baseline": {
+      "completed_calls": {
+        "value": 4.0,
+        "unknown_reason": null,
+        "metric_id": "completed_calls",
+        "unit": "count",
+        "aggregation": "total",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null
+      },
+      "engine_overlap": {
+        "value": 1.0,
+        "unknown_reason": null,
+        "metric_id": "engine_overlap",
+        "unit": "count",
+        "aggregation": "minimum round peak",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null
+      },
+      "pair_seconds": {
+        "value": null,
+        "unknown_reason": "No admissible latency comparison: one round is within the predeclared 0.4-second polling margin. Raw timings retained.",
+        "metric_id": "pair_seconds",
+        "unit": "seconds",
+        "aggregation": "mean",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "unknown",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": "warm",
+        "cost_breakdown": null
+      }
+    },
+    "candidate": {
+      "completed_calls": {
+        "value": 4.0,
+        "unknown_reason": null,
+        "metric_id": "completed_calls",
+        "unit": "count",
+        "aggregation": "total",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null
+      },
+      "engine_overlap": {
+        "value": 2.0,
+        "unknown_reason": null,
+        "metric_id": "engine_overlap",
+        "unit": "count",
+        "aggregation": "minimum round peak",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "complete",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": null,
+        "cost_breakdown": null
+      },
+      "pair_seconds": {
+        "value": null,
+        "unknown_reason": "No admissible latency comparison: one round is within the predeclared 0.4-second polling margin. Raw timings retained.",
+        "metric_id": "pair_seconds",
+        "unit": "seconds",
+        "aggregation": "mean",
+        "population": "Two measured rounds over the same pinned historical input pair",
+        "sample_count": 2,
+        "coverage": "unknown",
+        "numerator": null,
+        "denominator": null,
+        "review": {
+          "kind": "not_reviewed",
+          "reviewer": null,
+          "reviewed_at": null
+        },
+        "timing_scope": "warm",
+        "cost_breakdown": null
+      }
+    }
+  },
+  "operational": {
+    "startup_automation_passed": true,
+    "model_jobs_completed": 10,
+    "telemetry_jobs_completed": 9,
+    "new_failed_jobs": 0,
+    "shutdown_verified": true,
+    "full_endpoint_configuration_restored": true
+  },
+  "original_assessment": {
+    "comparable": false,
+    "reasons": [
+      "difference does not exceed the 0.4-second polling uncertainty margin"
+    ],
+    "rounds": [
+      {
+        "repeat": 1,
+        "serial": 3.423087624832988,
+        "concurrent": 3.355291415937245,
+        "serial_over_concurrent": 1.0202057587527924,
+        "absolute_difference_seconds": 0.0677962088957429
+      },
+      {
+        "repeat": 2,
+        "concurrent": 2.850205041002482,
+        "serial": 3.82918966608122,
+        "serial_over_concurrent": 1.3434786659188585,
+        "absolute_difference_seconds": 0.9789846250787377
+      }
+    ]
+  },
+  "decision": "Keep one shared model with up to two requests; concurrent admission worked. Do not claim a speedup or choose another latency optimization from these two short-output rounds. The next useful decision needs representative reader evidence and answer checks, not more serving changes or automatic training."
+}

@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "Envoy Experiment Mode",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"experiment_id\": \"experiment_00bb7ec56e354c9493e5a98c87b688f9\",\n  \"revision\": 1,\n  \"status\": \"draft\",\n  \"brief\": {\n    \"schema_version\": \"ml-experiment-brief-v1\",\n    \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n    \"goal\": null,\n    \"current_setup\": {\n      \"task\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"model\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"checkpoint\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"revision\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"hardware\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"workload\": {\n        \"value\": null,\n        \"unknown_reason\": \"Not provided yet\"\n      },\n      \"software\": {}\n    },\n    \"constraints\": [],\n    \"observations\": [],\n    \"alternatives\": [],\n    \"proposed_change\": null,\n    \"hypothesis\": null,\n    \"expected_signal\": null,\n    \"applicability\": null,\n    \"differences\": [],\n    \"baseline\": null,\n    \"candidate\": null,\n    \"evaluation\": null,\n    \"conditions\": [],\n    \"metrics\": [],\n    \"criteria\": [],\n    \"budget\": null,\n    \"procedure\": [],\n    \"references\": [],\n    \"unknowns\": [],\n    \"limitations\": [],\n    \"candidate_outcomes_already_seen\": \"unknown\",\n    \"author_kind\": \"agent_authored\",\n    \"supersedes_experiment_id\": null\n  },\n  \"missing_fields\": [\n    \"goal\",\n    \"proposed_change\",\n    \"hypothesis\",\n    \"expected_signal\",\n    \"applicability\",\n    \"baseline\",\n    \"candidate\",\n    \"evaluation\",\n    \"budget\",\n    \"procedure\",\n    \"metrics\",\n    \"criteria\",\n    \"current_setup.task\",\n    \"current_setup.model\",\n    \"current_setup.workload\",\n    \"conditions.one_proposed_change\"\n  ],\n  \"revisions\": [\n    {\n      \"revision\": 1,\n      \"sha256\": \"8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335\",\n      \"recorded_at\": \"2026-10-21T21:26:16.297597+00:00\"\n    }\n  ],\n  \"plan_sha256\": null,\n  \"frozen_plan\": null,\n  \"evidence_receipts\": [],\n  \"reference_warning\": \"References are declarations; source and semantic verification are separate.\",\n  \"results\": [],\n  \"selected_result\": null,\n  \"research_notes\": [\n    {\n      \"note_id\": \"prior_research_context\",\n      \"sha256\": \"8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\",\n      \"brief_revision\": 1,\n      \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n      \"recorded_at\": \"2026-10-21T21:26:16.301909+00:00\",\n      \"data_kind\": \"recorded\"\n    }\n  ],\n  \"selected_research_note\": {\n    \"schema_version\": \"ml-experiment-research-v1\",\n    \"experiment_id\": \"experiment_00bb7ec56e354c9493e5a98c87b688f9\",\n    \"brief_revision\": 1,\n    \"brief_sha256\": \"8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335\",\n    \"recorded_at\": \"2026-10-21T21:26:16.301909+00:00\",\n    \"note\": {\n      \"note_id\": \"prior_research_context\",\n      \"question\": \"Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\",\n      \"findings\": [\n        {\n          \"claim\": \"The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\",\n          \"reference_ids\": [\n            \"prior_paper_research\",\n            \"original_paper\"\n          ]\n        }\n      ],\n      \"references\": [\n        {\n          \"kind\": \"local_artifact\",\n          \"reference_id\": \"prior_paper_research\",\n          \"relative_path\": \"serving-observations.json\",\n          \"sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n          \"json_pointer\": \"/saved_paper_research\"\n        },\n        {\n          \"kind\": \"external_reference\",\n          \"reference_id\": \"original_paper\",\n          \"url\": \"https://arxiv.org/abs/2309.06180v1\",\n          \"description\": \"Original paper from earlier live discovery; not fetched by this replay.\"\n        }\n      ],\n      \"uncertainties\": [\n        \"Paper mechanisms do not establish local speed or useful evidence extraction.\"\n      ],\n      \"proposed_test\": null,\n      \"origin\": \"host_research\",\n      \"data_kind\": \"recorded\",\n      \"semantic_support\": \"not_reviewed\",\n      \"proposal_status\": \"not_executed_or_validated\"\n    },\n    \"evidence_receipts\": [\n      {\n        \"reference_id\": \"prior_paper_research\",\n        \"reference_sha256\": \"e74743da2cb95e00530a9a916512f937d949bea654cf9e266e909be509e30428\",\n        \"kind\": \"local_artifact\",\n        \"verification\": \"artifact_value_verified\",\n        \"source_sha256\": \"6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902\",\n        \"value\": {\n          \"claim\": \"The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\",\n          \"arxiv_id\": \"2309.06180v1\",\n          \"start\": 24052,\n          \"end\": 24100,\n          \"quote\": \"we organize the KV cache as fixed-size KV blocks\",\n          \"provenance\": \"Imported earlier research artifact; not a fresh paper-span verification or independent semantic review.\"\n        },\n        \"metadata\": {\n          \"relative_path\": \"serving-observations.json\",\n          \"json_pointer\": \"/saved_paper_research\"\n        },\n        \"semantic_support\": \"not_reviewed\"\n      },\n      {\n        \"reference_id\": \"original_paper\",\n        \"reference_sha256\": \"5c55b5584fba0e35eb750f86d9f6678440b033933e3e8b80513afa7da862828b\",\n        \"kind\": \"external_reference\",\n        \"verification\": \"reference_only\",\n        \"source_sha256\": null,\n        \"value\": null,\n        \"metadata\": {\n          \"url\": \"https://arxiv.org/abs/2309.06180v1\",\n          \"description\": \"Original paper from earlier live discovery; not fetched by this replay.\"\n        },\n        \"semantic_support\": \"not_reviewed\"\n      }\n    ],\n    \"sha256\": \"8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\"\n  },\n  \"markdown\": \"# Experiment brief\\n\\nCan two Qwen v5 reader requests share one A5000, and should we claim a latency win?\\n\\nStatus: draft · revision 1\\n\\n## Current setup\\n\\n- task: Not provided yet\\n- model: Not provided yet\\n- checkpoint: Not provided yet\\n- revision: Not provided yet\\n- hardware: Not provided yet\\n- workload: Not provided yet\\n\\n## Goal\\n\\nNot established yet\\n\\n## Proposed change\\n\\nNot established yet\\n\\n## Hypothesis\\n\\nNot established yet\\n\\n## Expected signal\\n\\nNot established yet\\n\\n## Applicability\\n\\nNot established yet\\n\\n## Constraints\\n\\nNot established yet\\n\\n## Alternatives considered\\n\\nNot established yet\\n\\n## Differences from source settings\\n\\nNot established yet\\n\\n## Procedure\\n\\nNot established yet\\n\\n## Unknowns\\n\\nNot established yet\\n\\n## Limitations\\n\\nNot established yet\\n\\n## Observations\\n\\n\\n## Baseline\\n\\nNot established yet\\n\\n## Candidate\\n\\nNot established yet\\n\\n## Evaluation sample\\n\\nNot established yet\\n\\n## Controlled conditions\\n\\nNot established yet\\n\\n## Metrics\\n\\nNot established yet\\n\\n## Decision criteria\\n\\nNot established yet\\n\\n## Resource ceilings (recorded, not enforced)\\n\\nNot established yet\\n\\n## Evidence\\n\\nSource checks establish provenance; semantic support remains unreviewed.\\n\\n## Linked research (unreviewed)\\n\\nNote: prior\\\\_research\\\\_context\\nWritten against brief revision: 1\\nQuestion: Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\\nData: recorded\\nSource checks prove provenance, not semantic support.\\n- Item 1:\\n  - claim: The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\\n  - reference ids:\\n    - prior\\\\_paper\\\\_research\\n    - original\\\\_paper\\nUncertainties:\\n- Paper mechanisms do not establish local speed or useful evidence extraction.\\nProposed test (not executed): None\\nResearch record SHA-256: 8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\\n\\n## Planning status\\n\\nMissing: goal, proposed change, hypothesis, expected signal, applicability, baseline, candidate, evaluation, budget, procedure, metrics, criteria, current setup task, current setup model, current setup workload, conditions one proposed change\\nCandidate outcomes already seen: unknown\\nAuthor: agent_authored\\nFreezing records intent and grants no permission to execute or spend.\\n\",\n  \"markdown_truncated\": false\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "experiment_id": "experiment_00bb7ec56e354c9493e5a98c87b688f9",
+    "revision": 1,
+    "status": "draft",
+    "brief": {
+      "schema_version": "ml-experiment-brief-v1",
+      "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+      "goal": null,
+      "current_setup": {
+        "task": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "model": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "checkpoint": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "revision": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "hardware": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "workload": {
+          "value": null,
+          "unknown_reason": "Not provided yet"
+        },
+        "software": {}
+      },
+      "constraints": [],
+      "observations": [],
+      "alternatives": [],
+      "proposed_change": null,
+      "hypothesis": null,
+      "expected_signal": null,
+      "applicability": null,
+      "differences": [],
+      "baseline": null,
+      "candidate": null,
+      "evaluation": null,
+      "conditions": [],
+      "metrics": [],
+      "criteria": [],
+      "budget": null,
+      "procedure": [],
+      "references": [],
+      "unknowns": [],
+      "limitations": [],
+      "candidate_outcomes_already_seen": "unknown",
+      "author_kind": "agent_authored",
+      "supersedes_experiment_id": null
+    },
+    "missing_fields": [
+      "goal",
+      "proposed_change",
+      "hypothesis",
+      "expected_signal",
+      "applicability",
+      "baseline",
+      "candidate",
+      "evaluation",
+      "budget",
+      "procedure",
+      "metrics",
+      "criteria",
+      "current_setup.task",
+      "current_setup.model",
+      "current_setup.workload",
+      "conditions.one_proposed_change"
+    ],
+    "revisions": [
+      {
+        "revision": 1,
+        "sha256": "8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335",
+        "recorded_at": "2026-10-21T21:26:16.297597+00:00"
+      }
+    ],
+    "plan_sha256": null,
+    "frozen_plan": null,
+    "evidence_receipts": [],
+    "reference_warning": "References are declarations; source and semantic verification are separate.",
+    "results": [],
+    "selected_result": null,
+    "research_notes": [
+      {
+        "note_id": "prior_research_context",
+        "sha256": "8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3",
+        "brief_revision": 1,
+        "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+        "recorded_at": "2026-10-21T21:26:16.301909+00:00",
+        "data_kind": "recorded"
+      }
+    ],
+    "selected_research_note": {
+      "schema_version": "ml-experiment-research-v1",
+      "experiment_id": "experiment_00bb7ec56e354c9493e5a98c87b688f9",
+      "brief_revision": 1,
+      "brief_sha256": "8df87a96ca0fc08c71ded3d1b183643196b90262af00419a42d7e567a4eeb335",
+      "recorded_at": "2026-10-21T21:26:16.301909+00:00",
+      "note": {
+        "note_id": "prior_research_context",
+        "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+        "findings": [
+          {
+            "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+            "reference_ids": [
+              "prior_paper_research",
+              "original_paper"
+            ]
+          }
+        ],
+        "references": [
+          {
+            "kind": "local_artifact",
+            "reference_id": "prior_paper_research",
+            "relative_path": "serving-observations.json",
+            "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+            "json_pointer": "/saved_paper_research"
+          },
+          {
+            "kind": "external_reference",
+            "reference_id": "original_paper",
+            "url": "https://arxiv.org/abs/2309.06180v1",
+            "description": "Original paper from earlier live discovery; not fetched by this replay."
+          }
+        ],
+        "uncertainties": [
+          "Paper mechanisms do not establish local speed or useful evidence extraction."
+        ],
+        "proposed_test": null,
+        "origin": "host_research",
+        "data_kind": "recorded",
+        "semantic_support": "not_reviewed",
+        "proposal_status": "not_executed_or_validated"
+      },
+      "evidence_receipts": [
+        {
+          "reference_id": "prior_paper_research",
+          "reference_sha256": "e74743da2cb95e00530a9a916512f937d949bea654cf9e266e909be509e30428",
+          "kind": "local_artifact",
+          "verification": "artifact_value_verified",
+          "source_sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+          "value": {
+            "claim": "The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.",
+            "arxiv_id": "2309.06180v1",
+            "start": 24052,
+            "end": 24100,
+            "quote": "we organize the KV cache as fixed-size KV blocks",
+            "provenance": "Imported earlier research artifact; not a fresh paper-span verification or independent semantic review."
+          },
+          "metadata": {
+            "relative_path": "serving-observations.json",
+            "json_pointer": "/saved_paper_research"
+          },
+          "semantic_support": "not_reviewed"
+        },
+        {
+          "reference_id": "original_paper",
+          "reference_sha256": "5c55b5584fba0e35eb750f86d9f6678440b033933e3e8b80513afa7da862828b",
+          "kind": "external_reference",
+          "verification": "reference_only",
+          "source_sha256": null,
+          "value": null,
+          "metadata": {
+            "url": "https://arxiv.org/abs/2309.06180v1",
+            "description": "Original paper from earlier live discovery; not fetched by this replay."
+          },
+          "semantic_support": "not_reviewed"
+        }
+      ],
+      "sha256": "8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3"
+    },
+    "markdown": "# Experiment brief\n\nCan two Qwen v5 reader requests share one A5000, and should we claim a latency win?\n\nStatus: draft · revision 1\n\n## Current setup\n\n- task: Not provided yet\n- model: Not provided yet\n- checkpoint: Not provided yet\n- revision: Not provided yet\n- hardware: Not provided yet\n- workload: Not provided yet\n\n## Goal\n\nNot established yet\n\n## Proposed change\n\nNot established yet\n\n## Hypothesis\n\nNot established yet\n\n## Expected signal\n\nNot established yet\n\n## Applicability\n\nNot established yet\n\n## Constraints\n\nNot established yet\n\n## Alternatives considered\n\nNot established yet\n\n## Differences from source settings\n\nNot established yet\n\n## Procedure\n\nNot established yet\n\n## Unknowns\n\nNot established yet\n\n## Limitations\n\nNot established yet\n\n## Observations\n\n\n## Baseline\n\nNot established yet\n\n## Candidate\n\nNot established yet\n\n## Evaluation sample\n\nNot established yet\n\n## Controlled conditions\n\nNot established yet\n\n## Metrics\n\nNot established yet\n\n## Decision criteria\n\nNot established yet\n\n## Resource ceilings (recorded, not enforced)\n\nNot established yet\n\n## Evidence\n\nSource checks establish provenance; semantic support remains unreviewed.\n\n## Linked research (unreviewed)\n\nNote: prior\\_research\\_context\nWritten against brief revision: 1\nQuestion: Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?\nData: recorded\nSource checks prove provenance, not semantic support.\n- Item 1:\n  - claim: The original PagedAttention paper describes fixed-size KV blocks. That memory mechanism does not supply a measured latency or two-reader fit result for our A5000/Qwen workload.\n  - reference ids:\n    - prior\\_paper\\_research\n    - original\\_paper\nUncertainties:\n- Paper mechanisms do not establish local speed or useful evidence extraction.\nProposed test (not executed): None\nResearch record SHA-256: 8117cd63c959792ba8d7392c630a16771735617b2a7288ab70e5f0164b73b2e3\n\n## Planning status\n\nMissing: goal, proposed change, hypothesis, expected signal, applicability, baseline, candidate, evaluation, budget, procedure, metrics, criteria, current setup task, current setup model, current setup workload, conditions one proposed change\nCandidate outcomes already seen: unknown\nAuthor: agent_authored\nFreezing records intent and grants no permission to execute or spend.\n",
+    "markdown_truncated": false
+  },
+  "isError": false,
+  "resultType": "complete"
+}

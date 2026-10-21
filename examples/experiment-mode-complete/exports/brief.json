@@ -1,0 +1,189 @@
+{
+  "question": "Can two Qwen v5 reader requests share one A5000, and should we claim a latency win?",
+  "goal": "latency",
+  "current_setup": {
+    "task": {
+      "value": "Retrospective review of a fixed-input serving diagnostic; not full agents"
+    },
+    "model": {
+      "value": "Qwen/Qwen3-8B"
+    },
+    "checkpoint": {
+      "value": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5/artifacts/full/checkpoint-50"
+    },
+    "revision": {
+      "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+    },
+    "hardware": {
+      "value": "NVIDIA RTX A5000"
+    },
+    "workload": {
+      "value": "Two measured rounds over the same pinned historical input pair"
+    },
+    "software": {
+      "serving": {
+        "value": "vLLM 0.31.0; torch 2.13.0+cu130"
+      }
+    }
+  },
+  "proposed_change": "Compare previously recorded concurrent dispatch with serial dispatch.",
+  "hypothesis": "Concurrent requests can share one engine; latency benefit is uncertain.",
+  "expected_signal": "Complete matched outputs and two-request overlap; admit latency only when the original uncertainty/comparability check allows it.",
+  "applicability": "Two short fixed inputs only; reconstruction after results were seen.",
+  "baseline": {
+    "description": "Recorded serial pair",
+    "identity": {
+      "model_revision": {
+        "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+      },
+      "workload": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      },
+      "hardware": {
+        "value": "NVIDIA RTX A5000"
+      },
+      "software_revision": {
+        "value": "vLLM 0.31.0; torch 2.13.0+cu130"
+      }
+    }
+  },
+  "candidate": {
+    "description": "Recorded concurrent pair",
+    "identity": {
+      "model_revision": {
+        "value": "b968826d9c46dd6066d109eabc6255188de91218/7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3"
+      },
+      "workload": {
+        "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+      },
+      "hardware": {
+        "value": "NVIDIA RTX A5000"
+      },
+      "software_revision": {
+        "value": "vLLM 0.31.0; torch 2.13.0+cu130"
+      }
+    }
+  },
+  "evaluation": {
+    "population": "Two measured rounds over the same pinned historical input pair",
+    "purpose": "historical",
+    "expected_cases": 2,
+    "sample_ids": [
+      "pair_round_1",
+      "pair_round_2"
+    ],
+    "dataset_revision": {
+      "value": "5940a8efb98774ce2f820a391f94615ee8dce1a0825f4ed0fd6ce9950f8d657e"
+    }
+  },
+  "conditions": [
+    {
+      "name": "dispatch_mode",
+      "role": "proposed_change",
+      "baseline": {
+        "value": "serial"
+      },
+      "candidate": {
+        "value": "concurrent"
+      }
+    },
+    {
+      "name": "runtime_config",
+      "role": "held_constant",
+      "baseline": {
+        "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}"
+      },
+      "candidate": {
+        "value": "{\"ENABLE_PREFIX_CACHING\": \"false\", \"MAX_CONCURRENCY\": \"2\", \"MAX_MODEL_LEN\": \"8192\", \"MAX_NUM_SEQS\": \"2\"}"
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "metric_id": "completed_calls",
+      "unit": "count",
+      "aggregation": "total",
+      "population": "Two measured rounds over the same pinned historical input pair",
+      "direction": "higher",
+      "measurement_kind": "other"
+    },
+    {
+      "metric_id": "engine_overlap",
+      "unit": "count",
+      "aggregation": "minimum round peak",
+      "population": "Two measured rounds over the same pinned historical input pair",
+      "direction": "higher",
+      "measurement_kind": "other"
+    },
+    {
+      "metric_id": "pair_seconds",
+      "unit": "seconds",
+      "aggregation": "mean",
+      "population": "Two measured rounds over the same pinned historical input pair",
+      "direction": "lower",
+      "measurement_kind": "latency",
+      "timing_scope": "warm"
+    }
+  ],
+  "criteria": [
+    {
+      "criterion_id": "all_timed_calls_completed",
+      "metric_id": "completed_calls",
+      "operation": "absolute_gte",
+      "threshold": 4.0
+    },
+    {
+      "criterion_id": "same_engine_overlap",
+      "metric_id": "engine_overlap",
+      "operation": "absolute_gte",
+      "threshold": 2.0
+    },
+    {
+      "criterion_id": "resolved_pair_time_nonregression",
+      "metric_id": "pair_seconds",
+      "operation": "delta_lte",
+      "threshold": 0.0
+    }
+  ],
+  "budget": {
+    "max_model_requests": 0,
+    "max_input_tokens": 0,
+    "max_output_tokens": 0,
+    "max_gpu_seconds": 0.0,
+    "max_elapsed_seconds": 120.0,
+    "max_cost_usd": 0.0,
+    "stop_conditions": [
+      "Source hash mismatch or MCP error; never dispatch inference."
+    ]
+  },
+  "procedure": [
+    "Verify original saved-source checksums and derive selected observations.",
+    "Import prior research, freeze this retrospective analysis, and record measurements.",
+    "Restart MCP and recover the same result, evidence and unresolved performance gate."
+  ],
+  "references": [
+    {
+      "kind": "local_artifact",
+      "reference_id": "observed_runtime",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/live_identity"
+    },
+    {
+      "kind": "local_artifact",
+      "reference_id": "original_comparability",
+      "relative_path": "serving-observations.json",
+      "sha256": "6169e7cf458406343756022590503d26936002374660f9c2038998798e5f9902",
+      "json_pointer": "/original_assessment"
+    }
+  ],
+  "unknowns": [
+    "Representative reader evidence quality remains unmeasured.",
+    "Reliable latency benefit and all-in invoice cost remain unknown."
+  ],
+  "limitations": [
+    "Reconstruction, not preregistration or a new model/optimization run.",
+    "No human usefulness review or fine-tuning improvement demonstrated."
+  ],
+  "candidate_outcomes_already_seen": "yes"
+}
