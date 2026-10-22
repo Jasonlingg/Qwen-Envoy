@@ -165,3 +165,20 @@ def test_real_saved_audit_is_reproducible_and_never_calls_a_model_or_repl(tmp_pa
     assert original["scores"]["scoped_overlap"] == swapped["scores"]["scoped_overlap"]
     with pytest.raises(FileExistsError):
         audit.audit(destination)
+
+
+def test_supplemental_history_flags_prior_pool_membership_and_missing_history(tmp_path):
+    path = tmp_path / "out/research/train-pool/benchmark.json"
+    path.parent.mkdir(parents=True)
+    write(path, {"questions": [{"id": "qasper_train_" + "1" * 40,
+                               "target_doc_ids": ["qasper_2000_00001"]}]})
+    registry = {"files": [], "excluded_doc_ids": [], "excluded_question_ids": []}
+    cases = [{"case_id": "training-pair", "doc_id": "qasper_2000_00001",
+              "question_id": "qasper_train_" + "1" * 40, "role": "train"},
+             {"case_id": "dev", "doc_id": "qasper_2000_00002",
+              "question_id": "qasper_validation_" + "2" * 40, "role": "development"}]
+    result = audit.supplemental_history(registry, cases, tmp_path)
+    assert result["affected_case_ids"] == ["training-pair"]
+    assert result["affected_development_papers"] == []
+    assert result["missing_local_required_history"]
+    assert result["training_ready"] is False

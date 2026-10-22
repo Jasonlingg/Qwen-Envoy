@@ -3,9 +3,11 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 from collections import Counter
 from pathlib import Path
 
+from src.eval.passage_pilot_data import REQUIRED, SKIP, metadata_ids
 from src.eval.passage_pilot_replay import PROMPT_SHA, verify_case
 from src.eval.qasper_reward import normalize, parse_strict, score_submission
 from src.eval.reader_improvement import digest, file_hash, inside, load, write
@@ -213,6 +215,40 @@ def summarize(results):
     return summaries
 
 
+def supplemental_history(registry, cases, root=ROOT):
+    """Identifier-only comparison with omitted structured historical task pools."""
+    listed = {r["path"] for r in registry["files"]}
+    omitted, docs, questions = [], set(), set()
+    for area in ("out/research", "out/diagnostics"):
+        for base, dirs, names in os.walk(root / area):
+            dirs[:] = sorted(d for d in dirs if d not in SKIP and d != "research_reader_v1")
+            for name in sorted(names):
+                path = Path(base) / name
+                relative = str(path.relative_to(root))
+                if name not in {"benchmark.json", "questions.json"} or relative in listed:
+                    continue
+                found_docs, found_questions = metadata_ids(load(path))
+                if not found_docs and not found_questions:
+                    continue
+                omitted.append({"path": relative, "sha256": file_hash(path),
+                                "doc_ids": sorted(found_docs),
+                                "question_ids": sorted(found_questions)})
+                docs |= found_docs
+                questions |= found_questions
+    affected = [c for c in cases if c["doc_id"] in docs or c["question_id"] in questions]
+    return {"schema_version": "supplemental-reader-history-v1", "omitted_metadata_files": omitted,
+        "additional_doc_ids": sorted(docs - set(registry["excluded_doc_ids"])),
+        "additional_question_ids": sorted(questions - set(registry["excluded_question_ids"])),
+        "affected_case_ids": [c["case_id"] for c in affected],
+        "affected_train_papers": sorted({c["doc_id"] for c in affected if c["role"] == "train"}),
+        "affected_development_papers": sorted({c["doc_id"] for c in affected if
+                                              c["role"] == "development"}),
+        "missing_local_required_history": [p for p in REQUIRED if not (root / p).is_file()],
+        "human_review": None, "training_ready": False,
+        "limitation": "Prepared-pool membership is not proof of optimizer use. "
+        "Missing local history prevents re-audit; it is never interpreted as no exposure."}
+
+
 def audit(output):
     if output.exists():
         raise FileExistsError("refusing to overwrite reward audit")
@@ -234,10 +270,13 @@ def audit(output):
         "Passing syntax/provenance cannot establish factual support. No reward is deployed."}
     write(output / "summary.json", summary)
     write(output / "trainer-inspection.json", trainer_observations())
+    write(output / "history-coverage.json", supplemental_history(
+        load(PILOT / "prepared/exclusions.json"), load(PILOT / "prepared/cases.json")))
     write(output / "manifest.json", {"artifact_sha256": {p.name: file_hash(p)
         for p in sorted(output.iterdir())}, "implementation_sha256": {p: file_hash(ROOT / p)
         for p in ("src/eval/reader_rl_audit.py", "scripts/audit_reader_rl.py",
-                  "src/eval/qasper_reward.py", "src/product/reader_gaps.py")},
+                  "src/eval/qasper_reward.py", "src/product/reader_gaps.py",
+                  "src/eval/passage_pilot_data.py")},
         "source_sha256": {str(p.relative_to(ROOT)): file_hash(p) for p in (
             PILOT / "validation.json", REGRESSION / "queue.json",
             REGRESSION / "implementing-assistant-review.json",

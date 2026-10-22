@@ -345,3 +345,28 @@ def test_saved_bundle_binds_real_observations_review_and_train_only_export():
     assert manifest["token_checks"] == {"actions": 72, "input_tokens": 225496,
                                        "supervised_tokens": 3018, "max_tokens": 3729}
     assert manifest["training_performed"] is False and manifest["human_review"] is None
+
+
+def test_structured_training_pools_are_inventoried_without_corpus_reservations(
+        tmp_path, monkeypatch):
+    monkeypatch.setattr(data, "REQUIRED", [])
+    path = tmp_path / "out/research/training-pool/benchmark.json"
+    path.parent.mkdir(parents=True)
+    qid = "qasper_train_" + "1" * 40
+    write(path, {"questions": [{"id": qid, "target_doc_ids": ["qasper_2000_00001"]}],
+                 "reserved_doc_ids": ["qasper_2000_99999"]})
+    registry = data.inventory(tmp_path)
+    assert registry["schema_version"] == "passage-pilot-exclusions-v2"
+    assert registry["excluded_doc_ids"] == ["qasper_2000_00001"]
+    assert registry["excluded_question_ids"] == [qid]
+    data.check_registry(registry, tmp_path)
+    registry["schema_version"] = "passage-pilot-exclusions-v1"
+    with pytest.raises(ValueError, match="structured benchmark"):
+        data.check_registry(registry, tmp_path)
+
+
+def test_old_saved_pilot_is_blocked_by_incomplete_inventory():
+    old = load(Path(__file__).resolve().parents[1] /
+               "examples/passage-reader-pilot-data/prepared/exclusions.json")
+    with pytest.raises(ValueError, match="structured benchmark"):
+        data.check_registry(old)

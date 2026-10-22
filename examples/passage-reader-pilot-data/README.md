@@ -1,6 +1,14 @@
 # Reviewed passage-reader pilot data — October 22, 2026
 
-**Data ready for a small SFT pilot; no new model trained or evaluated.**
+**Historical data-preparation record — training use is now ON HOLD.**
+The [follow-up RL/history investigation](../../docs/READER_RL_INVESTIGATION.md)
+found 13 structured benchmark/question files missing from the original inventory.
+Seven training papers (14 trajectories) have prior prepared-pool membership under
+the declared conservative exclusion rule. This is not proof of optimizer use;
+it does invalidate the original all-fresh claim. The development papers are
+unaffected by this supplemental scan. [HOLD.json](../../data/sft/passage-reader-pilot-v1/HOLD.json)
+supersedes the old export eligibility. No new model was trained or evaluated.
+The old source, review, replay and export artifacts remain unchanged.
 This adapts official QASPER questions, annotations and paper text (Dasigi et al.,
 2021, CC BY 4.0); it is not an original benchmark or an official leaderboard
 result. See [dataset attribution and provenance](../../benchmarks/envoybench/data/README.md).
@@ -89,6 +97,12 @@ both attempts were separately inspected as absent. No host Python fallback,
 credential read, cloud call or paid teacher endpoint was used.
 
 ## Reproduce locally
+
+The commands below describe the **historical `5a31cda` implementation**. Current
+code rejects the old schema-v1 exclusion registry, preventing its reuse for new
+training exports. Historical reproduction requires that isolated version and
+the original local history; use the saved artifact check for inspection. A new
+training proposal needs complete schema-v2 exclusions and a reviewed reuse policy.
 
 Strict re-export requires the original inventoried workspace artifacts, including
 historical local `out/` files. The committed registry preserves identifier lists

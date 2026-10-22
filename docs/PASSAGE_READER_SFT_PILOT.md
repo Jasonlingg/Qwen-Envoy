@@ -1,5 +1,13 @@
 # Proposed passage-reader SFT pilot
 
+**ON HOLD — superseded as the immediate next experiment by the
+[RL feasibility investigation](READER_RL_INVESTIGATION.md).** The original
+exclusion scan missed structured historical task pools; seven selected training
+papers have prior prepared-pool membership. The frozen export is retained, but
+its eligibility is superseded by [HOLD.json](../data/sft/passage-reader-pilot-v1/HOLD.json).
+No training was launched. The 24 examples do not establish sufficient training
+scale; the settings below remain an archived proposal, not a launch instruction.
+
 Status: reviewed local data prepared, **not a training launch**. No new checkpoint
 has been trained. [Actual data and Docker receipts](../examples/passage-reader-pilot-data/README.md)
 freeze 24 training trajectories on 12 papers and 12 separate development episodes

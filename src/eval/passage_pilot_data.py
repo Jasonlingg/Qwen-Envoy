@@ -36,7 +36,10 @@ REQUIRED = ["data/sft/qasper-v2/train.jsonl", "data/sft/qasper-v2/val.jsonl",
     "out/diagnostics/qwen-learning-20260918/data/train.jsonl",
     "data/research/qasper-v6-holdout-lock.json",
     "benchmarks/envoybench/data/dev/benchmark.json",
-    "benchmarks/envoybench/data/test_candidate/benchmark.json"]
+    "benchmarks/envoybench/data/test_candidate/benchmark.json",
+    "out/research/qasper-rl-v1/train-v2/benchmark.json",
+    "out/research/qasper-annotation-scale-v1/source/benchmark.json",
+    "out/research/qasper-train-pilot-v2/questions.json"]
 
 
 def metadata_ids(value):
@@ -86,6 +89,7 @@ def inventory(root=ROOT):
                 metadata = name.endswith(".json") and (
                     name.endswith(".manifest.json") or name in {"results.json", "cases.json"}
                     or (area == "data/research")
+                    or name in {"benchmark.json", "questions.json"}
                     or (eval_hint and any(s in name for s in (
                         "benchmark", "questions", "selection", "manifest", "models"))))
                 if not training and not metadata:
@@ -103,7 +107,7 @@ def inventory(root=ROOT):
     scanned = {f["path"] for f in files}
     if not set(REQUIRED) <= scanned:
         raise ValueError("inventory rules missed required sources")
-    return {"schema_version": "passage-pilot-exclusions-v1", "files": files,
+    return {"schema_version": "passage-pilot-exclusions-v2", "files": files,
             "excluded_doc_ids": sorted(all_docs), "excluded_question_ids": sorted(all_questions),
             "rules": "Conservative union of prepared training/candidate conversations and selected "
             "evaluation identifier fields in declared workspace roots. Indexed corpus files, "
@@ -113,8 +117,9 @@ def inventory(root=ROOT):
 
 
 def check_registry(registry, root=ROOT):
-    if registry.get("schema_version") != "passage-pilot-exclusions-v1":
-        raise ValueError("unknown exclusion registry")
+    if registry.get("schema_version") != "passage-pilot-exclusions-v2":
+        raise ValueError("legacy or unknown exclusion registry; regenerate with structured "
+                         "benchmark training-pool coverage")
     if not set(REQUIRED) <= {f["path"] for f in registry["files"]}:
         raise ValueError("incomplete exclusion registry")
     docs, questions = set(), set()

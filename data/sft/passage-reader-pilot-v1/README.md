@@ -1,5 +1,12 @@
 # Passage-reader pilot training export
 
+**ON HOLD — October 22 follow-up audit.** [HOLD.json](HOLD.json) supersedes
+the frozen export manifest’s eligibility. Seven training papers (14 trajectories)
+were in historical prepared pools omitted by the original inventory. Development
+papers are unaffected by the supplemental scan. The data and original records
+remain unchanged; no training occurred. See the
+[RL investigation](../../../docs/READER_RL_INVESTIGATION.md).
+
 24 annotation-assisted, implementing-assistant source-reviewed trajectories from
 12 QASPER train papers. Each has two real Docker passage reads followed by a
 supported answer or a specific scoped gap. This is data preparation, not a new
