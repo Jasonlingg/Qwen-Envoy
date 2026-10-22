@@ -1,0 +1,80 @@
+{
+  "reviewer": "implementing assistant; not independent human review",
+  "human_review": null,
+  "sent_to_model": false,
+  "paid_judge_requests": 0,
+  "claim": "Exact quote matching proves provenance, not semantic support or completeness.",
+  "evaluation_type": "three previously exposed development cases; no generalization/model gain claim",
+  "protocol_completion": "3/3 terminal verified packets, zero execution or action/submission/gap errors",
+  "useful_answer_or_specific_gap_gate": "not met",
+  "factual_summary": "One broadly supported but incomplete answer; one scoped inability submitted as an answer; one placeholder gap.",
+  "cases": [
+    {
+      "case_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "question": "What lexical cues are used for humor recogition?",
+      "reference_answerability": "sufficient",
+      "retrieval": "miss: annotated paragraph 2045..3050 has zero overlap with selected windows",
+      "model_output_kind": "prose inability submitted as evidence_found with citations; not submit_gap",
+      "claims": [
+        {
+          "claim": "The inspected passages do not establish the lexical cues used for humor recognition.",
+          "support": "consistent with the two inspected windows; they do not enumerate the annotated cue lists",
+          "limitation": "not an answer to the full-paper question and not a structured gap; cannot establish whole-paper absence"
+        }
+      ],
+      "reference_facts": [
+        "Incongruity, Ambiguity, Interpersonal Effect, Phonetic Style",
+        "alliteration, antonymy, adult slang"
+      ],
+      "invented_cue_names": false,
+      "useful_answer": false,
+      "specific_atomic_gap": false,
+      "diagnosis": [
+        "retrieval omitted the original answer paragraph",
+        "reader/controller accepted scoped inability as an evidence_found candidate answer"
+      ]
+    },
+    {
+      "case_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "question": "What translation models are explored?",
+      "reference_answerability": "sufficient",
+      "retrieval": "hit: entire annotated paragraph 5164..5336 is in inspected window 4000..5600",
+      "model_output_kind": "evidence_found candidate answer",
+      "claims": [
+        {
+          "claim": "Neural machine translation (NMT) models are explored.",
+          "support": "supported by abstract in inspected/cited 0..1200, which explicitly describes neural machine translation models",
+          "completeness": "too broad: omits LSTM architecture and attention mechanism stated in the inspected experiment paragraph"
+        }
+      ],
+      "citation_note": "Authored 1600-character citations were clipped by the existing investigator to 1200 each; second verified span is 4000..5200, not the full gold paragraph. The abstract supports the broad NMT statement.",
+      "reference_facts": [
+        "established NMT architecture based on LSTMs with attention mechanism"
+      ],
+      "useful_answer": "partial only; not a complete reference-level answer",
+      "specific_atomic_gap": false,
+      "diagnosis": [
+        "reader omitted relevant details despite actual access to the full annotated paragraph"
+      ]
+    },
+    {
+      "case_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "question": "Can their approach be extended to eliminate racial or ethnic biases?",
+      "reference_answerability": "insufficient",
+      "retrieval": "no gold evidence paragraph; original annotations mark paper-level unanswerable",
+      "model_output_kind": "no_evidence through terminal submit_gap after two successful reads",
+      "missing": "What these passages do not establish",
+      "follow_up_query": "A useful next search",
+      "claims": [],
+      "gap_review": "copies prompt-example placeholders; neither field identifies the question-specific gap or a usable next query",
+      "useful_answer": false,
+      "specific_atomic_gap": false,
+      "mechanical_atomic_gap": true,
+      "absence_proven": false,
+      "absence_scope": "selected inspected passages only",
+      "diagnosis": [
+        "atomic protocol works live, but structurally valid strings are not a useful gap report"
+      ]
+    }
+  ]
+}

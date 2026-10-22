@@ -1,0 +1,123 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "ac40b20b-d3c7-49b3-b131-5e1697d953ef",
+  "question_id": "paper_c71f981f8b2c1e8f",
+  "question": "Can their approach be extended to eliminate racial or ethnic biases?",
+  "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1804_03839\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1804_03839', 'start': 0, 'end': 1600, 'text': 'Generating Clues for Gender based Occupation De-biasing in Text\\n\\nVast availability of text data has enabled widespread training and use of AI systems that not only learn and predict attributes from the text but also generate text automatically. However, these AI models also learn gender, racial and ethnic biases present in the training data. In this paper, we present the first system that discovers the possibility that a given text portrays a gender stereotype associated with an occupation. If the possibility exists, the system offers counter-evidences of opposite gender also being associated with the same occupation in the context of user-provided geography and timespan. The system thus enables text de-biasing by assisting a human-in-the-loop. The system can not only act as a text pre-processor before training any AI model but also help human story writers write stories free of occupation-level gender bias in the geographical and temporal context of their choice.\\n\\nAI systems are increasing and Natural Language Generation is getting ever more automated with emerging creative AI systems. These creative systems rely heavily on past available textual data. But often, as evident from studies done on Hollywood and Bollywood story plots and scripts, these texts are biased in terms of gender, race or ethnicity. Hence there is a need for a de-biasing system for textual stories that are used for training these creative systems.\\n\\nSuch de-biasing systems may be of two types 1) an end-to-end system that takes in a biased text and returns an unbiased version of it or 2) a system with a '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1804_03839\", 1600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1804_03839', 'start': 1600, 'end': 3200, 'text': 'human-in-the-loop that takes a text, analyzes it and returns meaningful clues or pieces of evidence to the human who can appropriately modify the text to create an unbiased version. Since multiple types of biases may exist in the given text, the former de-biasing system requires identifying which biases to focus on and how to paraphrase or modify the sentence to de-bias it. These notions can often be subjective and it might be desirable to have a human-in-the-loop. This is the focus of the latter de-biasing system as well as the approach taken by us in the paper.\\n\\nGender stereotyping with respect to occupations is one of the most pervasive biases that cuts across countries and age groups BIBREF0 . In this paper, we focus on de-biasing with respect to gender stereotyping in occupations. This bias has also been recently noted in machine translation systems BIBREF1 . In this translation tool, the sentences “He is a nurse. She is a doctor\" were translated from English to Turkish and back to English which inappropriately returned “She is a nurse. He is a doctor\"!\\n\\nIn this paper, our system takes a piece of text and finds mentions of named entities and their corresponding occupations. From the gender of the named entities, the system suggests examples of real people with alternate gender who also had the corresponding occupation.\\n\\nThe rest of the paper is organized as follows - Section 2 describes the related work, Section 3 discusses about the design and Section 4 lays out the implementation of our de-biasing system. In Section 5 we describe a walk-through of our system and in S'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"What these passages do not establish\", follow_up_query=\"A useful next search\")",
+      "research_gap": {
+        "missing": "What these passages do not establish",
+        "follow_up_query": "A useful next search",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1804_03839",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 1600,
+        "end": 3200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1804_03839\", 0, 1600))",
+      "print(passage(\"qasper_1804_03839\", 1600, 1600))"
+    ],
+    "source_text_sha256": "979114b6bfb23ad1751bd44df61c1cfe3188f72c88b1b34df7b42a4e19446554",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "9312d857afd621101adf6d78af26e453036536546a24d705e6a4d5b4def93fdc",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 1600,
+      "end": 3200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+    "doc_id": "qasper_1804_03839",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1804.03839",
+    "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a9f7786efcc3001c2cb662a064534965d2f894455ab0e93d641fd9bfc3cd1482",
+  "research_gaps": [
+    {
+      "missing": "What these passages do not establish",
+      "follow_up_query": "A useful next search",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

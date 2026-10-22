@@ -44,3 +44,17 @@ After inference, inspect claim-level support and original annotations separately
 exact spans establish provenance only. An inspected-passage gap is not proof the
 whole paper is unanswerable. Human review remains pending. No training, reward
 changes, base-model calls or access to the reserved new-paper pack are included.
+
+
+## Outcome
+
+Implementation `f7f11ff`; selection and first inputs frozen in `9291514` before
+activation. [Actual result](../../examples/qasper-passage-v2/README.md): nine V5
+requests, 27,936 reported tokens; no execution errors, three mechanically valid
+terminal packets. Useful-output gate not met: one retrieval miss with inability
+submitted as an answer, one incomplete but broadly supported NMT answer, and one
+terminal gap with copied placeholder content. No unsupported racial capability
+or cue list was invented. Exact quote checks did not catch these quality issues.
+A fresh check verified complete cloud shutdown/config restoration; six owned
+Docker containers absent. Final suite: 1974 passed. No further paid attempt or
+training is authorized by this completed smoke.

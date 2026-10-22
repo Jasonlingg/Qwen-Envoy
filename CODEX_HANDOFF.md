@@ -1,5 +1,29 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: bounded QASPER passage-v2 live smoke completed, quality gate not met.**
+> User explicitly requested QASPER. Scope `2064b62`, implementation `f7f11ff`,
+> frozen inputs `9291514`. [Results](examples/qasper-passage-v2/README.md):
+> three deterministically selected, already exposed questions; fixed full-paper
+> BM25 selected two disjoint passages per paper without gold labels in model
+> inputs. Dataset assignment retains QASPER/S2ORC revision rather than fake arXiv
+> versions. This is an evaluation-only MCP adapter, not product QASPER ingestion.
+> V5 made nine calls / 27,936 reported tokens, no inference retries or execution,
+> action/submission/gap errors; three terminal packets passed provenance checks.
+> Humor retrieval missed its gold paragraph, and scoped inability was accepted
+> as an evidence_found candidate. Translation answered only NMT despite reading
+> LSTM/attention details. The unanswerable case used terminal submit_gap but
+> copied generic placeholder strings. Mechanical completion is not useful answer
+> quality. Implementing-assistant claim review is saved; human review stays null.
+> Final suite 1974 passed in 107.95s, no skips, three existing SWIG warnings.
+> Fresh 14:32:21 UTC reads: workers 0/0, zero workers/pending jobs, full config
+> restored; six owned Docker containers absent. Eleven protected files, 637 prior
+> artifacts/markers and 15 atomic-gap files unchanged. One new
+> `out/qasper-passage-v2-LIVE_ATTEMPT` marker consumed; no further paid calls,
+> base-model run, reserved-set use, training/RL or reward change are included.
+> No general fine-tuning gain or full QASPER score is claimed. Address retrieval,
+> answer completeness and gap specificity separately before another live run.
+
+
 > **October 22: atomic passage gaps implemented and locally verified.** User
 > approved simplifying the gap workflow. Scope `802ccec`, implementation
 > `ed75991`. Optional experiment MCP now uses `passages-v2`: after two distinct

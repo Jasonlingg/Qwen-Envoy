@@ -1,0 +1,148 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "4795396e-89e7-4592-86e0-98c225921679",
+  "question_id": "paper_4215c4d3218d5ec5",
+  "question": "What lexical cues are used for humor recogition?",
+  "corpus_hash": "cdb7936aca6cf1a5a721a018d668640d0281b1904ce98472219339c28a79ed05",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "The inspected passages do not establish the lexical cues used for humor recognition. I cannot identify the features inspected in the inspected passages.",
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1702_02584",
+      "start": 0,
+      "end": 1200,
+      "quote": "Predicting Audience's Laughter Using Convolutional Neural Network\n\nFor the purpose of automatically evaluating speakers' humor usage, we build a presentation corpus containing humorous utterances based on TED talks. Compared to previous data resources supporting humor recognition research, ours has several advantages, including (a) both positive and negative instances coming from a homogeneous data set, (b) containing a large number of speakers, and (c) being open. Focusing on using lexical cues for humor recognition, we systematically compare a newly emerging text classification method based on Convolutional Neural Networks (CNNs) with a well-established conventional method using linguistic knowledge. The advantages of the CNN method are both getting higher detection accuracies and being able to learn essential features automatically.\n\nThe ability to make effective presentations has been found to be linked with success at school and in the workplace. Humor plays an important role in successful public speaking, e.g., helping to reduce public speaking anxiety often regarded as the most prevalent type of social phobia, generating shared amusement to boost persuasive power, and servin",
+      "quote_truncated": true,
+      "source_url": "https://arxiv.org/abs/1702.02584",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+      "source_path": null,
+      "record": {}
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "qasper_1702_02584",
+      "start": 4000,
+      "end": 5200,
+      "quote": "und to be the best model that uses both acoustic and lexical cues for humor recognition. By using Long Short Time Memory (LSTM) cells BIBREF7 , Bertero2016NAACL showed that Recurrent Neural Networks (RNNs) perform better on modeling sequential information than Conditional Random Fields (CRFs) BIBREF8 .\n\nFrom the brief review, it is clear that corpora used in humor research so far are limited to one-line puns or jokes and conversations from TV comedy shows. There is a great need for an open corpus that can support investigating humor in presentations. CNN-based text categorization methods have been applied to humor recognition (e.g., in BIBREF5 ) but with limitations: (a) a rigorous comparison with the state-of-the-art conventional method examined in yang-EtAl:2015:EMNLP2 is missing; (b) CNN's performance in the previous research is not quite clear; and (c) some important techniques that can improve CNN performance (e.g., using varied-sized filters and dropout regularization BIBREF10 ) were not applied. Therefore, the present study is meant to address these limitations.\n\nTED Talks are recordings from TED conferences and other special TED programs. In the present study, we focused on",
+      "quote_truncated": true,
+      "source_url": "https://arxiv.org/abs/1702.02584",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1702_02584\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1702_02584', 'start': 0, 'end': 1600, 'text': \"Predicting Audience's Laughter Using Convolutional Neural Network\\n\\nFor the purpose of automatically evaluating speakers' humor usage, we build a presentation corpus containing humorous utterances based on TED talks. Compared to previous data resources supporting humor recognition research, ours has several advantages, including (a) both positive and negative instances coming from a homogeneous data set, (b) containing a large number of speakers, and (c) being open. Focusing on using lexical cues for humor recognition, we systematically compare a newly emerging text classification method based on Convolutional Neural Networks (CNNs) with a well-established conventional method using linguistic knowledge. The advantages of the CNN method are both getting higher detection accuracies and being able to learn essential features automatically.\\n\\nThe ability to make effective presentations has been found to be linked with success at school and in the workplace. Humor plays an important role in successful public speaking, e.g., helping to reduce public speaking anxiety often regarded as the most prevalent type of social phobia, generating shared amusement to boost persuasive power, and serving as a means to attract attention and reduce tension BIBREF0 .\\n\\nAutomatically simulating an audience's reactions to humor will not only be useful for presentation training, but also improve conversational systems by giving machines more empathetic power. The present study reports our efforts in recognizing utterances that cause laughter in presentations. These include building a corpus from TED ta\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1702_02584\", 4000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1702_02584', 'start': 4000, 'end': 5600, 'text': \"und to be the best model that uses both acoustic and lexical cues for humor recognition. By using Long Short Time Memory (LSTM) cells BIBREF7 , Bertero2016NAACL showed that Recurrent Neural Networks (RNNs) perform better on modeling sequential information than Conditional Random Fields (CRFs) BIBREF8 .\\n\\nFrom the brief review, it is clear that corpora used in humor research so far are limited to one-line puns or jokes and conversations from TV comedy shows. There is a great need for an open corpus that can support investigating humor in presentations. CNN-based text categorization methods have been applied to humor recognition (e.g., in BIBREF5 ) but with limitations: (a) a rigorous comparison with the state-of-the-art conventional method examined in yang-EtAl:2015:EMNLP2 is missing; (b) CNN's performance in the previous research is not quite clear; and (c) some important techniques that can improve CNN performance (e.g., using varied-sized filters and dropout regularization BIBREF10 ) were not applied. Therefore, the present study is meant to address these limitations.\\n\\nTED Talks are recordings from TED conferences and other special TED programs. In the present study, we focused on the transcripts of the talks. Most transcripts of the talks contain the markup `(Laughter)', which represents where audiences laughed aloud during the talks. This special markup was used to determine utterance labels.\\n\\nWe collected INLINEFORM0 TED Talk transcripts. An example transcription is given in Figure FIGREF4 . The collected transcripts were split into sentences using the Stanford CoreNLP \"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: The inspected passages do not establish the lexical cues used for humor recognition. I cannot identify the features inspected in the inspected passages. CITATIONS: [\"qasper_1702_02584\"] EVIDENCE: [{\"doc_id\":\"qasper_1702_02584\",\"start\":0,\"end\":1600},{\"doc_id\":\"qasper_1702_02584\",\"start\":4000,\"end\":5600}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1702_02584",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 4000,
+        "end": 5600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1702_02584\", 0, 1600))",
+      "print(passage(\"qasper_1702_02584\", 4000, 1600))"
+    ],
+    "source_text_sha256": "64a147065f057b33d25786af27a7d16c60d507b3a1bf20aee8adde22d4f6b50b",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "120fcdef959a538f89bb0c847f0e5bab3f458547c39856f933ac3e496df6f6f5",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 4000,
+      "end": 5600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "cdb7936aca6cf1a5a721a018d668640d0281b1904ce98472219339c28a79ed05",
+    "doc_id": "qasper_1702_02584",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1702.02584",
+    "title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "7c6b817333cfd0cbe63ee368b93a17140c64b51b84c6b1bd154ffada23720fbb",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}
