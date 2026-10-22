@@ -1,0 +1,70 @@
+{
+  "schema_version": "reader-improvement-queue-v1",
+  "queue_sha256": "981ac83fe88cc2a042111c3e607af2c3fd2aa7fbc2d89c959705654fba9a2c4a",
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "Implementing assistant; source-visible review, not independent human review",
+  "reviewed_at": "2026-10-22T18:15:40.963116+00:00",
+  "rows": [
+    {
+      "case_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "record_sha256": "f55e8cb86cdca660637d86b30555b3fdf0331e3c3d88cdf9ef2c6b990512c5d0",
+      "verdict": "fail",
+      "category": "evidence_not_used",
+      "notes": "Both actual reads succeeded. All seven original reference terms appear in the actual final model input and in this inspected source excerpt. The original answer denies that lexical cues are specified. The proposed correction preserves attribution to related work; it does not claim these are newly proposed features of this paper.",
+      "correction": {
+        "replacement_final_action": "SUBMIT: The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features, and incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects. CITATIONS: [\"qasper_1702_02584\"] EVIDENCE: [{\"doc_id\": \"qasper_1702_02584\", \"start\": 2400, \"end\": 3050}]",
+        "rationale": "Extract the explicitly listed features with their related-work attribution rather than denying supplied evidence.",
+        "source_support_reviewed": true,
+        "supporting_spans": [
+          {
+            "doc_id": "qasper_1702_02584",
+            "start": 2400,
+            "end": 3050,
+            "quote": "collect humorous instances while using formal writing resources (e.g., news titles) to obtain non-humorous instances. Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers. In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building."
+          }
+        ]
+      }
+    },
+    {
+      "case_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "record_sha256": "4fb4a0197408dd6d2d56be407d9d1d77cd0a3ddab31a26cbd57c552d7df71780",
+      "verdict": "pass",
+      "category": "none",
+      "notes": "Retain as control: LSTMs and attention are stated at 5164..5336 and dropout at 5659, all inside actual inspected and returned citation 4800..6000. No correction proposed.",
+      "correction": null
+    },
+    {
+      "case_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "record_sha256": "f1af1aa99ba3322cc44593dc5c3dbadc8a8780a8cc76570639fdbb1b9ae47bb4",
+      "verdict": "fail",
+      "category": "gap_reporting",
+      "notes": "Original scoped uncertainty is consistent with these passages, but it is submitted as evidence_found and omits the required terminal gap/query. The correction states only what the inspected passages do not establish. The follow-up query is a suggestion, not an executed search or verified capability.",
+      "correction": {
+        "replacement_final_action": "submit_gap(missing=\"The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.\", follow_up_query=\"\\\"Generating Clues for Gender based Occupation De-biasing in Text\\\" racial ethnic bias extension evaluation\")",
+        "rationale": "Use the existing terminal gap protocol after the two successful distinct reads; preserve scoped uncertainty and supply a relevant next query.",
+        "source_support_reviewed": true,
+        "supporting_spans": [
+          {
+            "doc_id": "qasper_1804_03839",
+            "start": 2307,
+            "end": 2400,
+            "quote": "In this paper, we focus on de-biasing with respect to gender stereotyping in occupations. Thi"
+          }
+        ]
+      }
+    }
+  ],
+  "correction_format": {
+    "replacement_final_action": "literal terminal action",
+    "rationale": "why this addresses the failure",
+    "source_support_reviewed": true,
+    "supporting_spans": [
+      {
+        "doc_id": "...",
+        "start": 0,
+        "end": 1,
+        "quote": "..."
+      }
+    ]
+  }
+}

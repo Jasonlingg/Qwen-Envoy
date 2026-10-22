@@ -1,0 +1,65 @@
+{
+  "schema_version": "reader-improvement-queue-v1",
+  "queue_sha256": "981ac83fe88cc2a042111c3e607af2c3fd2aa7fbc2d89c959705654fba9a2c4a",
+  "review_sha256": "ce2494dba2e7802d636020f486bc2dc71ecbad77f081b51ec6294307a1206b13",
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "Implementing assistant; source-visible review, not independent human review",
+  "reviewed_at": "2026-10-22T18:15:40.963116+00:00",
+  "human_review": null,
+  "independent_human_review": null,
+  "reviewed_counts": {
+    "pass": 1,
+    "partial": 0,
+    "fail": 2
+  },
+  "correction_drafts": [
+    {
+      "case_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "record_sha256": "f55e8cb86cdca660637d86b30555b3fdf0331e3c3d88cdf9ef2c6b990512c5d0",
+      "kind": "answer",
+      "proposed_final_action": "SUBMIT: The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features, and incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects. CITATIONS: [\"qasper_1702_02584\"] EVIDENCE: [{\"doc_id\": \"qasper_1702_02584\", \"start\": 2400, \"end\": 3050}]",
+      "original_prefix_sha256": "f19874f73c493c6a603519f56b60315f4158d10fc5a4089d6fb32c40a4ec5987",
+      "actual_final_request_sha256": "7ecf1f9284271428df20eb812e2954ac6521723d7d2990f731007bdf24ab48f3",
+      "rationale": "Extract the explicitly listed features with their related-work attribution rather than denying supplied evidence.",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1702_02584",
+          "start": 2400,
+          "end": 3050,
+          "quote": "collect humorous instances while using formal writing resources (e.g., news titles) to obtain non-humorous instances. Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers. In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building."
+        }
+      ],
+      "source_support": "reviewer_attestation_not_mechanically_proven",
+      "docker_replay": "required_not_performed",
+      "training_ready": false,
+      "training_eligible": false,
+      "usage": "regression_only"
+    },
+    {
+      "case_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "record_sha256": "f1af1aa99ba3322cc44593dc5c3dbadc8a8780a8cc76570639fdbb1b9ae47bb4",
+      "kind": "gap",
+      "proposed_final_action": "submit_gap(missing=\"The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.\", follow_up_query=\"\\\"Generating Clues for Gender based Occupation De-biasing in Text\\\" racial ethnic bias extension evaluation\")",
+      "original_prefix_sha256": "487493c7f776d18ca3c3bc446283da908d7bd87f3e04eb32bfa9784aa8cb570c",
+      "actual_final_request_sha256": "9ed8ed7bf7526f1c2e6960a6aa295c0f3419fdf6a90bc77587ccb589eeee25e3",
+      "rationale": "Use the existing terminal gap protocol after the two successful distinct reads; preserve scoped uncertainty and supply a relevant next query.",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1804_03839",
+          "start": 2307,
+          "end": 2400,
+          "quote": "In this paper, we focus on de-biasing with respect to gender stereotyping in occupations. Thi"
+        }
+      ],
+      "source_support": "reviewer_attestation_not_mechanically_proven",
+      "docker_replay": "required_not_performed",
+      "training_ready": false,
+      "training_eligible": false,
+      "usage": "regression_only"
+    }
+  ],
+  "training_ready": 0,
+  "model_calls": 0,
+  "status": "reviewed_drafts_pending_docker_replay",
+  "limitation": "No semantic correctness, model improvement or promotion is proven. Baseline evaluation papers/questions are excluded from training. This is not an SFT export."
+}

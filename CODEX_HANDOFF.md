@@ -1,5 +1,28 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: offline reader improvement queue added; runtime baseline frozen.**
+> User approved a continuously improvable workflow after freezing the tested
+> harness at `cce82c2`. Scope `e5232a3`, implementation `01615f9`.
+> [Guide](docs/READER_IMPROVEMENT_LOOP.md),
+> [saved example](examples/reader-improvement-loop/README.md).
+> `scripts/reader_improvement.py prepare/check` binds saved source, original
+> multi-turn traces and actual final model inputs to an attributed review.
+> The actual hybrid smoke imports all three cases: implementing-assistant source
+> review records two failures (humor extraction, structured gap reporting) and
+> one passing translation control. Two final-action correction drafts pass
+> provenance/structure checks, not automatic semantic grading. Independent human
+> review remains null. The drafts are regression-only, excluded from training,
+> and require fresh Docker replay; no corrected observations are fabricated.
+> This is not an SFT export, automatic collector, self-training loop or promotion
+> system. All 29 frozen implementation files and 1,680 prior files/markers were
+> verified unchanged. No GPU/cloud call, training, reward or runtime change.
+> Focused 55 passed; full 2042 passed in 272.17s with no skips and three existing
+> SWIG warnings. Ruff/diff and deterministic artifact reproduction passed.
+> A future training adapter needs separate reviewed examples and paper/question
+> exclusions; a new checkpoint needs predeclared matched evaluation. Do not
+> reopen retrieval tuning or claim weights alone explain every remaining failure.
+
+
 > **October 22: matched hybrid-input live V5 smoke completed, partial answer gain.**
 > User explicitly said “ok go test it.” Scope `1de2485`, runner `7ba4e52`, exact
 > frozen input comparison `6ff9404`. [Results](examples/qasper-hybrid-v5/README.md):
