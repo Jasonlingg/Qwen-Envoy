@@ -1,0 +1,62 @@
+{
+  "status": "local_atomic_gap_controller_and_mcp_verified",
+  "scope_commit": "802ccec",
+  "implementation_commit": "ed75991",
+  "data_kind": "synthetic_scripted_responses_and_paper_fixture",
+  "live_model_quality": "not_evaluated",
+  "human_review": null,
+  "paid_model_requests": 0,
+  "gpu_activations": 0,
+  "training_or_reward_changes": false,
+  "tests": {
+    "focused": {
+      "passed": 90,
+      "seconds": 63.67
+    },
+    "full": {
+      "passed": 1963,
+      "seconds": 214.82,
+      "skipped": 0,
+      "warnings": 3
+    },
+    "full_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs",
+    "ruff": "passed",
+    "diff_check": "passed"
+  },
+  "checks": {
+    "V1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "legacy_prompt_hashes_unchanged": 12,
+    "new_prompt_matches_policy_investigator_packet": "passed for Qwen/Nemotron construction and recorded scripted packet",
+    "two_source_reads_then_terminal_gap": "passed in three actions",
+    "premature_abstention_recovery": "passed on fourth action, including actual Docker/MCP",
+    "failed_duplicate_or_uninspected_reads_unlock_nothing": true,
+    "literal_only_terminal_call_never_executed_as_model_python": true,
+    "forged_or_nonterminal_gap_packets_rejected": true,
+    "malformed_ancillary_gap_retains_independent_quotes": true,
+    "note_persists_missing_statement_and_unexecuted_query": true,
+    "identical_note_retry_and_service_restart_dispatch_no_new_calls": true,
+    "optional_cli_selects_v2_without_startup_inference": true,
+    "default_unconfigured_mcp_unchanged": true,
+    "protected_files_unchanged": 11,
+    "prior_artifacts_and_markers_unchanged": 637,
+    "public_secret_pattern_scan": "passed"
+  },
+  "limitations": [
+    "All new responses and source text are scripted test fixtures; no post-change live Qwen result.",
+    "A valid terminal gap records an unreviewed model claim, not semantic proof of absence.",
+    "Only selected inspected passages are in scope, not the full paper or literature.",
+    "Two distinct successful passage inspections remain required; duplicate/failed calls do not count.",
+    "No substantive partial-findings synthesis or automatic next search was added.",
+    "No model-weight, held-out evaluation or broader product-quality improvement claim.",
+    "Historical base/V5 comparison runners retain passages-v1 and all paid markers remain consumed."
+  ],
+  "artifact_sha256": {
+    "README.md": "5d8b6456c29309fb44cfe652f6c0b7bb6cead3591b6c662d8b85705971cf4d34",
+    "effective-prompt.txt": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+    "focused-tests.txt": "1a518d060e77ef81d0f2b0aa3196d1d828c762bdf5724707943de638faa40f24",
+    "full-tests.txt": "c6d0317abc1af88c2a91ea2ab9042609f8d3b5f635e1cbf7650d0cecfe94d660",
+    "legacy-prompt-hashes.json": "15fd895f7f8afaf097c4a298f6a669b238f02fe3fa8e21e5928054a949c88b94",
+    "saved-note.json": "aa3e1ffa9519587793254f64da7802f740fd75bb9c68a878abb58d1e081584ff",
+    "scripted-report.json": "3d8446e760e3c5cf2c0b671e1251aaede325936834008b860a6d39d741bba41b"
+  }
+}

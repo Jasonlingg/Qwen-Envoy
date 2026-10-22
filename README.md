@@ -62,6 +62,8 @@ gap case; the overall test still did not pass. This is not a model-training gain
 A [matched base-model smoke](examples/passage-reader-base/README.md) completed
 one answerable case versus V5's two, mainly differing in protocol compliance;
 three exposed development cases do not establish a general fine-tuning gain.
+Gap completion now uses a [single terminal action](examples/atomic-passage-gap/README.md),
+verified locally through MCP/Docker; live Qwen adoption of that change is pending.
 
 **No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
 It includes the saved runs and makes no model calls; no GPU, Docker, login,

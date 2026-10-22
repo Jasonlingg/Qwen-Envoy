@@ -1,5 +1,24 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: atomic passage gaps implemented and locally verified.** User
+> approved simplifying the gap workflow. Scope `802ccec`, implementation
+> `ed75991`. Optional experiment MCP now uses `passages-v2`: after two distinct
+> successful passage inspections, `submit_gap(missing=..., follow_up_query=...)`
+> saves an unreviewed gap and ends without an accepted answer in one action.
+> It launches no search or host Python. Source code remains Docker-only; source
+> bounds, inspection checks and the four-request budget remain. A premature
+> separate abstention can recover on turn four. The verifier checks the terminal
+> trace; the missing statement and unexecuted next query survive in the note.
+> Same-request retry/restart makes no new call. Legacy baseline/focused/v1 prompts
+> (12 hashes), V1 preamble pin, 11 protected files and 637 prior artifacts/markers
+> are unchanged. Historical comparison runners keep v1; no paid allowance reset.
+> [Scripted MCP/Docker example](examples/atomic-passage-gap/README.md) uses synthetic
+> responses and paper text. Focused 90 passed; standalone full 1963 passed in
+> 214.82 seconds, no skips, three SWIG warnings; Ruff/diff checks passed. No
+> post-change live Qwen, GPU/paid call, training/reward change or semantic/model
+> improvement result is included. A bounded fresh development smoke is a separate
+> next step; do not relabel old V5/base failures as new-protocol successes.
+
 > **October 21 local / October 22 UTC: base passage comparison completed.**
 > User explicitly requested base alongside V5. `6c84969` adds a pinned model arm;
 > `4ad24e3` freezes matching first inputs (only model alias differs). [Actual base

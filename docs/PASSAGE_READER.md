@@ -80,9 +80,27 @@ Raw and normalized actions are retained in the trace. Other document tools,
 arbitrary Python and out-of-scope reads are
 rejected before execution. Supported submissions can cite only inspected ranges.
 
-For a gap, the model must inspect two distinct reads, report what remains
-missing, and abstain. The gap is limited to selected passages; it does not prove
-absence from the paper or all literature. A proposed next query is not executed.
+The optional experiment MCP now selects **`passages-v2`**. For a missing answer,
+the model must first complete two distinct successful passage inspections, then
+finish with one control action:
+
+```python
+submit_gap(
+    missing="These passages do not establish p95 latency for the requested setup.",
+    follow_up_query="Requested model and hardware p95 latency measurements",
+)
+```
+
+This records the gap and ends without an accepted answer in the same action.
+Two reads plus this action take three turns; a premature separate abstention can
+still recover with it on turn four. Failed, duplicate or out-of-scope reads do not
+satisfy the inspection requirement. The terminal action is parsed as literal
+control data and is never executed as Python. The four-request budget is unchanged.
+
+The gap is an unreviewed model report limited to selected inspected passages;
+it does not prove absence from the paper or all literature. The proposed next
+query is saved for the host and is not executed. Source observations remain in
+the report. This action does not by itself produce verified partial findings.
 
 Successful and incomplete reader reports are saved under the configured library's
 `passage-reader-reports` directory. Verified evidence is attached as an unreviewed
@@ -91,6 +109,17 @@ host can reattach it through the ordinary research-note tool without rerunning Q
 An interrupted invocation remains consumed rather than being retried automatically.
 The same note ID and request return the saved report without new model calls;
 changed input under that ID is rejected. New note IDs are explicit new attempts.
+The missing-evidence statement and unreviewed next query are also retained in
+the experiment note's uncertainties, so save/resume preserves both. Switching
+protocol versions changes the request identity; old note IDs cannot trigger a
+fresh attempt implicitly.
+
+The local atomic-gap tests include a real MCP client/server and network-disabled
+Docker with scripted responses. They establish controller behavior and durable
+records, not live Qwen's response to the new prompt. No post-change paid model
+trial or training was run. Earlier `passages-v1`, focused and baseline prompt
+bytes and saved comparisons remain unchanged; the historical comparison runner
+retains v1. [Change scope and validation](implementation/2026-10-22-atomic-passage-gap.md).
 
 ## Development attempt
 
