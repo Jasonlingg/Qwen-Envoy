@@ -8,9 +8,11 @@ change rewards, train a checkpoint or promote one.
 
 ```
 Saved run → review queue → attributed source review → quarantined correction draft
+                                                        ↓
+                                            fixed-action Docker regression replay
                                                         ↓ future work
-                                            Docker replay → separate training data
-                                            → candidate evaluation → promotion
+                                            separate reviewed training data
+                                            → training → candidate evaluation → promotion
 ```
 
 ## Use it
@@ -84,14 +86,39 @@ silently fix either baseline behavior.
 Only saved, complete QASPER passage-smoke bundles with a bound plan, ledger,
 source snapshots and one raw request per action are currently supported. No
 automatic runtime collection, arbitrary trace adapter, correction generator,
-Docker correction replay, training export or model deployment is included.
+training export or model deployment is included.
 Earlier tool errors can be diagnosed, but repairing them requires new trajectories
 with actual observations. Never append invented successful observations.
 
 ## Next increments and decision rule
 
-First replay reviewed final-action corrections in the existing Docker boundary
-as **regression demonstrations**. Then collect a separate, reviewed training set
+Reviewed final-action corrections can now be replayed in the existing Docker
+boundary as **regression demonstrations**:
+
+```bash
+python scripts/replay_reader_corrections.py \
+  --run examples/qasper-hybrid-v5 \
+  --queue examples/reader-improvement-loop \
+  --review examples/reader-improvement-loop/implementing-assistant-review.json \
+  --drafts examples/reader-improvement-loop/correction-drafts.json \
+  --output out/my-reader-correction-replay
+```
+
+The exact pinned Docker image must already exist locally. There is no LocalREPL
+fallback, model/tokenizer download, credential lookup or inference request. First
+all three original trajectories must reproduce, comparing the entire packet
+except its fresh run UUID and every generated request against the historical
+payload. Only then are the two reviewed final-action replacements allowed.
+Original source-inspection actions and actual observations must remain identical.
+The runner records per-action/input receipts, sandbox configuration and verified
+removal of owned containers. Input bundles and output directories are immutable.
+
+A fixed reply does not show how Qwen would choose actions or react to new
+feedback. The replay cannot measure model quality, a post-training gain or
+generalization. Passing replay does not change the earlier draft files or
+their training eligibility. See the [saved replay](../examples/reader-correction-replay/README.md).
+
+Next collect a separate, reviewed training set
 with no overlap in questions or papers with evaluation. Train only under a
 separate scoped plan with named questions, reviewed outputs and a budget.
 
