@@ -25,7 +25,10 @@ from scripts.reader_comparison import credential
 from scripts.runpod_qwen_bootstrap import BASE, BASE_REVISION
 from src.env.repl import PersistentREPL
 from src.eval.assigned_smoke_lifecycle import supervise
+from src.eval.assigned_smoke_plan import MODEL_IDENTITY
 from src.eval.assigned_smoke_run import track_sandbox
+from src.eval.reader_comparison_plan import ARMS
+from src.eval.reader_comparison_run import identity
 from src.eval.worker_log_reader import WorkerLogReader
 from src.policies.runpod_queue import RunpodQueueTransport
 from src.product.arxiv_library import ArxivLibrary
@@ -41,6 +44,7 @@ ENDPOINT = "q05pjrvguakieg"
 IMAGE = "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382"
 # One newly authorized rerun; the original attempt marker remains consumed.
 MARKER = ROOT / "out/passage-reader-three-case-RERUN-1"
+BASE_MARKER = ROOT / "out/passage-reader-three-case-BASE-1"
 LIMITS = {"model_requests": 12, "tokens_reserved": 98304, "seconds": 900, "gpus": 1}
 FILES = ["scripts/try_passage_reader.py", "scripts/experiment_mode_mcp.py",
     "src/product/passage_reader_service.py", "src/product/passage_scope.py",
@@ -49,6 +53,8 @@ FILES = ["scripts/try_passage_reader.py", "scripts/experiment_mode_mcp.py",
     "src/product/packet_verifier.py", "src/product/paper_assignment.py",
     "src/product/experiment_budget.py", "src/policies/runpod_queue.py",
     "src/eval/assigned_smoke_lifecycle.py", "src/eval/worker_log_reader.py",
+    "src/eval/reader_comparison_plan.py", "src/eval/reader_comparison_run.py",
+    "src/eval/assigned_smoke_plan.py",
     "src/env/repl.py", "src/env/tools.py", "src/env/tools_v2.py"]
 
 
@@ -66,7 +72,9 @@ def hashes():
     return {name: sha(ROOT / name) for name in FILES}
 
 
-def prepare(output):
+def prepare(output, *, model_arm="v5"):
+    if model_arm not in ARMS:
+        raise ValueError("unknown model arm")
     if not PersistentREPL._docker_available(IMAGE):
         raise ValueError("pinned Docker image unavailable")
     cases = json.loads((ROOT / "examples/base-v5-reader-comparison/cases.json").read_text())
@@ -96,6 +104,7 @@ def prepare(output):
         "human_review": None, "sent_to_model": False,
         "cases": [by_id[name] for name in selected]})
     plan = {"schema_version": "three-case-passage-reader-v1", "limits": LIMITS,
+        "model_arm": model_arm, "model_identity": identity({"models": MODEL_IDENTITY}, model_arm),
         "endpoint": ENDPOINT, "sandbox_image": IMAGE, "implementation_sha256": hashes(),
         "source_sha256": sources, "cases_sha256": sha(output / "cases.json"),
         "review_input_sha256": sha(output / "review-input.json"),
@@ -105,9 +114,12 @@ def prepare(output):
     return plan
 
 
-def check(output):
+def check(output, *, model_arm=None):
     plan = json.loads((output / "plan.json").read_text())
-    if (plan["limits"] != LIMITS or plan["endpoint"] != ENDPOINT
+    arm = plan.get("model_arm")
+    if (arm not in ARMS or model_arm is not None and arm != model_arm
+            or plan["model_identity"] != identity({"models": MODEL_IDENTITY}, arm)
+            or plan["limits"] != LIMITS or plan["endpoint"] != ENDPOINT
             or plan["sandbox_image"] != IMAGE or plan["implementation_sha256"] != hashes()
             or plan["cases_sha256"] != sha(output / "cases.json")
             or plan["review_input_sha256"] != sha(output / "review-input.json")
@@ -117,7 +129,8 @@ def check(output):
 
 
 async def run_cases(output, tokenizer, key=None, *, scripted=False):
-    check(output)
+    plan = check(output)
+    model = plan["model_identity"]
     cases = json.loads((output / "cases.json").read_text())
     review = json.loads((output / "review-input.json").read_text())
     refs = {r["case_id"]: r for r in review["cases"]}
@@ -132,7 +145,7 @@ async def run_cases(output, tokenizer, key=None, *, scripted=False):
             pass
         queue = RunpodQueueTransport(ENDPOINT, key, tokenizer,
                                     output / "session.requests.jsonl", requests_max=12,
-                                    wait_seconds=120)
+                                    wait_seconds=120, served_model=model["served_model"])
     first_inputs, reports = {}, []
     expected_inputs = ({} if scripted else json.loads((output / "first-inputs.json").read_text()))
     try:
@@ -163,17 +176,18 @@ async def run_cases(output, tokenizer, key=None, *, scripted=False):
                 content = next(scripted_actions)
                 count = len(tokenizer.apply_chat_template(payload["messages"], tokenize=True,
                     add_generation_prompt=True, enable_thinking=False, return_dict=False))
-                return {"model": "envoy", "choices": [{"message": {"content": content},
-                    "finish_reason": "stop"}], "usage": {"prompt_tokens": count,
+                return {"model": model["served_model"], "choices": [{
+                    "message": {"content": content}, "finish_reason": "stop"}],
+                    "usage": {"prompt_tokens": count,
                     "completion_tokens": len(tokenizer.encode(content))}}
             def factory():
                 budget = ExperimentBudget(tokenizer, transport, requests_max=4, tokens_max=32768)
                 reader = build_assigned_reader("qwen", qwen_endpoint=
-                    "https://api.runpod.ai/v2/" + ENDPOINT, qwen_model="envoy",
-                    qwen_checkpoint="jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@"
-                    "27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+                    "https://api.runpod.ai/v2/" + ENDPOINT, qwen_model=model["served_model"],
+                    qwen_checkpoint=model["checkpoint"],
                     reader_guidance=PASSAGES, max_steps=4, sandbox_image=IMAGE,
                     policy_transport=budget)
+                reader.model_identity.update(model)
                 track_sandbox(reader, output)
                 return reader, budget
             service = PassageReaderService(store, library, factory, folder / "reports",
@@ -222,11 +236,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("phase", choices=["prepare", "run", "worker"])
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--model-arm", choices=tuple(ARMS), default="v5")
     args = parser.parse_args()
+    marker = BASE_MARKER if args.model_arm == "base" else MARKER
     os.environ.update(HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1")
     tokenizer = load_tokenizer(BASE, BASE_REVISION)
     if args.phase == "prepare":
-        prepare(args.output)
+        prepare(args.output, model_arm=args.model_arm)
         summary = asyncio.run(run_cases(args.output, tokenizer, scripted=True))
         if summary["unattempted_cases"] or not all(c["note_attached"] for c in summary["cases"]):
             raise ValueError("scripted preflight did not complete")
@@ -235,7 +251,7 @@ def main():
         save(args.output / "plan.json", plan)
         print(json.dumps(summary))
         return
-    plan = check(args.output)
+    plan = check(args.output, model_arm=args.model_arm)
     if plan["first_inputs_sha256"] != sha(args.output / "first-inputs.json"):
         raise ValueError("frozen model inputs changed")
     approval = json.loads((args.output / "authorization.json").read_text())
@@ -250,7 +266,7 @@ def main():
     key = credential()
     if args.phase == "worker":
         runtime = json.loads((args.output / "runtime.json").read_text())
-        if (MARKER.read_text().strip() != str(args.output.resolve())
+        if (marker.read_text().strip() != str(args.output.resolve())
                 or runtime["plan_sha256"] != sha(args.output / "plan.json")
                 or time.time() >= runtime["deadline_unix"]):
             raise ValueError("worker is outside its single authorized session")
@@ -272,7 +288,7 @@ def main():
             or before.get("entrypoint") != ["python3", "-u", "-c", (
                 ROOT / "scripts/runpod_qwen_bootstrap.py").read_text()]):
         raise ValueError("endpoint must be parked with its original pinned bootstrap")
-    with MARKER.open("x") as stream:
+    with marker.open("x") as stream:
         stream.write(str(args.output.resolve()) + "\n")
     deadline = time.time() + 900
     save(args.output / "runtime.json", {"deadline_unix": deadline,
@@ -280,7 +296,7 @@ def main():
         "implementation_commit": subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()})
     command = [sys.executable, str(Path(__file__).resolve()), "worker", "--output",
-               str(args.output.resolve())]
+               str(args.output.resolve()), "--model-arm", args.model_arm]
     try:
         supervise(ENDPOINT, args.output, command, key=key, seconds=900,
             deadline_unix=deadline, logged_running_ready=True,
