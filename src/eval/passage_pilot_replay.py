@@ -105,6 +105,9 @@ def verify_case(prepared, case, row, packet, payloads):
     verified = verify_investigation_packet(packet, manifest, docs,
         allowed_prompt_sha256s=frozenset({PROMPT_SHA}), expected_reader_mode="assigned",
         expected_reader_guidance=PASSAGES_V2, expected_passage_windows=case["scope"]["windows"])
+    if packet.get("status") in {"unavailable", "error"}:
+        raise ValueError("Docker demonstration unavailable/failed: " +
+                         packet.get("error", "unknown"))
     actions = case["scope"]["read_calls"] + [row["final_action"]]
     trace = packet["trajectory"]
     if (packet["execution"] != "docker_only" or packet["inspection_steps"] != 2
@@ -219,9 +222,10 @@ def replay(prepared, review_path, output):
         raise
     finally:
         proofs = cleanup(containers)
-        closed = len(proofs) == len(cases) and all(p["absent"] for p in proofs)
-        write(output / "cleanup.json", {"containers": proofs, "all_absent": closed})
-        if not closed:
+        closed = all(p["absent"] for p in proofs)
+        write(output / "cleanup.json", {"containers": proofs, "all_absent": closed,
+            "expected_case_count": len(cases), "owned_container_count": len(proofs)})
+        if not closed or len(proofs) != len(cases):
             summary["status"] = "failed"
         write(output / "summary.json", summary)
         write(output / "manifest.json", {"schema_version": "passage-pilot-replay-v1",

@@ -298,3 +298,11 @@ def test_export_never_includes_development_or_accepts_partial_replay(
     with pytest.raises(ValueError, match="changed replay artifacts"):
         runner.export(root, review, replay, tmp_path / "tampered-export")
     assert not (tmp_path / "tampered-export").exists()
+
+
+def test_unavailable_packet_reports_docker_failure_not_missing_counter(prepared, monkeypatch):
+    root, cases, _ = prepared
+    monkeypatch.setattr(runner, "verify_investigation_packet", lambda *args, **kwargs: {})
+    with pytest.raises(ValueError, match="Docker demonstration unavailable/failed"):
+        runner.verify_case(root, cases[0], {}, {"status": "unavailable",
+                           "error": "Docker image unavailable"}, [])
