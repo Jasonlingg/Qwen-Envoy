@@ -32,3 +32,33 @@ evidence-conditioned extraction versus scoped structured gaps. Keep source revie
 Docker replay, train/development paper exclusions, independent evaluation and
 paid budget gates explicit. No invented demonstration observations or automatic
 semantic labels, and no promotion from training loss or fixed-action replay.
+
+## Actual audit and next decision
+
+Implementation `226722e` reproduces V5 train/validation totals of 4,812/1,162
+supervised tokens using local-only cached tokenization and existing preprocessing.
+Training has 19 answerable and 16 insufficient labels, not a refusal majority.
+All 44 conversations lack evidence spans and the current effective prompt;
+all 18 insufficient examples use cited prose, and none demonstrates submit_gap.
+The audit checks the historical exporter rule explicitly (three train observations
+have outer-whitespace normalization), without editing saved observations.
+Its initial raw-byte expectation failed; the final check reuses the existing
+legacy export rule and still rejects content changes. Source/provenance hashes
+match; no specified evaluation-set question/paper overlap was found.
+
+The proposed pilot is scoped to present-versus-missing supplied evidence, not a
+repeat of the successful old memorization diagnostic or failed broader V6 pilot.
+It requires separately frozen IDs, a complete prior-data exclusion registry,
+source-reviewed Docker demonstrations and a paid budget before execution.
+There is no new training dataset or optimizer result. Focused verification:
+23 passed. Original data/trainer/reward and all 29 frozen runtime files unchanged;
+1,736 prior file/marker hashes preserved. No model, teacher API or GPU call.
+
+A separate source-visible implementing-assistant spot check covers two training
+cases per label in deterministic hash order. It finds a supported definition,
+an ambiguity between manual inspection and formal human evaluation, and two
+reasonable scoped refusals that do not prove whole-paper absence or optimal
+stopping. Its input/review hashes and actual observation excerpts are saved;
+no training reuse or independent human review is approved by this check.
+Full offline suite with pinned Docker image: **2056 passed in 166.52 seconds**,
+no skips, three existing SWIG warnings. Ruff/diff passed.

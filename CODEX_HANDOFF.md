@@ -1,5 +1,33 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: V5 training alignment audit completed; no new training run.**
+> User approved auditing existing data and defining a targeted SFT pilot.
+> Scope `3cc3d5b`, audit/pilot implementation `226722e`.
+> [Actual audit](examples/reader-training-audit/README.md),
+> [proposed narrow pilot](docs/PASSAGE_READER_SFT_PILOT.md).
+> Reproduced train/validation token totals 4,812/1,162 with the cached pinned
+> tokenizer and existing assistant-only preprocessing. Train is 19 answerable /
+> 16 insufficient, so not a refusal-majority dataset. Across 44 conversations:
+> zero final EVIDENCE spans, zero submit_gap actions, zero current prompt matches;
+> all 18 insufficient examples end in cited prose. Old export whitespace
+> normalization is explicitly reproduced; original observations are preserved.
+> These are structural/lexical findings, not fresh semantic grades or causal proof.
+> The September two-example overfit already passed; the October V6 pilot already
+> failed promotion (answerable 5/17 versus V5 4/17, insufficient 2/7 versus 7/7).
+> Do not repeat either as if untested. The old V6 holdout is consumed regardless
+> of its unchanged historical lock text. No new reserved question pack was opened.
+> Proposed next data batch pairs present/missing evidence under passages-v2;
+> actual IDs, full previous-training/evaluation exclusion registry, reviewed
+> demonstrations, replay and a paid budget must be frozen before any GPU job.
+> Current training/inference/teacher paid allowance is zero. No training/reward
+> or frozen runtime file changed, no model call/GPU activation occurred.
+> Separate four-case source-visible spot check is explicitly implementing-assistant
+> review: a supported definition, qualified/ambiguous manual-evaluation answer,
+> and scoped gaps that do not establish whole-paper absence. No reuse approved.
+> Focused 23 passed; full 2056 passed in 166.52s, no skips, three existing SWIG
+> warnings. Ruff/diff passed; all 29 frozen files and 1,736 prior hashes preserved.
+
+
 > **October 22: source-reviewed corrections replayed in the frozen Docker harness.**
 > User approved the next offline validation step. Scope `2674209`, implementation
 > `dc350a8`. [Actual replay](examples/reader-correction-replay/README.md): all three

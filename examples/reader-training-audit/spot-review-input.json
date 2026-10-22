@@ -1,0 +1,125 @@
+{
+  "selection": "Two per historical label, SHA256(42:<question ID>) order, training split only; post-audit spot check, not blind or a new evaluation",
+  "human_review": null,
+  "cases": [
+    {
+      "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+      "label": "sufficient",
+      "question": "Use the known paper \"Can neural networks understand monotonicity reasoning?\" (doc_id: \"qasper_1906_06448\") to answer: What is monotonicity reasoning?",
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within('qasper_1906_06448', 'monotonicity reasoning definition'))",
+          "observation": "[{'text': 'Can neural networks understand monotonicity reasoning?\\n\\nMonotonicity reasoning is one of the important reasoning skills for any intelligent natural language inference (NLI) model in that it requires the ability to capture the interaction between lexical and syntactic structures. Since no test set has been developed for monotonicity reasoning with wide coverage, it is still unclear whether neural models can perform monotonicity reasoning in a proper way. To investigate this issue, we introduce th', 'offset': 0, 'score': 9}, {'text': 'uction, we can collect naturally-occurring examples by crowdsourcing and well-designed ones from linguistics publications. To enable the evaluation of skills required for monotonicity reasoning, we annotate each example in our dataset with linguistic tags associated with monotonicity reasoning.\\n\\nWe measure the performance of state-of-the-art NLI models on monotonicity reasoning and investigate their generalization ability in upward and downward reasoning (Section \"Results and Discussion\" ). The ', 'offset': 3600, 'score': 7}, {'text': 'he ability to capture the interaction between lexical and syntactic structures. Since no test set has been developed for monotonicity reasoning with wide coverage, it is still unclear whether neural models can perform monotonicity reasoning in a proper way. To investigate this issue, we introduce the Monotonicity Entailment Dataset (MED). Performance by state-of-the-art NLI models on the new test set is substantially worse, under 55%, especially on downward reasoning. In addition, analysis using', 'offset': 200, 'score': 6}]\n\n\n[Step 1/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 2,
+          "action": "print(read('qasper_1906_06448')[0:3300])",
+          "observation": "Can neural networks understand monotonicity reasoning?\n\nMonotonicity reasoning is one of the important reasoning skills for any intelligent natural language inference (NLI) model in that it requires the ability to capture the interaction between lexical and syntactic structures. Since no test set has been developed for monotonicity reasoning with wide coverage, it is still unclear whether neural models can perform monotonicity reasoning in a proper way. To investigate this issue, we introduce the Monotonicity Entailment Dataset (MED). Performance by state-of-the-art NLI models on the new test set is substantially worse, under 55%, especially on downward reasoning. In addition, analysis using a monotonicity-driven data augmentation method showed that these models might be limited in their generalization ability in upward and downward reasoning.\n\nNatural language inference (NLI), also known as recognizing textual entailment (RTE), has been proposed as a benchmark task for natural language understanding. Given a premise $P$ and a hypothesis $H$ , the task is to determine whether the premise semantically entails the hypothesis BIBREF0 . A number of recent works attempt to test and analyze what type of inferences an NLI model may be performing, focusing on various types of lexical inferences BIBREF1 , BIBREF2 , BIBREF3 and logical inferences BIBREF4 , BIBREF5 .\n\nConcerning logical inferences, monotonicity reasoning BIBREF6 , BIBREF7 , which is a type of reasoning based on word replacement, requires the ability to capture the interaction between lexical and syntactic structures. Consider examples in ( \"Introduction\" ) and ( \"Introduction\" ).\n\nAll [ workers $\\leavevmode {\\color {blue!80!black}\\downarrow }$ ] [joined for a French dinner $\\leavevmode {\\color {red!80!black}\\uparrow }$ ] All workers joined for a dinner All new workers joined for a French dinner Not all [new workers $\\leavevmode {\\color {red!80!black}\\uparrow }$ ] joined for a dinner Not all workers joined for a dinner \n\nA context is upward entailing (shown by [... $\\leavevmode {\\color {red!80!black}\\uparrow }$ ]) that allows an inference from ( \"Introduction\" ) to ( \"Introduction\" ), where French dinner is replaced by a more general concept dinner. On the other hand, a downward entailing context (shown by [... $\\leavevmode {\\color {blue!80!black}\\downarrow }$ ]) allows an inference from ( \"Introduction\" ) to ( \"Introduction\" ), where workers is replaced by a more specific concept new workers. Interestingly, the direction of monotonicity can be reversed again by embedding yet another downward entailing context (e.g., not in ( \"Introduction\" )), as witness the fact that ( \"Introduction\" ) entails ( \"Introduction\" ). To properly handle both directions of monotonicity, NLI models must detect monotonicity operators (e.g., all, not) and their arguments from the syntactic structure.\n\nFor previous datasets containing monotonicity inference problems, FraCaS BIBREF8 and the GLUE diagnostic dataset BIBREF9 are manually-curated datasets for testing a wide range of linguistic phenomena. However, monotonicity problems are limited to very small sizes (FraCaS: 37/346 examples and GLUE: 93/1650 examples). The limited syntactic patterns and vocabularies in previous test sets are obstacles in accurately\n\n\n[Step 2/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Monotonicity reasoning is inference by replacing words while accounting for the interaction between lexical meaning and syntactic structure. It includes upward and downward reasoning. CITATIONS: [\"qasper_1906_06448\"]",
+          "observation": "Submitted. Reward: 0.473",
+          "reward": 0.47317073170731705,
+          "done": true
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+      "label": "sufficient",
+      "question": "Use the known paper \"Incorporating Sememes into Chinese Definition Modeling\" (doc_id: \"qasper_1905_06512\") to answer: Do they perform manual evaluation?",
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within('qasper_1905_06512', 'manual evaluation inspection'))",
+          "observation": "[{'text': \"an generate more accurate and concrete definitions. For example, for the word \u201c\u65c5\u9986\u201d (hotel), the baseline model fails to generate definition containing the token \u201c\u65c5\u884c\u8005\u201d(tourists). However, by incoporating sememes' information, especially the sememe \u201c\u65c5\u6e38\u201d (tour), AAM and SAAM successfully generate \u201c\u65c5\u884c\u8005\u201d(tourists). Manual inspection of others examples also supports our claim.\\n\\nWe also conduct an ablation study to evaluate the various choices we made for SAAM. We consider three key components: positio\", 'offset': 23400, 'score': 2}, {'text': \"ng sememes' information, especially the sememe \u201c\u65c5\u6e38\u201d (tour), AAM and SAAM successfully generate \u201c\u65c5\u884c\u8005\u201d(tourists). Manual inspection of others examples also supports our claim.\\n\\nWe also conduct an ablation study to evaluate the various choices we made for SAAM. We consider three key components: position embedding, the adaptive attention layer, and the incorporated sememes. As illustrated in table 3 , we remove one of these components and report the performance of the resulting model on validation s\", 'offset': 23600, 'score': 2}, {'text': 'ries for Chinese as a foreign language (CFL) learners.\\n\\nIn recent years, the number of CFL learners has risen sharply. In 2017, 770,000 people took the Chinese Proficiency Test, an increase of 38% from 2016. However, most Chinese dictionaries are for native speakers. Since these dictionaries usually require a fairly high level of Chinese, it is necessary to build a dictionary specifically for CFL learners. Manually writing definitions relies on the knowledge of lexicographers and linguists, whic', 'offset': 1200, 'score': 1}]\n\n\n[Step 1/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 2,
+          "action": "SUBMIT: Yes, they report qualitative manual inspection of generated definitions and examples. The inspected passage supports that claim, without establishing a separate scored human-evaluation study. CITATIONS: [\"qasper_1905_06512\"]",
+          "observation": "Submitted. Reward: 0.262",
+          "reward": 0.26153846153846155,
+          "done": true
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "label": "insufficient",
+      "question": "Use the known paper \"Classification Betters Regression in Query-based Multi-document Summarisation Techniques for Question Answering: Macquarie University at BioASQ7b\" (doc_id: \"qasper_1909_00542\") to answer: How did the author's work rank among other submissions on the challenge?",
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"qasper_1909_00542\", \"rank among other submissions\"))",
+          "observation": "[{'text': '\\n\\nThe Spearman rank correlation and the Kendall rank correlation are two of the most popular among metrics that aim to detect non-linear correlations. The Spearman rank correlation between two variables can be computed as the Pearson correlation between the rank values of the two variables, whereas the Kendall rank correlation measures the ordinal association between the two variables using Equation DISPLAY_FORM36.\\n\\nIt is useful to account for the fact that the results are from 28 independent se', 'offset': 14000, 'score': 6}, {'text': 'd by the product of their standard deviations. This correlation is a good indication of a linear relation between the two variables, but may not be very effective when there is non-linear correlation.\\n\\nThe Spearman rank correlation and the Kendall rank correlation are two of the most popular among metrics that aim to detect non-linear correlations. The Spearman rank correlation between two variables can be computed as the Pearson correlation between the rank values of the two variables, whereas ', 'offset': 13800, 'score': 5}, {'text': 'he correlation metrics are Pearson, Kendall, and a revised Kendall correlation explained below.\\n\\nThe Pearson correlation between two variables is computed as the covariance of the two variables divided by the product of their standard deviations. This correlation is a good indication of a linear relation between the two variables, but may not be very effective when there is non-linear correlation.\\n\\nThe Spearman rank correlation and the Kendall rank correlation are two of the most popular among m', 'offset': 13600, 'score': 3}]\n\n\n[Step 1/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 2,
+          "action": "print(search_within(\"qasper_1909_00542\", \"leaderboard official results other systems best\"))",
+          "observation": "[{'text': 'r correlation.\\n\\nTable TABREF41 shows the results and details of the runs submitted to BioASQ. The table uses ROUGE-SU4 Recall since this is the metric available at the time of writing this paper. However, note that, as explained in Section SECREF6, these results might differ from the final human evaluation results. Therefore we do not comment on the results, other than observing that the \u201cfirst $n$\u201d baseline produces the same results as the neural regressor. As mentioned in Section SECREF3, the ', 'offset': 15800, 'score': 6}, {'text': 'a hidden layer.\\n\\nThe results reported by BIBREF2 used ROUGE Recall and indicated no improvement with respect to deep learning architectures. Human evaluation results are preferable over ROUGE but these were made available after the publication of the paper. When comparing the ROUGE and human evaluation results (Table TABREF29), we observe an inversion of the results. In particular, the reinforcement learning approaches (RL) of BIBREF2 receive good human evaluation results, and as a matter of fac', 'offset': 10000, 'score': 5}, {'text': 'e were made available after the publication of the paper. When comparing the ROUGE and human evaluation results (Table TABREF29), we observe an inversion of the results. In particular, the reinforcement learning approaches (RL) of BIBREF2 receive good human evaluation results, and as a matter of fact they are the best of our runs in two of the batches. In contrast, the regression systems (NNR) fare relatively poorly. Section SECREF6 expands on the comparison between the ROUGE and human evaluatio', 'offset': 10200, 'score': 5}]\n\n\n[Step 2/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 3,
+          "action": "print(search_within(\"qasper_1909_00542\", \"conclusion future work\"))",
+          "observation": "[{'text': 'sed regression approaches using the following framework:\\n\\nTrain the regressor to predict the ROUGE-SU4 F1 score of the input sentence.\\n\\nProduce a summary by selecting the top $n$ input sentences.\\n\\nA novelty in the current participation is the introduction of classification approaches using the following framework.\\n\\nTrain the classifier to predict the target label (\u201csummary\u201d or \u201cnot summary\u201d) of the input sentence.\\n\\nProduce a summary by selecting all sentences predicted as \u201csummary\u201d.\\n\\nIf the tota', 'offset': 5000, 'score': 2}, {'text': 'ts, in general the results are compatible with the top part of the table and prior work suggesting that classification-based approaches improve over regression-based approaches.\\n\\nWe also experiment with the use of reinforcement learning techniques. Again these experiments are based on BIBREF2, who uses REINFORCE to train a global policy. The policy predictor uses a simple feedforward network with a hidden layer.\\n\\nThe results reported by BIBREF2 used ROUGE Recall and indicated no improvement with', 'offset': 9600, 'score': 2}, {'text': 'etter results than regression but the quality of the results depends on the approach followed to annotate the data labels.\\n\\nWe conduct correlation analysis between various ROUGE evaluation metrics and the human evaluations conducted at BioASQ and show that Precision and F1 correlate better than Recall.\\n\\nSection SECREF2 briefly introduces some related work for context. Section SECREF3 describes our classification and regression experiments. Section SECREF4 details our experiments using deep learn', 'offset': 1800, 'score': 1}]\n\n\n[Step 3/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 4,
+          "action": "print(passage(\"qasper_1909_00542\", 15000, 2000))",
+          "observation": "{'doc_id': 'qasper_1909_00542', 'start': 15000, 'end': 17000, 'text': \"call and F1, both precision and F1 are similar, but precision gives a better correlation. Recall shows poor correlation, and virtually no correlation when using the revised Kendall measure. For reporting the evaluation of results, it will be therefore more useful to use precision or F1. However, given the small difference between precision and F1, and given that precision may favour short summaries when used as a function to optimise in a machine learning setting (e.g. using reinforcement learning), it may be best to use F1 as the metric to optimise.\\n\\nFig. FIGREF40 shows the scatterplots of ROUGE-SU4 recall, precision and F1 with respect to the average human evaluation. We observe that the relation between ROUGE and the human evaluations is not linear, and that Precision and F1 have a clear correlation.\\n\\nTable TABREF41 shows the results and details of the runs submitted to BioASQ. The table uses ROUGE-SU4 Recall since this is the metric available at the time of writing this paper. However, note that, as explained in Section SECREF6, these results might differ from the final human evaluation results. Therefore we do not comment on the results, other than observing that the \u201cfirst $n$\u201d baseline produces the same results as the neural regressor. As mentioned in Section SECREF3, the labels used for the classification experiments are the 5 sentences with highest ROUGE-SU4 F1 score.\\n\\nMacquarie University's participation in BioASQ 7 focused on the task of generating the ideal answers. The runs use query-based extractive techniques and we experiment with classification, regression, and reinforcement learning approaches. At the time of writing there were no human evaluation results, and based on ROUGE-F1 scores under cross-validation on the training data we observed that classification approaches outperform regression approaches. We experimented with several approaches to label the individual sentences for the classifier and observed that the optimal labelling policy for thi\"}\n\n\n[Step 4/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 5,
+          "action": "SUBMIT: No rank relative to other teams is given in the inspected results and conclusion. Human evaluation was not yet available at writing time, and the reported comparisons among the authors' own approaches do not establish a challenge ranking. CITATIONS: [\"qasper_1909_00542\"]",
+          "observation": "Submitted. Reward: 0.100",
+          "reward": 0.1,
+          "done": true
+        }
+      ]
+    },
+    {
+      "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+      "label": "insufficient",
+      "question": "Use the known paper \"Effective Use of Transformer Networks for Entity Tracking\" (doc_id: \"qasper_1909_02635\") to answer: Do they report results only on English?",
+      "trajectory": [
+        {
+          "step": 1,
+          "action": "print(search_within(\"qasper_1909_02635\", \"language English dataset\"))",
+          "observation": "[{'text': \"Effective Use of Transformer Networks for Entity Tracking\\n\\nTracking entities in procedural language requires understanding the transformations arising from actions on entities as well as those entities' interactions. While self-attention-based pre-trained language encoders like GPT and BERT have been successfully applied across a range of natural language understanding tasks, their ability to handle the nuances of procedural texts is still untested. In this paper, we explore the use of pre-train\", 'offset': 0, 'score': 3}, {'text': 'ed entities per se, again using surface clues like verbs to identify the components involved in a new composition.\\n\\nWe evaluate our models on two datasets specifically designed to invoke procedural understanding: (i) Recipes BIBREF16, and (ii) ProPara BIBREF14. For the Recipes dataset, we classify whether an ingredient was affected in a certain step, which requires understanding when ingredients are combined or the focus of the recipe shifts away from them. The ProPara dataset involves answering', 'offset': 3800, 'score': 3}, {'text': 'detecting state changes in recipes in the Recipes dataset and proposed an entity-centric memory network neural architecture for simulating action dynamics. Figure FIGREF2a shows an example from the Recipes dataset with a grid showing ingredient presence. We focus specifically on this core problem of ingredient detection; while only one of the sub-tasks associated with their dataset, it reflects some complex semantics involving understanding the current state of the recipe. Tracking of ingredient', 'offset': 5800, 'score': 3}]\n\n\n[Step 1/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 2,
+          "action": "print(search_within(\"qasper_1909_02635\", \"corpus language multilingual\"))",
+          "observation": "[{'text': \"Effective Use of Transformer Networks for Entity Tracking\\n\\nTracking entities in procedural language requires understanding the transformations arising from actions on entities as well as those entities' interactions. While self-attention-based pre-trained language encoders like GPT and BERT have been successfully applied across a range of natural language understanding tasks, their ability to handle the nuances of procedural texts is still untested. In this paper, we explore the use of pre-train\", 'offset': 0, 'score': 3}, {'text': \"s' interactions. While self-attention-based pre-trained language encoders like GPT and BERT have been successfully applied across a range of natural language understanding tasks, their ability to handle the nuances of procedural texts is still untested. In this paper, we explore the use of pre-trained transformer networks for entity tracking tasks in procedural text. First, we test standard lightweight approaches for prediction with pre-trained transformers, and find that these approaches underp\", 'offset': 200, 'score': 2}, {'text': 'tities and oblique entity references. On two different tasks, ingredient detection in recipes and QA over scientific processes, we achieve state-of-the-art results, but our models still largely attend to shallow context clues and do not form complex representations of intermediate entity or process state.\\n\\nTransformer based pre-trained language models BIBREF0, BIBREF1, BIBREF2, BIBREF3, BIBREF4 have been shown to perform remarkably well on a range of tasks, including entity-related tasks like co', 'offset': 1000, 'score': 1}]\n\n\n[Step 2/10/10]",
+          "reward": 0.0,
+          "done": false
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: The retrieved passages identify the Recipes and ProPara datasets but do not specify their language coverage. I cannot confirm from these passages whether the reported evaluations are English-only. CITATIONS: [\"qasper_1909_02635\"]",
+          "observation": "Submitted. Reward: 0.100",
+          "reward": 0.1,
+          "done": true
+        }
+      ]
+    }
+  ]
+}

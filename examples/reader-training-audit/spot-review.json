@@ -1,0 +1,68 @@
+{
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "Implementing assistant; source-visible post-audit spot check, not blind or independent human review",
+  "reviewed_at": "2026-10-22T20:38:52.056205+00:00",
+  "human_review": null,
+  "independent_human_review": null,
+  "input_sha256": "667973e2a6356515c2f029529eae41731a1f6b0c0ea52178e38cc6558017e867",
+  "selection": "Two per historical label, SHA256(42:<question ID>) order, training split only; post-audit spot check, not blind or a new evaluation",
+  "cases": [
+    {
+      "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+      "historical_label": "sufficient",
+      "assessment": "supported_definition",
+      "notes": "The definition covers word replacement, lexical/syntactic interaction and both monotonicity directions, which are explicitly described in observation 2. This is source support for the observed answer, not an evaluation score.",
+      "supporting_observation_excerpt": {
+        "step": 2,
+        "start_in_observation": 1380,
+        "end_in_observation": 1620,
+        "quote": "Concerning logical inferences, monotonicity reasoning BIBREF6 , BIBREF7 , which is a type of reasoning based on word replacement, requires the ability to capture the interaction between lexical and syntactic structures. Consider examples in"
+      },
+      "current_protocol_compatible": false,
+      "training_reuse_approved": false
+    },
+    {
+      "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+      "historical_label": "sufficient",
+      "assessment": "qualified_answer_with_question_ambiguity",
+      "notes": "The observation explicitly mentions manual inspection of generated examples. The answer carefully limits this to qualitative inspection and does not claim a scored human study. The initial Yes depends on interpreting manual evaluation broadly; a formal annotator-study interpretation is not established. Flag this interpretation before reusing the example.",
+      "supporting_observation_excerpt": {
+        "step": 1,
+        "start_in_observation": 323,
+        "end_in_observation": 563,
+        "quote": "Manual inspection of others examples also supports our claim.\\n\\nWe also conduct an ablation study to evaluate the various choices we made for SAAM. We consider three key components: positio\", 'offset': 23400, 'score': 2}, {'text': \"ng seme"
+      },
+      "current_protocol_compatible": false,
+      "training_reuse_approved": false
+    },
+    {
+      "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+      "historical_label": "insufficient",
+      "assessment": "scoped_gap_not_global_unanswerability",
+      "notes": "The observed results/conclusion says human evaluation was unavailable and compares the authors own approaches, without a challenge ranking. The scoped inability is reasonable for the inspected text; these observations do not prove absence from the whole paper or establish that stopping the old unrestricted search was optimal.",
+      "supporting_observation_excerpt": {
+        "step": 4,
+        "start_in_observation": 1717,
+        "end_in_observation": 1957,
+        "quote": "At the time of writing there were no human evaluation results, and based on ROUGE-F1 scores under cross-validation on the training data we observed that classification approaches outperform regression approaches. We experimented with severa"
+      },
+      "current_protocol_compatible": false,
+      "training_reuse_approved": false
+    },
+    {
+      "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+      "historical_label": "insufficient",
+      "assessment": "scoped_gap_not_global_unanswerability",
+      "notes": "The inspected snippets identify Recipes and ProPara without explicit language coverage. The answer correctly limits uncertainty to those snippets. It does not establish whole-paper unanswerability, and this spot check does not establish that the old unrestricted investigation exhausted useful follow-up reads.",
+      "supporting_observation_excerpt": {
+        "step": 1,
+        "start_in_observation": 670,
+        "end_in_observation": 910,
+        "quote": "We evaluate our models on two datasets specifically designed to invoke procedural understanding: (i) Recipes BIBREF16, and (ii) ProPara BIBREF14. For the Recipes dataset, we classify whether an ingredient was affected in a certain step, whi"
+      },
+      "current_protocol_compatible": false,
+      "training_reuse_approved": false
+    }
+  ],
+  "limitation": "Four already inspected training cases only. No model-performance estimate, complete semantic audit, global unanswerability proof, training label approval or causal conclusion."
+}

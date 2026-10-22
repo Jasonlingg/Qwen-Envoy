@@ -1,0 +1,2159 @@
+{
+  "schema_version": "reader-training-alignment-audit-v1",
+  "splits": {
+    "train": {
+      "conversations": 35,
+      "assistant_actions": 106,
+      "whitespace_normalized_observations": 3,
+      "answerability": {
+        "sufficient": 19,
+        "insufficient": 16
+      },
+      "action_count_distribution": {
+        "2": 9,
+        "3": 18,
+        "4": 6,
+        "5": 2
+      },
+      "flags": {
+        "end_by_action_three": 27,
+        "one_tool_action_before_submit": 9,
+        "assistant_repaired": 30,
+        "system_prompt_matches_current": 0,
+        "initial_observation_is_question_only": 35,
+        "first_action_passage_form_compatible": 0,
+        "terminal_has_evidence_spans": 0,
+        "terminal_has_citations": 35,
+        "terminal_is_bare_unanswerable": 0,
+        "terminal_is_submit_gap": 0,
+        "insufficient_label_with_cited_prose": 16,
+        "uncertainty_phrase_flag": 15
+      },
+      "rows": [
+        {
+          "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+          "doc_id": "qasper_2001_05467",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "f73d57825521bba48077f4bda5cd789bebfdb893a8ab36601310c692131431df",
+          "candidate_sha256": "8585b839da8bcbce7440a2ddee9e421075f530737a371302fcb20cadd4679c7c",
+          "whitespace_normalized_observations": 1,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: Amazon MTurk annotators compared generated responses pairwise, with responses randomly shuffled to hide model identity. The criteria were Plausibility (whether a response fits its context) and Content Richness (whether it is diverse and informative). CITATIONS: [\"qasper_2001_05467\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            31,
+            69
+          ]
+        },
+        {
+          "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+          "doc_id": "qasper_1909_00542",
+          "expected_answerability": "insufficient",
+          "actions": 5,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "02c0e406f2d1a56f60f60c28169418bcb917c47174cb7d8d1cf9e26f4085542f",
+          "candidate_sha256": "353287abb86b5fd5f1b3fb82188d7b9caf87c1947cdb64b1d04cbc913556e131",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 3,
+            "passage": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false,
+            true
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: No rank relative to other teams is given in the inspected results and conclusion. Human evaluation was not yet available at writing time, and the reported comparisons among the authors' own approaches do not establish a challenge ranking. CITATIONS: [\"qasper_1909_00542\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            29,
+            26,
+            33,
+            65
+          ]
+        },
+        {
+          "question_id": "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+          "doc_id": "qasper_1810_00663",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": false,
+          "conversation_sha256": "8429d7dda15639490372125f4cf0dce1bf43cc54441d6dc4814b64e48271e4a8",
+          "candidate_sha256": "de09a3705856995a8ea2ac2753378a7bd037d6bcb5e7ff924652ee740e030850",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "passage": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The paper uses four evaluation metrics: (1) Exact Match (EM) — 1 if the predicted plan matches the ground truth plan exactly, else 0; (2) F1 score — the harmonic average of precision and recall over the test set; (3) Edit Distance — the minimum number of insertions, deletions, or swaps needed to turn the predicted behavior sequence into the ground truth sequence; and (4) Goal Match (GM) — 1 if the predicted plan reaches the correct final destination, even if the full sequence doesn't match exactly, else 0. CITATIONS: [\"qasper_1810_00663\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            50,
+            36,
+            142
+          ]
+        },
+        {
+          "question_id": "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+          "doc_id": "qasper_1910_11949",
+          "expected_answerability": "sufficient",
+          "actions": 5,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": false,
+          "conversation_sha256": "2b455bdea507ecd4945555ce126474107cc2f33e69f4cca9f9a45a0f7608a2ef",
+          "candidate_sha256": "9d7a5fef0cfc1f3ed066a79311b4873656054c2a39ff14e04915fa9632bfc075",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 3,
+            "passage": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false,
+            true
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The system's performance is measured in two complementary ways. Quantitatively, the visual-question-generation model is evaluated with the BLEU metric on a validation set (achieving a BLEU score of 2.07), while the dialogue/feedback generation quality is assessed via manual (human) evaluation of grammatical correctness and content appropriateness. Additionally, a usability study was conducted with real users (with and without mild cognitive impairment): after 30-minute sessions, participants completed a five-point Likert survey rating how much they liked the system, how engaging it was, and how difficult it was, yielding average scores of 4.6 (amusing/engaging) and 2.6 (difficulty). CITATIONS: [\"qasper_1910_11949\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            58,
+            61,
+            61,
+            33,
+            168
+          ]
+        },
+        {
+          "question_id": "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+          "doc_id": "qasper_1907_01413",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "ee431abbd640606574e3946cb1fe83d7b00a8dc5322e68d727b7706562135d5c",
+          "candidate_sha256": "fc435af1989ea1c16db55904a6a737465dd0ca5b3ffd88b819b5dc1bbeaa431e",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The paper reports about 10,700 training examples after sampling. CITATIONS: [\"qasper_1907_01413\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            39
+          ]
+        },
+        {
+          "question_id": "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c",
+          "doc_id": "qasper_1810_01570",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "715356f0e965ebd600364e6918f64be212a00d6e55a31acb8fb1e949cef78036",
+          "candidate_sha256": "88579f86867cf1b68da3bb3207b2c7940c7add06fde79b7122155ca7eae37d6e",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: No BERT component is described in the inspected architecture. It uses GloVe, ELMo, and character-level LSTM embeddings. CITATIONS: [\"qasper_1810_01570\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            31,
+            49
+          ]
+        },
+        {
+          "question_id": "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19",
+          "doc_id": "qasper_1909_07512",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "9d6543798f9130dffb4186de76e65229d13e857481bdfb438d14f62e949ca020",
+          "candidate_sha256": "1875e91eb81ca075f4b4aa0b86e893521cb61533a3125c16da307005a736e08f",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: BERT was pre-trained on Wikipedia and BooksCorpus. CITATIONS: [\"qasper_1909_07512\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            35
+          ]
+        },
+        {
+          "question_id": "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4",
+          "doc_id": "qasper_2002_01359",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "dcbaf317781aee64bbbd6bbf6e5c3749a72e442291c400f3f9c7274ff58e3560",
+          "candidate_sha256": "a7cdf754c765255e766e375f87ef9cc09f5c91992a61cf2a05e69680e4e30461",
+          "whitespace_normalized_observations": 1,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The paper reports 25 participating teams and a range of neural-network models, but its detailed approach summary covers nine workshop submissions. That evidence does not establish whether every one of the 25 teams used a neural network. CITATIONS: [\"qasper_2002_01359\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            31,
+            68
+          ]
+        },
+        {
+          "question_id": "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047",
+          "doc_id": "qasper_2002_02562",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "61f6ef39148e22746c1f10e398e52ce134937798c6b9d17a0bf48fd6881707c7",
+          "candidate_sha256": "aba4517005cfa7bc651563ca7b79a93d23ef68fb3e62faf8a046637dea378263",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "extract": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved text discusses comparisons with existing LibriSpeech systems and points to result tables, but it does not provide a recoverable previous-best accuracy value in these passages. I cannot supply that number from the available evidence. CITATIONS: [\"qasper_2002_02562\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            27,
+            31,
+            66
+          ]
+        },
+        {
+          "question_id": "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+          "doc_id": "qasper_1910_05608",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "b2e5946f036d39efe4b2ae91c5b88548e0f0df8377200780baa13c9ecb5e1f22",
+          "candidate_sha256": "efe8fa8e146f5a3b1e0467035258aa36aef5303730c197e658e6a04e665ebe69",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The baseline search returned no matches. The model-comparison passages describe the proposed architectures but do not identify a baseline system, so I cannot name one from this evidence. CITATIONS: [\"qasper_1910_05608\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            23,
+            25,
+            56
+          ]
+        },
+        {
+          "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+          "doc_id": "qasper_1812_10860",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "1c476b1043bbe2f409f0e8e7d44fd357c067a2b800d501161ebe1043b75fb350",
+          "candidate_sha256": "22c07554fcda48690518f191fd0eed3c93ec7e05fad8af589e1c0125770b1dc6",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: Yes. When compared in isolation without ELMo, language modeling performs best, followed by MNLI; most remaining pretraining tasks perform near the random baseline. Different target tasks benefit from different forms of pretraining. CITATIONS: [\"qasper_1812_10860\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            27,
+            66
+          ]
+        },
+        {
+          "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+          "doc_id": "qasper_1909_02635",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "fc5b0877c3b07698b46642c7652a37447f8af2cd905c523f75049a08b4a353bf",
+          "candidate_sha256": "441238c7d4d20fc12bd2019aa602701cc162cd67a86ec16611945ef55cc86cbc",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved passages identify the Recipes and ProPara datasets but do not specify their language coverage. I cannot confirm from these passages whether the reported evaluations are English-only. CITATIONS: [\"qasper_1909_02635\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            27,
+            55
+          ]
+        },
+        {
+          "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+          "doc_id": "qasper_1906_06448",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "910bb3f8a3519ee3f3f204730d7dcd0910fd63b3ab59dcbf4a0988ab01ece60b",
+          "candidate_sha256": "83b60552985c1cceb7f9875d3f42d0eed960f570c7cdde89d3a1d522c09bffbd",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: Monotonicity reasoning is inference by replacing words while accounting for the interaction between lexical meaning and syntactic structure. It includes upward and downward reasoning. CITATIONS: [\"qasper_1906_06448\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            28,
+            26,
+            53
+          ]
+        },
+        {
+          "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+          "doc_id": "qasper_1908_06151",
+          "expected_answerability": "sufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "0e300dc8db0e7886c44f00d6fc5e14355d15ef5423f0ca7d06b320e960f9b2e2",
+          "candidate_sha256": "6854340307fea06624b8811e7a439a649f3bac662c2d827aa1681ab47ddf2b8a",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The paper describes prior state-of-the-art multi-source transformer APE systems from WMT 2018: pal-EtAl:2018:WMT used three self-attention-based encoders, including a joint encoder over source and MT; tebbifakhr-EtAl:2018:WMT won the NMT subtask using sequence-level losses; shin-lee:2018:WMT used separate encoders with additional source-to-MT and source-to-post-edit attention. The PBSMT-subtask winner used two encoders and stacked source-to-post-edit cross-attention above MT-to-post-edit cross-attention. CITATIONS: [\"qasper_1908_06151\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            30,
+            35,
+            29,
+            159
+          ]
+        },
+        {
+          "question_id": "qasper_train_fdd9dea06550a2fd0df7a1e6a5109facf3601d76",
+          "doc_id": "qasper_1910_10869",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": false,
+          "conversation_sha256": "aae18d7df9b92ea4e2058e2a3eac170b6d9a202b261f6d8e34634cb318f5820f",
+          "candidate_sha256": "97c0716df7e41cf8159256429a901946e71794e6a901d29cd078ebb8a30963cf",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "read": 1,
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The ICSI meeting corpus is comprised of 75 meetings and about 70 hours of real-time audio duration. CITATIONS: [\"qasper_1910_10869\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            93,
+            47
+          ]
+        },
+        {
+          "question_id": "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43",
+          "doc_id": "qasper_2004_02083",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "c377e5603a8584fbc3005e51a1e0a1dc7bbe65ec73e934b4ce9e6f8cf15745fc",
+          "candidate_sha256": "cd97ab052e429fdca5da6c78bd4b6ae783f58dacefddfcb5de56fc9f701a408a",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The paper describes a hand-curated resource of complete inflection tables for 198 lemmata, tagged using UniMorph. The inspected resource description does not explain how the underlying forms were originally collected or elicited, so that collection procedure remains unclear. CITATIONS: [\"qasper_2004_02083\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            25,
+            29,
+            76
+          ]
+        },
+        {
+          "question_id": "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed",
+          "doc_id": "qasper_1602_08741",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "dee2b61a80ba5b2d87a2be29ff84cd76db708eb068977f5d04d8f2032c269aef",
+          "candidate_sha256": "090cdaae130d3ca58bef7f7622715bd908763fb813d7b525c15e7c73138788d9",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: They collected their own Russian-language Twitter corpus through the Streaming API filter endpoint, using a heuristic query of Russian function words such as conjunctions, pronouns and prepositions. CITATIONS: [\"qasper_1602_08741\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            25,
+            57
+          ]
+        },
+        {
+          "question_id": "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d",
+          "doc_id": "qasper_1906_06442",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "040691841359ade6750cf59d28c53292943901a15dee72f7e469e8a81bf5bca5",
+          "candidate_sha256": "6e92a4df0740db692e24295f6aac76c56ac78df2b7679e7dd1dd33f0decc6d56",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The experiments use WMT18 English-German, WMT16 English-Romanian, and WMT15 English-French bitext. WMT Newscrawl supplies the monolingual data. CITATIONS: [\"qasper_1906_06442\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            66
+          ]
+        },
+        {
+          "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+          "doc_id": "qasper_1905_06512",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "dd88457aa1cb07093dca986e67d2d43ff21a53c2a5b083024a20861e37c83472",
+          "candidate_sha256": "961e55fb9700db446acf1e5adb25aa875f929c8d4d1972cc4ef1e546cb83141c",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: Yes, they report qualitative manual inspection of generated definitions and examples. The inspected passage supports that claim, without establishing a separate scored human-evaluation study. CITATIONS: [\"qasper_1905_06512\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            53
+          ]
+        },
+        {
+          "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+          "doc_id": "qasper_2003_09971",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "747f0ee2d5ff284520c8aceea51f6e16b4500e83d318a2d58bc69052f1e89533",
+          "candidate_sha256": "70d7038a81bd535720c0c969113a4ff41501ad9aedf6f530192874eac0a23fac",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected setup describes image captioning experiments on COCO using the Karpathy split. It does not name a separate reinforcement-learning environment, so I cannot supply that name from these passages. CITATIONS: [\"qasper_2003_09971\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            30,
+            27,
+            61
+          ]
+        },
+        {
+          "question_id": "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+          "doc_id": "qasper_2001_11899",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "0418e59badadac936b16411539e9bd3fc48b7aae92d56bd36d0885ecdcfdfbc2",
+          "candidate_sha256": "bd2ec50de54f6a07cf03b3c774168e4438c02b602a071f702eddf0f99fe5a163",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: One retrieved database description covers 42 languages. That is an example of the evaluated scale, not a demonstrated upper limit; the retrieved conclusion gives no numerical capacity limit, so I cannot establish the maximum language-set size. CITATIONS: [\"qasper_2001_11899\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            29,
+            67
+          ]
+        },
+        {
+          "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+          "doc_id": "qasper_1911_08370",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "202ab1b91138af784dff531eb0b50b5359f2b396dcf85f065f06ecc83c5cf933",
+          "candidate_sha256": "c4b01b231df0180da892be973af23ba1387ef8cb0edfa73bf7c1bd7e23aaa736",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected passages describe the topic-detection method as a baseline for a future extensive analysis of how people engage in Twitter threads across news types. They do not report engagement findings, so I cannot answer that comparison from this evidence. CITATIONS: [\"qasper_1911_08370\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            29,
+            28,
+            68
+          ]
+        },
+        {
+          "question_id": "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9",
+          "doc_id": "qasper_2002_11893",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "9db1a8ef65b5b2fe32545e689df6893ade4e103914ef9db84a564b7c920cfced",
+          "candidate_sha256": "9e9db1752e6ff9a35a419abadb7335f07813dcb52d55694cdd40e0f44560cad4",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "extract": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The benchmark models are BERTNLU for natural-language understanding; RuleDST and TRADE for dialogue state tracking; the supervised SL policy; and TemplateNLG and SC-LSTM for natural-language generation. The paper also provides a rule-based user simulator. CITATIONS: [\"qasper_2002_11893\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            41,
+            74
+          ]
+        },
+        {
+          "question_id": "qasper_train_91c81807374f2459990e5f9f8103906401abc5c2",
+          "doc_id": "qasper_1705_03487",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": false,
+          "conversation_sha256": "9a3eca74ef965fa55fa34a904817f54782c9e0a2781505702aa8883cf64aa3c7",
+          "candidate_sha256": "bc760923dff8baec18f1669b89efde54ee00c4c6afc8312ed12057905ee9a240",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "verify": 1,
+            "search_within": 1,
+            "read": 1,
+            "len": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: A barycentric Newton diagram is a visualization technique that expresses a mixture in terms of its constituents as represented in barycentric coordinates. It draws on Isaac Newton's visualization of the color spectrum and allows an intuitive interpretation of which country a recipe belongs to by mapping probability values from a neural network's activation function. The countries on the Newton diagram are placed by spectral graph drawing so that similar countries are positioned nearby on the circle. CITATIONS: [\"qasper_1705_03487\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            177,
+            110
+          ]
+        },
+        {
+          "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+          "doc_id": "qasper_1910_02789",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "385f6a1d619adef63bcf25a7e84f54d7398a9da66c858517d657740a54b88172",
+          "candidate_sha256": "0227cf139349366ac9722e5559e5d5296a29f53320304164aba4a728041c4600",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "extract": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved abstract and results paragraph say natural-language agents converge faster than the comparison agents, but give no numerical speedup. I cannot quantify how much faster from those passages. CITATIONS: [\"qasper_1910_02789\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            28,
+            33,
+            57
+          ]
+        },
+        {
+          "question_id": "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+          "doc_id": "qasper_1804_05868",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "255ef05680c70063243e5a6a5d0306da6260ce13da5e42b84b1404f649a8a5bc",
+          "candidate_sha256": "97bf8bb96dea5c7cbc063e7b202265fa4e919905e52eb79a71b41349f27c88e4",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved passages report LAS and UAS scores for dependency parsing, but do not define how LAS is computed. I cannot supply the definition from this evidence. CITATIONS: [\"qasper_1804_05868\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            27,
+            54
+          ]
+        },
+        {
+          "question_id": "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7",
+          "doc_id": "qasper_1912_05066",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "81f46f239e5432fa9b63e892f26df4dcee7474cb3fa028bdd6417ed7d6981062",
+          "candidate_sha256": "7c3fe3a4004d0c70337508a44db90674c794cb2e1466d5d7595c40a9db52bd57",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected annotation description gives candidate and positive/negative sentiment labels for the debate tweets, but no interannotator-agreement statistic. I cannot report an agreement value from these passages. CITATIONS: [\"qasper_1912_05066\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            27,
+            31,
+            28,
+            59
+          ]
+        },
+        {
+          "question_id": "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+          "doc_id": "qasper_1804_08094",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": false,
+          "conversation_sha256": "a3a7525cbcde4f861794edd7f0181240bd8b9bfde5b0e2d5848ed0f593dde7fd",
+          "candidate_sha256": "27f2af067ad429a3a36a09273cc949d940116dc96a5bbd3e2d3f07e19504773a",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The dataset used consists of 4,792 tweets total, a balanced set of 2,396 ironic and 2,396 non-ironic tweets. CITATIONS: [\"qasper_1804_08094\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            57,
+            61
+          ]
+        },
+        {
+          "question_id": "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7",
+          "doc_id": "qasper_1809_01060",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "79dcc0bfe3e1517a56380f531b87d3bca17051ccd7336b9520ddd4e007c004de",
+          "candidate_sha256": "847ea8f4c5a1d676120f74facd7c1d080381cc233a50f2588186ae5bc8699f67",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected evaluation describes the original metaphor-paraphrase dataset and its contextualized extension, but does not state their language coverage. I cannot confirm that the reported results are English-only from these passages. CITATIONS: [\"qasper_1809_01060\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            31,
+            25,
+            62
+          ]
+        },
+        {
+          "question_id": "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32",
+          "doc_id": "qasper_1901_03438",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "f27ce9deb1e3909b1f2e74e15d19b00ec7d733142456a07c8f6b0d0b2093de50",
+          "candidate_sha256": "93db5688b2e88ab5dde96c6eaaa2a5c8279ce7133b67bfbba75e5cde5192266f",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: Experts labeled the 1,043 sentences of the CoLA development set for 63 minor grammatical features grouped into 15 major features. A sentence receives a major-feature label when at least one of its corresponding minor features is present. CITATIONS: [\"qasper_1901_03438\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            27,
+            74
+          ]
+        },
+        {
+          "question_id": "qasper_train_be1c0816793a4549c811480170f30fab52a7a157",
+          "doc_id": "qasper_1901_11117",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "8fc6be23143b59dc541ea3948f560767c319aa2bd9dfa55af3dc4d3b0790a088",
+          "candidate_sha256": "2e6c3cc1fb09238ea8ed837956c29e28fe9f28503aaa1b69f017bada189008e9",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved passages discuss hardware and training time but provide no measured energy consumption for the NAS run. Hardware counts or runtime alone do not establish energy use, so I cannot give a kWh or joule figure from this evidence. CITATIONS: [\"qasper_1901_11117\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            84,
+            67
+          ]
+        },
+        {
+          "question_id": "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af",
+          "doc_id": "qasper_1905_10044",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "1cc87d4513898851ef7b57a23688255f4461229b2c7a03ee693af57d19969cdc",
+          "candidate_sha256": "d469f55c296e987a0153a58d5d81daf3c76c2551582e79f3128cfeb87b560d66",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: BoolQ contains about 16,000 questions. CITATIONS: [\"qasper_1905_10044\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            24,
+            36
+          ]
+        },
+        {
+          "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+          "doc_id": "qasper_1701_04653",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "fabb8310c9b86ab2ff8afb60bd1d6372f7c09e5ee6791c4747ebf91c8f9e86b5",
+          "candidate_sha256": "0b3beed7d43d67862d5924af0cd1094b55c916d35fbfefe8df55a2128be22855",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: No, not generally. Yahoo! Answers has more correlated terms for attributes related to religion or ethnicity; Twitter has more for the two exceptions, Price and Buddhist. CITATIONS: [\"qasper_1701_04653\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            27,
+            31,
+            55
+          ]
+        },
+        {
+          "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+          "doc_id": "qasper_1808_09920",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "197f4414e17764f619936dd732b585cb10f6e650bf15d4deac4853eb88b3a993",
+          "candidate_sha256": "e010c2dff94b90077d7f502eceb51a8ee3ac79b6c7d2ba836844a88c0fce117d",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected passages do not specify a maximum number of documents Entity-GCN can handle at once. Counts of candidate entities or graph nodes do not establish a document limit, so I cannot give that figure from this evidence. CITATIONS: [\"qasper_1808_09920\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            31,
+            28,
+            66
+          ]
+        },
+        {
+          "question_id": "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4",
+          "doc_id": "qasper_2002_11268",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "d60fc8e2cdb5fae1e9fad5456d70f6dcc8fd263ef2af02118e02aca541cb15cf",
+          "candidate_sha256": "5d925a08efde7a0c472f1f3ad14022096c7661bedba034b69ae3d18ebdadcd31",
+          "whitespace_normalized_observations": 1,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected data and experiment passages describe YouTube and Voice Search data but do not specify their language coverage. I cannot identify the training and test languages from this evidence. CITATIONS: [\"qasper_2002_11268\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            31,
+            26,
+            55
+          ]
+        }
+      ]
+    },
+    "val": {
+      "conversations": 9,
+      "assistant_actions": 26,
+      "whitespace_normalized_observations": 0,
+      "answerability": {
+        "insufficient": 2,
+        "sufficient": 7
+      },
+      "action_count_distribution": {
+        "2": 3,
+        "3": 4,
+        "4": 2
+      },
+      "flags": {
+        "end_by_action_three": 7,
+        "one_tool_action_before_submit": 3,
+        "assistant_repaired": 7,
+        "system_prompt_matches_current": 0,
+        "initial_observation_is_question_only": 9,
+        "first_action_passage_form_compatible": 0,
+        "terminal_has_evidence_spans": 0,
+        "terminal_has_citations": 9,
+        "terminal_is_bare_unanswerable": 0,
+        "terminal_is_submit_gap": 0,
+        "insufficient_label_with_cited_prose": 2,
+        "uncertainty_phrase_flag": 2
+      },
+      "rows": [
+        {
+          "question_id": "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72",
+          "doc_id": "qasper_1809_04686",
+          "expected_answerability": "insufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "a00064e9379fa8d28f1d526c024cb097bbcb9b38842c3b08a5f12fbfdcb31d65",
+          "candidate_sha256": "5471006949a51e48c8fe1a753d75a124112fdaea6d6858e585c6d7307a0898d4",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The retrieved data description reports 72 million training sentence pairs, and the analysis outline says training-data amount is studied. However, the retrieved analysis/conclusion text gives no numerical comparison across data sizes, so I cannot quantify the impact from that evidence. CITATIONS: [\"qasper_1809_04686\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            29,
+            29,
+            31,
+            73
+          ]
+        },
+        {
+          "question_id": "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1",
+          "doc_id": "qasper_1707_00995",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "3ea99cdf100340de929363fcf7c887ff78d85c3418706ccfdb55c9ba9dee72ef",
+          "candidate_sha256": "a9b9f7283fd1e009ad34d5ae854d0fccf85d88b125a9d09af43b63a758db721c",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: When visual attention loses track of the objects, the model still uses that visual information and lets it override the text-based annotations, misleading the translation. CITATIONS: [\"qasper_1707_00995\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            31,
+            52
+          ]
+        },
+        {
+          "question_id": "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+          "doc_id": "qasper_1809_10644",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "d2d56207b5a9cfcd55b37df6b9c2bc5ba4402bc512ef6b35156adc30aa06af51",
+          "candidate_sha256": "f66d1ecf5b2541d9d0cdf57f7cc0f4d51246f2bba8b3a32b3c0b21fcf6c61fa8",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The three datasets are Sexist/Racist (SR), HATE, and HAR. CITATIONS: [\"qasper_1809_10644\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            25,
+            40
+          ]
+        },
+        {
+          "question_id": "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+          "doc_id": "qasper_1912_00819",
+          "expected_answerability": "sufficient",
+          "actions": 4,
+          "end_by_action_three": false,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": false,
+          "conversation_sha256": "aaad48fc10cd9960bca3aef01b294ea9fc29b708014932b185ce0703eab680d8",
+          "candidate_sha256": "5e44a9098b47d6600c5125dbbda97c3d928a56b946d40a35dd960df77924a71f",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 4
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The paper used a pool of five neural annotator models (DANA models) for dialogue act labeling. CITATIONS: [\"qasper_1912_00819\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            52,
+            56,
+            105,
+            44
+          ]
+        },
+        {
+          "question_id": "qasper_train_af1439c68b28c27848203f863675946380d28943",
+          "doc_id": "qasper_2002_09758",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "a85fa9c5fc7268b76cd70b564d9017921dd2a970f230eeda577fd9e3cbe9e03b",
+          "candidate_sha256": "644cf944a684d7679da082b020e82220ccdee4da5a15254b4da79a30b3cc4697",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The strong baseline is the RoBERTa-based QA model, which processes each paragraph separately. CITATIONS: [\"qasper_2002_09758\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            41
+          ]
+        },
+        {
+          "question_id": "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51",
+          "doc_id": "qasper_1905_10810",
+          "expected_answerability": "insufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "30bb58d35e01d94356f86070ecba64c6319ab5be0140ceda7828cb9ad5cef94b",
+          "candidate_sha256": "79c64d93d0907a6379fdf0ac210d2eda71781ffdfa643a58969ea7962e432794",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1,
+            "read": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": true,
+          "uncertainty_phrase_flag": true,
+          "final_action": "SUBMIT: The inspected discussion suggests a modular approach combining correction with separate error detection and context handling, and mentions language models for context handling. It does not specify concrete modules for both tasks in these isolated spelling-correction experiments, so I cannot identify a complete proposed solution from these passages. CITATIONS: [\"qasper_1905_10810\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            26,
+            26,
+            77
+          ]
+        },
+        {
+          "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+          "doc_id": "qasper_1911_00069",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": true,
+          "conversation_sha256": "78da6c3d63ad6dafc0e8715e68e804a1a367e90578dcf40959cb54a5c2b937e6",
+          "candidate_sha256": "6c4520cd2a54a8c1b2eabe9e97d794d3978b2112ad295bfef9317fbe3fc96527",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 1
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The experiments use an in-house dataset and the ACE05 dataset. CITATIONS: [\"qasper_1911_00069\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            25,
+            37
+          ]
+        },
+        {
+          "question_id": "qasper_train_57586358dd01633aa2ebeef892e96a549b1d1930",
+          "doc_id": "qasper_1909_09484",
+          "expected_answerability": "sufficient",
+          "actions": 2,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": true,
+          "assistant_repaired": false,
+          "conversation_sha256": "bea758fed91c1b2c66c8cac630a0a260f2c461393d4318bb10741df95d27ec50",
+          "candidate_sha256": "c25ccb2e8fdab3962c0dc0c6328ea292416133de0a2fd9b03d80f3f927172abb",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "verify": 1,
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: The two benchmark datasets used are DSTC2 and Maluuba. CITATIONS: [\"qasper_1909_09484\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            157,
+            37
+          ]
+        },
+        {
+          "question_id": "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b",
+          "doc_id": "qasper_1712_09127",
+          "expected_answerability": "sufficient",
+          "actions": 3,
+          "end_by_action_three": true,
+          "one_tool_action_before_submit": false,
+          "assistant_repaired": true,
+          "conversation_sha256": "a630b61d86d2a1dd746f41a31f2172db78779e35dfe5d7a78a04c0879d146d2e",
+          "candidate_sha256": "4f54e295f9d6ed5b67e42bcb33002a4232cf2a8a1e2f4b6552b6c07ca0c049a7",
+          "whitespace_normalized_observations": 0,
+          "system_prompt_matches_current": false,
+          "initial_observation_is_question_only": true,
+          "tool_calls": {
+            "search_within": 2
+          },
+          "nonterminal_passage_form_compatible": [
+            false,
+            false
+          ],
+          "first_action_passage_form_compatible": false,
+          "scope_compatibility": "not_checked_no_controller_ranges_in_old_data",
+          "terminal_has_evidence_spans": false,
+          "terminal_has_citations": true,
+          "terminal_is_bare_unanswerable": false,
+          "terminal_is_submit_gap": false,
+          "insufficient_label_with_cited_prose": false,
+          "uncertainty_phrase_flag": false,
+          "final_action": "SUBMIT: They use weGAN to train cross-corpus word embeddings and deGAN to generate document embeddings for multiple corpora. CITATIONS: [\"qasper_1712_09127\"]",
+          "semantic_support_review": null,
+          "supervised_tokens_by_action": [
+            24,
+            27,
+            46
+          ]
+        }
+      ]
+    }
+  },
+  "current_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "historical_prompt_sha256": "7b5ae820827750b2dd93f5a2d1c67bacf2c1d13c3def62b17aec6d0e433ddc8a",
+  "checked_source_sha256": {
+    "out/research/qasper-sft-v5/combined-reviewed.json": "75662b634d2d7acc1663afd42e6079dbd10120127ac87b7a32961322dc7b73cd",
+    "out/research/qasper-sft-v5/combined-benchmark.json": "a6bce524f73eb47617e834a2265840507c6439c65015c1c2b2cec2a8306bf59c",
+    "out/research/qasper-sft-v5/combined-review.json": "8c201d95cfb498d8610b35edb2b6d73aa1c30212a611e23c53b4ef9505904905",
+    "out/research/qasper-code-dev-v2/benchmark.json": "499dfc1a9d6ea1a5e1b6d719e1dcc6dac583f934dac2f3e8953d4477ca73745e",
+    "out/research/qasper-test-abstention-v1/benchmark.json": "dd58fdab0a6d6a038f6b03ba4072e0ecddf6718f47d1b8d14e05a5b96904f411",
+    "out/research/qasper-validation-eval-v1/questions.json": "9f63dcad5d5dcf01504f5f32582e66475a222bbc33a4689a3f987429c713e11a",
+    "data/sft/qasper-v5/train.jsonl": "a29fa1583198f4dee7bb44fe607ba5efe2b1a000bbaa57324648d8dfce40a598",
+    "data/sft/qasper-v5/val.jsonl": "cef58ecbad93c3ef72233bc4be8e0318df30cdd7920d8b4c10bfa29e498da4bc",
+    "data/sft/qasper-v5/manifest.json": "fa60b84f02c1c162d406fb0c9c4cea5cf644245753b2c1f13faf700f79922737",
+    "data/sft/qasper-v5/candidates.jsonl": "cb3b15cc7e7bd5ffbc2f840fa698ba4c36b2d349f768a1e36ee5c72367438422",
+    "data/sft/qasper-v5/tokenization-check.json": "836818fc6bccca0d3b7ca3084b00def10a0b3ba2b3e1df8b9d649634818de4e8",
+    "release/qwen-v5-training/run-manifest.json": "aaad47231e7e5864e0a682f7901890b6feeb149469c2bc6c9eb625158e5a325a"
+  },
+  "human_review": null,
+  "new_model_calls": 0,
+  "training_performed": false,
+  "trainer": {
+    "historical_sha256": "61ef9ae0ad7078a2ec638fd11e9a6af43af9624e7e057387bdb5fa0fecfbafbd",
+    "current_sha256": "c6c9062c632a7333a26d902403d721a34b56e4830cbc13b8c591422d2ba88379"
+  },
+  "limitations": [
+    "Structural/lexical audit, not fresh semantic grading or causality.",
+    "Uncertainty flags are lexical cues, not judgments that a refusal is wrong.",
+    "V5 labels/reviews are historical model-assisted curation, not independent human review."
+  ],
+  "train_val_paper_overlap": [],
+  "evaluation_exclusions": [
+    {
+      "set": "dev",
+      "sha256": "60e6649aa2e22ffa88b96f10618493892ce15f3a42a34b4f9bd5813f6dd10fa4",
+      "status": "already_exposed",
+      "question_overlap": [],
+      "paper_overlap": []
+    },
+    {
+      "set": "test_candidate",
+      "sha256": "b7b66f1481c8b651497eec006543687620f660ba39f7e15ffe3945a46f841b6d",
+      "status": "already_exposed",
+      "question_overlap": [],
+      "paper_overlap": []
+    },
+    {
+      "set": "old_v6_holdout_lock",
+      "sha256": "e9c6fedee1a7a3a0c981d0efb358428d7c7a8433bd1ed222cf39ea473af9560b",
+      "status": "consumed_by_completed_v6_comparison",
+      "question_overlap": [],
+      "paper_overlap": []
+    },
+    {
+      "set": "current_three_case_regression",
+      "status": "already_exposed_regression_only",
+      "question_overlap": [],
+      "paper_overlap": []
+    }
+  ],
+  "legacy_structural_audit": {
+    "files": {
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/data/sft/qasper-v5/train.jsonl": {
+        "sha256": "a29fa1583198f4dee7bb44fe607ba5efe2b1a000bbaa57324648d8dfce40a598",
+        "conversations": 35,
+        "assistant_actions": 106,
+        "flags": {},
+        "action_count_distribution": {
+          "2": 9,
+          "3": 18,
+          "4": 6,
+          "5": 2
+        },
+        "answerability": {
+          "sufficient": 19,
+          "insufficient": 16
+        },
+        "doc_ids": [
+          "qasper_1602_08741",
+          "qasper_1701_04653",
+          "qasper_1705_03487",
+          "qasper_1804_05868",
+          "qasper_1804_08094",
+          "qasper_1808_09920",
+          "qasper_1809_01060",
+          "qasper_1810_00663",
+          "qasper_1810_01570",
+          "qasper_1812_10860",
+          "qasper_1901_03438",
+          "qasper_1901_11117",
+          "qasper_1905_06512",
+          "qasper_1905_10044",
+          "qasper_1906_06442",
+          "qasper_1906_06448",
+          "qasper_1907_01413",
+          "qasper_1908_06151",
+          "qasper_1909_00542",
+          "qasper_1909_02635",
+          "qasper_1909_07512",
+          "qasper_1910_02789",
+          "qasper_1910_05608",
+          "qasper_1910_10869",
+          "qasper_1910_11949",
+          "qasper_1911_08370",
+          "qasper_1912_05066",
+          "qasper_2001_05467",
+          "qasper_2001_11899",
+          "qasper_2002_01359",
+          "qasper_2002_02562",
+          "qasper_2002_11268",
+          "qasper_2002_11893",
+          "qasper_2003_09971",
+          "qasper_2004_02083"
+        ],
+        "rows": [
+          {
+            "question_id": "qasper_train_a09633584df1e4b9577876f35e38b37fdd83fa63",
+            "doc_id": "qasper_2001_05467",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_b6a4ab009e6f213f011320155a7ce96e713c11cf",
+            "doc_id": "qasper_1909_00542",
+            "actions": 5,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_f42d470384ca63a8e106c7caf1cb59c7b92dbc27",
+            "doc_id": "qasper_1810_00663",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_11d2f0d913d6e5f5695f8febe2b03c6c125b667c",
+            "doc_id": "qasper_1910_11949",
+            "actions": 5,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_d24acc567ebaec1efee52826b7eaadddc0a89e8b",
+            "doc_id": "qasper_1907_01413",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_0a050658d09f3c6e21e9ab828dc18e59b147cf7c",
+            "doc_id": "qasper_1810_01570",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_226ae469a65611f041de3ae545be0e386dba7d19",
+            "doc_id": "qasper_1909_07512",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_bbaf7cbae88c085faa6bbe3319e4943362fe1ad4",
+            "doc_id": "qasper_2002_01359",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_2ebd7a59baad1f935fe83f90526557bfa9df4047",
+            "doc_id": "qasper_2002_02562",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_11e376f98df42f487298ec747c32d485c845b5cd",
+            "doc_id": "qasper_1910_05608",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_1d6c42e3f545d55daa86bea6fabf0b1c52a93bbb",
+            "doc_id": "qasper_1812_10860",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_0e45aae0e97a6895543e88705e153f084ce9c136",
+            "doc_id": "qasper_1909_02635",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_82bcacad668351c0f81bd841becb2dbf115f000e",
+            "doc_id": "qasper_1906_06448",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_7889ec45b996be0b8bf7360d08f84daf3644f115",
+            "doc_id": "qasper_1908_06151",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_fdd9dea06550a2fd0df7a1e6a5109facf3601d76",
+            "doc_id": "qasper_1910_10869",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_27f575e90487ef68298cfb6452683bb977e39e43",
+            "doc_id": "qasper_2004_02083",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_e51d0c2c336f255e342b5f6c3cf2a13231789fed",
+            "doc_id": "qasper_1602_08741",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_c431c142f5b82374746a2b2f18b40c6874f7131d",
+            "doc_id": "qasper_1906_06442",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_9f6e877e3bde771595e8aee10c2656a0e7b9aeb2",
+            "doc_id": "qasper_1905_06512",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_d7109cf68bcefc2f8c996c9492dedb8b6b1e1149",
+            "doc_id": "qasper_2003_09971",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_6a7370dd12682434248d006ffe0a72228c439693",
+            "doc_id": "qasper_2001_11899",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_5a2c0c55a43dcc0b9439d330d2cbe1d5d444bf36",
+            "doc_id": "qasper_1911_08370",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_0137ecebd84a03b224eb5ca51d189283abb5f6d9",
+            "doc_id": "qasper_2002_11893",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_91c81807374f2459990e5f9f8103906401abc5c2",
+            "doc_id": "qasper_1705_03487",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_827464c79f33e69959de619958ade2df6f65fdee",
+            "doc_id": "qasper_1910_02789",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_3996438cef34eb7bedaa6745b190c69553cf246b",
+            "doc_id": "qasper_1804_05868",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_79bd2ad4cb5c630ce69d5a859ed118132cae62d7",
+            "doc_id": "qasper_1912_05066",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_95d98b2a7fbecd1990ec9a070f9d5624891a4f26",
+            "doc_id": "qasper_1804_08094",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_46563a1fb2c3e1b39a185e4cbb3ee1c80c8012b7",
+            "doc_id": "qasper_1809_01060",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_f809fd0d3acfaccbe6c8abb4a9d951a83eec9a32",
+            "doc_id": "qasper_1901_03438",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_be1c0816793a4549c811480170f30fab52a7a157",
+            "doc_id": "qasper_1901_11117",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_10210d5c31dc937e765051ee066b971b6f04d3af",
+            "doc_id": "qasper_1905_10044",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_f981781021d4bacbaf3d076c895dc42d7fa108ba",
+            "doc_id": "qasper_1701_04653",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_bbeb74731b9ac7f61e2d74a7d9ea74caa85e62ef",
+            "doc_id": "qasper_1808_09920",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_4f9a8b50903deb1850aee09c95d1b6204a7410b4",
+            "doc_id": "qasper_2002_11268",
+            "actions": 4,
+            "flags": []
+          }
+        ]
+      },
+      "/Users/jasonling/Documents/GitHub/rlm-explorer/data/sft/qasper-v5/val.jsonl": {
+        "sha256": "cef58ecbad93c3ef72233bc4be8e0318df30cdd7920d8b4c10bfa29e498da4bc",
+        "conversations": 9,
+        "assistant_actions": 26,
+        "flags": {},
+        "action_count_distribution": {
+          "2": 3,
+          "3": 4,
+          "4": 2
+        },
+        "answerability": {
+          "insufficient": 2,
+          "sufficient": 7
+        },
+        "doc_ids": [
+          "qasper_1707_00995",
+          "qasper_1712_09127",
+          "qasper_1809_04686",
+          "qasper_1809_10644",
+          "qasper_1905_10810",
+          "qasper_1909_09484",
+          "qasper_1911_00069",
+          "qasper_1912_00819",
+          "qasper_2002_09758"
+        ],
+        "rows": [
+          {
+            "question_id": "qasper_train_e930f153c89dfe9cff75b7b15e45cd3d700f4c72",
+            "doc_id": "qasper_1809_04686",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_f0317e48dafe117829e88e54ed2edab24b86edb1",
+            "doc_id": "qasper_1707_00995",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_81303f605da57ddd836b7c121490b0ebb47c60e7",
+            "doc_id": "qasper_1809_10644",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_b99948ac4810a7fe3477f6591b8cf211d6398e67",
+            "doc_id": "qasper_1912_00819",
+            "actions": 4,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_af1439c68b28c27848203f863675946380d28943",
+            "doc_id": "qasper_2002_09758",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_bbcd77aac74989f820e84488c52f3767d0405d51",
+            "doc_id": "qasper_1905_10810",
+            "actions": 3,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_a7d72f308444616a0befc8db7ad388b3216e2143",
+            "doc_id": "qasper_1911_00069",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_57586358dd01633aa2ebeef892e96a549b1d1930",
+            "doc_id": "qasper_1909_09484",
+            "actions": 2,
+            "flags": []
+          },
+          {
+            "question_id": "qasper_train_6548db45fc28e8a8b51f114635bad14a13eaec5b",
+            "doc_id": "qasper_1712_09127",
+            "actions": 3,
+            "flags": []
+          }
+        ]
+      }
+    },
+    "paper_overlaps": [
+      {
+        "left": "/Users/jasonling/Documents/GitHub/rlm-explorer/data/sft/qasper-v5/train.jsonl",
+        "right": "/Users/jasonling/Documents/GitHub/rlm-explorer/data/sft/qasper-v5/val.jsonl",
+        "doc_ids": []
+      }
+    ],
+    "limitation": "Structural audit; does not establish semantic support or causation."
+  },
+  "tokenization": {
+    "model": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "local_files_only": true,
+    "chat_template_sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8",
+    "splits": {
+      "train": {
+        "actions": 106,
+        "input_tokens": 91456,
+        "supervised_tokens": 4812,
+        "max_tokens": 2579,
+        "allocation": {
+          "tool_action_tokens": 2397,
+          "sufficient_terminal_tokens": 1413,
+          "insufficient_terminal_tokens": 1002
+        },
+        "matches_recorded_counts": true
+      },
+      "val": {
+        "actions": 26,
+        "input_tokens": 21151,
+        "supervised_tokens": 1162,
+        "max_tokens": 1890,
+        "allocation": {
+          "tool_action_tokens": 715,
+          "insufficient_terminal_tokens": 150,
+          "sufficient_terminal_tokens": 297
+        },
+        "matches_recorded_counts": true
+      }
+    }
+  },
+  "recorded_tokenization": {
+    "base_model": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "transformers_version": "5.3.0",
+    "max_sequence_length": 8192,
+    "inference_action_budget": 1024,
+    "local_tokenizer_only": true,
+    "splits": {
+      "train": {
+        "actions": 106,
+        "input_tokens": 91456,
+        "supervised_tokens": 4812,
+        "max_tokens": 2579,
+        "conversations": 35,
+        "max_supervised_target_tokens": 177,
+        "data_sha256": "a29fa1583198f4dee7bb44fe607ba5efe2b1a000bbaa57324648d8dfce40a598"
+      },
+      "val": {
+        "actions": 26,
+        "input_tokens": 21151,
+        "supervised_tokens": 1162,
+        "max_tokens": 1890,
+        "conversations": 9,
+        "max_supervised_target_tokens": 157,
+        "data_sha256": "cef58ecbad93c3ef72233bc4be8e0318df30cdd7920d8b4c10bfa29e498da4bc"
+      }
+    },
+    "status": "all_actions_fit_and_match_inference_prefix"
+  },
+  "environment": {
+    "python": "3.11.9",
+    "machine": "arm64",
+    "transformers": "5.3.0"
+  }
+}
