@@ -3,12 +3,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 
 from src.product.arxiv_ids import validate_arxiv_id
 from src.product.assigned_actions import ACTION_PROTOCOL
 from src.product.reader_gaps import GAP_PROTOCOL
 
 ASSIGNMENT_VERSION = "assigned-paper-v1"
+QASPER_ASSIGNMENT_VERSION = "assigned-qasper-paper-v1"
 _DISCOVERY_INSTRUCTION = (
     "Your first action must call search() with words from the question to discover\n"
     "real document IDs. Never guess a document ID. Use an ID with read(), passage(),\n"
@@ -39,6 +41,8 @@ def paper_assignment(manifest: dict, docs: dict) -> dict:
     metadata = doc.get("metadata") or {}
     if not isinstance(metadata, dict):
         raise ValueError("assigned paper needs metadata")
+    if metadata.get("coverage") == "qasper_s2orc_text":
+        return _qasper_assignment(manifest, doc_id, doc, metadata)
     version = validate_arxiv_id(metadata.get("arxiv_id"))
     if "v" not in version or doc_id != "arxiv_" + version.replace(".", "_"):
         raise ValueError("assigned paper identity must match its pinned version")
@@ -49,6 +53,27 @@ def paper_assignment(manifest: dict, docs: dict) -> dict:
     return {"version": ASSIGNMENT_VERSION, "corpus_hash": manifest["corpus_hash"],
             "doc_id": doc_id, "arxiv_id": version, "title": doc["title"][:300],
             "coverage": metadata.get("coverage"), "counts_as_source_inspection": False}
+
+
+def _qasper_assignment(manifest: dict, doc_id: str, doc: dict, metadata: dict) -> dict:
+    """Dataset identity is distinct from a versioned arXiv extraction."""
+    paper_id = metadata.get("qasper_paper_id")
+    revision = manifest.get("source_revision")
+    if (not isinstance(paper_id, str) or not paper_id.strip()
+            or len(paper_id) > 100
+            or doc_id != "qasper_" + re.sub(r"[^A-Za-z0-9_-]+", "_", paper_id)
+            or metadata.get("source_dataset") != "allenai/qasper"
+            or manifest.get("source_dataset") != "allenai/qasper"
+            or not isinstance(revision, str) or not re.fullmatch(r"[a-f0-9]{40}", revision)
+            or metadata.get("source_revision") != revision
+            or metadata.get("source_kind") != "research_paper"
+            or not isinstance(doc.get("title"), str) or not doc["title"].strip()):
+        raise ValueError("assigned QASPER identity needs matching dataset provenance")
+    return {"version": QASPER_ASSIGNMENT_VERSION, "corpus_hash": manifest["corpus_hash"],
+            "doc_id": doc_id, "source_dataset": "allenai/qasper",
+            "source_revision": revision, "qasper_paper_id": paper_id,
+            "title": doc["title"][:300], "coverage": "qasper_s2orc_text",
+            "counts_as_source_inspection": False}
 
 
 def assignment_hash(assignment: dict) -> str:
