@@ -1,0 +1,28 @@
+{
+  "plan_sha256": "ecaec9c0a3bd225e759c8faf5f717c1ff478071731ec7eca8080366ad6d22a96",
+  "model": {
+    "checkpoint": "Qwen/Qwen3-8B@b968826d9c46dd6066d109eabc6255188de91218",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter_applied": false,
+    "served_model": "envoy-base-only"
+  },
+  "decoding": {
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "max_tokens": 1024,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "hardware": "one NVIDIA RTX A5000",
+  "first_prompt_tokens": {
+    "qlora-dtypes": 2628,
+    "awq-protocol": 2588,
+    "paged-target": 2670
+  },
+  "prompt_sha256": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+  "comparison_to_saved_v5": "first payloads differ only in model alias; same effective product implementation, cases/source/review hashes; three exposed-development cases; no causal or generalization claim",
+  "training_or_reward": "none"
+}
