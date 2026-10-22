@@ -1,0 +1,81 @@
+{
+  "status": "before_model_evaluation",
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "implementing Codex assistant; not independent human review",
+  "model_outputs_used": false,
+  "rejected_question_paper_pairs": 13,
+  "rows": [
+    {
+      "question_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348",
+      "doc_id": "qasper_1810_03459",
+      "reason": "Question specifically asks LM training data, but its annotated paragraph describes ASR experimental corpus without explicitly binding RNNLM training. Missing excerpts also mention BABEL. Ambiguous positive/gap contrast."
+    },
+    {
+      "question_id": "qasper_train_3bf429633ecbbfec3d7ffbcfa61fa90440cc918b",
+      "doc_id": "qasper_1710_06536",
+      "reason": "Missing common window explicitly states deep-learning/linguistic ensemble and CNN aspect extraction. Truncated annotation exact string absence did not remove semantic answer."
+    },
+    {
+      "question_id": "qasper_train_9e391c8325b48f6119ca4f3d428b1b2b037f5c13",
+      "doc_id": "qasper_1909_05017",
+      "reason": "Missing abstract explains WER similarity purpose and shared conclusion explains diagnostic use, so missing scope remains answerable by paraphrase."
+    },
+    {
+      "question_id": "qasper_train_0c1663a7f7750b399f40ef7b4bf19d5c598890ff",
+      "doc_id": "qasper_1910_04887",
+      "reason": "Missing training excerpt gives image representation and FactorCell/LSTM configuration; broad how question can be substantially answered. Gap label is not reliable."
+    },
+    {
+      "question_id": "qasper_train_d353a6bbdc66be9298494d0c853e0d8d752dec4b",
+      "doc_id": "qasper_2004_04435",
+      "reason": "Question says proved while annotation supplies empirical validation. Missing introduction and conclusion also describe AD correctness/comparison. Avoid ambiguous proof and evidence-state targets."
+    },
+    {
+      "question_id": "qasper_validation_9a7ba5ed1779c664d2cac92494a43517d3e87c96",
+      "doc_id": "qasper_1608_01884",
+      "reason": "Broad what data question is already answerable as Winograd schemas from missing introduction and collection references. No clean missing-evidence contrast."
+    },
+    {
+      "question_id": "qasper_validation_b962cc817a4baf6c56150f0d97097f18ad6cd9ed",
+      "doc_id": "qasper_1810_12196",
+      "reason": "Question asks kinds of questions, but annotation is vague competency statement; complete eight-task list is in an unavailable table. Missing windows already give some types, so target/gap contrast is ambiguous."
+    },
+    {
+      "question_id": "qasper_train_10f560fe8e1c0c7dea5e308ee4cec16d07874f1d",
+      "doc_id": "qasper_1901_03859",
+      "reason": "Missing scope abstract explicitly explains next-sentence prediction using the source article and summary produced so far; shared conclusion also describes the mechanism. Exact-string removal does not remove semantic support."
+    },
+    {
+      "question_id": "qasper_train_6adfa9eee76b96953a76c03356bf41d8a9378851",
+      "doc_id": "qasper_1908_01060",
+      "reason": "The shared 16000:17600 conclusion reports 1.6 phone error rate improvement across all 16 corpora. Missing scope remains answerable despite differing wording."
+    },
+    {
+      "question_id": "qasper_train_0747cecb3c72594c5d15ba18490566be1ffdbfad",
+      "doc_id": "qasper_1710_02772",
+      "reason": "Broad comparator question has a vague annotation (competitive leaderboard methods); missing abstract already claims comparison to state-of-the-art on SQuAD and TriviaQA. Not a reliable present/missing distinction."
+    },
+    {
+      "question_id": "qasper_validation_114934e1a1e818630ff33ac5c4cd4be6c6f75bb2",
+      "doc_id": "qasper_1811_08603",
+      "reason": "Shared 25600:27200 passage explicitly describes good generalization to difficult entity linking and qualitative advantages; missing abstract also asserts effectiveness. The broad effectiveness question is answerable qualitatively in the proposed missing scope."
+    },
+    {
+      "question_id": "qasper_train_be9cadaebfa0ff1a3c5a5ed56ff3aae76cf5e0a4",
+      "doc_id": "qasper_1805_03122",
+      "reason": "Question asks evaluation metrics, while annotated answer names two aggregation setups. Shared missing excerpt explicitly discusses human accuracy and model scores, making accuracy inferable; do not teach refusal for this broad metric question."
+    },
+    {
+      "question_id": "qasper_validation_03ebb29c08375afc42a957c7b2dc1a42bed7b713",
+      "doc_id": "qasper_1909_05359",
+      "reason": "The present excerpt reports ontology population counts but does not describe an effectiveness evaluation procedure or success metric. Treating those counts as a full answer would overclaim; positive label is ambiguous."
+    }
+  ],
+  "initial_scope_rule": "1600-character evidence anchor plus last answer-string-free distractor; missing replaces anchor with first answer-string-free window. All three windows source-reviewed. Exact-string absence is not semantic absence.",
+  "local_rounds": [
+    "prepared",
+    "prepared-v2",
+    "prepared-v3",
+    "prepared-v4"
+  ]
+}

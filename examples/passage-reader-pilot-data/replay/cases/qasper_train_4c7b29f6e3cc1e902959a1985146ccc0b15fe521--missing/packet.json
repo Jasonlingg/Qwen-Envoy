@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "a33bce60-a194-4f56-a11c-12ec2d1307e0",
+  "question_id": "paper_153bf3262e3582ee",
+  "question": "How do you find the entity descriptions?",
+  "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1701_02025\", 1600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1701_02025', 'start': 1600, 'end': 3200, 'text': 'tic updating and completing the entity knowledge, text resources such as news, user forums, textbooks or any other data in the form of text are important sources. Therefore, information extraction methods have been introduced to extract knowledge about entities from text. In this paper, we focus on the extraction of entity types, i.e., assigning types to – or typing – entities. Type information can help extraction of relations by applying constraints on relation arguments.\\n\\nWe address a problem setting in which the following are given: a KB with a set of entities $E$ , a set of types $T$ and a membership function $m: E \\\\times T \\\\mapsto \\\\lbrace 0,1\\\\rbrace $ such that $m(e,t)=1$ iff entity $e$ has type $t$ ; and a large corpus $C$ in which mentions of $E$ are annotated. In this setting, we address the task of fine-grained entity typing: we want to learn a probability function $S(e,t)$ for a pair of entity $e$ and type $T$0 and based on $T$1 infer whether $T$2 holds, i.e., whether entity $T$3 is a member of type $T$4 .\\n\\nWe address this problem by learning a multi-level representation for an entity that contains the information necessary for typing it. One important source is the contexts in which the entity is used. We can take the standard method of learning embeddings for words and extend it to learning embeddings for entities. This requires the use of an entity linker and can be implemented by replacing all occurrences of the entity by a unique token. We refer to entity embeddings as entity-level representations. Previously, entity embeddings have been learned mostly using '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1701_02025', 'start': 27200, 'end': 28800, 'text': \" AGG-FIGER and ELR, the best single-level model baseline.\\n\\nUnknown vs. known entities. To analyze the complementarity of character and word level representations, as well as more fine-grained comparison of our models and the baselines, we divide test entities into known entities – at least one word of the entity's name appears in a train entity – and unknown entities (the complement). There are 45,000 (resp. 15,000) known (resp. unknown) test entities.\\n\\nTable 2 shows that the CNN works only slightly better (by 0.3%) than NSL on known entities, but works much better on unknown entities (by 3.3%), justifying our preference for deep learning CLR models. As expected, BOW works relatively well for known entities and really poorly for unknown entities. SWLR beats CLR models as well as BOW. The reason is that in our setup, word embeddings are induced on the entire corpus using an unsupervised algorithm. Thus, even for many words that did not occur in train, SWLR has access to informative representations of words. The joint model, SWLR+CLR(CNN), is significantly better than BOW+CLR(NSL) again due to limits of BOW. SWLR+CLR(CNN) is better than SWLR in unknown entities.\\n\\nCase study of living-thing. To understand the interplay of different levels better, we perform a case study of the type living-thing. Living beings that are not humans belong to this type.\\n\\nWLRs incorrectly assign “Walter Leaf” (person) and “Along Came A Spider” (music) to living-thing because these names contain a word referring to a living-thing (“leaf”, “spider”), but the entity itself is not a living-thing. In th\"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions.\", follow_up_query=\"entity descriptions acquisition source FIGMENT\")",
+      "research_gap": {
+        "missing": "The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions.",
+        "follow_up_query": "entity descriptions acquisition source FIGMENT",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1701_02025",
+    "windows": [
+      {
+        "start": 1600,
+        "end": 3200
+      },
+      {
+        "start": 27200,
+        "end": 28800
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1701_02025\", 1600, 1600))",
+      "print(passage(\"qasper_1701_02025\", 27200, 1600))"
+    ],
+    "source_text_sha256": "8cdb92e911ef292fff95e5bb85af44e4f3fc7ef8dd7973dffc226ddbd9ded05b",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "8da87d4f88bbc5ecf46c53fd91287f52ea61a7e99a605a44a0628c6b41927752",
+  "inspected_passage_windows": [
+    {
+      "start": 1600,
+      "end": 3200
+    },
+    {
+      "start": 27200,
+      "end": 28800
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+    "doc_id": "qasper_1701_02025",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1701.02025",
+    "title": "Multi-level Representations for Fine-Grained Typing of Knowledge Base Entities",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a099c2e0310ae4d4238a2d7277758b2303358f72637569a12124f3bec80e7ce6",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions.",
+      "follow_up_query": "entity descriptions acquisition source FIGMENT",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

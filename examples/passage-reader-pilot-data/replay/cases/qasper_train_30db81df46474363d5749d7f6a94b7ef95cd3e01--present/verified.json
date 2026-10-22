@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "a6c23316dd0274efbc4c021d6033c5a3d2f99a45d4c6f3f345555a9c1bb45bcf",
+  "candidate_answer": "For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1811_05085",
+      "title": "Domain Agnostic Real-Valued Specificity Prediction",
+      "start": 5245,
+      "end": 5723,
+      "quote": "With unsupervised domain adaptation, one has access to labeled sentence specificity in one source domain, and unlabeled sentences in all target domains. The goal is to predict the specificity of target domain data. Our source domain is news, the only domain with publicly available labeled data for training BIBREF1 . We crowdsource sentence specificity for evaluation for three target domains: Twitter, Yelp reviews and movie reviews. The data is described in Section SECREF4 .",
+      "arxiv_id": "1811.05085",
+      "source_url": "https://arxiv.org/abs/1811.05085",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "a6c23316dd0274efbc4c021d6033c5a3d2f99a45d4c6f3f345555a9c1bb45bcf",
+    "doc_id": "qasper_1811_05085",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1811.05085",
+    "title": "Domain Agnostic Real-Valued Specificity Prediction",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "6d32809b978e78563e030304a029af9a02bdb0feff5da92fa1aa128ba3ed556f",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1811_05085",
+    "windows": [
+      {
+        "start": 4945,
+        "end": 6545
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1811_05085\", 4945, 1600))",
+      "print(passage(\"qasper_1811_05085\", 25600, 1600))"
+    ],
+    "source_text_sha256": "c1517f8e8b45d97665b71f2057b76f435ef922a572d24ad0f3a485ae17fb3a45",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 4945,
+      "end": 6545
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

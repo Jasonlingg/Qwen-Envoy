@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "5e0d9882-4ac1-43db-9a95-c277587d8ff5",
+  "question_id": "paper_0178f239ff5bb701",
+  "question": "Which of the model yields the best performance?",
+  "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1912_00582\", 3200, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00582', 'start': 3200, 'end': 4800, 'text': 'ts below human performance overall.\\n\\nWe conduct additional experiments to investigate the effect of training size on LSTM model performance on *X . We show that learning trajectories differ, sometimes drastically, across different paradigms in the dataset, with phenomena such as anaphor agreement showing consistent improvement as training size increases, and other phenomena such as NPIs and extraction islands remaining near chance despite increases in training size. We also compare overall sentence probability to two other built-in metrics coded on *X and find that the chosen metric changes how we evaluate relative model performance.\\n\\nThe objective of a language model is to give a probability distribution over the possible strings of a language. Language models can be built on neural network models or non-neural network models. Due to their unsupervised nature, they can be trained without external annotations. More recently, neural network based language modeling has been shown to be a strong pretraining task for natural language understanding tasks BIBREF6, BIBREF7, BIBREF8, BIBREF9. Some recent models, such as BERT BIBREF9 use closely related tasks such as masked language modeling.\\n\\nIn the last decade, we have seen two major paradigm shifts in the state of the art for language modeling. The first major shift for language modeling was the movement from statistical methods based on $n$-grams BIBREF10 to neural methods such as LSTMs BIBREF11, which directly optimize on the task of predicting the next word. More recently, Transformer-based architectures employing self-attenti'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1912_00582\", 28800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00582', 'start': 28800, 'end': 30400, 'text': \"nces cannot be compatible with both prefix methods, and that a pair may be compatible with the full-sentence method but neither prefix method.\\n\\nFor both prefix methods, it is crucial that the grammaticality of the sentence is unambiguously predictable from the critical word, but not sooner. With simple LM probabilities, the probabilities of the rest of the word tokens in the sentence also affect the performance. For example, a model may predict that `The cat ate the mouse' is more likely than `The cat eaten the mouse' without correctly predicting that $P(\\\\emph {ate}|\\\\emph {the cat}) > P(\\\\emph {eaten}|\\\\emph {the cat})$ if it predicts that $P(\\\\emph {the mouse}|\\\\emph {the cat ate})$ is much greater than $P(\\\\emph {the mouse}|\\\\emph {the cat eaten})$. Furthermore, it is unclear how a model assigns probabilities conditioned on an ungrammatical prefix, since ungrammatical sentences are largely absent from the training data. Using prefix probabilities allow us to exclude models' use of this additional information and evaluate how the models perform when they have just enough information to judge grammaticality.\\n\\nThe results in Figure FIGREF42 show that models have generally comparable accuracies overall in prefix methods and the simple whole-sentence LM method. However, A deeper examination of the differences between these methods in each paradigm reveals some cases where a models' performance fluctuates more between these methods. For example, Transformer-XL performs much worse at binding, determiner-noun agreement, and subject-verb agreement in the simple LM method, suggesting tha\"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts do not establish which model has the highest overall benchmark accuracy.\", follow_up_query=\"language model minimal pairs overall accuracy model comparison\")",
+      "research_gap": {
+        "missing": "The excerpts do not establish which model has the highest overall benchmark accuracy.",
+        "follow_up_query": "language model minimal pairs overall accuracy model comparison",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_00582",
+    "windows": [
+      {
+        "start": 3200,
+        "end": 4800
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_00582\", 3200, 1600))",
+      "print(passage(\"qasper_1912_00582\", 28800, 1600))"
+    ],
+    "source_text_sha256": "a6d48062d033aaf2bbb4248e0e8870d8ea639aae5cb33c82f319f2059a219e29",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "8bca00a3f0917840dfb02588395b28a749b9741ff7793044049929bf25d3a32a",
+  "inspected_passage_windows": [
+    {
+      "start": 3200,
+      "end": 4800
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+    "doc_id": "qasper_1912_00582",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.00582",
+    "title": "BLiMP: A Benchmark of Linguistic Minimal Pairs for English",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "1ef712c7ec75930c191287e1241dab7f8ded2cfe0be2d455ac38394f64da5d61",
+  "research_gaps": [
+    {
+      "missing": "The excerpts do not establish which model has the highest overall benchmark accuracy.",
+      "follow_up_query": "language model minimal pairs overall accuracy model comparison",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

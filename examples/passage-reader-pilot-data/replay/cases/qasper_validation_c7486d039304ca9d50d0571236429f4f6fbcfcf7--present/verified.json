@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+  "candidate_answer": "Turkish has the lowest reported non-English RNN accuracy, 74.36%.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1806_04511",
+      "title": "Multilingual Sentiment Analysis: An RNN-Based Framework for Limited Data",
+      "start": 16607,
+      "end": 17541,
+      "quote": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements.",
+      "arxiv_id": "1806.04511",
+      "source_url": "https://arxiv.org/abs/1806.04511",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+    "doc_id": "qasper_1806_04511",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1806.04511",
+    "title": "Multilingual Sentiment Analysis: An RNN-Based Framework for Limited Data",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "554c4c8e4269d9433f7f90e5a14ea115fbd63cd1fcaf234ccc1757e4ae9858d9",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1806_04511",
+    "windows": [
+      {
+        "start": 12800,
+        "end": 14400
+      },
+      {
+        "start": 16307,
+        "end": 17907
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+      "print(passage(\"qasper_1806_04511\", 16307, 1600))"
+    ],
+    "source_text_sha256": "6083c5d95b4725599dc53dda0a914bfa4608308e9eab33b5bd3c09c654bc8fda",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 12800,
+      "end": 14400
+    },
+    {
+      "start": 16307,
+      "end": 17907
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

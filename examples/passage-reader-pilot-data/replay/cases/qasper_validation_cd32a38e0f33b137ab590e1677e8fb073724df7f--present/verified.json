@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "8c347c859419858d79ccfe46e4d70068ac911cfd7f20c948c8869a843adfb8af",
+  "candidate_answer": "The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1707_05236",
+      "title": "Artificial Error Generation with Machine Translation and Syntactic Patterns",
+      "start": 8658,
+      "end": 9373,
+      "quote": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data.",
+      "arxiv_id": "1707.05236",
+      "source_url": "https://arxiv.org/abs/1707.05236",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "8c347c859419858d79ccfe46e4d70068ac911cfd7f20c948c8869a843adfb8af",
+    "doc_id": "qasper_1707_05236",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1707.05236",
+    "title": "Artificial Error Generation with Machine Translation and Syntactic Patterns",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "7bb924e6bd6d6e592a084fd0d87e82e39743360444b6cdecdee5bed36f49983e",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1707_05236",
+    "windows": [
+      {
+        "start": 8358,
+        "end": 9958
+      },
+      {
+        "start": 12800,
+        "end": 14400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1707_05236\", 8358, 1600))",
+      "print(passage(\"qasper_1707_05236\", 12800, 1600))"
+    ],
+    "source_text_sha256": "d9136688d14984ad532eab14454b7226be34e0bb51b31414c95fc363607dab79",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 8358,
+      "end": 9958
+    },
+    {
+      "start": 12800,
+      "end": 14400
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "1a3a2763010292f5b721e0d4b1bc9d119cd7a8cf6958377ec97e85632a909c0d",
+  "candidate_answer": "They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1610_00956",
+      "title": "Embracing data abundance: BookTest Dataset for Reading Comprehension",
+      "start": 25905,
+      "end": 26591,
+      "quote": "The ensembles were formed by simply averaging the predictions from the constituent single models. These single models were selected using the following algorithm.\n\nWe started with the best performing model according to validation performance. Then in each step we tried adding the best performing model that had not been previously tried. We kept it in the ensemble if it did improve its validation performance and discarded it otherwise. This way we gradually tried each model once. We call the resulting model a greedy ensemble. We used the INLINEFORM0 BookTest validation dataset for this procedure.\n\nThe algorithm was offered 10 models and selected 5 of them for the final ensemble.",
+      "arxiv_id": "1610.00956",
+      "source_url": "https://arxiv.org/abs/1610.00956",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "1a3a2763010292f5b721e0d4b1bc9d119cd7a8cf6958377ec97e85632a909c0d",
+    "doc_id": "qasper_1610_00956",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1610.00956",
+    "title": "Embracing data abundance: BookTest Dataset for Reading Comprehension",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d40a4ee5d80afec6d57e222fce8ac11a224035229484ee8926e5f2dd39c328c1",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1610_00956",
+    "windows": [
+      {
+        "start": 22400,
+        "end": 24000
+      },
+      {
+        "start": 24991,
+        "end": 26591
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1610_00956\", 22400, 1600))",
+      "print(passage(\"qasper_1610_00956\", 24991, 1600))"
+    ],
+    "source_text_sha256": "1dda7e6b1beedf3de4f91de3849db5a01aea5cdf914ca7c0978ab264b0043423",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 22400,
+      "end": 24000
+    },
+    {
+      "start": 24991,
+      "end": 26591
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

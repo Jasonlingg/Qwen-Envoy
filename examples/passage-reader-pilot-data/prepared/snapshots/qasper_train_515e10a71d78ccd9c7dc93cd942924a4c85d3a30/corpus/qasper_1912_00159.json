@@ -1,0 +1,130 @@
+{
+  "doc_id": "qasper_1912_00159",
+  "title": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German",
+  "text": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German\n\nThis paper presents SwissCrawl, the largest Swiss German text corpus to date. Composed of more than half a million sentences, it was generated using a customized web scraping tool that could be applied to other low-resource languages as well. The approach demonstrates how freely available web pages can be used to construct comprehensive text corpora, which are of fundamental importance for natural language processing. In an experimental evaluation, we show that using the new corpus leads to significant improvements for the task of language modeling. To capture new content, our approach will run continuously to keep increasing the corpus over time.\n\nSwiss German (“Schwyzerdütsch” or “Schwiizertüütsch”, abbreviated “GSW”) is the name of a large continuum of dialects attached to the Germanic language tree spoken by more than 60% of the Swiss population BIBREF0. Used every day from colloquial conversations to business meetings, Swiss German in its written form has become more and more popular in recent years with the rise of blogs, messaging applications and social media. However, the variability of the written form is rather large as orthography is more based on local pronunciations and emerging conventions than on a unique grammar.\n\nEven though Swiss German is widely spread in Switzerland, there are still few natural language processing (NLP) corpora, studies or tools available BIBREF1. This lack of resources may be explained by the small pool of speakers (less than one percent of the world population), but also the many intrinsic difficulties of Swiss German, including the lack of official writing rules, the high variability across different dialects, and the informal context in which texts are commonly written. Furthermore, there is no official top-level domain (TLD) for Swiss German on the Internet, which renders the automatic collection of Swiss German texts more difficult.\n\nTo automate the treatment of Swiss German and foster its adoption in online services such as automatic speech recognition (ASR), we gathered the largest corpus of written Swiss German to date by crawling the web using a customized tool. We highlight the difficulties for finding Swiss German on the web and demonstrate in an experimental evaluation how our text corpus can be used to significantly improve an important NLP task that is a fundamental part of the ASR process: language modeling.\n\nFew GSW corpora already exists. Although they are very valuable for research on specific aspects of the Swiss German language, they are either highly specialized BIBREF2 BIBREF3 BIBREF4, rather small BIBREF1 (7,305 sentences), or do not offer full sentences BIBREF5.\n\nTo our knowledge, the only comprehensive written Swiss German corpus to date comes from the Leipzig corpora collection initiative BIBREF6 offering corpora for more than 136 languages. The Swiss German data has two sources: the Alemannic Wikipedia and web crawls on the .ch domain in 2016 and 2017, leading to a total of 175,399 unique sentences. While the Leipzig Web corpus for Swiss German is of considerable size, we believe this number does not reflect the actual amount of GSW available on the Internet. Furthermore, the enforced sentence structures do not represent the way Swiss German speakers write online.\n\nIn this paper, we thus aim at augmenting the Leipzig Web corpus by looking further than the .ch domain and by using a suite of tools specifically designed for retrieving Swiss German.\n\nThe idea of using the web as a vast source of linguistic data has been around for decades BIBREF7 and many authors have already addressed its importance for low-resources languages BIBREF8. A common technique is to send queries made of mid-frequency $n$-grams to a search engine to gather bootstrap URLs, which initiate a crawl using a breadth-first strategy in order to gather meaningful information, such as documents or words BIBREF9, BIBREF5.\n\nExisting tools and studies, however, have requirements that are inadequate for the case of Swiss German. For example, GSW is not a language known to search engines BIBREF9, does not have specific TLDs BIBREF10, and lacks good language identification models. Also, GSW documents are too rare to use bootstrapping techniques BIBREF8. Finally, as GSW is scarce and mostly found in comments sections or as part of multilingual web pages (e.g. High German), we cannot afford to “privilege precision over recall” BIBREF11 by focusing on the main content of a page.\n\nAs a consequence, our method is based on known techniques that are adapted to deal with those peculiarities. Furthermore, it was designed for having a human in the loop. Its iterative nature makes it possible to refine each step of the tool chain as our knowledge of GSW improves.\n\nThe two main components of our proposed system are shown in Figure FIGREF1: a seeder that gathers potentially interesting URLs using a Search Engine and a crawler that extracts GSW from web pages, linked together by a MongoDB database. The system is implemented in Python 3, with the full code available on GitHub. Due to the exploratory nature of the task, the tool chain is executed in an iterative manner, allowing us to control and potentially improve the process punctually.\n\nLanguage identification (LID) is a central component of the pipeline, as it has a strong influence on the final result. In addition, readily available tools are not performing at a satisfying level. For these reasons we created a tailor-made LID system for this situation.\n\nLID has been extensively studied over the past decades BIBREF12 and has achieved impressive results on long monolingual documents in major languages such as English. However, the task becomes more challenging when the pool of training data is small and of high variability, and when the unit of identification is only a sentence.\n\nFree pretrained LIDs supporting GSW such as FastText BIBREF13 are trained on the Alemannic Wikipedia, which encompasses not only GSW, but also German dialects such as Badisch, Elsässisch, Schwäbisch and Vorarlbergisch. This makes the precision of the model insufficient for our purposes.\n\nThe dataset used to build our Swiss German LID is based on the Leipzig text corpora BIBREF6, mostly focusing on the texts gathered from the Internet. In preliminary experiments, we have chosen eight language classes shown in Table TABREF4, which give precedence to languages closely related to Swiss German in their structure. In this Table, GSW_LIKE refers to a combination of dialects that are similar to Swiss German but for which we did not have sufficient resources to model classes on their own.\n\nA total of 535,000 sentences are considered for LID with an equal distribution over the eight classes. The 66,684 GSW sentences originate from the Leipzig web corpus 2017 and have been refined during preliminary experiments to exclude obvious non-GSW contents. We use 75% of the data for training, 10% for optimizing system parameters, and 15% for testing the final performance.\n\nUsing a pretrained German BERT model BIBREF14 and fine-tuning it on our corpus, we obtain a high LID accuracy of 99.58%. GSW is most confused with German (0.04%) and GSW_LIKE (0.04%). We have also validated the LID system on SMS sentences BIBREF2, where it proves robust for sentences as short as five words.\n\nQuery generation has already been extensively studied BIBREF15, BIBREF9. In the case of Swiss German, we tested three different approaches: (a) most frequent trigrams, (b) selection of 2 to 7 random words weighted by their frequency distribution and (c) human-generated queries.\n\nWhen comparing the corpora generated by 100 seeds of each type, we did not observe significant differences in terms of quantity or quality for the three seeding strategies. On a positive side, $50\\%$ of the sentences were different from one seed strategy to the other, suggesting for an approach where strategies are mixed. However, we also observed that (a) tends to yield more similar queries over time and (c) is too time-consuming for practical use.\n\nConsidering these observations, we privileged the following approach:\n\nStart with a list of sentences, either from a bootstrap dataset or from sentences from previous crawls using one single sentence per unique URL;\n\nCompute the frequency over the vocabulary, normalizing words to lower case and discarding those having non-alphabetic characters;\n\nFilter out words appearing only once or present in German or English vocabularies;\n\nGenerate query seeds by sampling 3 words with a probability following their frequency distribution;\n\nExclude seeds with more than two single-letter words or having a GSW probability below 95% (see Section SECREF3).\n\nInitial sentences come from the Leipzig web corpus 2017, filtered by means of the LID described in Section SECREF3\n\nEach seed is submitted to startpage.com, a Google Search proxy augmented with privacy features. To ensure GSW is not auto-corrected to High German, each word is first surrounded by double quotes. The first 20 new URLs, i.e. URLs that were never seen before, are saved for further crawling.\n\nThe crawler starts with a list of URLs and metadata taken either from a file or from the MongoDB instance, and are added to a task queue with a depth of 0. As illustrated in Figure FIGREF1, each task consists of a series of steps that will download the page content, extract well-formed GSW sentences and add links found on the page to the task queue. At different stages of this pipeline, a decider can intervene in order to stop the processing early. A crawl may also be limited to a given depth, usually set to 3.\n\nThe raw HTML content is fetched and converted to UTF-8 using a mixture of requests and BeautifulSoup. Boilerplate removal such as navigation and tables uses jusText BIBREF16, but ignores stop words filtering as such a list is not available for GSW. The output is a UTF-8 text containing newlines.\n\nThis stage tries to fix remaining encoding issues using ftfy BIBREF17 and to remove unicode emojis. Another important task is to normalize the unicode code points used for accents, spaces, dashes, quotes etc., and strip any invisible characters. To further improve the usability of the corpus and to simplify tokenization, we also try to enforce one single convention for spaces around quotes and colons, e.g. colons after closing quote, no space inside quotes.\n\nTo split text into sentences, we implemented Moses' split-sentences.perl in Python and changed it in three main ways: existing newlines are preserved, colons and semi-colons are considered segmentation hints and sentences are not required to start with an uppercase. The latter is especially important as GSW is mostly found in comments where people tend to write fast and without proper casing/punctuation. The list of non-breaking prefixes used is a concatenation of the English and German prefixes found in Moses with few additions.\n\nNon- or bad- sentences are identified based on a list of $20+$ rules that normal sentences should obey. Most rules are specified in the form of regular expression patterns and boundaries of acceptable occurrences, few compare the ratio of occurrence between two patterns. Examples of such rules in natural language are: “no more than one hashtag”, “no word with more than 30 characters”, “the ratio capitalized/lowercase words is below 1.5”.\n\nUsing the LID described in Section SECREF3, sentences with a GSW probability of less than 92% are discarded. This threshold is low on purpose in order to favor recall over precision.\n\nThis component is used to exclude or transform outgoing links found in a page based on duplicates, URL composition, but also specific rules for big social media sites or known blogs. Examples are the exclusion of unrelated national TLDs (.af, .nl, ...) and known media extensions (.pdf, .jpeg, etc.), the stripping of session IDs in URL parameters, and the homogenization of subdomains for sites such as Twitter. Note that filtering is based only on the URL and therefore does not handle redirects or URLs pointing to the same page. This leads to extra work during the crawling, but keeps the whole system simple.\n\nA decider has three main decisions to take. First, based on the metadata associated with an URL, should it be visited? In practice, we visit only new URLs, but the tool is designed in a way such that a recrawl is possible if the page is detected as highly dynamic. The second decision arises at the end of the processing, where the page can be either saved or blacklisted. To favor recall, we currently keep any URL with at least one GSW sentence. Finally, the decider can choose to visit the outgoing links or not. After some trials, we found that following links from pages with more than two new GSW sentences is a reasonable choice, as pages with less sentences are often quotes or false positives.\n\nDuring the crawl, the uniqueness of sentences and URLs considers only exact matches. However, when exporting the results, near-duplicate sentences are removed by first stripping any non-letter (including spaces) and making a lowercase comparison. We tried other near-duplicate approaches, but found that they also discarded meaningful writing variations.\n\nTable TABREF14 shows the results of running the system three times using 100 seeds on a virtual machine with 5 CPU cores and no GPUs. As expected, the first iteration yields the most new sentences. Unfortunately, the number of newly discovered hosts and sentences decreases exponentially as the system runs, dropping to 20K sentences on the third iteration. This result emphasizes the fact that the amount of GSW on the web is very limited.\n\nThe third iteration took also significantly longer, which highlights the difficulties of crawling the web. In this iteration, some URLs had as much as 12 thousand outgoing links that we had to visit before discarding. Another problem arises on web sites where query parameters are used in URLs to encode cookie information and on which duplicate hypotheses cannot be solved unless visiting the links.\n\nOn each new search engine query, we go further down the list of results as the top ones may already be known. As such, the percentage of pertinent URLs retrieved (% good, see decider description in Section SECREF13) slowly decreases at each iteration. It is however still above 55% of the retrieved URLs on the third run, indicating a good quality of the seeds.\n\nUsing the proposed system, we were able to gather more than half a million unique GSW sentences from around the web. The crawling took place between September and November 2019. The corpus is available for download in the form of a CSV file with four columns: text, url, crawl_proba, date, with crawl_proba being the GSW probability returned by the LID system (see Section SECREF3).\n\nThe corpus is composed of 562,524 sentences from 62K URLs among 3,472 domains. The top ten domains (see Table TABREF18) are forums and social media sites. They account for 46% of the whole corpus.\n\nIn general, we consider a GSW probability of $\\ge {99}\\%$, to be indeed Swiss German with high confidence. This represents more than 89% of the corpus (500K) (see Figure FIGREF19). The sentence length varies between 25 and 998 characters with a mean of $92\\pm 55$ and a median of 77 (see Figure FIGREF20), while the number of words lies between 4 and 222, with a mean of $16\\pm 10$ and a median of 14. This highlights a common pattern in Swiss German writings: used mostly in informal contexts, sentences tend to be short and to include many symbols, such as emojis or repetitive punctuation.\n\nVery long sentences are usually lyrics that lack proper punctuation and thus could not be segmented properly. We however decided to keep them in the final corpus, as they could be useful in specific tasks and are easy to filter out otherwise.\n\nBesides the normalization described in SECREF13, no cleaning nor post-processing is applied to the sentences. This is a deliberate choice to avoid losing any information that could be pertinent for a given task or for further selection. As a result, the mean letter density is 80% and only 61% of sentences both start with an uppercase letter and end with a common punctuation mark (.!?).\n\nFinally, although we performed no human validation per se, we actively monitored the crawling process to spot problematic domains early. This allowed to blacklist some domains entirely, for example those serving embedded PDFs (impossible to parse properly) or written in very close German dialects.\n\nTable TABREF23 shows some hand-picked examples. As most of our sources are social medias and forums, the writing style is often colloquial, interspersed with emojis and slang. This perfectly reflects the use of GSW in real life, where speakers switch to High German in formal conversations.\n\nIn general, the quality of sentences is good, with few false positives mostly in High German or German dialects, rarer still in Dutch or Luxembourgian. The presence of specific structures in the sentences are often the cause of such mistakes, as they yield strong GSW cues. For example:\n\nHigh German with spelling mistakes or broken words;\n\nGSW named entities (“Ueli Aeschbacher”, “Züri”);\n\nThe presence of many umlauts and/or short words;\n\nThe repetition of letters, also used to convey emotions.\n\nThe quality of the corpus highly depends on the text extraction step, which itself depends on the HTML structure of the pages. As there are no enforced standards and each website has its own needs, it is impossible to handle all edge cases. For example, some sites use hidden <span> elements to hold information, which become part of the extracted sentences. This is true for watson.ch and was dealt with using a specific rule, but there are still instances we did not detect.\n\nSplitting text into sentences is not a trivial task. Typical segmentation mistakes come from the use of ASCII emojis as punctuation marks (see text sample 3 in Table TABREF23), which are very common in forums. They are hard to detect due to the variability of each individual style. We defined duplicates as having the exact same letters. As such, some sentences may differ by one umlaut and some may be the truncation of others (e.g. excerpts with ellipsis). Finally, the corpus also contains poems and lyrics. Sometimes repetitive and especially hard to segment, they are still an important source of Swiss German online. In any case, they may be filtered out using cues in the sentence length and the URLs.\n\nTo demonstrate the effectiveness of the SwissCrawl corpus, we conducted a series of experiments for the NLP task of language modeling. The whole code is publicly available on GitHub.\n\nUsing the GPT-2 BIBREF18 model in its base configuration (12 layers, 786 hidden states, 12 heads, 117M parameters), we trained three models using different training data:\n\nLeipzig unique sentences from the Leipzig GSW web;\n\nSwissCrawl sentences with a GSW probability $\\ge {99}\\%$ (see Section SECREF17);\n\nBoth the union of 1) and 2).\n\nFor each model, the vocabulary is generated using Byte Pair Encoding (BPE) BIBREF19 applied on the training set. The independent test sets are composed of 20K samples from each source.\n\nTable TABREF32 shows the perplexity of the models on each of the test sets. As expected, each model performs better on the test set they have been trained on. When applied to a different test set, both see an increase in perplexity. However, the Leipzig model seems to have more trouble generalizing: its perplexity nearly doubles on the SwissCrawl test set and raises by twenty on the combined test set.\n\nThe best results are achieved by combining both corpora: while the perplexity on our corpus only marginally improves (from $49.5$ to $45.9$), the perplexity on the Leipzig corpus improves significantly (from $47.6$ to $30.5$, a 36% relative improvement).\n\nIn this paper, we presented the tools developed to gather the most comprehensive collection of written Swiss German to our knowledge. It represents Swiss German in the way it is actually used in informal contexts, both with respect to the form (punctuation, capitalization, ...) and the content (slang, elliptic sentences, ...). We have demonstrated how this new resource can significantly improve Swiss German language modeling. We expect that other NLP tasks, such as LID and eventually machine translation, will also be able to profit from this new resource in the future.\n\nOur experiments support the reasoning that Swiss German is still scarce and very hard to find online. Still, the Internet is in constant evolution and we aim to keep increasing the corpus size by rerunning the tool chain at regular intervals. Another line of future development is the customization of the tools for big social media platforms such as Facebook and Twitter, where most of the content is only accessible through specific APIs.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 105
+    },
+    {
+      "section": "Abstract",
+      "start": 107,
+      "end": 762
+    },
+    {
+      "section": "Introduction",
+      "start": 764,
+      "end": 2510
+    },
+    {
+      "section": "Related Work",
+      "start": 2512,
+      "end": 4870
+    },
+    {
+      "section": "Proposed System",
+      "start": 4872,
+      "end": 5351
+    },
+    {
+      "section": "Proposed System ::: Language Identification",
+      "start": 5353,
+      "end": 7438
+    },
+    {
+      "section": "Proposed System ::: The Seeder",
+      "start": 7440,
+      "end": 9228
+    },
+    {
+      "section": "Proposed System ::: The Crawler",
+      "start": 9230,
+      "end": 9746
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Scrape",
+      "start": 9748,
+      "end": 10044
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Normalize",
+      "start": 10046,
+      "end": 10507
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Split",
+      "start": 10509,
+      "end": 11044
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Filter",
+      "start": 11046,
+      "end": 11487
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Language ID",
+      "start": 11489,
+      "end": 11671
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Link filter",
+      "start": 11673,
+      "end": 12286
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Decide",
+      "start": 12288,
+      "end": 12990
+    },
+    {
+      "section": "Proposed System ::: The Crawler ::: Duplicates",
+      "start": 12992,
+      "end": 13346
+    },
+    {
+      "section": "State of the Swiss German Web",
+      "start": 13348,
+      "end": 14553
+    },
+    {
+      "section": "The SwissCrawl Text Corpus",
+      "start": 14555,
+      "end": 14937
+    },
+    {
+      "section": "The SwissCrawl Text Corpus ::: Contents",
+      "start": 14939,
+      "end": 16663
+    },
+    {
+      "section": "The SwissCrawl Text Corpus ::: Discussion",
+      "start": 16665,
+      "end": 18643
+    },
+    {
+      "section": "Swiss German Language Modeling",
+      "start": 18645,
+      "end": 20011
+    },
+    {
+      "section": "Conclusion",
+      "start": 20013,
+      "end": 21030
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1912.00159",
+    "arxiv_id": "1912.00159",
+    "source_url": "https://arxiv.org/abs/1912.00159",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

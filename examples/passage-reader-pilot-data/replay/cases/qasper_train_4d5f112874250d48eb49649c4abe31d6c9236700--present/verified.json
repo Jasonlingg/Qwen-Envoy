@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+  "candidate_answer": "GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1912_00582",
+      "title": "BLiMP: A Benchmark of Linguistic Minimal Pairs for English",
+      "start": 16131,
+      "end": 16818,
+      "quote": "An LM's overall performance on *X can be measured simply by taking the proportion of correct predictions across the 67,000 minimal pairs from all paradigms. GPT-2 achieves the highest score and the $n$-gram the lowest. Transformer-XL and the LSTM LM perform in the middle, and at roughly the same level as each other. All models perform well below estimated human agreement (as described in Section SECREF11). The $n$-gram model's poor overall performance confirms *X is not solvable from co-occurrence information alone. Rather, success at *X is driven by the more abstract features learned by neural networks. There are no categories in which the $n$-gram approaches human performance.",
+      "arxiv_id": "1912.00582",
+      "source_url": "https://arxiv.org/abs/1912.00582",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+    "doc_id": "qasper_1912_00582",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.00582",
+    "title": "BLiMP: A Benchmark of Linguistic Minimal Pairs for English",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "1ef712c7ec75930c191287e1241dab7f8ded2cfe0be2d455ac38394f64da5d61",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_00582",
+    "windows": [
+      {
+        "start": 15831,
+        "end": 17431
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_00582\", 15831, 1600))",
+      "print(passage(\"qasper_1912_00582\", 28800, 1600))"
+    ],
+    "source_text_sha256": "a6d48062d033aaf2bbb4248e0e8870d8ea639aae5cb33c82f319f2059a219e29",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 15831,
+      "end": 17431
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "55c68548-799a-418d-9a84-3cf882e34a68",
+  "question_id": "paper_8380a7fa96a47b8f",
+  "question": "What domains do they experiment with?",
+  "corpus_hash": "a6c23316dd0274efbc4c021d6033c5a3d2f99a45d4c6f3f345555a9c1bb45bcf",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1811_05085",
+      "start": 5245,
+      "end": 5723,
+      "quote": "With unsupervised domain adaptation, one has access to labeled sentence specificity in one source domain, and unlabeled sentences in all target domains. The goal is to predict the specificity of target domain data. Our source domain is news, the only domain with publicly available labeled data for training BIBREF1 . We crowdsource sentence specificity for evaluation for three target domains: Twitter, Yelp reviews and movie reviews. The data is described in Section SECREF4 .",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1811.05085",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Domain Agnostic Real-Valued Specificity Prediction",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1811_05085\", 4945, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1811_05085', 'start': 4945, 'end': 6545, 'text': \"reventing the system from overly favoring generic responses BIBREF18 , BIBREF19 . We show that predicted specificity works more effectively than length, and enables the system to generate more diverse and informative responses with better quality.\\n\\nIn sum, the paper's contributions are as follows:\\n\\nWith unsupervised domain adaptation, one has access to labeled sentence specificity in one source domain, and unlabeled sentences in all target domains. The goal is to predict the specificity of target domain data. Our source domain is news, the only domain with publicly available labeled data for training BIBREF1 . We crowdsource sentence specificity for evaluation for three target domains: Twitter, Yelp reviews and movie reviews. The data is described in Section SECREF4 .\\n\\nExisting sentence specificity labels in news are binary, i.e., a sentence is either general or specific. However, in practice, real-valued estimates of sentence specificity are widely adopted BIBREF6 , BIBREF12 , BIBREF7 , BIBREF8 , BIBREF9 , BIBREF10 . Most of these work directly uses the classifier posterior distributions, although we will later show that such distributions do not follow the true distribution of sentence specificity (see Figure FIGREF29 , Speciteller vs. real). We aim to produce accurate real-valued specificity estimates despite the binary training data. Specifically, the test sentences have real-valued labels between 0 and 1. We evaluate our system using mean absolute error, Kendall's Tau and Spearman correlation.\\n\\nOur core technique is the Self-Ensembling BIBREF14 , BIBREF15 of a single b\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1811_05085\", 25600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1811_05085', 'start': 25600, 'end': 27200, 'text': \"type-token ratio of unigrams and bigrams. The test set for these two metrics is a random sample of 10K instances from OpenSubtitles that doesn't overlap with the training set. Clearly, filtering training data according to specificity results in more diverse responses with lower perplexity than filtering by length.\\n\\nWe also crowdsource human evaluation for quality; in addition, we evaluate the systems for response informativeness. Note that in our instructions, informativeness means the usefulness of information and is a distinct measure from specificity. The original training data of specificity are linguistically annotated and involves only the change in the level of details BIBREF1 . Separate experiments are conducted to avoid priming. We use a test set of 388 instances, including questions randomly sampled from OpenSubtitles that doesn't overlap with the training set, and 188 example questions from previous dialogue generation papers, including BIBREF33 . We use Amazon MechenicalTurk for crowdsourcing. 7 workers chose between the two responses to the same question.\\n\\nTable TABREF32 shows the human evaluation comparing Remove Short vs. Remove General. Removing predicted general responses performs better than removing short sentences, on both informativeness and quality and on both test sets. This shows that sentence specificity is a superior measure for training data preprocessing than sentence length.\\n\\nSentence specificity prediction as a task is proposed by BIBREF1 , who repurposed discourse relation annotations from WSJ articles BIBREF34 for sentence specificity trainin\"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains. CITATIONS: [\"qasper_1811_05085\"] EVIDENCE: [{\"doc_id\": \"qasper_1811_05085\", \"start\": 5245, \"end\": 5723}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1811_05085",
+    "windows": [
+      {
+        "start": 4945,
+        "end": 6545
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1811_05085\", 4945, 1600))",
+      "print(passage(\"qasper_1811_05085\", 25600, 1600))"
+    ],
+    "source_text_sha256": "c1517f8e8b45d97665b71f2057b76f435ef922a572d24ad0f3a485ae17fb3a45",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "c7fb04235f0d07eccc45f92d69b00bcff4988b7468f1caf7f1bcc60ef6ab6b27",
+  "inspected_passage_windows": [
+    {
+      "start": 4945,
+      "end": 6545
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "a6c23316dd0274efbc4c021d6033c5a3d2f99a45d4c6f3f345555a9c1bb45bcf",
+    "doc_id": "qasper_1811_05085",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1811.05085",
+    "title": "Domain Agnostic Real-Valued Specificity Prediction",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "6d32809b978e78563e030304a029af9a02bdb0feff5da92fa1aa128ba3ed556f",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "1f7595c1-7dce-42b2-b4ef-28f203311a3e",
+  "question_id": "paper_79018420b08b2730",
+  "question": "Which dataset do they use?",
+  "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1910_14254\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1910_14254', 'start': 0, 'end': 1600, 'text': 'Harnessing the richness of the linguistic signal in predicting pragmatic inferences\\n\\nThe strength of pragmatic inferences systematically depends on linguistic and contextual cues. For example, the presence of a partitive construction increases the strength of a so-called scalar inference: humans perceive the inference that Chris did not eat all of the cookies to be stronger after hearing \"Chris ate some of the cookies\" than after hearing the same utterance without a partitive, \"Chris ate some cookies\". In this work, we explore to what extent it is possible to learn associations between linguistic cues and inference strength ratings without direct supervision. We show that an LSTM-based sentence encoder with an attention mechanism trained on a dataset of human inference strength ratings is able to predict ratings with high accuracy (r=0.78). We probe the model\\'s behavior in multiple analyses using corpus data and manually constructed minimal pairs and find that the model learns associations between linguistic cues and scalar inferences, suggesting that these associations are inferable from statistical input.\\n\\nAn important property of human communication is that listeners can infer information beyond the literal meaning of an utterance. One well-studied type of inference is scalar inference BIBREF0, BIBREF1, whereby a listener who hears an utterance with a scalar item like some infers the negation of a stronger alternative with all:\\n\\nChris ate some of the cookies.\\n\\n$\\\\rightsquigarrow $ Chris ate some, but not all, of the cookies.\\n\\nEarly accounts of scalar inferences (e.g., BIB'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1910_14254\", 28800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1910_14254', 'start': 28800, 'end': 30400, 'text': 'recise theories of pragmatic language use. Our goal here was to investigate whether neural networks can learn associations for already established linguistic cues but it would be equally interesting to investigate whether such models could be used to discover new cues, which could then be verified in experimental and corpus work, potentially providing a novel model-driven approach to experimental and formal pragmatics.\\n\\nFigure FIGREF44 shows the learning curves averaged over the 5 cross-validation tuning runs for models using different word embeddings. As these plots show, the attention layer improves predictions; contextual word embeddings lead to better results than the static GloVe embeddings; and including the conversational context does not improve predictions and in some cases even lowers prediction accuracy.\\n\\nFigure FIGREF45 shows the estimates of the predictors in the original and extended Bayesian mixed-effects models estimated only on the held-out test data. We find the same qualitative effects as in Figure FIGREF27, but since these models were estimated on much less data (only 408 items), there is a lot of uncertainty in the estimates and therefore quantitative comparisons between the coefficients of the different models are less informative.\\n\\nTables TABREF46 and TABREF47 show the 25 manually created sentences for the analyses described in the minimal pairs analysis in Section SECREF5. As described in the main text, we created 16 variants of the sentence with the some-NP in subject position (sentences in the left column), and 16 variants of the sentence with the '}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source.\", follow_up_query=\"scalar inference strength annotated dataset corpus source\")",
+      "research_gap": {
+        "missing": "The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source.",
+        "follow_up_query": "scalar inference strength annotated dataset corpus source",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1910_14254",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1910_14254\", 0, 1600))",
+      "print(passage(\"qasper_1910_14254\", 28800, 1600))"
+    ],
+    "source_text_sha256": "4c0d716432c11de2052914f1257299a7c86e3b2de644df53143a351f2b4f4ffa",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "6949dbdafff153b16f641adb908223c68a349ea1a004d52c15c8ba4343145fab",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+    "doc_id": "qasper_1910_14254",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1910.14254",
+    "title": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d55955f89a9878077431102760d2c510b858440f7c3afd963297d05ed665a1c0",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source.",
+      "follow_up_query": "scalar inference strength annotated dataset corpus source",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

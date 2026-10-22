@@ -1,0 +1,968 @@
+[
+  {
+    "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--present",
+    "question_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f",
+    "role": "development",
+    "source_split": "validation",
+    "question": "Which languages are explored in this paper?",
+    "doc_id": "qasper_1707_05236",
+    "snapshot": "snapshots/qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1707_05236",
+      "windows": [
+        {
+          "start": 8358,
+          "end": 9958
+        },
+        {
+          "start": 12800,
+          "end": 14400
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1707_05236\", 8358, 1600))",
+        "print(passage(\"qasper_1707_05236\", 12800, 1600))"
+      ],
+      "source_text_sha256": "d9136688d14984ad532eab14454b7226be34e0bb51b31414c95fc363607dab79",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "5b192b015c89c56f449ab079f4f07a56bcfdfd15",
+      "worker_id": "34c35a1877e453ecaebcf625df3ef788e1953cc4",
+      "answer_type": "extractive",
+      "answer_text": "English ",
+      "unanswerable": false,
+      "extractive_spans": [
+        "English "
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        ". Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens)."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 8658,
+          "end": 9373,
+          "section": "Evaluation",
+          "text": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--present",
+      "case_sha256": "9a47e0802ed1359026e5d4818c423e5252ed62d67d9212c2f93928d01319de9c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Qualified answer: the source explicitly establishes English examples; it does not justify an exhaustive only-English claim. Missing passages do not identify a language; no inference from external corpus familiarity.",
+      "final_action": "SUBMIT: The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source. CITATIONS: [\"qasper_1707_05236\"] EVIDENCE: [{\"doc_id\": \"qasper_1707_05236\", \"start\": 8658, \"end\": 9373}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 8658,
+          "end": 9373,
+          "quote": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data."
+        }
+      ],
+      "requested_fact_review": "The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--missing",
+    "question_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f",
+    "role": "development",
+    "source_split": "validation",
+    "question": "Which languages are explored in this paper?",
+    "doc_id": "qasper_1707_05236",
+    "snapshot": "snapshots/qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1707_05236",
+      "windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 12800,
+          "end": 14400
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1707_05236\", 0, 1600))",
+        "print(passage(\"qasper_1707_05236\", 12800, 1600))"
+      ],
+      "source_text_sha256": "d9136688d14984ad532eab14454b7226be34e0bb51b31414c95fc363607dab79",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "5b192b015c89c56f449ab079f4f07a56bcfdfd15",
+      "worker_id": "34c35a1877e453ecaebcf625df3ef788e1953cc4",
+      "answer_type": "extractive",
+      "answer_text": "English ",
+      "unanswerable": false,
+      "extractive_spans": [
+        "English "
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        ". Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens)."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 8658,
+          "end": 9373,
+          "section": "Evaluation",
+          "text": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--missing",
+      "case_sha256": "1793ff3e0e80a55f9174384e6dc9195d48cf75b8f20afede2d226e416989d318",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Qualified answer: the source explicitly establishes English examples; it does not justify an exhaustive only-English claim. Missing passages do not identify a language; no inference from external corpus familiarity.",
+      "final_action": "submit_gap(missing=\"The excerpts discuss error generation but do not explicitly identify the language studied.\", follow_up_query=\"automatic error generation language evaluation data\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 0,
+          "end": 600,
+          "quote": "Artificial Error Generation with Machine Translation and Syntactic Patterns\n\nShortage of available training data is holding back progress in the area of automated error detection. This paper investigates two alternative methods for artificially generating writing errors, in order to create additional resources. We propose treating error generation as a machine translation task, where grammatically correct text is translated to contain errors. In addition, we explore a system for extracting textual patterns from an annotated corpus, which can then be used to insert errors into grammatically cor"
+        },
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 12800,
+          "end": 13400,
+          "quote": "of the same sentences likely assists in learning a discriminative model.\n\nOur work builds on prior research into AEG. Brockett2006 constructed regular expressions for transforming correct sentences to contain noun number errors. Rozovskaya2010a learned confusion sets from an annotated corpus in order to generate preposition errors. Foster2009 devised a tool for generating errors for different types using patterns provided by the user or collected automatically from an annotated corpus. However, their method uses a limited number of edit operations and is thus unable to generate complex errors."
+        }
+      ],
+      "requested_fact_review": "The excerpts discuss error generation but do not explicitly identify the language studied."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--present",
+    "question_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3",
+    "role": "development",
+    "source_split": "validation",
+    "question": "How does their ensemble method work?",
+    "doc_id": "qasper_1610_00956",
+    "snapshot": "snapshots/qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1610_00956",
+      "windows": [
+        {
+          "start": 22400,
+          "end": 24000
+        },
+        {
+          "start": 24991,
+          "end": 26591
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1610_00956\", 22400, 1600))",
+        "print(passage(\"qasper_1610_00956\", 24991, 1600))"
+      ],
+      "source_text_sha256": "1dda7e6b1beedf3de4f91de3849db5a01aea5cdf914ca7c0978ab264b0043423",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "02dd9a461b813df2cafdcdc8dacdae784d8da24d",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "simply averaging the predictions from the constituent single models",
+      "unanswerable": false,
+      "extractive_spans": [
+        "simply averaging the predictions from the constituent single models"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "The ensembles were formed by simply averaging the predictions from the constituent single models."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 25905,
+          "end": 26067,
+          "section": "Training Details",
+          "text": "The ensembles were formed by simply averaging the predictions from the constituent single models. These single models were selected using the following algorithm.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--present",
+      "case_sha256": "9d3aa1d443f1ca7cead410f06aacfef361aa9c8aa428e07d27f3ecc6535e4b1e",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Citation extends past original annotation to include greedy validation-based selection. Missing windows discuss oracle ensembles/human results without the actual construction procedure.",
+      "final_action": "SUBMIT: They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance. CITATIONS: [\"qasper_1610_00956\"] EVIDENCE: [{\"doc_id\": \"qasper_1610_00956\", \"start\": 25905, \"end\": 26591}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 25905,
+          "end": 26591,
+          "quote": "The ensembles were formed by simply averaging the predictions from the constituent single models. These single models were selected using the following algorithm.\n\nWe started with the best performing model according to validation performance. Then in each step we tried adding the best performing model that had not been previously tried. We kept it in the ensemble if it did improve its validation performance and discarded it otherwise. This way we gradually tried each model once. We call the resulting model a greedy ensemble. We used the INLINEFORM0 BookTest validation dataset for this procedure.\n\nThe algorithm was offered 10 models and selected 5 of them for the final ensemble."
+        }
+      ],
+      "requested_fact_review": "They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--missing",
+    "question_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3",
+    "role": "development",
+    "source_split": "validation",
+    "question": "How does their ensemble method work?",
+    "doc_id": "qasper_1610_00956",
+    "snapshot": "snapshots/qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1610_00956",
+      "windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 22400,
+          "end": 24000
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1610_00956\", 0, 1600))",
+        "print(passage(\"qasper_1610_00956\", 22400, 1600))"
+      ],
+      "source_text_sha256": "1dda7e6b1beedf3de4f91de3849db5a01aea5cdf914ca7c0978ab264b0043423",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "02dd9a461b813df2cafdcdc8dacdae784d8da24d",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "simply averaging the predictions from the constituent single models",
+      "unanswerable": false,
+      "extractive_spans": [
+        "simply averaging the predictions from the constituent single models"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "The ensembles were formed by simply averaging the predictions from the constituent single models."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 25905,
+          "end": 26067,
+          "section": "Training Details",
+          "text": "The ensembles were formed by simply averaging the predictions from the constituent single models. These single models were selected using the following algorithm.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--missing",
+      "case_sha256": "7e36a14e04c0aed5440fdcc18f6eab44d82b5851038a3ba1a740c06819f53113",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Citation extends past original annotation to include greedy validation-based selection. Missing windows discuss oracle ensembles/human results without the actual construction procedure.",
+      "final_action": "submit_gap(missing=\"The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected.\", follow_up_query=\"BookTest ensemble construction prediction combination validation selection\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 0,
+          "end": 600,
+          "quote": "Embracing data abundance: BookTest Dataset for Reading Comprehension\n\nThere is a practically unlimited amount of natural language data available. Still, recent work in text comprehension has focused on datasets which are small relative to current computing possibilities. This article is making a case for the community to move to larger data and as a step in that direction it is proposing the BookTest, a new dataset similar to the popular Children's Book Test (CBT), however more than 60 times larger. We show that training on the new data improves the accuracy of our Attention-Sum Reader model o"
+        },
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 22400,
+          "end": 23000,
+          "quote": "Table TABREF28 . They show that a majority of questions that our system could not answer so far are in fact answerable. This suggests that 1) the original human baselines might have been underestimated, however, it might also be the case that there are some examples that can be answered by machines and not by humans; 2) there is still space for improvement.\n\nA system that would answer correctly every time when either our ensemble or human answered correctly would achieve accuracy over 92% percent on both validation and test NE datasets and over 96% on both CN datasets. Hence it still makes sen"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--present",
+    "question_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What modalities are supported by Macaw?",
+    "doc_id": "qasper_1912_08904",
+    "snapshot": "snapshots/qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1912_08904",
+      "windows": [
+        {
+          "start": 3281,
+          "end": 4881
+        },
+        {
+          "start": 9600,
+          "end": 11200
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1912_08904\", 3281, 1600))",
+        "print(passage(\"qasper_1912_08904\", 9600, 1600))"
+      ],
+      "source_text_sha256": "dccc46e9149be3eab08a4b0e4530e2e4afa85f5a8f88d5e472c76001f1c94981",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "40c72ee3c884a0456fc48639937ed20e6cce5de7",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "text, speech, image, click, etc",
+      "unanswerable": false,
+      "extractive_spans": [
+        "text, speech, image, click, etc"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 3581,
+          "end": 4240,
+          "section": "Introduction",
+          "text": "The modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--present",
+      "case_sha256": "f936cad4b4b12d952e7cde25b41556d5a6d954d3d50627563805379357a0003c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists text/speech/image/click. Examples are not framed as exhaustive. Missing intro supports speech only and later window describes future work, not a current supported list.",
+      "final_action": "SUBMIT: Supported interaction examples include text, speech, images, and clicks. CITATIONS: [\"qasper_1912_08904\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_08904\", \"start\": 3581, \"end\": 4240}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 3581,
+          "end": 4240,
+          "quote": "The modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions."
+        }
+      ],
+      "requested_fact_review": "Supported interaction examples include text, speech, images, and clicks."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--missing",
+    "question_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What modalities are supported by Macaw?",
+    "doc_id": "qasper_1912_08904",
+    "snapshot": "snapshots/qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1912_08904",
+      "windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 9600,
+          "end": 11200
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1912_08904\", 0, 1600))",
+        "print(passage(\"qasper_1912_08904\", 9600, 1600))"
+      ],
+      "source_text_sha256": "dccc46e9149be3eab08a4b0e4530e2e4afa85f5a8f88d5e472c76001f1c94981",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "40c72ee3c884a0456fc48639937ed20e6cce5de7",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "text, speech, image, click, etc",
+      "unanswerable": false,
+      "extractive_spans": [
+        "text, speech, image, click, etc"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 3581,
+          "end": 4240,
+          "section": "Introduction",
+          "text": "The modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--missing",
+      "case_sha256": "23e88eedfd32b3749ac2376c4c7f9cc215a7829cf1c9602d72aa684c38f04305",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists text/speech/image/click. Examples are not framed as exhaustive. Missing intro supports speech only and later window describes future work, not a current supported list.",
+      "final_action": "submit_gap(missing=\"The excerpts describe Macaw as multimodal and mention speech interfaces, but do not enumerate its supported modalities.\", follow_up_query=\"Macaw supported multimodal interaction input output modalities\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 0,
+          "end": 600,
+          "quote": "Macaw: An Extensible Conversational Information Seeking Platform\n\nConversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval. Such research will require data and tools, to allow the implementation and study of conversational systems. This paper introduces Macaw, an open-source framework with a modular architecture for CIS research. Macaw supports multi-turn, multi-modal, and mixed-initiative interactions, and enables research for tasks such as document retrieval, question answering, recommendation, and structured data exploration. It"
+        },
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 9600,
+          "end": 10200,
+          "quote": " integration of social networks with conversational systems. For example, see the Naseri and Zamani's study on news popularity in Telegram BIBREF12.\n\nSimilar to the other modules, one can easily extend Macaw using other appropriate user interfaces.\n\nThe current implementation of Macaw lacks the following actions. We intend to incrementally improve Macaw by supporting more actions and even more advanced techniques for the developed actions.\n\n[leftmargin=*]\n\nClarification and Preference Elicitation: Asking clarifying questions has been recently recognized as a necessary component in a conversati"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe Macaw as multimodal and mention speech interfaces, but do not enumerate its supported modalities."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--present",
+    "question_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7",
+    "role": "development",
+    "source_split": "validation",
+    "question": "which non-english language was the had the worst results?",
+    "doc_id": "qasper_1806_04511",
+    "snapshot": "snapshots/qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1806_04511",
+      "windows": [
+        {
+          "start": 12800,
+          "end": 14400
+        },
+        {
+          "start": 16307,
+          "end": 17907
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+        "print(passage(\"qasper_1806_04511\", 16307, 1600))"
+      ],
+      "source_text_sha256": "6083c5d95b4725599dc53dda0a914bfa4608308e9eab33b5bd3c09c654bc8fda",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "0e6e41b3faecd132893b3ec7a3e3972b613a2c90",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "Turkish",
+      "unanswerable": false,
+      "extractive_spans": [
+        "Turkish"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 16607,
+          "end": 17541,
+          "section": "Discussion",
+          "text": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--present",
+      "case_sha256": "9fca1dbce9ca2426b6015d38337add8b64f7ae660f61bac139f024b84ba76d99",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph gives Spanish 84.21, Turkish 74.36, Dutch 81.77, Russian 85.62. Compare RNN accuracies, not majority baselines. Missing sections contain no complete language ranking.",
+      "final_action": "SUBMIT: Turkish has the lowest reported non-English RNN accuracy, 74.36%. CITATIONS: [\"qasper_1806_04511\"] EVIDENCE: [{\"doc_id\": \"qasper_1806_04511\", \"start\": 16607, \"end\": 17541}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 16607,
+          "end": 17541,
+          "quote": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements."
+        }
+      ],
+      "requested_fact_review": "Turkish has the lowest reported non-English RNN accuracy, 74.36%."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--missing",
+    "question_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7",
+    "role": "development",
+    "source_split": "validation",
+    "question": "which non-english language was the had the worst results?",
+    "doc_id": "qasper_1806_04511",
+    "snapshot": "snapshots/qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1806_04511",
+      "windows": [
+        {
+          "start": 1600,
+          "end": 3200
+        },
+        {
+          "start": 12800,
+          "end": 14400
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1806_04511\", 1600, 1600))",
+        "print(passage(\"qasper_1806_04511\", 12800, 1600))"
+      ],
+      "source_text_sha256": "6083c5d95b4725599dc53dda0a914bfa4608308e9eab33b5bd3c09c654bc8fda",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "0e6e41b3faecd132893b3ec7a3e3972b613a2c90",
+      "worker_id": "258ee4069f740c400c0049a2580945a1cc7f044c",
+      "answer_type": "extractive",
+      "answer_text": "Turkish",
+      "unanswerable": false,
+      "extractive_spans": [
+        "Turkish"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 16607,
+          "end": 17541,
+          "section": "Discussion",
+          "text": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--missing",
+      "case_sha256": "382d7d65461dc6ecdea0f796615f1995268f2ad97ffe231ed2d5f9778c1e65d7",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph gives Spanish 84.21, Turkish 74.36, Dutch 81.77, Russian 85.62. Compare RNN accuracies, not majority baselines. Missing sections contain no complete language ranking.",
+      "final_action": "submit_gap(missing=\"The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.\", follow_up_query=\"multilingual sentiment RNN non English accuracy language comparison\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 1600,
+          "end": 2200,
+          "quote": "t of data that can be mined for opinion increased, commercial companies' interests for sentiment analysis increased as well. Sentiment analysis is an important part of understanding user behavior and opinions on products, places, or services.\n\nSentiment analysis has long been studied by the research community, leading to several sentiment-related resources such as sentiment dictionaries that can be used as features for machine learning models BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . These resources help increase sentiment analysis accuracies; however, they are highly dependent on language and r"
+        },
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 12800,
+          "end": 13400,
+          "quote": "tained by summing up the scores for each token. If the positive sum score for a given review is greater than the negative sum score, we accept that review as a positive review. If negative sum is larger than or equal to the positive sum, the review is labeled as a negative review.\n\nRNN outperforms both baselines in all four datasets (see Table TABREF9 ). Also for Spanish restaurant review, the lexicon-based baseline is below the majority baseline which shows that solely translating data and using lexicons is not sufficient to achieve good results in multilingual sentiment analysis.\n\nAmong the "
+        }
+      ],
+      "requested_fact_review": "The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--present",
+    "question_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What baselines are used for comparison?",
+    "doc_id": "qasper_1611_08661",
+    "snapshot": "snapshots/qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1611_08661",
+      "windows": [
+        {
+          "start": 15880,
+          "end": 17480
+        },
+        {
+          "start": 20800,
+          "end": 22400
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1611_08661\", 15880, 1600))",
+        "print(passage(\"qasper_1611_08661\", 20800, 1600))"
+      ],
+      "source_text_sha256": "b2488f66f01063373b4604dbb80a6a4deef06a86192603117c7da27f3945f597",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "05ba48f4452de551374de975a8127fc733e45368",
+      "worker_id": "057bf5a20e4406f1f05cf82ecd49cf4f227dd287",
+      "answer_type": "extractive",
+      "answer_text": "TransE",
+      "unanswerable": false,
+      "extractive_spans": [
+        "TransE"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "Our baseline is TransE since that the score function of our models is based on TransE."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 16180,
+          "end": 16492,
+          "section": "Link Prediction",
+          "text": "Experimental results on both WN18 and FB15k are shown in Table 2 , where we use “Jointly(CBOW)”, “Jointly(LSTM)” and “Jointly(A-LSTM)” to represent our jointly encoding models with CBOW, LSTM and attentive LSTM text encoders. Our baseline is TransE since that the score function of our models is based on TransE.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--present",
+      "case_sha256": "6014290aaa8a63f8fb370e6c5c9049eaef3edc3bde753bb211505f6aea70b1fc",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly calls TransE the baseline. Qualify to link prediction instead of claiming an exhaustive all-task comparator list. Missing intro/related work do not name the experimental baseline.",
+      "final_action": "SUBMIT: For link prediction, they use TransE as the baseline because their models use its score function. CITATIONS: [\"qasper_1611_08661\"] EVIDENCE: [{\"doc_id\": \"qasper_1611_08661\", \"start\": 16180, \"end\": 16492}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 16180,
+          "end": 16492,
+          "quote": "Experimental results on both WN18 and FB15k are shown in Table 2 , where we use “Jointly(CBOW)”, “Jointly(LSTM)” and “Jointly(A-LSTM)” to represent our jointly encoding models with CBOW, LSTM and attentive LSTM text encoders. Our baseline is TransE since that the score function of our models is based on TransE."
+        }
+      ],
+      "requested_fact_review": "For link prediction, they use TransE as the baseline because their models use its score function."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--missing",
+    "question_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What baselines are used for comparison?",
+    "doc_id": "qasper_1611_08661",
+    "snapshot": "snapshots/qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1611_08661",
+      "windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 20800,
+          "end": 22400
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1611_08661\", 0, 1600))",
+        "print(passage(\"qasper_1611_08661\", 20800, 1600))"
+      ],
+      "source_text_sha256": "b2488f66f01063373b4604dbb80a6a4deef06a86192603117c7da27f3945f597",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "05ba48f4452de551374de975a8127fc733e45368",
+      "worker_id": "057bf5a20e4406f1f05cf82ecd49cf4f227dd287",
+      "answer_type": "extractive",
+      "answer_text": "TransE",
+      "unanswerable": false,
+      "extractive_spans": [
+        "TransE"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "Our baseline is TransE since that the score function of our models is based on TransE."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 16180,
+          "end": 16492,
+          "section": "Link Prediction",
+          "text": "Experimental results on both WN18 and FB15k are shown in Table 2 , where we use “Jointly(CBOW)”, “Jointly(LSTM)” and “Jointly(A-LSTM)” to represent our jointly encoding models with CBOW, LSTM and attentive LSTM text encoders. Our baseline is TransE since that the score function of our models is based on TransE.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--missing",
+      "case_sha256": "71377eb0d8331a1491e0ec77e91a2d4d322d27b4f8c3af000d1d827cb7feea70",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly calls TransE the baseline. Qualify to link prediction instead of claiming an exhaustive all-task comparator list. Missing intro/related work do not name the experimental baseline.",
+      "final_action": "submit_gap(missing=\"The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.\", follow_up_query=\"joint structural textual knowledge graph link prediction experimental baseline\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 0,
+          "end": 600,
+          "quote": "Knowledge Graph Representation with Jointly Structural and Textual Encoding\n\nThe objective of knowledge graph embedding is to encode both entities and relations of knowledge graphs into continuous low-dimensional vector spaces. Previously, most works focused on symbolic representation of knowledge graph with structure information, which can not handle new entities or entities with few facts well. In this paper, we propose a novel deep architecture to utilize both structural and textual information of entities. Specifically, we introduce three neural models to encode the valuable information fr"
+        },
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 20800,
+          "end": 21400,
+          "quote": "ver, these two works align the two kinds of embeddings on word level, which can lose some semantic information on phrase or sentence level.\n\n BIBREF25 also represent entities with entity names or the average of word embeddings in descriptions. However, their use of descriptions neglects word orders, and the use of entity names struggles with ambiguity. BIBREF7 jointly learn knowledge graph embeddings with entity descriptions. They use continuous bag-of-words and convolutional neural network to encode semantics of entity descriptions. However, they separate the objective functions into two ener"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--present",
+    "question_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What types of social media did they consider?",
+    "doc_id": "qasper_1809_01202",
+    "snapshot": "snapshots/qasper_validation_a4d115220438c0ded06a91ad62337061389a6747",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1809_01202",
+      "windows": [
+        {
+          "start": 10184,
+          "end": 11784
+        },
+        {
+          "start": 25600,
+          "end": 27200
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1809_01202\", 10184, 1600))",
+        "print(passage(\"qasper_1809_01202\", 25600, 1600))"
+      ],
+      "source_text_sha256": "d29780cefad6f5ef9a88329f6da3121f36baada84a29de11a20430a57b4c5cb8",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "present",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "71bc2caa46a859720ebdd335eb2f8b03a746cd0c",
+      "worker_id": "2b413669fd1e681656c8d43a27df86e649065edf",
+      "answer_type": "extractive",
+      "answer_text": "Facebook status update messages",
+      "unanswerable": false,
+      "extractive_spans": [
+        "Facebook status update messages"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 10484,
+          "end": 10927,
+          "section": "Dataset",
+          "text": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--present",
+      "case_sha256": "e8aec160f8f92bb700cce723aff1944fcdca66ed08324550d06429d018656e27",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds Facebook status messages to the collected dataset. Shared conclusion explicitly mentions Yelp reviews; positive answer includes both and gap acknowledges Yelp rather than claiming no platform is mentioned.",
+      "final_action": "SUBMIT: They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews. CITATIONS: [\"qasper_1809_01202\"] EVIDENCE: [{\"doc_id\": \"qasper_1809_01202\", \"start\": 10484, \"end\": 10927}, {\"doc_id\": \"qasper_1809_01202\", \"start\": 26423, \"end\": 26664}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 10484,
+          "end": 10927,
+          "quote": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations."
+        },
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 26423,
+          "end": 26664,
+          "quote": "Finally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews."
+        }
+      ],
+      "requested_fact_review": "They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews."
+    },
+    "usage": "scoring_only_never_training"
+  },
+  {
+    "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--missing",
+    "question_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747",
+    "role": "development",
+    "source_split": "validation",
+    "question": "What types of social media did they consider?",
+    "doc_id": "qasper_1809_01202",
+    "snapshot": "snapshots/qasper_validation_a4d115220438c0ded06a91ad62337061389a6747",
+    "scope": {
+      "version": "passages-v2",
+      "doc_id": "qasper_1809_01202",
+      "windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 25600,
+          "end": 27200
+        }
+      ],
+      "read_calls": [
+        "print(passage(\"qasper_1809_01202\", 0, 1600))",
+        "print(passage(\"qasper_1809_01202\", 25600, 1600))"
+      ],
+      "source_text_sha256": "d29780cefad6f5ef9a88329f6da3121f36baada84a29de11a20430a57b4c5cb8",
+      "counts_as_source_inspection": false
+    },
+    "scope_answerability": "missing",
+    "original_qasper_answerability": "sufficient",
+    "annotation_for_review_only": {
+      "annotation_id": "71bc2caa46a859720ebdd335eb2f8b03a746cd0c",
+      "worker_id": "2b413669fd1e681656c8d43a27df86e649065edf",
+      "answer_type": "extractive",
+      "answer_text": "Facebook status update messages",
+      "unanswerable": false,
+      "extractive_spans": [
+        "Facebook status update messages"
+      ],
+      "free_form_answer": "",
+      "yes_no": null,
+      "highlighted_evidence": [
+        "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages."
+      ],
+      "requires_nontext_evidence": false,
+      "evidence": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 10484,
+          "end": 10927,
+          "section": "Dataset",
+          "text": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations.",
+          "match_count": 1
+        }
+      ]
+    },
+    "review_status": "pending_source_review",
+    "training_ready": false,
+    "review": {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--missing",
+      "case_sha256": "2f65376c582239e15fb351069f7029d315784d9a39e6c54d9a25074513c4249f",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds Facebook status messages to the collected dataset. Shared conclusion explicitly mentions Yelp reviews; positive answer includes both and gap acknowledges Yelp rather than claiming no platform is mentioned.",
+      "final_action": "submit_gap(missing=\"The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.\", follow_up_query=\"causal explanation analysis social media dataset collection source\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 0,
+          "end": 600,
+          "quote": "Causal Explanation Analysis on Social Media\n\nUnderstanding causal explanations - reasons given for happenings in one's life - has been found to be an important psychological factor linked to physical and mental health. Causal explanations are often studied through manual identification of phrases over limited samples of personal writing. Automatic identification of causal explanations in social media, while challenging in relying on contextual and sequential cues, offers a larger-scale alternative to expensive manual ratings and opens the door for new applications (e.g. studying prevailing bel"
+        },
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 25600,
+          "end": 26200,
+          "quote": "nstitutional Review Board.\n\nWe developed a pipeline for causal explanation analysis over social media text, including both causality prediction and causal explanation identification. We examined a variety of model types and RNN architectures for each part of the pipeline, finding an SVM best for causality prediction and a hierarchy of BiLSTMs for causal explanation identification, suggesting the later task relies more heavily on sequential information. In fact, we found replacing either layer of the hierarchical LSTM architecture (the word-level or the DA-level) with a an equivalent “bag of fe"
+        }
+      ],
+      "requested_fact_review": "The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset."
+    },
+    "usage": "scoring_only_never_training"
+  }
+]

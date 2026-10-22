@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "ec2126ee-23e4-4095-b08c-0cef5678de42",
+  "question_id": "paper_0178f239ff5bb701",
+  "question": "Which of the model yields the best performance?",
+  "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1912_00582",
+      "start": 16131,
+      "end": 16818,
+      "quote": "An LM's overall performance on *X can be measured simply by taking the proportion of correct predictions across the 67,000 minimal pairs from all paradigms. GPT-2 achieves the highest score and the $n$-gram the lowest. Transformer-XL and the LSTM LM perform in the middle, and at roughly the same level as each other. All models perform well below estimated human agreement (as described in Section SECREF11). The $n$-gram model's poor overall performance confirms *X is not solvable from co-occurrence information alone. Rather, success at *X is driven by the more abstract features learned by neural networks. There are no categories in which the $n$-gram approaches human performance.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1912.00582",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "BLiMP: A Benchmark of Linguistic Minimal Pairs for English",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1912_00582\", 15831, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00582', 'start': 15831, 'end': 17431, 'text': \"bility tends to decrease as sentence length increases or word frequencies decrease BIBREF27. However, as discussed in Section SECREF3 we design every paradigm in *X to be compatible with this method.\\n\\nWe report the 12-category accuracy results for all models and human evaluation in Table TABREF14.\\n\\nAn LM's overall performance on *X can be measured simply by taking the proportion of correct predictions across the 67,000 minimal pairs from all paradigms. GPT-2 achieves the highest score and the $n$-gram the lowest. Transformer-XL and the LSTM LM perform in the middle, and at roughly the same level as each other. All models perform well below estimated human agreement (as described in Section SECREF11). The $n$-gram model's poor overall performance confirms *X is not solvable from co-occurrence information alone. Rather, success at *X is driven by the more abstract features learned by neural networks. There are no categories in which the $n$-gram approaches human performance.\\n\\nBecause we evaluate pretrained models that differ in architecture and training data quantity/domain, we can only speculate about what drives these differences (though see Section SECREF37 for a controlled ablation study on the LSTM LM). Nonetheless, the results seem to indicate that access to training data is the main driver of performance on *X for the neural models we evaluate. On purely architectural grounds, the similar performance of Transformer-XL and the LSTM is surprising since Transformer-XL is the state of the art on several LM training sets. However, they are both trained 100$\\\\pm 10$M tokens o\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1912_00582\", 28800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00582', 'start': 28800, 'end': 30400, 'text': \"nces cannot be compatible with both prefix methods, and that a pair may be compatible with the full-sentence method but neither prefix method.\\n\\nFor both prefix methods, it is crucial that the grammaticality of the sentence is unambiguously predictable from the critical word, but not sooner. With simple LM probabilities, the probabilities of the rest of the word tokens in the sentence also affect the performance. For example, a model may predict that `The cat ate the mouse' is more likely than `The cat eaten the mouse' without correctly predicting that $P(\\\\emph {ate}|\\\\emph {the cat}) > P(\\\\emph {eaten}|\\\\emph {the cat})$ if it predicts that $P(\\\\emph {the mouse}|\\\\emph {the cat ate})$ is much greater than $P(\\\\emph {the mouse}|\\\\emph {the cat eaten})$. Furthermore, it is unclear how a model assigns probabilities conditioned on an ungrammatical prefix, since ungrammatical sentences are largely absent from the training data. Using prefix probabilities allow us to exclude models' use of this additional information and evaluate how the models perform when they have just enough information to judge grammaticality.\\n\\nThe results in Figure FIGREF42 show that models have generally comparable accuracies overall in prefix methods and the simple whole-sentence LM method. However, A deeper examination of the differences between these methods in each paradigm reveals some cases where a models' performance fluctuates more between these methods. For example, Transformer-XL performs much worse at binding, determiner-noun agreement, and subject-verb agreement in the simple LM method, suggesting tha\"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs. CITATIONS: [\"qasper_1912_00582\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00582\", \"start\": 16131, \"end\": 16818}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_00582",
+    "windows": [
+      {
+        "start": 15831,
+        "end": 17431
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_00582\", 15831, 1600))",
+      "print(passage(\"qasper_1912_00582\", 28800, 1600))"
+    ],
+    "source_text_sha256": "a6d48062d033aaf2bbb4248e0e8870d8ea639aae5cb33c82f319f2059a219e29",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "97348566f57a133975934d367223df3f4db61fe1c4edfffce28fc07e8c67007c",
+  "inspected_passage_windows": [
+    {
+      "start": 15831,
+      "end": 17431
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "ed336316b34e17e0898e71d6e947f441103da02ba7dc75ea5493a30a72a7ef0e",
+    "doc_id": "qasper_1912_00582",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.00582",
+    "title": "BLiMP: A Benchmark of Linguistic Minimal Pairs for English",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "1ef712c7ec75930c191287e1241dab7f8ded2cfe0be2d455ac38394f64da5d61",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

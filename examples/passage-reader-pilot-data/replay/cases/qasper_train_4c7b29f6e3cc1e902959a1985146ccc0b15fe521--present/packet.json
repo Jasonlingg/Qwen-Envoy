@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "0690ece5-30aa-4dd3-a45f-59504655b601",
+  "question_id": "paper_153bf3262e3582ee",
+  "question": "How do you find the entity descriptions?",
+  "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1701_02025",
+      "start": 30025,
+      "end": 30409,
+      "quote": "Adding another source: description-based embeddings. While in this paper, we focus on the contexts and names of entities, there is a textual source of information about entities in KBs which we can also make use of: descriptions of entities. We extract Wikipedia descriptions of FIGMENT entities filtering out the entities ( $\\sim $ 40,000 out of $\\sim $ 200,000) without description.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1701.02025",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Multi-level Representations for Fine-Grained Typing of Knowledge Base Entities",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1701_02025', 'start': 27200, 'end': 28800, 'text': \" AGG-FIGER and ELR, the best single-level model baseline.\\n\\nUnknown vs. known entities. To analyze the complementarity of character and word level representations, as well as more fine-grained comparison of our models and the baselines, we divide test entities into known entities – at least one word of the entity's name appears in a train entity – and unknown entities (the complement). There are 45,000 (resp. 15,000) known (resp. unknown) test entities.\\n\\nTable 2 shows that the CNN works only slightly better (by 0.3%) than NSL on known entities, but works much better on unknown entities (by 3.3%), justifying our preference for deep learning CLR models. As expected, BOW works relatively well for known entities and really poorly for unknown entities. SWLR beats CLR models as well as BOW. The reason is that in our setup, word embeddings are induced on the entire corpus using an unsupervised algorithm. Thus, even for many words that did not occur in train, SWLR has access to informative representations of words. The joint model, SWLR+CLR(CNN), is significantly better than BOW+CLR(NSL) again due to limits of BOW. SWLR+CLR(CNN) is better than SWLR in unknown entities.\\n\\nCase study of living-thing. To understand the interplay of different levels better, we perform a case study of the type living-thing. Living beings that are not humans belong to this type.\\n\\nWLRs incorrectly assign “Walter Leaf” (person) and “Along Came A Spider” (music) to living-thing because these names contain a word referring to a living-thing (“leaf”, “spider”), but the entity itself is not a living-thing. In th\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1701_02025\", 29725, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1701_02025', 'start': 29725, 'end': 31325, 'text': 'C1 is the result of an automatic entity linking system and any entity linking errors propagate to our models. Second, due to the incompleteness of Freebase BIBREF9 , many entities in the FIGMENT dataset are incompletely annotated, resulting in correctly typed entities being evaluated as incorrect.\\n\\nAdding another source: description-based embeddings. While in this paper, we focus on the contexts and names of entities, there is a textual source of information about entities in KBs which we can also make use of: descriptions of entities. We extract Wikipedia descriptions of FIGMENT entities filtering out the entities ( $\\\\sim $ 40,000 out of $\\\\sim $ 200,000) without description.\\n\\nWe then build a simple entity representation by averaging the embeddings of the top $k$ words (wrt tf-idf) of the description (henceforth, AVG-DES). This representation is used as input in Figure 1 to train the MLP. We also train our best multi-level model as well as the joint of the two on this smaller dataset. Since the descriptions are coming from Wikipedia, we use 300-dimensional Glove BIBREF23 embeddings pretrained on Wikipdia+Gigaword to get more coverage of words. For MuLR, we still use the embeddings we trained before.\\n\\nResults are shown in Table 3 . While for head entities, MuLR works marginally better, the difference is very small in tail entities. The joint model of the two (by concatenation of vectors) improves the micro F1, with clear boost for tail entities. This suggests that for tail entities, the contextual and name information is not enough by itself and some keywords from descriptio'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions. CITATIONS: [\"qasper_1701_02025\"] EVIDENCE: [{\"doc_id\": \"qasper_1701_02025\", \"start\": 30025, \"end\": 30409}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1701_02025",
+    "windows": [
+      {
+        "start": 27200,
+        "end": 28800
+      },
+      {
+        "start": 29725,
+        "end": 31325
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+      "print(passage(\"qasper_1701_02025\", 29725, 1600))"
+    ],
+    "source_text_sha256": "8cdb92e911ef292fff95e5bb85af44e4f3fc7ef8dd7973dffc226ddbd9ded05b",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "729aa81a47fa87c63229e095ba773bd75bc576707d7c3ff5215bb335c29572b0",
+  "inspected_passage_windows": [
+    {
+      "start": 27200,
+      "end": 28800
+    },
+    {
+      "start": 29725,
+      "end": 31325
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+    "doc_id": "qasper_1701_02025",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1701.02025",
+    "title": "Multi-level Representations for Fine-Grained Typing of Knowledge Base Entities",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a099c2e0310ae4d4238a2d7277758b2303358f72637569a12124f3bec80e7ce6",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

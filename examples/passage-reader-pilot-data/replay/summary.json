@@ -1,0 +1,1024 @@
+{
+  "status": "passed_demonstration_replay",
+  "data_kind": "reviewed_fixed_action_docker_demonstration",
+  "new_model_calls": 0,
+  "training_performed": false,
+  "human_review": null,
+  "started_at": "2026-10-22T21:44:10.169017+00:00",
+  "preparation_hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.9"
+  },
+  "cases": [
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 14041, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "56a7d9a2f7b9825e02460e4345870d1df4ad17524de05b1fc30df1438f45170d"
+        },
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 24000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e55b363fef6e8a1367f3c93d009401f37fe36d9804d0c121aade06cc5cb8b71c"
+        },
+        {
+          "action": "SUBMIT: They use KFTT and BTEC for English-to-Japanese translation. CITATIONS: [\"qasper_1606_02006\"] EVIDENCE: [{\"doc_id\": \"qasper_1606_02006\", \"start\": 14341, \"end\": 14796}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "30399457a3838beb512ceac739ea6978d1151f45f2820b83a51bd938e9a49850"
+        },
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 24000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e55b363fef6e8a1367f3c93d009401f37fe36d9804d0c121aade06cc5cb8b71c"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts discuss the translation method but do not name the two experimental corpora.\", follow_up_query=\"English Japanese translation experimental datasets corpora\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1910_14254\", 4128, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "27929f250dc864cd62cb0d7e8dd29a333f02a89a9fb6b3ca687897556e5e8478"
+        },
+        {
+          "action": "print(passage(\"qasper_1910_14254\", 28800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "58a82913fa3300fe6d8ae5162609a5ee19de473730e8633696b5703edf079702"
+        },
+        {
+          "action": "SUBMIT: They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings. CITATIONS: [\"qasper_1910_14254\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14254\", \"start\": 4428, \"end\": 5350}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1910_14254\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "933bd4e9e594f3fe1c821787905f2431e9ae9effeacdfd51806717445c37127d"
+        },
+        {
+          "action": "print(passage(\"qasper_1910_14254\", 28800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "58a82913fa3300fe6d8ae5162609a5ee19de473730e8633696b5703edf079702"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source.\", follow_up_query=\"scalar inference strength annotated dataset corpus source\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_00582\", 15831, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "0d41f32252e74a718ecb6c091696ef44e1fa307f0422322e197c01b56935ecc3"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_00582\", 28800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "312ef3c813df821e4dcf8d3a6976bdf5db59ed1e6fa5dd8804e308e7ef5f89d9"
+        },
+        {
+          "action": "SUBMIT: GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs. CITATIONS: [\"qasper_1912_00582\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00582\", \"start\": 16131, \"end\": 16818}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_00582\", 3200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "4a13c9b7dd658fd0016415e238bf74fca7891cf1bd6c7b98142826f783cb8db9"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_00582\", 28800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "312ef3c813df821e4dcf8d3a6976bdf5db59ed1e6fa5dd8804e308e7ef5f89d9"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts do not establish which model has the highest overall benchmark accuracy.\", follow_up_query=\"language model minimal pairs overall accuracy model comparison\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1808_10267\", 5504, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "25ff01b897cf5eb200f2fb04c22c9dd31c3e8cbb38779dca4b6d6d02981aa96a"
+        },
+        {
+          "action": "print(passage(\"qasper_1808_10267\", 11200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "614964fe9926c29ce17a873caed203e7bad701e945e20043d266a7959f26c76a"
+        },
+        {
+          "action": "SUBMIT: They use Stanford CoreNLP to produce binary constituency parses and linearize them. CITATIONS: [\"qasper_1808_10267\"] EVIDENCE: [{\"doc_id\": \"qasper_1808_10267\", \"start\": 5804, \"end\": 6343}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1808_10267\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "8095ef26f4560a45af078baf0b8147a475912d0d5a396d1b5012358d1a8a6dc4"
+        },
+        {
+          "action": "print(passage(\"qasper_1808_10267\", 11200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "614964fe9926c29ce17a873caed203e7bad701e945e20043d266a7959f26c76a"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe using parsed input but do not identify how the source parses are obtained.\", follow_up_query=\"source sentence binary constituency parser linearization\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_2001_03632\", 3465, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "5bb0e8bb37f584a4f3bf194e3ca5b5d7489f9c0a56811805bdf81f93b5d0bb91"
+        },
+        {
+          "action": "print(passage(\"qasper_2001_03632\", 40000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "bb538f7f799d419c7f0b9012bcd918a9807836dce6bfca2c6388bcdc3733ab2c"
+        },
+        {
+          "action": "SUBMIT: They investigate recurrent-unit type, attention type, and sequential versus tree-based structure. CITATIONS: [\"qasper_2001_03632\"] EVIDENCE: [{\"doc_id\": \"qasper_2001_03632\", \"start\": 3765, \"end\": 4354}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_2001_03632\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "007bbef72a219eb67c1a39096c57522099470ffe29639edfb842d1e181d36967"
+        },
+        {
+          "action": "print(passage(\"qasper_2001_03632\", 40000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "bb538f7f799d419c7f0b9012bcd918a9807836dce6bfca2c6388bcdc3733ab2c"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated.\", follow_up_query=\"experimental architectural factors investigated complete list\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_2003_08897\", 5290, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "ce4a635b26d39aef3eefad3dc1b87dcc2012c85bb098734788a49bd57077d875"
+        },
+        {
+          "action": "print(passage(\"qasper_2003_08897\", 32000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "dc5645978881d848c227785436bf8f4d05ed5866db9b7d728d68d283687bdc1e"
+        },
+        {
+          "action": "SUBMIT: They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering. CITATIONS: [\"qasper_2003_08897\"] EVIDENCE: [{\"doc_id\": \"qasper_2003_08897\", \"start\": 5590, \"end\": 6468}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_2003_08897\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "46303f4dae0b9cd615989657885768c1927f8b04ca6242a364f0f53dd1f9237d"
+        },
+        {
+          "action": "print(passage(\"qasper_2003_08897\", 32000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "dc5645978881d848c227785436bf8f4d05ed5866db9b7d728d68d283687bdc1e"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts name the three additional tasks but do not identify their experimental datasets.\", follow_up_query=\"three additional tasks video captioning translation visual question answering datasets\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "fa2c1baa985da620ba849e75b1c8e7429853c2a134a0e3148c23399ae63ce83e"
+        },
+        {
+          "action": "print(passage(\"qasper_1701_02025\", 29725, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "eae6b28b1b4b13a9218b875056a7607d2fcbcb9e40b7da8afbb256d4a02b9300"
+        },
+        {
+          "action": "SUBMIT: They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions. CITATIONS: [\"qasper_1701_02025\"] EVIDENCE: [{\"doc_id\": \"qasper_1701_02025\", \"start\": 30025, \"end\": 30409}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1701_02025\", 1600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "8a2e939cc549e50bd2dbdd19379f182fed818215667a9b27c996437de7e7e338"
+        },
+        {
+          "action": "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e25cf98cf2bc86bfd165155a1f3ee03744f5167dc9b1183353a14e70c8d4fde5"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions.\", follow_up_query=\"entity descriptions acquisition source FIGMENT\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_00159\", 16000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "b3fd375375bcaa21e111ccdc26a21e5288614ebf3c2824ee1996aa0d999e2a25"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_00159\", 19051, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "2b6a4b9c8141ac3bb17959c61a6cc1105f782d001c961adb310274298c3bfc23"
+        },
+        {
+          "action": "SUBMIT: They evaluate language models by perplexity on independent test sets from the corpus sources. CITATIONS: [\"qasper_1912_00159\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00159\", \"start\": 19351, \"end\": 19755}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_00159\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "4ffc5a0e62df5f9f32c30235b717703667c1cf94de44ae49e40360d67a92ebf6"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_00159\", 16000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "96779760a29eb1dd0f5533def61c31c128f690585278bed13caf144faaad4bd0"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric.\", follow_up_query=\"Swiss German language modeling evaluation metric test sets\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1905_10238\", 12744, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "896c382f74428fda6712083f0ddce6fd732a9797264b9c5d7c6a89830a86a53f"
+        },
+        {
+          "action": "print(passage(\"qasper_1905_10238\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "a898014c39827d083dd161860aee5fefd2224bc8f8fb4c42cab5994fa83e2b94"
+        },
+        {
+          "action": "SUBMIT: They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0. CITATIONS: [\"qasper_1905_10238\"] EVIDENCE: [{\"doc_id\": \"qasper_1905_10238\", \"start\": 13044, \"end\": 13754}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1905_10238\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7230bf5d5ca77f7b588b947e8f5f6325530512134728ee55feeb4f0f473d30d5"
+        },
+        {
+          "action": "print(passage(\"qasper_1905_10238\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "a898014c39827d083dd161860aee5fefd2224bc8f8fb4c42cab5994fa83e2b94"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe the pronoun-coreference model but do not name its evaluation dataset.\", follow_up_query=\"pronoun coreference resolution evaluation dataset experimental setup\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1811_05085\", 4945, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "75f7d57c01bf0c196bb1f107e9aaecf25a32256d47ea2e6ab42b2dc3364035e1"
+        },
+        {
+          "action": "print(passage(\"qasper_1811_05085\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "5c62ab33f5db3a06b9ac8a68bff0a805c884df1366935e7811e37ef942a64f6e"
+        },
+        {
+          "action": "SUBMIT: For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains. CITATIONS: [\"qasper_1811_05085\"] EVIDENCE: [{\"doc_id\": \"qasper_1811_05085\", \"start\": 5245, \"end\": 5723}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1811_05085\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "12773a9444206d303eec1ff798f19f12e59791e02c12be65d502e2ab9ee2caad"
+        },
+        {
+          "action": "print(passage(\"qasper_1811_05085\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "5c62ab33f5db3a06b9ac8a68bff0a805c884df1366935e7811e37ef942a64f6e"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts mention a dialogue application using OpenSubtitles but do not identify the source and three target domains for specificity prediction.\", follow_up_query=\"sentence specificity prediction source and target evaluation domains\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1708_00481\", 5026, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f94277aa83b1193c43ca1c15e29cbde485a666acf9f016eb2c4853226be45073"
+        },
+        {
+          "action": "print(passage(\"qasper_1708_00481\", 11200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f28766993181b818cbcb40642aca589fe6db260cc40ceab99aded37506ee3520"
+        },
+        {
+          "action": "SUBMIT: LUWAK is implemented in pure JavaScript. CITATIONS: [\"qasper_1708_00481\"] EVIDENCE: [{\"doc_id\": \"qasper_1708_00481\", \"start\": 5326, \"end\": 5990}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1708_00481\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7467844b01afd3dd8e64198afa5901680bfb54ccc54e045ae692eb5c3b37fd29"
+        },
+        {
+          "action": "print(passage(\"qasper_1708_00481\", 11200, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f28766993181b818cbcb40642aca589fe6db260cc40ceab99aded37506ee3520"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe a browser-based entity-population tool but do not explicitly state its programming language.\", follow_up_query=\"LUWAK implementation programming language client side\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1911_03058\", 8000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7870de99da975136af24360c14a4f2da220c66334a4997f4d1a61b16fc074f05"
+        },
+        {
+          "action": "print(passage(\"qasper_1911_03058\", 9733, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "d27b10538521a4524c3d2850e0b783e99e6b8a9c90967828a129176e66dd62ab"
+        },
+        {
+          "action": "SUBMIT: They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix. CITATIONS: [\"qasper_1911_03058\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_03058\", \"start\": 10033, \"end\": 10705}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1911_03058\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f8534d4e828b7e2121472e9a1755b9e361a8ae2b6759bbd9cfed1513b8482215"
+        },
+        {
+          "action": "print(passage(\"qasper_1911_03058\", 8000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7a96e858546659b890f1b49887c745a88a7cd8df01cf1d69b69781067fb12025"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics.\", follow_up_query=\"cross lingual lexicon induction reported evaluation metrics\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1707_05236\", 8358, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "c1fd116aac3dfd6faf9261ee264b6d759827b8cc9aa2817c15271e1c5beecd92"
+        },
+        {
+          "action": "print(passage(\"qasper_1707_05236\", 12800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "c7c628b7afb8546a07879762bebc2d051c8811533df1e2efdbd2e7cdeb71a808"
+        },
+        {
+          "action": "SUBMIT: The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source. CITATIONS: [\"qasper_1707_05236\"] EVIDENCE: [{\"doc_id\": \"qasper_1707_05236\", \"start\": 8658, \"end\": 9373}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1707_05236\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e9f9b1c998746703832453f0eb319ed127f8992ef75443f877f2fde23bf55b20"
+        },
+        {
+          "action": "print(passage(\"qasper_1707_05236\", 12800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "c7c628b7afb8546a07879762bebc2d051c8811533df1e2efdbd2e7cdeb71a808"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts discuss error generation but do not explicitly identify the language studied.\", follow_up_query=\"automatic error generation language evaluation data\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1610_00956\", 22400, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "3af6deb58bd7e17fc1eb419d2b5018a0c4ff4ff0c8835da8758a72b5b1366024"
+        },
+        {
+          "action": "print(passage(\"qasper_1610_00956\", 24991, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "2afb40ab147197833fad644d254e7a07522b88ecef27b069ff9d62c7f6294b20"
+        },
+        {
+          "action": "SUBMIT: They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance. CITATIONS: [\"qasper_1610_00956\"] EVIDENCE: [{\"doc_id\": \"qasper_1610_00956\", \"start\": 25905, \"end\": 26591}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1610_00956\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "6be505228a1816bf00508370626e11e52c40c38198fa5274e81e846ad908cf4b"
+        },
+        {
+          "action": "print(passage(\"qasper_1610_00956\", 22400, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "84cdbcd2b67c85d8780764880c0a71541874ae60fbc7936bacd7d93a011f5834"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected.\", follow_up_query=\"BookTest ensemble construction prediction combination validation selection\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_08904\", 3281, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "2191369679430a00dc3a0123a73a94c164c62722bed20f46fb37124017b0b6e7"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_08904\", 9600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "3a619d6f38cb6a0d65f16fa5c012ccaf5b74199f82cafb0331ddfc34137a5230"
+        },
+        {
+          "action": "SUBMIT: Supported interaction examples include text, speech, images, and clicks. CITATIONS: [\"qasper_1912_08904\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_08904\", \"start\": 3581, \"end\": 4240}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1912_08904\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "40e168fbe465adac2fb3b8195dcb3998e1e94e52ba5da97151d4636aec8499f2"
+        },
+        {
+          "action": "print(passage(\"qasper_1912_08904\", 9600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "3a619d6f38cb6a0d65f16fa5c012ccaf5b74199f82cafb0331ddfc34137a5230"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe Macaw as multimodal and mention speech interfaces, but do not enumerate its supported modalities.\", follow_up_query=\"Macaw supported multimodal interaction input output modalities\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "c67db3088b3d3dbe3604d17ddba7f048130ef2feab24df6e5910b5af99b8a20f"
+        },
+        {
+          "action": "print(passage(\"qasper_1806_04511\", 16307, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f85e9927cc06b56a6afeec54d21fa9358ba5a484b70991fbbede52d89b70c864"
+        },
+        {
+          "action": "SUBMIT: Turkish has the lowest reported non-English RNN accuracy, 74.36%. CITATIONS: [\"qasper_1806_04511\"] EVIDENCE: [{\"doc_id\": \"qasper_1806_04511\", \"start\": 16607, \"end\": 17541}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1806_04511\", 1600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "30d4ec42f48c78dd0ea8a650a009a06b30ba1aa834cbc62f94be76ce22633c9b"
+        },
+        {
+          "action": "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "0cf288a606aef5b462d5e15bfbde7b7573ce808f2c0dc9c9127d06517910524f"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.\", follow_up_query=\"multilingual sentiment RNN non English accuracy language comparison\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1611_08661\", 15880, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "af470426adfe04d398d6c8e6dacb78fd297be440b708417c577811627452ae4b"
+        },
+        {
+          "action": "print(passage(\"qasper_1611_08661\", 20800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7e9e87d5838096ed86c68502df776ba75e0567218254780ec2b20f09750bb022"
+        },
+        {
+          "action": "SUBMIT: For link prediction, they use TransE as the baseline because their models use its score function. CITATIONS: [\"qasper_1611_08661\"] EVIDENCE: [{\"doc_id\": \"qasper_1611_08661\", \"start\": 16180, \"end\": 16492}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1611_08661\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e114643aa4bf1c2441db604e464b71068c3823c7840829ceeabf08455e8dfe29"
+        },
+        {
+          "action": "print(passage(\"qasper_1611_08661\", 20800, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "7e9e87d5838096ed86c68502df776ba75e0567218254780ec2b20f09750bb022"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.\", follow_up_query=\"joint structural textual knowledge graph link prediction experimental baseline\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--present",
+      "role": "development",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1809_01202\", 10184, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "9c9ac06b18a5b309f38291c584a2c7fc5d9f9b9b0083d21a9f7faeafca3f92b1"
+        },
+        {
+          "action": "print(passage(\"qasper_1809_01202\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "887580574556110e35cf3cf0359bd7383cfa3286849237c6f0bc0006c1376d52"
+        },
+        {
+          "action": "SUBMIT: They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews. CITATIONS: [\"qasper_1809_01202\"] EVIDENCE: [{\"doc_id\": \"qasper_1809_01202\", \"start\": 10484, \"end\": 10927}, {\"doc_id\": \"qasper_1809_01202\", \"start\": 26423, \"end\": 26664}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--missing",
+      "role": "development",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1809_01202\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "f704cc5c383c7a9c60d6e5ea20d2a14ce0d18df2f4658efed11e8305142d2f35"
+        },
+        {
+          "action": "print(passage(\"qasper_1809_01202\", 25600, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "887580574556110e35cf3cf0359bd7383cfa3286849237c6f0bc0006c1376d52"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.\", follow_up_query=\"causal explanation analysis social media dataset collection source\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    }
+  ],
+  "limitation": "Fixed actions do not measure Qwen choosing actions, responding to feedback, or improving. Quotes establish provenance; source support is a separately attributed review, not a mechanical proof."
+}

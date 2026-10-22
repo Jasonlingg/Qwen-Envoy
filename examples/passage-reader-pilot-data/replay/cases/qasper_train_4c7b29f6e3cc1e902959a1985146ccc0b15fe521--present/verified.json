@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+  "candidate_answer": "They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1701_02025",
+      "title": "Multi-level Representations for Fine-Grained Typing of Knowledge Base Entities",
+      "start": 30025,
+      "end": 30409,
+      "quote": "Adding another source: description-based embeddings. While in this paper, we focus on the contexts and names of entities, there is a textual source of information about entities in KBs which we can also make use of: descriptions of entities. We extract Wikipedia descriptions of FIGMENT entities filtering out the entities ( $\\sim $ 40,000 out of $\\sim $ 200,000) without description.",
+      "arxiv_id": "1701.02025",
+      "source_url": "https://arxiv.org/abs/1701.02025",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "530e6f8fcc3c78fdbf5d97d7ce00927e1baee68a8f8cd52d1e5e24898426a81c",
+    "doc_id": "qasper_1701_02025",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1701.02025",
+    "title": "Multi-level Representations for Fine-Grained Typing of Knowledge Base Entities",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a099c2e0310ae4d4238a2d7277758b2303358f72637569a12124f3bec80e7ce6",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1701_02025",
+    "windows": [
+      {
+        "start": 27200,
+        "end": 28800
+      },
+      {
+        "start": 29725,
+        "end": 31325
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1701_02025\", 27200, 1600))",
+      "print(passage(\"qasper_1701_02025\", 29725, 1600))"
+    ],
+    "source_text_sha256": "8cdb92e911ef292fff95e5bb85af44e4f3fc7ef8dd7973dffc226ddbd9ded05b",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 27200,
+      "end": 28800
+    },
+    {
+      "start": 29725,
+      "end": 31325
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "d6963a11-3447-406e-bae0-247a0fa42f9f",
+  "question_id": "paper_fa86b092bb253b6f",
+  "question": "What dataset do they evaluate their model on?",
+  "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1905_10238\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1905_10238', 'start': 0, 'end': 1600, 'text': 'Incorporating Context and External Knowledge for Pronoun Coreference Resolution\\n\\nLinking pronominal expressions to the correct references requires, in many cases, better analysis of the contextual information and external knowledge. In this paper, we propose a two-layer model for pronoun coreference resolution that leverages both context and external knowledge, where a knowledge attention mechanism is designed to ensure the model leveraging the appropriate source of external knowledge based on different context. Experimental results demonstrate the validity and effectiveness of our model, where it outperforms state-of-the-art models by a large margin.\\n\\nThe question of how human beings resolve pronouns has long been of interest to both linguistics and natural language processing (NLP) communities, for the reason that pronoun itself has weak semantic meaning BIBREF0 and brings challenges in natural language understanding. To explore solutions for that question, pronoun coreference resolution BIBREF1 was proposed. As an important yet vital sub-task of the general coreference resolution task, pronoun coreference resolution is to find the correct reference for a given pronominal anaphor in the context and has been shown to be crucial for a series of downstream tasks BIBREF2 , including machine translation BIBREF3 , summarization BIBREF4 , information extraction BIBREF5 , and dialog systems BIBREF6 .\\n\\nConventionally, people design rules BIBREF1 , BIBREF7 , BIBREF8 or use features BIBREF9 , BIBREF10 , BIBREF11 to resolve the pronoun coreferences. These methods heavily rely on the '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1905_10238\", 25600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1905_10238', 'start': 25600, 'end': 27200, 'text': 'aining data. Different from previous work, we explore the possibility of joining the two types of knowledge for pronoun coreference resolution rather than use only one of them. To the best of our knowledge, this is the first attempt that uses deep learning model to incorporate contextual information and external knowledge for pronoun coreference resolution.\\n\\nIn this paper, we proposed a two-layer model for pronoun coreference resolution, where the first layer encodes contextual information and the second layer leverages external knowledge. Particularly, a knowledge attention mechanism is proposed to selectively leverage features from different knowledge sources. As an enhancement to existing methods, the proposed model combines the advantage of conventional feature-based models and deep learning models, so that context and external knowledge can be synchronously and effectively used for this task. Experimental results and case studies demonstrate the superiority of the proposed model to state-of-the-art baselines. Since the proposed model adopted an extensible structure, one possible future work is to explore the best way to enhance it with more complicated knowledge resources such as knowledge graphs.\\n\\nThis paper was partially supported by the Early Career Scheme (ECS, No.26206717) from Research Grants Council in Hong Kong. In addition, Hongming Zhang has been supported by the Hong Kong Ph.D. Fellowship and the Tencent Rhino-Bird Elite Training Program. We also thank the anonymous reviewers for their valuable comments and suggestions that help improving the quality of this'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts describe the pronoun-coreference model but do not name its evaluation dataset.\", follow_up_query=\"pronoun coreference resolution evaluation dataset experimental setup\")",
+      "research_gap": {
+        "missing": "The excerpts describe the pronoun-coreference model but do not name its evaluation dataset.",
+        "follow_up_query": "pronoun coreference resolution evaluation dataset experimental setup",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1905_10238",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1905_10238\", 0, 1600))",
+      "print(passage(\"qasper_1905_10238\", 25600, 1600))"
+    ],
+    "source_text_sha256": "1164b7931c21482fa0f1613aa9ee196a76c7899fecacf8bee310c6f4c31f848e",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "2ca52198dea2a6fd16f7485297eabe7e635b60af007cee42adceeed46e91ddf6",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+    "doc_id": "qasper_1905_10238",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1905.10238",
+    "title": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "69e57318a582e4d06ca48b040fc79c246dd3ab3e9c4b60893dfe2b513404383b",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe the pronoun-coreference model but do not name its evaluation dataset.",
+      "follow_up_query": "pronoun coreference resolution evaluation dataset experimental setup",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

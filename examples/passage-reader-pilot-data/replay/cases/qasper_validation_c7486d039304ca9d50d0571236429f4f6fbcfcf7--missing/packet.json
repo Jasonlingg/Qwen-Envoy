@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "9b8b47bb-f575-4007-a7c5-365008af12b0",
+  "question_id": "paper_44ccc5afc1a7d249",
+  "question": "which non-english language was the had the worst results?",
+  "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1806_04511\", 1600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1806_04511', 'start': 1600, 'end': 3200, 'text': \"t of data that can be mined for opinion increased, commercial companies' interests for sentiment analysis increased as well. Sentiment analysis is an important part of understanding user behavior and opinions on products, places, or services.\\n\\nSentiment analysis has long been studied by the research community, leading to several sentiment-related resources such as sentiment dictionaries that can be used as features for machine learning models BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . These resources help increase sentiment analysis accuracies; however, they are highly dependent on language and require researchers to build such resources for every language to process.\\n\\nFeature engineering is a large part of the model building phase for most sentiment analysis and emotion detection models BIBREF4 . Determining the correct set of features is a task that requires thorough investigation. Furthermore, these features are mostly language and dataset dependent making it even further challenging to build models for different languages. For example, the sentiment and emotion lexicons, as well as pre-trained word embeddings are not completely transferable to other languages which replicates the efforts for every language that users would like to build sentiment classification models on. For languages and tasks where the data is limited, extracting these features, building language models, training word embeddings, and creating lexicons are big challenges. In addition to the feature engineering effort, the machine learning models' parameters also need to be tuned separately for each langu\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1806_04511', 'start': 12800, 'end': 14400, 'text': \"tained by summing up the scores for each token. If the positive sum score for a given review is greater than the negative sum score, we accept that review as a positive review. If negative sum is larger than or equal to the positive sum, the review is labeled as a negative review.\\n\\nRNN outperforms both baselines in all four datasets (see Table TABREF9 ). Also for Spanish restaurant review, the lexicon-based baseline is below the majority baseline which shows that solely translating data and using lexicons is not sufficient to achieve good results in multilingual sentiment analysis.\\n\\nAmong the wrong classifications for each test set, we calculated the percentage of false positives and false negatives. Table TABREF10 shows the distribution of false positives and false negatives for each class. In all four classes, the number of false negatives are more than the number of false positives. This can be explained by the unbalanced training dataset where the number of positive reviews are more than the number of negative reviews (59,577 vs 17,132).\\n\\nTo be able to see the difference between baseline and RNN, we took each method's results as a group (4 values: one for each language) and compared the means. Post hoc comparisons using the Tukey HSD test indicated that the mean accuracies for baselines (majority and lexicon-based) are significantly different than RNN accuracies as can be seen in Table TABREF12 (family-wise error rate=0.06). When RNN is compared with lexicon-based baseline and majority baseline, the null hypothesis can be rejected meaning that each test is significant. \"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.\", follow_up_query=\"multilingual sentiment RNN non English accuracy language comparison\")",
+      "research_gap": {
+        "missing": "The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.",
+        "follow_up_query": "multilingual sentiment RNN non English accuracy language comparison",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1806_04511",
+    "windows": [
+      {
+        "start": 1600,
+        "end": 3200
+      },
+      {
+        "start": 12800,
+        "end": 14400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1806_04511\", 1600, 1600))",
+      "print(passage(\"qasper_1806_04511\", 12800, 1600))"
+    ],
+    "source_text_sha256": "6083c5d95b4725599dc53dda0a914bfa4608308e9eab33b5bd3c09c654bc8fda",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "f7821f1a4861d21db4f35a11f97e98c8fb770f617b18e49b28608c6d8d2ddbf5",
+  "inspected_passage_windows": [
+    {
+      "start": 1600,
+      "end": 3200
+    },
+    {
+      "start": 12800,
+      "end": 14400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+    "doc_id": "qasper_1806_04511",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1806.04511",
+    "title": "Multilingual Sentiment Analysis: An RNN-Based Framework for Limited Data",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "554c4c8e4269d9433f7f90e5a14ea115fbd63cd1fcaf234ccc1757e4ae9858d9",
+  "research_gaps": [
+    {
+      "missing": "The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.",
+      "follow_up_query": "multilingual sentiment RNN non English accuracy language comparison",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

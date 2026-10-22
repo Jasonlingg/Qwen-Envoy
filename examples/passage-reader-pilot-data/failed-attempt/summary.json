@@ -1,0 +1,74 @@
+{
+  "status": "failed",
+  "data_kind": "reviewed_fixed_action_docker_demonstration",
+  "new_model_calls": 0,
+  "training_performed": false,
+  "human_review": null,
+  "started_at": "2026-10-22T21:36:43.510217+00:00",
+  "preparation_hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "python": "3.11.9"
+  },
+  "cases": [
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--present",
+      "role": "train",
+      "passed": true,
+      "status": "evidence_found",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 14041, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "56a7d9a2f7b9825e02460e4345870d1df4ad17524de05b1fc30df1438f45170d"
+        },
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 24000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e55b363fef6e8a1367f3c93d009401f37fe36d9804d0c121aade06cc5cb8b71c"
+        },
+        {
+          "action": "SUBMIT: They use KFTT and BTEC for English-to-Japanese translation. CITATIONS: [\"qasper_1606_02006\"] EVIDENCE: [{\"doc_id\": \"qasper_1606_02006\", \"start\": 14341, \"end\": 14796}]",
+          "source_inspection": false,
+          "observation_sha256": "fde2be9f09e191867b1236b2c373aae95a4d7225b3b8ad00d16316b78484e9a0"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--missing",
+      "role": "train",
+      "passed": true,
+      "status": "no_evidence",
+      "source_inspections": 2,
+      "local_policy_turns": 3,
+      "new_model_calls": 0,
+      "review_origin": "see bound source review",
+      "semantic_support": "reviewer_attestation_not_mechanically_proven",
+      "actions": [
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 0, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "30399457a3838beb512ceac739ea6978d1151f45f2820b83a51bd938e9a49850"
+        },
+        {
+          "action": "print(passage(\"qasper_1606_02006\", 24000, 1600))",
+          "source_inspection": true,
+          "observation_sha256": "e55b363fef6e8a1367f3c93d009401f37fe36d9804d0c121aade06cc5cb8b71c"
+        },
+        {
+          "action": "submit_gap(missing=\"The excerpts discuss the translation method but do not name the two experimental corpora.\", follow_up_query=\"English Japanese translation experimental datasets corpora\")",
+          "source_inspection": false,
+          "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+        }
+      ]
+    }
+  ],
+  "limitation": "Fixed actions do not measure Qwen choosing actions, responding to feedback, or improving. Quotes establish provenance; source support is a separately attributed review, not a mechanical proof.",
+  "error_kind": "KeyError",
+  "error": "'inspection_steps'"
+}

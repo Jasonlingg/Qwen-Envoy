@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "93e73202-093c-46e0-af34-bee270e7d5d0",
+  "question_id": "paper_95ba8e6389ca5cee",
+  "question": "How is language modelling evaluated?",
+  "corpus_hash": "5ace0aa83df68844b6b739d16c7db8c6882db08009ee64a7ea00871f52bebcd5",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1912_00159\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00159', 'start': 0, 'end': 1600, 'text': 'Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German\\n\\nThis paper presents SwissCrawl, the largest Swiss German text corpus to date. Composed of more than half a million sentences, it was generated using a customized web scraping tool that could be applied to other low-resource languages as well. The approach demonstrates how freely available web pages can be used to construct comprehensive text corpora, which are of fundamental importance for natural language processing. In an experimental evaluation, we show that using the new corpus leads to significant improvements for the task of language modeling. To capture new content, our approach will run continuously to keep increasing the corpus over time.\\n\\nSwiss German (“Schwyzerdütsch” or “Schwiizertüütsch”, abbreviated “GSW”) is the name of a large continuum of dialects attached to the Germanic language tree spoken by more than 60% of the Swiss population BIBREF0. Used every day from colloquial conversations to business meetings, Swiss German in its written form has become more and more popular in recent years with the rise of blogs, messaging applications and social media. However, the variability of the written form is rather large as orthography is more based on local pronunciations and emerging conventions than on a unique grammar.\\n\\nEven though Swiss German is widely spread in Switzerland, there are still few natural language processing (NLP) corpora, studies or tools available BIBREF1. This lack of resources may be explained by the small pool of speakers (less than one '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1912_00159\", 16000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00159', 'start': 16000, 'end': 17600, 'text': ' described in SECREF13, no cleaning nor post-processing is applied to the sentences. This is a deliberate choice to avoid losing any information that could be pertinent for a given task or for further selection. As a result, the mean letter density is 80% and only 61% of sentences both start with an uppercase letter and end with a common punctuation mark (.!?).\\n\\nFinally, although we performed no human validation per se, we actively monitored the crawling process to spot problematic domains early. This allowed to blacklist some domains entirely, for example those serving embedded PDFs (impossible to parse properly) or written in very close German dialects.\\n\\nTable TABREF23 shows some hand-picked examples. As most of our sources are social medias and forums, the writing style is often colloquial, interspersed with emojis and slang. This perfectly reflects the use of GSW in real life, where speakers switch to High German in formal conversations.\\n\\nIn general, the quality of sentences is good, with few false positives mostly in High German or German dialects, rarer still in Dutch or Luxembourgian. The presence of specific structures in the sentences are often the cause of such mistakes, as they yield strong GSW cues. For example:\\n\\nHigh German with spelling mistakes or broken words;\\n\\nGSW named entities (“Ueli Aeschbacher”, “Züri”);\\n\\nThe presence of many umlauts and/or short words;\\n\\nThe repetition of letters, also used to convey emotions.\\n\\nThe quality of the corpus highly depends on the text extraction step, which itself depends on the HTML structure of the pages. As there are no e'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric.\", follow_up_query=\"Swiss German language modeling evaluation metric test sets\")",
+      "research_gap": {
+        "missing": "The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric.",
+        "follow_up_query": "Swiss German language modeling evaluation metric test sets",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_00159",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 16000,
+        "end": 17600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_00159\", 0, 1600))",
+      "print(passage(\"qasper_1912_00159\", 16000, 1600))"
+    ],
+    "source_text_sha256": "0ae0f376a2d5d921575457e3ebc1e7af8e91de1e7351288a59d6642f03b11746",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "ff2b248a5ca4fb21f4fc0ec7162f4a981066cfdb76b02d37323deca7f9b9888c",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 16000,
+      "end": 17600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "5ace0aa83df68844b6b739d16c7db8c6882db08009ee64a7ea00871f52bebcd5",
+    "doc_id": "qasper_1912_00159",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.00159",
+    "title": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "31c712fda238c81e47e882599af93be6eb534293d52f887cd689be0c9db6fd12",
+  "research_gaps": [
+    {
+      "missing": "The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric.",
+      "follow_up_query": "Swiss German language modeling evaluation metric test sets",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

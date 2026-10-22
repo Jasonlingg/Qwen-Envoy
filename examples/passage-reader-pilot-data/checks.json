@@ -1,0 +1,29 @@
+{
+  "focused": {
+    "passed": 28,
+    "seconds": 9.29,
+    "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_passage_pilot_data.py tests/test_train_sft.py tests/test_qwen3_chat_template.py"
+  },
+  "full": {
+    "passed": 2075,
+    "skipped": 0,
+    "warnings": 3,
+    "seconds": 113.11,
+    "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+  },
+  "ruff": "passed on both new modules, both new CLIs and new tests",
+  "diff_check": "passed",
+  "actual_offline_docker_replay": {
+    "successful_episodes": 36,
+    "source_inspections": 72,
+    "local_policy_turns": 108,
+    "new_model_calls": 0,
+    "owned_containers_freshly_absent": 38
+  },
+  "tokenization": {
+    "actions": 72,
+    "input_tokens": 225496,
+    "supervised_tokens": 3018,
+    "max_tokens": 3729
+  }
+}

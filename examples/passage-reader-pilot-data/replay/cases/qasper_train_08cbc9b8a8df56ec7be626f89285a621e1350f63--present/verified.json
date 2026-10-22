@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+  "candidate_answer": "They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1910_14254",
+      "title": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences",
+      "start": 4428,
+      "end": 5350,
+      "quote": "We used the annotated dataset reported by degen2015investigating, a dataset of the utterances from the Switchboard corpus of telephone dialogues BIBREF21 that contain the word some. The dataset consists of 1,362 unique utterances with a noun phrase containing some (some-NP). For each example with a some-NP, degen2015investigating collected inference strength ratings from at least 10 participants recruited on Amazon's Mechanical Turk. Participants saw both the target utterance and ten utterances from the preceding discourse context. They then rated the similarity between the original utterance like (UNKREF8) and an utterance in which some was replaced with some, but not all like (UNKREF9), on a 7-point Likert scale with endpoints labeled “very different meaning” (1) and “same meaning” (7). Low similarity ratings thus indicate low inference strength, and high similarity ratings indicate high inference strength.",
+      "arxiv_id": "1910.14254",
+      "source_url": "https://arxiv.org/abs/1910.14254",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+    "doc_id": "qasper_1910_14254",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1910.14254",
+    "title": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d55955f89a9878077431102760d2c510b858440f7c3afd963297d05ed665a1c0",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1910_14254",
+    "windows": [
+      {
+        "start": 4128,
+        "end": 5728
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1910_14254\", 4128, 1600))",
+      "print(passage(\"qasper_1910_14254\", 28800, 1600))"
+    ],
+    "source_text_sha256": "4c0d716432c11de2052914f1257299a7c86e3b2de644df53143a351f2b4f4ffa",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 4128,
+      "end": 5728
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

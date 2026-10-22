@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "92f78b05-3d3f-4df3-abed-d9bfcaa21d42",
+  "question_id": "paper_ee863ba871b9dd89",
+  "question": "What types of social media did they consider?",
+  "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1809_01202\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1809_01202', 'start': 0, 'end': 1600, 'text': \"Causal Explanation Analysis on Social Media\\n\\nUnderstanding causal explanations - reasons given for happenings in one's life - has been found to be an important psychological factor linked to physical and mental health. Causal explanations are often studied through manual identification of phrases over limited samples of personal writing. Automatic identification of causal explanations in social media, while challenging in relying on contextual and sequential cues, offers a larger-scale alternative to expensive manual ratings and opens the door for new applications (e.g. studying prevailing beliefs about causes, such as climate change). Here, we explore automating causal explanation analysis, building on discourse parsing, and presenting two novel subtasks: causality detection (determining whether a causal explanation exists at all) and causal explanation identification (identifying the specific phrase that is the explanation). We achieve strong accuracies for both tasks but find different approaches best: an SVM for causality prediction (F1 = 0.791) and a hierarchy of Bidirectional LSTMs for causal explanation identification (F1 = 0.853). Finally, we explore applications of our complete pipeline (F1 = 0.868), showing demographic differences in mentions of causal explanation and that the association between a word and sentiment can change when it is used within a causal explanation.\\n\\nExplanations of happenings in one's life, causal explanations, are an important topic of study in social, psychological, economic, and behavioral sciences. For example, psychologists have analyz\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1809_01202\", 25600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1809_01202', 'start': 25600, 'end': 27200, 'text': 'nstitutional Review Board.\\n\\nWe developed a pipeline for causal explanation analysis over social media text, including both causality prediction and causal explanation identification. We examined a variety of model types and RNN architectures for each part of the pipeline, finding an SVM best for causality prediction and a hierarchy of BiLSTMs for causal explanation identification, suggesting the later task relies more heavily on sequential information. In fact, we found replacing either layer of the hierarchical LSTM architecture (the word-level or the DA-level) with a an equivalent “bag of features” approach resulted in reduced accuracy. Results of our whole pipeline of causal explanation analysis were found quite strong, achieving an $F1=0.868$ at identifying discourse arguments that are causal explanations.\\n\\nFinally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews. Utilization of discourse structure in social media analysis has been a largely untapped area of exploration, perhaps due to its perceived difficulty. We hope the strong results of causal explanation identification here leads to the integration of more syntax and deeper semantics into social media analyses and ultimately enables new applications beyond the current state of the art.\\n\\nThis work was supported, in part, by a grant from the Templeton Religion Trust (ID #TRT0048). The funders had no role in study design, data collection'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.\", follow_up_query=\"causal explanation analysis social media dataset collection source\")",
+      "research_gap": {
+        "missing": "The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.",
+        "follow_up_query": "causal explanation analysis social media dataset collection source",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1809_01202",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1809_01202\", 0, 1600))",
+      "print(passage(\"qasper_1809_01202\", 25600, 1600))"
+    ],
+    "source_text_sha256": "d29780cefad6f5ef9a88329f6da3121f36baada84a29de11a20430a57b4c5cb8",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "a25efe87a66c70945f53624bf651965ef1533c7dcf30ae25c3fede95e7303a25",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+    "doc_id": "qasper_1809_01202",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1809.01202",
+    "title": "Causal Explanation Analysis on Social Media",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "dc5682cefde8e504a9df22ca0b776c502fc764b43efc4dfd18f59b7d81f1430a",
+  "research_gaps": [
+    {
+      "missing": "The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.",
+      "follow_up_query": "causal explanation analysis social media dataset collection source",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

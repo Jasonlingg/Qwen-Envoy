@@ -1,0 +1,77 @@
+{
+  "status": "no_evidence",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "1a3a2763010292f5b721e0d4b1bc9d119cd7a8cf6958377ec97e85632a909c0d",
+  "candidate_answer": null,
+  "evidence": [],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "1a3a2763010292f5b721e0d4b1bc9d119cd7a8cf6958377ec97e85632a909c0d",
+    "doc_id": "qasper_1610_00956",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1610.00956",
+    "title": "Embracing data abundance: BookTest Dataset for Reading Comprehension",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d40a4ee5d80afec6d57e222fce8ac11a224035229484ee8926e5f2dd39c328c1",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected.",
+      "follow_up_query": "BookTest ensemble construction prediction combination validation selection",
+      "reported_at_step": 3,
+      "review_status": "unreviewed_model_report",
+      "absence_proven": false
+    }
+  ],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1610_00956",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 22400,
+        "end": 24000
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1610_00956\", 0, 1600))",
+      "print(passage(\"qasper_1610_00956\", 22400, 1600))"
+    ],
+    "source_text_sha256": "1dda7e6b1beedf3de4f91de3849db5a01aea5cdf914ca7c0978ab264b0043423",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 22400,
+      "end": 24000
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

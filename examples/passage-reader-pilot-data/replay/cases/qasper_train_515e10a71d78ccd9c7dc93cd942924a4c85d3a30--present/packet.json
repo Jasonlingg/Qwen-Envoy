@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "a180d954-dd1f-4823-8d59-119d91d27520",
+  "question_id": "paper_95ba8e6389ca5cee",
+  "question": "How is language modelling evaluated?",
+  "corpus_hash": "5ace0aa83df68844b6b739d16c7db8c6882db08009ee64a7ea00871f52bebcd5",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They evaluate language models by perplexity on independent test sets from the corpus sources.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1912_00159",
+      "start": 19351,
+      "end": 19755,
+      "quote": "Table TABREF32 shows the perplexity of the models on each of the test sets. As expected, each model performs better on the test set they have been trained on. When applied to a different test set, both see an increase in perplexity. However, the Leipzig model seems to have more trouble generalizing: its perplexity nearly doubles on the SwissCrawl test set and raises by twenty on the combined test set.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1912.00159",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1912_00159\", 16000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00159', 'start': 16000, 'end': 17600, 'text': ' described in SECREF13, no cleaning nor post-processing is applied to the sentences. This is a deliberate choice to avoid losing any information that could be pertinent for a given task or for further selection. As a result, the mean letter density is 80% and only 61% of sentences both start with an uppercase letter and end with a common punctuation mark (.!?).\\n\\nFinally, although we performed no human validation per se, we actively monitored the crawling process to spot problematic domains early. This allowed to blacklist some domains entirely, for example those serving embedded PDFs (impossible to parse properly) or written in very close German dialects.\\n\\nTable TABREF23 shows some hand-picked examples. As most of our sources are social medias and forums, the writing style is often colloquial, interspersed with emojis and slang. This perfectly reflects the use of GSW in real life, where speakers switch to High German in formal conversations.\\n\\nIn general, the quality of sentences is good, with few false positives mostly in High German or German dialects, rarer still in Dutch or Luxembourgian. The presence of specific structures in the sentences are often the cause of such mistakes, as they yield strong GSW cues. For example:\\n\\nHigh German with spelling mistakes or broken words;\\n\\nGSW named entities (“Ueli Aeschbacher”, “Züri”);\\n\\nThe presence of many umlauts and/or short words;\\n\\nThe repetition of letters, also used to convey emotions.\\n\\nThe quality of the corpus highly depends on the text extraction step, which itself depends on the HTML structure of the pages. As there are no e'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1912_00159\", 19051, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_00159', 'start': 19051, 'end': 20651, 'text': '\\n\\nSwissCrawl sentences with a GSW probability $\\\\ge {99}\\\\%$ (see Section SECREF17);\\n\\nBoth the union of 1) and 2).\\n\\nFor each model, the vocabulary is generated using Byte Pair Encoding (BPE) BIBREF19 applied on the training set. The independent test sets are composed of 20K samples from each source.\\n\\nTable TABREF32 shows the perplexity of the models on each of the test sets. As expected, each model performs better on the test set they have been trained on. When applied to a different test set, both see an increase in perplexity. However, the Leipzig model seems to have more trouble generalizing: its perplexity nearly doubles on the SwissCrawl test set and raises by twenty on the combined test set.\\n\\nThe best results are achieved by combining both corpora: while the perplexity on our corpus only marginally improves (from $49.5$ to $45.9$), the perplexity on the Leipzig corpus improves significantly (from $47.6$ to $30.5$, a 36% relative improvement).\\n\\nIn this paper, we presented the tools developed to gather the most comprehensive collection of written Swiss German to our knowledge. It represents Swiss German in the way it is actually used in informal contexts, both with respect to the form (punctuation, capitalization, ...) and the content (slang, elliptic sentences, ...). We have demonstrated how this new resource can significantly improve Swiss German language modeling. We expect that other NLP tasks, such as LID and eventually machine translation, will also be able to profit from this new resource in the future.\\n\\nOur experiments support the reasoning that Swiss German is st'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They evaluate language models by perplexity on independent test sets from the corpus sources. CITATIONS: [\"qasper_1912_00159\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00159\", \"start\": 19351, \"end\": 19755}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_00159",
+    "windows": [
+      {
+        "start": 16000,
+        "end": 17600
+      },
+      {
+        "start": 19051,
+        "end": 20651
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_00159\", 16000, 1600))",
+      "print(passage(\"qasper_1912_00159\", 19051, 1600))"
+    ],
+    "source_text_sha256": "0ae0f376a2d5d921575457e3ebc1e7af8e91de1e7351288a59d6642f03b11746",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "64c43a7ea843efcca47126e241761a1e30c1f2f9c21457c0668512ff8cd17464",
+  "inspected_passage_windows": [
+    {
+      "start": 16000,
+      "end": 17600
+    },
+    {
+      "start": 19051,
+      "end": 20651
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "5ace0aa83df68844b6b739d16c7db8c6882db08009ee64a7ea00871f52bebcd5",
+    "doc_id": "qasper_1912_00159",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.00159",
+    "title": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "31c712fda238c81e47e882599af93be6eb534293d52f887cd689be0c9db6fd12",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

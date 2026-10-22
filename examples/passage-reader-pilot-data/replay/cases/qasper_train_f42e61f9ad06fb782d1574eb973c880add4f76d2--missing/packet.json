@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "e2669639-5cbb-451e-8fce-32a81b261e31",
+  "question_id": "paper_2105da2691afa93f",
+  "question": "What architectural factors were investigated?",
+  "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_2001_03632\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_2001_03632', 'start': 0, 'end': 1600, 'text': 'Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks\\n\\nLearners that are exposed to the same training data might generalize differently due to differing inductive biases. In neural network models, inductive biases could in theory arise from any aspect of the model architecture. We investigate which architectural factors affect the generalization behavior of neural sequence-to-sequence models trained on two syntactic tasks, English question formation and English tense reinflection. For both tasks, the training set is consistent with a generalization based on hierarchical structure and a generalization based on linear order. All architectural factors that we investigated qualitatively affected how models generalized, including factors with no clear connection to hierarchical structure. For example, LSTMs and GRUs displayed qualitatively different inductive biases. However, the only factor that consistently contributed a hierarchical bias across tasks was the use of a tree-structured model rather than a model with sequential recurrence, suggesting that human-like syntactic generalization requires architectural syntactic structure.\\n\\nAny finite training set is consistent with multiple generalizations. Therefore, the way that a learner generalizes to unseen examples depends not only on the training data but also on properties of the learner. Suppose a learner is told that a blue triangle is an example of a blick. A learner preferring shape-based generalizations would conclude that blick means “triangle,” while a learner preferr'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_2001_03632\", 40000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_2001_03632', 'start': 40000, 'end': 41600, 'text': 's approach is also not very viable. However, it is possible that further secondary tasks would bring further gains, making this approach more effective.\\n\\nA final option is to use more interpretable architectures with explicit hierachical structure. Our results suggest that this approach is the most viable, as it yielded models that reliably generalized hierarchically. However, this approach only worked when the architectural bias was augmented with rich assumptions about the input to the learner, namely that it provided correct hierarchical parses for all sentences. We leave for future work an investigation of how to effectively use tree-based models without providing correct parses.\\n\\nFor helpful comments we thank Joe Pater, Paul Smolensky, the JHU Computation and Psycholinguistics lab, the JHU Neurosymbolic Computation lab, the Computational Linguistics at Yale (CLAY) lab, the anonymous reviewers, and audiences at the University of Pavia Center for Neurocognition, Epistemology, and Theoretical Syntax, the Penn State Dept. of Computer Science and Engineering, and the MIT Dept. of Brain and Cognitive Sciences. Any errors are our own.\\n\\nThis material is based upon work supported by the NSF Graduate Research Fellowship Program under Grant No. 1746891, and by NSF Grant Nos. BCS-1920924 and BCS-1919321. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation. Our experiments were conducted with resources from the Maryland Advanced Research Computing C'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated.\", follow_up_query=\"experimental architectural factors investigated complete list\")",
+      "research_gap": {
+        "missing": "The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated.",
+        "follow_up_query": "experimental architectural factors investigated complete list",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_2001_03632",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 40000,
+        "end": 41600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_2001_03632\", 0, 1600))",
+      "print(passage(\"qasper_2001_03632\", 40000, 1600))"
+    ],
+    "source_text_sha256": "019d79895afc54ea8c31b1d467cf8d58031beb354784ec7171cfb23ed75b180d",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "4eeb67d0de7813f12238a761b6e7189c2cc9b1ec4e9382a40a93ac2ff8a1d4c3",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 40000,
+      "end": 41600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+    "doc_id": "qasper_2001_03632",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "2001.03632",
+    "title": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a3bf424715137f87769a4fcdc0fb429dda7e89fb372b7423901157ec4b0d262f",
+  "research_gaps": [
+    {
+      "missing": "The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated.",
+      "follow_up_query": "experimental architectural factors investigated complete list",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

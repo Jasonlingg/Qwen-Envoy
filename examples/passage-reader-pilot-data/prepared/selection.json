@@ -1,0 +1,64 @@
+{
+  "seed": 42,
+  "rank": "sha256(42:<question ID>)",
+  "source": {
+    "train": {
+      "source_split": "train",
+      "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+      "source_rows_sha256": "2cf2919a965a6e124ac1644060e646a8f28fc89c6570883cc0a03d5e526a1ac9",
+      "source_arrow_sha256": "e392335ce65f5e4da0772220b4ce2c1038d7c07b97194429d21ed1f60a8c0115",
+      "paper_count": 888
+    },
+    "validation": {
+      "source_split": "validation",
+      "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+      "source_rows_sha256": "73e5f3dc2cd80a3310614ba00ae3e1ba75adb788a2eeae982d6d1386d39d27e0",
+      "source_arrow_sha256": "4a2c2e7e81e539c3afe4ab03fa8dc86e5e5fcb6be412a054ee4fb0bf4eed7294",
+      "paper_count": 281
+    }
+  },
+  "splits": {
+    "train": {
+      "eligible_questions": 16,
+      "selected_papers": 12,
+      "rejection_counts": {
+        "prior_paper_exposure": 717,
+        "identity_or_annotation_mapping": 146,
+        "answer_length_or_complexity": 21,
+        "not_single_agreed_extractive_answer": 84,
+        "paired_scope_feasibility": 29
+      }
+    },
+    "validation": {
+      "eligible_questions": 38,
+      "selected_papers": 6,
+      "rejection_counts": {
+        "prior_paper_exposure": 117,
+        "identity_or_annotation_mapping": 183,
+        "not_single_agreed_extractive_answer": 232,
+        "paired_scope_feasibility": 14,
+        "answer_length_or_complexity": 14
+      }
+    }
+  },
+  "model_outputs_used": false,
+  "data_review_rejections": {
+    "prepared_path": "out/passage-pilot-data-20261022/prepared-v3",
+    "cases_sha256": "f213417a2f7c174721fdaa1be86fbf4cba3620305842528447e74f4e5ab88e32",
+    "reviewer_kind": "model_assisted",
+    "reviewer_identity": "implementing Codex assistant; source-visible data review, not independent human",
+    "rows": [
+      {
+        "question_id": "qasper_train_be9cadaebfa0ff1a3c5a5ed56ff3aae76cf5e0a4",
+        "doc_id": "qasper_1805_03122",
+        "reason": "Question asks evaluation metrics, while annotated answer names two aggregation setups. Shared missing excerpt explicitly discusses human accuracy and model scores, making accuracy inferable; do not teach refusal for this broad metric question."
+      },
+      {
+        "question_id": "qasper_validation_03ebb29c08375afc42a957c7b2dc1a42bed7b713",
+        "doc_id": "qasper_1909_05359",
+        "reason": "The present excerpt reports ontology population counts but does not describe an effectiveness evaluation procedure or success metric. Treating those counts as a full answer would overclaim; positive label is ambiguous."
+      }
+    ]
+  },
+  "rejections_sha256": "01f8fcaeab224329d9ff81a8a2810a179c6ba7e4c892fb72059dc6cd8b6e38a3"
+}

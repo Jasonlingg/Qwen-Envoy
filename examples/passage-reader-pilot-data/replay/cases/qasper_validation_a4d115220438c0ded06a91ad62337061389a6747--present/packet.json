@@ -1,0 +1,134 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "83cd301f-6677-4bb7-a2cf-e80a6096aa86",
+  "question_id": "paper_ee863ba871b9dd89",
+  "question": "What types of social media did they consider?",
+  "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews.",
+      "evidence_ids": [
+        "E1",
+        "E2"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1809_01202",
+      "start": 10484,
+      "end": 10927,
+      "quote": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1809.01202",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Causal Explanation Analysis on Social Media",
+      "source_path": null,
+      "record": {}
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "qasper_1809_01202",
+      "start": 26423,
+      "end": 26664,
+      "quote": "Finally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1809.01202",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Causal Explanation Analysis on Social Media",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1809_01202\", 10184, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1809_01202', 'start': 10184, 'end': 11784, 'text': 'simpler text segmentation method; for explicit discourse relations, it finds the presence of discourse connectives within a document and extracts discourse arguments which parametrize the connective while for implicit relations, it considers all adjacent sentences as candidate discourse arguments.\\n\\nWe created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations.\\n\\nFor each task, we used 80% of the dataset for training our model and 10% for tuning the hyperparameters of our models. Finally, we evaluated all of our models on the remaining 10% (Table 1 and Table 2 ). For causal explanation detection task, we extracted discourse arguments using our parser and selected discourse arguments which most cover the annotated causal explanation text span as our gold standard.\\n\\nWe build two types of models. First, we develop feature-based models which utilize features of the successful models in social media analysis and causal relation discourse parsing. Then, we build a recursive neural network model which uses distributed representation of discourse arguments as this approach can even capture latent properties of causal relations which may exist between distant discourse arguments. We specifically selected bidire'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1809_01202\", 25600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1809_01202', 'start': 25600, 'end': 27200, 'text': 'nstitutional Review Board.\\n\\nWe developed a pipeline for causal explanation analysis over social media text, including both causality prediction and causal explanation identification. We examined a variety of model types and RNN architectures for each part of the pipeline, finding an SVM best for causality prediction and a hierarchy of BiLSTMs for causal explanation identification, suggesting the later task relies more heavily on sequential information. In fact, we found replacing either layer of the hierarchical LSTM architecture (the word-level or the DA-level) with a an equivalent “bag of features” approach resulted in reduced accuracy. Results of our whole pipeline of causal explanation analysis were found quite strong, achieving an $F1=0.868$ at identifying discourse arguments that are causal explanations.\\n\\nFinally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews. Utilization of discourse structure in social media analysis has been a largely untapped area of exploration, perhaps due to its perceived difficulty. We hope the strong results of causal explanation identification here leads to the integration of more syntax and deeper semantics into social media analyses and ultimately enables new applications beyond the current state of the art.\\n\\nThis work was supported, in part, by a grant from the Templeton Religion Trust (ID #TRT0048). The funders had no role in study design, data collection'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews. CITATIONS: [\"qasper_1809_01202\"] EVIDENCE: [{\"doc_id\": \"qasper_1809_01202\", \"start\": 10484, \"end\": 10927}, {\"doc_id\": \"qasper_1809_01202\", \"start\": 26423, \"end\": 26664}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1809_01202",
+    "windows": [
+      {
+        "start": 10184,
+        "end": 11784
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1809_01202\", 10184, 1600))",
+      "print(passage(\"qasper_1809_01202\", 25600, 1600))"
+    ],
+    "source_text_sha256": "d29780cefad6f5ef9a88329f6da3121f36baada84a29de11a20430a57b4c5cb8",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "abf1a11b2a2692d3bb818fca8851dd973922f68afb7284224b66d79d42990f9b",
+  "inspected_passage_windows": [
+    {
+      "start": 10184,
+      "end": 11784
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+    "doc_id": "qasper_1809_01202",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1809.01202",
+    "title": "Causal Explanation Analysis on Social Media",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "dc5682cefde8e504a9df22ca0b776c502fc764b43efc4dfd18f59b7d81f1430a",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

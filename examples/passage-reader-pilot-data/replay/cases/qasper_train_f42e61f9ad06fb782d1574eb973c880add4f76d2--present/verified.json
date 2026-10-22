@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+  "candidate_answer": "They investigate recurrent-unit type, attention type, and sequential versus tree-based structure.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_2001_03632",
+      "title": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks",
+      "start": 3765,
+      "end": 4354,
+      "quote": "We find that all the factors we tested can qualitatively affect how a model generalizes on the question formation task. These factors are the type of recurrent unit, the type of attention, and the choice of sequential vs. tree-based model structure. Even though all these factors affected the model's decision between move-main and move-first, only the use of a tree-based model can be said to impart a hierarchical bias, since this was the only model type that chose a hierarchical generalization across both of our tasks. Specific findings that support these general conclusions include:",
+      "arxiv_id": "2001.03632",
+      "source_url": "https://arxiv.org/abs/2001.03632",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+    "doc_id": "qasper_2001_03632",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "2001.03632",
+    "title": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a3bf424715137f87769a4fcdc0fb429dda7e89fb372b7423901157ec4b0d262f",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_2001_03632",
+    "windows": [
+      {
+        "start": 3465,
+        "end": 5065
+      },
+      {
+        "start": 40000,
+        "end": 41600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_2001_03632\", 3465, 1600))",
+      "print(passage(\"qasper_2001_03632\", 40000, 1600))"
+    ],
+    "source_text_sha256": "019d79895afc54ea8c31b1d467cf8d58031beb354784ec7171cfb23ed75b180d",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 3465,
+      "end": 5065
+    },
+    {
+      "start": 40000,
+      "end": 41600
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

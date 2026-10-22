@@ -1,0 +1,28 @@
+{
+  "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--missing",
+  "role": "development",
+  "passed": true,
+  "status": "no_evidence",
+  "source_inspections": 2,
+  "local_policy_turns": 3,
+  "new_model_calls": 0,
+  "review_origin": "see bound source review",
+  "semantic_support": "reviewer_attestation_not_mechanically_proven",
+  "actions": [
+    {
+      "action": "print(passage(\"qasper_1806_04511\", 1600, 1600))",
+      "source_inspection": true,
+      "observation_sha256": "30d4ec42f48c78dd0ea8a650a009a06b30ba1aa834cbc62f94be76ce22633c9b"
+    },
+    {
+      "action": "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+      "source_inspection": true,
+      "observation_sha256": "0cf288a606aef5b462d5e15bfbde7b7573ce808f2c0dc9c9127d06517910524f"
+    },
+    {
+      "action": "submit_gap(missing=\"The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.\", follow_up_query=\"multilingual sentiment RNN non English accuracy language comparison\")",
+      "source_inspection": false,
+      "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323"
+    }
+  ]
+}

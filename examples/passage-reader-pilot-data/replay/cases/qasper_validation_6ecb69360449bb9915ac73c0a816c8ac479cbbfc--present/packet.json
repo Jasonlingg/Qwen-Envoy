@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c5080796-25e8-4906-abf1-cacb27796753",
+  "question_id": "paper_57362b7167f274a3",
+  "question": "What modalities are supported by Macaw?",
+  "corpus_hash": "62bac03f7d18f3652cc6a5dde424583f20ca26bca14ffa0c34345a63d4f9dc93",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "Supported interaction examples include text, speech, images, and clicks.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1912_08904",
+      "start": 3581,
+      "end": 4240,
+      "quote": "The modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1912.08904",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Macaw: An Extensible Conversational Information Seeking Platform",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1912_08904\", 3281, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_08904', 'start': 3281, 'end': 4881, 'text': \"r interaction, Macaw runs all actions in parallel. The actions' outputs produced within a predefined time interval (i.e., an interaction timeout constant) are then post-processed. Macaw can choose one or combine multiple of these outputs and prepare an output Message object as the user's response.\\n\\nThe modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions.\\n\\nThe research community can benefit from Macaw for the following purposes:\\n\\n[leftmargin=*]\\n\\nDeveloping algorithms, tools, and techniques for CIS.\\n\\nStudying user interactions with CIS systems.\\n\\nPerforming CIS studies based on an intermediary person and wizard of oz.\\n\\nPreparing quick demonstration for a developed CIS model.\\n\\nMacaw has a modular design, with the goal of making it easy to configure and add new modules such as a different user interface or different retrieval module. The overall setup also follows a Model-View-Controller (MVC) like architecture. The design decisions have been made to smooth the Macaw's adoptions and exte\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1912_08904\", 9600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1912_08904', 'start': 9600, 'end': 11200, 'text': \" integration of social networks with conversational systems. For example, see the Naseri and Zamani's study on news popularity in Telegram BIBREF12.\\n\\nSimilar to the other modules, one can easily extend Macaw using other appropriate user interfaces.\\n\\nThe current implementation of Macaw lacks the following actions. We intend to incrementally improve Macaw by supporting more actions and even more advanced techniques for the developed actions.\\n\\n[leftmargin=*]\\n\\nClarification and Preference Elicitation: Asking clarifying questions has been recently recognized as a necessary component in a conversational system BIBREF3, BIBREF7. The authors are not aware of a published solution for generating clarifying questions using public resources. Therefore, Macaw does not currently support clarification.\\n\\nExplanation: Despite its importance, result list explanation is also a relatively less explored topic. We intend to extend Macaw with result list explanation as soon as we find a stable and mature solution.\\n\\nRecommendation: In our first release, we focus on conversational search and question answering tasks. We intend to provide support for conversational recommendation, e.g., BIBREF13, BIBREF14, BIBREF15, and joint search and recommendation, e.g., BIBREF16, BIBREF17, in the future.\\n\\nNatural Language Interface: Macaw can potentially support access to structured data, such as knowledge graph. We would like to ease conversational natural language interface to structured and semi-structured data in our future releases.\\n\\nMacaw is distributed under the MIT License. We welcome contributions and \"}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: Supported interaction examples include text, speech, images, and clicks. CITATIONS: [\"qasper_1912_08904\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_08904\", \"start\": 3581, \"end\": 4240}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1912_08904",
+    "windows": [
+      {
+        "start": 3281,
+        "end": 4881
+      },
+      {
+        "start": 9600,
+        "end": 11200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1912_08904\", 3281, 1600))",
+      "print(passage(\"qasper_1912_08904\", 9600, 1600))"
+    ],
+    "source_text_sha256": "dccc46e9149be3eab08a4b0e4530e2e4afa85f5a8f88d5e472c76001f1c94981",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "461b3be7e5219021d3a86d35752346c74285449dcd0684e8aaaae5dcffcc336c",
+  "inspected_passage_windows": [
+    {
+      "start": 3281,
+      "end": 4881
+    },
+    {
+      "start": 9600,
+      "end": 11200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "62bac03f7d18f3652cc6a5dde424583f20ca26bca14ffa0c34345a63d4f9dc93",
+    "doc_id": "qasper_1912_08904",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1912.08904",
+    "title": "Macaw: An Extensible Conversational Information Seeking Platform",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "bfcbcbef2bd1edd869d0194659b1d656b58d3babd9c900aea03b599a5584ae1c",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

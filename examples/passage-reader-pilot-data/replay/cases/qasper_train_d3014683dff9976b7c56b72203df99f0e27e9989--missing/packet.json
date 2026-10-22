@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c96af5ac-9d5e-44f5-b084-98161eb33c74",
+  "question_id": "paper_c27c24a8d282ba2a",
+  "question": "What evaluation metrics did they use?",
+  "corpus_hash": "ca1c5a8c758a3bec7ae859f940c2a2bb1adf0cfa24eee6334aa3921f85f6276d",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1911_03058\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1911_03058', 'start': 0, 'end': 1600, 'text': 'Should All Cross-Lingual Embeddings Speak English?\\n\\nMost of recent work in cross-lingual word embeddings is severely Anglocentric. The vast majority of lexicon induction evaluation dictionaries are between English and another language, and the English embedding space is selected by default as the hub when learning in a multilingual setting. With this work, however, we challenge these practices. First, we show that the choice of hub language can significantly impact downstream lexicon induction performance. Second, we both expand the current evaluation dictionary collection to include all language pairs using triangulation, and also create new dictionaries for under-represented languages. Evaluating established methods over all these language pairs sheds light into their suitability and presents new challenges for the field. Finally, in our analysis we identify general guidelines for strong cross-lingual embeddings baselines, based on more than just Anglocentric experiments.\\n\\nContinuous distributional vectors for representing words (embeddings) BIBREF0 have become ubiquitous in modern, neural NLP. Cross-lingual representations BIBREF1 additionally represent words from various languages in a shared continuous space, which in turn can be used for Bilingual Lexicon Induction (BLI). BLI is often the first step towards several downstream tasks such as Part-Of-Speech (POS) tagging BIBREF2, parsing BIBREF3, document classification BIBREF4, and machine translation BIBREF5, BIBREF6, BIBREF7.\\n\\nOften, such shared representations are learned with a two-step process, whether under biling'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1911_03058\", 8000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1911_03058', 'start': 8000, 'end': 9600, 'text': 'nguages, and also follows an iterative refinement approach.\\n\\nSimilar to BIBREF19, BIBREF20 note that it is important to use all $N^2$ language pairs when optimizing multilingual alignments, rather than just the $N-1$ pairs between the hub and all other languages, and propose a model (UMH) that implements this intuition within a Wasserstein-Procrustes approach. Even though the architecture and modeling approach of MAT+MPSR and of UMH are not the same, the two methods are conceptually similar, as in both cases a language is chosen as the hub, and $N-1$ mappings for the other languages are learned. In either case, English is by default selected to be the hub. The only exception is the study of triplets alignments in BIBREF20, where Spanish is used as the hub for the Spanish–French–Portuguese triplet, although the authors mention that they found little differences due the choice of the hub, in contrast to our general findings.\\n\\nOther than MAT+MPSR and UMH, another unsupervised multilingual approach is that of BIBREF21, who propose to incrementally align multiple languages by adding each new language as a hub. We decided, though, against comparing to this method, because (a) their method requires learning $\\\\mathcal {O}(N^2)$ mappings for relatively small improvements and (b) the order in which the languages are added is an additional hyperparameter that would explode the experimental space.\\n\\nOne of the most common downstream evaluation tasks for the learned cross-lingual word mappings is Lexicon Induction (LI), the task of retrieving the most appropriate word-level translation f'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics.\", follow_up_query=\"cross lingual lexicon induction reported evaluation metrics\")",
+      "research_gap": {
+        "missing": "The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics.",
+        "follow_up_query": "cross lingual lexicon induction reported evaluation metrics",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1911_03058",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 8000,
+        "end": 9600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1911_03058\", 0, 1600))",
+      "print(passage(\"qasper_1911_03058\", 8000, 1600))"
+    ],
+    "source_text_sha256": "d80470381d56df48b0e213a3cbc1c03f5ef40aa657b1bea0edf019964bd290d3",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "4df7e5cc91d173617bab62d6a4094438ef06a7286e661bcdaf0ea138e38ec57a",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 8000,
+      "end": 9600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "ca1c5a8c758a3bec7ae859f940c2a2bb1adf0cfa24eee6334aa3921f85f6276d",
+    "doc_id": "qasper_1911_03058",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1911.03058",
+    "title": "Should All Cross-Lingual Embeddings Speak English?",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "40d10fd1739054bf06b97f0f551032dd115b04b00b1956fea653e9cf50a04e92",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics.",
+      "follow_up_query": "cross lingual lexicon induction reported evaluation metrics",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

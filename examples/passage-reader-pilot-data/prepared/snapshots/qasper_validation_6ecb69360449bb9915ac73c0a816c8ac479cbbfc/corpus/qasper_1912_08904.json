@@ -1,0 +1,70 @@
+{
+  "doc_id": "qasper_1912_08904",
+  "title": "Macaw: An Extensible Conversational Information Seeking Platform",
+  "text": "Macaw: An Extensible Conversational Information Seeking Platform\n\nConversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval. Such research will require data and tools, to allow the implementation and study of conversational systems. This paper introduces Macaw, an open-source framework with a modular architecture for CIS research. Macaw supports multi-turn, multi-modal, and mixed-initiative interactions, and enables research for tasks such as document retrieval, question answering, recommendation, and structured data exploration. It has a modular design to encourage the study of new CIS algorithms, which can be evaluated in batch mode. It can also integrate with a user interface, which allows user studies and data collection in an interactive mode, where the back end can be fully algorithmic or a wizard of oz setup. Macaw is distributed under the MIT License.\n\nThe rapid growth in speech and small screen interfaces, particularly on mobile devices, has significantly influenced the way users interact with intelligent systems to satisfy their information needs. The growing interest in personal digital assistants, such as Amazon Alexa, Apple Siri, Google Assistant, and Microsoft Cortana, demonstrates the willingness of users to employ conversational interactions BIBREF0. As a result, conversational information seeking (CIS) has been recognized as a major emerging research area in the Third Strategic Workshop on Information Retrieval (SWIRL 2018) BIBREF1.\n\nResearch progress in CIS relies on the availability of resources to the community. There have been recent efforts on providing data for various CIS tasks, such as the TREC 2019 Conversational Assistance Track (CAsT), MISC BIBREF2, Qulac BIBREF3, CoQA BIBREF4, QuAC BIBREF5, SCS BIBREF6, and CCPE-M BIBREF7. In addition, BIBREF8 have implemented a demonstration for conversational movie recommendation based on Google's DialogFlow. Despite all of these resources, the community still feels the lack of a suitable platform for developing CIS systems. We believe that providing such platform will speed up the progress in conversational information seeking research. Therefore, we developed a general framework for supporting CIS research. The framework is called Macaw. This paper describes the high-level architecture of Macaw, the supported functionality, and our future vision. Researchers working on various CIS tasks should be able to take advantage of Macaw in their projects.\n\nMacaw is designed based on a modular architecture to support different information seeking tasks, including conversational search, conversational question answering, conversational recommendation, and conversational natural language interface to structured and semi-structured data. Each interaction in Macaw (from both user and system) is a Message object, thus a conversation is a list of Messages. Macaw consists of multiple actions, each action is a module that can satisfy the information needs of users for some requests. For example, search and question answering can be two actions in Macaw. Even multiple search algorithms can be also seen as multiple actions. Each action can produce multiple outputs (e.g., multiple retrieved documents). For every user interaction, Macaw runs all actions in parallel. The actions' outputs produced within a predefined time interval (i.e., an interaction timeout constant) are then post-processed. Macaw can choose one or combine multiple of these outputs and prepare an output Message object as the user's response.\n\nThe modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions.\n\nThe research community can benefit from Macaw for the following purposes:\n\n[leftmargin=*]\n\nDeveloping algorithms, tools, and techniques for CIS.\n\nStudying user interactions with CIS systems.\n\nPerforming CIS studies based on an intermediary person and wizard of oz.\n\nPreparing quick demonstration for a developed CIS model.\n\nMacaw has a modular design, with the goal of making it easy to configure and add new modules such as a different user interface or different retrieval module. The overall setup also follows a Model-View-Controller (MVC) like architecture. The design decisions have been made to smooth the Macaw's adoptions and extensions. Macaw is implemented in Python, thus machine learning models implemented using PyTorch, Scikit-learn, or TensorFlow can be easily integrated into Macaw. The high-level overview of Macaw is depicted in FIGREF8. The user interacts with the interface and the interface produces a Message object from the current interaction of user. The interaction can be in multi-modal form, such as text, speech, image, and click. Macaw stores all interactions in an “Interaction Database”. For every interaction, Macaw looks for most recent user-system interactions (including the system's responses) to create a list of Messages, called the conversation list. It is then dispatched to multiple information seeking (and related) actions. The actions run in parallel, and each should respond within a pre-defined time interval. The output selection component selects from (or potentially combines) the outputs generated by different actions and creates a Message object as the system's response. This message is logged into the interaction database and is sent to the interface to be presented to the user. Again, the response message can be multi-modal and include text, speech, link, list of options, etc.\n\nMacaw also supports Wizard of Oz studies or intermediary-based information seeking studies. The architecture of Macaw for such setup is presented in FIGREF16. As shown in the figure, the seeker interacts with a real conversational interface that supports multi-modal and mixed-initiative interactions in multiple devices. The intermediary (or the wizard) receives the seeker's message and performs different information seeking actions with Macaw. All seeker-intermediary and intermediary-system interactions will be logged for further analysis. This setup can simulate an ideal CIS system and thus is useful for collecting high-quality data from real users for CIS research.\n\nThe overview of retrieval and question answering actions in Macaw is shown in FIGREF17. These actions consist of the following components:\n\n[leftmargin=*]\n\nCo-Reference Resolution: To support multi-turn interactions, it is sometimes necessary to use co-reference resolution techniques for effective retrieval. In Macaw, we identify all the co-references from the last request of user to the conversation history. The same co-reference resolution outputs can be used for different query generation components. This can be a generic or action-specific component.\n\nQuery Generation: This component generates a query based on the past user-system interactions. The query generation component may take advantage of co-reference resolution for query expansion or re-writing.\n\nRetrieval Model: This is the core ranking component that retrieves documents or passages from a large collection. Macaw can retrieve documents from an arbitrary document collection using the Indri python interface BIBREF9, BIBREF10. We also provide the support for web search using the Bing Web Search API. Macaw also allows multi-stage document re-ranking.\n\nResult Generation: The retrieved documents can be too long to be presented using some interfaces. Result generation is basically a post-processing step ran on the retrieved result list. In case of question answering, it can employ answer selection or generation techniques, such as machine reading comprehension models. For example, Macaw features the DrQA model BIBREF11 for question answering.\n\nThese components are implemented in a generic form, so researchers can easily replace them with their own favorite algorithms.\n\nWe have implemented the following interfaces for Macaw:\n\n[leftmargin=*]\n\nFile IO: This interface is designed for experimental purposes, such as evaluating the performance of a conversational search technique on a dataset with multiple queries. This is not an interactive interface.\n\nStandard IO: This interactive command line interface is designed for development purposes to interact with the system, see the logs, and debug or improve the system.\n\nTelegram: This interactive interface is designed for interaction with real users (see FIGREF4). Telegram is a popular instant messaging service whose client-side code is open-source. We have implemented a Telegram bot that can be used with different devices (personal computers, tablets, and mobile phones) and different operating systems (Android, iOS, Linux, Mac OS, and Windows). This interface allows multi-modal interactions (text, speech, click, image). It can be also used for speech-only interactions. For speech recognition and generation, Macaw relies on online APIs, e.g., the services provided by Google Cloud and Microsoft Azure. In addition, there exist multiple popular groups and channels in Telegram, which allows further integration of social networks with conversational systems. For example, see the Naseri and Zamani's study on news popularity in Telegram BIBREF12.\n\nSimilar to the other modules, one can easily extend Macaw using other appropriate user interfaces.\n\nThe current implementation of Macaw lacks the following actions. We intend to incrementally improve Macaw by supporting more actions and even more advanced techniques for the developed actions.\n\n[leftmargin=*]\n\nClarification and Preference Elicitation: Asking clarifying questions has been recently recognized as a necessary component in a conversational system BIBREF3, BIBREF7. The authors are not aware of a published solution for generating clarifying questions using public resources. Therefore, Macaw does not currently support clarification.\n\nExplanation: Despite its importance, result list explanation is also a relatively less explored topic. We intend to extend Macaw with result list explanation as soon as we find a stable and mature solution.\n\nRecommendation: In our first release, we focus on conversational search and question answering tasks. We intend to provide support for conversational recommendation, e.g., BIBREF13, BIBREF14, BIBREF15, and joint search and recommendation, e.g., BIBREF16, BIBREF17, in the future.\n\nNatural Language Interface: Macaw can potentially support access to structured data, such as knowledge graph. We would like to ease conversational natural language interface to structured and semi-structured data in our future releases.\n\nMacaw is distributed under the MIT License. We welcome contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com. This project has adopted the Microsoft Open Source Code of Conduct.\n\nWhen you submit a pull request, a CLA bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.\n\nThis paper described Macaw, an open-source platform for conversational information seeking research. Macaw supports multi-turn, multi-modal, and mixed-initiative interactions. It was designed based on a modular architecture that allows further improvements and extensions. Researchers can benefit from Macaw for developing algorithms and techniques for conversational information seeking research, for user studies with different interfaces, for data collection from real users, and for preparing a demonstration of a CIS model.\n\nThe authors wish to thank Ahmed Hassan Awadallah, Krisztian Balog, and Arjen P. de Vries for their invaluable feedback.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "section": "Abstract",
+      "start": 66,
+      "end": 933
+    },
+    {
+      "section": "Introduction",
+      "start": 935,
+      "end": 4564
+    },
+    {
+      "section": "Macaw Architecture",
+      "start": 4566,
+      "end": 6756
+    },
+    {
+      "section": "Retrieval and Question Answering in Macaw",
+      "start": 6758,
+      "end": 8410
+    },
+    {
+      "section": "User Interfaces",
+      "start": 8412,
+      "end": 9848
+    },
+    {
+      "section": "Limitations and Future Work",
+      "start": 9850,
+      "end": 11125
+    },
+    {
+      "section": "Contribution",
+      "start": 11127,
+      "end": 11809
+    },
+    {
+      "section": "Conclusions",
+      "start": 11811,
+      "end": 12339
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 12341,
+      "end": 12460
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "validation",
+    "qasper_paper_id": "1912.08904",
+    "arxiv_id": "1912.08904",
+    "source_url": "https://arxiv.org/abs/1912.08904",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

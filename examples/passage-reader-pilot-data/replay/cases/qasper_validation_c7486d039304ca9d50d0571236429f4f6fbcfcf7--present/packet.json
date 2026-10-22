@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "b13a0d8f-33f4-4b6e-8ec5-13c62490a331",
+  "question_id": "paper_44ccc5afc1a7d249",
+  "question": "which non-english language was the had the worst results?",
+  "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "Turkish has the lowest reported non-English RNN accuracy, 74.36%.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1806_04511",
+      "start": 16607,
+      "end": 17541,
+      "quote": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1806.04511",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Multilingual Sentiment Analysis: An RNN-Based Framework for Limited Data",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1806_04511', 'start': 12800, 'end': 14400, 'text': \"tained by summing up the scores for each token. If the positive sum score for a given review is greater than the negative sum score, we accept that review as a positive review. If negative sum is larger than or equal to the positive sum, the review is labeled as a negative review.\\n\\nRNN outperforms both baselines in all four datasets (see Table TABREF9 ). Also for Spanish restaurant review, the lexicon-based baseline is below the majority baseline which shows that solely translating data and using lexicons is not sufficient to achieve good results in multilingual sentiment analysis.\\n\\nAmong the wrong classifications for each test set, we calculated the percentage of false positives and false negatives. Table TABREF10 shows the distribution of false positives and false negatives for each class. In all four classes, the number of false negatives are more than the number of false positives. This can be explained by the unbalanced training dataset where the number of positive reviews are more than the number of negative reviews (59,577 vs 17,132).\\n\\nTo be able to see the difference between baseline and RNN, we took each method's results as a group (4 values: one for each language) and compared the means. Post hoc comparisons using the Tukey HSD test indicated that the mean accuracies for baselines (majority and lexicon-based) are significantly different than RNN accuracies as can be seen in Table TABREF12 (family-wise error rate=0.06). When RNN is compared with lexicon-based baseline and majority baseline, the null hypothesis can be rejected meaning that each test is significant. \"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1806_04511\", 16307, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1806_04511', 'start': 16307, 'end': 17907, 'text': 'ysis.\\n\\nWe also evaluated our model with an English corpus BIBREF27 to see its performance without any interference from machine translation errors. Using the English data for testing, the model achieved 87.06% accuracy where a majority baseline was 68.37% and the lexicon-based baseline was 60.10%.\\n\\nConsidering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements.\\n\\nBuilding effective machine learning models for text requires data and different resources such as pre-trained word embeddings and reusable lexicons. Unfortunately, most of these resources are not entirely transferable to different domains, tasks or languages. Sentiment analysis is one such task that requires additional effort to transfer knowledge between langua'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: Turkish has the lowest reported non-English RNN accuracy, 74.36%. CITATIONS: [\"qasper_1806_04511\"] EVIDENCE: [{\"doc_id\": \"qasper_1806_04511\", \"start\": 16607, \"end\": 17541}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1806_04511",
+    "windows": [
+      {
+        "start": 12800,
+        "end": 14400
+      },
+      {
+        "start": 16307,
+        "end": 17907
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1806_04511\", 12800, 1600))",
+      "print(passage(\"qasper_1806_04511\", 16307, 1600))"
+    ],
+    "source_text_sha256": "6083c5d95b4725599dc53dda0a914bfa4608308e9eab33b5bd3c09c654bc8fda",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "67cc06c5d8e5fdb70a9002e3451943b50a27dee8731bb2254a78d1ec0e508259",
+  "inspected_passage_windows": [
+    {
+      "start": 12800,
+      "end": 14400
+    },
+    {
+      "start": 16307,
+      "end": 17907
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "eac872ae15e6e22d7c553dfa8562eb4387a0e0c8a8dac592d53f7d6c0d0beb92",
+    "doc_id": "qasper_1806_04511",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1806.04511",
+    "title": "Multilingual Sentiment Analysis: An RNN-Based Framework for Limited Data",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "554c4c8e4269d9433f7f90e5a14ea115fbd63cd1fcaf234ccc1757e4ae9858d9",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

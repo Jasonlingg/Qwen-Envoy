@@ -1,0 +1,109 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "b20143d3-ab22-4340-b128-4a23b80ee4e9",
+  "question_id": "paper_d6009e1d17ebd77e",
+  "question": "What baselines are used for comparison?",
+  "corpus_hash": "812301f12edd263e9593399b7abff9f19de1bdee27346221e54d12e170c707f3",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1611_08661\", 0, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1611_08661', 'start': 0, 'end': 1600, 'text': 'Knowledge Graph Representation with Jointly Structural and Textual Encoding\\n\\nThe objective of knowledge graph embedding is to encode both entities and relations of knowledge graphs into continuous low-dimensional vector spaces. Previously, most works focused on symbolic representation of knowledge graph with structure information, which can not handle new entities or entities with few facts well. In this paper, we propose a novel deep architecture to utilize both structural and textual information of entities. Specifically, we introduce three neural models to encode the valuable information from text description of entity, among which an attentive model can select related information as needed. Then, a gating mechanism is applied to integrate representations of structure and text into a unified architecture. Experiments show that our models outperform baseline by margin on link prediction and triplet classification tasks. Source codes of this paper will be available on Github.\\n\\nKnowledge graphs have been proved to benefit many artificial intelligence applications, such as relation extraction, question answering and so on. A knowledge graph consists of multi-relational data, having entities as nodes and relations as edges. An instance of fact is represented as a triplet (Head Entity, Relation, Tail Entity), where the Relation indicates a relationship between these two entities. In the past decades, great progress has been made in building large scale knowledge graphs, such as WordNet BIBREF0 , Freebase BIBREF1 . However, most of them have been built either collaboratively or'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1611_08661\", 20800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1611_08661', 'start': 20800, 'end': 22400, 'text': 'ver, these two works align the two kinds of embeddings on word level, which can lose some semantic information on phrase or sentence level.\\n\\n BIBREF25 also represent entities with entity names or the average of word embeddings in descriptions. However, their use of descriptions neglects word orders, and the use of entity names struggles with ambiguity. BIBREF7 jointly learn knowledge graph embeddings with entity descriptions. They use continuous bag-of-words and convolutional neural network to encode semantics of entity descriptions. However, they separate the objective functions into two energy functions of structure-based and description-based representations. BIBREF26 embeds both entity and relation embeddings by taking KG and text into consideration using CNN. To utilize both representations, they need further estimate an optimum weight coefficients to combine them together in the specific tasks.\\n\\nBesides entity representation, there are also a lot of works BIBREF27 , BIBREF28 , BIBREF29 to map textual relations and knowledge base relations to the same vector space and obtained substantial improvements.\\n\\nWhile releasing the current paper we discovered a paper by BIBREF30 proposing a similar model with attention mechanism which is evaluated on link prediction and triplet classification. However, our work encodes text description as a whole without explicit segmentation of sentences, which breaks the order and coherence among sentences.\\n\\nWe propose a united representation for knowledge graph, utilizing both structure and text description information of the entities. Exper'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.\", follow_up_query=\"joint structural textual knowledge graph link prediction experimental baseline\")",
+      "research_gap": {
+        "missing": "The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.",
+        "follow_up_query": "joint structural textual knowledge graph link prediction experimental baseline",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1611_08661",
+    "windows": [
+      {
+        "start": 0,
+        "end": 1600
+      },
+      {
+        "start": 20800,
+        "end": 22400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1611_08661\", 0, 1600))",
+      "print(passage(\"qasper_1611_08661\", 20800, 1600))"
+    ],
+    "source_text_sha256": "b2488f66f01063373b4604dbb80a6a4deef06a86192603117c7da27f3945f597",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "8aa1ae17bee4a5a85ac2f0826122da51856b45979aeddaa704db718def7d536b",
+  "inspected_passage_windows": [
+    {
+      "start": 0,
+      "end": 1600
+    },
+    {
+      "start": 20800,
+      "end": 22400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "812301f12edd263e9593399b7abff9f19de1bdee27346221e54d12e170c707f3",
+    "doc_id": "qasper_1611_08661",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1611.08661",
+    "title": "Knowledge Graph Representation with Jointly Structural and Textual Encoding",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "44f5a4523545531de7d6c45f32cb5dd39b84fcc56abe7d117795f98f7dde8c4d",
+  "research_gaps": [
+    {
+      "missing": "The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.",
+      "follow_up_query": "joint structural textual knowledge graph link prediction experimental baseline",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

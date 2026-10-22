@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "5d2f9b46-711e-49df-bf11-60eeb2de5552",
+  "question_id": "paper_2105da2691afa93f",
+  "question": "What architectural factors were investigated?",
+  "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They investigate recurrent-unit type, attention type, and sequential versus tree-based structure.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_2001_03632",
+      "start": 3765,
+      "end": 4354,
+      "quote": "We find that all the factors we tested can qualitatively affect how a model generalizes on the question formation task. These factors are the type of recurrent unit, the type of attention, and the choice of sequential vs. tree-based model structure. Even though all these factors affected the model's decision between move-main and move-first, only the use of a tree-based model can be said to impart a hierarchical bias, since this was the only model type that chose a hierarchical generalization across both of our tasks. Specific findings that support these general conclusions include:",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/2001.03632",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_2001_03632\", 3465, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_2001_03632', 'start': 3465, 'end': 5065, 'text': \"rchical generalization for only one task, this preference is likely due to task-specific factors rather than a general hierarchical bias. On the other hand, a consistent preference for hierarchical generalizations across tasks would provide converging evidence that a model has a hierarchical bias.\\n\\nWe find that all the factors we tested can qualitatively affect how a model generalizes on the question formation task. These factors are the type of recurrent unit, the type of attention, and the choice of sequential vs. tree-based model structure. Even though all these factors affected the model's decision between move-main and move-first, only the use of a tree-based model can be said to impart a hierarchical bias, since this was the only model type that chose a hierarchical generalization across both of our tasks. Specific findings that support these general conclusions include:\\n\\nGeneralization behavior is profoundly affected by the type of recurrent unit and the type of attention, and also by the interactions between these factors.\\n\\nLSTMs and GRUs have qualitatively different inductive biases. The difference appears at least partly due to the fact that the values in GRU hidden states are bounded within a particular interval BIBREF5.\\n\\nOnly a model built around the correct tree structure displayed a robust hierarchical bias across tasks. Sequentially-structured models failed to generalize hierarchically even when the input contained explicit marking of each sentence's hierarchical structure.\\n\\nOverall, we conclude that many factors can qualitatively affect a model's inductive b\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_2001_03632\", 40000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_2001_03632', 'start': 40000, 'end': 41600, 'text': 's approach is also not very viable. However, it is possible that further secondary tasks would bring further gains, making this approach more effective.\\n\\nA final option is to use more interpretable architectures with explicit hierachical structure. Our results suggest that this approach is the most viable, as it yielded models that reliably generalized hierarchically. However, this approach only worked when the architectural bias was augmented with rich assumptions about the input to the learner, namely that it provided correct hierarchical parses for all sentences. We leave for future work an investigation of how to effectively use tree-based models without providing correct parses.\\n\\nFor helpful comments we thank Joe Pater, Paul Smolensky, the JHU Computation and Psycholinguistics lab, the JHU Neurosymbolic Computation lab, the Computational Linguistics at Yale (CLAY) lab, the anonymous reviewers, and audiences at the University of Pavia Center for Neurocognition, Epistemology, and Theoretical Syntax, the Penn State Dept. of Computer Science and Engineering, and the MIT Dept. of Brain and Cognitive Sciences. Any errors are our own.\\n\\nThis material is based upon work supported by the NSF Graduate Research Fellowship Program under Grant No. 1746891, and by NSF Grant Nos. BCS-1920924 and BCS-1919321. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation. Our experiments were conducted with resources from the Maryland Advanced Research Computing C'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They investigate recurrent-unit type, attention type, and sequential versus tree-based structure. CITATIONS: [\"qasper_2001_03632\"] EVIDENCE: [{\"doc_id\": \"qasper_2001_03632\", \"start\": 3765, \"end\": 4354}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_2001_03632",
+    "windows": [
+      {
+        "start": 3465,
+        "end": 5065
+      },
+      {
+        "start": 40000,
+        "end": 41600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_2001_03632\", 3465, 1600))",
+      "print(passage(\"qasper_2001_03632\", 40000, 1600))"
+    ],
+    "source_text_sha256": "019d79895afc54ea8c31b1d467cf8d58031beb354784ec7171cfb23ed75b180d",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "c9e4d2d0d0bbada0f15039f09bf380fb753b3400744befbc03040ce6d36dcfa7",
+  "inspected_passage_windows": [
+    {
+      "start": 3465,
+      "end": 5065
+    },
+    {
+      "start": 40000,
+      "end": 41600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "84f719d25575477468392f4c876bf2cded38a84e9e85b8af3e8ee4501c7ef889",
+    "doc_id": "qasper_2001_03632",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "2001.03632",
+    "title": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a3bf424715137f87769a4fcdc0fb429dda7e89fb372b7423901157ec4b0d262f",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

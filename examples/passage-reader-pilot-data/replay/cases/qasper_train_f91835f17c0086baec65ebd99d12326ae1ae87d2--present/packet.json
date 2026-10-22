@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "1e54a815-dff3-4b03-b7a0-f012c0855bbb",
+  "question_id": "paper_bd56efab2fb6f604",
+  "question": "How do they obtain parsed source sentences?",
+  "corpus_hash": "c507d855a3e61881b54035a9dcaf725dfec4e2be59cfed6c50d5f30d6c727861",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They use Stanford CoreNLP to produce binary constituency parses and linearize them.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1808_10267",
+      "start": 5804,
+      "end": 6343,
+      "quote": "We use an off-the-shelf parser, in this case Stanford CoreNLP BIBREF11 , to create binary constituency parses. These parses are linearized as shown in Table TABREF6 . We tokenize the opening parentheses with the node label (so each node label begins with a parenthesis) but keep the closing parentheses separate from the words they follow. For our task, the parser failed on one training sentence of 5.9 million, which we discarded, and succeeded on all test sentences. It took roughly 16 hours to parse the 5.9 million training sentences.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1808.10267",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Multi-Source Syntactic Neural Machine Translation",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1808_10267\", 5504, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1808_10267', 'start': 5504, 'end': 7104, 'text': 'd for incorporating source syntax into NMT. This method makes use of linearized source parses; we describe these parses in section SECREF5 . Throughout this paper, we refer to standard sentences that do not contain any explicit syntactic information as sequential; see Table TABREF6 for an example.\\n\\nWe use an off-the-shelf parser, in this case Stanford CoreNLP BIBREF11 , to create binary constituency parses. These parses are linearized as shown in Table TABREF6 . We tokenize the opening parentheses with the node label (so each node label begins with a parenthesis) but keep the closing parentheses separate from the words they follow. For our task, the parser failed on one training sentence of 5.9 million, which we discarded, and succeeded on all test sentences. It took roughly 16 hours to parse the 5.9 million training sentences.\\n\\nFollowing sennrich2015neural, our networks operate at the subword level using byte pair encoding (BPE) with a shared vocabulary on the source and target sides. However, the parser operates at the word level. Therefore, we parse then break into subwords, so a leaf may have multiple tokens without internal structure.\\n\\nThe proposed method is tested using both lexicalized and unlexicalized parses. In unlexicalized parses, we remove the words, keeping only the node labels and the parentheses. In lexicalized parses, the words are included. Table TABREF6 shows an example of the three source sentence formats: sequential, lexicalized parse, and unlexicalized parse. Note that the lexicalized parse is significantly longer than the other versions.\\n\\nWe propose a'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1808_10267\", 11200, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1808_10267', 'start': 11200, 'end': 12800, 'text': 'ere every source sentence is “( )”.\\n\\nThe parse2seq system fails when given only sequential source data. On the other hand, both multi-source systems perform reasonably well without parsed data, although the BLEU scores are worse than multi-source with parsed data.\\n\\nFor models that use source-side linearized parses (multi-source and parse2seq), the source sequences are significantly longer than for the seq2seq baseline. Since NMT already performs relatively poorly on long sentences BIBREF0 , adding linearized source parses may exacerbate this issue. To detect whether this occurs, we calculate BLEU by sentence length.\\n\\nWe bucket the sentences in newstest2017 by source sentence length. We then compute BLEU scores for each bucket for the seq2seq and parse2seq baselines and the lexicalized multi-source system. The results are in Figure FIGREF15 .\\n\\nIn line with previous work on NMT on long sentences BIBREF0 , BIBREF8 , we see a significant deterioration in BLEU for longer sentences for all systems. In particular, although the parse2seq model outperformed the seq2seq model overall, it does worse than seq2seq for sentences containing more than 30 words. This indicates that parse2seq performance does indeed suffer due to its long sequences. On the other hand, the multi-source system outperforms the seq2seq baseline for all sentence lengths and does particularly well for sentences with over 50 words. This may be because the multi-source system has both sequential and parsed input, so it can rely more on sequential input for very long sentences.\\n\\nIn this paper, we presented a multi-so'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They use Stanford CoreNLP to produce binary constituency parses and linearize them. CITATIONS: [\"qasper_1808_10267\"] EVIDENCE: [{\"doc_id\": \"qasper_1808_10267\", \"start\": 5804, \"end\": 6343}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1808_10267",
+    "windows": [
+      {
+        "start": 5504,
+        "end": 7104
+      },
+      {
+        "start": 11200,
+        "end": 12800
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1808_10267\", 5504, 1600))",
+      "print(passage(\"qasper_1808_10267\", 11200, 1600))"
+    ],
+    "source_text_sha256": "950ec6756cebb5cc8c42d24fb119d97db8f8b3ff9c27e2c931fda7543be11ce7",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "df69bdd1e15fed20fd58a5abcbffc6260d67158f08305034f6bf3fdb92cd6608",
+  "inspected_passage_windows": [
+    {
+      "start": 5504,
+      "end": 7104
+    },
+    {
+      "start": 11200,
+      "end": 12800
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "c507d855a3e61881b54035a9dcaf725dfec4e2be59cfed6c50d5f30d6c727861",
+    "doc_id": "qasper_1808_10267",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1808.10267",
+    "title": "Multi-Source Syntactic Neural Machine Translation",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "135dc4ae302c4cc8900550981940f509233fbc5f557a403fda75c6d81ab97180",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

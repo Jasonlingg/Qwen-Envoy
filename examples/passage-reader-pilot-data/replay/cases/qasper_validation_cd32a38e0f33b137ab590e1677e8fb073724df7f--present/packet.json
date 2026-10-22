@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "77d0c19c-f946-4f69-b88e-50b9438f2d51",
+  "question_id": "paper_e6bb1672b656389f",
+  "question": "Which languages are explored in this paper?",
+  "corpus_hash": "8c347c859419858d79ccfe46e4d70068ac911cfd7f20c948c8869a843adfb8af",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1707_05236",
+      "start": 8658,
+      "end": 9373,
+      "quote": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1707.05236",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Artificial Error Generation with Machine Translation and Syntactic Patterns",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1707_05236\", 8358, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1707_05236', 'start': 8358, 'end': 9958, 'text': 'ability distribution for each token. The model is optimised by minimising categorical cross-entropy with respect to the correct labels. We use AdaDelta BIBREF15 for calculating an adaptive learning rate during training, which accounts for a higher baseline performance compared to previous results.\\n\\nWe trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data.\\n\\nWe evaluated our detection models on three benchmarks: the FCE test data (41K tokens) and the two alternative annotations of the CoNLL 2014 Shared Task dataset (30K tokens) BIBREF3 . Each artificial error generation system was used to generate 3 different versions of the artificial data, which were then combined with the original annotated dataset and used for training an error detection system. Table TABREF1 contains example sentences from the error generation systems, highlighting each of the edits that are marked as errors.\\n\\nThe error detection results can be seen in Table '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1707_05236\", 12800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1707_05236', 'start': 12800, 'end': 14400, 'text': 'of the same sentences likely assists in learning a discriminative model.\\n\\nOur work builds on prior research into AEG. Brockett2006 constructed regular expressions for transforming correct sentences to contain noun number errors. Rozovskaya2010a learned confusion sets from an annotated corpus in order to generate preposition errors. Foster2009 devised a tool for generating errors for different types using patterns provided by the user or collected automatically from an annotated corpus. However, their method uses a limited number of edit operations and is thus unable to generate complex errors. Cahill2013 compared different training methodologies and showed that artificial errors helped correct prepositions. Felice2014a learned error type distributions for generating five types of errors, and the system in Section SECREF3 is an extension of this model. While previous work focused on generating a specific subset of error types, we explored two holistic approaches to AEG and showed that they are able to significantly improve error detection performance.\\n\\nThis paper investigated two AEG methods, in order to create additional training data for error detection. First, we explored a method using textual patterns learned from an annotated corpus, which are used for inserting errors into correct input text. In addition, we proposed formulating error generation as an MT framework, learning to translate from grammatically correct to incorrect sentences.\\n\\nThe addition of artificial data to the training process was evaluated on three error detection annotations, using the FCE and CoNLL '}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source. CITATIONS: [\"qasper_1707_05236\"] EVIDENCE: [{\"doc_id\": \"qasper_1707_05236\", \"start\": 8658, \"end\": 9373}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1707_05236",
+    "windows": [
+      {
+        "start": 8358,
+        "end": 9958
+      },
+      {
+        "start": 12800,
+        "end": 14400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1707_05236\", 8358, 1600))",
+      "print(passage(\"qasper_1707_05236\", 12800, 1600))"
+    ],
+    "source_text_sha256": "d9136688d14984ad532eab14454b7226be34e0bb51b31414c95fc363607dab79",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "5fc3938a55c4424f0ec259cc2acaf94dabf046aafac94593961fa48b8b0825a7",
+  "inspected_passage_windows": [
+    {
+      "start": 8358,
+      "end": 9958
+    },
+    {
+      "start": 12800,
+      "end": 14400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "8c347c859419858d79ccfe46e4d70068ac911cfd7f20c948c8869a843adfb8af",
+    "doc_id": "qasper_1707_05236",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1707.05236",
+    "title": "Artificial Error Generation with Machine Translation and Syntactic Patterns",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "7bb924e6bd6d6e592a084fd0d87e82e39743360444b6cdecdee5bed36f49983e",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+  "candidate_answer": "They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1905_10238",
+      "title": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution",
+      "start": 13044,
+      "end": 13754,
+      "quote": "The CoNLL-2012 shared task BIBREF21 corpus is used as the evaluation dataset, which is selected from the Ontonotes 5.0. Following conventional approaches BIBREF9 , BIBREF11 , for each pronoun in the document, we consider candidate $n$ from the previous two sentences and the current sentence. For pronouns, we consider two types of them following BIBREF9 , i.e., third personal pronoun (she, her, he, him, them, they, it) and possessive pronoun (his, hers, its, their, theirs). Table 1 reports the number of the two type pronouns and the overall statistics for the experimental dataset. According to our selection range of candidate $n$ , on average, each pronoun has 4.6 candidates and 1.3 correct references.",
+      "arxiv_id": "1905.10238",
+      "source_url": "https://arxiv.org/abs/1905.10238",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+    "doc_id": "qasper_1905_10238",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1905.10238",
+    "title": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "69e57318a582e4d06ca48b040fc79c246dd3ab3e9c4b60893dfe2b513404383b",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1905_10238",
+    "windows": [
+      {
+        "start": 12744,
+        "end": 14344
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1905_10238\", 12744, 1600))",
+      "print(passage(\"qasper_1905_10238\", 25600, 1600))"
+    ],
+    "source_text_sha256": "1164b7931c21482fa0f1613aa9ee196a76c7899fecacf8bee310c6f4c31f848e",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 12744,
+      "end": 14344
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

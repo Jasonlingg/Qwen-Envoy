@@ -1,11 +1,16 @@
 # Proposed passage-reader SFT pilot
 
-Status: data/pilot design, **not a training launch**. No new checkpoint has been
-trained. The frozen execution baseline is `cce82c2`; prompts, tools, retrieval,
+Status: reviewed local data prepared, **not a training launch**. No new checkpoint
+has been trained. [Actual data and Docker receipts](../examples/passage-reader-pilot-data/README.md)
+freeze 24 training trajectories on 12 papers and 12 separate development episodes
+on six papers. Source review is implementing-assistant/model-assisted, not human.
+The frozen execution baseline is `cce82c2`; prompts, tools, retrieval,
 source-inspection rules, four-action limit and decoding remain unchanged.
 The [V5 alignment audit](../examples/reader-training-audit/README.md) motivates
-this proposal. Actual question IDs, paper IDs, source hashes and reviewed targets
-must be frozen in a data manifest before this becomes an executable experiment.
+this proposal. Actual question IDs, paper IDs, source hashes, exclusions and
+reviewed targets
+are now frozen in the [export manifest](../data/sft/passage-reader-pilot-v1/manifest.json)
+and linked source bundle. A paid/training budget remains unapproved.
 
 ## What we already learned
 
@@ -123,9 +128,18 @@ before claiming trained Qwen improved or replacing the deployed checkpoint.
 ## Current budget and readiness
 
 **Current paid request allowance: zero. GPU activations: zero.** This document
-authorizes no training, teacher API or inference job. There is no new trained
-candidate, selected data manifest, complete exclusion registry, reviewed dataset,
-or approved GPU/inference budget yet. Those are explicit readiness gates.
+authorizes no training, teacher API or inference job. The local data gates now
+pass: 213 historical files inventoried, 956 papers and
+1,370 question IDs excluded, 13 source-review pairs rejected before any model
+outcomes, all 36 accepted demonstrations replayed in Docker, and all 72 training
+action prefixes/masks checked with the pinned cached tokenizer. The 3,018
+supervised tokens are approximately 60% present and 40% missing despite equal
+trajectory counts. Development references are scoring-only, excluded from the
+training export. Independent human review remains null. The registry covers
+declared workspace history, not unknown remote jobs or pretraining; strict
+re-export needs historical local files that are not all redistributed.
+There is no new trained candidate or approved GPU/inference budget. Fixed-action
+replay measures compatibility, not a model's action choices or learning.
 
 Before any later paid attempt, freeze the final data and implementation, read
 current resource/pricing information, and specify the request/token, active-time

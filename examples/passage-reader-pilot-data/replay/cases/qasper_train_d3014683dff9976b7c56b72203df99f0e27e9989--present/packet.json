@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "c55d7a6a-1fdd-4aba-8a72-0db69d75b309",
+  "question_id": "paper_c27c24a8d282ba2a",
+  "question": "What evaluation metrics did they use?",
+  "corpus_hash": "ca1c5a8c758a3bec7ae859f940c2a2bb1adf0cfa24eee6334aa3921f85f6276d",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1911_03058",
+      "start": 10033,
+      "end": 10705,
+      "quote": "Given the mapped embedding spaces, the translations are retrieved using a distance metric, with Cross-Lingual Similarity Scaling BIBREF12 as the most common and best performing in the literature. Intuitively, CSLS decreases the scores of pairs that lie in dense areas, increasing the scores of rarer words (which are harder to align). The retrieved pairs are compared to the gold standard and evaluated using precision at $k$ (P@$k$, evaluating how often the correct translation is within the $k$ retrieved nearest neighbours of the query). Throughout this work we report P@1, which is equivalent to accuracy, but we also provide results with P@5 and P@10 in the Appendix.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1911.03058",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Should All Cross-Lingual Embeddings Speak English?",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1911_03058\", 8000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1911_03058', 'start': 8000, 'end': 9600, 'text': 'nguages, and also follows an iterative refinement approach.\\n\\nSimilar to BIBREF19, BIBREF20 note that it is important to use all $N^2$ language pairs when optimizing multilingual alignments, rather than just the $N-1$ pairs between the hub and all other languages, and propose a model (UMH) that implements this intuition within a Wasserstein-Procrustes approach. Even though the architecture and modeling approach of MAT+MPSR and of UMH are not the same, the two methods are conceptually similar, as in both cases a language is chosen as the hub, and $N-1$ mappings for the other languages are learned. In either case, English is by default selected to be the hub. The only exception is the study of triplets alignments in BIBREF20, where Spanish is used as the hub for the Spanish–French–Portuguese triplet, although the authors mention that they found little differences due the choice of the hub, in contrast to our general findings.\\n\\nOther than MAT+MPSR and UMH, another unsupervised multilingual approach is that of BIBREF21, who propose to incrementally align multiple languages by adding each new language as a hub. We decided, though, against comparing to this method, because (a) their method requires learning $\\\\mathcal {O}(N^2)$ mappings for relatively small improvements and (b) the order in which the languages are added is an additional hyperparameter that would explode the experimental space.\\n\\nOne of the most common downstream evaluation tasks for the learned cross-lingual word mappings is Lexicon Induction (LI), the task of retrieving the most appropriate word-level translation f'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1911_03058\", 9733, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1911_03058', 'start': 9733, 'end': 11333, 'text': 'anguage pairs, with the MUSE dictionaries BIBREF12 most often used, providing word translations between English (En) and 48 other high- to mid-resource languages, as well as on all 30 pairs among 6 very similar Romance and Germanic languages (English, French, German, Spanish, Italian, Portuguese).\\n\\nGiven the mapped embedding spaces, the translations are retrieved using a distance metric, with Cross-Lingual Similarity Scaling BIBREF12 as the most common and best performing in the literature. Intuitively, CSLS decreases the scores of pairs that lie in dense areas, increasing the scores of rarer words (which are harder to align). The retrieved pairs are compared to the gold standard and evaluated using precision at $k$ (P@$k$, evaluating how often the correct translation is within the $k$ retrieved nearest neighbours of the query). Throughout this work we report P@1, which is equivalent to accuracy, but we also provide results with P@5 and P@10 in the Appendix.\\n\\nWith this work we challenge the standard practices in learning cross-lingual word embeddings. We empirically showed that the choice of the hub language is an important parameter that affects lexicon induction performance in both bilingual (between distant languages) and multilingual settings. More importantly, we hope that by providing new dictionaries and baseline results on several language pairs, we will stir the community towards evaluating all methods in challenging scenarios that include under-represented language pairs. Towards this end, our analysis provides insights and general directions for stronger baseline'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix. CITATIONS: [\"qasper_1911_03058\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_03058\", \"start\": 10033, \"end\": 10705}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1911_03058",
+    "windows": [
+      {
+        "start": 8000,
+        "end": 9600
+      },
+      {
+        "start": 9733,
+        "end": 11333
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1911_03058\", 8000, 1600))",
+      "print(passage(\"qasper_1911_03058\", 9733, 1600))"
+    ],
+    "source_text_sha256": "d80470381d56df48b0e213a3cbc1c03f5ef40aa657b1bea0edf019964bd290d3",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "6a39445633ac9bb08d0022de18bf1ef4b4edf6804fe7d1de0a769c0689196d99",
+  "inspected_passage_windows": [
+    {
+      "start": 8000,
+      "end": 9600
+    },
+    {
+      "start": 9733,
+      "end": 11333
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "ca1c5a8c758a3bec7ae859f940c2a2bb1adf0cfa24eee6334aa3921f85f6276d",
+    "doc_id": "qasper_1911_03058",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1911.03058",
+    "title": "Should All Cross-Lingual Embeddings Speak English?",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "40d10fd1739054bf06b97f0f551032dd115b04b00b1956fea653e9cf50a04e92",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

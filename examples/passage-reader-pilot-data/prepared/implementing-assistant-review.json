@@ -1,0 +1,737 @@
+{
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "implementing Codex assistant; annotation-assisted drafting and full selected-text source review; not independent human review",
+  "reviewed_at": "2026-10-22T21:29:49.324017+00:00",
+  "cases_sha256": "c89af678ff1016eda9a68d38c4578c9bb97b3df94c9b32fdaee4b698a839b2a2",
+  "rows": [
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--present",
+      "case_sha256": "03ff43deefb531e9cf2dc90665d77dda09d358907eef146c6f358ef2d04adef7",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph names both corpora and direction. Both missing windows lack corpus identities.",
+      "final_action": "SUBMIT: They use KFTT and BTEC for English-to-Japanese translation. CITATIONS: [\"qasper_1606_02006\"] EVIDENCE: [{\"doc_id\": \"qasper_1606_02006\", \"start\": 14341, \"end\": 14796}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1606_02006",
+          "start": 14341,
+          "end": 14796,
+          "quote": "Dataset: We perform experiments on two widely-used tasks for the English-to-Japanese language pair: KFTT BIBREF12 and BTEC BIBREF13 . KFTT is a collection of Wikipedia article about city of Kyoto and BTEC is a travel conversation corpus. BTEC is an easier translation task than KFTT, because KFTT covers a broader domain, has a larger vocabulary of rare words, and has relatively long sentences. The details of each corpus are depicted in Table TABREF19 ."
+        }
+      ],
+      "requested_fact_review": "They use KFTT and BTEC for English-to-Japanese translation."
+    },
+    {
+      "case_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--missing",
+      "case_sha256": "b926c074bec5fc54bb3fc0f93cceb50f119259f8ad0a9afe55e563a6d6b1c979",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph names both corpora and direction. Both missing windows lack corpus identities.",
+      "final_action": "submit_gap(missing=\"The excerpts discuss the translation method but do not name the two experimental corpora.\", follow_up_query=\"English Japanese translation experimental datasets corpora\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1606_02006",
+          "start": 0,
+          "end": 600,
+          "quote": "Incorporating Discrete Translation Lexicons into Neural Machine Translation\n\nNeural machine translation (NMT) often makes mistakes in translating low-frequency content words that are essential to understanding the meaning of the sentence. We propose a method to alleviate this problem by augmenting NMT systems with discrete translation lexicons that efficiently encode translations of these low-frequency words. We describe a method to calculate the lexicon probability of the next word in the translation candidate by using the attention vector of the NMT model to select which source word lexical "
+        },
+        {
+          "doc_id": "qasper_1606_02006",
+          "start": 24000,
+          "end": 24600,
+          "quote": "riate words in the target vocabulary BIBREF10 , BIBREF29 according to a lexicon similar to the one used in this work. In contrast to our work, these only handle unknown words and do not incorporate information from the lexicon in the learning procedure.\n\nThere have also been other approaches that incorporate models that learn when to copy words as-is into the target language BIBREF30 , BIBREF31 , BIBREF32 . These models are similar to the linear approach of § UID10 , but are only applicable to words that can be copied as-is into the target language. In fact, these models can be thought of as a"
+        }
+      ],
+      "requested_fact_review": "The excerpts discuss the translation method but do not name the two experimental corpora."
+    },
+    {
+      "case_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--present",
+      "case_sha256": "ed06a2d703140d88774db47284b42da6f4d1b9d40a605f9b688519f356a2b235",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly binds Degen, Switchboard, some, and ratings. Missing excerpts describe ratings but do not identify Switchboard.",
+      "final_action": "SUBMIT: They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings. CITATIONS: [\"qasper_1910_14254\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14254\", \"start\": 4428, \"end\": 5350}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1910_14254",
+          "start": 4428,
+          "end": 5350,
+          "quote": "We used the annotated dataset reported by degen2015investigating, a dataset of the utterances from the Switchboard corpus of telephone dialogues BIBREF21 that contain the word some. The dataset consists of 1,362 unique utterances with a noun phrase containing some (some-NP). For each example with a some-NP, degen2015investigating collected inference strength ratings from at least 10 participants recruited on Amazon's Mechanical Turk. Participants saw both the target utterance and ten utterances from the preceding discourse context. They then rated the similarity between the original utterance like (UNKREF8) and an utterance in which some was replaced with some, but not all like (UNKREF9), on a 7-point Likert scale with endpoints labeled “very different meaning” (1) and “same meaning” (7). Low similarity ratings thus indicate low inference strength, and high similarity ratings indicate high inference strength."
+        }
+      ],
+      "requested_fact_review": "They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings."
+    },
+    {
+      "case_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--missing",
+      "case_sha256": "0693b2e0c0cbd7062529ddfc47c2deeda69435aae501e91863aa3bfe71f2b79a",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly binds Degen, Switchboard, some, and ratings. Missing excerpts describe ratings but do not identify Switchboard.",
+      "final_action": "submit_gap(missing=\"The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source.\", follow_up_query=\"scalar inference strength annotated dataset corpus source\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1910_14254",
+          "start": 0,
+          "end": 600,
+          "quote": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences\n\nThe strength of pragmatic inferences systematically depends on linguistic and contextual cues. For example, the presence of a partitive construction increases the strength of a so-called scalar inference: humans perceive the inference that Chris did not eat all of the cookies to be stronger after hearing \"Chris ate some of the cookies\" than after hearing the same utterance without a partitive, \"Chris ate some cookies\". In this work, we explore to what extent it is possible to learn associations between linguis"
+        },
+        {
+          "doc_id": "qasper_1910_14254",
+          "start": 28800,
+          "end": 29400,
+          "quote": "recise theories of pragmatic language use. Our goal here was to investigate whether neural networks can learn associations for already established linguistic cues but it would be equally interesting to investigate whether such models could be used to discover new cues, which could then be verified in experimental and corpus work, potentially providing a novel model-driven approach to experimental and formal pragmatics.\n\nFigure FIGREF44 shows the learning curves averaged over the 5 cross-validation tuning runs for models using different word embeddings. As these plots show, the attention layer "
+        }
+      ],
+      "requested_fact_review": "The excerpts describe inference-strength ratings but do not identify the annotated corpus or its source."
+    },
+    {
+      "case_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--present",
+      "case_sha256": "db28de610332cd6d6f3ff814fc1021d7cc5b1fab2ea5a903431cf3f6bb54e80c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph states overall proportion correct, 67,000 pairs, and GPT-2 highest. Missing excerpts cover modeling/evaluation methods without the overall ranking.",
+      "final_action": "SUBMIT: GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs. CITATIONS: [\"qasper_1912_00582\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00582\", \"start\": 16131, \"end\": 16818}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_00582",
+          "start": 16131,
+          "end": 16818,
+          "quote": "An LM's overall performance on *X can be measured simply by taking the proportion of correct predictions across the 67,000 minimal pairs from all paradigms. GPT-2 achieves the highest score and the $n$-gram the lowest. Transformer-XL and the LSTM LM perform in the middle, and at roughly the same level as each other. All models perform well below estimated human agreement (as described in Section SECREF11). The $n$-gram model's poor overall performance confirms *X is not solvable from co-occurrence information alone. Rather, success at *X is driven by the more abstract features learned by neural networks. There are no categories in which the $n$-gram approaches human performance."
+        }
+      ],
+      "requested_fact_review": "GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs."
+    },
+    {
+      "case_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--missing",
+      "case_sha256": "0f38c1345cb66786ff173efa8ace563e5fbf0e047e9e87814a103d8af789b9f2",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph states overall proportion correct, 67,000 pairs, and GPT-2 highest. Missing excerpts cover modeling/evaluation methods without the overall ranking.",
+      "final_action": "submit_gap(missing=\"The excerpts do not establish which model has the highest overall benchmark accuracy.\", follow_up_query=\"language model minimal pairs overall accuracy model comparison\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_00582",
+          "start": 3200,
+          "end": 3800,
+          "quote": "ts below human performance overall.\n\nWe conduct additional experiments to investigate the effect of training size on LSTM model performance on *X . We show that learning trajectories differ, sometimes drastically, across different paradigms in the dataset, with phenomena such as anaphor agreement showing consistent improvement as training size increases, and other phenomena such as NPIs and extraction islands remaining near chance despite increases in training size. We also compare overall sentence probability to two other built-in metrics coded on *X and find that the chosen metric changes ho"
+        },
+        {
+          "doc_id": "qasper_1912_00582",
+          "start": 28800,
+          "end": 29400,
+          "quote": "nces cannot be compatible with both prefix methods, and that a pair may be compatible with the full-sentence method but neither prefix method.\n\nFor both prefix methods, it is crucial that the grammaticality of the sentence is unambiguously predictable from the critical word, but not sooner. With simple LM probabilities, the probabilities of the rest of the word tokens in the sentence also affect the performance. For example, a model may predict that `The cat ate the mouse' is more likely than `The cat eaten the mouse' without correctly predicting that $P(\\emph {ate}|\\emph {the cat}) > P(\\emph "
+        }
+      ],
+      "requested_fact_review": "The excerpts do not establish which model has the highest overall benchmark accuracy."
+    },
+    {
+      "case_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--present",
+      "case_sha256": "b5fb55c84d003762842f17d73f91f4de4893a49eb3390d9572cc44b6af2083a2",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph names the Stanford CoreNLP parser and binary linearized constituency representation. Missing windows do not identify the parser.",
+      "final_action": "SUBMIT: They use Stanford CoreNLP to produce binary constituency parses and linearize them. CITATIONS: [\"qasper_1808_10267\"] EVIDENCE: [{\"doc_id\": \"qasper_1808_10267\", \"start\": 5804, \"end\": 6343}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1808_10267",
+          "start": 5804,
+          "end": 6343,
+          "quote": "We use an off-the-shelf parser, in this case Stanford CoreNLP BIBREF11 , to create binary constituency parses. These parses are linearized as shown in Table TABREF6 . We tokenize the opening parentheses with the node label (so each node label begins with a parenthesis) but keep the closing parentheses separate from the words they follow. For our task, the parser failed on one training sentence of 5.9 million, which we discarded, and succeeded on all test sentences. It took roughly 16 hours to parse the 5.9 million training sentences."
+        }
+      ],
+      "requested_fact_review": "They use Stanford CoreNLP to produce binary constituency parses and linearize them."
+    },
+    {
+      "case_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--missing",
+      "case_sha256": "ec00caceb4f0c07bf6df9b6f70583ebc129729a4b2666f1a10389110eaf5c446",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph names the Stanford CoreNLP parser and binary linearized constituency representation. Missing windows do not identify the parser.",
+      "final_action": "submit_gap(missing=\"The excerpts describe using parsed input but do not identify how the source parses are obtained.\", follow_up_query=\"source sentence binary constituency parser linearization\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1808_10267",
+          "start": 0,
+          "end": 600,
+          "quote": "Multi-Source Syntactic Neural Machine Translation\n\nWe introduce a novel multi-source technique for incorporating source syntax into neural machine translation using linearized parses. This is achieved by employing separate encoders for the sequential and parsed versions of the same source sentence; the resulting representations are then combined using a hierarchical attention mechanism. The proposed model improves over both seq2seq and parsed baselines by over 1 BLEU on the WMT17 English-German task. Further analysis shows that our multi-source syntactic model is able to translate successfully"
+        },
+        {
+          "doc_id": "qasper_1808_10267",
+          "start": 11200,
+          "end": 11800,
+          "quote": "ere every source sentence is “( )”.\n\nThe parse2seq system fails when given only sequential source data. On the other hand, both multi-source systems perform reasonably well without parsed data, although the BLEU scores are worse than multi-source with parsed data.\n\nFor models that use source-side linearized parses (multi-source and parse2seq), the source sequences are significantly longer than for the seq2seq baseline. Since NMT already performs relatively poorly on long sentences BIBREF0 , adding linearized source parses may exacerbate this issue. To detect whether this occurs, we calculate B"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe using parsed input but do not identify how the source parses are obtained."
+    },
+    {
+      "case_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--present",
+      "case_sha256": "347d91bcc1b3658433f2b7b8c75954ffecd89bbcc075f65f633f4cd0dec4b2a5",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists three factors. Missing abstract supplies two, not attention; gap acknowledges partial evidence rather than claiming no architecture information.",
+      "final_action": "SUBMIT: They investigate recurrent-unit type, attention type, and sequential versus tree-based structure. CITATIONS: [\"qasper_2001_03632\"] EVIDENCE: [{\"doc_id\": \"qasper_2001_03632\", \"start\": 3765, \"end\": 4354}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_2001_03632",
+          "start": 3765,
+          "end": 4354,
+          "quote": "We find that all the factors we tested can qualitatively affect how a model generalizes on the question formation task. These factors are the type of recurrent unit, the type of attention, and the choice of sequential vs. tree-based model structure. Even though all these factors affected the model's decision between move-main and move-first, only the use of a tree-based model can be said to impart a hierarchical bias, since this was the only model type that chose a hierarchical generalization across both of our tasks. Specific findings that support these general conclusions include:"
+        }
+      ],
+      "requested_fact_review": "They investigate recurrent-unit type, attention type, and sequential versus tree-based structure."
+    },
+    {
+      "case_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--missing",
+      "case_sha256": "a4e1d38e64667789b1048b3863ce0d751a0a01ffca44e3747cc1b4b3ee9226dc",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists three factors. Missing abstract supplies two, not attention; gap acknowledges partial evidence rather than claiming no architecture information.",
+      "final_action": "submit_gap(missing=\"The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated.\", follow_up_query=\"experimental architectural factors investigated complete list\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_2001_03632",
+          "start": 0,
+          "end": 600,
+          "quote": "Does syntax need to grow on trees? Sources of hierarchical inductive bias in sequence-to-sequence networks\n\nLearners that are exposed to the same training data might generalize differently due to differing inductive biases. In neural network models, inductive biases could in theory arise from any aspect of the model architecture. We investigate which architectural factors affect the generalization behavior of neural sequence-to-sequence models trained on two syntactic tasks, English question formation and English tense reinflection. For both tasks, the training set is consistent with a general"
+        },
+        {
+          "doc_id": "qasper_2001_03632",
+          "start": 40000,
+          "end": 40600,
+          "quote": "s approach is also not very viable. However, it is possible that further secondary tasks would bring further gains, making this approach more effective.\n\nA final option is to use more interpretable architectures with explicit hierachical structure. Our results suggest that this approach is the most viable, as it yielded models that reliably generalized hierarchically. However, this approach only worked when the architectural bias was augmented with rich assumptions about the input to the learner, namely that it provided correct hierarchical parses for all sentences. We leave for future work an"
+        }
+      ],
+      "requested_fact_review": "The excerpts discuss recurrent units and tree versus sequential structure, but do not establish the complete list of architectural factors investigated."
+    },
+    {
+      "case_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--present",
+      "case_sha256": "da8a47549b5934d5dc03f76afe73dde1f81644ad950fa8d9640f79d1261ca7b0",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds each dataset to its task and translation direction. Missing abstract names additional tasks and main MSCOCO task, not additional datasets.",
+      "final_action": "SUBMIT: They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering. CITATIONS: [\"qasper_2003_08897\"] EVIDENCE: [{\"doc_id\": \"qasper_2003_08897\", \"start\": 5590, \"end\": 6468}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_2003_08897",
+          "start": 5590,
+          "end": 6468,
+          "quote": "By combining both NSA and GSA, we obtain an enhanced SA module. We then construct our Normalized and Geometry-aware Self-Attention Network, namely NG-SAN, by replacing the vanilla SA modules in the encoder of the self-attention network with the proposed one. Extensive experiments on MS-COCO validates the effectiveness of our proposals. In particular, our NG-SAN establishes a new state-of-the-art on the MS-COCO evaluation sever, improving the best single-model result in terms of CIDEr from 125.5 to 128.6. To demonstrate the generality of NSA, we further present video captioning, machine translation, and visual question answering experiments on the VATEX, WMT 2014 English-to-German, and VQA-v2 datasets, respectively. On top of the strong Transformer-based baselines, our methods can consistently increase accuracies on all tasks at a negligible extra computational cost."
+        }
+      ],
+      "requested_fact_review": "They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering."
+    },
+    {
+      "case_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--missing",
+      "case_sha256": "8a4f8470201edcca31b9d0bf25523fecc271cf5f226ec341d7be55af23aba66b",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds each dataset to its task and translation direction. Missing abstract names additional tasks and main MSCOCO task, not additional datasets.",
+      "final_action": "submit_gap(missing=\"The excerpts name the three additional tasks but do not identify their experimental datasets.\", follow_up_query=\"three additional tasks video captioning translation visual question answering datasets\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_2003_08897",
+          "start": 0,
+          "end": 600,
+          "quote": "Normalized and Geometry-Aware Self-Attention Network for Image Captioning\n\nSelf-attention (SA) network has shown profound value in image captioning. In this paper, we improve SA from two aspects to promote the performance of image captioning. First, we propose Normalized Self-Attention (NSA), a reparameterization of SA that brings the benefits of normalization inside SA. While normalization is previously only applied outside SA, we introduce a novel normalization method and demonstrate that it is both possible and beneficial to perform it on the hidden activations inside SA. Second, to compens"
+        },
+        {
+          "doc_id": "qasper_2003_08897",
+          "start": 32000,
+          "end": 32600,
+          "quote": "all tasks, simply replacing the vanilla SA module with our proposed methods provides solid improvements over strong baselines.\n\nThis work was supported by National Natural Science Foundation of China (No.61922086 and No.61872366) and Beijing Natural Science Foundation (No.4192059).\n\nTo gain a better insight about the effect of the relative geometry information on attention weights, we visualize the geometric weights in GSA. Specifically, we use the content-dependent version ($\\phi ^1$) of GSA, and use a trained one-layer G-SAN model. We visualize how the geometric weight $\\phi ^1_{ij}$ between"
+        }
+      ],
+      "requested_fact_review": "The excerpts name the three additional tasks but do not identify their experimental datasets."
+    },
+    {
+      "case_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--present",
+      "case_sha256": "cc17c3edf95369f4d30f06123d21a64f9704eccabadf7ce09c4c09db977d74f8",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph states Wikipedia descriptions and filtering. Missing sections discuss entity linking/type performance, not description acquisition.",
+      "final_action": "SUBMIT: They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions. CITATIONS: [\"qasper_1701_02025\"] EVIDENCE: [{\"doc_id\": \"qasper_1701_02025\", \"start\": 30025, \"end\": 30409}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1701_02025",
+          "start": 30025,
+          "end": 30409,
+          "quote": "Adding another source: description-based embeddings. While in this paper, we focus on the contexts and names of entities, there is a textual source of information about entities in KBs which we can also make use of: descriptions of entities. We extract Wikipedia descriptions of FIGMENT entities filtering out the entities ( $\\sim $ 40,000 out of $\\sim $ 200,000) without description."
+        }
+      ],
+      "requested_fact_review": "They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions."
+    },
+    {
+      "case_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--missing",
+      "case_sha256": "f51c631bb3fdf8401c874e9887f97e99e1d65e2888ddce585e69e596a055313f",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph states Wikipedia descriptions and filtering. Missing sections discuss entity linking/type performance, not description acquisition.",
+      "final_action": "submit_gap(missing=\"The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions.\", follow_up_query=\"entity descriptions acquisition source FIGMENT\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1701_02025",
+          "start": 1600,
+          "end": 2200,
+          "quote": "tic updating and completing the entity knowledge, text resources such as news, user forums, textbooks or any other data in the form of text are important sources. Therefore, information extraction methods have been introduced to extract knowledge about entities from text. In this paper, we focus on the extraction of entity types, i.e., assigning types to – or typing – entities. Type information can help extraction of relations by applying constraints on relation arguments.\n\nWe address a problem setting in which the following are given: a KB with a set of entities $E$ , a set of types $T$ and a"
+        },
+        {
+          "doc_id": "qasper_1701_02025",
+          "start": 27200,
+          "end": 27800,
+          "quote": " AGG-FIGER and ELR, the best single-level model baseline.\n\nUnknown vs. known entities. To analyze the complementarity of character and word level representations, as well as more fine-grained comparison of our models and the baselines, we divide test entities into known entities – at least one word of the entity's name appears in a train entity – and unknown entities (the complement). There are 45,000 (resp. 15,000) known (resp. unknown) test entities.\n\nTable 2 shows that the CNN works only slightly better (by 0.3%) than NSL on known entities, but works much better on unknown entities (by 3.3%"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe entity representations but do not establish the source or acquisition of entity descriptions."
+    },
+    {
+      "case_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present",
+      "case_sha256": "c3103ff4cf6f853622693cb3d7dfb33cd49a5525d7bdc451f729cd388edcb958",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Present window explicitly describes independent 20K test sets and perplexity. Neither missing intro nor corpus-quality window names a metric. No numeric gains are inferred.",
+      "final_action": "SUBMIT: They evaluate language models by perplexity on independent test sets from the corpus sources. CITATIONS: [\"qasper_1912_00159\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_00159\", \"start\": 19351, \"end\": 19755}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_00159",
+          "start": 19351,
+          "end": 19755,
+          "quote": "Table TABREF32 shows the perplexity of the models on each of the test sets. As expected, each model performs better on the test set they have been trained on. When applied to a different test set, both see an increase in perplexity. However, the Leipzig model seems to have more trouble generalizing: its perplexity nearly doubles on the SwissCrawl test set and raises by twenty on the combined test set."
+        }
+      ],
+      "requested_fact_review": "They evaluate language models by perplexity on independent test sets from the corpus sources."
+    },
+    {
+      "case_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--missing",
+      "case_sha256": "08a509e349e3c43cb261e89170d24112b97c38c3859df22233e1c8cec95b5f4c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Present window explicitly describes independent 20K test sets and perplexity. Neither missing intro nor corpus-quality window names a metric. No numeric gains are inferred.",
+      "final_action": "submit_gap(missing=\"The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric.\", follow_up_query=\"Swiss German language modeling evaluation metric test sets\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_00159",
+          "start": 0,
+          "end": 600,
+          "quote": "Automatic Creation of Text Corpora for Low-Resource Languages from the Internet: The Case of Swiss German\n\nThis paper presents SwissCrawl, the largest Swiss German text corpus to date. Composed of more than half a million sentences, it was generated using a customized web scraping tool that could be applied to other low-resource languages as well. The approach demonstrates how freely available web pages can be used to construct comprehensive text corpora, which are of fundamental importance for natural language processing. In an experimental evaluation, we show that using the new corpus leads "
+        },
+        {
+          "doc_id": "qasper_1912_00159",
+          "start": 16000,
+          "end": 16600,
+          "quote": " described in SECREF13, no cleaning nor post-processing is applied to the sentences. This is a deliberate choice to avoid losing any information that could be pertinent for a given task or for further selection. As a result, the mean letter density is 80% and only 61% of sentences both start with an uppercase letter and end with a common punctuation mark (.!?).\n\nFinally, although we performed no human validation per se, we actively monitored the crawling process to spot problematic domains early. This allowed to blacklist some domains entirely, for example those serving embedded PDFs (impossib"
+        }
+      ],
+      "requested_fact_review": "The excerpts discuss corpus construction and quality but do not state the language-model evaluation metric."
+    },
+    {
+      "case_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--present",
+      "case_sha256": "4747f54723cb7b6753437e9a377026b688e2d7d6e4aad5285c24d5db7bd462ed",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly names evaluation dataset and parent corpus. Intro/conclusion missing windows contain no dataset identity.",
+      "final_action": "SUBMIT: They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0. CITATIONS: [\"qasper_1905_10238\"] EVIDENCE: [{\"doc_id\": \"qasper_1905_10238\", \"start\": 13044, \"end\": 13754}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1905_10238",
+          "start": 13044,
+          "end": 13754,
+          "quote": "The CoNLL-2012 shared task BIBREF21 corpus is used as the evaluation dataset, which is selected from the Ontonotes 5.0. Following conventional approaches BIBREF9 , BIBREF11 , for each pronoun in the document, we consider candidate $n$ from the previous two sentences and the current sentence. For pronouns, we consider two types of them following BIBREF9 , i.e., third personal pronoun (she, her, he, him, them, they, it) and possessive pronoun (his, hers, its, their, theirs). Table 1 reports the number of the two type pronouns and the overall statistics for the experimental dataset. According to our selection range of candidate $n$ , on average, each pronoun has 4.6 candidates and 1.3 correct references."
+        }
+      ],
+      "requested_fact_review": "They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0."
+    },
+    {
+      "case_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--missing",
+      "case_sha256": "6311d3a7a786dcb5f8b8a8047d160cf9063a97e771a622c096d6a89301045705",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly names evaluation dataset and parent corpus. Intro/conclusion missing windows contain no dataset identity.",
+      "final_action": "submit_gap(missing=\"The excerpts describe the pronoun-coreference model but do not name its evaluation dataset.\", follow_up_query=\"pronoun coreference resolution evaluation dataset experimental setup\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1905_10238",
+          "start": 0,
+          "end": 600,
+          "quote": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution\n\nLinking pronominal expressions to the correct references requires, in many cases, better analysis of the contextual information and external knowledge. In this paper, we propose a two-layer model for pronoun coreference resolution that leverages both context and external knowledge, where a knowledge attention mechanism is designed to ensure the model leveraging the appropriate source of external knowledge based on different context. Experimental results demonstrate the validity and effectiveness of our model, wher"
+        },
+        {
+          "doc_id": "qasper_1905_10238",
+          "start": 25600,
+          "end": 26200,
+          "quote": "aining data. Different from previous work, we explore the possibility of joining the two types of knowledge for pronoun coreference resolution rather than use only one of them. To the best of our knowledge, this is the first attempt that uses deep learning model to incorporate contextual information and external knowledge for pronoun coreference resolution.\n\nIn this paper, we proposed a two-layer model for pronoun coreference resolution, where the first layer encodes contextual information and the second layer leverages external knowledge. Particularly, a knowledge attention mechanism is propo"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe the pronoun-coreference model but do not name its evaluation dataset."
+    },
+    {
+      "case_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--present",
+      "case_sha256": "7260e5570546c4b2af9ac98c6c30844e40c4a8b53f84a58f1c01210f4acd0942",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds news to source and names three target domains. Missing excerpts include OpenSubtitles dialogue application; acknowledge that partial domain evidence without calling it the specificity-domain list.",
+      "final_action": "SUBMIT: For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains. CITATIONS: [\"qasper_1811_05085\"] EVIDENCE: [{\"doc_id\": \"qasper_1811_05085\", \"start\": 5245, \"end\": 5723}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1811_05085",
+          "start": 5245,
+          "end": 5723,
+          "quote": "With unsupervised domain adaptation, one has access to labeled sentence specificity in one source domain, and unlabeled sentences in all target domains. The goal is to predict the specificity of target domain data. Our source domain is news, the only domain with publicly available labeled data for training BIBREF1 . We crowdsource sentence specificity for evaluation for three target domains: Twitter, Yelp reviews and movie reviews. The data is described in Section SECREF4 ."
+        }
+      ],
+      "requested_fact_review": "For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains."
+    },
+    {
+      "case_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--missing",
+      "case_sha256": "7b7049f9d080fa1cb602cc76785e3e84e417e1fc7eb89d34d663dc2b92f0eabf",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds news to source and names three target domains. Missing excerpts include OpenSubtitles dialogue application; acknowledge that partial domain evidence without calling it the specificity-domain list.",
+      "final_action": "submit_gap(missing=\"The excerpts mention a dialogue application using OpenSubtitles but do not identify the source and three target domains for specificity prediction.\", follow_up_query=\"sentence specificity prediction source and target evaluation domains\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1811_05085",
+          "start": 0,
+          "end": 600,
+          "quote": "Domain Agnostic Real-Valued Specificity Prediction\n\nSentence specificity quantifies the level of detail in a sentence, characterizing the organization of information in discourse. While this information is useful for many downstream applications, specificity prediction systems predict very coarse labels (binary or ternary) and are trained on and tailored toward specific domains (e.g., news). The goal of this work is to generalize specificity prediction to domains where no labeled data is available and output more nuanced real-valued specificity ratings. We present an unsupervised domain adapta"
+        },
+        {
+          "doc_id": "qasper_1811_05085",
+          "start": 25600,
+          "end": 26200,
+          "quote": "type-token ratio of unigrams and bigrams. The test set for these two metrics is a random sample of 10K instances from OpenSubtitles that doesn't overlap with the training set. Clearly, filtering training data according to specificity results in more diverse responses with lower perplexity than filtering by length.\n\nWe also crowdsource human evaluation for quality; in addition, we evaluate the systems for response informativeness. Note that in our instructions, informativeness means the usefulness of information and is a distinct measure from specificity. The original training data of specifici"
+        }
+      ],
+      "requested_fact_review": "The excerpts mention a dialogue application using OpenSubtitles but do not identify the source and three target domains for specificity prediction."
+    },
+    {
+      "case_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--present",
+      "case_sha256": "948390f18fbd16a88c2f5563ee7c9530b1018a93e4ec737227e28795abf52f81",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly says pure JavaScript. A browser UI alone is not proof of implementation language; missing windows never state it.",
+      "final_action": "SUBMIT: LUWAK is implemented in pure JavaScript. CITATIONS: [\"qasper_1708_00481\"] EVIDENCE: [{\"doc_id\": \"qasper_1708_00481\", \"start\": 5326, \"end\": 5990}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1708_00481",
+          "start": 5326,
+          "end": 5990,
+          "quote": "LUWAK is implemented in pure JavaScript code, and it uses the LocalStorage of a web browser. A user does not have to install any packages except for a web browser. The only thing the user must do is to download the LUWAK software and put it in a local directory. We believe the cost of installing the tool will keep away a good amount of potential users. This philosophy follows our empirical feeling of the curse of installing required packages/libraries. Moreover, LUWAK does not need users to consider the usage and maintenance of these additional packages. That is why we are deeply committed to making LUWAK a pure client-side tool in the off-the-shelf style."
+        }
+      ],
+      "requested_fact_review": "LUWAK is implemented in pure JavaScript."
+    },
+    {
+      "case_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--missing",
+      "case_sha256": "2a360561aa0c9c40aab1a451c354b661c3e75912296c7799a296e4c28314c99b",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly says pure JavaScript. A browser UI alone is not proof of implementation language; missing windows never state it.",
+      "final_action": "submit_gap(missing=\"The excerpts describe a browser-based entity-population tool but do not explicitly state its programming language.\", follow_up_query=\"LUWAK implementation programming language client side\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1708_00481",
+          "start": 0,
+          "end": 600,
+          "quote": "A Lightweight Front-end Tool for Interactive Entity Population\n\nEntity population, a task of collecting entities that belong to a particular category, has attracted attention from vertical domains. There is still a high demand for creating entity dictionaries in vertical domains, which are not covered by existing knowledge bases. We develop a lightweight front-end tool for facilitating interactive entity population. We implement key components necessary for effective interactive entity population: 1) GUI-based dashboards to quickly modify an entity dictionary, and 2) entity highlighting on doc"
+        },
+        {
+          "doc_id": "qasper_1708_00481",
+          "start": 11200,
+          "end": 11800,
+          "quote": "ubmit Feedback button. Then, the user will see the entity dashboard with the newly added entities as shown in Figure UID13 . The user can inactivate the entity by clicking the inactivate button. The user can sort rows by column values to take a brief look at the current entity set. Also, the entity dashboard provides a search function to find an entity for action. The user can also check how entities appear in a test document. As shown in Figure UID14 , LUWAK highlights these entities in the current entity set. After the user is satisfied with the amount of the current entity set in the table,"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe a browser-based entity-population tool but do not explicitly state its programming language."
+    },
+    {
+      "case_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--present",
+      "case_sha256": "8c703f2e63e7bcdc78cccbbd361fe4af2b16cab0d5331a7a79d08d0c2e3f5245",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph specifies P@k and the three reported k values. Missing windows discuss alignments/tasks but do not state metrics.",
+      "final_action": "SUBMIT: They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix. CITATIONS: [\"qasper_1911_03058\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_03058\", \"start\": 10033, \"end\": 10705}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1911_03058",
+          "start": 10033,
+          "end": 10705,
+          "quote": "Given the mapped embedding spaces, the translations are retrieved using a distance metric, with Cross-Lingual Similarity Scaling BIBREF12 as the most common and best performing in the literature. Intuitively, CSLS decreases the scores of pairs that lie in dense areas, increasing the scores of rarer words (which are harder to align). The retrieved pairs are compared to the gold standard and evaluated using precision at $k$ (P@$k$, evaluating how often the correct translation is within the $k$ retrieved nearest neighbours of the query). Throughout this work we report P@1, which is equivalent to accuracy, but we also provide results with P@5 and P@10 in the Appendix."
+        }
+      ],
+      "requested_fact_review": "They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix."
+    },
+    {
+      "case_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--missing",
+      "case_sha256": "50705c56119b0e174261b5479f81988c02ca0b7dff390c98b0cd4309a5ea6097",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph specifies P@k and the three reported k values. Missing windows discuss alignments/tasks but do not state metrics.",
+      "final_action": "submit_gap(missing=\"The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics.\", follow_up_query=\"cross lingual lexicon induction reported evaluation metrics\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1911_03058",
+          "start": 0,
+          "end": 600,
+          "quote": "Should All Cross-Lingual Embeddings Speak English?\n\nMost of recent work in cross-lingual word embeddings is severely Anglocentric. The vast majority of lexicon induction evaluation dictionaries are between English and another language, and the English embedding space is selected by default as the hub when learning in a multilingual setting. With this work, however, we challenge these practices. First, we show that the choice of hub language can significantly impact downstream lexicon induction performance. Second, we both expand the current evaluation dictionary collection to include all langu"
+        },
+        {
+          "doc_id": "qasper_1911_03058",
+          "start": 8000,
+          "end": 8600,
+          "quote": "nguages, and also follows an iterative refinement approach.\n\nSimilar to BIBREF19, BIBREF20 note that it is important to use all $N^2$ language pairs when optimizing multilingual alignments, rather than just the $N-1$ pairs between the hub and all other languages, and propose a model (UMH) that implements this intuition within a Wasserstein-Procrustes approach. Even though the architecture and modeling approach of MAT+MPSR and of UMH are not the same, the two methods are conceptually similar, as in both cases a language is chosen as the hub, and $N-1$ mappings for the other languages are learne"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe cross-lingual lexicon-induction evaluation but do not state the reported scoring metrics."
+    },
+    {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--present",
+      "case_sha256": "9a47e0802ed1359026e5d4818c423e5252ed62d67d9212c2f93928d01319de9c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Qualified answer: the source explicitly establishes English examples; it does not justify an exhaustive only-English claim. Missing passages do not identify a language; no inference from external corpus familiarity.",
+      "final_action": "SUBMIT: The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source. CITATIONS: [\"qasper_1707_05236\"] EVIDENCE: [{\"doc_id\": \"qasper_1707_05236\", \"start\": 8658, \"end\": 9373}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 8658,
+          "end": 9373,
+          "quote": "We trained our error generation models on the public FCE training set BIBREF16 and used them to generate additional artificial training data. Grammatically correct text is needed as the starting point for inserting artificial errors, and we used two different sources: 1) the corrected version of the same FCE training set on which the system is trained (450K tokens), and 2) example sentences extracted from the English Vocabulary Profile (270K tokens).. While there are other text corpora that could be used (e.g., Wikipedia and news articles), our development experiments showed that keeping the writing style and vocabulary close to the target domain gives better results compared to simply including more data."
+        }
+      ],
+      "requested_fact_review": "The supplied evidence describes English example sentences from the English Vocabulary Profile as an error-generation source."
+    },
+    {
+      "case_id": "qasper_validation_cd32a38e0f33b137ab590e1677e8fb073724df7f--missing",
+      "case_sha256": "1793ff3e0e80a55f9174384e6dc9195d48cf75b8f20afede2d226e416989d318",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Qualified answer: the source explicitly establishes English examples; it does not justify an exhaustive only-English claim. Missing passages do not identify a language; no inference from external corpus familiarity.",
+      "final_action": "submit_gap(missing=\"The excerpts discuss error generation but do not explicitly identify the language studied.\", follow_up_query=\"automatic error generation language evaluation data\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 0,
+          "end": 600,
+          "quote": "Artificial Error Generation with Machine Translation and Syntactic Patterns\n\nShortage of available training data is holding back progress in the area of automated error detection. This paper investigates two alternative methods for artificially generating writing errors, in order to create additional resources. We propose treating error generation as a machine translation task, where grammatically correct text is translated to contain errors. In addition, we explore a system for extracting textual patterns from an annotated corpus, which can then be used to insert errors into grammatically cor"
+        },
+        {
+          "doc_id": "qasper_1707_05236",
+          "start": 12800,
+          "end": 13400,
+          "quote": "of the same sentences likely assists in learning a discriminative model.\n\nOur work builds on prior research into AEG. Brockett2006 constructed regular expressions for transforming correct sentences to contain noun number errors. Rozovskaya2010a learned confusion sets from an annotated corpus in order to generate preposition errors. Foster2009 devised a tool for generating errors for different types using patterns provided by the user or collected automatically from an annotated corpus. However, their method uses a limited number of edit operations and is thus unable to generate complex errors."
+        }
+      ],
+      "requested_fact_review": "The excerpts discuss error generation but do not explicitly identify the language studied."
+    },
+    {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--present",
+      "case_sha256": "9d3aa1d443f1ca7cead410f06aacfef361aa9c8aa428e07d27f3ecc6535e4b1e",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Citation extends past original annotation to include greedy validation-based selection. Missing windows discuss oracle ensembles/human results without the actual construction procedure.",
+      "final_action": "SUBMIT: They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance. CITATIONS: [\"qasper_1610_00956\"] EVIDENCE: [{\"doc_id\": \"qasper_1610_00956\", \"start\": 25905, \"end\": 26591}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 25905,
+          "end": 26591,
+          "quote": "The ensembles were formed by simply averaging the predictions from the constituent single models. These single models were selected using the following algorithm.\n\nWe started with the best performing model according to validation performance. Then in each step we tried adding the best performing model that had not been previously tried. We kept it in the ensemble if it did improve its validation performance and discarded it otherwise. This way we gradually tried each model once. We call the resulting model a greedy ensemble. We used the INLINEFORM0 BookTest validation dataset for this procedure.\n\nThe algorithm was offered 10 models and selected 5 of them for the final ensemble."
+        }
+      ],
+      "requested_fact_review": "They average constituent-model predictions, selecting models greedily by retaining additions that improve validation performance."
+    },
+    {
+      "case_id": "qasper_validation_09c86ef78e567033b725fc56b85c5d2602c1a7c3--missing",
+      "case_sha256": "7e36a14e04c0aed5440fdcc18f6eab44d82b5851038a3ba1a740c06819f53113",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Citation extends past original annotation to include greedy validation-based selection. Missing windows discuss oracle ensembles/human results without the actual construction procedure.",
+      "final_action": "submit_gap(missing=\"The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected.\", follow_up_query=\"BookTest ensemble construction prediction combination validation selection\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 0,
+          "end": 600,
+          "quote": "Embracing data abundance: BookTest Dataset for Reading Comprehension\n\nThere is a practically unlimited amount of natural language data available. Still, recent work in text comprehension has focused on datasets which are small relative to current computing possibilities. This article is making a case for the community to move to larger data and as a step in that direction it is proposing the BookTest, a new dataset similar to the popular Children's Book Test (CBT), however more than 60 times larger. We show that training on the new data improves the accuracy of our Attention-Sum Reader model o"
+        },
+        {
+          "doc_id": "qasper_1610_00956",
+          "start": 22400,
+          "end": 23000,
+          "quote": "Table TABREF28 . They show that a majority of questions that our system could not answer so far are in fact answerable. This suggests that 1) the original human baselines might have been underestimated, however, it might also be the case that there are some examples that can be answered by machines and not by humans; 2) there is still space for improvement.\n\nA system that would answer correctly every time when either our ensemble or human answered correctly would achieve accuracy over 92% percent on both validation and test NE datasets and over 96% on both CN datasets. Hence it still makes sen"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe ensemble performance but do not establish how predictions are combined or ensemble models are selected."
+    },
+    {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--present",
+      "case_sha256": "f936cad4b4b12d952e7cde25b41556d5a6d954d3d50627563805379357a0003c",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists text/speech/image/click. Examples are not framed as exhaustive. Missing intro supports speech only and later window describes future work, not a current supported list.",
+      "final_action": "SUBMIT: Supported interaction examples include text, speech, images, and clicks. CITATIONS: [\"qasper_1912_08904\"] EVIDENCE: [{\"doc_id\": \"qasper_1912_08904\", \"start\": 3581, \"end\": 4240}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 3581,
+          "end": 4240,
+          "quote": "The modular design of Macaw makes it relatively easy to configure a different user interface or add a new one. The current implementation of Macaw supports a command line interface as well as mobile, desktop, and web apps. In more detail, Macaw's interface can be a Telegram bot, which supports a wide range of devices and operating systems (see FIGREF4). This allows Macaw to support multi-modal interactions, such as text, speech, image, click, etc. A number of APIs for automatic speech recognition and generation have been employed to support speech interactions. Note that the Macaw's architecture and implementation allows mixed-initiative interactions."
+        }
+      ],
+      "requested_fact_review": "Supported interaction examples include text, speech, images, and clicks."
+    },
+    {
+      "case_id": "qasper_validation_6ecb69360449bb9915ac73c0a816c8ac479cbbfc--missing",
+      "case_sha256": "23e88eedfd32b3749ac2376c4c7f9cc215a7829cf1c9602d72aa684c38f04305",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly lists text/speech/image/click. Examples are not framed as exhaustive. Missing intro supports speech only and later window describes future work, not a current supported list.",
+      "final_action": "submit_gap(missing=\"The excerpts describe Macaw as multimodal and mention speech interfaces, but do not enumerate its supported modalities.\", follow_up_query=\"Macaw supported multimodal interaction input output modalities\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 0,
+          "end": 600,
+          "quote": "Macaw: An Extensible Conversational Information Seeking Platform\n\nConversational information seeking (CIS) has been recognized as a major emerging research area in information retrieval. Such research will require data and tools, to allow the implementation and study of conversational systems. This paper introduces Macaw, an open-source framework with a modular architecture for CIS research. Macaw supports multi-turn, multi-modal, and mixed-initiative interactions, and enables research for tasks such as document retrieval, question answering, recommendation, and structured data exploration. It"
+        },
+        {
+          "doc_id": "qasper_1912_08904",
+          "start": 9600,
+          "end": 10200,
+          "quote": " integration of social networks with conversational systems. For example, see the Naseri and Zamani's study on news popularity in Telegram BIBREF12.\n\nSimilar to the other modules, one can easily extend Macaw using other appropriate user interfaces.\n\nThe current implementation of Macaw lacks the following actions. We intend to incrementally improve Macaw by supporting more actions and even more advanced techniques for the developed actions.\n\n[leftmargin=*]\n\nClarification and Preference Elicitation: Asking clarifying questions has been recently recognized as a necessary component in a conversati"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe Macaw as multimodal and mention speech interfaces, but do not enumerate its supported modalities."
+    },
+    {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--present",
+      "case_sha256": "9fca1dbce9ca2426b6015d38337add8b64f7ae660f61bac139f024b84ba76d99",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph gives Spanish 84.21, Turkish 74.36, Dutch 81.77, Russian 85.62. Compare RNN accuracies, not majority baselines. Missing sections contain no complete language ranking.",
+      "final_action": "SUBMIT: Turkish has the lowest reported non-English RNN accuracy, 74.36%. CITATIONS: [\"qasper_1806_04511\"] EVIDENCE: [{\"doc_id\": \"qasper_1806_04511\", \"start\": 16607, \"end\": 17541}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 16607,
+          "end": 17541,
+          "quote": "Considering the improvements over the majority baseline achieved by the RNN model for both non-English (on the average 22.76% relative improvement; 15.82% relative improvement on Spanish, 72.71% vs. 84.21%, 30.53% relative improvement on Turkish, 56.97% vs. 74.36%, 37.13% relative improvement on Dutch, 59.63% vs. 81.77%, and 7.55% relative improvement on Russian, 79.60% vs. 85.62%) and English test sets (27.34% relative improvement), we can draw the conclusion that our model is robust to handle multiple languages. Building separate models for each language requires both labeled and unlabeled data. Even though having lots of labeled data in every language is the perfect case, it is unrealistic. Therefore, eliminating the resource requirement in this resource-constrained task is crucial. The fact that machine translation can be used in reusing models from different languages is promising for reducing the data requirements."
+        }
+      ],
+      "requested_fact_review": "Turkish has the lowest reported non-English RNN accuracy, 74.36%."
+    },
+    {
+      "case_id": "qasper_validation_c7486d039304ca9d50d0571236429f4f6fbcfcf7--missing",
+      "case_sha256": "382d7d65461dc6ecdea0f796615f1995268f2ad97ffe231ed2d5f9778c1e65d7",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph gives Spanish 84.21, Turkish 74.36, Dutch 81.77, Russian 85.62. Compare RNN accuracies, not majority baselines. Missing sections contain no complete language ranking.",
+      "final_action": "submit_gap(missing=\"The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language.\", follow_up_query=\"multilingual sentiment RNN non English accuracy language comparison\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 1600,
+          "end": 2200,
+          "quote": "t of data that can be mined for opinion increased, commercial companies' interests for sentiment analysis increased as well. Sentiment analysis is an important part of understanding user behavior and opinions on products, places, or services.\n\nSentiment analysis has long been studied by the research community, leading to several sentiment-related resources such as sentiment dictionaries that can be used as features for machine learning models BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . These resources help increase sentiment analysis accuracies; however, they are highly dependent on language and r"
+        },
+        {
+          "doc_id": "qasper_1806_04511",
+          "start": 12800,
+          "end": 13400,
+          "quote": "tained by summing up the scores for each token. If the positive sum score for a given review is greater than the negative sum score, we accept that review as a positive review. If negative sum is larger than or equal to the positive sum, the review is labeled as a negative review.\n\nRNN outperforms both baselines in all four datasets (see Table TABREF9 ). Also for Spanish restaurant review, the lexicon-based baseline is below the majority baseline which shows that solely translating data and using lexicons is not sufficient to achieve good results in multilingual sentiment analysis.\n\nAmong the "
+        }
+      ],
+      "requested_fact_review": "The excerpts compare RNNs with baselines but do not provide the language-by-language RNN accuracies needed to identify the worst-performing non-English language."
+    },
+    {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--present",
+      "case_sha256": "6014290aaa8a63f8fb370e6c5c9049eaef3edc3bde753bb211505f6aea70b1fc",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly calls TransE the baseline. Qualify to link prediction instead of claiming an exhaustive all-task comparator list. Missing intro/related work do not name the experimental baseline.",
+      "final_action": "SUBMIT: For link prediction, they use TransE as the baseline because their models use its score function. CITATIONS: [\"qasper_1611_08661\"] EVIDENCE: [{\"doc_id\": \"qasper_1611_08661\", \"start\": 16180, \"end\": 16492}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 16180,
+          "end": 16492,
+          "quote": "Experimental results on both WN18 and FB15k are shown in Table 2 , where we use “Jointly(CBOW)”, “Jointly(LSTM)” and “Jointly(A-LSTM)” to represent our jointly encoding models with CBOW, LSTM and attentive LSTM text encoders. Our baseline is TransE since that the score function of our models is based on TransE."
+        }
+      ],
+      "requested_fact_review": "For link prediction, they use TransE as the baseline because their models use its score function."
+    },
+    {
+      "case_id": "qasper_validation_932b39fd6c47c6a880621a62e6a978491d881d60--missing",
+      "case_sha256": "71377eb0d8331a1491e0ec77e91a2d4d322d27b4f8c3af000d1d827cb7feea70",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph explicitly calls TransE the baseline. Qualify to link prediction instead of claiming an exhaustive all-task comparator list. Missing intro/related work do not name the experimental baseline.",
+      "final_action": "submit_gap(missing=\"The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison.\", follow_up_query=\"joint structural textual knowledge graph link prediction experimental baseline\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 0,
+          "end": 600,
+          "quote": "Knowledge Graph Representation with Jointly Structural and Textual Encoding\n\nThe objective of knowledge graph embedding is to encode both entities and relations of knowledge graphs into continuous low-dimensional vector spaces. Previously, most works focused on symbolic representation of knowledge graph with structure information, which can not handle new entities or entities with few facts well. In this paper, we propose a novel deep architecture to utilize both structural and textual information of entities. Specifically, we introduce three neural models to encode the valuable information fr"
+        },
+        {
+          "doc_id": "qasper_1611_08661",
+          "start": 20800,
+          "end": 21400,
+          "quote": "ver, these two works align the two kinds of embeddings on word level, which can lose some semantic information on phrase or sentence level.\n\n BIBREF25 also represent entities with entity names or the average of word embeddings in descriptions. However, their use of descriptions neglects word orders, and the use of entity names struggles with ambiguity. BIBREF7 jointly learn knowledge graph embeddings with entity descriptions. They use continuous bag-of-words and convolutional neural network to encode semantics of entity descriptions. However, they separate the objective functions into two ener"
+        }
+      ],
+      "requested_fact_review": "The excerpts describe knowledge-graph models and related work but do not identify the baseline used for the reported link-prediction comparison."
+    },
+    {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--present",
+      "case_sha256": "e8aec160f8f92bb700cce723aff1944fcdca66ed08324550d06429d018656e27",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds Facebook status messages to the collected dataset. Shared conclusion explicitly mentions Yelp reviews; positive answer includes both and gap acknowledges Yelp rather than claiming no platform is mentioned.",
+      "final_action": "SUBMIT: They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews. CITATIONS: [\"qasper_1809_01202\"] EVIDENCE: [{\"doc_id\": \"qasper_1809_01202\", \"start\": 10484, \"end\": 10927}, {\"doc_id\": \"qasper_1809_01202\", \"start\": 26423, \"end\": 26664}]",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 10484,
+          "end": 10927,
+          "quote": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations."
+        },
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 26423,
+          "end": 26664,
+          "quote": "Finally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews."
+        }
+      ],
+      "requested_fact_review": "They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews."
+    },
+    {
+      "case_id": "qasper_validation_a4d115220438c0ded06a91ad62337061389a6747--missing",
+      "case_sha256": "2f65376c582239e15fb351069f7029d315784d9a39e6c54d9a25074513c4249f",
+      "decision": "accept",
+      "source_support_reviewed": true,
+      "notes": "Gold paragraph binds Facebook status messages to the collected dataset. Shared conclusion explicitly mentions Yelp reviews; positive answer includes both and gap acknowledges Yelp rather than claiming no platform is mentioned.",
+      "final_action": "submit_gap(missing=\"The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset.\", follow_up_query=\"causal explanation analysis social media dataset collection source\")",
+      "supporting_spans": [
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 0,
+          "end": 600,
+          "quote": "Causal Explanation Analysis on Social Media\n\nUnderstanding causal explanations - reasons given for happenings in one's life - has been found to be an important psychological factor linked to physical and mental health. Causal explanations are often studied through manual identification of phrases over limited samples of personal writing. Automatic identification of causal explanations in social media, while challenging in relying on contextual and sequential cues, offers a larger-scale alternative to expensive manual ratings and opens the door for new applications (e.g. studying prevailing bel"
+        },
+        {
+          "doc_id": "qasper_1809_01202",
+          "start": 25600,
+          "end": 26200,
+          "quote": "nstitutional Review Board.\n\nWe developed a pipeline for causal explanation analysis over social media text, including both causality prediction and causal explanation identification. We examined a variety of model types and RNN architectures for each part of the pipeline, finding an SVM best for causality prediction and a hierarchy of BiLSTMs for causal explanation identification, suggesting the later task relies more heavily on sequential information. In fact, we found replacing either layer of the hierarchical LSTM architecture (the word-level or the DA-level) with a an equivalent “bag of fe"
+        }
+      ],
+      "requested_fact_review": "The excerpts mention Yelp reviews as an application but do not identify the social-media source used to construct the causal-explanation dataset."
+    }
+  ],
+  "human_review": null,
+  "source_review_method": "Each pair reviewed across all three unique 1600-character windows (4800 unique characters). Each case exposes 3200 characters. Clause-level support and attribution reviewed separately from exact quote matching. Gap review covers full selected text, not only recorded supporting excerpts.",
+  "new_model_calls": 0
+}

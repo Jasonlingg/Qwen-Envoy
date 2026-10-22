@@ -1,0 +1,81 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "b909b4e78b383c6ff9f6fb44dfcbc02d489f8689f50962f611413014303b65ff",
+  "candidate_answer": "They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_2003_08897",
+      "title": "Normalized and Geometry-Aware Self-Attention Network for Image Captioning",
+      "start": 5590,
+      "end": 6468,
+      "quote": "By combining both NSA and GSA, we obtain an enhanced SA module. We then construct our Normalized and Geometry-aware Self-Attention Network, namely NG-SAN, by replacing the vanilla SA modules in the encoder of the self-attention network with the proposed one. Extensive experiments on MS-COCO validates the effectiveness of our proposals. In particular, our NG-SAN establishes a new state-of-the-art on the MS-COCO evaluation sever, improving the best single-model result in terms of CIDEr from 125.5 to 128.6. To demonstrate the generality of NSA, we further present video captioning, machine translation, and visual question answering experiments on the VATEX, WMT 2014 English-to-German, and VQA-v2 datasets, respectively. On top of the strong Transformer-based baselines, our methods can consistently increase accuracies on all tasks at a negligible extra computational cost.",
+      "arxiv_id": "2003.08897",
+      "source_url": "https://arxiv.org/abs/2003.08897",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "b909b4e78b383c6ff9f6fb44dfcbc02d489f8689f50962f611413014303b65ff",
+    "doc_id": "qasper_2003_08897",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "2003.08897",
+    "title": "Normalized and Geometry-Aware Self-Attention Network for Image Captioning",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "acc6e1a63d94ad7e1c68e4005c9e3328004ee43d4a326cfcd71067547e117ac6",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_2003_08897",
+    "windows": [
+      {
+        "start": 5290,
+        "end": 6890
+      },
+      {
+        "start": 32000,
+        "end": 33600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_2003_08897\", 5290, 1600))",
+      "print(passage(\"qasper_2003_08897\", 32000, 1600))"
+    ],
+    "source_text_sha256": "30bf77eb85ea3bd1f1dc5a1553f2f8841819d04a80feebb0db3db9b1a77d55e0",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 5290,
+      "end": 6890
+    },
+    {
+      "start": 32000,
+      "end": 33600
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

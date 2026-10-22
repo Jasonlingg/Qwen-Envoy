@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "bb0c3060-986b-413b-b4a9-79b04d2c9a41",
+  "question_id": "paper_79018420b08b2730",
+  "question": "Which dataset do they use?",
+  "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1910_14254",
+      "start": 4428,
+      "end": 5350,
+      "quote": "We used the annotated dataset reported by degen2015investigating, a dataset of the utterances from the Switchboard corpus of telephone dialogues BIBREF21 that contain the word some. The dataset consists of 1,362 unique utterances with a noun phrase containing some (some-NP). For each example with a some-NP, degen2015investigating collected inference strength ratings from at least 10 participants recruited on Amazon's Mechanical Turk. Participants saw both the target utterance and ten utterances from the preceding discourse context. They then rated the similarity between the original utterance like (UNKREF8) and an utterance in which some was replaced with some, but not all like (UNKREF9), on a 7-point Likert scale with endpoints labeled “very different meaning” (1) and “same meaning” (7). Low similarity ratings thus indicate low inference strength, and high similarity ratings indicate high inference strength.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1910.14254",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1910_14254\", 4128, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1910_14254', 'start': 4128, 'end': 5728, 'text': \"derlying word embedding model (GloVe, ELMo, or BERT) and in the sentence embedding model (LSTM, LSTM$+$attention). We then probe the best model's behavior through a regression analysis, an analysis of attention weights, and an analysis of predictions on manually constructed minimal sentence pairs.\\n\\nWe used the annotated dataset reported by degen2015investigating, a dataset of the utterances from the Switchboard corpus of telephone dialogues BIBREF21 that contain the word some. The dataset consists of 1,362 unique utterances with a noun phrase containing some (some-NP). For each example with a some-NP, degen2015investigating collected inference strength ratings from at least 10 participants recruited on Amazon's Mechanical Turk. Participants saw both the target utterance and ten utterances from the preceding discourse context. They then rated the similarity between the original utterance like (UNKREF8) and an utterance in which some was replaced with some, but not all like (UNKREF9), on a 7-point Likert scale with endpoints labeled “very different meaning” (1) and “same meaning” (7). Low similarity ratings thus indicate low inference strength, and high similarity ratings indicate high inference strength.\\n\\nI like, I like to read some of the philosophy stuff.\\n\\nI like, I like to read some, but not all, of the philosophy stuff.\\n\\nUsing this corpus, degen2015investigating found that several linguistic and contextual factors influenced inference strength ratings, including the partitive form of, subjecthood, the previous mention of the embedded NP referent, determiner strength, and\"}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1910_14254\", 28800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1910_14254', 'start': 28800, 'end': 30400, 'text': 'recise theories of pragmatic language use. Our goal here was to investigate whether neural networks can learn associations for already established linguistic cues but it would be equally interesting to investigate whether such models could be used to discover new cues, which could then be verified in experimental and corpus work, potentially providing a novel model-driven approach to experimental and formal pragmatics.\\n\\nFigure FIGREF44 shows the learning curves averaged over the 5 cross-validation tuning runs for models using different word embeddings. As these plots show, the attention layer improves predictions; contextual word embeddings lead to better results than the static GloVe embeddings; and including the conversational context does not improve predictions and in some cases even lowers prediction accuracy.\\n\\nFigure FIGREF45 shows the estimates of the predictors in the original and extended Bayesian mixed-effects models estimated only on the held-out test data. We find the same qualitative effects as in Figure FIGREF27, but since these models were estimated on much less data (only 408 items), there is a lot of uncertainty in the estimates and therefore quantitative comparisons between the coefficients of the different models are less informative.\\n\\nTables TABREF46 and TABREF47 show the 25 manually created sentences for the analyses described in the minimal pairs analysis in Section SECREF5. As described in the main text, we created 16 variants of the sentence with the some-NP in subject position (sentences in the left column), and 16 variants of the sentence with the '}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings. CITATIONS: [\"qasper_1910_14254\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14254\", \"start\": 4428, \"end\": 5350}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1910_14254",
+    "windows": [
+      {
+        "start": 4128,
+        "end": 5728
+      },
+      {
+        "start": 28800,
+        "end": 30400
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1910_14254\", 4128, 1600))",
+      "print(passage(\"qasper_1910_14254\", 28800, 1600))"
+    ],
+    "source_text_sha256": "4c0d716432c11de2052914f1257299a7c86e3b2de644df53143a351f2b4f4ffa",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "c0fc05c3093302bed3fb6c681c45b70c98352674e676d937c6282f7dad5da6df",
+  "inspected_passage_windows": [
+    {
+      "start": 4128,
+      "end": 5728
+    },
+    {
+      "start": 28800,
+      "end": 30400
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "8f57d2c193fd5dc07351a65089155ebf4265584f80e0624a6a01f6d745bc92f1",
+    "doc_id": "qasper_1910_14254",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1910.14254",
+    "title": "Harnessing the richness of the linguistic signal in predicting pragmatic inferences",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "d55955f89a9878077431102760d2c510b858440f7c3afd963297d05ed665a1c0",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "fac0cab7-3ee7-45a7-ab52-6652ca376be5",
+  "question_id": "paper_fa86b092bb253b6f",
+  "question": "What dataset do they evaluate their model on?",
+  "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1905_10238",
+      "start": 13044,
+      "end": 13754,
+      "quote": "The CoNLL-2012 shared task BIBREF21 corpus is used as the evaluation dataset, which is selected from the Ontonotes 5.0. Following conventional approaches BIBREF9 , BIBREF11 , for each pronoun in the document, we consider candidate $n$ from the previous two sentences and the current sentence. For pronouns, we consider two types of them following BIBREF9 , i.e., third personal pronoun (she, her, he, him, them, they, it) and possessive pronoun (his, hers, its, their, theirs). Table 1 reports the number of the two type pronouns and the overall statistics for the experimental dataset. According to our selection range of candidate $n$ , on average, each pronoun has 4.6 candidates and 1.3 correct references.",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1905.10238",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1905_10238\", 12744, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1905_10238', 'start': 12744, 'end': 14344, 'text': 'ng standard. Therefore, if candidates have similar $F_c$ scores, the module allow more of them to proceed to the second layer. Compared with other conventional pruning methods BIBREF12 , BIBREF20 that generally keep a fixed number of candidates, our pruning strategy is more efficient and flexible.\\n\\nThe CoNLL-2012 shared task BIBREF21 corpus is used as the evaluation dataset, which is selected from the Ontonotes 5.0. Following conventional approaches BIBREF9 , BIBREF11 , for each pronoun in the document, we consider candidate $n$ from the previous two sentences and the current sentence. For pronouns, we consider two types of them following BIBREF9 , i.e., third personal pronoun (she, her, he, him, them, they, it) and possessive pronoun (his, hers, its, their, theirs). Table 1 reports the number of the two type pronouns and the overall statistics for the experimental dataset. According to our selection range of candidate $n$ , on average, each pronoun has 4.6 candidates and 1.3 correct references.\\n\\nIn this study, we use two types of knowledge in our experiments. The first type is linguistic features, i.e., plurality and animacy & gender. We employ the Stanford parser, which generates plurality, animacy, and gender markups for all the noun phrases, to annotate our data. Specifically, the plurality feature denotes each $n$ and $p$ to be singular or plural. For each candidate $n$ , if its plurality status is the same as the target pronoun, we label it 1, otherwise 0. The animacy & gender (AG) feature denotes whether a $n$ or $p$ is a living object, and being male, female, or neu'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1905_10238\", 25600, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1905_10238', 'start': 25600, 'end': 27200, 'text': 'aining data. Different from previous work, we explore the possibility of joining the two types of knowledge for pronoun coreference resolution rather than use only one of them. To the best of our knowledge, this is the first attempt that uses deep learning model to incorporate contextual information and external knowledge for pronoun coreference resolution.\\n\\nIn this paper, we proposed a two-layer model for pronoun coreference resolution, where the first layer encodes contextual information and the second layer leverages external knowledge. Particularly, a knowledge attention mechanism is proposed to selectively leverage features from different knowledge sources. As an enhancement to existing methods, the proposed model combines the advantage of conventional feature-based models and deep learning models, so that context and external knowledge can be synchronously and effectively used for this task. Experimental results and case studies demonstrate the superiority of the proposed model to state-of-the-art baselines. Since the proposed model adopted an extensible structure, one possible future work is to explore the best way to enhance it with more complicated knowledge resources such as knowledge graphs.\\n\\nThis paper was partially supported by the Early Career Scheme (ECS, No.26206717) from Research Grants Council in Hong Kong. In addition, Hongming Zhang has been supported by the Hong Kong Ph.D. Fellowship and the Tencent Rhino-Bird Elite Training Program. We also thank the anonymous reviewers for their valuable comments and suggestions that help improving the quality of this'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0. CITATIONS: [\"qasper_1905_10238\"] EVIDENCE: [{\"doc_id\": \"qasper_1905_10238\", \"start\": 13044, \"end\": 13754}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1905_10238",
+    "windows": [
+      {
+        "start": 12744,
+        "end": 14344
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1905_10238\", 12744, 1600))",
+      "print(passage(\"qasper_1905_10238\", 25600, 1600))"
+    ],
+    "source_text_sha256": "1164b7931c21482fa0f1613aa9ee196a76c7899fecacf8bee310c6f4c31f848e",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "ecd8438c48a187cfd3aee1c895e45d0edc5e542a1b2b0c21cd21d69dea6092dd",
+  "inspected_passage_windows": [
+    {
+      "start": 12744,
+      "end": 14344
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "44d4cebc3782acf5a76b1917d541eb6749b828c10186d3ed8484f2c3ad286714",
+    "doc_id": "qasper_1905_10238",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1905.10238",
+    "title": "Incorporating Context and External Knowledge for Pronoun Coreference Resolution",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "69e57318a582e4d06ca48b040fc79c246dd3ab3e9c4b60893dfe2b513404383b",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

@@ -1,5 +1,6 @@
 """Data gates, exclusion semantics and offline-only demonstration export."""
 import copy
+from pathlib import Path
 
 import pytest
 
@@ -306,3 +307,41 @@ def test_unavailable_packet_reports_docker_failure_not_missing_counter(prepared,
     with pytest.raises(ValueError, match="Docker demonstration unavailable/failed"):
         runner.verify_case(root, cases[0], {}, {"status": "unavailable",
                            "error": "Docker image unavailable"}, [])
+
+
+def test_saved_bundle_binds_real_observations_review_and_train_only_export():
+    """Portable artifact check, not a re-audit of unredistributed historical jobs."""
+    import json
+    root = Path(__file__).resolve().parents[1]
+    bundle = root / "examples/passage-reader-pilot-data"
+    validation = load(bundle / "validation.json")
+    for name, expected in validation["artifact_sha256"].items():
+        assert file_hash(bundle / name) == expected
+    prepared = bundle / "prepared"
+    cases = load(prepared / "cases.json")
+    rows = {r["case_id"]: r for r in load(
+        prepared / "implementing-assistant-review.json")["rows"]}
+    registry = load(prepared / "exclusions.json")
+    assert not {c["doc_id"] for c in cases} & set(registry["excluded_doc_ids"])
+    assert not {c["question_id"] for c in cases} & set(registry["excluded_question_ids"])
+    train = root / "data/sft/passage-reader-pilot-v1"
+    manifest = load(train / "manifest.json")
+    assert file_hash(train / "manifest.json") == validation["export_manifest_sha256"]
+    for name, expected in manifest["artifact_sha256"].items():
+        assert file_hash(train / name) == expected
+    actual = [json.loads(line) for line in (train / "train.jsonl").read_text().splitlines()]
+    expected = []
+    for case in cases:
+        saved = bundle / "replay/cases" / case["case_id"]
+        packet, payloads = load(saved / "packet.json"), load(saved / "payloads.json")
+        assert runner.verify_case(prepared, case, rows[case["case_id"]], packet, payloads) == load(
+            saved / "verified.json")
+        if case["role"] == "train":
+            expected.append({"messages": payloads[-1]["messages"] + [{"role": "assistant",
+                "content": rows[case["case_id"]]["final_action"]}]})
+    assert actual == expected and len(actual) == 24
+    dev = load(train / "development-scoring-only.json")
+    assert len(dev) == 12 and all(c["usage"] == "scoring_only_never_training" for c in dev)
+    assert manifest["token_checks"] == {"actions": 72, "input_tokens": 225496,
+                                       "supervised_tokens": 3018, "max_tokens": 3729}
+    assert manifest["training_performed"] is False and manifest["human_review"] is None

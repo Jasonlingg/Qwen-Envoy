@@ -1,0 +1,119 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "a6ac3dfb-8eb9-4cb0-9cec-2d3f12875339",
+  "question_id": "paper_1deef636a9cf999b",
+  "question": "What datasets were used?",
+  "corpus_hash": "7fe77b26703a33899847be98920158beb42b07c017ba23d51efe26bb957e5e30",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "evidence_found",
+  "candidate_claims": [
+    {
+      "text": "They use KFTT and BTEC for English-to-Japanese translation.",
+      "evidence_ids": [
+        "E1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1606_02006",
+      "start": 14341,
+      "end": 14796,
+      "quote": "Dataset: We perform experiments on two widely-used tasks for the English-to-Japanese language pair: KFTT BIBREF12 and BTEC BIBREF13 . KFTT is a collection of Wikipedia article about city of Kyoto and BTEC is a travel conversation corpus. BTEC is an easier translation task than KFTT, because KFTT covers a broader domain, has a larger vocabulary of rare words, and has relatively long sentences. The details of each corpus are depicted in Table TABREF19 .",
+      "quote_truncated": false,
+      "source_url": "https://arxiv.org/abs/1606.02006",
+      "coverage": "qasper_s2orc_text",
+      "source_kind": "research_paper",
+      "title": "Incorporating Discrete Translation Lexicons into Neural Machine Translation",
+      "source_path": null,
+      "record": {}
+    }
+  ],
+  "warning": "Qwen's answer is an untrusted proposal. Exact spans prove source provenance, not semantic support; the host model must review claims and the selected snapshot does not prove what is true outside it.",
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1606_02006\", 14041, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1606_02006', 'start': 14041, 'end': 15641, 'text': 'fill-up used in PBMT systems BIBREF11 , we use the probability of the automatically learned lexicons INLINEFORM1 by default, and fall back to the handmade lexicons INLINEFORM2 only for uncovered words: DISPLAYFORM0 \\n\\nIn this section, we describe experiments we use to evaluate our proposed methods.\\n\\nDataset: We perform experiments on two widely-used tasks for the English-to-Japanese language pair: KFTT BIBREF12 and BTEC BIBREF13 . KFTT is a collection of Wikipedia article about city of Kyoto and BTEC is a travel conversation corpus. BTEC is an easier translation task than KFTT, because KFTT covers a broader domain, has a larger vocabulary of rare words, and has relatively long sentences. The details of each corpus are depicted in Table TABREF19 .\\n\\nWe tokenize English according to the Penn Treebank standard BIBREF14 and lowercase, and tokenize Japanese using KyTea BIBREF15 . We limit training sentence length up to 50 in both experiments and keep the test data at the original length. We replace words of frequency less than a threshold INLINEFORM0 in both languages with the INLINEFORM1 symbol and exclude them from our vocabulary. We choose INLINEFORM2 for BTEC and INLINEFORM3 for KFTT, resulting in INLINEFORM4 k, INLINEFORM5 k for BTEC and INLINEFORM6 k, INLINEFORM7 k for KFTT.\\n\\nNMT Systems: We build the described models using the Chainer toolkit. The depth of the stacking LSTM is INLINEFORM0 and hidden node size INLINEFORM1 . We concatenate the forward and backward encodings (resulting in a 1600 dimension vector) and then perform a linear transformation to 800 dimensions.\\n\\nWe '}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1606_02006\", 24000, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1606_02006', 'start': 24000, 'end': 25600, 'text': 'riate words in the target vocabulary BIBREF10 , BIBREF29 according to a lexicon similar to the one used in this work. In contrast to our work, these only handle unknown words and do not incorporate information from the lexicon in the learning procedure.\\n\\nThere have also been other approaches that incorporate models that learn when to copy words as-is into the target language BIBREF30 , BIBREF31 , BIBREF32 . These models are similar to the linear approach of § UID10 , but are only applicable to words that can be copied as-is into the target language. In fact, these models can be thought of as a subclass of the proposed approach that use a lexicon that assigns a all its probability to target words that are the same as the source. On the other hand, while we are simply using a static interpolation coefficient INLINEFORM0 , these works generally have a more sophisticated method for choosing the interpolation between the standard and “copy” models. Incorporating these into our linear method is a promising avenue for future work.\\n\\nIn addition mi16acl have also recently proposed a similar approach by limiting the number of vocabulary being predicted by each batch or sentence. This vocabulary is made by considering the original HMM alignments gathered from the training corpus. Basically, this method is a specific version of our bias method that gives some of the vocabulary a bias of negative infinity and all other vocabulary a uniform distribution. Our method improves over this by considering actual translation probabilities, and also considering the attention vector when deciding '}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "SUBMIT: They use KFTT and BTEC for English-to-Japanese translation. CITATIONS: [\"qasper_1606_02006\"] EVIDENCE: [{\"doc_id\": \"qasper_1606_02006\", \"start\": 14341, \"end\": 14796}]",
+      "observation": "Exact spans accepted; semantic support unreviewed."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1606_02006",
+    "windows": [
+      {
+        "start": 14041,
+        "end": 15641
+      },
+      {
+        "start": 24000,
+        "end": 25600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1606_02006\", 14041, 1600))",
+      "print(passage(\"qasper_1606_02006\", 24000, 1600))"
+    ],
+    "source_text_sha256": "06cc03338d87d68d36d43b96641caa5cb201a0205c676615d083e96854b5e787",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "4b66f578955b42659ddadaf9a90e9fba10e847857e1fc3d88165ad1e23caa360",
+  "inspected_passage_windows": [
+    {
+      "start": 14041,
+      "end": 15641
+    },
+    {
+      "start": 24000,
+      "end": 25600
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "7fe77b26703a33899847be98920158beb42b07c017ba23d51efe26bb957e5e30",
+    "doc_id": "qasper_1606_02006",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1606.02006",
+    "title": "Incorporating Discrete Translation Lexicons into Neural Machine Translation",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a4cac847769e09db509f597406d551deab2755f30f26f950e501be18fc2b69f3",
+  "research_gaps": [],
+  "reader_guidance": "passages-v2",
+  "omitted_predicted_spans": 0,
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

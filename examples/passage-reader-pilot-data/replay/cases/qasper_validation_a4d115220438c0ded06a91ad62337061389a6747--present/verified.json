@@ -1,0 +1,92 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+  "candidate_answer": "They construct their dataset from Facebook status updates and also discuss an application to Yelp reviews.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1809_01202",
+      "title": "Causal Explanation Analysis on Social Media",
+      "start": 10484,
+      "end": 10927,
+      "quote": "We created our own causal explanation dataset by collecting 3,268 random Facebook status update messages. Three well-trained annotators manually labeled whether or not each message contains the causal explanation and obtained 1,598 causality messages with substantial agreement ( $\\kappa =0.61$ ). We used the majority vote for our gold standard. Then, on each causality message, annotators identified which text spans are causal explanations.",
+      "arxiv_id": "1809.01202",
+      "source_url": "https://arxiv.org/abs/1809.01202",
+      "coverage": "qasper_s2orc_text"
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "qasper_1809_01202",
+      "title": "Causal Explanation Analysis on Social Media",
+      "start": 26423,
+      "end": 26664,
+      "quote": "Finally, we demonstrated use of our models in applications, finding associations between demographics and rate of mentioning causal explanations, as well as showing differences in the top words predictive of negative ratings in Yelp reviews.",
+      "arxiv_id": "1809.01202",
+      "source_url": "https://arxiv.org/abs/1809.01202",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "data_kind": "scripted_reviewed_demonstration",
+    "model_inference": false,
+    "author": "implementing assistant; annotation-assisted, source-reviewed"
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "80028322440aa0ba262ca392ab63b3bb11408d29b948bf2a5ba3f89595176b0e",
+    "doc_id": "qasper_1809_01202",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1809.01202",
+    "title": "Causal Explanation Analysis on Social Media",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "dc5682cefde8e504a9df22ca0b776c502fc764b43efc4dfd18f59b7d81f1430a",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1809_01202",
+    "windows": [
+      {
+        "start": 10184,
+        "end": 11784
+      },
+      {
+        "start": 25600,
+        "end": 27200
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1809_01202\", 10184, 1600))",
+      "print(passage(\"qasper_1809_01202\", 25600, 1600))"
+    ],
+    "source_text_sha256": "d29780cefad6f5ef9a88329f6da3121f36baada84a29de11a20430a57b4c5cb8",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 10184,
+      "end": 11784
+    },
+    {
+      "start": 25600,
+      "end": 27200
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

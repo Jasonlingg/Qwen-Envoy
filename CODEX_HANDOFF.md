@@ -1,5 +1,36 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: paired passage-reader pilot data prepared; zero model calls/training.**
+> User approved local data preparation under scope `9640256`. Implementation
+> `1062832`, Docker reporting correction `44f87b5`.
+> [Saved data/replay](examples/passage-reader-pilot-data/README.md),
+> [training export](data/sft/passage-reader-pilot-v1/manifest.json).
+> Identifier inventory covers 213 prior workspace files, excluding 956 papers and
+> 1,370 question IDs. Twelve fresh train papers yield 24 paired trajectories; six
+> different official-validation papers yield 12 scoring-only development episodes.
+> Thirteen draft pairs were rejected for source ambiguity/remaining support before
+> any model outcomes; reasons and all four local draft rounds are retained.
+> All 36 accepted demonstrations passed fixed-action Docker replay: 72 actual
+> inspections, 108 local formatter turns, exact current prompt and reviewed final
+> actions. Zero inference/paid calls/GPU activations/optimizer updates. The first
+> attempt stopped after two successes on a transient Docker availability probe;
+> saved separately, no source/model failure hidden. All 38 owned containers were
+> freshly inspected absent. Frozen runtime/tools/retrieval/reward/trainer unchanged.
+> Source review is implementing-assistant/model-assisted; independent human null.
+> Export contains only 24 train trajectories, 72 assistant next-action targets;
+> 225,496 input tokens, 3,018 supervised, max 3,729 under 8,192. Token allocation
+> present-read 784 / present-terminal 1,028 / missing-read 749 / missing-terminal 457.
+> Runtime prefix/masking checks pass; equal row counts do not balance token loss.
+> No fine-tuned Qwen improvement is measured. Future work is the proposed single
+> budgeted V5 continuation plus matched candidate/V5/base development comparison,
+> then fresh evaluation before promotion. Current paid/training allowance is zero.
+> Historical local inventory files are not all redistributed; strict re-export
+> requires them. Saved source/replay/export artifacts have a portable hash check.
+> Focused 28 passed; full 2075 passed in 113.11s, no skips, three existing SWIG
+> warnings. Ruff/diff passed; all 1,747 prior file hashes and 29 frozen runtime
+> files preserved, including protected dirty files and paid markers.
+
+
 > **October 22: V5 training alignment audit completed; no new training run.**
 > User approved auditing existing data and defining a targeted SFT pilot.
 > Scope `3cc3d5b`, audit/pilot implementation `226722e`.
