@@ -62,3 +62,24 @@ Implement reusable selection returning exact source offsets; export proposed
 reader assignments separately from scoring labels. Focused tests must cover
 fusion/reranking, annotation separation, bounds, disjointness, failure accounting
 and exact BM25 compatibility. Run the full relevant suite before finishing.
+
+
+## Outcome
+
+Implementation `e79bd99`; model/data/code plan frozen in `ce63cc3` before scoring.
+[Full saved comparison](../../examples/hybrid-passage-retrieval/README.md): all 80
+questions processed with four methods, zero selection failures. One of 20 dev
+answerable rows lacks gold spans; valid denominators are 19 dev / 20 secondary.
+BM25 fully covered an annotated paragraph on 4/19 and 9/20. Dense: 5/19, 11/20;
+hybrid: 5/19, 14/20; hybrid plus cross encoder: 5/19, 10/20. The preselected
+reranked candidate failed the required primary +2 gain (actual +1), so no default
+was changed and no secondary-score winner was promoted. Plain hybrid recovered
+the reference cue lists missed by the last live smoke; Qwen has not been rerun.
+
+Both small models ran on Apple M3 CPU, four threads. Reranked query p95 was 0.226 /
+0.321 seconds; resident-weight indexing/model-loading costs are reported separately.
+All dense window records exceeded the chosen encoder's 256-token maximum, an
+explicit limitation. No paid API, Qwen call, GPU activation, training or reward
+change occurred. Focused 35 passed; full 1993 passed in 108.40s. All 774 prior
+file hashes, including the 11 protected files and consumed allowances, remained
+unchanged. This supports a narrow retrieval diagnostic, not model improvement.

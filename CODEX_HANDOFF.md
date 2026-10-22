@@ -1,5 +1,26 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: CPU-only hybrid retrieval comparison completed; candidate not promoted.**
+> User approved better RAG before more Qwen calls/training. Scope `54227ea`,
+> implementation `e79bd99`, frozen model/data/code plan `ce63cc3`.
+> [Actual comparison](examples/hybrid-passage-retrieval/README.md): 80 existing
+> exposed QASPER questions, four methods, exact same two disjoint 1600-character
+> windows as the live smoke. Gold stayed outside retrieval. Full-paragraph counts
+> dev / exposed secondary: BM25 4/19 · 9/20; dense 5/19 · 11/20; hybrid 5/19 · 14/20;
+> hybrid+reranker 5/19 · 10/20. Dev has one answerable row without gold spans;
+> unanswerable rows are not retrieval successes. Preselected reranked candidate
+> failed required dev gain +2, actual +1; no default or MCP tool was changed.
+> Plain hybrid contains the last smoke's humor cue lists and translation details;
+> reranking loses them. Do not promote an ablation using exposed secondary scores.
+> All dense windows exceeded the encoder's 256-token limit; report truncation.
+> Code exports exact proposed reader windows, without inspection credit or Qwen
+> dispatch. Local M3 CPU only, zero paid/Qwen calls, GPU launches or Runpod API
+> operations; no training/reward change or reserved-pack access. 35 focused and
+> 1993 full tests passed; 774 prior hashes including protected files and consumed
+> paid markers unchanged. Human review stays null. Qwen quality on these new
+> windows remains untested; this is not a model-improvement or workflow win.
+
+
 > **October 22: bounded QASPER passage-v2 live smoke completed, quality gate not met.**
 > User explicitly requested QASPER. Scope `2064b62`, implementation `f7f11ff`,
 > frozen inputs `9291514`. [Results](examples/qasper-passage-v2/README.md):
