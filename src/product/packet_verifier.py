@@ -14,7 +14,8 @@ from src.product.assigned_actions import displayed_tool_call
 from src.product.assigned_guidance import BASELINE, FOCUSED, validate_guidance
 from src.product.paper_assignment import verify_assignment
 from src.product.passage_scope import (
-    PASSAGES,
+    PASSAGE_GUIDANCES,
+    PASSAGES_V2,
     checked_read,
     evidence_is_inspected,
     make_scope,
@@ -65,12 +66,12 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
     validate_guidance(guidance, mode)
     if guidance != expected_reader_guidance:
         raise ValueError("packet reader guidance differs from the configured reader")
-    if guidance == PASSAGES:
+    if guidance in PASSAGE_GUIDANCES:
         if (not isinstance(packet.get("trajectory"), list)
                 or any(not isinstance(t, dict) or not isinstance(t.get("action"), str)
                        for t in packet["trajectory"])):
             raise ValueError("invalid passage reader trajectory")
-        scope = make_scope(docs, expected_passage_windows)
+        scope = make_scope(docs, expected_passage_windows, version=guidance)
         if (packet.get("passage_scope") != scope
                 or packet.get("passage_scope_sha256") != scope_hash(scope)):
             raise ValueError("passage assignment differs from the controller scope")
@@ -86,7 +87,7 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                 or not evidence_is_inspected(packet.get("evidence", []), scope, inspected)):
             raise ValueError("packet cites an uninspected or unassigned passage")
     elif expected_passage_windows is not None:
-        raise ValueError("passage windows require passages-v1 guidance")
+        raise ValueError("passage windows require passage guidance")
     assignment = None
     if mode == "assigned":
         if harness != "v2":
@@ -95,8 +96,11 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
     status = packet.get("status")
     if not isinstance(status, str) or status not in _STATUSES:
         raise ValueError("Qwen packet has an unknown status")
-    if guidance == PASSAGES and status == "no_evidence" and len(inspected) < 2:
-        raise ValueError("passage gap requires two inspected reads")
+    if guidance in PASSAGE_GUIDANCES and status == "no_evidence":
+        count = (len({(w["start"], w["end"]) for w in inspected})
+                 if guidance == PASSAGES_V2 else len(inspected))
+        if count < 2:
+            raise ValueError("passage gap requires two inspected reads")
     supplied = packet.get("evidence")
     if not isinstance(supplied, list) or len(supplied) > MAX_EVIDENCE_SPANS:
         raise ValueError("Qwen packet has too many evidence spans")
@@ -157,12 +161,15 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
         result.update(reader_mode="assigned", paper_assignment=assignment,
                       assignment_sha256=packet["assignment_sha256"])
         result["research_gaps"], result["gap_report_error"] = verify_gap_reports(packet)
-        if guidance in {FOCUSED, PASSAGES} and status == "no_evidence" and not result[
+        if guidance in {FOCUSED, *PASSAGE_GUIDANCES} and status == "no_evidence" and not result[
                 "research_gaps"]:
             raise ValueError("focused-v1 abstention requires a verified gap report")
+        if guidance == PASSAGES_V2 and status == "no_evidence" and (
+                not trajectory or trajectory[-1].get("gap_submission") is not True):
+            raise ValueError("passages-v2 requires a verified terminal gap submission")
         if guidance != BASELINE:
             result["reader_guidance"] = guidance
-        if guidance == PASSAGES:
+        if guidance in PASSAGE_GUIDANCES:
             result.update(passage_scope=scope, inspected_passage_windows=inspected,
                           absence_scope="selected inspected passages only; not the whole paper")
     return result

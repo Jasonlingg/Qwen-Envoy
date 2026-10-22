@@ -63,12 +63,13 @@ def create_server(store, library, discovery, *, passage_reader=None):
         def read_experiment_passages(experiment_id: str, expected_revision: StrictInt,
                                      note_id: str, question: str, arxiv_id: str,
                                      windows: list[dict[str, StrictInt]]) -> dict[str, Any]:
-            """Delegate selected cached passages to Qwen and save unreviewed candidate evidence.
+            """Read selected passages with Qwen; save candidate evidence or an unresolved gap.
 
             Makes bounded external model calls only when invoked. Sends the question,
             paper metadata and selected passage text. Does not activate a GPU. Exact
             quotes prove provenance, not meaning. A note ID is one durable attempt;
             identical retries return its saved report without another model call.
+            Gaps cover inspected passages only. Suggested next searches are not executed.
             """
             return passage_reader.read(experiment_id, expected_revision, note_id,
                                        question, arxiv_id, windows)
@@ -154,7 +155,7 @@ def main():
             from src.product.experiment_budget import ExperimentBudget
             from src.product.experiment_tokenizer import load_tokenizer
             from src.product.passage_reader_service import PassageReaderService
-            from src.product.passage_scope import PASSAGES
+            from src.product.passage_scope import PASSAGES_V2
             if not (args.qwen_endpoint and args.qwen_model and args.qwen_checkpoint):
                 raise ValueError("passage reader requires endpoint, model and checkpoint")
             validate_endpoint(args.qwen_endpoint)
@@ -168,7 +169,7 @@ def main():
                 reader = build_assigned_reader("qwen", qwen_endpoint=args.qwen_endpoint,
                     qwen_model=args.qwen_model, qwen_checkpoint=args.qwen_checkpoint,
                     sandbox_image=args.sandbox_image, max_steps=4,
-                    reader_guidance=PASSAGES, policy_transport=budget)
+                    reader_guidance=PASSAGES_V2, policy_transport=budget)
                 return reader, budget
             passage_reader = PassageReaderService(store, library, factory,
                                                   library.root / "passage-reader-reports")

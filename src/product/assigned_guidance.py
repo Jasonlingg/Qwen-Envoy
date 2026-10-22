@@ -4,8 +4,14 @@ from __future__ import annotations
 import ast
 
 from src.product.assigned_actions import displayed_tool_call
-from src.product.passage_scope import PASSAGE_PROTOCOL, PASSAGES
-from src.product.reader_gaps import GAP_PROTOCOL
+from src.product.passage_scope import (
+    PASSAGE_GUIDANCES,
+    PASSAGE_PROTOCOL,
+    PASSAGE_PROTOCOL_V2,
+    PASSAGES,
+    PASSAGES_V2,
+)
+from src.product.reader_gaps import GAP_PROTOCOL, TERMINAL_GAP_PROTOCOL
 
 BASELINE = "baseline"
 FOCUSED = "focused-v1"
@@ -32,8 +38,8 @@ reports and source access do not establish semantic support or prove absence.
 
 
 def validate_guidance(version: str, reader_mode: str) -> None:
-    if version not in {BASELINE, FOCUSED, PASSAGES}:
-        raise ValueError("reader_guidance must be baseline, focused-v1 or passages-v1")
+    if version not in {BASELINE, FOCUSED, *PASSAGE_GUIDANCES}:
+        raise ValueError("unknown reader_guidance")
     if version != BASELINE and reader_mode != "assigned":
         raise ValueError("focused-v1 guidance requires the assigned reader")
 
@@ -44,6 +50,14 @@ def guidance_prompt(base: str, version: str) -> str:
     # Replace the optional rule rather than leaving conflicting instructions.
     if base.count(GAP_PROTOCOL) != 1:
         raise ValueError("focused guidance requires the known assigned gap protocol")
+    if version == PASSAGES_V2:
+        old = ("If the selected snapshot does not supply the requested answer, use at least\n"
+               "two distinct document-tool actions, then submit exactly:\n"
+               "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []")
+        if base.count(old) != 1:
+            raise ValueError("terminal gap guidance requires the known abstention protocol")
+        updated = base.replace(old, "For missing answers, follow the terminal gap protocol below.")
+        return updated.replace(GAP_PROTOCOL, TERMINAL_GAP_PROTOCOL) + PASSAGE_PROTOCOL_V2
     required = GAP_PROTOCOL.replace("you may\nuse", "you must\nuse")
     return base.replace(GAP_PROTOCOL, required) + (
         PASSAGE_PROTOCOL if version == PASSAGES else FOCUSED_PROTOCOL)
@@ -68,7 +82,12 @@ def action_recovery(action: str, reason: str, remaining: int) -> str:
             f"[{remaining} steps left.]")
 
 
-def missing_gap_feedback(remaining: int) -> str:
+def missing_gap_feedback(remaining: int, version: str = FOCUSED) -> str:
+    if version == PASSAGES_V2:
+        return ("Submission rejected: after two distinct successful passage inspections, use "
+                'submit_gap(missing="What these passages do not establish", '
+                'follow_up_query="A useful next search") to report the gap and finish '
+                f"in one action. No search is launched. [{remaining} steps left.]")
     return ("Submission rejected: focused-v1 abstention requires a gap report first. "
             'Use report_gap(missing="What you have not established", '
             'follow_up_query="A useful next search"), then explicitly abstain. '

@@ -47,14 +47,16 @@ from src.product.paper_assignment import (
     paper_assignment,
 )
 from src.product.passage_scope import (
+    PASSAGE_GUIDANCES,
     PASSAGES,
+    PASSAGES_V2,
     checked_read,
     evidence_is_inspected,
     make_scope,
     normalize_read_arithmetic,
     scope_hash,
 )
-from src.product.reader_gaps import parse_gap_call, record_gap
+from src.product.reader_gaps import parse_gap_call, parse_gap_submission, record_gap
 from src.product.submit_call import submit_call_to_line
 from src.research.agent import load_snapshot
 from src.research.code_exec_packet import (
@@ -313,9 +315,10 @@ class QwenInvestigator:
         snapshot = Path(snapshot).expanduser().resolve(strict=True)
         manifest, docs = load_snapshot(snapshot)
         assignment = paper_assignment(manifest, docs) if self.reader_mode == "assigned" else None
-        scope = make_scope(docs, passage_windows) if self.reader_guidance == PASSAGES else None
+        scope = (make_scope(docs, passage_windows, version=self.reader_guidance)
+                 if self.reader_guidance in PASSAGE_GUIDANCES else None)
         if passage_windows is not None and scope is None:
-            raise ValueError("passage windows require passages-v1 guidance")
+            raise ValueError("passage windows require passage guidance")
         corpus = snapshot / "corpus"
         question_prefix = "vault_" if self.source_domain == "personal_vault" else "paper_"
         question_id = question_prefix + hashlib.sha256(question.encode()).hexdigest()[:16]
@@ -413,6 +416,11 @@ class QwenInvestigator:
                 if reminder is not None and self.harness_version == "v2":
                     reminder = reminder.replace("Never call submit() in Python.",
                                                 "A lone literal submit() call is allowed.")
+                    if self.reader_guidance == PASSAGES_V2:
+                        reminder = reminder.replace(
+                            "use SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: [].",
+                            "use a lone literal submit_gap(missing=..., follow_up_query=...) "
+                            "after two distinct inspected passage reads.")
                 action, format_retries = next_action(
                     policy, observation if reminder is None else f"{observation}\n\n[{reminder}]",
                     result, self.harness_version, MAX_ACTION_CHARS)
@@ -431,8 +439,32 @@ class QwenInvestigator:
 
                 if assignment is not None:
                     try:
+                        terminal = parse_gap_submission(action)
+                        if terminal is not None:
+                            if self.reader_guidance != PASSAGES_V2:
+                                raise ValueError("submit_gap() requires passages-v2 guidance")
+                            inspected = result["inspected_passage_windows"]
+                            if (document_tool_steps < 2 or inspection_steps < 2
+                                    or len({(w["start"], w["end"]) for w in inspected}) < 2):
+                                raise ValueError("submit_gap() needs two distinct successful "
+                                                 "passage inspections first")
+                            trace["research_gap"] = record_gap(
+                                result, terminal, step, inspection_steps)
+                            trace["gap_submission"] = True
+                            trace["observation"] = (
+                                "Gap recorded and investigation ended without an accepted answer. "
+                                "Selected inspected passages only; no search was launched.")
+                            result.update(status="no_evidence", candidate_claims=[], evidence=[],
+                                warning=(_NO_EVIDENCE_WARNING if self.protocol_variant == "default"
+                                         else _NO_EVIDENCE_WARNING.replace("Qwen", "The model")),
+                                uncertainty="The selected inspected passages did not establish "
+                                            "the requested answer. Host review is required.")
+                            break
                         gap = parse_gap_call(action)
                         if gap is not None:
+                            if self.reader_guidance == PASSAGES_V2:
+                                raise ValueError("use submit_gap(missing=..., follow_up_query=...) "
+                                                 "to report the gap and finish in one action")
                             trace["research_gap"] = record_gap(result, gap, step, inspection_steps)
                             observation = (
                                 "Gap recorded for host review; this is not proof of absence. "
@@ -462,6 +494,10 @@ class QwenInvestigator:
                     answer, citations, predicted_evidence = parsed
                     abstained = answer.strip().casefold() in _ABSTENT_ANSWERS
                     if abstained:
+                        if self.reader_guidance == PASSAGES_V2:
+                            observation = trace["observation"] = missing_gap_feedback(
+                                self.max_steps - step, self.reader_guidance)
+                            continue
                         exact_empty_suffix = bool(re.search(
                             r"CITATIONS:\s*\[\s*\]\s*EVIDENCE:\s*\[\s*\]\s*\Z",
                             submission, re.IGNORECASE,

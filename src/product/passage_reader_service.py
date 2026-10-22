@@ -7,7 +7,7 @@ from pathlib import Path
 from src.product.ml_experiment_io import LocalFiles, decode, digest, encode
 from src.product.ml_experiment_research_notes import ResearchNote
 from src.product.packet_verifier import verify_investigation_packet
-from src.product.passage_scope import PASSAGES, make_scope
+from src.product.passage_scope import PASSAGE_GUIDANCES, PASSAGES_V2, make_scope
 from src.research.agent import load_snapshot
 
 
@@ -26,8 +26,8 @@ class PassageReaderService:
         if type(expected_revision) is not int or expected_revision < 1:
             raise ValueError("expected_revision must be a positive integer")
         reader, budget = self.reader_factory()
-        if reader.reader_guidance != PASSAGES or reader.max_steps > 4:
-            raise ValueError("passage reader requires passages-v1 and at most four actions")
+        if reader.reader_guidance not in PASSAGE_GUIDANCES or reader.max_steps > 4:
+            raise ValueError("passage reader requires passage guidance and at most four actions")
         arguments = {"experiment_id": experiment_id, "expected_revision": expected_revision,
             "note_id": note_id, "question": question, "arxiv_id": arxiv_id, "windows": windows,
             "model_identity": reader.model_identity, "data_kind": self.data_kind,
@@ -45,7 +45,8 @@ class PassageReaderService:
                     raise ValueError("note_id is already recorded; no inference was dispatched")
                 # Check source, ranges and snapshot before consuming the request identity.
                 document = self.library.document(arxiv_id)  # Already open; never fetch here.
-                scope = make_scope({document["doc_id"]: document}, windows)
+                scope = make_scope({document["doc_id"]: document}, windows,
+                                   version=reader.reader_guidance)
                 snapshot = self.library.view([arxiv_id])
                 self.files.write(directory, name, encode({"fingerprint": fingerprint,
                     "state": "started", "source_scope": scope}))
@@ -69,7 +70,7 @@ class PassageReaderService:
             manifest, docs = load_snapshot(snapshot)
             checked = verify_investigation_packet(packet, manifest, docs,
                 allowed_prompt_sha256s=frozenset({digest(reader.system_prompt.encode())}),
-                expected_reader_mode="assigned", expected_reader_guidance=PASSAGES,
+                expected_reader_mode="assigned", expected_reader_guidance=reader.reader_guidance,
                 expected_passage_windows=windows)
             report.update(status=checked["status"], evidence=checked["evidence"],
                           candidate_answer=checked["candidate_answer"], verified=checked)
@@ -79,6 +80,9 @@ class PassageReaderService:
             findings = ([{"claim": checked["candidate_answer"],
                           "reference_ids": [r["reference_id"] for r in refs]}] if refs else [])
             missing = [g["missing"] for g in checked.get("research_gaps", [])]
+            if reader.reader_guidance == PASSAGES_V2:
+                missing += ["Suggested next search (unreviewed, not executed): "
+                            + g["follow_up_query"] for g in checked.get("research_gaps", [])]
             note = {"note_id": note_id, "question": question, "findings": findings,
                 "references": refs, "origin": "qwen_research", "data_kind": self.data_kind,
                 "uncertainties": ["Host semantic review is pending; selected passages only.",

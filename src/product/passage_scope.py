@@ -6,6 +6,8 @@ import hashlib
 import json
 
 PASSAGES = "passages-v1"
+PASSAGES_V2 = "passages-v2"
+PASSAGE_GUIDANCES = frozenset({PASSAGES, PASSAGES_V2})
 PASSAGE_PROTOCOL = """
 Passage-focused reader v1:
 The controller supplies exact candidate passage ranges. Your job is to extract
@@ -24,8 +26,21 @@ submit Unanswerable. A gap applies to these selected passages, not the full
 paper or the literature. Never invent a requested target measurement.
 """
 
+PASSAGE_PROTOCOL_V2 = PASSAGE_PROTOCOL.replace(
+    "Passage-focused reader v1:", "Passage-focused reader v2:"
+).replace(
+    "measurement is missing, inspect a second distinct subrange, report_gap(), then\n"
+    "submit Unanswerable.",
+    "measurement is missing, inspect a second distinct subrange, then finish with\n"
+    'submit_gap(missing="What these passages do not establish",\n'
+    'follow_up_query="A useful next search"). Do not send a separate gap report\n'
+    "or Unanswerable submission."
+)
 
-def make_scope(docs, windows):
+
+def make_scope(docs, windows, *, version=PASSAGES):
+    if version not in PASSAGE_GUIDANCES:
+        raise ValueError("unknown passage scope version")
     if len(docs) != 1 or not isinstance(windows, list) or not 1 <= len(windows) <= 3:
         raise ValueError("select one paper and one to three passage windows")
     doc_id, doc = next(iter(docs.items()))
@@ -41,7 +56,7 @@ def make_scope(docs, windows):
         total, previous = total + end - start, end
     if total > 4000:
         raise ValueError("assigned passages exceed 4000 characters")
-    return {"version": PASSAGES, "doc_id": doc_id, "windows": checked,
+    return {"version": version, "doc_id": doc_id, "windows": checked,
             "read_calls": [f'print(passage("{doc_id}", {w["start"]}, '
                            f'{w["end"] - w["start"]}))' for w in checked],
             "source_text_sha256": hashlib.sha256(doc["text"].encode()).hexdigest(),
