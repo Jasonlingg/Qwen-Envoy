@@ -1,0 +1,86 @@
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................F............................... [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+.........................................................                [100%]
+=================================== FAILURES ===================================
+_______ test_scripted_mcp_with_real_docker_source_access[baseline-True] ________
+
+tmp_path = PosixPath('/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/pytest-of-jasonling/pytest-658/test_scripted_mcp_with_real_do1')
+dead_code = True, guidance = 'baseline'
+
+    @pytest.mark.parametrize("dead_code", [False, True])
+    @pytest.mark.parametrize("guidance", ["baseline", "focused-v1"])
+    def test_scripted_mcp_with_real_docker_source_access(tmp_path, dead_code, guidance):
+        assert PersistentREPL._docker_available(IMAGE), "configured Docker image must be available"
+        library, fake = make_library(tmp_path, {"2609.12345v2": {"html": article_page()}})
+        library.open("2609.12345v2")
+        source = library.document("2609.12345v2")["text"]
+        quote = "Eviction saves 40 percent of memory"
+        start = source.index(quote)
+        first = ('if False:\n    read("arxiv_2609_12345v2")\nprint("Metadata only.")'
+                 if dead_code else 'print(search_within("arxiv_2609_12345v2", "eviction memory"))')
+        actions = iter([first, 'report_gap(missing="Latency has not been established.", '
+            'follow_up_query="cache eviction latency measurements")',
+            'submit(answer="Memory savings are reported.", citations=["arxiv_2609_12345v2"], '
+            f'evidence=[{{"doc_id":"arxiv_2609_12345v2","start":{start},'
+            f'"end":{start + len(quote)}}}])'])
+        scripted_requests = []
+        def transport(url, payload, headers, timeout):
+            scripted_requests.append(payload)
+            return {"choices": [{"message": {"content": next(actions)}}]}
+        reader = build_assigned_reader("qwen", qwen_endpoint="http://scripted-no-model",
+            qwen_model="fake", qwen_checkpoint="fake", policy_transport=transport,
+            max_steps=3, sandbox_image=IMAGE, reader_guidance=guidance)
+        server = create_server(library, FakeDiscovery(), investigator=reader)
+        fetches = len(fake.calls)
+        async def call():
+            async with Client(server) as client:
+                reply = await client.call_tool("investigate", {"question": "Memory and latency?",
+                    "arxiv_ids": ["2609.12345v2"]})
+                assert not reply.is_error
+                return reply.structured_content
+        result = asyncio.run(call())
+        assert result["papers"][0].get("reader_guidance", "baseline") == guidance
+>       assert len(scripted_requests) == 3 and len(fake.calls) == fetches
+E       assert (0 == 3)
+E        +  where 0 = len([])
+
+tests/test_assigned_reader_docker.py:53: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-10-21 20:44:20.819 | INFO     | src.env.repl:__init__:342 - Using Docker REPL
+2026-10-21 20:44:37.396 | INFO     | src.env.repl:kill_session:235 - Docker container removed: d418c25dab57
+=============================== warnings summary ===============================
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 failed, 1928 passed, 3 warnings in 258.96s (0:04:18)

@@ -122,3 +122,15 @@ The same exposed inputs and unchanged model do not establish generalization,
 fine-tuning improvement or an advantage over ordinary assistant reading. Live
 literal reads did not exercise arithmetic normalization; both it and the new
 read examples changed between attempts, so their effects are not isolated.
+
+A separately authorized [base comparison](../examples/passage-reader-base/README.md)
+used the same repaired prompt, source windows and four-action limit, changing
+only the model alias in first requests. Base Qwen3-8B without V5 returned the
+QLoRA facts correctly, but never inspected AWQ because mixed read/submission
+outputs were interpreted as premature abstentions. Its gap case also remained
+incomplete. V5 completed two answerable cases versus base's one in these familiar
+examples, with fewer calls (9 versus 12). This suggests better protocol compliance
+here, without establishing a general fine-tuning, factual-reading or cost gain.
+Independent human review remains blank. Base and V5 still fail the gap procedure;
+training should target reviewed, repeatable failures after interface choices
+are stable and must be tested on separate questions.

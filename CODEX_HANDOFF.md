@@ -1,5 +1,29 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 21 local / October 22 UTC: base passage comparison completed.**
+> User explicitly requested base alongside V5. `6c84969` adds a pinned model arm;
+> `4ad24e3` freezes matching first inputs (only model alias differs). [Actual base
+> result](examples/passage-reader-base/README.md): QLoRA supported after four calls;
+> AWQ incomplete with zero source reads because mixed code/SUBMIT output was
+> cleaned into premature abstentions; target gap incomplete after two reads and
+> abstention without a gap report. Twelve base requests, 34,646 reported tokens,
+> all `envoy-base-only`, saved `adapter_applied: false`; no new V5 calls or training.
+> V5's saved repaired run completed two answerable cases versus base's one, with
+> nine calls / 26,302 tokens. Both failed the gap procedure. This small exposed
+> diagnostic suggests better V5 protocol compliance here, not a validated general
+> fine-tuning or domain-knowledge gain. Base AWQ semantic reading was not assessed.
+> Preserve raw outputs alongside the policy-cleaned actions; they differ on AWQ.
+> No production harness/gap/training/reward change followed this comparison.
+> Focused 46 passed. Initial full run had one Docker startup failure before any
+> scripted call (1928 passed) while another rehearsal ran; cause unproven. Without
+> code/timeout changes, standalone Docker checks passed 4/4 and standalone full
+> suite passed 1929 in 152.10 seconds. Fresh 00:54:54 UTC reads verified workers
+> 0/0, no workers/jobs, full original configuration restored; six owned Docker
+> containers absent. Eleven protected and 507 prior artifact hashes unchanged.
+> `out/passage-reader-three-case-BASE-1` is consumed; no further paid attempt is
+> included. Training remains an option after stable interfaces, reviewed targets
+> and separate evaluation; it is not declared worthless or demonstrated necessary.
+
 > **October 21: repaired-harness live rerun completed.** User said “ok rerun it”.
 > One new allowance and `out/passage-reader-three-case-RERUN-1` marker were consumed;
 > the first attempt remains frozen. [Actual rerun](examples/passage-reader-rerun-1/README.md):

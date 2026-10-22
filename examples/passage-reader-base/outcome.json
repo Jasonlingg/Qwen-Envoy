@@ -1,0 +1,327 @@
+{
+  "schema_version": "base-passage-reader-result-v1",
+  "data_kind": "recorded_live_model",
+  "model_arm": "base",
+  "quality_rule": "not_met",
+  "human_review": null,
+  "actual_requests": 12,
+  "usage": {
+    "prompt_tokens": 33974,
+    "completion_tokens": 672,
+    "total_tokens": 34646
+  },
+  "tokens_reserved": 98304,
+  "max_requests": 12,
+  "max_tokens_reserved": 98304,
+  "max_seconds": 900,
+  "live_implementation_commit": "4ad24e338032a3bc40c0dd66507b3e7ee99affd5",
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "status": "evidence_found",
+      "requests": 4,
+      "candidate_answer": "In QLoRA, the usual weight storage dtype is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients.",
+      "experiment_id": "experiment_268f2130989b4f4392548f70d7b218b4",
+      "note_attached": true,
+      "metrics": {
+        "execution_error_steps": [],
+        "action_rejection_steps": [
+          1
+        ],
+        "submission_rejection_steps": [],
+        "gap_rejection_steps": [],
+        "repeated_call_rejections": []
+      },
+      "source_inspections": 2,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))\nprint(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+          "raw_model_output": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))\nprint(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+          "source_inspection": false,
+          "result": "Action rejected: assigned readers use one literal document-tool call, optionally print(tool(...)), or result = tool(...); print(result). Other Python forms are rejected."
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))",
+          "raw_model_output": "print(passage(\"arxiv_2305_14314v1\", 12848, 283))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2305_14314v1', 'start': 12848, 'end': 13131, 'text': 'QLoRA has one low-precision storage data type, in our case usually 4-bit, and one computation data type that is usually BFloat16. In practice, this means whenever a QLoRA weight tensor is used, we dequantize the tensor to BFloat16, and then perform a matrix multiplication in 16-bit.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+          "raw_model_output": "print(passage(\"arxiv_2305_14314v1\", 19416, 319))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2305_14314v1', 'start': 19416, 'end': 19735, 'text': 'To summarize, QLoRA has one storage data type (usually 4-bit NormalFloat) and a computation data type (16-bit BrainFloat). We dequantize the storage data type to the computation data type to perform the forward and backward pass, but we only compute weight gradients for the LoRA parameters which use 16-bit BrainFloat.'}\n\n\n[1 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: In QLoRA, the usual weight storage dtype is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":12848,\"end\":13131},{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19416,\"end\":19735}]",
+          "raw_model_output": "SUBMIT: In QLoRA, the usual weight storage dtype is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients. CITATIONS: [\"arxiv_2305_14314v1\"] EVIDENCE: [{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":12848,\"end\":13131},{\"doc_id\":\"arxiv_2305_14314v1\",\"start\":19416,\"end\":19735}]",
+          "source_inspection": false,
+          "result": "Exact spans accepted; semantic support unreviewed."
+        }
+      ],
+      "research_gaps": []
+    },
+    {
+      "case_id": "awq-protocol",
+      "status": "incomplete",
+      "requests": 4,
+      "candidate_answer": null,
+      "experiment_id": "experiment_15b05552c32b4ef797d0306d8d835f6b",
+      "note_attached": true,
+      "metrics": {
+        "execution_error_steps": [],
+        "action_rejection_steps": [],
+        "submission_rejection_steps": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "gap_rejection_steps": [],
+        "repeated_call_rejections": []
+      },
+      "source_inspections": 0,
+      "actions": [
+        {
+          "step": 1,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "raw_model_output": "print(passage(\"arxiv_2306_00978v6\", 33939, 500))\nSUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: abstention needs two distinct successful document-tool actions, inspected source text, and empty CITATIONS/EVIDENCE arrays."
+        },
+        {
+          "step": 2,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "raw_model_output": "hits = search_within(\"arxiv_2306_00978v6\", \"Figure 9 TinyChat benchmark-protocol\")\nprint(hits)\nSUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: abstention needs two distinct successful document-tool actions, inspected source text, and empty CITATIONS/EVIDENCE arrays."
+        },
+        {
+          "step": 3,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "raw_model_output": "hits = search_within(\"arxiv_2306_00978v6\", \"Figure 9 TinyChat benchmark-protocol\")\nprint(passage(\"arxiv_2306_00978v6\", 33939, 500))\nSUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: abstention needs two distinct successful document-tool actions, inspected source text, and empty CITATIONS/EVIDENCE arrays."
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "raw_model_output": "hits = search_within(\"arxiv_2306_00978v6\", \"Figure 9 TinyChat benchmark-protocol\")\nprint(passage(\"arxiv_2306_00978v6\", 33939, 500))\nSUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: abstention needs two distinct successful document-tool actions, inspected source text, and empty CITATIONS/EVIDENCE arrays."
+        }
+      ],
+      "research_gaps": []
+    },
+    {
+      "case_id": "paged-target",
+      "status": "incomplete",
+      "requests": 4,
+      "candidate_answer": null,
+      "experiment_id": "experiment_36960b5933bc4b6996babb925c2d92e1",
+      "note_attached": true,
+      "metrics": {
+        "execution_error_steps": [],
+        "action_rejection_steps": [
+          1
+        ],
+        "submission_rejection_steps": [
+          4
+        ],
+        "gap_rejection_steps": [],
+        "repeated_call_rejections": []
+      },
+      "source_inspections": 2,
+      "actions": [
+        {
+          "step": 1,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))\nprint(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+          "raw_model_output": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))\nprint(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+          "source_inspection": false,
+          "result": "Action rejected: assigned readers use one literal document-tool call, optionally print(tool(...)), or result = tool(...); print(result). Other Python forms are rejected."
+        },
+        {
+          "step": 2,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+          "raw_model_output": "print(passage(\"arxiv_2309_06180v1\", 44228, 502))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2309_06180v1', 'start': 44228, 'end': 44730, 'text': 'Model and server configurations. We use OPT (Zhang et al., 2022) models with 13B, 66B, and 175B parameters and LLaMA (Touvron et al., 2023) with 13B parameters for our evaluation. 13B and 66B are popular sizes for LLMs as shown in an LLM leaderboard (ORG, 2023), while 175B is the size of the famous GPT-3 (Brown et al., 2020) model. For all of our experiments, we use A2 instances with NVIDIA A100 GPUs on Google Cloud Platform. The detailed model sizes and server configurations are shown in Table 1.'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 3,
+          "action": "print(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+          "raw_model_output": "print(passage(\"arxiv_2309_06180v1\", 47000, 512))",
+          "source_inspection": true,
+          "result": "{'doc_id': 'arxiv_2309_06180v1', 'start': 47000, 'end': 47512, 'text': 'Key metrics. We focus on serving throughput. Specifically, using the workloads with different request rates, we measure normalized latency of the systems, the mean of every request\u2019s end-to-end latency divided by its output length, as in Orca (Yu et al., 2022). A high-throughput serving system should retain low normalized latency against high request rates. For most experiments, we evaluate the systems with 1-hour traces. As an exception, we use 15-minute traces for the OPT-175B model due to the cost limit.'}\n\n\n[1 steps left; submit with evidence or abstain.]"
+        },
+        {
+          "step": 4,
+          "action": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "raw_model_output": "SUBMIT: Unanswerable CITATIONS: [] EVIDENCE: []",
+          "source_inspection": false,
+          "result": "Submission rejected: focused-v1 abstention requires a gap report first. Use report_gap(missing=\"What you have not established\", follow_up_query=\"A useful next search\"), then explicitly abstain. A gap report is an unreviewed host suggestion, not evidence or a search. [0 steps left.]"
+        }
+      ],
+      "research_gaps": []
+    }
+  ],
+  "comparison": [
+    {
+      "case_id": "qlora-dtypes",
+      "base": {
+        "status": "evidence_found",
+        "requests": 4,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [
+            1
+          ],
+          "submission_rejection_steps": [],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        }
+      },
+      "saved_v5": {
+        "status": "evidence_found",
+        "requests": 3,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [],
+          "submission_rejection_steps": [],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        },
+        "source_file": "examples/passage-reader-rerun-1/live/qlora-dtypes.json",
+        "sha256": "72d6bd426400861b6cfdb2ce2178f06b8a1476ce9a85bfaf1c43e341478410b4"
+      }
+    },
+    {
+      "case_id": "awq-protocol",
+      "base": {
+        "status": "incomplete",
+        "requests": 4,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [],
+          "submission_rejection_steps": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        }
+      },
+      "saved_v5": {
+        "status": "evidence_found",
+        "requests": 2,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [],
+          "submission_rejection_steps": [],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        },
+        "source_file": "examples/passage-reader-rerun-1/live/awq-protocol.json",
+        "sha256": "a1e7118fd2b4ad09dbc38946f9968dd9a8c898e122bd47d2582c96274cb56222"
+      }
+    },
+    {
+      "case_id": "paged-target",
+      "base": {
+        "status": "incomplete",
+        "requests": 4,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [
+            1
+          ],
+          "submission_rejection_steps": [
+            4
+          ],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        }
+      },
+      "saved_v5": {
+        "status": "incomplete",
+        "requests": 4,
+        "metrics": {
+          "execution_error_steps": [],
+          "action_rejection_steps": [],
+          "submission_rejection_steps": [
+            3
+          ],
+          "gap_rejection_steps": [],
+          "repeated_call_rejections": []
+        },
+        "source_file": "examples/passage-reader-rerun-1/live/paged-target.json",
+        "sha256": "0b2565fe8cee72ab315363dd9c57df7063bfedbb4b2c8319a60f09e6b2250a42"
+      }
+    }
+  ],
+  "attribution": "Sequential three-case exposed-development comparison with matching first payloads except model alias. Not isolated causal or held-out generalization evidence. V5 completed more requested evidence extractions here; base AWQ reading ability was not assessed because mixed code/submission actions never executed source reads.",
+  "hardware_shutdown": {
+    "checked_at": "2026-10-22 00:54:54 UTC",
+    "endpoint": {
+      "id": "q05pjrvguakieg",
+      "workers": {
+        "idleTimeout": 60,
+        "max": 0,
+        "min": 0
+      },
+      "gpu": {
+        "allowedCudaVersions": [],
+        "count": 1,
+        "excludedTypes": [
+          "NVIDIA GeForce RTX 3090",
+          "NVIDIA L4",
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+        ],
+        "minCudaVersion": "13.0",
+        "pools": [
+          "AMPERE_24"
+        ]
+      },
+      "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"
+    },
+    "health": {
+      "jobs": {
+        "completed": 177,
+        "failed": 1,
+        "inProgress": 0,
+        "inQueue": 0,
+        "retried": 0
+      },
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      }
+    },
+    "workers": {
+      "endpointVersion": 9,
+      "summary": {
+        "idle": 0,
+        "initializing": 0,
+        "running": 0,
+        "throttled": 0,
+        "total": 0,
+        "unhealthy": 0
+      },
+      "workers": []
+    },
+    "full_configuration_matches_before": true
+  },
+  "local_dollar_allowance": 0.5,
+  "provider_dollar_cap": false,
+  "actual_invoice_usd": null
+}

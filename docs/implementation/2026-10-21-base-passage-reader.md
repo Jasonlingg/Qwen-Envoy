@@ -38,3 +38,50 @@ Preparation must verify each first payload matches the saved V5 repaired-rerun
 payload after changing only `model` to `envoy-base-only`. Save checkpoint,
 corpus/prompt/source hashes, decoding, hardware, per-action results and claim
 review. Compare factual quality separately from execution/protocol compliance.
+
+## Actual result
+
+`6c84969` adds explicit model-arm selection and tests base identity through the
+MCP/policy/queue/record path. `4ad24e3` freezes the matched inputs before activation.
+No product prompt, source tools, verifier, gap contract, training or reward code
+changed. First actual inputs matched V5 exactly apart from model alias; all twelve
+requests and responses used `envoy-base-only`, and saved identities declare
+`adapter_applied: false`. The worker still loaded both routes; no endpoint
+image/bootstrap/env mutation was needed.
+
+Base: QLoRA returned all requested facts with adequate citations at step four.
+Its first two-read action was rejected, then it recovered with two single reads
+and a final submission. AWQ remained incomplete: every response combined read/
+search code and an Unanswerable submission. The unchanged policy cleaner selected
+the submission line, so no AWQ source read executed. Four premature abstentions
+were rejected; semantic AWQ reading was not assessed. The gap case read both
+windows after a rejected two-read action, then abstained without a gap report
+at its last step. It remained incomplete, invented no target measurement and
+returned no useful partial findings. The overall rule was not met.
+
+Under implementing-assistant source review, supported answerable cases were
+base one / saved V5 two; gap completions were zero for both. Base had two action
+and five submission rejections, versus V5's one submission rejection. Both had
+zero Docker Python execution errors. This is a descriptive tiny development
+comparison, not a validated general fine-tuning gain. V5 complied better with
+the current action protocol; the base AWQ failure cannot establish weak domain
+knowledge. Training can target repeatable protocol errors, but these observations
+alone do not justify another job. Independent human review remains blank.
+
+Base usage: 33,974 input + 672 output = 34,646 reported tokens across twelve calls,
+98,304 reserved tokens. V5's saved usage was nine calls / 26,302 reported tokens.
+All base jobs completed; no inference resubmissions or new failed/retried jobs.
+Native startup verified identity/readiness with thirteen received snapshots.
+Supervisor time before cleanup was 203.884 seconds; watchdog did not fire.
+Fresh reads at 00:54:54 UTC on October 22 verified full configuration restored,
+workers 0/0, no workers/pending jobs; all six owned Docker containers were absent.
+Actual invoice cost is unknown. The base allowance is consumed, without another
+paid attempt or new V5 calls. Eleven protected files and 507 prior artifacts
+remained unchanged.
+
+Focused checks: 46 passed in 50.30 seconds. Initial full run: 1928 passed, one
+Docker startup failure before any scripted call, three warnings, 258.96 seconds.
+A separate Docker rehearsal overlapped that run; exact cause is unproven.
+Without code/timeout changes, four standalone Docker tests passed in 7.40 seconds,
+then the standalone full suite passed 1929 tests in 152.10 seconds, no skips and
+three existing SWIG warnings. Preserve both logs. [All results and source review](../../examples/passage-reader-base/README.md).

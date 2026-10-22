@@ -1,0 +1,54 @@
+{
+  "reviewer": "implementing assistant; source-based claim review, aware of model arm; not an independent human or calibrated judge",
+  "human_review": null,
+  "training_reward": false,
+  "quality_rule": "not_met",
+  "cases": [
+    {
+      "case_id": "qlora-dtypes",
+      "judgment": "all three requested facts supported by own submitted evidence",
+      "answer": "In QLoRA, the usual weight storage dtype is 4-bit NormalFloat, the computation dtype is 16-bit BrainFloat, and only the LoRA parameters receive weight gradients.",
+      "claims": [
+        {
+          "claim": "Usual weight storage is 4-bit NormalFloat",
+          "supported": true,
+          "source": "submitted E2, 19416..19735: usually 4-bit NormalFloat"
+        },
+        {
+          "claim": "Computation is 16-bit BrainFloat/BFloat16",
+          "supported": true,
+          "source": "submitted E1 and E2, 12848..13131 and 19416..19735"
+        },
+        {
+          "claim": "Only LoRA parameters receive weight gradients",
+          "supported": true,
+          "source": "submitted E2: only compute weight gradients for LoRA parameters"
+        }
+      ],
+      "workflow": "First two-read action rejected; two separate reads and final submission succeeded at step four."
+    },
+    {
+      "case_id": "awq-protocol",
+      "judgment": "incomplete; no accepted factual answer and no source inspection, so semantic reading ability was not assessed",
+      "accepted_answer": null,
+      "analysis": "Each raw output mixed read/search code with a SUBMIT Unanswerable line. The unchanged V2 policy cleaner selected the submission line; the preceding read code was not executed. Each abstention was rejected because source-inspection requirements were unmet. There is no evidence-backed answer to grade. The source does contain all six requested benchmark facts, as checked in the saved V5 review.",
+      "raw_vs_policy_actions": "Preserved in outcome.json and actual request ledger; do not describe these as Docker execution failures or wrong extracted facts."
+    },
+    {
+      "case_id": "paged-target",
+      "judgment": "incomplete; no accepted final abstention or gap report",
+      "accepted_answer": null,
+      "missing_measurement_invented": false,
+      "analysis": "Two-read first action rejected; two separate source reads succeeded; final Unanswerable submission rejected for missing prior gap report. No substantive partial findings or next query returned. Inspected text describes OPT/LLaMA models on A100/GCP and normalized mean latency, not the requested Llama-3.1-8B/A5000/32-user p95.",
+      "scope": "Selected inspected windows only; not absence across the full paper or literature."
+    }
+  ],
+  "comparison": {
+    "base_supported_answerable_cases": 1,
+    "saved_v5_supported_answerable_cases": 2,
+    "base_completed_gap_cases": 0,
+    "saved_v5_completed_gap_cases": 0,
+    "interpretation": "V5 completed more requested fact extractions in this tiny diagnostic, primarily with better compliance with the action protocol. Base did not reach reading on AWQ. Same prompt/source/decoding, but sequential separate sessions, not randomized or held out. No statistical, general model-improvement, cost-benefit or training-causality claim."
+  },
+  "training_implication": "Training could target repeated action-format and gap-procedure errors with reviewed trajectories. This run does not justify another training job on its own. Keep the interface stable and use separate unseen evaluation before making a model-improvement claim."
+}

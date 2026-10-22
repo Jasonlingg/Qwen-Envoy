@@ -1,0 +1,163 @@
+{
+  "status": "base_one_supported_answer_two_incomplete_cases",
+  "quality_rule": "not_met",
+  "human_review": null,
+  "implementation_and_scope_commit": "6c84969",
+  "frozen_preparation_and_live_commit": "4ad24e3",
+  "post_live_product_implementation_changes": false,
+  "tests": {
+    "focused": {
+      "passed": 46,
+      "seconds": 50.3
+    },
+    "initial_full": {
+      "passed": 1928,
+      "failed": 1,
+      "warnings": 3,
+      "seconds": 258.96,
+      "failure": "test_assigned_reader_docker.py::test_scripted_mcp_with_real_docker_source_access[baseline-True] failed during Docker startup before any scripted model call; a separate Docker rehearsal overlapped; exact cause unproven"
+    },
+    "standalone_docker_recheck": {
+      "passed": 4,
+      "seconds": 7.4
+    },
+    "standalone_full_recheck": {
+      "passed": 1929,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 3,
+      "seconds": 152.1
+    },
+    "code_or_timeout_changes_for_recheck": false,
+    "full_command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+  },
+  "checks": {
+    "first_requests_match_saved_v5_except_model_alias": true,
+    "all_twelve_requests_and_responses_use_base_alias": true,
+    "all_nine_v5_requests_are_saved_not_new_calls": true,
+    "all_base_packet_and_verified_identities_adapter_applied_false": true,
+    "all_twelve_local_prompt_counts_equal_provider_usage": true,
+    "all_twelve_completions_finish_stop": true,
+    "raw_outputs_reconstruct_policy_cleaned_actions": true,
+    "AWQ_raw_read_code_not_executed": true,
+    "all_accepted_quotes_equal_original_cached_source": true,
+    "all_three_reports_attached_and_identical_note_retries_no_dispatch": true,
+    "effective_prompt_sha256": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "V1_tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+    "protected_file_hashes_unchanged": 11,
+    "prior_artifact_hashes_unchanged": 507,
+    "owned_containers_absent": 6,
+    "public_secret_pattern_scan": "passed"
+  },
+  "shutdown": {
+    "checked_at": "2026-10-22 00:54:54 UTC",
+    "endpoint": {
+      "id": "q05pjrvguakieg",
+      "workers": {
+        "idleTimeout": 60,
+        "max": 0,
+        "min": 0
+      },
+      "gpu": {
+        "allowedCudaVersions": [],
+        "count": 1,
+        "excludedTypes": [
+          "NVIDIA GeForce RTX 3090",
+          "NVIDIA L4",
+          "NVIDIA RTX PRO 6000 Blackwell Server Edition MIG 1g.24gb"
+        ],
+        "minCudaVersion": "13.0",
+        "pools": [
+          "AMPERE_24"
+        ]
+      },
+      "image": "registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:b7212acc6"
+    },
+    "health": {
+      "jobs": {
+        "completed": 177,
+        "failed": 1,
+        "inProgress": 0,
+        "inQueue": 0,
+        "retried": 0
+      },
+      "workers": {
+        "idle": 0,
+        "initializing": 0,
+        "ready": 0,
+        "running": 0,
+        "throttled": 0,
+        "unhealthy": 0
+      }
+    },
+    "workers": {
+      "endpointVersion": 9,
+      "summary": {
+        "idle": 0,
+        "initializing": 0,
+        "running": 0,
+        "throttled": 0,
+        "total": 0,
+        "unhealthy": 0
+      },
+      "workers": []
+    },
+    "full_configuration_matches_before": true
+  },
+  "limitations": [
+    "Three exposed development cases, relevant windows supplied by host, sequential separate sessions, no randomization or held-out generalization test.",
+    "Implementing-assistant claim review; independent human review remains blank.",
+    "Base AWQ factual reading was not assessed: mixed code/SUBMIT outputs were cleaned to abstentions before reads executed.",
+    "V5 completed more tasks here, but no general fine-tuning, domain-knowledge or training-causality claim.",
+    "Both models failed the gap procedure and returned no useful partial findings on that case.",
+    "No new V5 inference, training or reward change.",
+    "Base route chosen on a worker loading base weights and the V5 adapter; request/response and record identities distinguish adapter application.",
+    "Local runtime/request/token guards are not a provider invoice cap; actual invoice unknown.",
+    "In-process real MCP, remote Qwen and local Docker; no new native-host install."
+  ],
+  "artifact_sha256": {
+    "README.md": "4fd1b93c553f3306364ed711acb47f7b0f25322faa6aaf735ef3d375d64f2308",
+    "authorization.json": "225f4316939d2e8fd32fc19918d11b0238b8e645e81586de1716e20d764c3f52",
+    "cases.json": "bd9fcfb13de98b85e29fd79528630c7ee342154c4f2280bd04cf924c6b5b18e5",
+    "claim-review.json": "54bfb72923884145311e7115a48a35456180bc07c2aa093f660867b71d63e289",
+    "configuration-restoration.json": "d926492f8a041f486ec8589ea480198d7b5f4444b08233961404ebbf222fcdf9",
+    "docker-proof.json": "9021df091b738e8d1a885b708a3cdcb11fdb51ea2db0ec09ea694d39efa69904",
+    "docker-recheck.txt": "49849aae90fd625206911ecad7eb24f169bef7cd3c417cc692b65a6d2f3f4113",
+    "endpoint-final.json": "44b58264a36ba754f347e8e73b0450828f1e911a404e845aae36326f9cee8a79",
+    "experiment-config.json": "a584cac78b509b3996dc5e7e5eb6d3efc2c624d0c8e956ddf1e0d279af77bd06",
+    "focused-tests.txt": "de10f01ec2f6681210970a9c3583bc495e3f9ba45a0d508fae7dc8ff38fcaffd",
+    "full-tests-recheck.txt": "96cba8dbf661abb86f672db29b0d080861016f144490f81622ce5f15a52679d8",
+    "full-tests.txt": "9859794e4310144f10c6fd5a0da3e637a1b6b92c1c92530dc4cc9cbb279648ed",
+    "lifecycle.json": "abb061470b6ffae4e4267d8992bc443fe5d28ca89cb2153fa1a334fcdbeed82b",
+    "live/awq-protocol.json": "2af5cbc865972705d1b23fb3516fe3701218fe17f5c6e71ed32f69edb937dbdb",
+    "live/awq-protocol.resume.json": "bbeb602efdb816b636f9e7f864aa795499845e9c613109e4803eb03de73e14e1",
+    "live/paged-target.json": "25953eb261687f39b5f3ca7ccdcd969b65f4f2742e2b6231d39927ed2f499412",
+    "live/paged-target.resume.json": "33860e2dad7c9147e639f6ef645d2054d06c9a202c258d5004f7758e4e50001e",
+    "live/qlora-dtypes.json": "e40b3427e2462b6384f651b8915598f60041ac510b24cdc1abccffb83cd1ff85",
+    "live/qlora-dtypes.resume.json": "cf9ca72ba70a9e60d8670969791723648eda7172e6c9b27712cb5993514618fd",
+    "live/records/experiment_15b05552c32b4ef797d0306d8d835f6b.json": "0a399e96a0125c5cb83e938dc20e4a0e7392c105124fb3f20ea66825c932d7c7",
+    "live/records/experiment_268f2130989b4f4392548f70d7b218b4.json": "9f04cd086f79dcce13a2062881005e64dd87717f04c3ed24a1fc21abde683b1d",
+    "live/records/experiment_36960b5933bc4b6996babb925c2d92e1.json": "7ce3d266d21d0d7f082c791049754afb503a69fcd099829b82ef33927fb256ab",
+    "live/records/object_0c7aad1891f8bd453c20853ca789dd1940453303eee1dc66a26b369f17e3286a.json": "0c7aad1891f8bd453c20853ca789dd1940453303eee1dc66a26b369f17e3286a",
+    "live/records/object_39f4291043422742c3570eeb53fb271e9ca48e680c99fdc5d6a413f41d352774.json": "39f4291043422742c3570eeb53fb271e9ca48e680c99fdc5d6a413f41d352774",
+    "live/records/object_a772e8b2eba4b00060784444b6847e9ba0f0a54a6b06a71487ff0db7a35cbb13.json": "a772e8b2eba4b00060784444b6847e9ba0f0a54a6b06a71487ff0db7a35cbb13",
+    "live/records/object_d70f9d7a7e678857386b1ffae14e439ba58010babb081733b7e7a83d3953937d.json": "d70f9d7a7e678857386b1ffae14e439ba58010babb081733b7e7a83d3953937d",
+    "live/records/object_dae12cc1eac2aff96ecd8f7b909204caa7301d56dafd7f1b4598b25acef4904a.json": "dae12cc1eac2aff96ecd8f7b909204caa7301d56dafd7f1b4598b25acef4904a",
+    "live/records/object_f5c55c23b54b44d89034f3d6e66ebf0bb8a5b08728d0d22dac3f583bce0aa245.json": "f5c55c23b54b44d89034f3d6e66ebf0bb8a5b08728d0d22dac3f583bce0aa245",
+    "live/reports/experiment_1cac640043e915fcbbd8d83b83a6b7ca.json": "fc7979c6756efd33a28da644ee91a2d9b87b1e2d8484a65b76e25aafe0aec3f4",
+    "live/reports/experiment_5516674fdc1b8dbc504d217ed0e4efa9.json": "ae405b2693ce738d2a3c791f09dec1ae70f037b09d420a0a0111c997f1da8e7c",
+    "live/reports/experiment_cc5cf7b55df31cc8acb4167cbdaf614a.json": "8fdfe79bb0a4fd146b44a9f716d83e75361d1dcb65f113d2dc2557c7e1f151e2",
+    "live/reports/object_21d0ed8e6b4ecad971af9d47d0b7f2dd6627a68453d47d49ad231c8ce8aba6a5.json": "21d0ed8e6b4ecad971af9d47d0b7f2dd6627a68453d47d49ad231c8ce8aba6a5",
+    "live/reports/object_37961a811be816508ec74fb66f088e7b6d20df823dfd858fc2cb6fb1d4fc3b1c.json": "37961a811be816508ec74fb66f088e7b6d20df823dfd858fc2cb6fb1d4fc3b1c",
+    "live/reports/object_c44aaed33b07daf90267cd12511c81a7d4b9d45345c534b5d3220b9b2bee19c0.json": "c44aaed33b07daf90267cd12511c81a7d4b9d45345c534b5d3220b9b2bee19c0",
+    "live/summary.json": "3d029167286d9d05f09e7a68f81f46356c2b540d3c1da4861fac2b18f9943460",
+    "outcome.json": "3b1510a50aaee300251d178fc8839dea29fc2af3ae175f6ba543ed022ac4f724",
+    "plan.json": "ecaec9c0a3bd225e759c8faf5f717c1ff478071731ec7eca8080366ad6d22a96",
+    "preflight.json": "d7115f42bf1d6dd5e0cfeb034edef2774e7b413a6fea026c59fa82a4580177d8",
+    "review-input.json": "91d0eb113ed4259f67ba7b94e49020bc609fc6d20e5c6f62260050863e271384",
+    "session.requests.jsonl": "fd600c5634ce2c1b09bcc2cbd38c7afef15ee38111044b1e68768fcd155ca293",
+    "startup-log-reads.jsonl": "0d15f1e41a63f90089baf4a3724368a28a7bf52bcacb33e429793cba4597797e",
+    "system-prompt.txt": "df1b6d39f21ead366471a4f90ab7566c59bb2061251c845d3aa5fb3774667641",
+    "worker-identity.json": "ad30c2224c8f7f9f49d88638791583567271276296f1867dadfeac553aa5b4eb"
+  }
+}

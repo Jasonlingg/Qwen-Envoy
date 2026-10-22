@@ -59,6 +59,9 @@ An optional [Qwen passage reader](docs/PASSAGE_READER.md) now connects selected
 source windows to saved experiment notes. A [repaired-harness live rerun](examples/passage-reader-rerun-1/README.md)
 returned two supported answers under assistant source review and one incomplete
 gap case; the overall test still did not pass. This is not a model-training gain.
+A [matched base-model smoke](examples/passage-reader-base/README.md) completed
+one answerable case versus V5's two, mainly differing in protocol compliance;
+three exposed development cases do not establish a general fine-tuning gain.
 
 **No setup:** [open the public Studio](https://jasonlingg.github.io/Qwen-Envoy/).
 It includes the saved runs and makes no model calls; no GPU, Docker, login,
