@@ -1,7 +1,7 @@
 # Offline hybrid passage retrieval comparison
 
 User approved evaluating stronger retrieval before further Qwen calls/training.
-Scope: CPU-only, existing exposed QASPER documents/questions, unchanged two-passsage
+Scope: CPU-only, existing exposed QASPER documents/questions, unchanged two-passage
 reader contract. No Runpod activation, paid inference, Qwen request, model training,
 reward change, reserved research-reader pack access or production default change.
 Public model weights may be downloaded once; model loading/evaluation is then
@@ -53,7 +53,8 @@ count; secondary exposed test fully-covered count must not decrease. Steady-stat
 CPU query p95 must be <=2 seconds on both splits; model load and per-paper indexing
 are measured separately and excluded from that query threshold. Report all timing
 and indexing costs rather than presenting the warm timing as end-to-end latency.
-Other arms are ablations, not candidates selected after seeing test scores.
+Any candidate retrieval/selection failure blocks promotion. Other arms are
+ablations, not candidates selected after seeing test scores.
 If any gate fails, retain BM25 as default and report the candidate's limitations.
 Even a pass authorizes no claim of Qwen answer improvement or automatic paid run.
 
