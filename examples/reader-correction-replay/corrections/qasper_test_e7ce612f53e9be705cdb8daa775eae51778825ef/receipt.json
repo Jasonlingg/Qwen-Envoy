@@ -1,0 +1,42 @@
+{
+  "case_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+  "kind": "gap",
+  "status": "no_evidence",
+  "passed": true,
+  "source_inspection_steps": 2,
+  "request_payloads_matched": 3,
+  "original_packet_matched_except_uuid": false,
+  "source_prefix_unchanged": true,
+  "semantic_support": "not_mechanically_reviewed",
+  "training_eligible": false,
+  "training_ready": false,
+  "actions": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1804_03839\", 800, 1600))",
+      "source_inspection": true,
+      "observation_sha256": "0073dc9205a56f741be63942b2ef5032c42f84c861ac0c9e488f13871b79ec59",
+      "original_action_matched": true,
+      "original_observation_matched": true,
+      "reply_origin": "recorded"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1804_03839\", 3200, 1600))",
+      "source_inspection": true,
+      "observation_sha256": "6ff15d317e004d896983609dc5e8a27d4827b69ce867799c6d042ae822b90d0c",
+      "original_action_matched": true,
+      "original_observation_matched": true,
+      "reply_origin": "recorded"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.\", follow_up_query=\"\\\"Generating Clues for Gender based Occupation De-biasing in Text\\\" racial ethnic bias extension evaluation\")",
+      "source_inspection": false,
+      "observation_sha256": "e34a17f056afadb9e1872b98d8b3045e799fb2661ca27c675ce8723533030323",
+      "original_action_matched": false,
+      "original_observation_matched": false,
+      "reply_origin": "reviewed_correction"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "cdb7936aca6cf1a5a721a018d668640d0281b1904ce98472219339c28a79ed05",
+  "candidate_answer": "The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features, and incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1702_02584",
+      "title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+      "start": 2400,
+      "end": 3050,
+      "quote": "collect humorous instances while using formal writing resources (e.g., news titles) to obtain non-humorous instances. Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers. In a recent work BIBREF3 , a new corpus was constructed from the Pun of the Day website. BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style. In addition, Word2Vec BIBREF4 distributed representations were utilized in the model building.",
+      "arxiv_id": "1702.02584",
+      "source_url": "https://arxiv.org/abs/1702.02584",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "cdb7936aca6cf1a5a721a018d668640d0281b1904ce98472219339c28a79ed05",
+    "doc_id": "qasper_1702_02584",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1702.02584",
+    "title": "Predicting Audience's Laughter Using Convolutional Neural Network",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "7c6b817333cfd0cbe63ee368b93a17140c64b51b84c6b1bd154ffada23720fbb",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1702_02584",
+    "windows": [
+      {
+        "start": 2400,
+        "end": 4000
+      },
+      {
+        "start": 4000,
+        "end": 5600
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1702_02584\", 2400, 1600))",
+      "print(passage(\"qasper_1702_02584\", 4000, 1600))"
+    ],
+    "source_text_sha256": "64a147065f057b33d25786af27a7d16c60d507b3a1bf20aee8adde22d4f6b50b",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 2400,
+      "end": 4000
+    },
+    {
+      "start": 4000,
+      "end": 5600
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

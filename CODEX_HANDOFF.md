@@ -1,5 +1,28 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: source-reviewed corrections replayed in the frozen Docker harness.**
+> User approved the next offline validation step. Scope `2674209`, implementation
+> `dc350a8`. [Actual replay](examples/reader-correction-replay/README.md): all three
+> original hybrid packets reproduced except fresh UUIDs before either correction
+> ran. Fifteen generated policy inputs matched recorded payloads; ten actual
+> source-inspection steps used the pinned Docker image, network none and exact
+> read-only corpus mounts. The reviewer-authored humor extraction returned its
+> exact 2400..3050 citation; the reviewer-authored bias gap ended no_evidence with
+> the specific unexecuted query retained. Both original read/observation prefixes
+> were unchanged. All five owned containers were confirmed absent, including a
+> separate fresh inspection. No model inference/tokenizer load, credential read,
+> GPU activation, training, reward change or runtime baseline change occurred.
+> Fixed-action replay cannot measure how Qwen chooses actions or reacts to new
+> feedback. It demonstrates interface/provenance compatibility, not a Qwen gain.
+> Evaluation papers/questions remain regression-only, excluded from training;
+> prior draft files remain unchanged. Independent human review is null. All
+> 29 frozen implementation files and 1,692 prior files/markers are unchanged.
+> Focused 39 passed; full 2051 passed in 137.22s, no skips, three existing SWIG
+> warnings. Ruff/diff passed. Next work is separate reviewed training data under
+> paper/question exclusion rules; no training or paid inference allowance exists
+> from this completed replay.
+
+
 > **October 22: offline reader improvement queue added; runtime baseline frozen.**
 > User approved a continuously improvable workflow after freezing the tested
 > harness at `cce82c2`. Scope `e5232a3`, implementation `01615f9`.

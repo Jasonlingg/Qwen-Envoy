@@ -1,0 +1,91 @@
+{
+  "status": "no_evidence",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+  "candidate_answer": null,
+  "evidence": [],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+    "doc_id": "qasper_1804_03839",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1804.03839",
+    "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a9f7786efcc3001c2cb662a064534965d2f894455ab0e93d641fd9bfc3cd1482",
+  "research_gaps": [
+    {
+      "missing": "The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.",
+      "follow_up_query": "\"Generating Clues for Gender based Occupation De-biasing in Text\" racial ethnic bias extension evaluation",
+      "reported_at_step": 3,
+      "review_status": "unreviewed_model_report",
+      "absence_proven": false
+    }
+  ],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1804_03839",
+    "windows": [
+      {
+        "start": 800,
+        "end": 2400
+      },
+      {
+        "start": 3200,
+        "end": 4800
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1804_03839\", 800, 1600))",
+      "print(passage(\"qasper_1804_03839\", 3200, 1600))"
+    ],
+    "source_text_sha256": "979114b6bfb23ad1751bd44df61c1cfe3188f72c88b1b34df7b42a4e19446554",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 800,
+      "end": 2400
+    },
+    {
+      "start": 3200,
+      "end": 4800
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}

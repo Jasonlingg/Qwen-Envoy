@@ -3,8 +3,10 @@
 This local workflow turns saved passage-reader traces into a source-bound review
 queue and final-action correction drafts. It is the first part of an improvement
 loop, not a self-training system. The tested harness baseline remains `cce82c2`.
-It makes no model calls and does not start a GPU, execute Python from a model,
-change rewards, train a checkpoint or promote one.
+It makes no model calls and does not start a GPU, change rewards, train a
+checkpoint or promote one. Preparation/review never execute model Python;
+the optional fixed-action replay executes recorded document-tool Python in
+Docker only.
 
 ```
 Saved run → review queue → attributed source review → quarantined correction draft

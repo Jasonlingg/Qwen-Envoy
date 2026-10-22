@@ -1,0 +1,123 @@
+{
+  "schema_version": "research-evidence-packet-v1",
+  "investigator_version": "qwen-product-investigator-v1",
+  "retriever_protocol": "code-execution",
+  "retriever": "qwen_investigator",
+  "retriever_run_id": "37255c41-092a-4307-b9ee-8c8729783049",
+  "question_id": "paper_c71f981f8b2c1e8f",
+  "question": "Can their approach be extended to eliminate racial or ethnic biases?",
+  "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+  "source_domain": "public_papers",
+  "protocol_variant": "default",
+  "system_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "status": "no_evidence",
+  "candidate_claims": [],
+  "evidence": [],
+  "warning": "Qwen found no cited evidence after a bounded investigation. This does not prove the answer is absent from the selected snapshot or unknown outside it.",
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "execution": "docker_only",
+  "max_steps": 4,
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "print(passage(\"qasper_1804_03839\", 800, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1804_03839', 'start': 800, 'end': 2400, 'text': 'cessor before training any AI model but also help human story writers write stories free of occupation-level gender bias in the geographical and temporal context of their choice.\\n\\nAI systems are increasing and Natural Language Generation is getting ever more automated with emerging creative AI systems. These creative systems rely heavily on past available textual data. But often, as evident from studies done on Hollywood and Bollywood story plots and scripts, these texts are biased in terms of gender, race or ethnicity. Hence there is a need for a de-biasing system for textual stories that are used for training these creative systems.\\n\\nSuch de-biasing systems may be of two types 1) an end-to-end system that takes in a biased text and returns an unbiased version of it or 2) a system with a human-in-the-loop that takes a text, analyzes it and returns meaningful clues or pieces of evidence to the human who can appropriately modify the text to create an unbiased version. Since multiple types of biases may exist in the given text, the former de-biasing system requires identifying which biases to focus on and how to paraphrase or modify the sentence to de-bias it. These notions can often be subjective and it might be desirable to have a human-in-the-loop. This is the focus of the latter de-biasing system as well as the approach taken by us in the paper.\\n\\nGender stereotyping with respect to occupations is one of the most pervasive biases that cuts across countries and age groups BIBREF0 . In this paper, we focus on de-biasing with respect to gender stereotyping in occupations. Thi'}\n\n\n[3 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 2,
+      "action": "print(passage(\"qasper_1804_03839\", 3200, 1600))",
+      "source_inspection": true,
+      "observation": "{'doc_id': 'qasper_1804_03839', 'start': 3200, 'end': 4800, 'text': 'ection 6 we conclude our paper.\\n\\nAnalysis of gender bias in machine learning in recent years has not only revealed the prevalence of such biases but also motivated much of the recent interest and work in de-biasing of ML models. BIBREF2 have pointed to the presence of gender bias in structured prediction from images. BIBREF3 , BIBREF0 notice these biases in movies while BIBREF4 , BIBREF5 notice the same in children books and music lyrics.\\n\\nDe-biasing the training algorithm as a way to remove the biases focusses on training paradigms that would result in fair predictions by an ML model. In the Bayesian network setting, Kushner et al. have proposed a latent-variable based approach to ensure counter-factual fairness in ML predictions. Another interesting technique ( BIBREF6 and BIBREF7 ) is to train a primary classifier while simultaneously trying to \"deceive\" an adversarial classifier that tries to predict gender from the predictions of the primary classifier.\\n\\nDe-biasing the model after training as a way to remove bias focuses on \"fixing\" the model after training is complete. BIBREF8 in their famous work on gender bias in word embeddings take this approach to \"fix\" the embeddings after training.\\n\\nDe-biasing the data at the source fixes the data set before it is consumed for training. This is the approach we take in this paper by trying to de-bias the data or suggesting the possibility of de-biasing the data to a human-in-the-loop. A related task is to modify or paraphrase text data to obfuscate gender as in BIBREF9 Another closely related work is to change the style of the t'}\n\n\n[2 steps left; submit with evidence or abstain.]"
+    },
+    {
+      "step": 3,
+      "action": "submit_gap(missing=\"The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.\", follow_up_query=\"\\\"Generating Clues for Gender based Occupation De-biasing in Text\\\" racial ethnic bias extension evaluation\")",
+      "research_gap": {
+        "missing": "The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.",
+        "follow_up_query": "\"Generating Clues for Gender based Occupation De-biasing in Text\" racial ethnic bias extension evaluation",
+        "reported_at_step": 3
+      },
+      "gap_submission": true,
+      "observation": "Gap recorded and investigation ended without an accepted answer. Selected inspected passages only; no search was launched."
+    }
+  ],
+  "model_requests_attempted": 3,
+  "harness_shim_sha256": "04a8a959cd6ed34389f87fd6508ac15c97282222b255b21ae442fabd8f6af814",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1804_03839",
+    "windows": [
+      {
+        "start": 800,
+        "end": 2400
+      },
+      {
+        "start": 3200,
+        "end": 4800
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1804_03839\", 800, 1600))",
+      "print(passage(\"qasper_1804_03839\", 3200, 1600))"
+    ],
+    "source_text_sha256": "979114b6bfb23ad1751bd44df61c1cfe3188f72c88b1b34df7b42a4e19446554",
+    "counts_as_source_inspection": false
+  },
+  "passage_scope_sha256": "749c55706a6a8813a7d98114f87a8a4298c240cab3c72190e4213fd92db4d8df",
+  "inspected_passage_windows": [
+    {
+      "start": 800,
+      "end": 2400
+    },
+    {
+      "start": 3200,
+      "end": 4800
+    }
+  ],
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+    "doc_id": "qasper_1804_03839",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1804.03839",
+    "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a9f7786efcc3001c2cb662a064534965d2f894455ab0e93d641fd9bfc3cd1482",
+  "research_gaps": [
+    {
+      "missing": "The two inspected passages discuss gender and occupation bias but do not establish whether the approach can eliminate racial or ethnic biases.",
+      "follow_up_query": "\"Generating Clues for Gender based Occupation De-biasing in Text\" racial ethnic bias extension evaluation",
+      "reported_at_step": 3
+    }
+  ],
+  "reader_guidance": "passages-v2",
+  "uncertainty": "The selected inspected passages did not establish the requested answer. Host review is required.",
+  "document_tool_steps": 2,
+  "inspection_steps": 2
+}

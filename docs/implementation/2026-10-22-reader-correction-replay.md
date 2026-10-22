@@ -35,3 +35,20 @@ the offline transport, and actual Docker replay. Run the full relevant suite aft
 focused checks. Preserve protected dirty files, prior results and consumed paid
 markers. Separate training data, a training job and model promotion remain future
 scoped work with no authorization to activate paid infrastructure here.
+
+## Actual result
+
+Implementation `dc350a8`: all three original packets matched except fresh UUIDs
+before both corrected episodes ran. Fifteen actual policy payloads matched the
+historical inputs, with ten successful Docker source-inspection steps. Humor's
+reviewer-authored final action retained its exact 2400..3050 quote. Bias's final
+submit_gap action ended with scoped no_evidence and the specific query preserved,
+not executed. Original source-inspection actions and observations were identical.
+Five containers were verified network-none/read-only and independently confirmed
+absent after cleanup. Zero new model calls, GPU activations or training examples.
+All 29 frozen implementation files and 1,692 prior file/marker hashes are unchanged.
+The two corrections remain excluded from training; no Qwen improvement is measured.
+Focused checks: 39 passed, including the actual five-episode Docker integration.
+Full offline suite with the pinned image: **2051 passed in 137.22 seconds**, no
+skips, three existing SWIG warnings. Ruff/diff checks passed. Packaged replay
+artifacts and final preservation/owned-container checks are bound in validation.json.

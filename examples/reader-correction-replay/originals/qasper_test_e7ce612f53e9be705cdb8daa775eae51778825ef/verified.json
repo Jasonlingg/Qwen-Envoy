@@ -1,0 +1,106 @@
+{
+  "status": "evidence_found",
+  "source_domain": "public_papers",
+  "retriever": "qwen_code_execution",
+  "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+  "candidate_answer": "The inspected passages do not establish whether the approach can be extended to eliminate racial or ethnic biases.",
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "doc_id": "qasper_1804_03839",
+      "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+      "start": 800,
+      "end": 2000,
+      "quote": "cessor before training any AI model but also help human story writers write stories free of occupation-level gender bias in the geographical and temporal context of their choice.\n\nAI systems are increasing and Natural Language Generation is getting ever more automated with emerging creative AI systems. These creative systems rely heavily on past available textual data. But often, as evident from studies done on Hollywood and Bollywood story plots and scripts, these texts are biased in terms of gender, race or ethnicity. Hence there is a need for a de-biasing system for textual stories that are used for training these creative systems.\n\nSuch de-biasing systems may be of two types 1) an end-to-end system that takes in a biased text and returns an unbiased version of it or 2) a system with a human-in-the-loop that takes a text, analyzes it and returns meaningful clues or pieces of evidence to the human who can appropriately modify the text to create an unbiased version. Since multiple types of biases may exist in the given text, the former de-biasing system requires identifying which biases to focus on and how to paraphrase or modify the sentence to de-bias it. These notions can often",
+      "arxiv_id": "1804.03839",
+      "source_url": "https://arxiv.org/abs/1804.03839",
+      "coverage": "qasper_s2orc_text"
+    },
+    {
+      "evidence_id": "E2",
+      "doc_id": "qasper_1804_03839",
+      "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+      "start": 3200,
+      "end": 4400,
+      "quote": "ection 6 we conclude our paper.\n\nAnalysis of gender bias in machine learning in recent years has not only revealed the prevalence of such biases but also motivated much of the recent interest and work in de-biasing of ML models. BIBREF2 have pointed to the presence of gender bias in structured prediction from images. BIBREF3 , BIBREF0 notice these biases in movies while BIBREF4 , BIBREF5 notice the same in children books and music lyrics.\n\nDe-biasing the training algorithm as a way to remove the biases focusses on training paradigms that would result in fair predictions by an ML model. In the Bayesian network setting, Kushner et al. have proposed a latent-variable based approach to ensure counter-factual fairness in ML predictions. Another interesting technique ( BIBREF6 and BIBREF7 ) is to train a primary classifier while simultaneously trying to \"deceive\" an adversarial classifier that tries to predict gender from the predictions of the primary classifier.\n\nDe-biasing the model after training as a way to remove bias focuses on \"fixing\" the model after training is complete. BIBREF8 in their famous work on gender bias in word embeddings take this approach to \"fix\" the embeddings af",
+      "arxiv_id": "1804.03839",
+      "source_url": "https://arxiv.org/abs/1804.03839",
+      "coverage": "qasper_s2orc_text"
+    }
+  ],
+  "semantic_support": "not_reviewed",
+  "warning": "Exact excerpts prove provenance, not support for the model's proposed answer.",
+  "uncertainty": null,
+  "model_identity": {
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "served_model": "envoy",
+    "endpoint": "https://api.runpod.ai/v2/q05pjrvguakieg",
+    "seed": 42,
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "thinking": false,
+    "harness_version": "v2",
+    "max_tokens": 1024,
+    "reader_mode": "assigned",
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "adapter_applied": true
+  },
+  "model_requests_attempted": 3,
+  "trajectory_steps": 3,
+  "prompt_hash": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "tool_search_version": "passage-bm25-okapi-v1",
+  "tool_preamble_sha256": "233adfef3cd72c8b8221e45dcaa58c76809f36bd717d1d342514a7c332c3dd71",
+  "harness_version": "v2",
+  "reader_mode": "assigned",
+  "paper_assignment": {
+    "version": "assigned-qasper-paper-v1",
+    "corpus_hash": "b4d3a9e53ef59dc6ced3e35a2a5afd84b324b4b305b3588b0c479acddf6335cc",
+    "doc_id": "qasper_1804_03839",
+    "source_dataset": "allenai/qasper",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "qasper_paper_id": "1804.03839",
+    "title": "Generating Clues for Gender based Occupation De-biasing in Text",
+    "coverage": "qasper_s2orc_text",
+    "counts_as_source_inspection": false
+  },
+  "assignment_sha256": "a9f7786efcc3001c2cb662a064534965d2f894455ab0e93d641fd9bfc3cd1482",
+  "research_gaps": [],
+  "gap_report_error": null,
+  "reader_guidance": "passages-v2",
+  "passage_scope": {
+    "version": "passages-v2",
+    "doc_id": "qasper_1804_03839",
+    "windows": [
+      {
+        "start": 800,
+        "end": 2400
+      },
+      {
+        "start": 3200,
+        "end": 4800
+      }
+    ],
+    "read_calls": [
+      "print(passage(\"qasper_1804_03839\", 800, 1600))",
+      "print(passage(\"qasper_1804_03839\", 3200, 1600))"
+    ],
+    "source_text_sha256": "979114b6bfb23ad1751bd44df61c1cfe3188f72c88b1b34df7b42a4e19446554",
+    "counts_as_source_inspection": false
+  },
+  "inspected_passage_windows": [
+    {
+      "start": 800,
+      "end": 2400
+    },
+    {
+      "start": 3200,
+      "end": 4800
+    }
+  ],
+  "absence_scope": "selected inspected passages only; not the whole paper"
+}
