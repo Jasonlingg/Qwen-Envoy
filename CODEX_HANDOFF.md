@@ -1,5 +1,31 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: matched hybrid-input live V5 smoke completed, partial answer gain.**
+> User explicitly said “ok go test it.” Scope `1de2485`, runner `7ba4e52`, exact
+> frozen input comparison `6ff9404`. [Results](examples/qasper-hybrid-v5/README.md):
+> same three exposed QASPER questions, source snapshots, prompt, V5 weights,
+> decoding, Docker image and four-request budget. Only scope ranges/read examples
+> changed to saved plain-hybrid windows. Nine requests / 28,270 reported tokens,
+> zero execution or action/submission/gap errors, six real Docker inspections,
+> three mechanically verified terminal packets. Complete answerable cases under
+> implementing-assistant review: historical BM25 0/2 → hybrid 1/2. Translation now
+> correctly gives LSTMs/attention/dropout with supporting citations. Humor still
+> denies lexical cues despite all seven reference terms in the actual model
+> request and returned quotes. Bias now gives question-specific prose inability
+> as evidence_found, without atomic gap/query; useful gaps 0/1 in both runs.
+> Overall quality rule not met. Evidence_found/provenance checks do not establish
+> answer correctness. No further retrieval tweak, training, reward change or
+> paid retry followed. Source/input/semantic evidence is saved; human review null.
+> Historical control, exposed examples and unguaranteed remote seed prevent a
+> general/causal improvement claim; no trained-versus-base model gain measured.
+> Fresh 16:35:47 UTC reads: full config restored, workers 0/0, no workers/pending
+> jobs; six owned Docker containers absent. New qasper-hybrid-v5 live marker
+> consumed, all older allowances unchanged. 64 focused and 2012 full tests passed;
+> 804 prior hashes including protected files unchanged. Next reader work should
+> target use of supplied evidence and specific structured gap reporting. No new
+> paid run, base call, reserved-set use or training is included by this test.
+
+
 > **October 22: CPU-only hybrid retrieval comparison completed; candidate not promoted.**
 > User approved better RAG before more Qwen calls/training. Scope `54227ea`,
 > implementation `e79bd99`, frozen model/data/code plan `ce63cc3`.

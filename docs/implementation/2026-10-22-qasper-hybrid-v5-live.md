@@ -52,3 +52,24 @@ focused tests and the full relevant suite before activation. Save raw model outp
 cleaned actions, source inspections, verified quotes, gaps, usage and failures.
 Finish by parking workers 0/0, verifying the full original endpoint configuration,
 zero workers/pending jobs and absence of owned Docker containers through fresh reads.
+
+
+## Outcome
+
+Implementation `7ba4e52`; exact matched first inputs frozen in `6ff9404` before
+activation. [Saved live results](../../examples/qasper-hybrid-v5/README.md):
+nine V5 requests / 28,270 tokens; zero execution/action/submission/gap errors,
+six actual Docker inspections and three provenance-valid terminal packets.
+Translation improved from generic NMT to supported LSTM/attention/dropout facts.
+Humor still denied cues despite all seven reference terms being present in the
+actual final model request and returned quotes. Bias returned question-specific
+prose inability as evidence_found, with no terminal gap or follow-up query.
+Complete answerable cases 0/2 → 1/2; useful gaps 0/1 → 0/1; overall gate not met.
+Review is implementing-assistant, not independent human or official QASPER grading.
+No model weight, prompt or harness was changed. No general model gain is claimed.
+
+Fresh 16:35:47 UTC reads verified full configuration restoration, workers 0/0,
+zero workers/pending jobs; six owned Docker containers absent. 804 prior hashes
+and all old consumed markers unchanged. Focused 64 passed; full 2012 passed in
+98.49s, no skips. The new hybrid V5 marker is consumed. No additional paid calls,
+reserved-set access, model training/RL or reward change is included.

@@ -1,0 +1,137 @@
+{
+  "reviewer": "implementing assistant; not independent human review",
+  "human_review": null,
+  "rule": "predeclared complete answers on both answerable cases plus useful specific structured gap",
+  "historical_bm25_complete_answerable_cases": 0,
+  "hybrid_complete_answerable_cases": 1,
+  "answerable_case_count": 2,
+  "overall_quality_gate": "not met",
+  "semantic_support": "claim-level review below",
+  "not_claimed": [
+    "general fine-tuning improvement",
+    "held-out generalization",
+    "causal proof",
+    "full QASPER score",
+    "weekly workflow/product success"
+  ],
+  "cases": [
+    {
+      "case_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "question": "What lexical cues are used for humor recogition?",
+      "candidate_answer": "The inspected passages describe humor recognition features but do not specify lexical cues.",
+      "packet_status": "evidence_found",
+      "historical_candidate_answer": "The inspected passages do not establish the lexical cues used for humor recognition. I cannot identify the features inspected in the inspected passages.",
+      "historical_status": "evidence_found",
+      "actual_source_inspections": 2,
+      "requests": 3,
+      "verified_quote_ranges": [
+        {
+          "start": 2400,
+          "end": 3600
+        },
+        {
+          "start": 4000,
+          "end": 5200
+        }
+      ],
+      "quality_pass": false,
+      "change": "still fails; retrieval miss is removed but answer remains a refusal",
+      "claims": [
+        {
+          "claim": "The inspected passages describe humor recognition features but do not specify lexical cues.",
+          "assessment": "Fails original QASPER reference content: it gives no cues and says they are unspecified despite all seven original reference terms in actual model input and returned quotes.",
+          "source_range": {
+            "start": 2400,
+            "end": 3050
+          },
+          "reference_terms_present_in_actual_input_and_citations": [
+            "alliteration",
+            "antonymy",
+            "adult slang",
+            "incongruity",
+            "ambiguity",
+            "interpersonal effect",
+            "phonetic style"
+          ]
+        }
+      ],
+      "complete_stylistic_reference_list": false,
+      "complete_latent_category_reference_list": false,
+      "limitation": "The fixed window begins mid-paragraph. This one test does not isolate model weights, wording, and prompt-induced conservatism."
+    },
+    {
+      "case_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "question": "What translation models are explored?",
+      "candidate_answer": "Neural machine translation (NMT) models are explored, including an LSTM-based architecture with attention and dropout.",
+      "packet_status": "evidence_found",
+      "historical_candidate_answer": "Neural machine translation (NMT) models are explored.",
+      "historical_status": "evidence_found",
+      "actual_source_inspections": 2,
+      "requests": 3,
+      "verified_quote_ranges": [
+        {
+          "start": 0,
+          "end": 1200
+        },
+        {
+          "start": 4800,
+          "end": 6000
+        }
+      ],
+      "quality_pass": true,
+      "change": "improved from broadly supported generic NMT to complete requested architecture details",
+      "claims": [
+        {
+          "claim": "NMT with an LSTM-based architecture and attention",
+          "assessment": "Supported and complete for the predeclared requested model details.",
+          "source_range": {
+            "start": 5164,
+            "end": 5336
+          },
+          "quote": "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+        },
+        {
+          "claim": "dropout",
+          "assessment": "Extra detail independently supported in the inspected and verified quote; not invented.",
+          "source_range": {
+            "start": 5579,
+            "end": 5734
+          },
+          "quote": "its. The \u201cscaled Luong\u201d version of the attention mechanism was used, as well as dropout with rate equal $0.2$. The number of training steps was 10000. (Thi"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_test_e7ce612f53e9be705cdb8daa775eae51778825ef",
+      "question": "Can their approach be extended to eliminate racial or ethnic biases?",
+      "candidate_answer": "The inspected passages do not establish whether the approach can be extended to eliminate racial or ethnic biases.",
+      "packet_status": "evidence_found",
+      "historical_candidate_answer": null,
+      "historical_status": "no_evidence",
+      "actual_source_inspections": 2,
+      "requests": 3,
+      "verified_quote_ranges": [
+        {
+          "start": 800,
+          "end": 2000
+        },
+        {
+          "start": 3200,
+          "end": 4400
+        }
+      ],
+      "quality_pass": false,
+      "change": "uncertainty is now question-specific prose, but structured-gap completion regressed",
+      "claims": [
+        {
+          "claim": "The inspected passages do not establish whether the approach can be extended to eliminate racial or ethnic biases.",
+          "assessment": "Scoped uncertainty is consistent with the selected gender-bias passages and original unanswerable annotations; it is not a verified whole-paper absence claim or a factual answer."
+        }
+      ],
+      "atomic_gap_submitted": false,
+      "follow_up_query": null,
+      "classification_issue": "Existing verifier accepts a cited prose inability as evidence_found; provenance validation does not classify semantic answer type.",
+      "historical_gap": "Mechanically terminal submit_gap with generic placeholder missing/query strings; no useful gap then either."
+    }
+  ]
+}
