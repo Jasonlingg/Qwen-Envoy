@@ -148,8 +148,9 @@ def test_source_key_tamper_duplicate_context_and_missing_claim_review_rejected(s
 
 
 def test_numeric_units_and_punctuation_are_not_erased():
-    assert validation.canonical("  64 MB\nper request. ") == "64 mb per request."
+    assert validation.canonical("  64 MB\nper request. ") == "64 MB per request."
     for a, b in [("64 MB", "64 GB"), ("0.2", "02"), ("a>b", "a<b"),
+                 ("64 MB", "64 Mb"), ("1 mW", "1 MW"),
                  ("not supported", "supported"), ("VATEX/video", "video/VATEX")]:
         assert validation.canonical(a) != validation.canonical(b)
 

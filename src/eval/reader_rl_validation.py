@@ -27,8 +27,8 @@ AUDIT = ROOT / "examples/reader-rl-investigation"
 
 
 def canonical(answer):
-    """Keep punctuation, numbers, units and word order; only case/space/NFC fold."""
-    return " ".join(unicodedata.normalize("NFC", answer).casefold().split())
+    """Only normalize whitespace/NFC: even letter case can change scientific units."""
+    return " ".join(unicodedata.normalize("NFC", answer).split())
 
 
 def interval(span, limit):
