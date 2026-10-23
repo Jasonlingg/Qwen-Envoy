@@ -1,5 +1,40 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: local RL reward/setup validation; training remains blocked.**
+> User approved validating reward and training setup before an RL retry, not
+> a paid/GPU launch. Scope `269c56f`, candidate/preflight `50393d7`, scientific-unit
+> case preservation `c958271`. [Report](docs/READER_RL_VALIDATION.md),
+> [saved per-record results](examples/reader-rl-validation/README.md).
+> Separate offline candidate uses source-reviewed complete answer variants plus
+> claim/support keys: 14 cards, 20 claims, 28 variants. On the unchanged 150 exposed
+> records, 0/74 answerable known negatives receive positive reward; 13/14 old
+> positive controls and all 28 reviewed variants pass. The rejected old positive
+> claims independent test sets; its cited excerpt establishes perplexity on test
+> sets, not independence. Old answer/artifact remains unchanged; narrowed variants
+> pass. All 50 missing-scope records have no numeric task reward and must be
+> excluded from this objective. All 12 reference-string controls score zero;
+> correct unlisted paraphrases can also fail. These finite-match development
+> results are partly by construction, not calibrated semantics or a Qwen gain.
+> Review is implementing-assistant/model-assisted; independent human null.
+> Preflight binds V5, source, exact effective prompt, Docker image, 29 unchanged
+> runtime files and unchanged V1 bytes. The historical generation-defaults fix
+> is present; old host-execution/old-prompt trainer remains incompatible with V2.
+> Its optimizer/config regressions pass, not proof of a current V5 GPU update or
+> proof that a bug caused the old held-out failure. No trainer/reward/runtime
+> was changed. Report CLI exits 2 for not-ready; it never launches and cannot
+> prevent someone directly invoking the historical trainer. Original data hold,
+> missing separate reward validation, V2 Docker/raw-token rollout parity, genuine
+> GPU update/reload proof and zero paid budget block retraining. No inference,
+> GPU activation, real Qwen optimizer update, training export or reserved-pack use.
+> Next: eligible training-only pool/reuse policy and separately locked reward
+> validation, then the V2 training adapter and a separately budgeted signal probe.
+> Focused 60 passed; final full suite 2,116 passed in 109.23s, no skips, three
+> existing SWIG warnings. One focused reporting failure and the earlier green
+> full run are retained. Saved scores reproduce exactly. Of 2,041 prior hashes,
+> only this intentional handoff update changed; 2,040 remain unchanged. Test logs,
+> preservation proof and score reproduction are in the validation bundle.
+
+
 > **October 22: RL investigated offline; reward and data gates block training.**
 > User authorized RL investigation, not a paid launch. Scope `05e7a24`, reward
 > audit `dc67ac7`, structured-history/hold fix `ddfef59`.

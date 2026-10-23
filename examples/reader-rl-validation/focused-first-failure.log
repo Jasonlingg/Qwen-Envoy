@@ -1,0 +1,60 @@
+..................F.......................................               [100%]
+=================================== FAILURES ===================================
+________ test_full_offline_report_preserves_failures_and_cannot_launch _________
+
+tmp_path = PosixPath('/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/pytest-of-jasonling/pytest-709/test_full_offline_report_prese0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x127be8350>
+
+    def test_full_offline_report_preserves_failures_and_cannot_launch(tmp_path, monkeypatch):
+        from src.env.repl import PersistentREPL
+    
+        def forbidden(*args, **kwargs):
+            raise AssertionError("no network, subprocess, Docker or model launch")
+        monkeypatch.setattr(socket.socket, "connect", forbidden)
+        monkeypatch.setattr(subprocess, "run", forbidden)
+        monkeypatch.setattr(subprocess, "Popen", forbidden)
+        monkeypatch.setattr(PersistentREPL, "start_session", forbidden)
+        output = tmp_path / "report"
+>       summary = validation.validate(KEYS, output)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_reader_rl_validation.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/eval/reader_rl_validation.py:270: in validate
+    readiness = preflight()
+                ^^^^^^^^^^^
+src/eval/reader_rl_validation.py:195: in preflight
+    "local_validation_hardware": {"platform": platform.platform(),
+                                              ^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/platform.py:1212: in platform
+    system, node, release, version, machine, processor = uname()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/platform.py:799: in __iter__
+    (self.processor,)
+     ^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/functools.py:1001: in __get__
+    val = self.func(instance)
+          ^^^^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/platform.py:794: in processor
+    return _unknown_as_blank(_Processor.get())
+                             ^^^^^^^^^^^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/platform.py:739: in get
+    return func() or ''
+           ^^^^^^
+../../../.pyenv/versions/3.11.9/lib/python3.11/platform.py:762: in from_subprocess
+    return subprocess.check_output(
+../../../.pyenv/versions/3.11.9/lib/python3.11/subprocess.py:466: in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (['uname', '-p'],)
+kwargs = {'check': True, 'encoding': 'utf8', 'stderr': -3, 'stdout': -1, ...}
+
+    def forbidden(*args, **kwargs):
+>       raise AssertionError("no network, subprocess, Docker or model launch")
+E       AssertionError: no network, subprocess, Docker or model launch
+
+tests/test_reader_rl_validation.py:159: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_reader_rl_validation.py::test_full_offline_report_preserves_failures_and_cannot_launch
+1 failed, 57 passed in 6.25s

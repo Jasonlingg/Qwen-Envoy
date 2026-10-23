@@ -46,3 +46,105 @@ This is an assistant-authored development review; independent human review stays
 null. A later experiment must lock separate reward-validation cases and model
 evaluation papers before model outcomes, declare IDs, objective, hardware and
 budget, and measure source-supported quality rather than training reward alone.
+
+## Implemented local experiment
+
+The candidate lives separately in `src/eval/reader_rl_validation.py`; neither
+active reward nor historical training code was changed. It matches a complete
+answer against explicitly reviewed variants and checks that every claim's
+required reference excerpt appears in the inspected, clipped submitted evidence.
+Extra unrelated citations fail. References bind the entire question, source and
+scope. Only NFC/whitespace are normalized: case is preserved because `MB`/`Mb`
+and `mW`/`MW` differ. A genuine shorter supporting excerpt or a correct unlisted
+paraphrase can still score zero. This deliberately restrictive objective is not
+a general semantic-support evaluator or an automatic label generator.
+
+The [saved keys](../examples/reader-rl-validation/reviewed-keys.json) contain
+14 source-reviewed cards, 20 claim/support bindings and 28 complete variants.
+The implementing assistant authored this review with sources visible; independent
+human review is null. Twelve cards are from the exposed pilot training-paper
+diagnostics, two from already exposed evaluation regressions. All are marked
+diagnostic-only, ineligible for training. Gap quality has no reward in this
+prototype. `None` means exclude that task from its RL objective, never turn it
+into a zero-reward failed rollout.
+
+One old positive control needs narrower wording: the cited excerpt reports
+perplexity on test sets, but does not establish the claimed **independence** of
+those sets. Its original record remains unchanged and scores zero; two narrower
+reviewed variants pass. This is a support insufficiency in the cited excerpt,
+not a finding that independent sets are absent elsewhere in the paper.
+
+## Results and interpretation
+
+All 150 old records remain intact and are reported individually in the
+[saved results](../examples/reader-rl-validation/results.json).
+
+| Diagnostic | Actual result |
+| --- | ---: |
+| Answerable records scored | 100 |
+| Known unacceptable answerable records getting positive reward | **0 / 74** |
+| Original answerable positive controls accepted | **13 / 14** |
+| Explicitly reviewed complete variants accepted | **28 / 28** |
+| Missing-scope records excluded from the objective | **50** |
+| New Qwen inference / GPU activations / Qwen updates | **0 / 0 / 0** |
+
+On the same 74 answerable negatives, the old legacy, scoped-overlap and
+scoped-exact scorers give positive reward to **50, 38 and 12**, respectively.
+The 12 original reference-string controls also receive zero from this candidate:
+their wording was not automatically promoted into the reviewed variant list.
+These are not new negative semantic labels. This highlights the false-negative
+risk of a narrow allowlist, not superiority on an independent distribution.
+
+The exposed development gate passes. That outcome is partly by construction:
+complete reviewed answer matching blocks all unlisted outputs. It does not
+establish reward recall, semantic-judge calibration, useful exploration variance,
+training-data sufficiency or model improvement. Separate source-reviewed reward
+validation must include unseen acceptable paraphrases as well as bad answers;
+passing only authored exploits is inadequate.
+
+## Training readiness and next executable work
+
+The [preflight](../examples/reader-rl-validation/preflight.json) records the pinned
+V5 identity, source revision, effective prompt, Docker image, all 29 runtime
+hashes, V1 preamble hash and original data hold. Its paid request/token/time/dollar
+budget is zero. It distinguishes the already-present generation-defaults fix
+from the incompatible host-execution/old-prompt path. The existing optimizer and
+generation-config regression tests pass; this does not reproduce a real current
+V5 GPU update or establish why the historical confirmation failed.
+
+`scripts/validate_reader_rl.py` is a **report-only** local entry point. It exits
+2 even when the exposed diagnostic gate passes, because training readiness is
+blocked. It never launches a trainer, and cannot stop someone directly invoking
+the historical trainer. Do not interpret its report as a hardened launch guard.
+
+Remaining work before any budgeted rollout: agree a disclosed training-only
+data/reuse policy and retain evaluation-paper exclusions; lock separately
+reviewed reward-validation cases; then implement the exact V2 Docker-only
+raw-token rollout adapter. Prove actual prefix/token/log-prob/loss-mask parity,
+complete-group handling and infrastructure-error separation. Only then freeze
+a bounded sampling probe and require valid trajectories plus useful within-group
+reward variation before an update. A later GPU test must verify policy change,
+unchanged reference, finite gradients and save/reload identity. Neither a new
+optimizer choice nor this allowlist resolves those missing checks.
+
+## Verification and preservation
+
+- Focused reward/audit/generation/optimizer checks: **60 passed**. CPU toy-model
+  optimizer checks are not current-checkpoint GPU training evidence.
+- Final relevant offline suite: **2,116 passed**, zero skips, three existing SWIG
+  warnings, 109.23 seconds. It includes local pinned-Docker fixtures. An earlier
+  full run before the unit-case correction also passed 2,116 in 174.59 seconds.
+- Saved 150-row scores, summaries and all 28 reviewed-variant checks reproduce
+  exactly; input/output/source bindings verify. The CLI returns expected exit 2.
+- The first saved focused attempt failed because `platform.platform()` invoked
+  `uname -p` under a no-subprocess test. Hardware reporting now uses `os.uname()`;
+  the failure and later green logs are retained. It was a local reporting bug,
+  unrelated to historical Qwen training or paid infrastructure.
+- Ruff and diff checks pass. All 29 frozen runtime files and V1 preamble bytes
+  remain unchanged. Of 2,041 pre-existing recorded files, only this pass's
+  intentional `CODEX_HANDOFF.md` update changed; 2,040 are unchanged, including
+  original user modifications, old audit/replay/data artifacts and protected
+  training/reward files. No reserved question pack was inspected.
+
+The [bundle](../examples/reader-rl-validation/README.md) contains raw logs,
+per-record results, source bindings and preservation/recomputation receipts.

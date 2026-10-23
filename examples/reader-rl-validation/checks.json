@@ -1,0 +1,31 @@
+{
+  "focused": {
+    "passed": 60,
+    "seconds": 14.65,
+    "command": "HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 python -m pytest -q tests/test_reader_rl_validation.py tests/test_reader_rl_audit.py tests/test_qasper_rl.py tests/test_grpo_loss.py"
+  },
+  "full_final": {
+    "passed": 2116,
+    "skipped": 0,
+    "warnings": 3,
+    "seconds": 109.23,
+    "command": "PATH=/Users/jasonling/.local/bin:$PATH HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 ENVOY_ASSIGNED_TEST_DOCKER_IMAGE=sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382 python -m pytest -q -rs"
+  },
+  "full_before_case_fix": {
+    "passed": 2116,
+    "seconds": 174.59
+  },
+  "first_saved_focused_failure": {
+    "failed": 1,
+    "passed": 57,
+    "reason": "platform.platform() spawned uname -p under a no-subprocess test; fixed using os.uname()."
+  },
+  "cli_exit_code": 2,
+  "cli_exit_expected": "training_not_ready",
+  "new_model_calls": 0,
+  "gpu_activations": 0,
+  "qwen_optimizer_updates": 0,
+  "independent_human_review": null,
+  "ruff_passed": true,
+  "staged_diff_check_passed": true
+}

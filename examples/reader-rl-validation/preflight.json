@@ -1,0 +1,98 @@
+{
+  "status": "blocked",
+  "training_ready": false,
+  "report_only_no_launch_guard": true,
+  "target_model_identity_from_frozen_evaluation": {
+    "base": "Qwen/Qwen3-8B",
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "adapter": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5",
+    "adapter_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "subfolder": "artifacts/full/checkpoint-50",
+    "adapter_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "seed": 42,
+    "thinking": false,
+    "checkpoint": "jasonlingg/qwen-envoy-qwen3-8b-qasper-sft-v5@27b912a863ff914ad45baa03624d8911dc1e17fb/artifacts/full/checkpoint-50",
+    "adapter_applied": true,
+    "served_model": "envoy"
+  },
+  "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+  "sandbox_image": "sha256:79bd8bf84bd4b7f2a32a0596cb1fd90164716c1cfca879f78829411193646382",
+  "training_sampling_settings": null,
+  "paid_budget": {
+    "requests": 0,
+    "tokens": 0,
+    "dollars": 0,
+    "gpu_seconds": 0
+  },
+  "local_validation_hardware": {
+    "system": "Darwin",
+    "release": "25.2.0",
+    "machine": "arm64",
+    "python": "3.11.9"
+  },
+  "effective_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+  "frozen_runtime": {
+    "benchmarks/envoybench/frozen_dataset.py": true,
+    "scripts/experiment_mode_mcp.py": true,
+    "scripts/runpod_qwen_bootstrap.py": true,
+    "scripts/try_passage_reader.py": true,
+    "scripts/try_qasper_passages.py": true,
+    "src/env/repl.py": true,
+    "src/env/tools.py": true,
+    "src/env/tools_v2.py": true,
+    "src/eval/assigned_smoke_lifecycle.py": true,
+    "src/eval/assigned_smoke_plan.py": true,
+    "src/eval/qasper_passage_smoke.py": true,
+    "src/eval/reader_comparison_plan.py": true,
+    "src/eval/reader_comparison_run.py": true,
+    "src/eval/worker_log_reader.py": true,
+    "src/policies/runpod_queue.py": true,
+    "src/product/assigned_actions.py": true,
+    "src/product/assigned_guidance.py": true,
+    "src/product/assigned_reader.py": true,
+    "src/product/experiment_budget.py": true,
+    "src/product/experiment_tokenizer.py": true,
+    "src/product/packet_verifier.py": true,
+    "src/product/paper_assignment.py": true,
+    "src/product/passage_reader_service.py": true,
+    "src/product/passage_scope.py": true,
+    "src/product/qwen_investigator.py": true,
+    "src/product/reader_gaps.py": true,
+    "scripts/try_qasper_hybrid_v5.py": true,
+    "src/research/hybrid_passages.py": true,
+    "scripts/compare_passage_retrieval.py": true
+  },
+  "v1_preamble_unchanged": true,
+  "legacy_trainer": {
+    "source_sha256": "9e92c1810833cade3beefeadd6d5bf6fd54b5b634d74f460860a0eb4e24f5aef",
+    "environment_constructors": [
+      {
+        "line": 214,
+        "use_docker": false
+      }
+    ],
+    "current_prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+    "uses_current_investigator": false,
+    "uses_submit_gap": false,
+    "training_launcher_executed": false,
+    "generation_defaults_override_fix_present": true
+  },
+  "data_hold": {
+    "path": "data/sft/passage-reader-pilot-v1/HOLD.json",
+    "sha256": "0ffe158fb9d5aea6c3835897023f0118eaf08c66abcc7b9ecd605c212d720980",
+    "status": "on_hold"
+  },
+  "blockers": [
+    "Exposed finite-answer keys are not independent reward-validation evidence.",
+    "No eligible reviewed training pool; the previous export remains on hold.",
+    "No current V2 Docker-only raw-token rollout adapter or loss-mask parity proof.",
+    "Historical host-execution/old-prompt trainer is incompatible with this task.",
+    "No current-checkpoint GPU update, frozen-reference and save/reload proof.",
+    "No authorized enforceable paid request/token/time/dollar budget."
+  ],
+  "new_model_calls": 0,
+  "gpu_activations": 0,
+  "optimizer_updates": 0
+}

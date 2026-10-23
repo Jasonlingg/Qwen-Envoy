@@ -1,0 +1,58 @@
+{
+  "schema_version": "reviewed-answer-support-diagnostic-v1",
+  "records": 150,
+  "eligible_answerable_records": 100,
+  "excluded_missing_scope_records": 50,
+  "known_answerable_negatives": 74,
+  "known_answerable_negatives_positive": 0,
+  "prior_proxies_on_same_answerable_negatives": {
+    "legacy_overlap": {
+      "positive_reward": 50,
+      "full_reward": 12
+    },
+    "scoped_overlap": {
+      "positive_reward": 38,
+      "full_reward": 0
+    },
+    "scoped_exact": {
+      "positive_reward": 12,
+      "full_reward": 12
+    }
+  },
+  "original_answerable_positive_controls": 14,
+  "original_positive_controls_rewarded": 13,
+  "source_review_disagreements": [
+    {
+      "record_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present:reviewed",
+      "context_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present",
+      "original_label": "acceptable",
+      "variant": "reviewed",
+      "previous_proxy_rewards": {
+        "legacy_overlap": 0.25,
+        "scoped_overlap": 0.25,
+        "scoped_exact": 0.0
+      },
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  ],
+  "reviewed_complete_variants": 28,
+  "reviewed_variants_rewarded": 28,
+  "reasons": {
+    "reviewed_answer_and_support_matched": 13,
+    "answer_not_in_reviewed_variants": 63,
+    "evidence_not_inspected_in_scope": 12,
+    "invalid_or_gap_terminal_on_answerable_task": 12,
+    "gap_quality_not_scored": 50
+  },
+  "exposed_development_gate_passed": true,
+  "training_reward_ready": false,
+  "independent_reward_validation": null,
+  "human_review": null,
+  "new_model_calls": 0,
+  "gpu_activations": 0,
+  "optimizer_updates": 0,
+  "limitation": "Finite reviewed whole-answer variants on already exposed cases; unlisted correct paraphrases score zero. Source support rests on attributed review, not executable entailment. No gap-quality reward or generalization measurement."
+}
