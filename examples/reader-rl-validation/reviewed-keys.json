@@ -1,0 +1,594 @@
+{
+  "schema_version": "reviewed-answer-support-diagnostic-v1",
+  "usage": "exposed_diagnostic_only",
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "implementing Codex assistant; source-visible manual claim review",
+  "reviewed_at": "2026-10-22",
+  "human_review": null,
+  "inputs_sha256": "92fe98840fbfa4c31c3119f58db59f363960c7158a2c94f0eed84d053620d4ef",
+  "cards": [
+    {
+      "context_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--present",
+      "context_sha256": "1818de2c24897d1d70f6ab530a05d7adecb307c3f8cf68044dd484b2ecb0bb42",
+      "source_control_id": "qasper_train_102a0439739428aac80ac11795e73ce751b93ea1--present:reviewed",
+      "original_control_answer": "They use KFTT and BTEC for English-to-Japanese translation.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "datasets",
+          "claim": "KFTT and BTEC are the English-to-Japanese experimental tasks.",
+          "support": [
+            {
+              "start": 14341,
+              "end": 14474,
+              "quote": "Dataset: We perform experiments on two widely-used tasks for the English-to-Japanese language pair: KFTT BIBREF12 and BTEC BIBREF13 ."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They use KFTT and BTEC for English-to-Japanese translation.",
+          "claim_ids": [
+            "datasets"
+          ]
+        },
+        {
+          "answer": "KFTT and BTEC are used for English-to-Japanese translation.",
+          "claim_ids": [
+            "datasets"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--present",
+      "context_sha256": "59f9dcc070758309759a633571b603963edc5cf2eba74cb1a43266e7a187875f",
+      "source_control_id": "qasper_train_08cbc9b8a8df56ec7be626f89285a621e1350f63--present:reviewed",
+      "original_control_answer": "They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "source",
+          "claim": "The dataset is the Degen-reported Switchboard telephone-dialogue utterances containing some.",
+          "support": [
+            {
+              "start": 4428,
+              "end": 4609,
+              "quote": "We used the annotated dataset reported by degen2015investigating, a dataset of the utterances from the Switchboard corpus of telephone dialogues BIBREF21 that contain the word some."
+            }
+          ]
+        },
+        {
+          "id": "ratings",
+          "claim": "Human participants supplied inference-strength ratings.",
+          "support": [
+            {
+              "start": 4704,
+              "end": 4865,
+              "quote": "For each example with a some-NP, degen2015investigating collected inference strength ratings from at least 10 participants recruited on Amazon's Mechanical Turk."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They use Degen’s annotated Switchboard telephone-dialogue utterances containing ‘some’, with human inference-strength ratings.",
+          "claim_ids": [
+            "source",
+            "ratings"
+          ]
+        },
+        {
+          "answer": "The dataset is Degen's Switchboard utterances containing some, annotated with human inference-strength ratings.",
+          "claim_ids": [
+            "source",
+            "ratings"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--present",
+      "context_sha256": "f946479563b834f00ff8f8db13418a49f8f9405278cf8b426bb2928b92f6af3d",
+      "source_control_id": "qasper_train_4d5f112874250d48eb49649c4abe31d6c9236700--present:reviewed",
+      "original_control_answer": "GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "best",
+          "claim": "Overall accuracy across 67,000 minimal pairs is highest for GPT-2.",
+          "support": [
+            {
+              "start": 16131,
+              "end": 16349,
+              "quote": "An LM's overall performance on *X can be measured simply by taking the proportion of correct predictions across the 67,000 minimal pairs from all paradigms. GPT-2 achieves the highest score and the $n$-gram the lowest."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "GPT-2 achieves the highest overall accuracy across the benchmark’s 67,000 minimal pairs.",
+          "claim_ids": [
+            "best"
+          ]
+        },
+        {
+          "answer": "GPT-2 has the highest overall accuracy over 67,000 minimal pairs.",
+          "claim_ids": [
+            "best"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--present",
+      "context_sha256": "9b60eff8ae7fc572ce5bf435e213507d8385d7e2ded028060397c6145c2d8666",
+      "source_control_id": "qasper_train_f91835f17c0086baec65ebd99d12326ae1ae87d2--present:reviewed",
+      "original_control_answer": "They use Stanford CoreNLP to produce binary constituency parses and linearize them.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "parser",
+          "claim": "Stanford CoreNLP generates binary constituency parses.",
+          "support": [
+            {
+              "start": 5804,
+              "end": 5914,
+              "quote": "We use an off-the-shelf parser, in this case Stanford CoreNLP BIBREF11 , to create binary constituency parses."
+            }
+          ]
+        },
+        {
+          "id": "linearization",
+          "claim": "The resulting parses are linearized.",
+          "support": [
+            {
+              "start": 5915,
+              "end": 5970,
+              "quote": "These parses are linearized as shown in Table TABREF6 ."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They use Stanford CoreNLP to produce binary constituency parses and linearize them.",
+          "claim_ids": [
+            "parser",
+            "linearization"
+          ]
+        },
+        {
+          "answer": "Stanford CoreNLP generates binary constituency parses, which are then linearized.",
+          "claim_ids": [
+            "parser",
+            "linearization"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--present",
+      "context_sha256": "81a7145941c92a23550c0514a65da7a6d879bb444a9719876347d2016c0286e0",
+      "source_control_id": "qasper_train_f42e61f9ad06fb782d1574eb973c880add4f76d2--present:reviewed",
+      "original_control_answer": "They investigate recurrent-unit type, attention type, and sequential versus tree-based structure.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "factors",
+          "claim": "The tested factors are recurrent-unit type, attention type, and sequential versus tree-based model structure.",
+          "support": [
+            {
+              "start": 3885,
+              "end": 4014,
+              "quote": "These factors are the type of recurrent unit, the type of attention, and the choice of sequential vs. tree-based model structure."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They investigate recurrent-unit type, attention type, and sequential versus tree-based structure.",
+          "claim_ids": [
+            "factors"
+          ]
+        },
+        {
+          "answer": "The factors are recurrent-unit type, attention type, and sequential versus tree-based model structure.",
+          "claim_ids": [
+            "factors"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--present",
+      "context_sha256": "e666e1897707f4be94da29dc20a328581bc7070c1fdf94621140fdbe59708765",
+      "source_control_id": "qasper_train_ad7b13579823cbc7825421c84d16f23ed863f6ee--present:reviewed",
+      "original_control_answer": "They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "bindings",
+          "claim": "The task/dataset bindings are video/VATEX, translation/WMT2014 English-to-German, and VQA/VQA-v2.",
+          "support": [
+            {
+              "start": 6100,
+              "end": 6314,
+              "quote": "To demonstrate the generality of NSA, we further present video captioning, machine translation, and visual question answering experiments on the VATEX, WMT 2014 English-to-German, and VQA-v2 datasets, respectively."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They use VATEX for video captioning, WMT2014 English-to-German for translation, and VQA-v2 for visual question answering.",
+          "claim_ids": [
+            "bindings"
+          ]
+        },
+        {
+          "answer": "VATEX is used for video captioning; WMT 2014 English-to-German for machine translation; VQA-v2 for visual question answering.",
+          "claim_ids": [
+            "bindings"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--present",
+      "context_sha256": "41e8a1a1778bfe5ef4163851f58eac2abeacfb93aedca3d676aa338a5a5ee488",
+      "source_control_id": "qasper_train_4c7b29f6e3cc1e902959a1985146ccc0b15fe521--present:reviewed",
+      "original_control_answer": "They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "extraction",
+          "claim": "Wikipedia descriptions are extracted for FIGMENT entities, excluding entities without descriptions.",
+          "support": [
+            {
+              "start": 30267,
+              "end": 30409,
+              "quote": "We extract Wikipedia descriptions of FIGMENT entities filtering out the entities ( $\\sim $ 40,000 out of $\\sim $ 200,000) without description."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They extract Wikipedia descriptions for FIGMENT entities and filter out entities without descriptions.",
+          "claim_ids": [
+            "extraction"
+          ]
+        },
+        {
+          "answer": "Wikipedia descriptions are extracted for FIGMENT entities; entities lacking descriptions are excluded.",
+          "claim_ids": [
+            "extraction"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present",
+      "context_sha256": "4a63f111ecee36888362fa9925270a0ffe62b8d3a0c064aaef3802974f041568",
+      "source_control_id": "qasper_train_515e10a71d78ccd9c7dc93cd942924a4c85d3a30--present:reviewed",
+      "original_control_answer": "They evaluate language models by perplexity on independent test sets from the corpus sources.",
+      "original_control_review": "needs_support_revision",
+      "review_notes": "The cited excerpt supports perplexity on test sets but does not establish independence. Remove that qualifier; this does not establish it is false elsewhere in the paper.",
+      "claims": [
+        {
+          "id": "metric",
+          "claim": "Language-model evaluation reports perplexity on test sets; independence is not established by this cited excerpt.",
+          "support": [
+            {
+              "start": 19351,
+              "end": 19426,
+              "quote": "Table TABREF32 shows the perplexity of the models on each of the test sets."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They evaluate language models using perplexity on test sets.",
+          "claim_ids": [
+            "metric"
+          ]
+        },
+        {
+          "answer": "Perplexity on test sets is used to evaluate the language models.",
+          "claim_ids": [
+            "metric"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--present",
+      "context_sha256": "342db83d449ef44e15f3a81ba0f0e9c244d9a1108d24996225c6ee435f6b6621",
+      "source_control_id": "qasper_train_4146e1d8f79902c0bc034695998b724515b6ac81--present:reviewed",
+      "original_control_answer": "They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "corpus",
+          "claim": "The evaluation dataset is CoNLL-2012, selected from OntoNotes 5.0.",
+          "support": [
+            {
+              "start": 13044,
+              "end": 13163,
+              "quote": "The CoNLL-2012 shared task BIBREF21 corpus is used as the evaluation dataset, which is selected from the Ontonotes 5.0."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They evaluate on the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0.",
+          "claim_ids": [
+            "corpus"
+          ]
+        },
+        {
+          "answer": "The evaluation corpus is the CoNLL-2012 shared-task corpus selected from OntoNotes 5.0.",
+          "claim_ids": [
+            "corpus"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--present",
+      "context_sha256": "50d21f67fe2b04c7fcd3b44e6585fa60ccf2b0e446b1cc6f68bf709e8297a344",
+      "source_control_id": "qasper_train_30db81df46474363d5749d7f6a94b7ef95cd3e01--present:reviewed",
+      "original_control_answer": "For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "source",
+          "claim": "News is the labeled source domain for sentence-specificity prediction.",
+          "support": [
+            {
+              "start": 5398,
+              "end": 5562,
+              "quote": "The goal is to predict the specificity of target domain data. Our source domain is news, the only domain with publicly available labeled data for training BIBREF1 ."
+            }
+          ]
+        },
+        {
+          "id": "targets",
+          "claim": "The three target evaluation domains are Twitter, Yelp reviews, and movie reviews.",
+          "support": [
+            {
+              "start": 5563,
+              "end": 5680,
+              "quote": "We crowdsource sentence specificity for evaluation for three target domains: Twitter, Yelp reviews and movie reviews."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "For specificity prediction, news is the labeled source domain; Twitter, Yelp reviews, and movie reviews are the three target evaluation domains.",
+          "claim_ids": [
+            "source",
+            "targets"
+          ]
+        },
+        {
+          "answer": "News supplies labeled source-domain data for specificity prediction; Twitter, Yelp reviews, and movie reviews are the target evaluation domains.",
+          "claim_ids": [
+            "source",
+            "targets"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--present",
+      "context_sha256": "5120e86fe62a13776fbc5e838a4e373a9a141afedb3d0568d78c346c7ee7910d",
+      "source_control_id": "qasper_train_4c1847f0f3e6f9cc6ac3dfbac9e135d34641a854--present:reviewed",
+      "original_control_answer": "LUWAK is implemented in pure JavaScript.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "language",
+          "claim": "LUWAK is implemented in pure JavaScript.",
+          "support": [
+            {
+              "start": 5326,
+              "end": 5418,
+              "quote": "LUWAK is implemented in pure JavaScript code, and it uses the LocalStorage of a web browser."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "LUWAK is implemented in pure JavaScript.",
+          "claim_ids": [
+            "language"
+          ]
+        },
+        {
+          "answer": "Pure JavaScript.",
+          "claim_ids": [
+            "language"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--present",
+      "context_sha256": "ad399f2d8020e1990991cdc7d7f0007980dee2e1fe4064104af5b63679478442",
+      "source_control_id": "qasper_train_d3014683dff9976b7c56b72203df99f0e27e9989--present:reviewed",
+      "original_control_answer": "They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "metrics",
+          "claim": "They report P@1, equivalent to accuracy, plus appendix P@5 and P@10.",
+          "support": [
+            {
+              "start": 10574,
+              "end": 10705,
+              "quote": "Throughout this work we report P@1, which is equivalent to accuracy, but we also provide results with P@5 and P@10 in the Appendix."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "They report precision at 1 (P@1), equivalent to accuracy, with P@5 and P@10 results in the appendix.",
+          "claim_ids": [
+            "metrics"
+          ]
+        },
+        {
+          "answer": "P@1 (precision at one, equivalent to accuracy) is reported, with P@5 and P@10 in the appendix.",
+          "claim_ids": [
+            "metrics"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7",
+      "context_sha256": "683d0103d78614b0ed37683c1644feae878366b57b23b33599ea82f646fc74ec",
+      "source_control_id": "qasper_test_88757bc49ccab76e587fba7521f0981d6a1af2f7:reviewed_correction",
+      "original_control_answer": "The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features, and incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "stylistic",
+          "claim": "The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features.",
+          "support": [
+            {
+              "start": 2518,
+              "end": 2681,
+              "quote": "Three humor-specific stylistic features, including alliteration, antonymy, and adult slang were utilized together with content-based features to build classifiers."
+            }
+          ]
+        },
+        {
+          "id": "semantic",
+          "claim": "The related-work discussion lists incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects.",
+          "support": [
+            {
+              "start": 2771,
+              "end": 2955,
+              "quote": "BIBREF3 explained and computed latent semantic structure features based on the following four aspects: (a) Incongruity, (b) Ambiguity, (c) Interpersonal Effect, and (d) Phonetic Style."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "The related-work discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features, and incongruity, ambiguity, interpersonal effect, and phonetic style as latent semantic aspects.",
+          "claim_ids": [
+            "stylistic",
+            "semantic"
+          ]
+        },
+        {
+          "answer": "The discussion lists alliteration, antonymy, and adult slang as humor-specific stylistic features; the latent semantic aspects are incongruity, ambiguity, interpersonal effect, and phonetic style.",
+          "claim_ids": [
+            "stylistic",
+            "semantic"
+          ]
+        }
+      ],
+      "training_eligible": false
+    },
+    {
+      "context_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb",
+      "context_sha256": "0461c3059d86bc62986cc873d0d1291495274f031533c786a2f8a56e9fae5505",
+      "source_control_id": "qasper_test_38363a7ed250bc729508c4c1dc975696a65c53cb:actual_v5",
+      "original_control_answer": "Neural machine translation (NMT) models are explored, including an LSTM-based architecture with attention and dropout.",
+      "original_control_review": "supported",
+      "review_notes": "The cited excerpts support the requested facts and the complete accepted variants; see individual claim/support bindings.",
+      "claims": [
+        {
+          "id": "nmt",
+          "claim": "The experiments explore neural machine translation models.",
+          "support": [
+            {
+              "start": 296,
+              "end": 414,
+              "quote": "The experiments with use of the current neural machine translation models are performed and its results are discussed."
+            }
+          ]
+        },
+        {
+          "id": "architecture",
+          "claim": "The NMT architecture is based on LSTMs and implements attention.",
+          "support": [
+            {
+              "start": 5164,
+              "end": 5336,
+              "quote": "For experiments with both data sets we used an established NMT architecture BIBREF10 based on LSTMs (long short-term memory cells) and implementing the attention mechanism."
+            }
+          ]
+        },
+        {
+          "id": "dropout",
+          "claim": "Dropout is used alongside the attention mechanism.",
+          "support": [
+            {
+              "start": 5584,
+              "end": 5689,
+              "quote": "The “scaled Luong” version of the attention mechanism was used, as well as dropout with rate equal $0.2$."
+            }
+          ]
+        }
+      ],
+      "accepted_answers": [
+        {
+          "answer": "Neural machine translation (NMT) models are explored, including an LSTM-based architecture with attention and dropout.",
+          "claim_ids": [
+            "nmt",
+            "architecture",
+            "dropout"
+          ]
+        },
+        {
+          "answer": "An LSTM-based neural machine translation architecture with attention and dropout.",
+          "claim_ids": [
+            "nmt",
+            "architecture",
+            "dropout"
+          ]
+        }
+      ],
+      "training_eligible": false
+    }
+  ],
+  "limitations": "Finite complete-answer matching is deliberately restrictive. These are exposed reward-development keys, not independent validation or training-ready data. Two cards are prior evaluation regressions; none may enter training from this file. Missing-scope/gap query usefulness is excluded."
+}
