@@ -1,0 +1,253 @@
+........................................................................ [  3%]
+........................................................................ [  6%]
+........................................................................ [ 10%]
+........................................................................ [ 13%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 24%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 51%]
+........................................................................ [ 55%]
+.............................................F.......................... [ 58%]
+........................................................................ [ 61%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 96%]
+........................................................................ [ 99%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_automatic_startup_and_full_request_flow_across_numeric_json_boundary[False] _
+
+tmp_path = PosixPath('/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/pytest-of-jasonling/pytest-705/test_automatic_startup_and_ful0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x12a420610>
+corrupt = False
+
+    @pytest.mark.parametrize("corrupt", [False, True])
+    def test_automatic_startup_and_full_request_flow_across_numeric_json_boundary(
+            tmp_path, monkeypatch, corrupt):
+        for key, value in profile.CONFIG.items():
+            monkeypatch.setenv(key, value)
+        monkeypatch.setattr("src.eval.assigned_smoke_lifecycle.STARTUP_POLL_SECONDS", 0.001)
+        with ProfileWireService(corrupt=corrupt) as fixture:
+            config = tmp_path / "fixture-config.json"
+            config.write_text(json.dumps({"plan": fixture.plan, "payloads": fixture.payloads}))
+            command = [sys.executable, "-c", "from tests.profile_wire_fixture import run_child; "
+                "import sys; run_child(*sys.argv[1:])", fixture.base, str(config), str(tmp_path)]
+            state = {"id": "fixture", "workersMin": 0, "workersMax": 0,
+                     "gpuIds": ["NVIDIA RTX A5000"], "gpuCount": 1}
+            def control(operation, endpoint, *args, **kwargs):
+                if operation == "get":
+                    return dict(state)
+                if operation == "update":
+                    state.update(workersMin=int(args[1]), workersMax=int(args[3]))
+                    return dict(state)
+                if operation == "health":
+                    return {"jobs": {"inQueue": 0, "inProgress": 0},
+                            "workers": {"ready": 0, "running": state["workersMin"]}}
+                raise AssertionError("The automatic profile must never request CLI logs")
+            def workers():
+                return [{"id": "worker", "status": "RUNNING"}] if state["workersMin"] else []
+            def cleanup_request(client, method, path, body=None):
+                assert client.base == "https://api.runpod.ai/v2/fixture"
+                conn = fixture.connection()
+                try:
+                    conn.request(method, "/v2/fixture" + path,
+                        body=json.dumps(body) if body is not None else None,
+                        headers={"Authorization": "Bearer fixture-only"})
+                    response = conn.getresponse()
+                    assert response.status == 200
+                    return json.loads(response.read())
+                finally:
+                    conn.close()
+            monkeypatch.setattr(RunpodQueueTransport, "_request", cleanup_request)
+            def launch(args, **kwargs):
+                return subprocess.Popen(args, **kwargs, env={"PATH": os.environ["PATH"],
+                    "RUNPOD_API_KEY": "fixture-only", "PYTHONNOUSERSITE": "1"})
+            reader = WorkerLogReader("fixture", "fixture-only", connection=fixture.connection,
+                                     seconds=0.05, quiet_seconds=0.05)
+            args = dict(key="fixture-only", control=control, worker_reader=workers,
+                log_reader=reader, popen=launch, seconds=20, logged_running_ready=True)
+            if corrupt:
+                with pytest.raises(RuntimeError, match="did not complete"):
+                    supervise("fixture", tmp_path, command, **args)
+            else:
+>               supervise("fixture", tmp_path, command, **args)
+
+tests/test_profile_wire.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+endpoint = 'fixture'
+output = PosixPath('/private/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/pytest-of-jasonling/pytest-705/test_automatic_startup_and_ful0')
+command = ['/Users/jasonling/.pyenv/versions/3.11.9/bin/python', '-c', 'from tests.profile_wire_fixture import run_child; import...rivate/var/folders/nn/ygg_r0b57rn4hqpvlr761cxc0000gn/T/pytest-of-jasonling/pytest-705/test_automatic_startup_and_ful0']
+
+    def supervise(endpoint: str, output: Path, command: list[str], *, key: str,
+                  control=cli, popen=subprocess.Popen, seconds=900, worker_reader=None,
+                  logged_running_ready=False, deadline_unix=None, log_reader=None) -> dict:
+        worker_reader = worker_reader or WorkerCatalog(endpoint, key).list
+        before = configuration(control("get", endpoint))
+        health = control("health", endpoint)
+        if (before["workersMin"] != 0 or before["workersMax"] != 0
+                or before["gpuIds"] != ["NVIDIA RTX A5000"] or before["gpuCount"] != 1
+                or health["jobs"]["inQueue"] or health["jobs"]["inProgress"]
+                or any(health["workers"].values()) or worker_reader()):
+            raise ValueError("endpoint must be parked, empty and pinned to one A5000")
+        write_json(output / "endpoint-before.json", {"configuration": before, "health": health})
+        child = None
+        expired = threading.Event()
+        mutation_lock = threading.Lock()
+        started = time.monotonic()
+        since = datetime.now(timezone.utc)
+    
+        def park():
+            with mutation_lock:
+                control("update", endpoint, "--workers-min", "0", "--workers-max", "0")
+    
+        def stop():
+            expired.set()
+            try:
+                with mutation_lock:
+                    if child is not None:
+                        kill_group(child.pid)
+                    control("update", endpoint, "--workers-min", "0", "--workers-max", "0")
+            except Exception:
+                pass  # The main finally records/retries cleanup and its read-back.
+    
+        if deadline_unix is not None:
+            seconds = min(seconds, deadline_unix - time.time())
+            if seconds <= 0:
+                raise TimeoutError("original session deadline elapsed before activation")
+        timer = threading.Timer(seconds, stop)
+        timer.daemon = True
+        timer.start()  # Armed BEFORE activation, including cold start.
+        outcome = {"watchdog_seconds": seconds, "exit_code": None}
+        try:
+            with mutation_lock:
+                if expired.is_set():
+                    raise TimeoutError("watchdog expired before activation")
+                control("update", endpoint, "--workers-min", "1", "--workers-max", "1")
+            after = configuration(control("get", endpoint))
+            expected = {**before, "workersMin": 1, "workersMax": 1}
+            if after != expected:
+                raise ValueError("activation read-back changed unexpected settings")
+            write_json(output / "endpoint-activated.json", after)
+            identity = None
+            log_worker = None
+            evidence_since = since
+            startup_lines = {}
+            while not expired.is_set():
+                health = control("health", endpoint)
+                write_json(output / "health-latest.json", health)
+                workers = worker_reader()
+                write_json(output / "workers-latest.json", workers)
+                active = {worker["id"] for worker in workers}
+                outcome["startup_worker_ids"] = sorted(active)
+                if len(active) > 1:
+                    raise ValueError("more than one active worker; refusing inference")
+                current = next(iter(active), None)
+                if current != log_worker:
+                    startup_lines.clear()
+                    log_worker = current
+                    evidence_since = since
+                identity = None
+                # A newly scheduled worker can be listed before its log service exists.
+                usable = all(w["status"] in {"IDLE", "RUNNING"} and not w.get("isStale")
+                             for w in workers)
+                if not usable:
+                    startup_lines.clear()
+                    evidence_since = datetime.now(timezone.utc)
+                running = (logged_running_ready and len(workers) == 1
+                           and workers[0]["status"] == "RUNNING"
+                           and health["workers"].get("running", 0)
+                           and not health["jobs"]["inQueue"] and not health["jobs"]["inProgress"])
+                ready = health["workers"].get("ready", 0)
+                if active and usable and (ready or running):
+                    logs = identity_logs(control, endpoint, active, evidence_since, expired,
+                                         audit=output / "startup-log-reads.jsonl", reader=log_reader)
+                    for line in logs.splitlines():
+                        startup_lines.setdefault(line, None)
+                    if sum(len(line.encode()) + 1 for line in startup_lines) > 4_000_000:
+                        raise ValueError("startup evidence exceeded 4 MB")
+                    accumulated = "\n".join(startup_lines)
+                    identity = worker_identity(accumulated, active_workers=active, since=evidence_since)
+                    if logged_running_ready:
+                        ready = (ready or running) and logged_readiness(
+                            accumulated, active, evidence_since)
+                if identity and ready:
+                    write_json(output / "worker-identity.json", identity)
+                    break
+                expired.wait(STARTUP_POLL_SECONDS)
+            if expired.is_set():
+                raise TimeoutError("watchdog expired during worker warmup")
+            with mutation_lock:
+                if expired.is_set():
+                    raise TimeoutError("watchdog expired before model worker")
+                with (output / "worker.stdout.log").open("w") as stdout:
+                    with (output / "worker.stderr.log").open("w") as stderr:
+                        child = popen(command, cwd=ROOT, stdout=stdout, stderr=stderr,
+                                      start_new_session=True)
+            outcome["exit_code"] = child.wait()
+        except BaseException as exc:
+            outcome["error_type"] = type(exc).__name__
+            if isinstance(exc, ControlError):
+                outcome["control_error"] = exc.details
+            raise
+        finally:
+            if child is not None:
+                kill_group(child.pid)
+                child.wait()
+            timer.cancel()
+            timer.join()
+            outcome.update(watchdog_fired=expired.is_set(), seconds=time.monotonic() - started)
+            errors = []
+            for _ in range(3):
+                try:
+                    park()
+                    break
+                except Exception as exc:
+                    errors.append(type(exc).__name__)
+            try:
+                outcome["job_cleanup"] = cleanup_jobs(output, endpoint, key)
+            except Exception as exc:
+                errors.append("job_cleanup:" + type(exc).__name__)
+            try:
+                cleanup_containers(output)
+                config, health = wait_parked(control, endpoint, worker_reader=worker_reader)
+                outcome["endpoint_after"] = configuration(config)
+                outcome["health_after"] = health
+                outcome["shutdown_verified"] = True
+            except Exception as exc:
+                errors.append("read_back:" + type(exc).__name__)
+            outcome["cleanup_errors"] = errors
+            write_json(output / "lifecycle.json", outcome)
+            if errors:
+                raise RuntimeError("session cleanup failed; inspect lifecycle.json")
+        if outcome["watchdog_fired"] or outcome["exit_code"] != 0:
+>           raise RuntimeError("live worker did not complete successfully")
+E           RuntimeError: live worker did not complete successfully
+
+src/eval/assigned_smoke_lifecycle.py:258: RuntimeError
+=============================== warnings summary ===============================
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_corpus.py::test_document_count
+  <frozen importlib._bootstrap>:241: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 failed, 2092 passed, 3 warnings in 194.27s (0:03:14)

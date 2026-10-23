@@ -1,0 +1,33 @@
+{
+  "test": "tests/test_profile_wire.py::test_automatic_startup_and_full_request_flow_across_numeric_json_boundary[False]",
+  "full_suite": "2092 passed, 1 failed, 3 SWIG warnings in 194.27s",
+  "scope": "Loopback scripted fixture, no live endpoint",
+  "child_exit_code": 1,
+  "watchdog_fired": false,
+  "fixture_assessment": {
+    "comparable": false,
+    "reasons": [
+      "difference does not exceed the 0.4-second polling uncertainty margin"
+    ],
+    "rounds": [
+      {
+        "repeat": 1,
+        "serial": 1.3764330421108752,
+        "concurrent": 1.2924362909980118,
+        "serial_over_concurrent": 1.0649910186659968,
+        "absolute_difference_seconds": 0.08399675111286342
+      },
+      {
+        "repeat": 2,
+        "concurrent": 0.9725649580359459,
+        "serial": 1.2329265410080552,
+        "serial_over_concurrent": 1.2677061113716235,
+        "absolute_difference_seconds": 0.2603615829721093
+      }
+    ]
+  },
+  "child_error": "scripted fixture did not exercise matched overlapping batches",
+  "isolated_recheck": "All three tests/test_profile_wire.py cases passed in 12.08s",
+  "production_runtime_changed": false,
+  "decision": "Preserve failure; rerun full suite without concurrent checks. No reward/model conclusion from this fixture failure."
+}

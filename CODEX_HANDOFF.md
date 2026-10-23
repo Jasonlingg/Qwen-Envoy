@@ -1,5 +1,45 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 22: RL investigated offline; reward and data gates block training.**
+> User authorized RL investigation, not a paid launch. Scope `05e7a24`, reward
+> audit `dc67ac7`, structured-history/hold fix `ddfef59`.
+> [Report and future gates](docs/READER_RL_INVESTIGATION.md),
+> [150-record audit](examples/reader-rl-investigation/README.md).
+> Research supports generating trajectories with outcome RL, but still needs QA
+> data and reliable reward. Search-R1/R1-Searcher/s3 are relevant, not evidence
+> for our Qwen3/V5 reader. s3's ~2.4k processed examples came from a ~70k eligible
+> pool; this is not support for a 24-example generalization experiment.
+> Existing September QASPER GRPO already failed fresh confirmation: SFT 13 passes
+> versus GRPO 12, despite a small automatic-reward increase. Review was model-assisted.
+> New offline audit: 24 saved demonstrations + 3 actual exposed V5 outputs + 2
+> replayed corrections + 121 authored terminals, not 150 model rollouts. Legacy,
+> scoped-overlap and scoped-exact scorers give full reward to 12/24/36 unacceptable
+> records. Generic/false gaps, irrelevant real quotes and reversed task bindings
+> demonstrate why syntax, provenance and lexical reward cannot certify support.
+> Source judgments are implementing-assistant/model-assisted; independent human null.
+> No model inference, GPU, optimizer update, active reward/trainer/runtime change.
+> The old QASPER trainer uses host execution, old prompt and no submit_gap path;
+> it must not be launched for V2. New training needs a Docker-only raw-token adapter.
+> **Correction to earlier all-fresh data claim:** the old inventory missed 13
+> structured historical task files, adding 96 paper / 659 question IDs. Seven
+> training papers (14 trajectories) have prior prepared-pool/evaluation membership;
+> this is not proof of optimizer exposure. Development papers are unaffected by
+> this supplemental scan. The 24-example export is ON HOLD; HOLD.json supersedes
+> historical eligibility. Old data/registry/receipts remain unchanged. The current
+> data adapter uses schema-v2 structured-history coverage and rejects the old registry.
+> The old selector had only 16 eligible train questions even before this fix.
+> Do not promise hundreds of fresh examples by rerunning it. Explicit training-pool
+> reuse or new reviewed facts needs its own data policy; preserve evaluation exclusions.
+> Next is a validated task/reward specification and runtime training adapter, then
+> a separately budgeted exploration-signal probe. No training launch is authorized.
+> Focused 58 passed; final full suite 2093 passed in 133.22s, no skips, three SWIG
+> warnings. One prior full attempt failed a loopback timing-comparability fixture;
+> isolated recheck 3 passed, then full rerun passed. All failure logs retained.
+> All 29 frozen runtime files unchanged. Of 2,043 prior hashes, four intended
+> inventory/test/hold-notice files changed; 2,039 others, protected files and
+> original user dirty files remain unchanged. No new data/model performance claim.
+
+
 > **October 22: paired passage-reader pilot data prepared; zero model calls/training.**
 > User approved local data preparation under scope `9640256`. Implementation
 > `1062832`, Docker reporting correction `44f87b5`.
