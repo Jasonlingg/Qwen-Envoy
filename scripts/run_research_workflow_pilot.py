@@ -37,6 +37,8 @@ def parser():
     check = commands.add_parser("check", help="Verify frozen inputs; zero model calls")
     check.add_argument("--bundle", type=Path, required=True)
     check.add_argument("--docker", action="store_true", help="Scripted sandbox check; no model")
+    check.add_argument("--sandbox-image", default="rlm-sandbox",
+                       help="Docker selector to inspect and pin when --docker is set")
     preflight = commands.add_parser("preflight",
                                    help="GET model identities; zero inference or infra")
     preflight.add_argument("--config", type=Path, required=True)
@@ -45,6 +47,8 @@ def parser():
     execute.add_argument("--config", type=Path, required=True)
     execute.add_argument("--output", type=Path, required=True)
     execute.add_argument("--execute", action="store_true", help="Permit configured model calls")
+    execute.add_argument("--sandbox-image", default="rlm-sandbox",
+                         help="Docker selector to inspect and pin before model calls")
     review = commands.add_parser("review", help="Write blank claim-level human review")
     review.add_argument("--run", type=Path, required=True)
     review.add_argument("--output", type=Path, required=True)
@@ -76,7 +80,7 @@ def main(argv=None):
                   "questions": len(data["questions"]), "model_requests": 0}
         if args.docker:
             from src.eval.research_pilot_probe import probe_sandbox
-            digest = subprocess.check_output(["docker", "image", "inspect", "rlm-sandbox",
+            digest = subprocess.check_output(["docker", "image", "inspect", args.sandbox_image,
                 "--format", "{{.Id}}"], text=True).strip()
             result["sandbox_probe"] = probe_sandbox(library, data["papers"][0]["arxiv_id"], digest)
             if result["sandbox_probe"]["status"] != "evidence_found":
@@ -98,7 +102,7 @@ def main(argv=None):
         if args.output.exists():
             raise ValueError("Run destination already exists")
         config = _read(args.config)
-        digest = subprocess.check_output(["docker", "image", "inspect", "rlm-sandbox",
+        digest = subprocess.check_output(["docker", "image", "inspect", args.sandbox_image,
             "--format", "{{.Id}}"], text=True).strip()
         # Persist reservations before each dispatch and after every completion.
         budget = RequestBudget(observer=lambda snapshot: write_json(

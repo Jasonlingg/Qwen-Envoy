@@ -22,6 +22,11 @@ stdio; their results carry provenance warnings. The host chooses tool order.
 For example: search papers, open selected results, find evidence, then use
 get_passage to inspect the surrounding text before making a claim.
 
+`--sandbox-image <image-or-digest>` explicitly selects the reader's Docker image;
+the default remains `rlm-sandbox`. The workflow pilot's `check --docker` and `run`
+accept the same flag, inspect that selector, and execute the resolved image digest.
+An unavailable selector fails without an automatic image or host-execution fallback.
+
 For a source-only client or the model-free arm of a comparison, register with
 `--tool-profile sources`. This exposes exactly `search_papers`, `get_citations`,
 `open_paper`, `find_evidence`, and `get_passage`; it hides `investigate` and

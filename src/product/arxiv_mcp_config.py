@@ -21,7 +21,7 @@ DEFAULT_NEMOTRON = "nvidia/Nemotron-3-Ultra-550b-a55b"
 def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str | None = None,
                  qwen_checkpoint: str | None = None, nemotron_model: str = DEFAULT_NEMOTRON,
                  harness_version: str = "v2", policy_transport=None,
-                 max_steps: int = 12) -> QwenInvestigator | None:
+                 max_steps: int = 12, sandbox_image: str = "rlm-sandbox") -> QwenInvestigator | None:
     if kind == "none":
         return None
     if kind == "qwen":
@@ -59,7 +59,7 @@ def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str
         model_identity={**identity, "temperature": 0.0, "top_p": 1.0, "thinking": False,
                         "harness_version": harness_version, "max_tokens": DEFAULT_MAX_TOKENS},
         source_domain="public_papers", protocol_variant=variant,
-        harness_version=harness_version, max_steps=max_steps,
+        harness_version=harness_version, max_steps=max_steps, image=sandbox_image,
     )
 
 

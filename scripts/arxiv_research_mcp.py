@@ -148,6 +148,8 @@ def main() -> None:
     parser.add_argument("--nemotron-model", default=DEFAULT_NEMOTRON)
     parser.add_argument("--reasoner", choices=["none", "nemotron"], default="none")
     parser.add_argument("--harness", choices=["v1", "v2"], default="v2")
+    parser.add_argument("--sandbox-image", default="rlm-sandbox",
+                        help="Docker image selector for reader Python; accepts an image digest")
     args = parser.parse_args()
     if args.tool_profile == "sources" and (args.reader != "none" or args.reasoner != "none"):
         parser.error("--tool-profile sources requires --reader none and --reasoner none")
@@ -158,7 +160,8 @@ def main() -> None:
                                     qwen_model=args.qwen_model,
                                     qwen_checkpoint=args.qwen_checkpoint,
                                     nemotron_model=args.nemotron_model,
-                                    harness_version=args.harness)
+                                    harness_version=args.harness,
+                                    sandbox_image=args.sandbox_image)
         reasoner = build_reasoner(args.reasoner, args.nemotron_model)
     except ValueError as exc:
         parser.error(str(exc))
