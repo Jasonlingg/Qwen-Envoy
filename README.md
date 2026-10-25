@@ -396,7 +396,7 @@ SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","st
 | Native Prime-RL / Verifiers continuation | Three verified updates; ten-update pilot and held-out comparison incomplete; no RL quality gain claimed |
 | Cloud controller | Proposed; current training placement still depends on an awake Mac running Docker |
 | Retrieval, thinking, and prefix-cache comparisons | Prepared protocols; no completed comparative result claimed |
-| Historical training and Obsidian/map demos | Retained for reproducibility; outside the current release scope |
+| Historical training and Obsidian/map demos | Training evidence retained; personal-memory and map apps archived in Git |
 | Hackathon submission | Separate historical draft; not a completed submission |
 
 ## Historical training experiments
@@ -739,26 +739,18 @@ model family.
 
 ## Earlier product prototypes
 
-The repository retains earlier Obsidian, memory, and map experiments. These are
-outside the current Studio release scope; their dated plans are not the active
-shipping roadmap. The proposed cost benefit of a small research worker has not
-been established by a complete cost comparison.
+The personal-memory web/MCP apps, Learning Lab, systems maps, and their dedicated
+launchers and evaluation scripts are **archived in Git**, outside the maintained
+source tree. Their reports, fixtures and saved evidence remain unchanged.
+[Archived prototypes](docs/ARCHIVED_PROTOTYPES.md) lists the removed features and
+how to recover the complete earlier implementation at commit `5240090`.
+Commands in their dated documentation require that earlier checkout.
 
-- [Learning-memory API](docs/PERSONAL_MEMORY_LOCAL_DEMO.md) and
-  [Learning Lab](docs/LEARNING_LAB_VERTICAL_SLICE.md): local notes, exact source
-  receipts, and approval-gated revisions. `python scripts/launch_sample_demo.py`
-  opens a disposable synthetic-note demo; `/chat` is its older chat page.
-- [Question desk](docs/QUESTION_DESK_PRODUCT_DIRECTION.md) and
-  [systems-map prototype](docs/SYSTEM_MAP_PROTOTYPE.md): earlier interaction
-  experiments. `python scripts/launch_research_map_demo.py` uses curated maps
-  and updates, not model-generated diagrams.
-- [Report-derived memory demo](docs/QWEN_EXPERIMENT_MEMORY_DEMO.md): recorded
-  Qwen experiment results presented as a dated Obsidian thread.
-- [Current repository layout](docs/REPOSITORY_LAYOUT.md) and
-  [harness design](docs/RESEARCH_LIBRARY_HARNESS_DESIGN.md): the earlier staging
-  harness has an offline fixture replay; it is separate from the live Studio
-  paper reader. The read-only MCP bridge serves snapshot passages; unattended
-  weekly scheduling and end-to-end product validation remain incomplete.
+The current research and experiment MCPs, Qwen investigator, training/evaluation
+pipeline and Studio remain available. Shared snapshot metadata/link helpers and
+the earlier staging harness remain where current callers use them; this cleanup
+does not establish the historical weekly-digest product gates or a cost advantage
+for the small research worker. See the [repository layout](docs/REPOSITORY_LAYOUT.md).
 
 The original code-execution environment was inspired by
 [arXiv:2512.24601](https://arxiv.org/abs/2512.24601).

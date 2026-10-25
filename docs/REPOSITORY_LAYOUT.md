@@ -16,14 +16,21 @@ opening the viewer never starts a model run.
 | `benchmarks/envoybench/run.py` | Paired inference runner. Historical imports from this module remain compatible. |
 | `benchmarks/envoybench/score.py`, `qasper_official.py` | Provisional mechanical/review scoring and the pinned official QASPER Answer F1 path. These measure different things. |
 | `src/env/`, `src/policies/`, `src/product/qwen_investigator.py` | Multi-step Python-action environment, model policies, and bounded paper investigator. The code-execution tool boundary stays `search()` / `read()` / `extract()`. |
+| `scripts/arxiv_research_mcp.py`, `scripts/ml_experiment_mcp.py` | Current paper-source and ML-experiment planning MCP entry points. |
+| `src/training/`, `environments/envoy_reader/` | Source-bound reader tasks, Docker rollout collection, Verifiers plugin, native Prime-RL orchestration and paired evaluation. |
+| `src/product/memory.py`, `src/product/chat.py` | Small retained snapshot/metadata and provenance-review helpers. These modules no longer implement a memory-writing product or chat server. |
 | `release/` | Recorded training, run, review, and Studio artifacts. The case-study checker verifies their hashes; cleanup must not rewrite them. |
 
-The earlier Obsidian digest and research-library prototype lives in
-`src/harness/`, `src/research/`, `src/product/weekly_digest.py`, and related
-scripts. It remains available as historical work, but it is not a completed
-product gate for this release. Training and reward code is also retained for
-reproducibility; the current cleanup does not change model weights, rewards, or
-the published evaluation.
+The personal-memory app and Learning Lab/map demos were removed from the
+maintained tree; their source can be recovered from Git at `5240090`. See
+[archived prototypes](ARCHIVED_PROTOTYPES.md). Historical reports, data and saved
+evidence remain in place. Commands in those dated product documents refer to the
+earlier checkout.
+
+Shared vault import, graph, research and staging utilities remain where retained
+callers need them. The weekly digest implementation is historical work, not a
+completed product gate for this release. This bounded cleanup does not change
+model weights, active rewards, frozen execution code or published results.
 
 Run the offline artifact check with `python scripts/reproduce_case_study.py`.
 The main launcher and release status are described in the [README](../README.md).

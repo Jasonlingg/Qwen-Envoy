@@ -1,5 +1,23 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 25: historical prototype cleanup completed.**
+> User approved a bounded cleanup of personal-memory and map demos. Recovery and
+> results: docs/ARCHIVED_PROTOTYPES.md; complete earlier source at 5240090.
+> Removed37files: old personal-memory web/MCP/CLI/eval, Learning Lab/map/impact/
+> Nemotron-chat product modules, three HTML interfaces and18dedicated test files.
+> Trimmed memory.py/chat.py to3shared helpers with original function bodies.
+> Current research/experiment MCPs, Qwen, training, evaluation and Studio retained.
+> Net7879implementation lines removed (69707->61828;11.3%),3316test lines removed
+> (34424->31108). Seven direct provenance tests preserve shared-boundary coverage.
+> Full2141pass/17optionalskips, native160pass, focused68+7pass; Ruff/diff checks pass.
+> Lower full count reflects90retired-feature tests removed and7newdirect checks.
+> All29frozen runtime hashes, source-bound plan and saved-case-study recount pass;
+> all data/examples/release bytes and protected legacy files unchanged. Original
+> three untracked plan/spec inputs preserved. No paid work or model-quality claim.
+> Cleanup is one local commit; no push. Historical commands for removed apps need
+> the earlier checkout. Operational record: out/prototype-cleanup-20261025/.
+
+
 > **October 25: commit authorization and unused-code review completed.**
 > User explicitly authorized committing the accumulated work after an unused-code
 > check, superseding earlier no-commit instructions for this work. Review:
