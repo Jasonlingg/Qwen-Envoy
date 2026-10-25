@@ -1,0 +1,50 @@
+{
+  "doc_id": "qasper_1810_10797",
+  "title": "The Logoscope: a Semi-Automatic Tool for Detecting and Documenting French New Words",
+  "text": "The Logoscope: a Semi-Automatic Tool for Detecting and Documenting French New Words\n\nIn this article we present the design and implementation of the Logoscope, the first tool especially developed to detect new words of the French language, to document them and allow a public access through a web interface. This semi-automatic tool collects new words daily by browsing the online versions of French well known newspapers such as Le Monde, Le Figaro, L'Equipe, Lib\\'eration, La Croix, Les \\'Echos. In contrast to other existing tools essentially dedicated to dictionary development, the Logoscope attempts to give a more complete account of the context in which the new words occur. In addition to the commonly given morpho-syntactic information it also provides information about the textual and discursive contexts of the word creation; in particular, it automatically determines the (journalistic) topics of the text containing the new word. In this article we first give a general overview of the developed tool. We then describe the approach taken, we discuss the linguistic background which guided our design decisions and present the computational methods we used to implement it.\n\nLike other areas of linguistics, the study of new words has benefited from the development of natural language processing techniques in the last twenty years. In this research area, the digital revolution has significantly changed the way to collect the data necessary for empirical research BIBREF0 , BIBREF1 : The traditional practice of collecting new words by reading texts (newspapers, literature, scientific and technical texts, etc.), has been supplemented by an automatisation of the collection process. In fact, today there are many computer tools capable of searching through large amounts of texts (often newspapers) in order to automatically detect the newly created words in various languages (German, Catalan, Spanish, English, French, etc.).\n\nThe main building block of the Logoscope framework consists of a continuously updated lexical resource containing unknown words, their occurrences in French online press articles and further morpho-syntactic and contextual documentation. In addition our system features a query interface which allows an open access to this knowledge base.\n\nThe Logoscope is built in three stages (see Figure FIGREF6 ). The first stage consists in the automatic detection of the unknown words. In the second stage the detected unknown words are manually validated, that is, a human expert decides which of them are genuine word creations. Finally, in the third stage these validated unknown words are documented. This is done firstly by manually adding morpho-syntactic features and information on the originating creation process. This information is automatically complemented by contextual information, typically e.g the journal and the paragraph the new words appeared in. But, in contrast to other similar systems (see Section SECREF32 ), the Logoscope also (automatically) gives a rough approximation of what the article containing the new word is about.\n\nIn the next sections we will first give a more detailed description of each of these three stages before briefly addressing how the Logoscope might be used through its web interface in Section SECREF30 . A more detailed report of the arising NLP challenges and the methods we used to tackle them will be presented in Section SECREF5 .\n\nThe Logoscope retrieves newspaper articles from several RSS feeds in French on a daily basis. The newspaper articles are preprocessed such that only the journalistic content is kept. The articles are then segmented into paragraphs and word forms. The resulting forms are filtered based on an exclusion list (French words found in several lexicons and corpora). They are then reordered in such a way that those words which are the most likely new word candidates appear on top, using a supervised classification method which will be described more in detail in Section SECREF71 .",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 83
+    },
+    {
+      "section": "Abstract",
+      "start": 85,
+      "end": 1187
+    },
+    {
+      "section": "Introduction: New Words, NLP and the Logoscope",
+      "start": 1189,
+      "end": 1945
+    },
+    {
+      "section": "General Description of the Logoscope Framework",
+      "start": 1947,
+      "end": 2286
+    },
+    {
+      "section": "New Words are Collected in Three Stages",
+      "start": 2288,
+      "end": 3426
+    },
+    {
+      "section": "Stage 1: Detection of Unknown Words",
+      "start": 3428,
+      "end": 4006
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1810.10797",
+    "arxiv_id": "1810.10797",
+    "source_url": "https://arxiv.org/abs/1810.10797",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

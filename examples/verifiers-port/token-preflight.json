@@ -1,0 +1,123 @@
+{
+  "schema": "native-verifiers-token-preflight-v1",
+  "status": "local_native_client_graph_contract_passed_training_still_disabled",
+  "tokenizer": {
+    "repo": "Qwen/Qwen3-8B",
+    "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "transformers": "4.57.6"
+  },
+  "prefix_sha256": {
+    "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact": [
+      "d17e2a559010b7386db23084d8013e2c6e359929203c0a9239a6b73bd58d90e9",
+      "fdf36cc58b9cfe4ce160925ce48ae2f7385bf42ba0b51f3fe5ce3d56fe5c09d2",
+      "dbed13d706fb628b4df96af6ac4b0180cce9e98670125993e143f8bf6b3b6536"
+    ],
+    "qasper_train_43878a6a8fc36aaae29d95815355aaa7d25c3b53--rl-short-fact": [
+      "32f719371997bbf76619f10a78f314b0abcec3ac704843924f4fab40b330ebf7",
+      "397322fc44ef9e883afe80c89b1a8f3cda83b866e62d6f44b6739b06713951aa",
+      "4b4bad9dc954709e14a5eceb3f25efe7a84e47822712a737413d57776a572a6a"
+    ],
+    "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact": [
+      "67ddad527bc052eb6f85b7243ad4a91503fc1c4beeae02087a523627c06cd4a5",
+      "675394fcae2891ea3917b5cb59a8799b75beed49e1213d7b2b6420bed75109c9",
+      "79897c6a5aed37335a47fb0d8fb310f1f6dae372bc0e8cbfcb5296d9352e3be1"
+    ]
+  },
+  "frameworks": {
+    "verifiers": "0.4.0",
+    "renderers": "0.1.12",
+    "transformers": "4.57.6",
+    "torch": "2.10.0"
+  },
+  "renderer_results": {
+    "optimized_qwen3_matches": 3,
+    "default_renderer_matches": 9,
+    "saved_prefixes": 9
+  },
+  "decoding": {
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "sampled_tokens_per_turn": 4,
+    "turns": 3,
+    "seed_initialization": 17,
+    "sampling_seeds": [
+      101,
+      102,
+      103
+    ]
+  },
+  "model": {
+    "kind": "random_initialized_tiny_Qwen3_CPU",
+    "pretrained_weights_loaded": false,
+    "hidden_size": 16,
+    "layers": 1,
+    "heads": 2,
+    "head_dim": 8,
+    "parameter_updates": 0
+  },
+  "fixture_kinds": {
+    "saved_prefixes": "authored_reference_controls_not_new_V5_inference",
+    "sample": "actual_tiny_CPU_ancestral_samples_and_logprobs",
+    "fenced_and_malformed": "synthetic_transport_fixtures_never_training_data",
+    "error_feedback": "simulated_not_executed"
+  },
+  "masks": {
+    "exact_prompt_and_raw_completion_ids": true,
+    "only_completion_positions_sampled": true,
+    "all_observations_and_history_masked": true,
+    "branches_per_successful_trace": 3
+  },
+  "tests": {
+    "focused_passed": 27,
+    "focused_seconds": 121.38,
+    "minimal_no_torch_prefix_passed": 3,
+    "shared_vf04_passed": 55,
+    "shared_vf04_optional_skips": 2,
+    "shared_followup_docker_passed": 5,
+    "shared_followup_covers_both_skips": true,
+    "full_legacy_passed": 2109,
+    "full_legacy_skipped": 15,
+    "full_legacy_warnings": 3,
+    "full_legacy_seconds": 355.3,
+    "full_followup_docker_passed": 14,
+    "full_followup_docker_seconds": 20.75,
+    "all_13_optional_docker_skips_covered": true,
+    "both_optional_vf04_modules_tested_separately": true
+  },
+  "runtime_implementation_lines": 452,
+  "new_token_test_lines": 193,
+  "new_files_python_total": 978,
+  "overall_net_python_added": 1003,
+  "paid_calls": 0,
+  "gpu_launches": 0,
+  "optimizer_updates": 0,
+  "real_V5_rollouts": 0,
+  "reward_scoring": null,
+  "production_training_guard_retained": true,
+  "native_prime_rl_training_verified": false,
+  "independent_human_review": null,
+  "limitations": [
+    "Native client/graph with mock HTTP is not actual vLLM or prime-rl end-to-end validation",
+    "Full investigator TrainClient interception remains blocked/unverified",
+    "V5 loading/reference scoring, branch export and reward/advantage attribution, update/reload remain unverified",
+    "No model improvement claim; no held-out model evaluation"
+  ],
+  "verified_at": "2026-10-23T04:10:46.529797+00:00",
+  "hardware": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "device": "CPU"
+  },
+  "docker_cleanup": {
+    "owned_containers_absent": 5,
+    "all_absent": true
+  },
+  "frozen_runtime_files_unchanged": 29,
+  "earlier_fixture_failure": {
+    "first_run_passed": 8,
+    "first_run_failed": 1,
+    "reason": "httpx json serializer rejected NaN before the native parser; corrected fixture to send raw bytes; final nine token checks all pass"
+  },
+  "hypothesis": "Native fallback renderer preserves V5 prompts and exact generated tokens/probabilities; graph masks all non-generated positions.",
+  "decision": "Local client/graph check passes. Keep production training blocked until investigator interception and prime-rl export/update checks pass."
+}

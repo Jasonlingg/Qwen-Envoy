@@ -1,0 +1,100 @@
+{
+  "doc_id": "qasper_1802_05322",
+  "title": "Classifying movie genres by analyzing text reviews",
+  "text": "Classifying movie genres by analyzing text reviews\n\nThis paper proposes a method for classifying movie genres by only looking at text reviews. The data used are from Large Movie Review Dataset v1.0 and IMDb. This paper compared a K-nearest neighbors (KNN) model and a multilayer perceptron (MLP) that uses tf-idf as input features. The paper also discusses different evaluation metrics used when doing multi-label classification. For the data used in this research, the KNN model performed the best with an accuracy of 55.4\\% and a Hamming loss of 0.047.\n\nBy only reading a single text review of a movie it can be difficult to say what the genre of that movie is, but by using text mining techniques on thousands of movie reviews is it possible to predict the genre?\n\nThis paper explores the possibility of classifying genres of a movie based only on a text review of that movie. This is an interesting problem because to the naked eye it may seem difficult to predict the genre by only looking at a text review. One example of a review can be seen in the following example:\n\nI liked the film. Some of the action scenes were very interesting, tense and well done. I especially liked the opening scene which had a semi truck in it. A very tense action scene that seemed well done. Some of the transitional scenes were filmed in interesting ways such as time lapse photography, unusual colors, or interesting angles. Also the film is funny is several parts. I also liked how the evil guy was portrayed too. I'd give the film an 8 out of 10.\n\nhttp://www.imdb.com/title/tt0211938/reviews\n\nFrom the quoted review, one could probably predict the movie falls in the action genre; however, it would be difficult to predict all three of the genres (action, comedy, crime) that International Movie Database (IMDB) lists. With the use of text mining techniques it is feasible to predict multiple genres based on a review.\n\nThere are numerous previous works on classifying the sentiment of reviews, e.g., maas-EtAl:2011:ACL-HLT2011 by BIBREF0 . There are fewer scientific papers available on specifically classifying movie genres based on reviews; therefore, inspiration for this paper comes from papers describing classification of text for other or general contexts. One of those papers is DBLP:journals/corr/cmp-lg-9707002 where BIBREF1 describe how to use a multilayer perceptron (MLP) for genre classification.\n\nAll data, in the form of reviews and genres, used in this paper originates from IMDb.\n\nIn this section all relevant theory and methodology is described. Table TABREF1 lists basic terminology and a short description of their meaning.\n\nData preprocessing is important when working with text data because it can reduce the number of features and it formats the data into the desired form BIBREF2 .\n\nRemoving stop words is a common type of filtering in text mining. Stop words are words that usually contain little or no information by itself and therefore it is better to remove them. Generally words that occur often can be considered stop words such as the, a and it. BIBREF2 \n\nLemmatization is the process of converting verbs into their infinitive tense form and nouns into their singular form. The reason for doing this is to reduce words into their basic forms and thus simplify the data. For example am, are and is are converted to be. BIBREF2 \n\nA way of representing a large corpus is to calculate the Term Frequency Inverse Document Frequency (tf-idf) of the corpus and then feed the models the tf-idf. As described in ramos2003using by BIBREF3 tf-idf is both efficient and simple for matching a query of words with a document in a corpus. Tf-idf is calculated by multiplying the Term Frequency (tf) with the Inverse Document Frequency (idf) , which is formulated as DISPLAYFORM0 \n\nwhere INLINEFORM0 is a document in corpus INLINEFORM1 and INLINEFORM2 is a term. INLINEFORM3 is defined as DISPLAYFORM0 \n\nand INLINEFORM0 is defined as DISPLAYFORM0 \n\nwhere INLINEFORM0 is the number of times INLINEFORM1 occurs in INLINEFORM2 and INLINEFORM3 total number of documents in the corpus.\n\nMLP is a class of feedforward neural network built up by a layered acyclic graph. An MLP consists of at least three layers and non-linear activations. The first layer is called input layer, the second layer is called hidden layer and the third layer is called output layer. The three layers are fully connected which means that every node in the hidden layer is connected to every node in the other layers. MLP is trained using backpropagation, where the weights are updated by calculating the gradient descent with respect to an error function. BIBREF4 \n\nK-nearest Neighbors (KNN) works by evaluating similarities between entities, where INLINEFORM0 stands for how many neighbors are taken into account during the classification. KNN is different from MLP in the sense that it does not require a computationally heavy training step; instead, all of the computation is done at the classification step. There are multiple ways of calculating the similarity, one way is to calculate the Minkowski distance. The Minkowski distance between two points DISPLAYFORM0 \n\nand DISPLAYFORM0 \n\nis defined by DISPLAYFORM0 \n\nwhere INLINEFORM0 which is equal to the Euclidean distance. BIBREF2 \n\nWhen evaluating classifiers it is common to use accuracy, precision and recall as well as Hamming loss. Accuracy, precision and recall are defined by the the four terms true positive ( INLINEFORM0 ), true negative ( INLINEFORM1 ), false positive ( INLINEFORM2 ) and false negative ( INLINEFORM3 ) which can be seen in table TABREF16 .\n\nAccuracy is a measurement of how correct a model's predictions are and is defined as DISPLAYFORM0 \n\n.\n\nPrecision is a ratio of how often positive predictions actually are positve and is defined as DISPLAYFORM0 \n\n.\n\nRecall is a measurement of how good the model is to find all true positives and is defined as DISPLAYFORM0 \n\n. BIBREF5 \n\nIt has been shown that when calculating precision and recall on multi-label classifiers, it can be advantageous to use micro averaged precision and recall BIBREF6 . The formulas for micro averaged precision are expressed as DISPLAYFORM0 DISPLAYFORM1 \n\nwhere INLINEFORM0 is label index and INLINEFORM1 is number of labels.\n\nHamming loss is different in the sense that it is a loss and it is defined as the fraction of wrong labels to the total number of labels. Hamming loss can be a good measurement when it comes to evaluating multi-label classifiers. the hamming loss is expressed as DISPLAYFORM0 \n\nwhere INLINEFORM0 is number of documents, INLINEFORM1 number of labels, INLINEFORM2 is the target value and INLINEFORM3 is predicted value. BIBREF7 \n\nFor evaluation the INLINEFORM0 and INLINEFORM1 was calculated as defined in section SECREF15 for both the MLP model and the KNN model. For precision and recall formulas EQREF20 and EQREF21 were used because of their advantage in multi-label classification. The distribution of predicted genres was also shown in a histogram and compared to the target distribution of genres.\n\nFurthermore the ratio of reviews that got zero genres predicted was also calculated and can be expressed as DISPLAYFORM0 \n\nwhere INLINEFORM0 is the number of reviews without any predicted genre and INLINEFORM1 is the total amount of predicted reviews.\n\nData used in this paper comes from two separate sources. The first source was Large Movie Review Dataset v1.0 BIBREF0 which is a dataset for binary sentiment analysis of moview reviews. The dataset contains a total of 50000 reviews in raw text together with information on whether the review is positive or negative and a URL to the movie on IMDb. The sentiment information was not used in this paper. Out of the 50000, reviews only 7000 were used because of limitations on computational power, resulting in a corpus of 7000 documents.\n\nThe second source of data was the genres for all reviews which were scraped from the IMDb site. A total of 27 different genres were scraped. A list of all genres can be find in Appendix SECREF8 . A review can have one genre or multiple genres. For example a review can be for a movie that is both Action, Drama and Thriller at the same time while another move only falls into Drama.\n\nThis section presents all steps needed to reproduce the results presented in this paper.\n\nIn this paper the data comes from two sources where the first is a collection of text reviews. Those reviews were downloaded from Large Movie Review Datasets website . Because only 7000 reviews was used in this paper all of them were from the `train` folder and split evenly between positive reviews and negative reviews.\n\nThe genres for the reviews where obtained by iterating through all reviews and doing the following steps:\n\nSave the text of the review.\n\nRetrieve IMDb URL to the movie from the Large Movie Review Datasets data.\n\nScrape that movie website for all genres and download the genres.\n\nThe distribution of genres was plotted in a histogram to check that the scraped data looked reasonable and can be seen in figure FIGREF27 . All genres with less than 50 reviews corresponding to that genre were removed.\n\nThe number of genres per review can be seen in figure FIGREF28 and it shows that it is most common for a review to have three different genres; furthermore, it shows that no review has more than three genres.\n\nhttp://ai.stanford.edu/ amaas/data/sentiment\n\nAll reviews were preprocessed according to the following steps:\n\nRemove all non-alphanumeric characters.\n\nLower case all tokens.\n\nRemove all stopwords.\n\nLemmatize all tokens.\n\nBoth the removal of stopwords and lemmatization were done with Python's Natural Language Toolkit (NLTK). Next the reviews and corresponding genres were split into a training set and a test set with INLINEFORM0 devided into the train set and INLINEFORM1 into the test set.\n\nThe preprocessed corpus was then used to calculate a tf-idf representing all reviews. The calculation of the tf-idf was done using scikit-learn'smodule TfidfVectorizer. Both transform and fit were run on the training set and only the transform was run on the test set. The decision to use tf-idf as a data representation is supported by BIBREF3 in ramos2003using which concludes that tf-idf is both simple and effective at categorizing relevant words.\n\nhttps://www.python.org http://www.nltk.org http://scikit-learn.org\n\nThis paper experimented with two different models and compared them against each other. The inspiration for the first model comes from BIBREF1 in their paper DBLP:journals/corr/cmp-lg-9707002 where they used an MLP for text genre detection. The model used in this paper comes from scikit-learn's neural_network module and is called MLPClassifier. Table TABREF35 shows all parameters that were changed from the default values.\n\nThe second model was a KNN which was chosen because of it is simple and does not require the pre-training that the MLP needs. The implementation of this model comes from scikit-learn's neighbors module and is called KNeighborsClassifier. The only parameter that was changed after some trial and error was the k-parameter which was set to 3.\n\nBoth models were fitted using the train set and then predictions were done for the test set.\n\nTable TABREF38 shows the INLINEFORM0 , INLINEFORM1 and INLINEFORM2 for the models. The KNN model had a higher accuracy of INLINEFORM3 compared to MPL's accuracy of INLINEFORM4 and the KNN model had a higher recall but slightly lower precision than the MLP model.\n\nTable TABREF39 shows the INLINEFORM0 and INLINEFORM1 for the models, it shows that the KNN model had lower values for both the INLINEFORM2 and INLINEFORM3 compared to the MLP model.\n\nFigure FIGREF40 shows the distribution of the genres for the predicted values when using MLP and the test set. The same comparison between KNN and the test set can be seen in figure FIGREF41 .\n\nWhen looking at the results it is apparent that KNN is better than MLP in these experiments. In particular, the INLINEFORM0 stands out between KNN and MLP where KNN got INLINEFORM1 and MLP got INLINEFORM2 which is considered a significant difference. Given that the INLINEFORM3 was relatively high for both models, this result hints that the models only predicted genres when the confidence was high, which resulted in fewer genres being predicted than the target. This can also be confirmed by looking at the figures FIGREF40 and FIGREF41 where the absolute number of reviews predicted for most genres was lower than the target. This unsatisfyingly low INLINEFORM4 can be explained by the multi-label nature of the problem in this paper. Even if the model correctly predicted 2 out of three genres it is considered a misclassification. A reason for the low accuracy could be that the models appeared to be on the conservative side when predicting genres.\n\nAnother factor that affected the performance of the models was the INLINEFORM0 which confirmed that over INLINEFORM1 of the reviews for the KNN model and over INLINEFORM2 of the reviews for the MLP model did not receive any predicted genre. Because no review had zero genres all predictions with zero genres are misclassified and this could be a good place to start when improving the models.\n\nFurthermore, when looking at the INLINEFORM0 it shows that when looking at the individual genres for all reviews the number of wrong predictions are very low which is promising when trying to answer this paper's main question: whether it is possible to predict the genre of the movie associated with a text review. It should be taken into account that this paper only investigated about 7000 movie reviews and the results could change significantly, for better or for worse, if a much larger data set was used. In this paper, some of the genres had very low amounts of training data, which could be why those genres were not predicted in the same frequency as the target. An example of that can be seen by looking at genre Sci-Fi in figure FIGREF40 .\n\nThis paper demonstrates that by only looking at text reviews of a movie, there is enough information to predict its genre with an INLINEFORM0 of INLINEFORM1 . This result implies that movie reviews carry latent information about genres. This paper also shows the complexity of doing prediction on multi-label problems, both in implementation and data processing but also when it comes to evaluation. Regular metrics typically work, but they mask the entire picture and the depth of how good a model is.\n\nFinally this paper provides an explanation of the whole process needed to conduct an experiment like this. The process includes downloading a data set, web scraping for extra information, data preprocessing, model tuning and evaluation of the results.\n\nAction\n\nAdult\n\nAdventure\n\nAnimation\n\nBiography\n\nComedy\n\nCrime\n\nDocumentary\n\nDrama\n\nFamily\n\nFantasy\n\nFilm-Noir\n\nGame-Show\n\nHistory\n\nHorror\n\nMusic\n\nMusical\n\nMystery\n\nReality-TV\n\nRomance\n\nSci-Fi\n\nShort\n\nSport\n\nTalk-Show\n\nThriller\n\nWar\n\nWestern",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 50
+    },
+    {
+      "section": "Abstract",
+      "start": 52,
+      "end": 554
+    },
+    {
+      "section": "Introduction",
+      "start": 556,
+      "end": 2490
+    },
+    {
+      "section": "Theory",
+      "start": 2492,
+      "end": 2637
+    },
+    {
+      "section": "Preprocessing",
+      "start": 2639,
+      "end": 4090
+    },
+    {
+      "section": "Models",
+      "start": 4092,
+      "end": 5270
+    },
+    {
+      "section": "Evaluation",
+      "start": 5272,
+      "end": 7322
+    },
+    {
+      "section": "Data",
+      "start": 7324,
+      "end": 8243
+    },
+    {
+      "section": "Method",
+      "start": 8245,
+      "end": 8333
+    },
+    {
+      "section": "Data collection",
+      "start": 8335,
+      "end": 9411
+    },
+    {
+      "section": "Data preprocessing",
+      "start": 9413,
+      "end": 10381
+    },
+    {
+      "section": "Model",
+      "start": 10383,
+      "end": 11244
+    },
+    {
+      "section": "Result",
+      "start": 11246,
+      "end": 11885
+    },
+    {
+      "section": "Discussion",
+      "start": 11887,
+      "end": 13988
+    },
+    {
+      "section": "Conclusion",
+      "start": 13990,
+      "end": 14745
+    },
+    {
+      "section": "All genres",
+      "start": 14747,
+      "end": 14987
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1802.05322",
+    "arxiv_id": "1802.05322",
+    "source_url": "https://arxiv.org/abs/1802.05322",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

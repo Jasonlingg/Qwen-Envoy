@@ -1,0 +1,70 @@
+{
+  "doc_id": "qasper_1704_00939",
+  "title": "Fortia-FBK at SemEval-2017 Task 5: Bullish or Bearish? Inferring Sentiment towards Brands from Financial News Headlines",
+  "text": "Fortia-FBK at SemEval-2017 Task 5: Bullish or Bearish? Inferring Sentiment towards Brands from Financial News Headlines\n\nIn this paper, we describe a methodology to infer Bullish or Bearish sentiment towards companies/brands. More specifically, our approach leverages affective lexica and word embeddings in combination with convolutional neural networks to infer the sentiment of financial news headlines towards a target company. Such architecture was used and evaluated in the context of the SemEval 2017 challenge (task 5, subtask 2), in which it obtained the best performance.\n\nReal time information is key for decision making in highly technical domains such as finance. The explosive growth of financial technology industry (Fintech) continued in 2016, partially due to the current interest in the market for Artificial Intelligence-based technologies.\n\nOpinion-rich texts such as micro-blogging and news can have an important impact in the financial sector (e.g. raise or fall in stock value) or in the overall economy (e.g. the Greek public debt crisis). In such a context, having granular access to the opinions of an important part of the population is of key importance to any public and private actor in the field. In order to take advantage of this raw data, it is thus needed to develop machine learning methods allowing to convert unstructured text into information that can be managed and exploited.\n\nIn this paper, we address the sentiment analysis problem applied to financial headlines, where the goal is, for a given news headline and target company, to infer its polarity score i.e. how positive (or negative) the sentence is with respect to the target company. Previous research BIBREF0 has highlighted the association between news items and market fluctiations; hence, in the financial domain, sentiment analysis can be used as a proxy for bullish (i.e. positive, upwards trend) or bearish (i.e. negative, downwards trend) attitude towards a specific financial actor, allowing to identify and monitor in real-time the sentiment associated with e.g. stocks or brands.\n\nOur contribution leverages pre-trained word embeddings (GloVe, trained on wikipedia+gigaword corpus), the DepecheMood affective lexicon, and convolutional neural networks.\n\nWhile image and sound come with a natural high dimensional embedding, the issue of which is the best representation is still an open research problem in the context of natural language and text. It is beyond the scope of this paper to do a thorough overview of word representations, for this we refer the interest reader to the excellent review provided by BIBREF1 . Here, we will just introduce the main representations that are related to the proposed method.\n\nThe data consists of a set of financial news headlines, crawled from several online outlets such as Yahoo Finance, where each sentence contains one or more company names/brands.\n\nEach tuple (headline, company) is annotated with a sentiment score ranging from -1 (very negative, bearish) to 1 (very positive, bullish). The training/test sets provided contain 1142 and 491 annotated sentences, respectively.\n\nA sample instance is reported below:\n\nHeadline: “Morrisons book second consecutive quarter of sales growth”\n\nCompany name: “Morrisons”\n\nSentiment score: 0.43\n\nIn Figure FIGREF5 , we can see the overall architecture of our model.\n\nMinimal preprocessing was adopted in our approach: we replaced the target company's name with a fixed word <company> and numbers with <number>. The sentences were then tokenized using spaces as separator and keeping punctuation symbols as separate tokens.\n\nThe words are represented as fixed length vectors INLINEFORM0 resulting from the concatenation of GloVe pre-trained embeddings and DepecheMood BIBREF19 lexicon representation. Since we cannot directly concatenate token-based embeddings (provided in GloVe) with the lemma#PoS-based representation available in DepecheMood, we proceeded to re-build the latter in token-based form, applying the exact same methodology albeit with two differences: we started from a larger dataset (51.9K news articles instead of 25.3K) and used a frequency cut-off, i.e. keeping only those tokens that appear at least 5 times in the corpus.\n\nThese word-level representation are used as the first layer of our network. During training we allow the weights of the representation to be updated. We further add the VADER score for the sentence under analysis. The complete sentence representation is presented in Algorithm UID8 .\n\nInputInput OutputOutput The sentence embedding INLINEFORM0 INLINEFORM1 \n\n INLINEFORM0 in INLINEFORM1 INLINEFORM2 = [GloVe( INLINEFORM3 , INLINEFORM4 ), DepecheMood( INLINEFORM5 )] INLINEFORM6 Sentence representation\n\nA 1D convolutional layer with filters of multiple sizes {2, 3, 4} is applied to the sequence of word embeddings. The filters are used to learn useful translation-invariant representations of the sequential input data. A global max-pooling is then applied across the sequence for each filter output.\n\nWe apply the concatenation layer to the output of the global max-pooling and the output of VADER.\n\nThe activation function used between layers is ReLU BIBREF24 except for the out layer where tanh is used to map the output into [-1, 1] range.\n\nDropout BIBREF25 was used to avoid over-fitting to the training data: it prevents the co-adaptation of the neurones and it also provides an inexpensive way to average an exponential number of networks. In addition, we averaged the output of multiple networks with the same architecture but trained independently with different random seeds in order to reduce noise.\n\nThe loss function used is the cosine distance between the predicted scores and the gold standard for each batch. Even though stochastic optimization methods like Adam BIBREF26 are usually applied to loss functions that are written as a sum of per-sample loss, which is not the case for the cosine, it converges to an acceptable solution. The loss can be written as : DISPLAYFORM0 \n\nwhere INLINEFORM0 and INLINEFORM1 are the predicted and true sentiment scores for batch INLINEFORM2 , respectively.\n\nThe algorithm for training/testing our model is reported in Algorithm UID15 .\n\nInputInput OutputOutput ParameterParameters A set of trained models INLINEFORM0 , and the predictions INLINEFORM1 for the test set INLINEFORM2 The number INLINEFORM3 of models to train INLINEFORM4 see sec 3.1 INLINEFORM5 in INLINEFORM6 INLINEFORM7 ) see Alg. UID8 INLINEFORM8 INLINEFORM9 see Eq. EQREF16 INLINEFORM10 INLINEFORM11 INLINEFORM12 Training/Testing algorithm. To build our model, we set N=10.\n\nIn this section, we report the results obtained by our model according to challenge official evaluation metric, which is based cosine-similarity and described in BIBREF27 . Results are reported for three diverse configurations: (i) the full system; (ii) the system without using word embeddings (i.e. Glove and DepecheMood); and (iii) the system without using pre-processing. In Table TABREF17 we show model's performances on the challenge training data, in a 5-fold cross-validation setting.\n\nFurther, the final performances obtained with our approach on the challenge test set are reported in Table TABREF18 . Consistently with the cross-validation performances shown earlier, we observe the beneficial impact of word-representations and basic pre-processing.\n\nIn this paper, we presented the network architecture used for the Fortia-FBK submission to the Semeval-2017 Task 5, Subtask 2 challenge, with the goal of predicting positive (bullish) or negative (bearish) attitude towards a target brand from financial news headlines. The proposed system ranked 1st in such challenge.\n\nOur approach is based on 1d convolutions and uses fine-tuning of unsupervised word representations and a rule based sentiment model in its inputs. We showed that the use of pre-computed word representations allows to reduce over-fitting and to achieve significantly better generalization, while some basic pre-processing was needed to further improve the performance.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 119
+    },
+    {
+      "section": "Abstract",
+      "start": 121,
+      "end": 581
+    },
+    {
+      "section": "Introduction",
+      "start": 583,
+      "end": 2263
+    },
+    {
+      "section": "Related Works",
+      "start": 2265,
+      "end": 2726
+    },
+    {
+      "section": "Data",
+      "start": 2728,
+      "end": 3292
+    },
+    {
+      "section": "Method",
+      "start": 3294,
+      "end": 3363
+    },
+    {
+      "section": "Sentence representation and preprocessing",
+      "start": 3365,
+      "end": 4744
+    },
+    {
+      "section": "Architectural Details",
+      "start": 4746,
+      "end": 6637
+    },
+    {
+      "section": "Results",
+      "start": 6639,
+      "end": 7400
+    },
+    {
+      "section": "Conclusions",
+      "start": 7402,
+      "end": 8089
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1704.00939",
+    "arxiv_id": "1704.00939",
+    "source_url": "https://arxiv.org/abs/1704.00939",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

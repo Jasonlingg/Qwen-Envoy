@@ -1,0 +1,420 @@
+[
+  {
+    "row_id": "07a4675ac7ed485c99bffa0fc2b90900",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_0cf5132ac7904b7b81e17938d5815f70926a5180--rl-short-fact",
+    "question_id": "qasper_train_0cf5132ac7904b7b81e17938d5815f70926a5180",
+    "question": "What classification models were used?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "fastText",
+    "context_sha256": "c8017448ecb5dfbadfde3c703e595bc8c13785361f914e0f17bba92aaaa6a312",
+    "rollout_sha256": "d51d01468ba0e806baffab6cd8f846268ba5c2fca740acc6e00655313a15425f",
+    "classification": "incomplete",
+    "rationale": "The question requests the classification models; the cited paragraph names both fastText and SVM. The answer omits SVM.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "094cb23711aa4a40876beb6544bee21e",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+    "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+    "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Frege's holistic and functional approach to meaning",
+    "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+    "rollout_sha256": "51da3c34121c4512e10d990d75cb6c9b014cf34cfde4ce9292e5bf8bfa522e23",
+    "classification": "incomplete",
+    "rationale": "Repeats the question topic instead of stating that a word has meaning only in a sentence context. The second citation contains the missing proposition.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "1080ed7731ce4766b8ac91507a70a8d6",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31--rl-short-fact",
+    "question_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31",
+    "question": "How big is Switchboard-300 database?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "300-hour database",
+    "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5",
+    "rollout_sha256": "6c8a7cda4d1ab10baf0b7de1469ecfe06b3d07134f2df437334ccd486d5e261a",
+    "classification": "complete_source_supported_answer",
+    "rationale": "The question asks database size. 300-hour database gives that size and unit, explicitly supported by the citation. English conversational speech describes the data but is not an additional requested size fact.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 1.0,
+      "reason": "reviewed_answer_and_support_matched",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "270eecdb7f6c47d78faa892b15f610d5",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348--rl-short-fact",
+    "question_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348",
+    "question": "What data do they train the language models on?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Japanese, Chinese, English, French, German, Spanish, Russian, Arabic, Portuguese, and Korean.",
+    "context_sha256": "3e3d5f0b3c1f8fc5f2bb2cecd1ab40ada3fa0a4a43c2761ba181521f9d50bcc3",
+    "rollout_sha256": "cf4e0428d00603fa7c9e415401284051212b39a738756999734b59d446b7fb17",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "An invented language list neither identifies the requested training corpus nor follows from the submitted abstract, which mentions BABEL languages without this list.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "292919629c5e48c190fd5dcaf656270f",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+    "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+    "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "First place in German sub-task A macro F1 0.62",
+    "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+    "rollout_sha256": "b4ea7492feba3d6132c26565b051067a63063c984959c210a601d0783a1f5252",
+    "classification": "complete_source_supported_answer",
+    "rationale": "The first citation supports both first place and macro F1 0.62 for German sub-task A. The extra citation about other subtasks does not support these claims and remains subject to the unchanged citation gate.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "additional_citation_without_reviewed_support",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "401e36211526402bab2c4b679e2815f3",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+    "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+    "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "German sub-task A F1 score of 0.62",
+    "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+    "rollout_sha256": "4139944b30e0ba6eebe96a8d941999d46335883672227ff663fed9d1dc32686c",
+    "classification": "incomplete",
+    "rationale": "Gives the correct number and subtask but omits the macro qualification of F1 required by the scientific result. Its submitted fragment also lacks the result. Conservatively do not propose a complete-answer alias.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "48a51e93df1946c58219b2812b4ed76d",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b--rl-short-fact",
+    "question_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b",
+    "question": "Which model architecture do they use to obtain representations?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Standard BiLSTM with max-pooling",
+    "context_sha256": "45ba5462545d228f81adbc6ea230c63aac4c3274e9e9046f9e66224c1ffeef29",
+    "rollout_sha256": "ee67c390b27d0611769982237978f8771261c4dabe9a24898b8aebf5aae80724",
+    "classification": "complete_source_supported_answer",
+    "rationale": "BiLSTM with max-pooling identifies the architecture in the source-reviewed sentence-representation paragraph; Standard adds no conflicting property. The submitted short fragment discusses hyperparameters and does not support this answer. Answer validity is distinct from citation validity.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "reviewed_support_missing_after_quote_clipping",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "4a3426b0853846fb93826019e7da19c1",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+    "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+    "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Computational linguistic approaches to analyzing causality expressions and retrieving their relations今までにも個人的な意見や信念を持ったりについて調べる方法として提唱されている。",
+    "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+    "rollout_sha256": "97af69e5f3cb894a5a00525bfb47ff7a1820ff88b936806306f6383c36ba0930",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "Generic computational-linguistic approaches and the appended unrelated mixed-language statement do not identify the employed Axelrod method. The cited paragraph explicitly names Axelrod.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "5753bd387f604d15bd550ceea3dc489e",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31--rl-short-fact",
+    "question_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31",
+    "question": "How big is Switchboard-300 database?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "300 hours",
+    "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5",
+    "rollout_sha256": "71c032419749800ce7992e7b8b86a5d7ada77b9c4bcf8198e29136c2655597ad",
+    "classification": "complete_source_supported_answer",
+    "rationale": "300 hours completely answers how big the database is, with the correct unit. The submitted paragraph explicitly identifies a 300-hour task; requiring the data-language description is unnecessarily restrictive for this question.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 1.0,
+      "reason": "reviewed_answer_and_support_matched",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "57dcf7a4614d4ce59a4061663a7f90ce",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+    "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+    "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Fregean sentence holism",
+    "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+    "rollout_sha256": "fab56dc1798d2bc1d1cc65efce6f33d3f0ccbfaad53e7934c3e67e1fac986a5a",
+    "classification": "incomplete",
+    "rationale": "Names the doctrine but does not state what it says, which is what the question asks. The submitted citation contains the missing sentence-context proposition.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "65968a8dae4c4a9d8e9f017aa0bf8064",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348--rl-short-fact",
+    "question_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348",
+    "question": "What data do they train the language models on?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Passage evidence indicates extensive experimentation on BABEL speech corpora with limited language scores, but provides no quantity of training speech, dataset size, multilingual coverage, language families, or fine-grained training regime beyond label-subword CMUs.",
+    "context_sha256": "3e3d5f0b3c1f8fc5f2bb2cecd1ab40ada3fa0a4a43c2761ba181521f9d50bcc3",
+    "rollout_sha256": "35957422b095b43eef007caa9d9e06423e1b66c52e2f0d575e4106d637dabe1a",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "Although it mentions BABEL, it adds unsubstantiated assertions about missing coverage, limited scores and label-subword CMUs. The submitted source describes BABEL recordings/features and points to language details; it does not substantiate these additional claims. Matching the corpus substring is insufficient.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "6dbb10c493dd4afabe045c9ddddf6cbf",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+    "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+    "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "causal mapping",
+    "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+    "rollout_sha256": "e68cacf9fcd356408b07145c4a53dcf4351e3eba0d527d8f3339d2887636b831",
+    "classification": "incomplete",
+    "rationale": "Repeats the question topic without identifying Axelrod's method, which is explicitly named in the citation.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "748cc9a4cca7463787fb9d251eeab0fe",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+    "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+    "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "my model gets a macro F1 score of 0.62 in subtask A",
+    "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+    "rollout_sha256": "00ca8f05b54c8622cd3e8f702402db80fd0aad5fb5536f2e43a83dfafa7de524",
+    "classification": "complete_source_supported_answer",
+    "rationale": "Gives macro F1 0.62 in subtask A, with German fixed by the question. The citation directly states that result. The first-person model phrasing is read as reporting the paper's result, not evidence of the assistant having trained its own model.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 1.0,
+      "reason": "reviewed_answer_and_support_matched",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "94bcf864b4394f0a8fd679c7cd8b2403",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+    "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+    "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Frege's holistic and functional approach to meaning",
+    "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+    "rollout_sha256": "09821e622053452dd9d7511699b2412c6bdbbf8c71da2075262514fc16dc7b37",
+    "classification": "incomplete",
+    "rationale": "Repeats the approach name without the requested sentence-context proposition; the second citation contains it.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "c1247b31ac564244ab1aa2771c53e5e7",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+    "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+    "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Reddit\\n\\nsupervised-learning-targets\\n\\ncontent-category\\n\\nlength-filter\\n\\nstress Annotation-criterion\\n\\nattention-distraction-discomfort\\n\\ninitial מעורבות\\n\\",
+    "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+    "rollout_sha256": "b8eb136453347369a1d5589982e7c3e616622c90c675315ef71d10b99ccbd320",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "The answer mixes source/platform and annotation-like fragments; it never supplies the five requested dataset domains. The cited abstract does not substantiate those fragments as domains.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "ce07e42f0ef646ab8be0744ede2a7bf8",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703--rl-short-fact",
+    "question_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703",
+    "question": "What is the class with highest error rate in SNLI-VE?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Neutral",
+    "context_sha256": "a8205df4877aafd4b2e38b0c315fdef292b95bab365f66c1c2298f908592e3cd",
+    "rollout_sha256": "214e81bca21c6d815bcb1e85c8b7862059dc7a8f2e68b1a7e1b16f3f6ccf4e29",
+    "classification": "complete_source_supported_answer",
+    "rationale": "Neutral names the class in the reviewed source paragraph; capitalization is not a scientific-unit distinction here. The submitted abstract never names that class and therefore does not support the answer.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "reviewed_support_missing_after_quote_clipping",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "d3efa78b04a04288baf77e4d21f99125",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+    "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+    "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Causal mapping method",
+    "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+    "rollout_sha256": "29785fc2dc436f7ef7b2a4fc41dc21cfa595cb8a9b778422aa70d92853ef38c8",
+    "classification": "incomplete",
+    "rationale": "Repeats causal mapping method without the requested method identification (Axelrod).",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "db955e16853b4189ac009d13a8ca2d54",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+    "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+    "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Psychology, Shopping, Sports, Travel, Technology",
+    "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+    "rollout_sha256": "efe07cd8d7e29a10b8cdee7dcf168073fbce55355472453f48ef5fc2e7a02f3f",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "The five categories contradict the submitted paragraph, which names abuse, social, anxiety, PTSD and financial.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "dd31bd662b97440c8c7d1d0d79be1004",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b--rl-short-fact",
+    "question_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b",
+    "question": "Which model architecture do they use to obtain representations?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Gating Mechanism",
+    "context_sha256": "45ba5462545d228f81adbc6ea230c63aac4c3274e9e9046f9e66224c1ffeef29",
+    "rollout_sha256": "504367c8511e2c68838a89509e478b604cbb3bfe274a5d08bf8c97d8ce66ca33",
+    "classification": "ambiguous_question_target",
+    "rationale": "The paper discusses gating for word representations as well as BiLSTM/max-pooling for sentence representations. The question only says representations; the frozen key targets sentence encoding, while the abstract citation concerns word-level gating. Do not promote an alias or declare the answer universally false without resolving the target.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "df1f4bd7052d40b18837c7acbfa922a7",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+    "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+    "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Financial, Anxiety, PTSD, Abuse, Social",
+    "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+    "rollout_sha256": "fc5772869fa43e776df9bdf99e97a4fe14aa23bc80b87ce0c6fc82aed5cac520",
+    "classification": "complete_source_supported_answer",
+    "rationale": "All five requested domains are present; list order and capitalization do not change them. The second citation supports the answer; the abstract citation does not enumerate the domains, so citation admissibility is checked separately.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "additional_citation_without_reviewed_support",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "e35fac7a24d24a96af23d893e9268350",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+    "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+    "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "Review of Forgotten Parameters and Implementing Guidelines",
+    "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+    "rollout_sha256": "0979f2708549c34f7ad4c2a31c62fb962f0de626b32211a6fcb6a3222d4ae981",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "An unrelated title-like phrase supplies no performance result; the citation does not support it.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  },
+  {
+    "row_id": "e8004fef69b24037b6d9b96613188153",
+    "cycle": "cycle-2",
+    "case_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703--rl-short-fact",
+    "question_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703",
+    "question": "What is the class with highest error rate in SNLI-VE?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+    "candidate_answer": "contradiction",
+    "context_sha256": "a8205df4877aafd4b2e38b0c315fdef292b95bab365f66c1c2298f908592e3cd",
+    "rollout_sha256": "ae27921730283761286b99aa20a8cd81a5bd953003a6381ca7fdee6742e24257",
+    "classification": "unsupported_or_irrelevant",
+    "rationale": "The submitted body paragraph states about 31% labeling errors for neutral versus about 1% for contradiction and entailment, contradicting the answer.",
+    "independent_human_review": null,
+    "counterfactual_with_proposed_aliases": {
+      "eligible": true,
+      "reward": 0.0,
+      "reason": "answer_not_in_reviewed_variants",
+      "support_authority": "attributed_reference_review_not_automatic_entailment"
+    }
+  }
+]

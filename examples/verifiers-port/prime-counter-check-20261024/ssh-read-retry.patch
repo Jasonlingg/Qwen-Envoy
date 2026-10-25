@@ -1,0 +1,27 @@
+--- deployment-drive-before.py
++++ deployment-drive-after.py
+@@ -32,8 +32,22 @@
+                    stdout=subprocess.DEVNULL)
+ 
+ def read_json(path):
+-    value=run('if test -f '+shlex.quote(path)+'; then cat '+shlex.quote(path)+'; else echo null; fi')
+-    return json.loads(value)
++    # Retry reads only. Never replay generation, training, uploads or mutations.
++    command='if test -f '+shlex.quote(path)+'; then cat '+shlex.quote(path)+'; else echo null; fi'
++    for attempt in range(3):
++        try:
++            return json.loads(run(command,timeout=15))
++        except (subprocess.CalledProcessError,subprocess.TimeoutExpired) as error:
++            if isinstance(error,subprocess.CalledProcessError) and error.returncode != 255:
++                raise
++            detail=error.stderr or b''
++            if isinstance(detail,bytes):detail=detail.decode(errors='replace')
++            with (ROOT/'ssh-read-errors.jsonl').open('a') as log:
++                log.write(json.dumps({'time':time.time(),'path':path,'attempt':attempt+1,
++                    'error_type':type(error).__name__,'returncode':getattr(error,'returncode',None),
++                    'stderr':detail[:2000]})+'\n')
++            if attempt==2:raise
++            time.sleep(attempt+1)
+ 
+ def archive(remote,local):
+     # Retain receipts and portable adapters; exclude large optimizer state/base weights.

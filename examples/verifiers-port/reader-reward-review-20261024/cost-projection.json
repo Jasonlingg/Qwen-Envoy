@@ -1,0 +1,203 @@
+{
+  "schema_version": "reader_native_pilot_cost_projection_v1",
+  "paid_launch": false,
+  "current_price_checked": false,
+  "price_basis": "Historical successful-run quoted GPU 1.79 USD/h plus conservative storage provision within combined 1.90 USD/h upper planning rate; not a current offer or provider-enforced dollar cap.",
+  "rate_usd_per_hour": 1.9,
+  "native_start_utc": "2026-10-25T00:26:37.640472+00:00",
+  "native_result_mtime_utc": "2026-10-25T00:56:21+00:00",
+  "stage_timing_method": "Preserved remote JSON file mtimes (one-second granularity), not kernel-only timings; includes coordination, sequential process loads and checkpoint I/O.",
+  "stage_receipts": [
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-1/collection-request.json",
+      "sha256": "0a2f8f3eeb44c8c63cfd96fde02b6aa592b036ed60b8cbc15306f71429e4e300",
+      "preserved_remote_mtime": 1792888089.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-1/collection-complete.json",
+      "sha256": "f54cd0402f47e0a80b3c4f3b1f10203a1f9d93e8f3c43bffb426c508580df8e7",
+      "preserved_remote_mtime": 1792888166.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-1/prepared.json",
+      "sha256": "18788db28394733fae389eabe65e7aadbbaa097c224351b2bc66564a92adf7f8",
+      "preserved_remote_mtime": 1792888322.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-1/verified.json",
+      "sha256": "2f10376be78c6656aa29fa06fcfcffde5cb6fe14582ea249194f34231af56aae",
+      "preserved_remote_mtime": 1792888723.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-2/collection-request.json",
+      "sha256": "b2dc9886d3d7afd706b26956dc299ff79a0f6b0f16fb909361192c51cd8bde76",
+      "preserved_remote_mtime": 1792888777.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-2/collection-complete.json",
+      "sha256": "34d77cf308b8b8cdd27ec6f27f6f21bdf05ec02369af55797ef28be95e684fb1",
+      "preserved_remote_mtime": 1792889324.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-2/prepared.json",
+      "sha256": "0c06db6fb0982579180837f6a326289d90aacb8ecf339b3f5e59f25b6dcb9e27",
+      "preserved_remote_mtime": 1792889457.0
+    },
+    {
+      "path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-2/verified.json",
+      "sha256": "0a1a0f418ea5b2fc9f442f2063fe1e55172cc5dada951b9f4ef94f7150327ea1",
+      "preserved_remote_mtime": 1792889778.0
+    }
+  ],
+  "stages": [
+    {
+      "cycle": 1,
+      "groups_collected": 1,
+      "start_load_until_collection_seconds": 91.3595278263092,
+      "collection_seconds": 77.0,
+      "scoring_and_preparation_seconds": 156.0,
+      "native_train_save_fresh_reload_seconds": 401.0,
+      "gradient_update_seconds": 24.9,
+      "total_seconds": 725.3595278263092
+    },
+    {
+      "cycle": 2,
+      "groups_collected": 10,
+      "start_load_until_collection_seconds": 54.0,
+      "collection_seconds": 547.0,
+      "scoring_and_preparation_seconds": 133.0,
+      "native_train_save_fresh_reload_seconds": 321.0,
+      "gradient_update_seconds": 22.0,
+      "total_seconds": 1055.0
+    }
+  ],
+  "measured_native_seconds": 1783.3595278263092,
+  "measured_owned_resource_seconds": 2202.638113975525,
+  "measured_collection_seconds": 624.0,
+  "average_collection_seconds_per_four_episode_group": 56.72727272727273,
+  "average_noncollection_seconds_per_verified_update": 579.6797639131546,
+  "outside_native_setup_export_cleanup_seconds": 419.2785861492157,
+  "paired_evaluation_seconds_allowance_not_measured": 1800,
+  "paired_evaluation_episodes_not_executed": 24,
+  "observed_average_requests_per_episode": 3.159090909090909,
+  "observed_average_reserved_tokens_per_episode": 13000.5,
+  "extrapolated_24_episode_requests_not_cap": 75.81818181818181,
+  "extrapolated_24_episode_reserved_tokens_not_cap": 312012.0,
+  "original_training_caps": {
+    "initialization": "original_pinned_v5_not_the_integration_adapter",
+    "optimizer_updates": 10,
+    "group_size": 4,
+    "question_passes": 1,
+    "max_generation_requests": 1024,
+    "max_reserved_tokens": 8388608,
+    "max_work_seconds": 3600,
+    "candidate_selection": "only_the_final_verified_step_10_no_checkpoint_search",
+    "insufficient_mixed_groups": "stop_and_report_incomplete_without_opening_evaluation"
+  },
+  "original_paired_evaluation_caps": {
+    "arms": [
+      "unchanged_v5",
+      "final_rl_step_10"
+    ],
+    "questions": 12,
+    "episodes_per_question_per_arm": 1,
+    "max_generation_requests": 288,
+    "max_reserved_tokens": 2359296,
+    "max_work_seconds": 1800,
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "min_p": 0.0,
+    "thinking": false,
+    "max_action_tokens": 1024,
+    "investigator_steps": 4,
+    "seed_rule": "42 + question_index; same per-question seed for both arms",
+    "question_order": "frozen_evaluation_question_order",
+    "arm_order": [
+      "unchanged_v5",
+      "final_rl_step_10"
+    ],
+    "retries": 0,
+    "protocol": "same_native_renderer_transport_Docker_scope_and_prompt_for_both_arms",
+    "startup_latency": "reported_separately_from_per_episode_latency"
+  },
+  "original_budget": {
+    "estimated_cost_ceiling_usd": 5.0,
+    "maximum_total_owned_GPU_lifetime_seconds": 7200,
+    "maximum_visible_gpus": 1,
+    "class": "80GB_GPU_sequential_inference_and_training",
+    "provider_enforced_dollar_cap": false,
+    "paid_authorization": false,
+    "launch_requirements": [
+      "fresh_price_storage_and_capacity_check",
+      "explicit_budget_authorization",
+      "independent_resource_lifetime_and_cost_watchdog_including_startup",
+      "receipts_and_owned_resource_cleanup"
+    ],
+    "if_cost_projection_does_not_fit": "do_not_launch_or_silently_raise_the_budget",
+    "minimum_initial_free_checkpoint_disk_gib": 464,
+    "disk_reason": "Current launcher retains initial and per-update native optimizer checkpoints for both experiments; this is disk space, not GPU VRAM."
+  },
+  "scenarios": [
+    {
+      "scenario": "every_group_mixed_optimistic",
+      "assumed_mixed_group_fraction": 1.0,
+      "projected_groups_for_10_updates": 10.0,
+      "projected_training_seconds": 6364.070366404273,
+      "projected_owned_seconds_including_evaluation_allowance": 8583.34895255349,
+      "projected_hours": 2.384263597931525,
+      "estimated_usd_at_historical_bound": 4.530100836069897,
+      "training_fits_original_3600_second_limit": false,
+      "fits_original_7200_second_rental_limit": false,
+      "fits_original_5_dollar_estimate": true,
+      "with_25_percent_time_margin_hours": 2.9803294974144063,
+      "with_25_percent_time_margin_estimated_usd": 5.6626260450873716,
+      "extrapolated_training_requests": 126.36363636363637,
+      "extrapolated_training_reserved_tokens": 520020.0
+    },
+    {
+      "scenario": "observed_fixed_key_2_of_11_descriptive",
+      "assumed_mixed_group_fraction": 0.18181818181818182,
+      "projected_groups_for_10_updates": 55.0,
+      "projected_training_seconds": 8916.797639131546,
+      "projected_owned_seconds_including_evaluation_allowance": 11136.076225280762,
+      "projected_hours": 3.093354507022434,
+      "estimated_usd_at_historical_bound": 5.8773735633426245,
+      "training_fits_original_3600_second_limit": false,
+      "fits_original_7200_second_rental_limit": false,
+      "fits_original_5_dollar_estimate": false,
+      "with_25_percent_time_margin_hours": 3.866693133778042,
+      "with_25_percent_time_margin_estimated_usd": 7.346716954178279,
+      "extrapolated_training_requests": 695.0,
+      "extrapolated_training_reserved_tokens": 2860110.0
+    },
+    {
+      "scenario": "counterfactual_aliases_4_of_11_not_observed_policy",
+      "assumed_mixed_group_fraction": 0.36363636363636365,
+      "projected_groups_for_10_updates": 27.5,
+      "projected_training_seconds": 7356.797639131546,
+      "projected_owned_seconds_including_evaluation_allowance": 9576.076225280762,
+      "projected_hours": 2.6600211736891004,
+      "estimated_usd_at_historical_bound": 5.05404023000929,
+      "training_fits_original_3600_second_limit": false,
+      "fits_original_7200_second_rental_limit": false,
+      "fits_original_5_dollar_estimate": false,
+      "with_25_percent_time_margin_hours": 3.3250264671113756,
+      "with_25_percent_time_margin_estimated_usd": 6.317550287511613,
+      "extrapolated_training_requests": 347.5,
+      "extrapolated_training_reserved_tokens": 1430055.0
+    }
+  ],
+  "caveats": [
+    "Two updates and 11 adaptively stopped training groups from two policies cannot estimate a stable or unbiased acceptance probability.",
+    "Counterfactual aliases rescore fixed outputs; they do not predict a changed policy, later updates, or the order of actual collection under changed keys.",
+    "The optimistic scenario is a sensitivity case, not a certified lower bound.",
+    "Evaluation uses the existing 1800-second allowance; completion within it has not been measured.",
+    "Rates, I/O, stock, setup, context length and actual mixed groups may differ; no guarantee that 10 updates are available within a single question pass.",
+    "25% margin is a planning allowance, not a confidence interval or enforced spend ceiling.",
+    "Reserved tokens are budget reservations, not generated tokens or extra API charges for local inference."
+  ],
+  "decision": "Do not launch the unchanged ten-update pilot: all three scenarios exceed its one-hour training and two-hour total rental limits. The observed-pattern scenario also exceeds the proposed $5 before a margin. Prepare an explicitly scoped revision or reduce demonstrated workflow overhead before asking to authorize paid work.",
+  "reward_aliases_active": false,
+  "held_out_references_opened": false
+}

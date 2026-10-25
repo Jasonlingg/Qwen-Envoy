@@ -1,0 +1,2076 @@
+{
+  "version": "reader-answer-f1-reference-support-candidate-v1",
+  "source_manifest_sha256": "874bb479bb9cc67baf33bcc0788cfca330aee10638b5cc35ce9ded0e1be46d5f",
+  "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+  "evaluator_sha256": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe",
+  "implementation_sha256": {
+    "/Users/jasonling/Documents/GitHub/rlm-explorer/scripts/audit_reader_f1_reward.py": "2f2fe68886ea810fca05e71ddc2af96e93b29a3e071660492bb1deb95e9a7e47",
+    "src/training/reader_f1_reward.py": "c0b25eef5aa04bb6452823f9793da9bc29e5ad8acdca40c07b8022eda0cf92ca",
+    "src/eval/reader_rl_validation.py": "9b2b428f52e49ee9cdf6102dce5dde29d8e2c4154ef37f0b14927e7c9e79813e",
+    "scripts/prepare_reader_semantic_reward.py": "92a7628f23548c0734b8831f7fdc05dc5526749ed3ae2ca4b6e6e04308ab1084"
+  },
+  "rows": [
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "record_sha256": "3d21cfe2fc11cd585accccc50aad0c80e2989465e9ca3dacc43649f77e407a12",
+      "record": {
+        "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+        "action": "SUBMIT: decades 1900s–2010s CITATIONS: [\"qasper_1908_10275\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_10275\", \"start\": 0, \"end\": 1200}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 18679,
+            "end": 20279
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "e2c4add279a1a29410411c1f153014596074740ac9cb93809c5c49ee7f427711",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "c2504c86fd9808a46d8c9922881edb9824bb27084bfc5e7283b450cf506aa79a",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Garg et al. (2012)'s Bayesian monolingual model. CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.375,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.375,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "e8cde53275128c1fe23692be97952257a8bf6fea2c9ab84efb10ec01f0290b82",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 15,000 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.5,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.5,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "6a56f32a71479da2d70d4181c0127e3e9367c25d64b4eef02be98bb7bbc248e9",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: MNIST CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "40a3fad23184f9a642a9d085d1066172ae49ec5ad6835843d3741da2d555231c",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: By manual annotation only CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "046ef2d150652a05042eed4d519bd99594e921948444c799787e7bcf5c26ce62",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Japanese CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "record_sha256": "c18e0962c2cac3eff0ebf7700199f830f0bc309b85cc83554fdc1da9d7896e88",
+      "record": {
+        "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+        "action": "SUBMIT: 1900s to 2010s CITATIONS: [\"qasper_1908_10275\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_10275\", \"start\": 18679, \"end\": 19879}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 18679,
+            "end": 20279
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.5714285714285715,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.5714285714285715,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "4306cb817dbe2e5ed718c7b854b04c82f2f4e44a38e4b5159521acccdced0f70",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "db31d8a4bd7838a91c6488e005c1e32d93de373ecad1be268085d4519ede7350",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Using the Zero Resource Toolkit, ZRTools. CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.8000000000000002,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.8000000000000002,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "a3a0e29bc097948872ae80b4659875a66060257a5e0dbab4327c23e98a2cead1",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: A unidirectional LSTM without a CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "098c75e3bbd6e980bbaac77aa196961a547c306c2a8a35d88ec4fe2418cc89a2",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT:  UM Inventory  CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 4771}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "record_sha256": "7e86a9130a57b5c4e5d452bc16eccc8edc27b6748179a78641824c8aecbe2fb9",
+      "record": {
+        "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+        "action": "SUBMIT: 1900s to 2010s CITATIONS: [\"qasper_1908_10275\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_10275\", \"start\": 0, \"end\": 1200}, {\"doc_id\": \"qasper_1908_10275\", \"start\": 18679, \"end\": 19879}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 18679,
+            "end": 20279
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 0.5714285714285715,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "d8369398d1b9547076389a5eb45346bb2e419f5873e09dfce862ce0d8ccfbfcd",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3261}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "c7c404d3c1ba4699b961663d9efc35e3653aa0ac6b5f0544f0d102dadc4cef20",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 187 threads and 1,400 tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.3333333333333333,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.3333333333333333,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fc70ce85065914715f4a1015e3e570a64282900ea3c00b01237b2cc5537795b3",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "a84d0c4cc46fb690b103918429d69e67553e582594173a51bdf6dd2e47dbc794",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT:  UM Inventory  CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fa035f4375680e49bc79e2aa1dd5b10650e776e62d40725107e7ac74a0ea0258",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 5943}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fdb319f4e5b0f129143a96e497163fbf5511140fab5e5abda2e5f2de547e81ae",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: A parallel corpus containing 1,500 sentences. CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.5714285714285715,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.5714285714285715,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "8d09f6b2aefbc4e802799249cb93073aecb0d6d35e2ed95956101a07ff435b7a",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 12758}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "37fd8c203e5e2d4e00182abf1a86f876fc3e1962019f4bb46a0c49026e61c9ed",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3309}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "821f066066c06538a17bd0d632606ab02b43f7d50730b06ee3bdc2b9067e715f",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 6600}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "record_sha256": "36db204885264916a1e326a12c63e334266e66183d8647285e827ed20e483363",
+      "record": {
+        "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+        "action": "SUBMIT: 1900s through 2010s CITATIONS: [\"qasper_1908_10275\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_10275\", \"start\": 1000, \"end\": 1600}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 18679,
+            "end": 20279
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 0.5714285714285715,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "b88efd607e6784d63c91853341b10266453c7151813988693a1ca6ac57d571fa",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter threads, comprising about 14,000 tweets. CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.5714285714285714,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.5714285714285714,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "d2c4066c49f59392a9e85dc222feaee195db321eabe2f112228c6fc5b1cca8fa",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: The UM Inventory dataset. CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.8,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.8,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "8d05eaa21648e7de4b65ca581876fa670ce958d225d90882411628f2584f3bbe",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 11738}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "3370ff67d46846e0a0013cb5e902ab4c33132678782c65db51a03847a4352ce2",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "ea287e543ca45e1e545afa6f14a5f487be722e6ca45cb13b27584d803f34df91",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3596}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "reviewed_support_missing_after_quote_clipping",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "851bbb47824b5ef378def326b4dd51095ec80648ff9aab4d325bef09b0cec511",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: They give Russian as an example. CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.33333333333333337,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.33333333333333337,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "32eb293a552d52f8d379ff67c795f3df29dc4df0fe0385c7344652181a53fa24",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "950e119c81509a597ebeadda23f5c7f46d5e6bff65577257869ac21f5547c7e7",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "51adfa1023dbcf52b55219590be87099e66f4ee0f0fae5a115e13e44d2f1e210",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: BLEU CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "abc38348b4e82dc47c0bdc8787a63b4a93e085dc7cb15c7f85c8725d949cdb0b",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: CCR (correct classification rate). CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "b50010847e46e033a1effde678e6c586c66dbbd39517cd1106612357775025ab",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: A transformer decoder only CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "a528d7e3b0b2df14303dc652f9022ff74ce19205ea63cb99b08c7cdf2ba8170f",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 1.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "38040916ce4032d82469c46292c28824ac1ff8212278a5a05cde345b71b568f9",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: A bidirectional LSTM with a CRF (Bi-LSTM-CRF). CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.33333333333333337,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.33333333333333337,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fee153632f223556b357591cf138ac688676fc91d8c502329d84f9a0a1f7683c",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "0fa245624b7c3a43cba1675eba03c60e8a675d99e22a50adcc5f67d93b3fb060",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}, {\"doc_id\": \"qasper_1909_03135\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "e159386005aa4819614d4d3b04808dc16a4e2d43949e0c917563d862f43fea90",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1909_03135\", \"start\": 3160, \"end\": 4760}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "8d176f210c36ad34ed66b39bd3d4d6ea672adce114e2930c29e5cf1149563a20",
+      "record": {
+        "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+        "action": "SUBMIT: Not Russian CITATIONS: [\"qasper_1909_03135\"] EVIDENCE: [{\"doc_id\": \"qasper_1909_03135\", \"start\": 3260, \"end\": 3498}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3160,
+            "end": 4760
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.6666666666666666,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.6666666666666666,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fc65c9f9dd99965a34443f4be37a88e31b0dc829d8257241cbeb11096a0c700b",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "70dc253c9a53e2557330ab81c7c95c2496d872605c274f80f4017089b4862c2e",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}, {\"doc_id\": \"qasper_1703_07476\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "3b49c02a8e3246c7e24655973d04051cfe5c57764839d089b0f9d40177c17638",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1703_07476\", \"start\": 5842, \"end\": 7442}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "25612e39b5a35801604681d1f3efabc6dc5fcfc15ad3f63153b49a2be876a758",
+      "record": {
+        "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+        "action": "SUBMIT: Not Zero Resource Toolkit (ZRTools) BIBREF7 CITATIONS: [\"qasper_1703_07476\"] EVIDENCE: [{\"doc_id\": \"qasper_1703_07476\", \"start\": 5942, \"end\": 6367}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 5842,
+            "end": 7442
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.9090909090909091,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.9090909090909091,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fe1ac1fdbd21e04f48e64550124f5583ccfc43a6822692d52d568030d8bdeba7",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "757f45b5edc37e0d30b8d5d50e44f9e8cd647463068dba07a4e27e995d901a14",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}, {\"doc_id\": \"qasper_1908_01294\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "9e03799edc3f11f1485c7168dac4c248e4757a4254741756393f79c38c484154",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1908_01294\", \"start\": 3208, \"end\": 4808}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "1a17d29196bd75b11f5e834bebdde5aefb7fb1c11851a8fa8adc0a52e3482243",
+      "record": {
+        "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+        "action": "SUBMIT: Not Bi-LSTM-CRF CITATIONS: [\"qasper_1908_01294\"] EVIDENCE: [{\"doc_id\": \"qasper_1908_01294\", \"start\": 3308, \"end\": 3556}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3208,
+            "end": 4808
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.6666666666666666,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.6666666666666666,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "32935a9c7616f4edd37a59cb1e284d70d9972919bd5ef601bcf63436af7ace2f",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: UM Inventory CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "8dfefd4631d504342659443f81495f06e085e8296762ace7a0223dc027f38300",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: UM Inventory CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}, {\"doc_id\": \"qasper_1910_14076\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "171777c127523bb57d55798c5f12959b2a3a605b994b20f5295cdce296123c14",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: UM Inventory CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1910_14076\", \"start\": 4670, \"end\": 6270}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "5d3ee783bb76eaeee1581d065e8e900ef7cbbd8e7bc953bbe316f4d063f2f659",
+      "record": {
+        "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+        "action": "SUBMIT: Not UM Inventory CITATIONS: [\"qasper_1910_14076\"] EVIDENCE: [{\"doc_id\": \"qasper_1910_14076\", \"start\": 4770, \"end\": 5767}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 4670,
+            "end": 6270
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.8,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.8,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "5875f63aaf6b318e26dd1b6647fe0f2e5f21b07e3664fa375200f416d89197dc",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "16db027838f3fb21b398e6c598b56ddb4fb1745dc2fb62dc1310c767eb1673c9",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}, {\"doc_id\": \"qasper_1911_01371\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "919a6f920b51f4950cc1f35a0b28e5d4b6d193a1b57fdccc1c19678df68e0d74",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1911_01371\", \"start\": 12657, \"end\": 14257}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "6ff849d370fafabed2dafd66ada9c000d07d7ee341ebcb1e41617dab9e074d99",
+      "record": {
+        "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+        "action": "SUBMIT: Not 1,873 Twitter conversation threads, roughly 14k tweets CITATIONS: [\"qasper_1911_01371\"] EVIDENCE: [{\"doc_id\": \"qasper_1911_01371\", \"start\": 12757, \"end\": 13216}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 12657,
+            "end": 14257
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.9333333333333333,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.9333333333333333,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "3636a096887b25661ebe86204c9b5bc33a3d79c8a049f9bee22fa7395a921f0c",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "ead883dbfe886cf915ec8daa4fc173294ad50ee5db7e34d8abb333bb9c063b27",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}, {\"doc_id\": \"qasper_2002_04181\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "22a2f5bf91be3616d353129ef53999b2cc1e2c62d4e18f077f9554ca613b81be",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_2002_04181\", \"start\": 6499, \"end\": 8099}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "9eced57c108403bb336a26ab3478bd5406fff0b7c17c08dbef8dc29d2ee18404",
+      "record": {
+        "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+        "action": "SUBMIT: Not correct classification rate (CCR) CITATIONS: [\"qasper_2002_04181\"] EVIDENCE: [{\"doc_id\": \"qasper_2002_04181\", \"start\": 6599, \"end\": 7256}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 6499,
+            "end": 8099
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.888888888888889,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.888888888888889,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "5e7180e5c428fde6917c61e0ee707ca1d9c16bc30eeec545c1d213d48c248723",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "749874112f19ce37bc58ff837d0b9cbb1cfc008f72da606775810c849efab918",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}, {\"doc_id\": \"qasper_1603_08594\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "0c3d9404d51184f956c3319a59e152148df8438c843a10cfdbd836851dd836cb",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1603_08594\", \"start\": 11637, \"end\": 13237}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "026b8ca6296c36aef7d62b25df39089649d7798ce61594afda31f2ab11b93829",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: Not 1500 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.8,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.8,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "decimal_normalization_collision",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fbd391c4b76fdbb2c7ba11ea168069ff8b4ee6674149602ab9f019a04fb21c03",
+      "record": {
+        "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+        "action": "SUBMIT: 15.00 sentences CITATIONS: [\"qasper_1603_08594\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_08594\", \"start\": 11737, \"end\": 12458}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 11637,
+            "end": 13237
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 1.0,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "uninspected",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "fded3a7234a7211ec4c9d1eccef77f13ff0ee54b12dd3b19385f1d794247e08d",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}]",
+        "inspected_windows": []
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "invalid_inspection_receipt",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "extra_unrelated_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "9ac586529f1ab861a613ea556612094cd7773f71c717711e7494e18307a626a0",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}, {\"doc_id\": \"qasper_1603_01514\", \"start\": 0, \"end\": 1}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "c766675f26698f2dba2babd1928dbf684152087f49609a66f0a9610afc3e68c4",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 0, \"end\": 1600}, {\"doc_id\": \"qasper_1603_01514\", \"start\": 3495, \"end\": 5095}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "additional_citation_without_reviewed_support",
+        "answer_f1": 1.0,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "role": "reward_validation",
+      "kind": "negated_reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "record_sha256": "698a8ce0d2633c965ad7209f2ad039cf252efe35b3e1563770e87945ee3859f6",
+      "record": {
+        "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+        "action": "SUBMIT: Not Bayesian model of garg2012unsupervised as our base monolingual model CITATIONS: [\"qasper_1603_01514\"] EVIDENCE: [{\"doc_id\": \"qasper_1603_01514\", \"start\": 3595, \"end\": 3867}]",
+        "inspected_windows": [
+          {
+            "start": 0,
+            "end": 1600
+          },
+          {
+            "start": 3495,
+            "end": 5095
+          }
+        ]
+      },
+      "finite_reference_reward": 0.0,
+      "candidate": {
+        "eligible": true,
+        "reward": 0.9473684210526316,
+        "reason": "answer_f1_with_reference_support",
+        "answer_f1": 0.9473684210526316,
+        "reward_version": "reader-answer-f1-reference-support-candidate-v1",
+        "training_ready": false,
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    }
+  ],
+  "by_kind": {
+    "all_assigned_windows": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.0
+    },
+    "decimal_normalization_collision": {
+      "count": 1,
+      "finite_mean": 0.0,
+      "candidate_mean": 1.0
+    },
+    "exposed_diagnostic_only": {
+      "count": 4,
+      "finite_mean": 0.25,
+      "candidate_mean": 0.14285714285714288
+    },
+    "extra_unrelated_quote": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.0
+    },
+    "negated_reference": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.8265018607123871
+    },
+    "paraphrase": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.5980654761904761
+    },
+    "real_but_insufficient_quote": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.0
+    },
+    "reference": {
+      "count": 8,
+      "finite_mean": 1.0,
+      "candidate_mean": 1.0
+    },
+    "uninspected": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.0
+    },
+    "wrong_answer": {
+      "count": 8,
+      "finite_mean": 0.0,
+      "candidate_mean": 0.10416666666666666
+    }
+  },
+  "checks": {
+    "reference_controls_full_credit": true,
+    "proposed_paraphrases_nonzero": true,
+    "invalid_evidence_zero": true,
+    "authored_wrong_answers_less_than_full_credit": false
+  },
+  "development_gate_passed": false,
+  "training_ready": false,
+  "active_reward_changed": false,
+  "independent_human_review": null,
+  "new_model_calls": 0,
+  "gpu_activations": 0
+}

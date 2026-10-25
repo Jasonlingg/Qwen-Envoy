@@ -1,0 +1,80 @@
+{
+  "doc_id": "qasper_1911_03514",
+  "title": "An Annotation Scheme of A Large-scale Multi-party Dialogues Dataset for Discourse Parsing and Machine Comprehension",
+  "text": "An Annotation Scheme of A Large-scale Multi-party Dialogues Dataset for Discourse Parsing and Machine Comprehension\n\nIn this paper, we propose the scheme for annotating large-scale multi-party chat dialogues for discourse parsing and machine comprehension. The main goal of this project is to help understand multi-party dialogues. Our dataset is based on the Ubuntu Chat Corpus. For each multi-party dialogue, we annotate the discourse structure and question-answer pairs for dialogues. As we know, this is the first large scale corpus for multi-party dialogues discourse parsing, and we firstly propose the task for multi-party dialogues machine reading comprehension.\n\nThere are more and more NLP scholars focusing on the research of multi-party dialogues, such as multi-party dialogues discourse parsing and multi-party meeting summarization BIBREF0, BIBREF1, BIBREF2, BIBREF3, BIBREF4, BIBREF5. However, the scale of the STAC dataset has limited the research of discourse parsing for multi-party dialogues. On the other hand, as we know, there is no literature working on machine reading comprehension for multi-party dialogues. Considering the connection between the relevance between machine reading comprehension and discourse parsing, we annotate the dataset for two tasks for multi-party dialogues understanding.\n\nOur dataset derives from the large scale multi-party dialogues dataset the Ubuntu Chat Corpus BIBREF6. For each dialogue in the corpus, we annotate the discourse structure of the dialogue and propose three questions and find the answer span in the input dialogues. To improve the difficulty of the task, we annotate $ \\frac{1}{6}$ to $ \\frac{1}{3}$ unanswerable questions and their plausible answers from dialogues.\n\nThis is a real example from the Ubuntu dataset.\n\nExample 1\n\n1. mjg59: Someone should suggest to Mark that the best way to get people to love you is to hire people to work on reverse-engineering closed drivers. 2. jdub: heh 3. daniels $\\rightarrow $ mjg59: heh 4. daniels: HELLO 5. daniels $\\rightarrow $ mjg59: your job is to entertain me so I don't fall asleep at 2pm and totally destroy my migration to AEST 6. bdale $\\rightarrow $ daniels: see you next week? 7. daniels $\\rightarrow $ bdale: oh, auug, right. rock. 8. daniels $\\rightarrow $ bdale: just drop me an email, or call +61 403 505 896 9. bdale $\\rightarrow $ daniels: I arrive Tuesday morning your time, depart Fri morning, will be staying at the Duxton\n\nThere are mainly two contributions to our corpus:\n\nA first large scale multi-part dialogues dataset for discourse parsing. It is a challenging task to parse the discourse structure of multi-party dialogues. Enough training data will be essential to develop more powerful models.\n\nWe firstly propose the task of machine reading comprehension for multi-party dialogues. Different from existing machine comprehension tasks, multi-party dialogues could be more difficult which needs a graph-based model for representing the dialogues and better understanding the discourse structure in the dialogue.\n\nIn this paper, I will give a detailed description of our large scale dataset. In section 2, I will introduce Ubuntu corpus. In Section 3 and Section 4, I will introduce the annotation for discourse parsing and machine reading comprehension respectively. In Section 5, I will briefly list some related literature.\n\nOur dataset derives from the large scale multi-party dialogues dataset the Ubuntu Chat Corpus BIBREF6. The Ubuntu dataset is a large scale multi-party dialogues corpus.\n\nThere are several reasons to choose the Ubuntu dataset as our raw data for annotation.\n\nFirst, Ubuntu dataset is a large multi-party dataset. Recently, BIBREF1 used Ubuntu as their dataset for learning dialogues graph representation. After some preprocessing, there are 38K sessions and 1.75M utterances. In each session, there are 3-10 utterances and 2-7 interlocutors.\n\nSecond, it is easy to annotate the Ubuntu dataset. The Ubuntu dataset already contains Response-to relations that are discourse relations between different speakers' utterances. For annotating discourse dependencies in dialogues, we only need to annotate relations between the same speaker's utterances and the specific sense of discourse relation.\n\nThird, there are many papers doing experiments on the Ubuntu dataset, and the dataset has been widely recognized.\n\nThe discourse dependency structure of each multi-party dialogue can be regarded as a graph. To learn better graph representation of multi-party dialogues, we adopt the dialogues with 8-15 utterances and 3-7 speakers. To simplify the task, we filter the dialogues with long sentences (more than 20 words). Finally, we obtain 52,053 dialogues and 460,358 utterances.\n\nThis section will explain how to annotate discourse structure in multi-party dialogues.\n\nThe task of discourse parsing for multi-party dialogues aims to detect discourse relations among utterances. The discourse structure of a multi-party dialogue is a directed acyclic graph (DAG). In the process of annotation of discourse parsing for multi-party dialogues, there are two parts: edges annotation between utterances and specific sense type of discourse relations.\n\nThe discourse structure of Example 1 is shown in Figure 1. There are four speakers and nine utterances in the sample dialogue. The left part shows the speakers and their utterances and the right part shows the discourse dependency relation arcs. The discourse structure can be seen as a discourse dependency graph. We adopt the same sense hierarchy with the STAC dataset which contains sixteen discourse relations.\n\nThe edge between two utterances represents that there is the discourse dependency relations between these two utterances. The direction of the edge represents the direction of discourse dependency. In this subsection, what we need to do is to confirm whether two utterances have discourse relation. Like PDTB BIBREF7, we call two utterances as Arg1 and Arg2 respectively. The front utterance is Arg1 and the back utterance is Arg2.\n\nFor example, there is a multi-party dialogue with 9 utterances in Example 1, utterances 1-9 respectively. The utterance 3 depends on utterance 1, we can draw an edge from utterance 1 to utterance 3. Otherwise, if utterance 1 depends on utterance 2, we can draw an edge from utterance 2 to utterance 1. In most cases, the direction of discourse relations in multi-party dialogues is from the front to the back.\n\nThe biggest difference between discourse parsing for well-written document and dialogues is that discourse relations can exist on two nonadjacent utterances in dialogues. When we annotate dialogues, we should read dialogues from begin to the end. For each utterance, we should find its one parent node at least from all its previous utterances. We assume that the discourse structure is a connected graph and no utterance is isolated.\n\nWhen we find the discourse relation between two utterances, we need continue to confirm the specific relation sense. We adopt the same senses hierarchy with the STAC dataset.\n\nThere are sixteen discourse relations in the STAC. All relations are listed as follows: Comment, Clarification_question, Elaboration, Acknowledgement, Continuation, Explanation, Conditional, Question-answer_pair, Alternation, Q-Elab, Result, Background, Narration, Correction, Parallel, Contrast.\n\nThe task of reading comprehension for multi-party dialogues aims to be beneficial for understanding multi-party dialogues. Different from existing machine reading comprehension tasks, the input of this task is a multi-party dialogue, and we should to answer some questions given the dialogue.\n\nWe propose three questions for eache dialogue and annotate the span of answers in the input dialogue. As we know, our dataset is the first corpus for multi-party dialogues reading comprehension.\n\nWe construct following questions and answers for the dialogue in Example 1:\n\nQ1: When does Bdale leave?\n\nA1: Fri morning\n\nQ2: How to get people love Mark in Mjg59's opinion.\n\nA2: Hire people to work on reverse-engineering closed drivers.\n\nOn the other hand, to improve the difficulty of the task, we propose $ \\frac{1}{6}$ to $ \\frac{1}{3}$ unanswerable questions in our dataset. We annotate unanswerable questions and their plausible answers (PA). Each plausible answer comes from the input dialogue, but is not the answer for the plausible question.\n\nQ1: Whis is the email of daniels?\n\nPA: +61 403 505 896\n\nIn this section, I will introduce several existing multi-party dialogues datasets, and explain why we need to annotated a new dataset.\n\nThere is an only corpus of discourse parsing on multi-party chat dialogues: STAC BIBREF8. The corpus derives from online game The Settlers of Catan. The game Settlers is a multi-party, win-lose game. As mentioned above, an example in STAC is shown in Figure 1. More details for STAC corpus are described in BIBREF8.\n\nThe overview of the STAC is shown in Table 1. From Table 1 we can know that there are about more 10K EDUs and relations and most of EDUs are weakly connected. Each EDU can be regarded as a message or sentence in the dialogues.\n\nThere are sixteen types of discourse dependency relations in STAC as shown in Section 3.2.\n\nMachine reading comprehension is a popular task which aims to help the machine better understand natural language. There are several types of datasets for machine comprehension, including extractive datasets BIBREF9, BIBREF10, answer sentence selection datasets BIBREF11, BIBREF12 and multiple choice datasets BIBREF13, BIBREF14. I will briefly introduce two datasets QuAC BIBREF15and CoQA BIBREF16.\n\nQuAC : Question Answering in Context is a two-party dialogues dataset for machine reading comprehension BIBREF15. The dataset for Question Answering in Context that contains 14K information-seeking QA dialogs (100K questions in total). The dialogs involve two crowd workers: (1) a student who poses a sequence of freeform questions to learn as much as possible about a hidden Wikipedia text, and (2) a teacher who answers the questions by providing short excerpts from the text.\n\nCoQA is a large dataset for building conversation question answering systems BIBREF16.\n\nWe propose the scheme for annotating large scale multi-party chat dialogues for discourse parsing and machine comprehension. The main goal of this project is to be beneficial for understanding multi-party dialogues. Our corpus are based on the Ubuntu Chat Corpus. For each multi-party dialogue, we annotate discourse structure and question-answer pairs for the dialogue. As we know, this would be the first large-scale corpus for multi-party dialogues discourse parsing, and we firstly propose the task for multi-party dialogues machine reading comprehension.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 115
+    },
+    {
+      "section": "Abstract",
+      "start": 117,
+      "end": 670
+    },
+    {
+      "section": "Introduction",
+      "start": 672,
+      "end": 3368
+    },
+    {
+      "section": "Ubuntu Corpus",
+      "start": 3370,
+      "end": 4741
+    },
+    {
+      "section": "Annotation for discourse parsing in multi-party dialogues",
+      "start": 4743,
+      "end": 5623
+    },
+    {
+      "section": "Annotation for discourse parsing in multi-party dialogues ::: Edges between utterances",
+      "start": 5625,
+      "end": 6903
+    },
+    {
+      "section": "Annotation for discourse parsing in multi-party dialogues ::: Sense of discourse relations",
+      "start": 6905,
+      "end": 7377
+    },
+    {
+      "section": "Annotation for machine reading comprehension in multi-party dialogues",
+      "start": 7379,
+      "end": 8476
+    },
+    {
+      "section": "Related work",
+      "start": 8478,
+      "end": 8612
+    },
+    {
+      "section": "Related work ::: Discourse parsing for multi-party dialogues",
+      "start": 8614,
+      "end": 9249
+    },
+    {
+      "section": "Related work ::: Machine reading comprehension",
+      "start": 9251,
+      "end": 10218
+    },
+    {
+      "section": "Conclusion",
+      "start": 10220,
+      "end": 10779
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1911.03514",
+    "arxiv_id": "1911.03514",
+    "source_url": "https://arxiv.org/abs/1911.03514",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

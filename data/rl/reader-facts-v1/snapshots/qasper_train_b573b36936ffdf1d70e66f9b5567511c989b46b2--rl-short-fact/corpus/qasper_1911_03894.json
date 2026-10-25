@@ -1,0 +1,160 @@
+{
+  "doc_id": "qasper_1911_03894",
+  "title": "CamemBERT: a Tasty French Language Model",
+  "text": "CamemBERT: a Tasty French Language Model\n\nPretrained language models are now ubiquitous in Natural Language Processing. Despite their success, most available models have either been trained on English data or on the concatenation of data in multiple languages. This makes practical use of such models—in all languages except English—very limited. Aiming to address this issue for French, we release CamemBERT, a French version of the Bi-directional Encoders for Transformers (BERT). We measure the performance of CamemBERT compared to multilingual models in multiple downstream tasks, namely part-of-speech tagging, dependency parsing, named-entity recognition, and natural language inference. CamemBERT improves the state of the art for most of the tasks considered. We release the pretrained model for CamemBERT hoping to foster research and downstream applications for French NLP.\n\nPretrained word representations have a long history in Natural Language Processing (NLP), from non-neural methods BIBREF0, BIBREF1, BIBREF2 to neural word embeddings BIBREF3, BIBREF4 and to contextualised representations BIBREF5, BIBREF6. Approaches shifted more recently from using these representations as an input to task-specific architectures to replacing these architectures with large pretrained language models. These models are then fine-tuned to the task at hand with large improvements in performance over a wide range of tasks BIBREF7, BIBREF8, BIBREF9, BIBREF10.\n\nThese transfer learning methods exhibit clear advantages over more traditional task-specific approaches, probably the most important being that they can be trained in an unsupervised manner. They nevertheless come with implementation challenges, namely the amount of data and computational resources needed for pretraining that can reach hundreds of gigabytes of uncompressed text and require hundreds of GPUs BIBREF11, BIBREF9. The latest transformer architecture has gone uses as much as 750GB of plain text and 1024 TPU v3 for pretraining BIBREF10. This has limited the availability of these state-of-the-art models to the English language, at least in the monolingual setting. Even though multilingual models give remarkable results, they are often larger and their results still lag behind their monolingual counterparts BIBREF12. This is particularly inconvenient as it hinders their practical use in NLP systems as well as the investigation of their language modeling capacity, something that remains to be investigated in the case of, for instance, morphologically rich languages.\n\nWe take advantage of the newly available multilingual corpus OSCAR BIBREF13 and train a monolingual language model for French using the RoBERTa architecture. We pretrain the model - which we dub CamemBERT- and evaluate it in four different downstream tasks for French: part-of-speech (POS) tagging, dependency parsing, named entity recognition (NER) and natural language inference (NLI). CamemBERT improves the state of the art for most tasks over previous monolingual and multilingual approaches, which confirms the effectiveness of large pretrained language models for French.\n\nWe summarise our contributions as follows:\n\nWe train a monolingual BERT model on the French language using recent large-scale corpora.\n\nWe evaluate our model on four downstream tasks (POS tagging, dependency parsing, NER and natural language inference (NLI)), achieving state-of-the-art results in most tasks, confirming the effectiveness of large BERT-based models for French.\n\nWe release our model in a user-friendly format for popular open-source libraries so that it can serve as a strong baseline for future research and be useful for French NLP practitioners.\n\nThe first neural word vector representations were non-contextualised word embeddings, most notably word2vec BIBREF3, GloVe BIBREF4 and fastText BIBREF14, which were designed to be used as input to task-specific neural architectures. Contextualised word representations such as ELMo BIBREF5 and flair BIBREF6, improved the expressivity of word embeddings by taking context into account. They improved the performance of downstream tasks when they replaced traditional word representations. This paved the way towards larger contextualised models that replaced downstream architectures in most tasks. These approaches, trained with language modeling objectives, range from LSTM-based architectures such as ULMFiT BIBREF15 to the successful transformer-based architectures such as GPT2 BIBREF8, BERT BIBREF7, RoBERTa BIBREF9 and more recently ALBERT BIBREF16 and T5 BIBREF10.\n\nSince the introduction of word2vec BIBREF3, many attempts have been made to create monolingual models for a wide range of languages. For non-contextual word embeddings, the first two attempts were by BIBREF17 and BIBREF18 who created word embeddings for a large number of languages using Wikipedia. Later BIBREF19 trained fastText word embeddings for 157 languages using Common Crawl and showed that using crawled data significantly increased the performance of the embeddings relatively to those trained only on Wikipedia.\n\nFollowing the success of large pretrained language models, they were extended to the multilingual setting with multilingual BERT , a single multilingual model for 104 different languages trained on Wikipedia data, and later XLM BIBREF12, which greatly improved unsupervised machine translation. A few monolingual models have been released: ELMo models for Japanese, Portuguese, German and Basque and BERT for Simplified and Traditional Chinese and German.\n\nHowever, to the best of our knowledge, no particular effort has been made toward training models for languages other than English, at a scale similar to the latest English models (e.g. RoBERTa trained on more than 100GB of data).\n\nOur approach is based on RoBERTa BIBREF9, which replicates and improves the initial BERT by identifying key hyper-parameters for more robust performance.\n\nIn this section, we describe the architecture, training objective, optimisation setup and pretraining data that was used for CamemBERT.\n\nCamemBERT differs from RoBERTa mainly with the addition of whole-word masking and the usage of SentencePiece tokenisation BIBREF20.\n\nSimilar to RoBERTa and BERT, CamemBERT is a multi-layer bidirectional Transformer BIBREF21. Given the widespread usage of Transformers, we do not describe them in detail here and refer the reader to BIBREF21. CamemBERT uses the original BERT $_{\\small \\textsc {BASE}}$ configuration: 12 layers, 768 hidden dimensions, 12 attention heads, which amounts to 110M parameters.\n\nWe train our model on the Masked Language Modeling (MLM) task. Given an input text sequence composed of $N$ tokens $x_1, ..., x_N$, we select $15\\%$ of tokens for possible replacement. Among those selected tokens, 80% are replaced with the special $<$mask$>$ token, 10% are left unchanged and 10% are replaced by a random token. The model is then trained to predict the initial masked tokens using cross-entropy loss.\n\nFollowing RoBERTa we dynamically mask tokens instead of fixing them statically for the whole dataset during preprocessing. This improves variability and makes the model more robust when training for multiple epochs.\n\nSince we segment the input sentence into subwords using SentencePiece, the input tokens to the models can be subwords. An upgraded version of BERT and BIBREF22 have shown that masking whole words instead of individual subwords leads to improved performance. Whole-word masking (WWM) makes the training task more difficult because the model has to predict a whole word instead of predicting only part of the word given the rest. As a result, we used WWM for CamemBERT by first randomly sampling 15% of the words in the sequence and then considering all subword tokens in each of these 15% words for candidate replacement. This amounts to a proportion of selected tokens that is close to the original 15%. These tokens are then either replaced by $<$mask$>$ tokens (80%), left unchanged (10%) or replaced by a random token.\n\nSubsequent work has shown that the next sentence prediction task (NSP) originally used in BERT does not improve downstream task performance BIBREF12, BIBREF9, we do not use NSP as a consequence.\n\nFollowing BIBREF9, we optimise the model using Adam BIBREF23 ($\\beta _1 = 0.9$, $\\beta _2 = 0.98$) for 100k steps. We use large batch sizes of 8192 sequences. Each sequence contains at most 512 tokens. We enforce each sequence to only contain complete sentences. Additionally, we used the DOC-SENTENCES scenario from BIBREF9, consisting of not mixing multiple documents in the same sequence, which showed slightly better results.\n\nWe segment the input text into subword units using SentencePiece BIBREF20. SentencePiece is an extension of Byte-Pair encoding (BPE) BIBREF24 and WordPiece BIBREF25 that does not require pre-tokenisation (at the word or token level), thus removing the need for language-specific tokenisers. We use a vocabulary size of 32k subword tokens. These are learned on $10^7$ sentences sampled from the pretraining dataset. We do not use subword regularisation (i.e. sampling from multiple possible segmentations) in our implementation for simplicity.\n\nPretrained language models can be significantly improved by using more data BIBREF9, BIBREF10. Therefore we used French text extracted from Common Crawl, in particular, we use OSCAR BIBREF13 a pre-classified and pre-filtered version of the November 2018 Common Craw snapshot.\n\nOSCAR is a set of monolingual corpora extracted from Common Crawl, specifically from the plain text WET format distributed by Common Crawl, which removes all HTML tags and converts all text encodings to UTF-8. OSCAR follows the same approach as BIBREF19 by using a language classification model based on the fastText linear classifier BIBREF26, BIBREF27 pretrained on Wikipedia, Tatoeba and SETimes, which supports 176 different languages.\n\nOSCAR performs a deduplication step after language classification and without introducing a specialised filtering scheme, other than only keeping paragraphs containing 100 or more UTF-8 encoded characters, making OSCAR quite close to the original Crawled data.\n\nWe use the unshuffled version of the French OSCAR corpus, which amounts to 138GB of uncompressed text and 32.7B SentencePiece tokens.\n\nWe fist evaluate CamemBERT on the two downstream tasks of part-of-speech (POS) tagging and dependency parsing. POS tagging is a low-level syntactic task, which consists in assigning to each word its corresponding grammatical category. Dependency parsing consists in predicting the labeled syntactic tree capturing the syntactic relations between words.\n\nWe run our experiments using the Universal Dependencies (UD) paradigm and its corresponding UD POS tag set BIBREF28 and UD treebank collection version 2.2 BIBREF29, which was used for the CoNLL 2018 shared task. We perform our work on the four freely available French UD treebanks in UD v2.2: GSD, Sequoia, Spoken, and ParTUT.\n\nGSD BIBREF30 is the second-largest treebank available for French after the FTB (described in subsection SECREF25), it contains data from blogs, news articles, reviews, and Wikipedia. The Sequoia treebank BIBREF31, BIBREF32 comprises more than 3000 sentences, from the French Europarl, the regional newspaper L’Est Républicain, the French Wikipedia and documents from the European Medicines Agency. Spoken is a corpus converted automatically from the Rhapsodie treebank BIBREF33, BIBREF34 with manual corrections. It consists of 57 sound samples of spoken French with orthographic transcription and phonetic transcription aligned with sound (word boundaries, syllables, and phonemes), syntactic and prosodic annotations. Finally, ParTUT is a conversion of a multilingual parallel treebank developed at the University of Turin, and consisting of a variety of text genres, including talks, legal texts, and Wikipedia articles, among others; ParTUT data is derived from the already-existing parallel treebank Par(allel)TUT BIBREF35 . Table TABREF23 contains a summary comparing the sizes of the treebanks.\n\nWe evaluate the performance of our models using the standard UPOS accuracy for POS tagging, and Unlabeled Attachment Score (UAS) and Labeled Attachment Score (LAS) for dependency parsing. We assume gold tokenisation and gold word segmentation as provided in the UD treebanks.\n\nTo demonstrate the value of building a dedicated version of BERT for French, we first compare CamemBERT to the multilingual cased version of BERT (designated as mBERT). We then compare our models to UDify BIBREF36. UDify is a multitask and multilingual model based on mBERT that is near state-of-the-art on all UD languages including French for both POS tagging and dependency parsing.\n\nIt is relevant to compare CamemBERT to UDify on those tasks because UDify is the work that pushed the furthest the performance in fine-tuning end-to-end a BERT-based model on downstream POS tagging and dependency parsing. Finally, we compare our model to UDPipe Future BIBREF37, a model ranked 3rd in dependency parsing and 6th in POS tagging during the CoNLL 2018 shared task BIBREF38. UDPipe Future provides us a strong baseline that does not make use of any pretrained contextual embedding.\n\nWe will compare to the more recent cross-lingual language model XLM BIBREF12, as well as the state-of-the-art CoNLL 2018 shared task results with predicted tokenisation and segmentation in an updated version of the paper.\n\nNamed Entity Recognition (NER) is a sequence labeling task that consists in predicting which words refer to real-world objects, such as people, locations, artifacts and organisations. We use the French Treebank (FTB) BIBREF39 in its 2008 version introduced by cc-clustering:09short and with NER annotations by sagot2012annotation. The NER-annotated FTB contains more than 12k sentences and more than 350k tokens extracted from articles of the newspaper Le Monde published between 1989 and 1995. In total, it contains 11,636 entity mentions distributed among 7 different types of entities, namely: 2025 mentions of “Person”, 3761 of “Location”, 2382 of “Organisation”, 3357 of “Company”, 67 of “Product”, 15 of “POI” (Point of Interest) and 29 of “Fictional Character”.\n\nA large proportion of the entity mentions in the treebank are multi-word entities. For NER we therefore report the 3 metrics that are commonly used to evaluate models: precision, recall, and F1 score. Here precision measures the percentage of entities found by the system that are correctly tagged, recall measures the percentage of named entities present in the corpus that are found and the F1 score combines both precision and recall measures giving a general idea of a model's performance.\n\nMost of the advances in NER haven been achieved on English, particularly focusing on the CoNLL 2003 BIBREF40 and the Ontonotes v5 BIBREF41, BIBREF42 English corpora. NER is a task that was traditionally tackled using Conditional Random Fields (CRF) BIBREF43 which are quite suited for NER; CRFs were later used as decoding layers for Bi-LSTM architectures BIBREF44, BIBREF45 showing considerable improvements over CRFs alone. These Bi-LSTM-CRF architectures were later enhanced with contextualised word embeddings which yet again brought major improvements to the task BIBREF5, BIBREF6. Finally, large pretrained architectures settled the current state of the art showing a small yet important improvement over previous NER-specific architectures BIBREF7, BIBREF46.\n\nIn non-English NER the CoNLL 2002 shared task included NER corpora for Spanish and Dutch corpora BIBREF47 while the CoNLL 2003 included a German corpus BIBREF40. Here the recent efforts of BIBREF48 settled the state of the art for Spanish and Dutch, while BIBREF6 did it for German.\n\nIn French, no extensive work has been done due to the limited availability of NER corpora. We compare our model with the strong baselines settled by BIBREF49, who trained both CRF and BiLSTM-CRF architectures on the FTB and enhanced them using heuristics and pretrained word embeddings.\n\nWe also evaluate our model on the Natural Language Inference (NLI) task, using the French part of the XNLI dataset BIBREF50. NLI consists in predicting whether a hypothesis sentence is entailed, neutral or contradicts a premise sentence.\n\nThe XNLI dataset is the extension of the Multi-Genre NLI (MultiNLI) corpus BIBREF51 to 15 languages by translating the validation and test sets manually into each of those languages. The English training set is also machine translated for all languages. The dataset is composed of 122k train, 2490 valid and 5010 test examples. As usual, NLI performance is evaluated using accuracy.\n\nTo evaluate a model on a language other than English (such as French), we consider the two following settings:\n\nTRANSLATE-TEST: The French test set is machine translated into English, and then used with an English classification model. This setting provides a reasonable, although imperfect, way to circumvent the fact that no such data set exists for French, and results in very strong baseline scores.\n\nTRANSLATE-TRAIN: The French model is fine-tuned on the machine-translated English training set and then evaluated on the French test set. This is the setting that we used for CamemBERT.\n\nFor the TRANSLATE-TEST setting, we report results of the English RoBERTa to act as a reference.\n\nIn the TRANSLATE-TRAIN setting, we report the best scores from previous literature along with ours. BiLSTM-max is the best model in the original XNLI paper, mBERT which has been reported in French in BIBREF52 and XLM (MLM+TLM) is the best-presented model from BIBREF50.\n\nIn this section, we measure the performance of CamemBERT by evaluating it on the four aforementioned tasks: POS tagging, dependency parsing, NER and NLI.\n\nWe use the RoBERTa implementation in the fairseq library BIBREF53. Our learning rate is warmed up for 10k steps up to a peak value of $0.0007$ instead of the original $0.0001$ given our large batch size (8192). The learning rate fades to zero with polynomial decay. We pretrain our model on 256 Nvidia V100 GPUs (32GB each) for 100k steps during 17h.\n\nFor each task, we append the relevant predictive layer on top of CamemBERT's Transformer architecture. Following the work done on BERT BIBREF7, for sequence tagging and sequence labeling we append a linear layer respectively to the $<$s$>$ special token and to the first subword token of each word. For dependency parsing, we plug a bi-affine graph predictor head as inspired by BIBREF54 following the work done on multilingual parsing with BERT by BIBREF36. We refer the reader to these two articles for more details on this module.\n\nWe fine-tune independently CamemBERT for each task and each dataset. We optimise the model using the Adam optimiser BIBREF23 with a fixed learning rate. We run a grid search on a combination of learning rates and batch sizes. We select the best model on the validation set out of the 30 first epochs.\n\nAlthough this might push the performances even further, for all tasks except NLI, we don't apply any regularisation techniques such as weight decay, learning rate warm-up or discriminative fine-tuning. We show that fine-tuning CamemBERT in a straight-forward manner leads to state-of-the-art results on most tasks and outperforms the existing BERT-based models in most cases.\n\nThe POS tagging, dependency parsing, and NER experiments are run using hugging face's Transformer library extended to support CamemBERT and dependency parsing BIBREF55. The NLI experiments use the fairseq library following the RoBERTa implementation.\n\nFor POS tagging and dependency parsing, we compare CamemBERT to three other near state-of-the-art models in Table TABREF32. CamemBERT outperforms UDPipe Future by a large margin for all treebanks and all metrics. Despite a much simpler optimisation process, CamemBERT beats UDify performances on all the available French treebanks.\n\nCamemBERT also demonstrates higher performances than mBERT on those tasks. We observe a larger error reduction for parsing than for tagging. For POS tagging, we observe error reductions of respectively 0.71% for GSD, 0.81% for Sequoia, 0.7% for Spoken and 0.28% for ParTUT. For parsing, we observe error reductions in LAS of 2.96% for GSD, 3.33% for Sequoia, 1.70% for Spoken and 1.65% for ParTUT.\n\nOn the XNLI benchmark, CamemBERT obtains improved performance over multilingual language models on the TRANSLATE-TRAIN setting (81.2 vs. 80.2 for XLM) while using less than half the parameters (110M vs. 250M). However, its performance still lags behind models trained on the original English training set in the TRANSLATE-TEST setting, 81.2 vs. 82.91 for RoBERTa. It should be noted that CamemBERT uses far fewer parameters than RoBERTa (110M vs. 355M parameters).\n\nFor named entity recognition, our experiments show that CamemBERT achieves a slightly better precision than the traditional CRF-based SEM architectures described above in Section SECREF25 (CRF and Bi-LSTM+CRF), but shows a dramatic improvement in finding entity mentions, raising the recall score by 3.5 points. Both improvements result in a 2.36 point increase in the F1 score with respect to the best SEM architecture (BiLSTM-CRF), giving CamemBERT the state of the art for NER on the FTB. One other important finding is the results obtained by mBERT. Previous work with this model showed increased performance in NER for German, Dutch and Spanish when mBERT is used as contextualised word embedding for an NER-specific model BIBREF48, but our results suggest that the multilingual setting in which mBERT was trained is simply not enough to use it alone and fine-tune it for French NER, as it shows worse performance than even simple CRF models, suggesting that monolingual models could be better at NER.\n\nCamemBERT displays improved performance compared to prior work for the 4 downstream tasks considered. This confirms the hypothesis that pretrained language models can be effectively fine-tuned for various downstream tasks, as observed for English in previous work. Moreover, our results also show that dedicated monolingual models still outperform multilingual ones. We explain this point in two ways. First, the scale of data is possibly essential to the performance of CamemBERT. Indeed, we use 138GB of uncompressed text vs. 57GB for mBERT. Second, with more data comes more diversity in the pretraining distribution. Reaching state-of-the-art performances on 4 different tasks and 6 different datasets requires robust pretrained models. Our results suggest that the variability in the downstream tasks and datasets considered is handled more efficiently by a general language model than by Wikipedia-pretrained models such as mBERT.\n\nCamemBERT improves the state of the art for multiple downstream tasks in French. It is also lighter than other BERT-based approaches such as mBERT or XLM. By releasing our model, we hope that it can serve as a strong baseline for future research in French NLP, and expect our experiments to be reproduced in many other languages. We will publish an updated version in the near future where we will explore and release models trained for longer, with additional downstream tasks, baselines (e.g. XLM) and analysis, we will also train additional models with potentially cleaner corpora such as CCNet BIBREF56 for more accurate performance evaluation and more complete ablation.\n\nThis work was partly funded by three French National grants from the Agence Nationale de la Recherche, namely projects PARSITI (ANR-16-CE33-0021), SoSweet (ANR-15-CE38-0011) and BASNUM (ANR-18-CE38-0003), as well as by the last author's chair in the PRAIRIE institute.\n\nWe analyze the addition of whole-word masking on the downstream performance of CamemBERT. As reported for English on other downstream tasks, whole word masking improves downstream performances for all tasks but NER as seen in Table TABREF46. NER is highly sensitive to capitalisation, prefixes, suffixes and other subword features that could be used by a model to correctly identify entity mentions. Thus the added information by learning the masking at a subword level rather than at whole-word level seems to have a detrimental effect on downstream NER results.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "section": "Abstract",
+      "start": 42,
+      "end": 883
+    },
+    {
+      "section": "Introduction",
+      "start": 885,
+      "end": 3697
+    },
+    {
+      "section": "Related Work ::: From non-contextual to contextual word embeddings",
+      "start": 3699,
+      "end": 4571
+    },
+    {
+      "section": "Related Work ::: Non-contextual word embeddings for languages other than English",
+      "start": 4573,
+      "end": 5096
+    },
+    {
+      "section": "Related Work ::: Contextualised models for languages other than English",
+      "start": 5098,
+      "end": 5784
+    },
+    {
+      "section": "CamemBERT",
+      "start": 5786,
+      "end": 6209
+    },
+    {
+      "section": "CamemBERT ::: Architecture",
+      "start": 6211,
+      "end": 6582
+    },
+    {
+      "section": "CamemBERT ::: Pretraining objective",
+      "start": 6584,
+      "end": 8237
+    },
+    {
+      "section": "CamemBERT ::: Optimisation",
+      "start": 8239,
+      "end": 8668
+    },
+    {
+      "section": "CamemBERT ::: Segmentation into subword units",
+      "start": 8670,
+      "end": 9212
+    },
+    {
+      "section": "CamemBERT ::: Pretraining data",
+      "start": 9214,
+      "end": 10327
+    },
+    {
+      "section": "Evaluation ::: Part-of-speech tagging and dependency parsing",
+      "start": 10329,
+      "end": 12389
+    },
+    {
+      "section": "Evaluation ::: Part-of-speech tagging and dependency parsing ::: Baselines",
+      "start": 12391,
+      "end": 13494
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition",
+      "start": 13496,
+      "end": 14759
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition ::: Baselines",
+      "start": 14761,
+      "end": 16098
+    },
+    {
+      "section": "Evaluation ::: Natural Language Inference",
+      "start": 16100,
+      "end": 17313
+    },
+    {
+      "section": "Evaluation ::: Natural Language Inference ::: Baselines",
+      "start": 17315,
+      "end": 17681
+    },
+    {
+      "section": "Experiments",
+      "start": 17683,
+      "end": 17836
+    },
+    {
+      "section": "Experiments ::: Experimental Setup ::: Pretraining",
+      "start": 17838,
+      "end": 18188
+    },
+    {
+      "section": "Experiments ::: Experimental Setup ::: Fine-tuning",
+      "start": 18190,
+      "end": 19654
+    },
+    {
+      "section": "Experiments ::: Results ::: Part-of-Speech tagging and dependency parsing",
+      "start": 19656,
+      "end": 20386
+    },
+    {
+      "section": "Experiments ::: Results ::: Natural Language Inference: XNLI",
+      "start": 20388,
+      "end": 20852
+    },
+    {
+      "section": "Experiments ::: Results ::: Named-Entity Recognition",
+      "start": 20854,
+      "end": 21860
+    },
+    {
+      "section": "Experiments ::: Discussion",
+      "start": 21862,
+      "end": 22798
+    },
+    {
+      "section": "Conclusion",
+      "start": 22800,
+      "end": 23475
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 23477,
+      "end": 23745
+    },
+    {
+      "section": "Appendix ::: Impact of Whole-Word Masking",
+      "start": 23747,
+      "end": 24310
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1911.03894",
+    "arxiv_id": "1911.03894",
+    "source_url": "https://arxiv.org/abs/1911.03894",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

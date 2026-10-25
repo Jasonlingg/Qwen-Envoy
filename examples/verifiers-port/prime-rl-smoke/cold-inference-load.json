@@ -1,0 +1,59 @@
+{
+  "loaded": true,
+  "generated_after_training": false,
+  "models": {
+    "object": "list",
+    "data": [
+      {
+        "id": "envoy-base",
+        "object": "model",
+        "created": 1792782714,
+        "owned_by": "vllm",
+        "root": "/workspace/smoke/base/b968826d9c46dd6066d109eabc6255188de91218",
+        "parent": null,
+        "max_model_len": 8192,
+        "permission": [
+          {
+            "id": "modelperm-bf995a74c32ce3b0",
+            "object": "model_permission",
+            "created": 1792782714,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      },
+      {
+        "id": "envoy",
+        "object": "model",
+        "created": 1792782714,
+        "owned_by": "vllm",
+        "root": "/workspace/smoke/portable-adapter",
+        "parent": "envoy-base",
+        "max_model_len": null,
+        "permission": [
+          {
+            "id": "modelperm-84db373101c2c97f",
+            "object": "model_permission",
+            "created": 1792782714,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      }
+    ]
+  }
+}

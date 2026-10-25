@@ -1,0 +1,90 @@
+{
+  "doc_id": "qasper_1909_12642",
+  "title": "HateMonitors: Language Agnostic Abuse Detection in Social Media",
+  "text": "HateMonitors: Language Agnostic Abuse Detection in Social Media\n\nReducing hateful and offensive content in online social media pose a dual problem for the moderators. On the one hand, rigid censorship on social media cannot be imposed. On the other, the free flow of such content cannot be allowed. Hence, we require efficient abusive language detection system to detect such harmful content in social media. In this paper, we present our machine learning model, HateMonitor, developed for Hate Speech and Offensive Content Identification in Indo-European Languages (HASOC), a shared task at FIRE 2019. We have used a Gradient Boosting model, along with BERT and LASER embeddings, to make the system language agnostic. Our model came at First position for the German sub-task A. We have also made our model public at this https URL .\n\nIn social media, abusive language denotes a text which contains any form of unacceptable language in a post or a comment. Abusive language can be divided into hate speech, offensive language and profanity. Hate speech is a derogatory comment that hurts an entire group in terms of ethnicity, race or gender. Offensive language is similar to derogatory comment, but it is targeted towards an individual. Profanity refers to any use of unacceptable language without a specific target. While profanity is the least threatening, hate speech has the most detrimental effect on the society.\n\nSocial media moderators are having a hard time in combating the rampant spread of hate speech as it is closely related to the other forms of abusive language. The evolution of new slangs and multilingualism, further adding to the complexity.\n\nRecently, there has been a sharp rise in hate speech related incidents in India, the lynchings being the clear indication BIBREF1. Arun et al. BIBREF1 suggests that hate speech in India is very complicated as people are not directly spreading hate but are spreading misinformation against a particular community. Hence, it has become imperative to study hate speech in Indian language.\n\nFor the first time, a shared task on abusive content detection has been released for Hindi language at HASOC 2019. This will fuel the hate speech and offensive language research for Indian languages. The inclusion of datasets for English and German language will give a performance comparison for detection of abusive content in high and low resource language.\n\nIn this paper, we focus on the detection of multilingual hate speech detection that are written in Hindi, English, and German and describe our submission (HateMonitors) for HASOC at FIRE 2019 competition. Our system concatenates two types of sentence embeddings to represent each tweet and use machine learning models for classification.\n\nAnalyzing abusive language in social media is a daunting task. Waseem et al. BIBREF2 categorizes abusive language into two sub-classes – hate speech and offensive language. In their analysis of abusive language, Classifying abusive language into these two subtypes is more challenging due to the correlation between offensive language and hate speech BIBREF3. Nobata et al. BIBREF4 uses predefined language element and embeddings to train a regression model. With the introduction of better classification models BIBREF5, BIBREF6 and newer features BIBREF7, BIBREF3, BIBREF8, the research in hate and offensive speech detection has gained momentum.\n\nSilva et al. BIBREF9 performed a large scale study to understand the target of such hate speech on two social media platforms: Twitter and Whisper. These target could be the Refugees and Immigrants BIBREF10, Jews BIBREF11, BIBREF12 and Muslims BIBREF13, BIBREF14. People could become the target of hate speech based on Nationality BIBREF15, sex BIBREF16, BIBREF17, and gender BIBREF18, BIBREF19 as well. Public expressions of hate speech affects the devaluation of minority members BIBREF20, the exclusion of minorities from the society BIBREF21, and tend to diffuse through the network at a faster rate BIBREF22.\n\nOne of the key issues with the current state of the hate and offensive language research is that the majority of the research is dedicated to the English language on BIBREF23. Few researchers have tried to solve the problem of abusive language in other languages BIBREF10, BIBREF24, but the works are mostly monolingual. Any online social media platform contains people of different ethnicity, which results in the spread of information in multiple languages. Hence, a robust classifier is needed, which can deal with abusive language in the multilingual domain. Several shared tasks like HASOC BIBREF0, HaSpeeDe BIBREF25, GermEval BIBREF26, AMI BIBREF27, HatEval BIBREF28 have focused on detection of abusive text in multiple languages recently.\n\nThe dataset at HASOC 2019 were given in three languages: Hindi, English, and German. Dataset in Hindi and English had three subtasks each, while German had only two subtasks. We participated in all the tasks provided by the organisers and decided to develop a single model that would be language agnostic. We used the same model architecture for all the three languages.\n\nWe present the statistics for HASOC dataset in Table TABREF5. From the table, we can observe that the dataset for the German language is highly unbalanced, English and Hindi are more or less balanced for sub-task A. For sub-task B German dataset is balanced but others are unbalanced. For sub-task C both the datasets are highly unbalanced.\n\nSub-task A consists of building a binary classification model which can predict if a given piece of text is hateful and offensive (HOF) or not (NOT). A data point is annotated as HOF if it contains any form of non-acceptable language such as hate speech, aggression, profanity. Each of the three languages had this subtask.\n\nSub-task B consists of building a multi-class classification model which can predict the three different classes in the data points annotated as HOF: Hate speech (HATE), Offensive language (OFFN), and Profane (PRFN). Again all three languages have this sub-task.\n\nSub-task C consists of building a binary classification model which can predict the type of offense: Targeted (TIN) and Untargeted (UNT). Sub-task C was not conducted for the German dataset.\n\nIn this section, we will explain the details about our system, which comprises of two sub-parts- feature generation and model selection. Figure FIGREF15 shows the architecture of our system.\n\nWe preprocess the tweets before performing the feature extraction. The following steps were followed:\n\nWe remove all the URLs.\n\nConvert text to lowercase. This step was not applied to the Hindi language since Devanagari script does not have lowercase and uppercase characters.\n\nWe did not normalize the mentions in the text as they could potentially reveal important information for the embeddings encoders.\n\nAny numerical figure was normalized to a string `number'.\n\nWe did not remove any punctuation and stop-words since the context of the sentence might get lost in such a process. Since we are using sentence embedding, it is essential to keep the context of the sentence intact.\n\nThe preprocessed posts are then used to generate features for the classifier. For our model, we decided to generate two types of feature vector: BERT Embeddings and LASER Embeddings. For each post, we generate the BERT and LASER Embedding, which are then concatenated and fed as input to the final classifier.\n\nMultilingual BERT embeddings: Bidirectional Encoder Representations from Transformers(BERT) BIBREF29 has played a key role in the advancement of natural language processing domain (NLP). BERT is a language model which is trained to predict the masked words in a sentence. To generate the sentence embedding for a post, we take the mean of the last 11 layers (out of 12) to get a sentence vector with length of 768.\n\nLASER embeddings: Researchers at Facebook released a language agnostic sentence embeddings representations (LASER) BIBREF30, where the model jointly learns on 93 languages. The model takes the sentence as input and produces a vector representation of length 1024. The model is able to handle code mixing as well BIBREF31.\n\nWe pass the preprocessed sentences through each of these embedding models and got two separate sentence representation. Further, we concatenate the embeddings into one single feature vector of length 1792, which is then passed to the final classification model.\n\nThe amount of data in each category was insufficient to train a deep learning model. Building such deep models would lead to overfitting. So, we resorted to using simpler models such as SVM and Gradient boosted trees. Gradient boosted trees BIBREF32 are often the choice for systems where features are pre-extracted from the raw data. In the category of gradient boosted trees, Light Gradient Boosting Machine (LGBM) BIBREF33 is considered one of the most efficient in terms of memory footprint. Moreover, it has been part of winning solutions of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more balanced than English or German dataset. Hence, the results were around 0.78. As the dataset in German language was highly imbalanced, the results drops to 0.62. In subtask B, the highest F1 score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these models are not able to capture the context in the sentence. The subtask C was again a case of imbalanced dataset as targeted(TIN) label gets the highest F1 score in table TABREF21.\n\nIn this shared task, we experimented with zero-shot transfer learning on abusive text detection with pre-trained BERT and LASER sentence embeddings. We use an LGBM model to train the embeddings to perform downstream task. Our model for German language got the first position. The results provided a strong baseline for further research in multilingual hate speech. We have also made the models public for use by other researchers.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 63
+    },
+    {
+      "section": "Abstract",
+      "start": 65,
+      "end": 833
+    },
+    {
+      "section": "Introduction",
+      "start": 835,
+      "end": 2750
+    },
+    {
+      "section": "Related works",
+      "start": 2752,
+      "end": 4763
+    },
+    {
+      "section": "Dataset and Task description",
+      "start": 4765,
+      "end": 5135
+    },
+    {
+      "section": "Dataset and Task description ::: Datasets",
+      "start": 5137,
+      "end": 5477
+    },
+    {
+      "section": "Dataset and Task description ::: Tasks",
+      "start": 5479,
+      "end": 6258
+    },
+    {
+      "section": "System Description",
+      "start": 6260,
+      "end": 6450
+    },
+    {
+      "section": "System Description ::: Feature Generation ::: Preprocessing:",
+      "start": 6452,
+      "end": 7135
+    },
+    {
+      "section": "System Description ::: Feature Generation ::: Feature vectors:",
+      "start": 7137,
+      "end": 8448
+    },
+    {
+      "section": "System Description ::: Our Model",
+      "start": 8450,
+      "end": 9090
+    },
+    {
+      "section": "Results",
+      "start": 9092,
+      "end": 9374
+    },
+    {
+      "section": "Discussion",
+      "start": 9376,
+      "end": 10039
+    },
+    {
+      "section": "Conclusion",
+      "start": 10041,
+      "end": 10471
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.12642",
+    "arxiv_id": "1909.12642",
+    "source_url": "https://arxiv.org/abs/1909.12642",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

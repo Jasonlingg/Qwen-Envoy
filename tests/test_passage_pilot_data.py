@@ -356,7 +356,7 @@ def test_structured_training_pools_are_inventoried_without_corpus_reservations(
     write(path, {"questions": [{"id": qid, "target_doc_ids": ["qasper_2000_00001"]}],
                  "reserved_doc_ids": ["qasper_2000_99999"]})
     registry = data.inventory(tmp_path)
-    assert registry["schema_version"] == "passage-pilot-exclusions-v2"
+    assert registry["schema_version"] == "passage-pilot-exclusions-v3"
     assert registry["excluded_doc_ids"] == ["qasper_2000_00001"]
     assert registry["excluded_question_ids"] == [qid]
     data.check_registry(registry, tmp_path)
@@ -370,3 +370,24 @@ def test_old_saved_pilot_is_blocked_by_incomplete_inventory():
                "examples/passage-reader-pilot-data/prepared/exclusions.json")
     with pytest.raises(ValueError, match="structured benchmark"):
         data.check_registry(old)
+
+
+def test_rl_roles_and_rejected_source_review_papers_are_reserved(tmp_path, monkeypatch):
+    monkeypatch.setattr(data, "REQUIRED", [])
+    root = tmp_path / "data/rl/facts"
+    root.mkdir(parents=True)
+    write(root / "cases.json", [{"question_id": "qasper_train_" + "1" * 40,
+        "doc_id": "qasper_2000_00001", "role": "train"},
+        {"question_id": "qasper_validation_" + "2" * 40,
+         "doc_id": "qasper_2000_00002", "role": "model_evaluation_locked"}])
+    write(root / "source-review.json", {"rows": [{"decision": "reject",
+        "case_id": "qasper_train_" + "3" * 40 + "--rl-short-fact",
+        "support": [{"doc_id": "qasper_2000_00003", "quote": "not an identifier"}]}]})
+    registry = data.inventory(tmp_path)
+    assert registry["excluded_doc_ids"] == ["qasper_2000_00001", "qasper_2000_00002",
+                                             "qasper_2000_00003"]
+    assert "qasper_train_" + "3" * 40 in registry["excluded_question_ids"]
+    data.check_registry(registry, tmp_path)
+    registry["schema_version"] = "passage-pilot-exclusions-v2"
+    with pytest.raises(ValueError, match="RL role/rejection"):
+        data.check_registry(registry, tmp_path)

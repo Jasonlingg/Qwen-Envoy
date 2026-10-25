@@ -1,0 +1,165 @@
+{
+  "doc_id": "qasper_1909_13375",
+  "title": "Tag-based Multi-Span Extraction in Reading Comprehension",
+  "text": "Tag-based Multi-Span Extraction in Reading Comprehension\n\nWith models reaching human performance on many popular reading comprehension datasets in recent years, a new dataset, DROP, introduced questions that were expected to present a harder challenge for reading comprehension models. Among these new types of questions were \"multi-span questions\", questions whose answers consist of several spans from either the paragraph or the question itself. Until now, only one model attempted to tackle multi-span questions as a part of its design. In this work, we suggest a new approach for tackling multi-span questions, based on sequence tagging, which differs from previous approaches for answering span questions. We show that our approach leads to an absolute improvement of 29.7 EM and 15.1 F1 compared to existing state-of-the-art results, while not hurting performance on other question types. Furthermore, we show that our model slightly eclipses the current state-of-the-art results on the entire DROP dataset.\n\nThe task of reading comprehension, where systems must understand a single passage of text well enough to answer arbitrary questions about it, has seen significant progress in the last few years. With models reaching human performance on the popular SQuAD dataset BIBREF0, and with much of the most popular reading comprehension datasets having been solved BIBREF1, BIBREF2, a new dataset, DROP BIBREF3, was recently published.\n\nDROP aimed to present questions that require more complex reasoning in order to answer than that of previous datasets, in a hope to push the field towards a more comprehensive analysis of paragraphs of text. In addition to questions whose answers are a single continuous span from the paragraph text (questions of a type already included in SQuAD), DROP introduced additional types of questions. Among these new types were questions that require simple numerical reasoning, i.e questions whose answer is the result of a simple arithmetic expression containing numbers from the passage, and questions whose answers consist of several spans taken from the paragraph or the question itself, what we will denote as \"multi-span questions\".\n\nOf all the existing models that tried to tackle DROP, only one model BIBREF4 directly targeted multi-span questions in a manner that wasn't just a by-product of the model's overall performance. In this paper, we propose a new method for tackling multi-span questions. Our method takes a different path from that of the aforementioned model. It does not try to generalize the existing approach for tackling single-span questions, but instead attempts to attack this issue with a new, tag-based, approach.\n\nNumerically-aware QANet (NAQANet) BIBREF3 was the model released with DROP. It uses QANET BIBREF5, at the time the best-performing published model on SQuAD 1.1 BIBREF0 (without data augmentation or pretraining), as the encoder. On top of QANET, NAQANet adds four different output layers, which we refer to as \"heads\". Each of these heads is designed to tackle a specific question type from DROP, where these types where identified by DROP's authors post-creation of the dataset. These four heads are (1) Passage span head, designed for producing answers that consist of a single span from the passage. This head deals with the type of questions already introduced in SQuAD. (2) Question span head, for answers that consist of a single span from the question. (3) Arithmetic head, for answers that require adding or subtracting numbers from the passage. (4) Count head, for answers that require counting and sorting entities from the text. In addition, to determine which head should be used to predict an answer, a 4-way categorical variable, as per the number of heads, is trained. We denote this categorical variable as the \"head predictor\".\n\nNumerically-aware BERT (NABERT+) BIBREF6 introduced two main improvements over NAQANET. The first was to replace the QANET encoder with BERT. This change alone resulted in an absolute improvement of more than eight points in both EM and F1 metrics. The second improvement was to the arithmetic head, consisting of the addition of \"standard numbers\" and \"templates\". Standard numbers were predefined numbers which were added as additional inputs to the arithmetic head, regardless of their occurrence in the passage. Templates were an attempt to enrich the head's arithmetic capabilities, by adding the ability of doing simple multiplications and divisions between up to three numbers.\n\nMTMSN BIBREF4 is the first, and only model so far, that specifically tried to tackle the multi-span questions of DROP. Their approach consisted of two parts. The first was to train a dedicated categorical variable to predict the number of spans to extract. The second was to generalize the single-span head method of extracting a span, by utilizing the non-maximum suppression (NMS) algorithm BIBREF7 to find the most probable set of non-overlapping spans. The number of spans to extract was determined by the aforementioned categorical variable.\n\nAdditionally, MTMSN introduced two new other, non span-related, components. The first was a new \"negation\" head, meant to deal with questions deemed as requiring logical negation (e.g. \"How many percent were not German?\"). The second was improving the arithmetic head by using beam search to re-rank candidate arithmetic expressions.\n\nProblem statement. Given a pair $(x^P,x^Q)$ of a passage and a question respectively, both comprised of tokens from a vocabulary $V$, we wish to predict an answer $y$. The answer could be either a collection of spans from the input, or a number, supposedly arrived to by performing arithmetic reasoning on the input. We want to estimate $p(y;x^P,x^Q)$.\n\nThe basic structure of our model is shared with NABERT+, which in turn is shared with that of NAQANET (the model initially released with DROP). Consequently, meticulously presenting every part of our model would very likely prove redundant. As a reasonable compromise, we will introduce the shared parts with more brevity, and will go into greater detail when presenting our contributions.\n\nAssume there are $K$ answer heads in the model and their weights denoted by $\\theta $. For each pair $(x^P,x^Q)$ we assume a latent categorical random variable $z\\in \\left\\lbrace 1,\\ldots \\,K\\right\\rbrace $ such that the probability of an answer $y$ is\n\nwhere each component of the mixture corresponds to an output head such that\n\nNote that a head is not always capable of producing the correct answer $y_\\text{gold}$ for each type of question, in which case $p\\left(y_\\text{gold} \\vert z ; x^{P},x^{Q},\\theta \\right)=0$. For example, the arithmetic head, whose output is always a single number, cannot possibly produce a correct answer for a multi-span question.\n\nFor a multi-span question with an answer composed of $l$ spans, denote $y_{{\\text{gold}}_{\\textit {MS}}}=\\left\\lbrace y_{{\\text{gold}}_1}, \\ldots , y_{{\\text{gold}}_l} \\right\\rbrace $. NAQANET and NABERT+ had no head capable of outputting correct answers for multi-span questions. Instead of ignoring them in training, both models settled on using \"semi-correct answers\": each $y_\\text{gold} \\in y_{{\\text{gold}}_{\\textit {MS}}}$ was considered to be a correct answer (only in training). By deliberately encouraging the model to provide partial answers for multi-span questions, they were able to improve the corresponding F1 score. As our model does have a head with the ability to answer multi-span questions correctly, we didn't provide the aforementioned semi-correct answers to any of the other heads. Otherwise, we would have skewed the predictions of the head predictor and effectively mislead the other heads to believe they could predict correct answers for multi-span questions.\n\nBefore going over the answer heads, two additional components should be introduced - the summary vectors, and the head predictor.\n\nSummary vectors. The summary vectors are two fixed-size learned representations of the question and the passage, which serve as an input for some of the heads. To create the summary vectors, first define $\\mathbf {T}$ as BERT's output on a $(x^{P},x^{Q})$ input. Then, let $\\mathbf {T}^{P}$ and $\\mathbf {T}^{Q}$ be subsequences of T that correspond to $x^P$ and $x^Q$ respectively. Finally, let us also define Bdim as the dimension of the tokens in $\\mathbf {T}$ (e.g 768 for BERTbase), and have $\\mathbf {W}^P \\in \\mathbb {R}^\\texttt {Bdim}$ and $\\mathbf {W}^Q \\in \\mathbb {R}^\\texttt {Bdim}$ as learned linear layers. Then, the summary vectors are computed as:\n\nHead predictor. A learned categorical variable with its number of outcomes equal to the number of answer heads in the model. Used to assign probabilities for using each of the heads in prediction.\n\nwhere FFN is a two-layer feed-forward network with RELU activation.\n\nPassage span. Define $\\textbf {W}^S \\in \\mathbb {R}^\\texttt {Bdim}$ and $\\textbf {W}^E \\in \\mathbb {R}^\\texttt {Bdim}$ as learned vectors. Then the probabilities of the start and end positions of a passage span are computed as\n\nQuestion span. The probabilities of the start and end positions of a question span are computed as\n\nwhere $\\textbf {e}^{|\\textbf {T}^Q|}\\otimes \\textbf {h}^P$ repeats $\\textbf {h}^P$ for each component of $\\textbf {T}^Q$.\n\nCount. Counting is treated as a multi-class prediction problem with the numbers 0-9 as possible labels. The label probabilities are computed as\n\nArithmetic. As in NAQNET, this head obtains all of the numbers from the passage, and assigns a plus, minus or zero (\"ignore\") for each number. As BERT uses wordpiece tokenization, some numbers are broken up into multiple tokens. Following NABERT+, we chose to represent each number by its first wordpiece. That is, if $\\textbf {N}^i$ is the set of tokens corresponding to the $i^\\text{th}$ number, we define a number representation as $\\textbf {h}_i^N = \\textbf {N}^i_0$.\n\nThe selection of the sign for each number is a multi-class prediction problem with options $\\lbrace 0, +, -\\rbrace $, and the probabilities for the signs are given by\n\nAs for NABERT+'s two additional arithmetic features, we decided on using only the standard numbers, as the benefits from using templates were deemed inconclusive. Note that unlike the single-span heads, which are related to our introduction of a multi-span head, the arithmetic and count heads were not intended to play a significant role in our work. We didn't aim to improve results on these types of questions, perhaps only as a by-product of improving the general reading comprehension ability of our model.\n\nA subset of questions that wasn't directly dealt with by the base models (NAQANET, NABERT+) is questions that have an answer which is composed of multiple non-continuous spans. We suggest a head that will be able to deal with both single-span and multi-span questions.\n\nTo model an answer which is a collection of spans, the multi-span head uses the $\\mathtt {BIO}$ tagging format BIBREF8: $\\mathtt {B}$ is used to mark the beginning of a span, $\\mathtt {I}$ is used to mark the inside of a span and $\\mathtt {O}$ is used to mark tokens not included in a span. In this way, we get a sequence of chunks that can be decoded to a final answer - a collection of spans.\n\nAs words are broken up by the wordpiece tokenization for BERT, we decided on only considering the representation of the first sub-token of the word to tag, following the NER task from BIBREF2.\n\nFor the $i$-th token of an input, the probability to be assigned a $\\text{tag} \\in \\left\\lbrace {\\mathtt {B},\\mathtt {I},\\mathtt {O}} \\right\\rbrace $ is computed as\n\nTo train our model, we try to maximize the log-likelihood of the correct answer $p(y_\\text{gold};x^{P},x^{Q},\\theta )$ as defined in Section SECREF2. If no head is capable of predicting the gold answer, the sample is skipped.\n\nWe enumerate over every answer head $z\\in \\left\\lbrace \\textit {PS}, \\textit {QS}, \\textit {C}, \\textit {A}, \\textit {MS}\\right\\rbrace $ (Passage Span, Question Span, Count, Arithmetic, Multi-Span) to compute each of the objective's addends:\n\nNote that we are in a weakly supervised setup: the answer type is not given, and neither is the correct arithmetic expression required for deriving some answers. Therefore, it is possible that $y_\\text{gold}$ could be derived by more than one way, even from the same head, with no indication of which is the \"correct\" one.\n\nWe use the weakly supervised training method used in NABERT+ and NAQANET. Based on BIBREF9, for each head we find all the executions that evaluate to the correct answer and maximize their marginal likelihood .\n\nFor a datapoint $\\left(y, x^{P}, x^{Q} \\right)$ let $\\chi ^z$ be the set of all possible ways to get $y$ for answer head $z\\in \\left\\lbrace \\textit {PS}, \\textit {QS}, \\textit {C}, \\textit {A}, \\textit {MS}\\right\\rbrace $. Then, as in NABERT+, we have\n\nFinally, for the arithmetic head, let $\\mu $ be the set of all the standard numbers and the numbers from the passage, and let $\\mathbf {\\chi }^{\\textit {A}}$ be the set of correct sign assignments to these numbers. Then, we have\n\nDenote by ${\\chi }^{\\textit {MS}}$ the set of correct tag sequences. If the concatenation of a question and a passage is $m$ tokens long, then denote a correct tag sequence as $\\left(\\text{tag}_1,\\ldots ,\\text{tag}_m\\right)$.\n\nWe approximate the likelihood of a tag sequence by assuming independence between the sequence's positions, and multiplying the likelihoods of all the correct tags in the sequence. Then, we have\n\nSince a given multi-span answer is a collection of spans, it is required to obtain its matching tag sequences in order to compute the training objective.\n\nIn what we consider to be a correct tag sequence, each answer span will be marked at least once. Due to the weakly supervised setup, we consider all the question/passage spans that match the answer spans as being correct. To illustrate, consider the following simple example. Given the text \"X Y Z Z\" and the correct multi-span answer [\"Y\", \"Z\"], there are three correct tag sequences: $\\mathtt {O\\,B\\,B\\,B}$,$\\quad $ $\\mathtt {O\\,B\\,B\\,O}$,$\\quad $ $\\mathtt {O\\,B\\,O\\,B}$.\n\nThe number of correct tag sequences can be expressed by\n\nwhere $s$ is the number of spans in the answer and $\\#_i$ is the number of times the $i^\\text{th}$ span appears in the text.\n\nFor questions with a reasonable amount of correct tag sequences, we generate all of them before the training starts. However, there is a small group of questions for which the amount of such sequences is between 10,000 and 100,000,000 - too many to generate and train on. In such cases, inspired by BIBREF9, instead of just using an arbitrary subset of the correct sequences, we use beam search to generate the top-k predictions of the training model, and then filter out the incorrect sequences. Compared to using an arbitrary subset, using these sequences causes the optimization to be done with respect to answers more compatible with the model. If no correct tag sequences were predicted within the top-k, we use the tag sequence that has all of the answer spans marked.\n\nBased on the outputs $\\textbf {p}_{i}^{{\\text{tag}}_{i}}$ we would like to predict the most likely sequence given the $\\mathtt {BIO}$ constraints. Denote $\\textit {validSeqs}$ as the set of all $\\mathtt {BIO}$ sequences of length $m$ that are valid according to the rules specified in Section SECREF5. The $\\mathtt {BIO}$ tag sequence to predict is then\n\nWe considered the following approaches:\n\nA natural candidate for getting the most likely sequence is Viterbi decoding, BIBREF10 with transition probabilities learned by a $\\mathtt {BIO}$ constrained Conditional Random Field (CRF) BIBREF11. However, further inspection of our sequence's properties reveals that such a computational effort is probably not necessary, as explained in following paragraphs.\n\nDue to our use of $\\mathtt {BIO}$ tags and their constraints, observe that past tag predictions only affect future tag predictions from the last $\\mathtt {B}$ prediction and as long as the best tag to predict is $\\mathtt {I}$. Considering the frequency and length of the correct spans in the question and the passage, effectively there's no effect of past sequence's positions on future ones, other than a very few positions ahead. Together with the fact that at each prediction step there are no more than 3 tags to consider, it means using beam search to get the most likely sequence is very reasonable and even allows near-optimal results with small beam width values.\n\nNotice that greedy tagging does not enforce the $\\mathtt {BIO}$ constraints. However, since the multi-span head's training objective adheres to the $\\mathtt {BIO}$ constraints via being given the correct tag sequences, we can expect that even with greedy tagging the predictions will mostly adhere to these constraints as well. In case there are violations, their amendment is required post-prediction. Albeit faster, greedy tagging resulted in a small performance hit, as seen in Table TABREF26.\n\nWe tokenize the passage, question, and all answer texts using the BERT uncased wordpiece tokenizer from huggingface. The tokenization resulting from each $(x^P,x^Q)$ input pair is truncated at 512 tokens so it can be fed to BERT as an input. However, before tokenizing the dataset texts, we perform additional preprocessing as listed below.\n\nThe raw dataset included almost a thousand of HTML entities that did not get parsed properly, e.g \"&#160;\" instead of a simple space. In addition, we fixed some quirks that were introduced by the original Wikipedia parsing method. For example, when encountering a reference to an external source that included a specific page from that reference, the original parser ended up introducing a redundant \":<PAGE NUMBER>\" into the parsed text.\n\nAlthough we previously stated that we aren't focusing on improving arithmetic performance, while analyzing the training process we encountered two arithmetic-related issues that could be resolved rather quickly: a precision issue and a number extraction issue. Regarding precision, we noticed that while either generating expressions for the arithmetic head, or using the arithmetic head to predict a numeric answer, the value resulting from an arithmetic operation would not always yield the exact result due to floating point precision limitations. For example, $5.8 + 6.6 = 12.3999...$ instead of $12.4$. This issue has caused a significant performance hit of about 1.5 points for both F1 and EM and was fixed by simply rounding numbers to 5 decimal places, assuming that no answer requires a greater precision. Regarding number extraction, we noticed that some numeric entities, required in order to produce a correct answer, weren't being extracted from the passage. Examples include ordinals (121st, 189th) and some \"per-\" units (1,580.7/km2, 1050.95/month).\n\nThe training dataset contains multi-span questions with answers that are clearly incorrect, with examples shown in Table TABREF22. In order to mitigate this, we applied an answer-cleaning technique using a pretrained Named Entity Recognition (NER) model BIBREF12 in the following manner: (1) Pre-define question prefixes whose answer spans are expected to contain only a specific entity type and filter the matching questions. (2) For a given answer of a filtered question, remove any span that does not contain at least one token of the expected type, where the types are determined by applying the NER model on the passage. For example, if a question starts with \"who scored\", we expect that any valid span will include a person entity ($\\mathtt {PER}$). By applying such rules, we discovered that at least 3% of the multi-span questions in the training dataset included incorrect spans. As our analysis of prefixes wasn't exhaustive, we believe that this method could yield further gains. Table TABREF22 shows a few of our cleaning method results, where we perfectly clean the first two questions, and partially clean a third question.\n\nThe starting point for our implementation was the NABERT+ model, which in turn was based on allenai's NAQANET. Our implementation can be found on GitHub. All three models utilize the allennlp framework. The pretrained BERT models were supplied by huggingface. For our base model we used bert-base-uncased. For our large models we used the standard bert-large-uncased-whole-word-masking and the squad fine-tuned bert-large-uncased- whole-word-masking-finetuned-squad.\n\nDue to limited computational resources, we did not perform any hyperparameter searching. We preferred to focus our efforts on the ablation studies, in hope to gain further insights on the effect of the components that we ourselves introduced. For ease of performance comparison, we followed NABERT+'s training settings: we used the BERT Adam optimizer from huggingface with default settings and a learning rate of $1e^{-5}$. The only difference was that we used a batch size of 12. We trained our base model for 20 epochs. For the large models we used a batch size of 3 with a learning rate of $5e^{-6}$ and trained for 5 epochs, except for the model without the single-span heads that was trained with a batch size of 2 for 7 epochs. F1 was used as our validation metric. All models were trained on a single GPU with 12-16GB of memory.\n\nTable TABREF24 shows the results on DROP's development set. Compared to our base models, our large models exhibit a substantial improvement across all metrics.\n\nWe can see that our base model surpasses the NABERT+ baseline in every metric. The major improvement in multi-span performance was expected, as our multi-span head was introduced specifically to tackle this type of questions. For the other types, most of the improvement came from better preprocessing. A more detailed discussion could be found in Section (SECREF36).\n\nNotice that different BERTlarge models were used, so the comparison is less direct. Overall, our large models exhibits similar results to those of MTMSNlarge.\n\nFor multi-span questions we achieve a significantly better performance. While a breakdown of metrics was only available for MTMSNlarge, notice that even when comparing these metrics to our base model, we still achieve a 12.2 absolute improvement in EM, and a 2.3 improvement in F1. All that, while keeping in mind we compare a base model to a large model (for reference, note the 8 point improvement between MTMSNbase and MTMSNlarge in both EM and F1). Our best model, large-squad, exhibits a huge improvement of 29.7 in EM and 15.1 in F1 compared to MTMSNlarge.\n\nWhen comparing single-span performance, our best model exhibits slightly better results, but it should be noted that it retains the single-span heads from NABERT+, while in MTMSN they have one head to predict both single-span and multi-span answers. For a fairer comparison, we trained our model with the single-span heads removed, where our multi-span head remained the only head aimed for handling span questions. With this no-single-span-heads setting, while our multi-span performance even improved a bit, our single-span performance suffered a slight drop, ending up trailing by 0.8 in EM and 0.6 in F1 compared to MTMSN. Therefore, it could prove beneficial to try and analyze the reasons behind each model's (ours and MTMSN) relative advantages, and perhaps try to combine them into a more holistic approach of tackling span questions.\n\nTable TABREF25 shows the results on DROP's test set, with our model being the best overall as of the time of writing, and not just on multi-span questions.\n\nIn order to analyze the effect of each of our changes, we conduct ablation studies on the development set, depicted in Table TABREF26.\n\nNot using the simple preprocessing from Section SECREF17 resulted in a 2.5 point decrease in both EM and F1. The numeric questions were the most affected, with their performance dropping by 3.5 points. Given that number questions make up about 61% of the dataset, we can deduce that our improved number handling is responsible for about a 2.1 point gain, while the rest could be be attributed to the improved Wikipedia parsing.\n\nAlthough NER span cleaning (Section SECREF23) affected only 3% of the multi-span questions, it provided a solid improvement of 5.4 EM in multi-span questions and 1.5 EM in single-span questions. The single-span improvement is probably due to the combination of better multi-span head learning as a result of fixing multi-span questions and the fact that the multi-span head can answer single-span questions as well.\n\nNot using the single-span heads results in a slight drop in multi-span performance, and a noticeable drop in single-span performance. However when performing the same comparison between our large models (see Table TABREF24), this performance gap becomes significantly smaller.\n\nAs expected, not using the multi-span head causes the multi-span performance to plummet. Note that for this ablation test the single-span heads were permitted to train on multi-span questions.\n\nCompared to using greedy decoding in the prediction of multi-span questions, using beam search results in a small improvement. We used a beam with of 5, and didn't perform extensive tuning of the beam width.\n\nIn this work, we introduced a new approach for tackling multi-span questions in reading comprehension datasets. This approach is based on individually tagging each token with a categorical tag, relying on the tokens' contextual representation to bridge the information gap resulting from the tokens being tagged individually.\n\nFirst, we show that integrating this new approach into an existing model, NABERT+, does not hinder performance on other questions types, while substantially improving the results on multi-span questions. Later, we compare our results to the current state-of-the-art on multi-span questions. We show that our model has a clear advantage in handling multi-span questions, with a 29.7 absolute improvement in EM, and a 15.1 absolute improvement in F1. Furthermore, we show that our model slightly eclipses the current state-of-the-art results on the entire DROP dataeset. Finally, we present some ablation studies, analyzing the benefit gained from individual components of our model.\n\nWe believe that combining our tag-based approach for handling multi-span questions with current successful techniques for handling single-span questions could prove beneficial in finding better, more holistic ways, of tackling span questions in general.\n\nCurrently, For each individual span, we optimize the average likelihood over all its possible tag sequences (see Section SECREF9). A different approach could be not taking each possible tag sequence into account but only the most likely one. This could provide the model more flexibility during training and the ability to focus on the more \"correct\" tag sequences.\n\nAs mentioned in Section SECREF5, we only considered the representation of the first wordpiece sub-token in our model. It would be interesting to see how different approaches to utilize the other sub-tokens' representations in the tagging task affect the results.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 56
+    },
+    {
+      "section": "Abstract",
+      "start": 58,
+      "end": 1014
+    },
+    {
+      "section": "Introduction",
+      "start": 1016,
+      "end": 2683
+    },
+    {
+      "section": "Related Work",
+      "start": 2685,
+      "end": 5397
+    },
+    {
+      "section": "Model",
+      "start": 5399,
+      "end": 6142
+    },
+    {
+      "section": "Model ::: NABERT+",
+      "start": 6144,
+      "end": 7797
+    },
+    {
+      "section": "Model ::: NABERT+ ::: Heads Shared with NABERT+",
+      "start": 7799,
+      "end": 10610
+    },
+    {
+      "section": "Model ::: Multi-Span Head",
+      "start": 10612,
+      "end": 11636
+    },
+    {
+      "section": "Model ::: Objective and Training",
+      "start": 11638,
+      "end": 13124
+    },
+    {
+      "section": "Model ::: Objective and Training ::: Multi-Span Head Training Objective",
+      "start": 13126,
+      "end": 13546
+    },
+    {
+      "section": "Model ::: Objective and Training ::: Multi-Span Head Correct Tag Sequences",
+      "start": 13548,
+      "end": 14176
+    },
+    {
+      "section": "Model ::: Objective and Training ::: Dealing with too Many Correct Tag Sequences",
+      "start": 14178,
+      "end": 15135
+    },
+    {
+      "section": "Model ::: Tag Sequence Prediction with the Multi-Span Head",
+      "start": 15137,
+      "end": 15531
+    },
+    {
+      "section": "Model ::: Tag Sequence Prediction with the Multi-Span Head ::: Viterbi Decoding",
+      "start": 15533,
+      "end": 15894
+    },
+    {
+      "section": "Model ::: Tag Sequence Prediction with the Multi-Span Head ::: Beam Search",
+      "start": 15896,
+      "end": 16567
+    },
+    {
+      "section": "Model ::: Tag Sequence Prediction with the Multi-Span Head ::: Greedy Tagging",
+      "start": 16569,
+      "end": 17065
+    },
+    {
+      "section": "Preprocessing",
+      "start": 17067,
+      "end": 17407
+    },
+    {
+      "section": "Preprocessing ::: Simple Preprocessing ::: Improved Textual Parsing",
+      "start": 17409,
+      "end": 17847
+    },
+    {
+      "section": "Preprocessing ::: Simple Preprocessing ::: Improved Handling of Numbers",
+      "start": 17849,
+      "end": 18913
+    },
+    {
+      "section": "Preprocessing ::: Using NER for Cleaning Up Multi-Span Questions",
+      "start": 18915,
+      "end": 20053
+    },
+    {
+      "section": "Training",
+      "start": 20055,
+      "end": 21359
+    },
+    {
+      "section": "Results and Discussion ::: Performance on DROP's Development Set",
+      "start": 21361,
+      "end": 21520
+    },
+    {
+      "section": "Results and Discussion ::: Performance on DROP's Development Set ::: Comparison to the NABERT+ Baseline",
+      "start": 21522,
+      "end": 21889
+    },
+    {
+      "section": "Results and Discussion ::: Performance on DROP's Development Set ::: Comparison to MTMSN",
+      "start": 21891,
+      "end": 23457
+    },
+    {
+      "section": "Results and Discussion ::: Performance on DROP's Test Set",
+      "start": 23459,
+      "end": 23614
+    },
+    {
+      "section": "Results and Discussion ::: Ablation Studies",
+      "start": 23616,
+      "end": 25277
+    },
+    {
+      "section": "Conclusion",
+      "start": 25279,
+      "end": 26542
+    },
+    {
+      "section": "Future Work ::: A Different Loss for Multi-span Questions",
+      "start": 26544,
+      "end": 26909
+    },
+    {
+      "section": "Future Work ::: Explore Utilization of Non-First Wordpiece Sub-Tokens",
+      "start": 26911,
+      "end": 27173
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.13375",
+    "arxiv_id": "1909.13375",
+    "source_url": "https://arxiv.org/abs/1909.13375",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

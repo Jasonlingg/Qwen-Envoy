@@ -1,0 +1,110 @@
+{
+  "doc_id": "qasper_1909_00100",
+  "title": "Small and Practical BERT Models for Sequence Labeling",
+  "text": "Small and Practical BERT Models for Sequence Labeling\n\nWe propose a practical scheme to train a single multilingual sequence labeling model that yields state of the art results and is small and fast enough to run on a single CPU. Starting from a public multilingual BERT checkpoint, our final model is 6x smaller and 27x faster, and has higher accuracy than a state-of-the-art multilingual baseline. We show that our model especially outperforms on low-resource languages, and works on codemixed input text without being explicitly trained on codemixed examples. We showcase the effectiveness of our method by reporting on part-of-speech tagging and morphological prediction on 70 treebanks and 48 languages.\n\nWe discuss two core models for addressing sequence labeling problems and describe, for each, training them in a single-model multilingual setting: (1) the Meta-LSTM BIBREF0 , an extremely strong baseline for our tasks, and (2) a multilingual BERT-based model BIBREF1 .\n\nThe Meta-LSTM is the best-performing model of the CoNLL 2018 Shared Task BIBREF2 for universal part-of-speech tagging and morphological features. The model is composed of 3 LSTMs: a character-BiLSTM, a word-BiLSTM and a single joint BiLSTM which takes the output of the character and word-BiLSTMs as input. The entire model structure is referred to as Meta-LSTM.\n\nTo set up multilingual Meta-LSTM training, we take the union of all the word embeddings from the bojanowski2017enriching embeddings model on Wikipedia in all languages. For out-of-vocabulary words, a special unknown token is used in place of the word.\n\nThe model is then trained as usual with cross-entropy loss. The char-BiLSTM and word-biLSTM are first trained independently. And finally we train the entire Meta-LSTM.\n\nBERT is a transformer-based model BIBREF3 pretrained with a masked-LM task on millions of words of text. In this paper our BERT-based experiments make use of the cased multilingual BERT model available on GitHub and pretrained on 104 languages.\n\nModels fine-tuned on top of BERT models achieve state-of-the-art results on a variety of benchmark and real-world tasks.\n\nTo train a multilingual BERT model for our sequence prediction tasks, we add a softmax layer on top of the the first wordpiece BIBREF4 of each token and finetune on data from all languages combined. During training, we concatenate examples from all treebanks and randomly shuffle the examples.\n\nThe results in Table TABREF1 make it clear that the BERT-based model for each task is a solid win over a Meta-LSTM model in both the per-language and multilingual settings. However, the number of parameters of the BERT model is very large (179M parameters), making deploying memory intensive and inference slow: 230ms on an Intel Xeon CPU. Our goal is to produce a model fast enough to run on a single CPU while maintaining the modeling capability of the large model on our tasks.\n\nWe choose a three-layer BERT, we call MiniBERT, that has the same number of layers as the Meta-LSTM and has fewer embedding parameters and hidden units than both models. Table TABREF7 shows the parameters of each model. The Meta-LSTM has the largest number of parameters dominated by the large embeddings. BERT's parameters are mostly in the hidden units. The MiniBERT has the fewest total parameters.\n\nThe inference-speed bottleneck for Meta-LSTM is the sequential character-LSTM-unrolling and for BERT is the large feedforward layers and attention computation that has time complexity quadratic to the sequence length. Table TABREF8 compares the model speeds.\n\nBERT is much slower than both MetaLSTM and MiniBERT on CPU. However, it is faster than Meta-LSTM on GPU due to the parallel computation of the transformer. The MiniBERT is significantly faster than the other models on both GPU and CPU.\n\nFor model distillation BIBREF6 , we extract sentences from Wikipedia in languages for which public multilingual is pretrained. For each sentence, we use the open-source BERT wordpiece tokenizer BIBREF4 , BIBREF1 and compute cross-entropy loss for each wordpiece: INLINEFORM0 \n\nwhere INLINEFORM0 is the cross-entropy function, INLINEFORM1 is the softmax function, INLINEFORM2 is the BERT model's logit of the current wordpiece, INLINEFORM3 is the small BERT model's logits and INLINEFORM4 is a temperature hyperparameter, explained in Section SECREF11 .\n\nTo train the distilled multilingual model mMiniBERT, we first use the distillation loss above to train the student from scratch using the teacher's logits on unlabeled data. Afterwards, we finetune the student model on the labeled data the teacher is trained on.\n\nWe use universal part-of-speech tagging and morphology data from the The CoNLL 2018 Shared Task BIBREF7 , BIBREF8 . For comparison simplicity, we remove the languages that the multilingual BERT public checkpoint is not pretrained on.\n\nFor segmentation, we use a baseline segmenter (UDPipe v2.2) provided by the shared task organizer to segment raw text. We train and tune the models on gold-segmented data and apply the segmenter on the raw test of test data before applying our models.\n\nThe part-of-speech tagging task has 17 labels for all languages. For morphology, we treat each morphological group as a class and union all classes as a output of 18334 labels.\n\nFor Meta-LSTM, we use the public repository's hyperparameters.\n\nFollowing devlin2019, we use a smaller learning rate of 3e-5 for fine-tuning and a larger learning rate of 1e-4 when training from scratch and during distillation. Training batch size is set to 16 for finetuning and 256 for distillation.\n\nFor distillation, we try temperatures INLINEFORM0 and use the teacher-student accuracy for evaluation. We observe BERT is very confident on its predictions, and using a large temperature INLINEFORM1 to soften the distribution consistently yields the best result.\n\nWe compare per-language models trained on single language treebanks with multilingual models in Table TABREF1 and Table TABREF14 . In the experimental results we use a prefix INLINEFORM0 to denote the model is a single multilingual model. We compare Meta-LSTM, BERT, and MiniBERT.\n\nmBERT performs the best among all multilingual models. The smallest and fastest model, mMiniBERT, performs comparably to mBERT, and outperforms mMeta-LSTM, a state-of-the-art model for this task.\n\nWhen comparing with per-language models, the multilingual models have lower F1. DBLP:journals/corr/abs-1904-02099 shows similar results. Meta-LSTM, when trained in a multilingual fashion, has bigger drops than BERT in general. Most of the Meta-LSTM drop is due to the character-LSTM, which drops by more than 4 points F1.\n\nWe pick languages with fewer than 500 training examples to investigate the performance of low-resource languages: Tamil (ta), Marathi (mr), Belarusian (be), Lithuanian (lt), Armenian (hy), Kazakh (kk). Table TABREF15 shows the performance of the models.\n\nWhile DBLP:journals/corr/abs-1904-09077 shows effective zero-shot crosslingual transfer from English to other high-resource languages, we show that cross-lingual transfer is even effective on low-resource languages when we train on all languages as mBERT is significantly better than BERT when we have fewer than 50 examples. In these cases, the mMiniBERT distilled from the multilingual mBERT yields results better than training individual BERT models. The gains becomes less significant when we have more training data.\n\nThe multilingual baseline mMeta-LSTM does not do well on low-resource languages. On the contrary, mMiniBERT performs well and outperforms the state-of-the-art Meta-LSTM on the POS tagging task and on four out of size languages of the Morphology task.\n\nWe use the Universal Dependencies' Hindi-English codemixed data set BIBREF9 to test the model's ability to label code-mixed data. This dataset is based on code-switching tweets of Hindi and English multilingual speakers. We use the Devanagari script provided by the data set as input tokens.\n\nIn the Universal Dependency labeling guidelines, code-switched or foreign-word tokens are labeled as X along with other tokens that cannot be labeled. The trained model learns to partition the languages in a codemixed input by labeling tokens in one language with X, and tokens in the other language with any of the other POS tags. It turns out that the 2nd-most likely label is usually the correct label in this case; we evaluate on this label when the 1-best is X.\n\nTable TABREF25 shows that all multilingual models handle codemixed data reasonably well without supervised codemixed traininig data.\n\nWe have described the benefits of multilingual models over models trained on a single language for a single task, and have shown that it is possible to resolve a major concern of deploying large BERT-based models by distilling our multilingual model into one that maintains the quality wins with performance fast enough to run on a single CPU. Our distilled model outperforms a multilingual version of a very strong baseline model, and for most languages yields comparable or better performance to a large BERT model.\n\nWe use exactly the same hyperparameters as the public multilingual BERT for finetuning our models. We train the part-of-speech tagging task for 10 epochs and the morphology task for 50 epochs.\n\nFor distillation, we use the following hyperparameters for all tasks.\n\nlearning rate: 1e-4\n\ntemperature: 3\n\nbatch size: 256\n\nnum epochs: 24\n\nWe take the Wikipedia pretraining data as is and drop sentences with fewer than 10 characters.\n\nWe use the vocab and wordpiece model included with the cased public multilingual model on GitHub.\n\nWe use the BERT configuration of the public multilingual BERT with the following modifications for mMiniBERT.\n\nHidden size = 256\n\nIntermediate layer size = 1024\n\nNum attention heads = 4\n\nLayers = 3\n\nTo understand the importance of distillation in training mMiniBERT, we compare it to a model with the MiniBERT structure trained from scratch using only labeled multilingual data the teacher is trained on. Table TABREF37 shows that distillation plays an important role in closing the accuracy gap between teacher and student.\n\nWe show per-language F1 results of each model in Table SECREF38 and Table SECREF38 . For per-language models, no models are trained for treebanks without tuning data, and metrics of those languages are not reported. All macro-averaged results reported exclude those languages.\n\nlccccc treebankBERTMeta-LSTMmBERT mMeta-LSTM mMiniBERT\n\naf_afribooms97.6297.6397.4993.1696.08\n\nam_att3.285.63.16\n\nar_padt90.4690.5590.328990.06\n\nar_pud71.5968.9671.06\n\nbe_hse94.8191.0595.0287.5994.95\n\nbg_btb99.0198.7798.7296.4398.19\n\nca_ancora98.8498.6298.7797.5798.45\n\ncs_cac99.1799.4399.398.4698.48\n\ncs_cltt87.4887.2587.6787.6287.53\n\ncs_fictree98.6298.6398.2597.297.18\n\ncs_pdt99.0699.0798.9998.2298.61\n\ncs_pud97.1396.5397\n\nda_ddt97.5997.4797.1892.3695.93\n\nde_gsd94.8194.1794.5391.9493.82\n\nde_pud88.7687.4288.7\n\nel_gdt97.9797.497.9194.8797.16\n\nen_ewt95.8295.4595.292.2494.19\n\nen_gum96.2295.0294.7992.3394.24\n\nen_lines97.2296.8195.7993.9695.25\n\nen_partut96.1195.995.0293.2994.61\n\nes_ancora98.8798.7898.1796.2797.8\n\nes_gsd93.793.989.6590.6189.58\n\nes_pud85.8786.185.71\n\net_edt97.2797.1797.0294.3295.64\n\neu_bdt96.296.195.5191.5394.15\n\nfa_seraji97.5797.1797.1795.2996.92\n\nfi_ftb96.2696.1293.1587.2389.79\n\nfi_pud95.5593.2395.01\n\nfi_tdt96.8197.0293.991.5892.6\n\nfr_gsd96.6296.4596.2395.3796.05\n\nfr_partut96.189695.4394.3594.93\n\nfr_pud90.7790.190.64\n\nfr_sequoia96.7797.5997.0795.9196.75\n\nfr_spoken97.5595.7896.190.0793.25\n\nga_idt91.9291.5590.8384.1685.72\n\ngl_ctg96.9997.2196.592.8795.84\n\ngl_treegal93.491.2891.9\n\nhe_htb82.7682.4982.6980.9381.93\n\nhi_hdtb97.3197.3997.196.296.43\n\nhi_pud86.4885.3385.68\n\nhr_set97.7997.9497.4796.2497.2\n\nhu_szeged96.5194.7195.9985.595.47\n\nhy_armtdp84.4286.6263.8286.98\n\nid_gsd93.0693.3793.390.8193.35\n\nid_pud63.5263.563.33\n\nit_isdt98.3398.0698.2796.797.8\n\nit_partut98.1298.1798.0996.9998.06\n\nit_postwita95.6695.8695.694.1793.2\n\nit_pud93.8492.7293.67\n\nja_gsd88.6388.7388.5487.0388.43\n\nja_modern41.5551.2621.61\n\nja_pud89.1587.9689.3\n\nkk_ktb75.9361.781.3652.9180.06\n\nko_gsd95.9295.6490.386.3988.62\n\nko_kaist95.5695.4293.8687.4693.43\n\nko_pud41.9346.1131.96\n\nla_ittb98.3498.4298.397.1897.65\n\nla_perseus89.9183.8585.23\n\nla_proiel96.3496.3795.9792.0293.78\n\nlt_hse88.8881.4390.0165.686.9\n\nlv_lvtb94.7994.4793.7188.2591.3\n\nmr_ufal77.4572.175.9265.4875.41\n\nnl_alpino97.196.1697.3393.7896.19\n\nnl_lassysmall95.5495.9295.7294.495.47\n\nno_bokmaal989897.9595.2797.04\n\nno_nynorsklia94.0888.2792.55\n\nno_nynorsk97.9497.9297.6994.9196.59\n\npl_lfg98.798.598.3995.2197.48\n\npl_sz98.5697.9198.0594.7397.29\n\npt_bosque96.7496.7396.1695.5395.85\n\npt_gsd95.8395.4493.8493.0794.44\n\npt_pud89.4889.6689.29\n\nro_nonstandard94.6794.489492.0591.9\n\nro_rrt97.6397.5297.4795.7896.71\n\nru_gsd92.2391.3990.8488.1390.14\n\nru_pud89.788.9289.52\n\nru_syntagrus98.398.6598.3297.1398.03\n\nru_taiga93.6292.7593.18\n\nsa_ufal32.4729.5827.11\n\nsk_snk97.0896.3296.9893.6196.35\n\nsl_ssj97.0796.6896.8994.2495.58\n\nsl_sst94.5190.3491.79\n\nsr_set98.6398.3398.3194.7997.36\n\nsv_lines97.2196.5996.9993.6495.57\n\nsv_pud94.5292.0694.32\n\nsv_talbanken98.0397.3497.7794.9196.76\n\nta_ttb75.7172.774.2861.5174.6\n\nte_mtg94.2592.7293.4287.3293.42\n\nth_pud2.372.731.54\n\ntl_trg70.6928.6268.28\n\ntr_imst93.9694.0393.184.6491.8\n\ntr_pud73.168.3672.47\n\nuk_iu97.2996.697.289396.88\n\nur_udtb93.8393.8793.699393.05\n\nvi_vtb77.6776.4277.4472.0177.06\n\nyo_ytb43.4830.8534.59\n\nzh_cfl49.8339.7749.42\n\nzh_gsd87.685.785.9682.7686.08\n\nzh_hk66.2957.8865.86\n\nzh_pud83.373.382.95\n\nPOS tagging F1 of all models.\n\nlccccc treebankBERT F1Meta-LSTM F1mBERT F1mMeta-LSTM F1mMiniBERT F1\n\naf_afribooms97.1197.3696.5388.9893.75\n\nam_att32.3632.36\n\nar_padt88.2688.2487.7683.1485.34\n\nar_pud36.3334.2836.08\n\nbe_hse82.8374.0387.5259.1681.82\n\nbg_btb97.5497.5897.4791.4195.4\n\nca_ancora98.3798.2198.2896.0497.67\n\ncs_cac96.3396.4996.5488.1193.47\n\ncs_cltt81.6179.8983.8678.8280.61\n\ncs_fictree96.3996.494.0983.3787.59\n\ncs_pdt97.1896.9197.1589.7794.63\n\ncs_pud93.8887.4491.81\n\nda_ddt97.2297.0895.6289.8294.08\n\nde_gsd90.8490.5890.480.6988.99\n\nde_pud30.4130.5530.4\n\nel_gdt94.5793.9594.8387.692.07\n\nen_gum96.879693.7990.1193.71\n\nen_lines97.3296.6893.1187.4992.07\n\nen_partut94.8895.3890.7679.9990.18\n\nen_pud93.2591.2393.1\n\nes_ancora98.4598.4297.695.1797\n\nes_gsd93.5293.7288.7289.2688.78\n\nes_pud52.752.852.73\n\net_edt96.1496.1195.7890.5192.14\n\neu_bdt93.2792.5692.6776.7284.53\n\nfa_seraji97.3597.2596.9193.8296.28\n\nfi_ftb96.3496.4892.3277.8986.47\n\nfi_pud93.5891.1291.65\n\nfi_tdt95.0395.5890.9688.4487.48\n\nfr_gsd96.0596.1194.6786.9794.51\n\nfr_partut93.3292.9388.987.4887.05\n\nfr_pud59.1557.558.94\n\nfr_sequoia97.0997.1391.5485.2390.74\n\nfr_spoken10010098.6280.6796.67\n\nga_idt82.281.7881.263.4466.82\n\ngl_ctg98.9898.9595.2789.9895.1\n\ngl_treegal80.0568.7375.97\n\nhe_htb81.2780.8580.7976.8978.74\n\nhi_hdtb93.3293.8592.9189.0990.65\n\nhi_pud22.122.3722.03\n\nhr_set91.9991.8591.2481.6287.81\n\nhu_szeged93.6591.2892.9371.2587.36\n\nhy_armtdp41.1354.4551.0836.5946.43\n\nid_gsd94.849694.8591.6294.39\n\nid_pud39.8342.7939.79\n\nit_isdt97.797.8297.8795.4797.37\n\nit_partut97.3597.7398.0196.3397.9\n\nit_postwita95.6296.0595.0391.5293.17\n\nit_pud57.8257.4157.6\n\nja_gsd90.2990.4590.2990.3990.41\n\nja_modern63.961.1763.99\n\nja_pud57.457.2657.27\n\nkk_ktb64.625.5559.49\n\nko_gsd99.6299.5599.498.9999.37\n\nko_kaist10010099.9499.2499.93\n\nko_pud38.3338.6638.27\n\nla_ittb96.796.9497.1590.7893.91\n\nla_perseus82.0964.7372.24\n\nla_proiel90.8291.0191.5179.0883.99\n\nlt_hse75.2169.6573.6142.5165.22\n\nlv_lvtb88.6191.3488.179.1181.91\n\nmr_ufal63.9559.1164.233.6354.01\n\nnl_alpino96.2296.1396.5391.995.67\n\nnl_lassysmall96.4696.0295.5592.1695.28\n\nno_bokmaal96.8597.1396.4891.1795.31\n\nno_nynorsklia94.2289.5691.08\n\nno_nynorsk96.797.0496.4992.1294.79\n\npl_lfg95.8594.6884.9647.9984.56\n\npl_sz93.991.9371.473.0265.36\n\npt_bosque96.2796.1687.0483.1385.72\n\npt_gsd97.295.3367.7276.0171.88\n\npt_pud52.0649.7950.95\n\nro_nonstandard88.5288.9186.8982.182.14\n\nro_rrt97.0297.2396.5893.294.85\n\nru_gsd88.8386.7381.4464.278.93\n\nru_pud37.9735.2637.49\n\nru_syntagrus97.0296.995.9991.9694.33\n\nru_taiga88.5684.0286.01\n\nsa_ufal15.916.1416.33\n\nsk_snk92.0689.6391.5868.2585.29\n\nsl_ssj94.3993.7894.4182.6989.23\n\nsl_sst88.4691.8978.2285.59\n\nsr_set94.8394.7192.7973.5190.48\n\nsv_lines89.5489.5588.6683.2786.4\n\nsv_pud77.3973.9476.79\n\nsv_talbanken96.9296.5696.1390.2394.49\n\nta_ttb72.9171.0173.7546.970.22\n\nte_mtg98.9698.9698.5498.6898.54\n\nth_pud8.2708.43\n\ntl_trg29.3128.6225.17\n\ntr_imst89.59188.6373.2381.99\n\ntr_pud23.7223.8423.46\n\nuk_iu92.490.9892.6479.4988.79\n\nur_udtb82.2483.7282.6481.8982.48\n\nvi_vtb83.748483.9383.5883.94\n\nyo_ytb58.7886.8261.88\n\nzh_cfl46.5543.5545.73\n\nzh_gsd87.6488.3888.3187.0588.5\n\nzh_hk66.3364.9766.23\n\nzh_pud86.3583.686.14\n\nMorphology F1 of all models.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 53
+    },
+    {
+      "section": "Abstract",
+      "start": 55,
+      "end": 708
+    },
+    {
+      "section": "Multilingual Models for Sequence Labeling",
+      "start": 710,
+      "end": 978
+    },
+    {
+      "section": "Meta-LSTM",
+      "start": 980,
+      "end": 1764
+    },
+    {
+      "section": "Multilingual BERT",
+      "start": 1766,
+      "end": 2427
+    },
+    {
+      "section": "Small and Practical Models",
+      "start": 2429,
+      "end": 2909
+    },
+    {
+      "section": "Size and speed",
+      "start": 2911,
+      "end": 3809
+    },
+    {
+      "section": "Distillation",
+      "start": 3811,
+      "end": 4627
+    },
+    {
+      "section": "Data",
+      "start": 4629,
+      "end": 5293
+    },
+    {
+      "section": "Tuning",
+      "start": 5295,
+      "end": 5860
+    },
+    {
+      "section": "Multilingual Models",
+      "start": 5862,
+      "end": 6662
+    },
+    {
+      "section": "Low Resource Languages",
+      "start": 6664,
+      "end": 7692
+    },
+    {
+      "section": "Codemixed Input",
+      "start": 7694,
+      "end": 8587
+    },
+    {
+      "section": "Conclusion",
+      "start": 8589,
+      "end": 9106
+    },
+    {
+      "section": "Training Hyperparameters",
+      "start": 9108,
+      "end": 9537
+    },
+    {
+      "section": "Small BERT structure",
+      "start": 9539,
+      "end": 9835
+    },
+    {
+      "section": "The Importance of Distillation",
+      "start": 9837,
+      "end": 10162
+    },
+    {
+      "section": "Per-Language Results",
+      "start": 10164,
+      "end": 16712
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.00100",
+    "arxiv_id": "1909.00100",
+    "source_url": "https://arxiv.org/abs/1909.00100",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

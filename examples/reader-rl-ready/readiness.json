@@ -1,0 +1,50 @@
+{
+  "schema_version": "reader-rl-readiness-v1",
+  "date": "2026-10-22",
+  "local_pipeline_ready": true,
+  "actual_qwen8b_gpu_verified": false,
+  "overall_empirical_rl_readiness": "pending_real_8b_GPU_probe_and_update_proof",
+  "new_real_qwen8b_calls": 0,
+  "real_checkpoint_optimizer_updates": 0,
+  "paid_model_calls": 0,
+  "cloud_resources_created": 0,
+  "tiny_cpu_model_sampling_update_reload_rpc_checks_passed": true,
+  "train_questions": 82,
+  "reward_validation_papers": 8,
+  "locked_model_evaluation_papers": 12,
+  "full_tests": {
+    "passed": 2159,
+    "warnings": 25,
+    "skipped": 0,
+    "seconds": 113.74
+  },
+  "focused_tests": {
+    "passed": 124,
+    "seconds": 14.54
+  },
+  "original_fixed_action_replays": 3,
+  "authored_Docker_controls_executed": 101,
+  "current_pool_control_subset_passed": 90,
+  "reference_contract_controls_passed": 84,
+  "review_kind": "implementing_assistant_model_assisted",
+  "human_review": null,
+  "paid_budget_authorization": null,
+  "model_improvement_measured": false,
+  "commits_created": 0,
+  "pending": [
+    "User hard GPU budget choice",
+    "Provider verified price/storage quote and automatic resource termination",
+    "Actual pinned Qwen3-8B NF4 CUDA load and memory proof",
+    "Actual sampled rollout reward variance and numerical parity",
+    "If signal gate passes: one policy-only update, unchanged reference, save/reload and local artifact retrieval",
+    "Matched source-supported evaluation before any checkpoint promotion"
+  ],
+  "limitations": [
+    "Finite reviewed answer variants, not a semantic answer judge",
+    "Annotation-assisted scope, not retrieval evaluation",
+    "Same implementing-assistant source reviewer, not independent human review",
+    "Training pool reuse is disclosed; not a universally unseen corpus",
+    "Scripted replay cannot measure model reactions to new feedback",
+    "No fine-tuned model improvement established"
+  ]
+}

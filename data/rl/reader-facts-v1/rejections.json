@@ -1,0 +1,646 @@
+[
+  {
+    "case_id": "qasper_train_9cc0fd3721881bd8e246d20fff5d15bd32365655--rl-short-fact",
+    "case_sha256": "b5491857943f8e530db89662cc7769faf382ba4f4373ac2cad281c2518a94603",
+    "index": 1,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "49256f32218df2c54584fe671195d401ce5367da7ec197b2a3f890d55c4202b0",
+    "source_support_reviewed": true,
+    "notes": "The excerpt establishes image input for the overall model, not the specifically requested differential network.",
+    "claim": "For What is the input to the differential network? the supported short fact is image",
+    "support": [
+      {
+        "doc_id": "qasper_1808_03986",
+        "start": 9256,
+        "end": 9795,
+        "section": "Method",
+        "text": "Our method is based on a sequence to sequence network BIBREF38 , BIBREF12 , BIBREF39 . The sequence to sequence network has a text sequence as input and output. In our method, we take an image as input and generate a natural question as output. The architecture for our model is shown in Figure FIGREF4 . Our model contains three main modules, (a) Representation Module that extracts multimodal features (b) Mixture Module that fuses the multimodal representation and (c) Decoder that generates question using an LSTM-based language model.",
+        "match_count": 1,
+        "quote": "Our method is based on a sequence to sequence network BIBREF38 , BIBREF12 , BIBREF39 . The sequence to sequence network has a text sequence as input and output. In our method, we take an image as input and generate a natural question as output. The architecture for our model is shown in Figure FIGREF4 . Our model contains three main modules, (a) Representation Module that extracts multimodal features (b) Mixture Module that fuses the multimodal representation and (c) Decoder that generates question using an LSTM-based language model."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_33ccbc401b224a48fba4b167e86019ffad1787fb--rl-short-fact",
+    "case_sha256": "b6c11c84e9ee55ed9761ad6be3255b7d10c16d35f26beabe2804523da5647724",
+    "index": 8,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "4f9903385b70f1709d2ea65985accf54e002c65815bf84234a0c409bcc185f58",
+    "source_support_reviewed": true,
+    "notes": "Counts are paired/unpaired examples without establishing the requested comment unit.",
+    "claim": "For How many comments were used? the supported short fact is from 50K to 4.8M",
+    "support": [
+      {
+        "doc_id": "qasper_1809_04960",
+        "start": 22863,
+        "end": 23546,
+        "section": "Analysis and Discussion",
+        "text": "We analyze the performance of the proposed method under the semi-supervised setting. We train the supervised IR model with different numbers of paired data. Figure FIGREF39 shows the curve (blue) of the recall1 score. As expected, the performance grows as the paired dataset becomes larger. We further combine the supervised IR with our unsupervised model, which is trained with full unpaired data (4.8M) and different number of paired data (from 50K to 4.8M). It shows that IR+Proposed can outperform the supervised IR model given the same paired dataset. It concludes that the proposed model can exploit the unpaired data to further improve the performance of the supervised model.",
+        "match_count": 1,
+        "quote": "We analyze the performance of the proposed method under the semi-supervised setting. We train the supervised IR model with different numbers of paired data. Figure FIGREF39 shows the curve (blue) of the recall1 score. As expected, the performance grows as the paired dataset becomes larger. We further combine the supervised IR with our unsupervised model, which is trained with full unpaired data (4.8M) and different number of paired data (from 50K to 4.8M). It shows that IR+Proposed can outperform the supervised IR model given the same paired dataset. It concludes that the proposed model can exploit the unpaired data to further improve the performance of the supervised model."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_e015d033d4ee1c83fe6f192d3310fb820354a553--rl-short-fact",
+    "case_sha256": "a7f368785dc9ad24f7ac23b681934f08206bf6f7b00b64287a972cfd9f43a17e",
+    "index": 11,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "1d74ef6de79859544a504f23601b57e711e841887019c08138c5bf4294e52289",
+    "source_support_reviewed": true,
+    "notes": "Related-work dataset description does not establish that this work used it.",
+    "claim": "For What datasets did they use? the supported short fact is BIBREF8 a refined collection of tweets gathered from twitter",
+    "support": [
+      {
+        "doc_id": "qasper_2001_06888",
+        "start": 21971,
+        "end": 22289,
+        "section": "Experimental Evaluation ::: Dataset",
+        "text": "In BIBREF8 a refined collection of tweets gathered from twitter is presented. Their dataset which is labeled for named entity recognition task contains 8,257 tweets. There are 12,784 entities in total in this dataset. Table TABREF19 shows statistics related to each named entity in training, development and test sets.",
+        "match_count": 1,
+        "quote": "In BIBREF8 a refined collection of tweets gathered from twitter is presented. Their dataset which is labeled for named entity recognition task contains 8,257 tweets. There are 12,784 entities in total in this dataset. Table TABREF19 shows statistics related to each named entity in training, development and test sets."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_b11ee27f3de7dd4a76a1f158dc13c2331af37d9f--rl-short-fact",
+    "case_sha256": "6a10c769a687a7b7cc93c80a955711df5c57d0fbe2dad9f394e93a77ec129603",
+    "index": 14,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "cc436ccb0589e523a6ba77e3aa89b2188e8f66c721a459ee1a560dc67566280c",
+    "source_support_reviewed": true,
+    "notes": "PRKGC is described as solving the task, without establishing the requested baseline role.",
+    "claim": "For What is the baseline? the supported short fact is path ranking-based KGC (PRKGC)",
+    "support": [
+      {
+        "doc_id": "qasper_1910_04601",
+        "start": 13041,
+        "end": 13332,
+        "section": "Baseline RC-QED@!START@$^{\\rm E}$@!END@ model",
+        "text": "RC-QED$^{\\rm E}$ can be naturally solved by path ranking-based KGC (PRKGC), where the query triplet and the sampled paths correspond to a question and derivation steps, respectively. PRKGC meets our purposes because of its glassboxness: we can trace the derivation steps of the model easily.",
+        "match_count": 1,
+        "quote": "RC-QED$^{\\rm E}$ can be naturally solved by path ranking-based KGC (PRKGC), where the query triplet and the sampled paths correspond to a question and derivation steps, respectively. PRKGC meets our purposes because of its glassboxness: we can trace the derivation steps of the model easily."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_0747cecb3c72594c5d15ba18490566be1ffdbfad--rl-short-fact",
+    "case_sha256": "019450d8e0816dbf5ef4345af6491399b16e56cff9e17666b576fbf5832f5c4c",
+    "index": 17,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "f9c08f57ad238e87d53e549ddf37429efd41828709649661b5dab99dda421c2a",
+    "source_support_reviewed": true,
+    "notes": "Generic leaderboard competitors are not identified solutions; unsuitable short-fact target.",
+    "claim": "For What other solutions do they compare to? the supported short fact is strong competitive methods on the SQuAD leaderboard and TriviaQA leaderboard",
+    "support": [
+      {
+        "doc_id": "qasper_1710_02772",
+        "start": 18571,
+        "end": 18792,
+        "section": "Overall Results",
+        "text": "We evaluate the performance of our proposed method based on two evaluation criteria EM and F1 for the MC tasks. We compare our model with other strong competitive methods on the SQuAD leaderboard and TriviaQA leaderboard.",
+        "match_count": 1,
+        "quote": "We evaluate the performance of our proposed method based on two evaluation criteria EM and F1 for the MC tasks. We compare our model with other strong competitive methods on the SQuAD leaderboard and TriviaQA leaderboard."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_b984612ceac5b4cf5efd841af2afddd244ee497a--rl-short-fact",
+    "case_sha256": "603c74b34a2a3e75085522501957375657be9ae69e8b852d339df08765757d7e",
+    "index": 18,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "be1d098b2a3eb2911b7908287023508c5c8ac81da6a023edb7c90298f0e9c159",
+    "source_support_reviewed": true,
+    "notes": "Equal parameterization is only established for one comparator, not other models generally.",
+    "claim": "For Does their model have more parameters than other models? the supported short fact is approximately equal parameterization",
+    "support": [
+      {
+        "doc_id": "qasper_1811_09786",
+        "start": 22492,
+        "end": 22932,
+        "section": "Overall Results",
+        "text": "Across all 26 datasets, RCRN outperforms not only standard BiLSTMs but also 3L-BiLSTMs which have approximately equal parameterization. 3L-BiLSTMs were overall better than BiLSTMs but lose out on a minority of datasets. RCRN outperforms a wide range of competitive baselines such as DiSAN, Bi-SRUs, BCN and LSTM-CNN, etc. We achieve (close to) state-of-the-art performance on SST, TREC question classification and 16 Amazon review datasets.",
+        "match_count": 1,
+        "quote": "Across all 26 datasets, RCRN outperforms not only standard BiLSTMs but also 3L-BiLSTMs which have approximately equal parameterization. 3L-BiLSTMs were overall better than BiLSTMs but lose out on a minority of datasets. RCRN outperforms a wide range of competitive baselines such as DiSAN, Bi-SRUs, BCN and LSTM-CNN, etc. We achieve (close to) state-of-the-art performance on SST, TREC question classification and 16 Amazon review datasets."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_609fbe627309775de415682f48588937d5dd8748--rl-short-fact",
+    "case_sha256": "1e39b79ce0f8a19acd7ee9a98614e2e71753b7d0dbc6aed840321784c156d7cb",
+    "index": 24,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "8ae3ec7de2a655e776442613fd48363fd999017256a779c1eff9da03e8636627",
+    "source_support_reviewed": true,
+    "notes": "The proposed reference omits the actual Yahoo/Amazon/Yelp dataset names and is incomplete.",
+    "claim": "For What are the datasets used the supported short fact is large-scale document classification datasets introduced by",
+    "support": [
+      {
+        "doc_id": "qasper_1908_06006",
+        "start": 14717,
+        "end": 15169,
+        "section": "Experimental setup ::: Datasets",
+        "text": "We evaluate the quality of the document embeddings learned by the different variants of CAHAN and the HAN baseline on three of the large-scale document classification datasets introduced by BIBREF14 and used in the original HAN paper BIBREF5. They fall into two categories: topic classification (Yahoo) and fine-grained sentiment analysis (Amazon, Yelp). Dataset statistics are shown in Table TABREF29. Classes are perfectly balanced, for all datasets.",
+        "match_count": 1,
+        "quote": "We evaluate the quality of the document embeddings learned by the different variants of CAHAN and the HAN baseline on three of the large-scale document classification datasets introduced by BIBREF14 and used in the original HAN paper BIBREF5. They fall into two categories: topic classification (Yahoo) and fine-grained sentiment analysis (Amazon, Yelp). Dataset statistics are shown in Table TABREF29. Classes are perfectly balanced, for all datasets."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_b1f2db88a6f89d0f048803e38a0a568f5ba38fc5--rl-short-fact",
+    "case_sha256": "40d321a4c085bc0a09a1e0e7a694d5f624e3b06a32c1795be9dd5a6f4ec7d9df",
+    "index": 28,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "45aecaaba1e51f21d511f43e2200954223f7bcfe3daee8113e5cf70b6afe14dc",
+    "source_support_reviewed": true,
+    "notes": "Open-ended etc. and underspecified multi-part response are unsuitable for a bounded short fact.",
+    "claim": "For What else is tried to be solved other than 12 tenses, model verbs and negative form? the supported short fact is cases of singular/plural, subject pronoun/object pronoun, etc.",
+    "support": [
+      {
+        "doc_id": "qasper_2001_05672",
+        "start": 7349,
+        "end": 7548,
+        "section": "Analysis and Discussion ::: Cases to be solved",
+        "text": "Moreover, this work also handles the cases of singular/plural, subject pronoun/object pronoun, etc. For instance, the pronoun “he\" is used for the subject as “he\" but is used for the object as “him\".",
+        "match_count": 1,
+        "quote": "Moreover, this work also handles the cases of singular/plural, subject pronoun/object pronoun, etc. For instance, the pronoun “he\" is used for the subject as “he\" but is used for the object as “him\"."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_3bf429633ecbbfec3d7ffbcfa61fa90440cc918b--rl-short-fact",
+    "case_sha256": "ca69ca1fbcb28cef7a576654a93ccda98daf8a5b1b766c96e9a43fe02e263e3e",
+    "index": 33,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "7f22d510801d91a77c7755a2913dba32bfb77476e2175aec3c73379bf99212b2",
+    "source_support_reviewed": true,
+    "notes": "Annotated answer is truncated midword.",
+    "claim": "For How are aspects identified in aspect extraction? the supported short fact is apply an ensemble of deep learning and linguistics t",
+    "support": [
+      {
+        "doc_id": "qasper_1710_06536",
+        "start": 8322,
+        "end": 8883,
+        "section": "Introduction",
+        "text": "Most of the previous works in aspect term extraction have either used conditional random fields (CRFs) BIBREF9 , BIBREF10 or linguistic patterns BIBREF7 , BIBREF11 . Both of these approaches have their own limitations: CRF is a linear model, so it needs a large number of features to work well; linguistic patterns need to be crafted by hand, and they crucially depend on the grammatical accuracy of the sentences. In this chapter, we apply an ensemble of deep learning and linguistics to tackle both the problem of aspect extraction and subjectivity detection.",
+        "match_count": 1,
+        "quote": "Most of the previous works in aspect term extraction have either used conditional random fields (CRFs) BIBREF9 , BIBREF10 or linguistic patterns BIBREF7 , BIBREF11 . Both of these approaches have their own limitations: CRF is a linear model, so it needs a large number of features to work well; linguistic patterns need to be crafted by hand, and they crucially depend on the grammatical accuracy of the sentences. In this chapter, we apply an ensemble of deep learning and linguistics to tackle both the problem of aspect extraction and subjectivity detection."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_e12674f0466f8c0da109b6076d9939b30952c7da--rl-short-fact",
+    "case_sha256": "17f6c817df825ef6da5fede99b296cfd881682dceb46ae57e0b29e40440aecbc",
+    "index": 35,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "78e6c3610d3fb165109dfef868b79e327949e660d8a92f9dc055717a44d99504",
+    "source_support_reviewed": true,
+    "notes": "FastText is best in a comparison, without establishing it alone is used to calculate the embeddings.",
+    "claim": "For What do you use to calculate word/sub-word embeddings the supported short fact is FastText",
+    "support": [
+      {
+        "doc_id": "qasper_1810_05320",
+        "start": 22263,
+        "end": 22761,
+        "section": "Result Analysis",
+        "text": "Evaluating FastText, GloVe and word2vec, we show that compared to other word representation learning algorithms, the FastText performs best. We sample and analyze the category attributes and find that many self-filled attributes contain misspellings. The FastText algorithm represents words by a sum of its character n-grams and it is much robust against problems like misspellings. In summary, FastText has greater advantages in dealing with natural language corpus usually with spelling mistakes.",
+        "match_count": 1,
+        "quote": "Evaluating FastText, GloVe and word2vec, we show that compared to other word representation learning algorithms, the FastText performs best. We sample and analyze the category attributes and find that many self-filled attributes contain misspellings. The FastText algorithm represents words by a sum of its character n-grams and it is much robust against problems like misspellings. In summary, FastText has greater advantages in dealing with natural language corpus usually with spelling mistakes."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_579a0603ec56fc2b4aa8566810041dbb0cd7b5e7--rl-short-fact",
+    "case_sha256": "aac884cde8b02c7df6d2d549f1b8558ce80404c5f707f34ca1d5ee9b55cf50f2",
+    "index": 38,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "30b6af5c61b180bd94a8f978bc1fd02108ade4a0fe6c92ecb341d567b90e971a",
+    "source_support_reviewed": true,
+    "notes": "The proposed reference describes an experiment rather than naming the requested models.",
+    "claim": "For What are the series of simple models? the supported short fact is perform experiments to utilize ASR $n$-best hypotheses during evaluation",
+    "support": [
+      {
+        "doc_id": "qasper_2001_05284",
+        "start": 6137,
+        "end": 6420,
+        "section": "Baseline, Oracle and Direct Models ::: Direct Models",
+        "text": "Besides the Baseline and Oracle, where only ASR 1-best hypothesis is considered, we also perform experiments to utilize ASR $n$-best hypotheses during evaluation. The models evaluating with $n$-bests and a BM (pre-trained on transcription) are called Direct Models (in Fig. FIGREF7):",
+        "match_count": 1,
+        "quote": "Besides the Baseline and Oracle, where only ASR 1-best hypothesis is considered, we also perform experiments to utilize ASR $n$-best hypotheses during evaluation. The models evaluating with $n$-bests and a BM (pre-trained on transcription) are called Direct Models (in Fig. FIGREF7):"
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_f52ec4d68de91dba66668f0affc198706949ff90--rl-short-fact",
+    "case_sha256": "e073a4f009edbd56778f17271846bb79a864cd9c91b44a41a122cb9b44b05d40",
+    "index": 39,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "3ac21e46321c7dc69a583a0afe5a5f7097b87cd3c06400b5e3dd9d32247ba0ae",
+    "source_support_reviewed": true,
+    "notes": "The excerpt gives multiple correlations and the requested other correlation is ambiguous.",
+    "claim": "For What other interesting correlations are observed? the supported short fact is Women-Yoga",
+    "support": [
+      {
+        "doc_id": "qasper_1906_07668",
+        "start": 16026,
+        "end": 16491,
+        "section": "Visualization",
+        "text": "We observe interesting hidden correlation in data. Fig. FIGREF24 has Topic 2 as selected topic. Topic 2 contains top-4 co-occurring keywords \"vegan\", \"yoga\", \"job\", \"every_woman\" having the highest term frequency. We can infer different things from the topic that \"women usually practice yoga more than men\", \"women teach yoga and take it as a job\", \"Yogi follow vegan diet\". We would say there are noticeable correlation in data i.e. `Yoga-Veganism', `Women-Yoga'.",
+        "match_count": 1,
+        "quote": "We observe interesting hidden correlation in data. Fig. FIGREF24 has Topic 2 as selected topic. Topic 2 contains top-4 co-occurring keywords \"vegan\", \"yoga\", \"job\", \"every_woman\" having the highest term frequency. We can infer different things from the topic that \"women usually practice yoga more than men\", \"women teach yoga and take it as a job\", \"Yogi follow vegan diet\". We would say there are noticeable correlation in data i.e. `Yoga-Veganism', `Women-Yoga'."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_9893c5f36f9d503678749cb0466eeaa0cfc9413f--rl-short-fact",
+    "case_sha256": "7c4038dff53c11542e69a875590e7c1cd1a1b9da7c3e759246f61e0982144528",
+    "index": 41,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "693f5ef4446345619254381f64ca5b035ff3e1d5ab761a7586a459503016a1c1",
+    "source_support_reviewed": true,
+    "notes": "One most-important submodule does not enumerate the requested submodules.",
+    "claim": "For What submodules does the model consist of? the supported short fact is five-character window context",
+    "support": [
+      {
+        "doc_id": "qasper_1704_08960",
+        "start": 3207,
+        "end": 3981,
+        "section": "Introduction",
+        "text": "We fill this gap by investigating rich external pretraining for neural segmentation. Following BIBREF4 and BIBREF5 , we adopt a globally optimised beam-search framework for neural structured prediction BIBREF9 , BIBREF17 , BIBREF18 , which allows word information to be modelled explicitly. Different from previous work, we make our model conceptually simple and modular, so that the most important sub module, namely a five-character window context, can be pretrained using external data. We adopt a multi-task learning strategy BIBREF19 , casting each external source of information as a auxiliary classification task, sharing a five-character window network. After pretraining, the character window network is used to initialize the corresponding module in our segmentor.",
+        "match_count": 1,
+        "quote": "We fill this gap by investigating rich external pretraining for neural segmentation. Following BIBREF4 and BIBREF5 , we adopt a globally optimised beam-search framework for neural structured prediction BIBREF9 , BIBREF17 , BIBREF18 , which allows word information to be modelled explicitly. Different from previous work, we make our model conceptually simple and modular, so that the most important sub module, namely a five-character window context, can be pretrained using external data. We adopt a multi-task learning strategy BIBREF19 , casting each external source of information as a auxiliary classification task, sharing a five-character window network. After pretraining, the character window network is used to initialize the corresponding module in our segmentor."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_544e29937e0c972abcdd27c953dc494b2376dd76--rl-short-fact",
+    "case_sha256": "68d58a66eaadb38b6b5d5d7ffed245d62126c5dfc4c85c63acca1dcb221a535e",
+    "index": 58,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "178e6d2c5daffd318952856d041435cf4b00748e0b18dd92a4be398b2955a192",
+    "source_support_reviewed": true,
+    "notes": "The cited excerpt describes BERT variants but does not establish the top-team condition.",
+    "claim": "For What model was used by the top team? the supported short fact is Two different BERT models were developed",
+    "support": [
+      {
+        "doc_id": "qasper_1909_07734",
+        "start": 8149,
+        "end": 8902,
+        "section": "Submissions ::: IDEA",
+        "text": "BIBREF9 Two different BERT models were developed. For Friends, pre-training was done using a sliding window of two utterances to provide dialogue context. Both Next Sentence Prediction (NSP) phase on the complete unlabeled scripts from all 10 seasons of Friends, which are available for download. In addition, the model learned the emotional disposition of each of six main six main characters in Friends (Rachel, Monica, Phoebe, Joey, Chandler and Ross) by adding a special token to represent the speaker. For EmotionPush, pre-training was performed on Twitter data, as it is similar in nature to chat based dialogues. In both cases, special attention was given to the class imbalance issue by applying “weighted balanced warming” on the loss function.",
+        "match_count": 1,
+        "quote": "BIBREF9 Two different BERT models were developed. For Friends, pre-training was done using a sliding window of two utterances to provide dialogue context. Both Next Sentence Prediction (NSP) phase on the complete unlabeled scripts from all 10 seasons of Friends, which are available for download. In addition, the model learned the emotional disposition of each of six main six main characters in Friends (Rachel, Monica, Phoebe, Joey, Chandler and Ross) by adding a special token to represent the speaker. For EmotionPush, pre-training was performed on Twitter data, as it is similar in nature to chat based dialogues. In both cases, special attention was given to the class imbalance issue by applying “weighted balanced warming” on the loss function."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_7dce1b64c0040500951c864fce93d1ad7a1809bc--rl-short-fact",
+    "case_sha256": "dfd1b4c1a660c292b157ed2840e28cd300ed85235f171d763a97e3e6ea7b40d5",
+    "index": 63,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "469a8d624fd609db4a065c36972a948811804d0b8f7415b717c170d278bfa6d0",
+    "source_support_reviewed": true,
+    "notes": "Related-work joint enhancement is not the requested frozen acoustic model.",
+    "claim": "For Which frozen acoustic model do they use? the supported short fact is a masking speech enhancement model,,",
+    "support": [
+      {
+        "doc_id": "qasper_2003_01769",
+        "start": 6230,
+        "end": 6588,
+        "section": "Related Work ::: Enhancement Without Parallel Data",
+        "text": "Several recent works have investigated jointly training the acoustic model with a masking speech enhancement model BIBREF11, BIBREF12, BIBREF13, but these works did not evaluate their system on speech enhancement metrics. Indeed, our internal experiments show that without access to the clean data, joint training severely harms performance on these metrics.",
+        "match_count": 1,
+        "quote": "Several recent works have investigated jointly training the acoustic model with a masking speech enhancement model BIBREF11, BIBREF12, BIBREF13, but these works did not evaluate their system on speech enhancement metrics. Indeed, our internal experiments show that without access to the clean data, joint training severely harms performance on these metrics."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_6cdd61ebf84aa742155f4554456cc3233b6ae2bf--rl-short-fact",
+    "case_sha256": "54ebd9416719229270d70bed26fbf4ab374adbf1f79cd4b1721bfe71370d7e7e",
+    "index": 66,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "da5b56f81a3039a6f02a89bd80459840514f402185d6d8c049e6e4ef4a8a01b9",
+    "source_support_reviewed": true,
+    "notes": "The cited SVM uses argument-tree and linguistic features, not only claim-specific linguistic features.",
+    "claim": "For What models that rely only on claim-specific linguistic features are used as baselines? the supported short fact is SVM with RBF kernel",
+    "support": [
+      {
+        "doc_id": "qasper_2004_03034",
+        "start": 15227,
+        "end": 15420,
+        "section": "Methodology ::: Baseline Models ::: SVM with RBF kernel",
+        "text": "Similar to BIBREF9, we experiment with SVM with RBF kernel, with features that represent (1) the simple characteristics of the argument tree and (2) the linguistic characteristics of the claim.",
+        "match_count": 1,
+        "quote": "Similar to BIBREF9, we experiment with SVM with RBF kernel, with features that represent (1) the simple characteristics of the argument tree and (2) the linguistic characteristics of the claim."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_0cd90e5b79ea426ada0203177c28812a7fc86be5--rl-short-fact",
+    "case_sha256": "e0969ee2910ae33bc0b481b71af6592e5a070b74a36c373a71b87fddfe9370bf",
+    "index": 68,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "ffd1ba3d1e6660c131359cf788ddf0404cd05178ceabef8f8f75e5cbbbaf303b",
+    "source_support_reviewed": true,
+    "notes": "Varying expert counts does not establish how the correct count is selected.",
+    "claim": "For How is the correct number of experts to use decided? the supported short fact is varied the number of experts between models",
+    "support": [
+      {
+        "doc_id": "qasper_1701_06538",
+        "start": 29647,
+        "end": 30615,
+        "section": "1 Billion Word Language Modeling Benchmark - Experimental Details",
+        "text": "Each expert in the MoE layer is a feed forward network with one ReLU-activated hidden layer of size 1024 and an output layer of size 512. Thus, each expert contains INLINEFORM0 parameters. The output of the MoE layer is passed through a sigmoid function before dropout. We varied the number of experts between models, using ordinary MoE layers with 4, 32 and 256 experts and hierarchical MoE layers with 256, 1024 and 4096 experts. We call the resulting models MoE-4, MoE-32, MoE-256, MoE-256-h, MoE-1024-h and MoE-4096-h. For the hierarchical MoE layers, the first level branching factor was 16, corresponding to the number of GPUs in our cluster. We use Noisy-Top-K Gating (see Section UID14 ) with INLINEFORM1 for the ordinary MoE layers and INLINEFORM2 at each level of the hierarchical MoE layers. Thus, each example is processed by exactly 4 experts for a total of 4M ops/timestep. The two LSTM layers contribute 2M ops/timestep each for the desired total of 8M.",
+        "match_count": 1,
+        "quote": "Each expert in the MoE layer is a feed forward network with one ReLU-activated hidden layer of size 1024 and an output layer of size 512. Thus, each expert contains INLINEFORM0 parameters. The output of the MoE layer is passed through a sigmoid function before dropout. We varied the number of experts between models, using ordinary MoE layers with 4, 32 and 256 experts and hierarchical MoE layers with 256, 1024 and 4096 experts. We call the resulting models MoE-4, MoE-32, MoE-256, MoE-256-h, MoE-1024-h and MoE-4096-h. For the hierarchical MoE layers, the first level branching factor was 16, corresponding to the number of GPUs in our cluster. We use Noisy-Top-K Gating (see Section UID14 ) with INLINEFORM1 for the ordinary MoE layers and INLINEFORM2 at each level of the hierarchical MoE layers. Thus, each example is processed by exactly 4 experts for a total of 4M ops/timestep. The two LSTM layers contribute 2M ops/timestep each for the desired total of 8M."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_084fb7c80a24b341093d4bf968120e3aff56f693--rl-short-fact",
+    "case_sha256": "0903bc458e6e4f64f5e3ec7da8c75a9739bf32c5dc830157c1781670f548f0dc",
+    "index": 70,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "5a5d1ec08e89e5ef196f77985d570c568b7e7449e143df7bb572ea70754fe4eb",
+    "source_support_reviewed": true,
+    "notes": "Tautological proposed answer repeats the question without explaining the requested representation.",
+    "claim": "For How is state to learn and complete tasks represented via natural language? the supported short fact is represent the state using natural language",
+    "support": [
+      {
+        "doc_id": "qasper_1910_02789",
+        "start": 1545,
+        "end": 2420,
+        "section": "Introduction",
+        "text": "The term representation is used differently in different contexts. For the purpose of this paper we define a semantic representation of a state as one that reflects its meaning as it is understood by an expert. The semantic representation of a state should thus be paired with a reliable and computationally efficient method for extracting information from it. Previous success in RL has mainly focused on representing the state in its raw form (e.g., visual input in Atari-based games BIBREF2). This approach stems from the belief that neural networks (specifically convolutional networks) can extract meaningful features from complex inputs. In this work, we challenge current representation techniques and suggest to represent the state using natural language, similar to the way we, as humans, summarize and transfer information efficiently from one to the other BIBREF5.",
+        "match_count": 1,
+        "quote": "The term representation is used differently in different contexts. For the purpose of this paper we define a semantic representation of a state as one that reflects its meaning as it is understood by an expert. The semantic representation of a state should thus be paired with a reliable and computationally efficient method for extracting information from it. Previous success in RL has mainly focused on representing the state in its raw form (e.g., visual input in Atari-based games BIBREF2). This approach stems from the belief that neural networks (specifically convolutional networks) can extract meaningful features from complex inputs. In this work, we challenge current representation techniques and suggest to represent the state using natural language, similar to the way we, as humans, summarize and transfer information efficiently from one to the other BIBREF5."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_2c88b46c7e3a632cfa10b7574276d84ecec7a0af--rl-short-fact",
+    "case_sha256": "e704be62f4d62d431d7fa792beb5b97c4091192fb5c5fc70dabf3a3af33ab388",
+    "index": 71,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "2003ba307cfacfded659506d4c16e8aeac17547502a8e00b3122664cfee82cba",
+    "source_support_reviewed": true,
+    "notes": "An unresolved BIBREF3 alone is not a useful named baseline answer.",
+    "claim": "For What is their baseline model? the supported short fact is the model proposed in",
+    "support": [
+      {
+        "doc_id": "qasper_1911_13066",
+        "start": 14259,
+        "end": 15033,
+        "section": "Proposed Model and Experimentation ::: Experimental Setup",
+        "text": "We re-implement the model proposed in BIBREF3, and use it as a baseline for our problem. The rationale behind choosing this particular model as a baseline is it's proven good predictive performance on multilingual text classification. For McM, the choices of number of convolutional filters, number of hidden units in first dense layer, number of hidden units in second dense layer, and recurrent units for LSTM are made empirically. Rest of the hyperparameters were selected by performing grid search using $20\\%$ stratified validation set from training set on McM$_\\textsubscript {R}$. Available choices and final selected parameters are mentioned in Table TABREF18. These choices remained same for all experiments and the validation set was merged back into training set.",
+        "match_count": 1,
+        "quote": "We re-implement the model proposed in BIBREF3, and use it as a baseline for our problem. The rationale behind choosing this particular model as a baseline is it's proven good predictive performance on multilingual text classification. For McM, the choices of number of convolutional filters, number of hidden units in first dense layer, number of hidden units in second dense layer, and recurrent units for LSTM are made empirically. Rest of the hyperparameters were selected by performing grid search using $20\\%$ stratified validation set from training set on McM$_\\textsubscript {R}$. Available choices and final selected parameters are mentioned in Table TABREF18. These choices remained same for all experiments and the validation set was merged back into training set."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_a130aa735de3b65c71f27018f20d3c068bafb826--rl-short-fact",
+    "case_sha256": "d7f5bc1cb648ea5f159aa98624042706f955b0809bc3edcfc0cb5387ae38136a",
+    "index": 75,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "bb99f90ae42007ea32432bc666db4696b4be0fce078b508076ff0aefd808761a",
+    "source_support_reviewed": true,
+    "notes": "The annotation covers one training subset and omits the other described dataset.",
+    "claim": "For How big is data provided by this research? the supported short fact is 16k images and 740k corresponding region descriptions",
+    "support": [
+      {
+        "doc_id": "qasper_1910_04887",
+        "start": 6320,
+        "end": 6653,
+        "section": "Methods ::: Data and Training Details",
+        "text": "For training, we aggregated (query, image) pairs using the region descriptions from the VG dataset and referring expressions from the ReferIt dataset. Our VG training set consists of 85% of the data: 16k images and 740k corresponding region descriptions. The Referit training data consists of 9k images and 54k referring expressions.",
+        "match_count": 1,
+        "quote": "For training, we aggregated (query, image) pairs using the region descriptions from the VG dataset and referring expressions from the ReferIt dataset. Our VG training set consists of 85% of the data: 16k images and 740k corresponding region descriptions. The Referit training data consists of 9k images and 54k referring expressions."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_5cc937c2dcb8fd4683cb2298d047f27a05e16d43--rl-short-fact",
+    "case_sha256": "b39ed58affa1cb9c18590737b11cd046ec8c932ba022967b8c3322d1d57d09b1",
+    "index": 77,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "a73d811448c548a13202eae5c4aef6b1ce09b9d94f2587a2f2bc1dd81000176f",
+    "source_support_reviewed": true,
+    "notes": "A differentiable top-k operation is not a loss metric.",
+    "claim": "For Which loss metrics do they try in their new training procedure evaluated on the output of beam search? the supported short fact is continuous relaxation to top-k-argmax",
+    "support": [
+      {
+        "doc_id": "qasper_1708_00111",
+        "start": 13320,
+        "end": 14056,
+        "section": "Continuous Approximation to top-k-argmax ",
+        "text": "Hence, the continuous relaxation to top-k-argmax operation can be simply implemented by iteratively using the max operation which is continuous and allows for gradient flow during backpropagation. As INLINEFORM0 , each INLINEFORM1 vector converges to hard index pairs representing hard backpointers and successor candidates described in Algorithm SECREF1 . For finite INLINEFORM2 , we introduce a notion of a soft backpointer, represented as a vector INLINEFORM3 in the INLINEFORM4 -probability simplex, which represents the contribution of each beam element from the previous time step to a beam element at current time step. This is obtained by a row-wise sum over INLINEFORM5 to get INLINEFORM6 values representing soft backpointers.",
+        "match_count": 1,
+        "quote": "Hence, the continuous relaxation to top-k-argmax operation can be simply implemented by iteratively using the max operation which is continuous and allows for gradient flow during backpropagation. As INLINEFORM0 , each INLINEFORM1 vector converges to hard index pairs representing hard backpointers and successor candidates described in Algorithm SECREF1 . For finite INLINEFORM2 , we introduce a notion of a soft backpointer, represented as a vector INLINEFORM3 in the INLINEFORM4 -probability simplex, which represents the contribution of each beam element from the previous time step to a beam element at current time step. This is obtained by a row-wise sum over INLINEFORM5 to get INLINEFORM6 values representing soft backpointers."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_0c3924214572579ddbc1b4a87c7f7842ef20ff1b--rl-short-fact",
+    "case_sha256": "083488e6b09ba435769d4a82cdf5e0249b2af488b62405c336997951f1a45607",
+    "index": 83,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "e85d16aff1b9322084d2c626363fea778aa34df9c5b8466aaebebb653aac1f04",
+    "source_support_reviewed": true,
+    "notes": "The excerpt says ancient but does not establish one of the first writing systems.",
+    "claim": "For What is one of the first writing systems in the world? the supported short fact is Cuneiform",
+    "support": [
+      {
+        "doc_id": "qasper_1904_12087",
+        "start": 1367,
+        "end": 1842,
+        "section": "Introduction",
+        "text": "As evidenced in Section \"Related Work\" , the focus of most of these studies is the identification of languages and dialects using contemporary data. A few exceptions include the work by trieschnigg2012exploration who applied language identification methods to historical varieties of Dutch and the work by CLIarxiv on languages written in cuneiform script: Sumerian and Akkadian. Cuneiform is an ancient writing system invented by the Sumerians for more than three millennia.",
+        "match_count": 1,
+        "quote": "As evidenced in Section \"Related Work\" , the focus of most of these studies is the identification of languages and dialects using contemporary data. A few exceptions include the work by trieschnigg2012exploration who applied language identification methods to historical varieties of Dutch and the work by CLIarxiv on languages written in cuneiform script: Sumerian and Akkadian. Cuneiform is an ancient writing system invented by the Sumerians for more than three millennia."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_4c88441f8a1b5fce0ca55a6fced34f97260206ae--rl-short-fact",
+    "case_sha256": "8653b468c302cad849975d99ceffe7477fd41f0151571393d6e61b30e3efc593",
+    "index": 94,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "c3fe55332f149be3803cd16ab80d4555283f146800e0e2aec12dfd04683bfcf8",
+    "source_support_reviewed": true,
+    "notes": "Naming biaffine attention does not answer the requested scorer definition completely.",
+    "claim": "For What is the biaffine scorer? the supported short fact is biaffine attention",
+    "support": [
+      {
+        "doc_id": "qasper_1808_03815",
+        "start": 8556,
+        "end": 9188,
+        "section": "Biaffine Attentional Role Scorer",
+        "text": "Typically, to predict and label arguments for a given predicate, a role classifier is employed on top of the BiLSTM encoder. Some work like BIBREF17 shows that incorporating the predicate's hidden state in their role classifier enhances the model performance, while we argue that a more natural way to incorporate the syntactic information carried by the predicate is to employ the attentional mechanism. Our model adopts the recently introduced biaffine attention BIBREF14 to enhance our role scorer. Biaffine attention is a natural extension of bilinear attention BIBREF18 which is widely used in neural machine translation (NMT).",
+        "match_count": 1,
+        "quote": "Typically, to predict and label arguments for a given predicate, a role classifier is employed on top of the BiLSTM encoder. Some work like BIBREF17 shows that incorporating the predicate's hidden state in their role classifier enhances the model performance, while we argue that a more natural way to incorporate the syntactic information carried by the predicate is to employ the attentional mechanism. Our model adopts the recently introduced biaffine attention BIBREF14 to enhance our role scorer. Biaffine attention is a natural extension of bilinear attention BIBREF18 which is widely used in neural machine translation (NMT)."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_195611926760d1ceec00bd043dfdc8eba2df5ad1--rl-short-fact",
+    "case_sha256": "0ff5a78085d9cd4ac9159f1df1ebca4368ad5661fcd1b621403df81002b80d74",
+    "index": 96,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "073a0826171c7483889e3fb049a7025d61e12427e18fef9e138a8b59b389cb6a",
+    "source_support_reviewed": true,
+    "notes": "Random Forest is used for feature selection; the excerpt does not establish it achieves the specified F1 gain.",
+    "claim": "For What model is used to achieve 5% improvement on F1 for identifying depressed individuals on Twitter? the supported short fact is Random Forest classifier",
+    "support": [
+      {
+        "doc_id": "qasper_1902_06843",
+        "start": 31540,
+        "end": 32444,
+        "section": "Multi-modal Prediction Framework",
+        "text": "We use the above findings for predicting depressive behavior. Our model exploits early fusion BIBREF32 technique in feature space and requires modeling each user INLINEFORM0 in INLINEFORM1 as vector concatenation of individual modality features. As opposed to computationally expensive late fusion scheme where each modality requires a separate supervised modeling, this model reduces the learning effort and shows promising results BIBREF75 . To develop a generalizable model that avoids overfitting, we perform feature selection using statistical tests and all relevant ensemble learning models. It adds randomness to the data by creating shuffled copies of all features (shadow feature), and then trains Random Forest classifier on the extended data. Iteratively, it checks whether the actual feature has a higher Z-score than its shadow feature (See Algorithm SECREF6 and Figure FIGREF45 ) BIBREF76 .",
+        "match_count": 1,
+        "quote": "We use the above findings for predicting depressive behavior. Our model exploits early fusion BIBREF32 technique in feature space and requires modeling each user INLINEFORM0 in INLINEFORM1 as vector concatenation of individual modality features. As opposed to computationally expensive late fusion scheme where each modality requires a separate supervised modeling, this model reduces the learning effort and shows promising results BIBREF75 . To develop a generalizable model that avoids overfitting, we perform feature selection using statistical tests and all relevant ensemble learning models. It adds randomness to the data by creating shuffled copies of all features (shadow feature), and then trains Random Forest classifier on the extended data. Iteratively, it checks whether the actual feature has a higher Z-score than its shadow feature (See Algorithm SECREF6 and Figure FIGREF45 ) BIBREF76 ."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_cb20aebfedad1a306e82966d6e9e979129fcd9f9--rl-short-fact",
+    "case_sha256": "1ccf32903894fdbb3afdc2720373266fcd8876b25b5907d74f2218c19cbd90bb",
+    "index": 99,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "36aa29dcec51a10ad7ea61ccc4a83936bf6b55e4ad83da9e4dd84ce32d8d6d2f",
+    "source_support_reviewed": true,
+    "notes": "The annotation omits Exact-Accuracy and Micro F1 used for official results.",
+    "claim": "For what evaluation metrics were used? the supported short fact is weighted F1-score",
+    "support": [
+      {
+        "doc_id": "qasper_1710_09589",
+        "start": 9169,
+        "end": 9822,
+        "section": "Evaluation",
+        "text": "We decided to evaluate our model using weighted F1-score, i.e., the per-class F1 score is calculated and averaged by weighting each label by its support. Notice, since our setup deviates from the shared task setup (single-label versus multi-label classification), the final evaluation metric is different. We will report on weighted F1-score for the development and test set (with simple macro averaging), but use Exact-Accuracy and Micro F1 over all labels when presenting official results on the test sets. The latter two metrics were part of the official evaluation metrics. For details we refer the reader to the shared task overview paper BIBREF5 .",
+        "match_count": 1,
+        "quote": "We decided to evaluate our model using weighted F1-score, i.e., the per-class F1 score is calculated and averaged by weighting each label by its support. Notice, since our setup deviates from the shared task setup (single-label versus multi-label classification), the final evaluation metric is different. We will report on weighted F1-score for the development and test set (with simple macro averaging), but use Exact-Accuracy and Micro F1 over all labels when presenting official results on the test sets. The latter two metrics were part of the official evaluation metrics. For details we refer the reader to the shared task overview paper BIBREF5 ."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_train_0460019eb2186aef835f7852fc445b037bd43bb7--rl-short-fact",
+    "case_sha256": "006af9b7e25f302803eb5d923a173a391563d6a2da0d7555f438ce7f275ae373",
+    "index": 114,
+    "role": "training_candidate",
+    "decision": "reject",
+    "context_sha256": "48b4cd28fcb0dbe9d6f1b0cc77d0f7bcc360e9a3d23241627c7d6323033ee2dd",
+    "source_support_reviewed": true,
+    "notes": "Two top categories versus 30 subcategories makes the number of classified intents ambiguous.",
+    "claim": "For How many intents were classified? the supported short fact is two",
+    "support": [
+      {
+        "doc_id": "qasper_1709_10217",
+        "start": 4664,
+        "end": 4896,
+        "section": "Task 1: User Intent Classification",
+        "text": "In task 1, there are two top categories, namely, chit-chat and task-oriented dialogue. The task-oriented dialogue also includes 30 sub categories. In this evaluation, we only consider to classify the user intent in single utterance.",
+        "match_count": 1,
+        "quote": "In task 1, there are two top categories, namely, chit-chat and task-oriented dialogue. The task-oriented dialogue also includes 30 sub categories. In this evaluation, we only consider to classify the user intent in single utterance."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_validation_9a7ba5ed1779c664d2cac92494a43517d3e87c96--rl-short-fact",
+    "case_sha256": "ae0c7869683454ef7fbf29846b8b47d581fd53f0e0443008b23af68be99f7efc",
+    "index": 5,
+    "role": "reward_validation",
+    "decision": "reject",
+    "context_sha256": "27dc6a4efbffe66d0906498cb8452d9d604918f17928b8ec8b8f88b5b21872f7",
+    "source_support_reviewed": true,
+    "notes": "A single WSC example does not establish the work's selected data generally.",
+    "claim": "For What data do they look at? the supported short fact is WSC collection",
+    "support": [
+      {
+        "doc_id": "qasper_1608_01884",
+        "start": 5827,
+        "end": 6353,
+        "section": "Winograd schemas as the basis for challenges for machine translation programs",
+        "text": "Care must be taken to avoid relying on, or seeming to rely on, objectionable stereotypes about men and women. One mechanism that can sometimes be used is to include a potentially problematic sentence in both directions. For instance, schema 23 from the WSC collection can be translated into both “The girls were bullying the boys so we [punished/rescued] them” and “The boys were bullying the girls, so we [punished/rescued] them,” thus avoiding any presupposition of whether girls are more likely to bully boys or vice versa.",
+        "match_count": 1,
+        "quote": "Care must be taken to avoid relying on, or seeming to rely on, objectionable stereotypes about men and women. One mechanism that can sometimes be used is to include a potentially problematic sentence in both directions. For instance, schema 23 from the WSC collection can be translated into both “The girls were bullying the boys so we [punished/rescued] them” and “The boys were bullying the girls, so we [punished/rescued] them,” thus avoiding any presupposition of whether girls are more likely to bully boys or vice versa."
+      }
+    ],
+    "accepted_answers": []
+  },
+  {
+    "case_id": "qasper_validation_bd419f4094186a5ce74ba6ac1622b24e29e553f4--rl-short-fact",
+    "case_sha256": "bf9e97d97f10a359310b9d3e993d3f7f2aaa9ccee0470ed607a37abb4dd728d7",
+    "index": 6,
+    "role": "reward_validation",
+    "decision": "reject",
+    "context_sha256": "ca273d957c2e1ece37378fcfe591f144fa750bcdeb07affb530be5d66139c8ad",
+    "source_support_reviewed": true,
+    "notes": "Paragraph accuracy 0.3 has no explicit unit; do not infer percent or fraction.",
+    "claim": "For How well did the baseline perform? the supported short fact is accuracy of 30.3% on single sentences and 0.3 on complete paragraphs",
+    "support": [
+      {
+        "doc_id": "qasper_1909_08970",
+        "start": 12439,
+        "end": 12849,
+        "section": "Experiments",
+        "text": "Table TABREF8 shows the results for the baseline models as well as the HUMAN measured performance on the task. The human performance provides an upper bound for the RUN task performance, while the simple baselines provide lower bounds. The best baseline model is NO-MOVE, reaching an accuracy of 30.3% on single sentences and 0.3 on complete paragraphs. For the HUMAN case, paragraph accuracy reaches above 80.",
+        "match_count": 1,
+        "quote": "Table TABREF8 shows the results for the baseline models as well as the HUMAN measured performance on the task. The human performance provides an upper bound for the RUN task performance, while the simple baselines provide lower bounds. The best baseline model is NO-MOVE, reaching an accuracy of 30.3% on single sentences and 0.3 on complete paragraphs. For the HUMAN case, paragraph accuracy reaches above 80."
+      }
+    ],
+    "accepted_answers": []
+  }
+]

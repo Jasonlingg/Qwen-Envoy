@@ -1,0 +1,130 @@
+{
+  "doc_id": "qasper_1909_09986",
+  "title": "Improving Quality and Efficiency in Plan-based Neural Data-to-Text Generation",
+  "text": "Improving Quality and Efficiency in Plan-based Neural Data-to-Text Generation\n\nWe follow the step-by-step approach to neural data-to-text generation we proposed in Moryossef et al (2019), in which the generation process is divided into a text-planning stage followed by a plan-realization stage. We suggest four extensions to that framework: (1) we introduce a trainable neural planning component that can generate effective plans several orders of magnitude faster than the original planner; (2) we incorporate typing hints that improve the model's ability to deal with unseen relations and entities; (3) we introduce a verification-by-reranking stage that substantially improves the faithfulness of the resulting texts; (4) we incorporate a simple but effective referring expression generation module. These extensions result in a generation process that is faster, more fluent, and more accurate.\n\nIn the data-to-text generation task (D2T), the input is data encoding facts (e.g., a table, a set of tuples, or a small knowledge graph), and the output is a natural language text representing those facts. In neural D2T, the common approaches train a neural end-to-end encoder-decoder system that encodes the input data and decodes an output text. In recent work BIBREF0 we proposed to adopt ideas from “traditional” language generation approaches (i.e. BIBREF1, BIBREF2, BIBREF3) that separate the generation into a planning stage that determines the order and structure of the expressed facts, and a realization stage that maps the plan to natural language text. We show that by breaking the task this way, one can achieve the same fluency of neural generation systems while being able to better control the form of the generated text and to improve its correctness by reducing missing facts and “hallucinations”, common in neural systems.\n\nIn this work we adopt the step-by-step framework of BIBREF0 and propose four independent extensions that improve aspects of our original system: we suggest a new plan generation mechanism, based on a trainable-yet-verifiable neural decoder, that is orders of magnitude faster than the original one (§SECREF3); we use knowledge of the plan structure to add typing information to plan elements. This improves the system's performance on unseen relations and entities (§SECREF4); the separation of planning from realizations allows the incorporation of a simple output verification heuristic that drastically improves the correctness of the output (§SECREF5); and finally we incorporate a post-processing referring expression generation (REG) component, as proposed but not implemented in our previous work, to improve the naturalness of the resulting output (§SECREF6).\n\nWe provide a brief overview of the step-by-step system. See BIBREF0 for further details. The system works in two stages. The first stage (planning) maps the input facts (encoded as a directed, labeled graph, where nodes represent entities and edges represent relations) to text plans, while the second stage (realization) maps the text plans to natural language text.\n\nThe text plans are a sequence of sentence plans—each of which is a tree— representing the ordering of facts and entities within the sentence. In other words, the plans determine the separation of facts into sentences, the ordering of sentences, and the ordering of facts and entities within each sentence. This stage is completely verifiable: the text plans are guaranteed to faithfully encode all and only the facts from the input. The realization stage then translates the plans into natural language sentences, using a neural sequence-to-sequence system, resulting in fluent output.\n\nThe data-to-plan component in BIBREF0 exhaustively generates all possible plans, scores them using a heuristic, and chooses the highest scoring one for realization. While this is feasible with the small input graphs in the WebNLG challenge BIBREF4, it is also very computationally intensive, growing exponentially with the input size. We propose an alternative planner which works in linear time in the size of the graph and remains verifiable: generated plans are guaranteed to represent the input faithfully.\n\nThe original planner works by first enumerating over all possible splits into sentences (sub-graphs), and for each sub-graph enumerating over all possible undirected, unordered, Depth First Search (DFS) traversals, where each traversal corresponds to a sentence plan. Our planner combines these into a single process. It works by performing a series of what we call random truncated DFS traversals. In a DFS traversal, a node is visited, then its children are visited recursively in order. Once all children are visited, the node “pops” back to the parent. In a random truncated traversal, the choice of which children to visit next, as well as whether to go to the next children or to “pop”, is non-deterministic (in practice, our planner decides by using a neural-network controller). Popping at a node before visiting all its children truncates the DFS: further descendants of that node will not be visited in this traversal. It behaves as a DFS on a graph where edges to these descendants do not exist. Popping the starting node terminates the traversal.\n\nOur planner works by choosing a node with a non-zero degree and performing a truncated DFS traversal from that node. Then, all edges visited in the traversal are removed from the input graph, and the process repeats (performing another truncated DFS) until no more edges remain. Each truncated DFS traversal corresponds to a sentence plan, following the DFS-to-plan procedure of BIBREF0: the linearized plan is generated incrementally at each step of the traversal. This process is linear in the number of edges in the graph.\n\nAt training time, we use the plan-to-DFS mapping to perform the correct sequence of traversals, and train a neural classifier to act as a controller, choosing which action to perform at each step. At test time, we use the controller to guide the truncated DFS process. This mechanism is inspired by transition based parsing BIBREF5. The action set at each stage is dynamic. During traversal, it includes the available children at each stage and pop. Before traversals, it includes a choose-i action for each available node $n_i$. We assign a score to each action, normalize with softmax, and train to choose the desired one using cross-entropy loss. At test time, we either greedily choose the best action, or we can sample plans by sampling actions according to their assigned probabilities.\n\nFeature Representation and action scoring. Each graph node $n_i$ corresponds to an entity $x_{n_i}$, and has an associated embedding vector $\\mathbf {x_{n_i}}$. Each relation $r_i$ is associated with an embedding vector $\\mathbf {r_i}$. Each labeled input graph edge $e_k = (n_i, r_\\ell , n_j)$ is represented as a projected concatenated vector $\\mathbf {e_k}=\\mathbf {E}(\\mathbf {x_{n_i}};\\mathbf {r_\\ell };\\mathbf {x_{n_j}})$, where $\\mathbf {E}$ is a projection matrix. Finally, each node $n_i$ is then represented as a vector $\\mathbf {n_i} = \\mathbf {V}[\\mathbf {x_{n_i}};\\sum _{e_j\\in \\pi (i)}\\mathbf {e_j};\\sum _{e_j\\in \\pi ^{-1}(i)}\\mathbf {e_j}]$, where $\\pi (i)$ and $\\pi ^{-1}(i)$ are the incoming and outgoing edges from node $n_i$. The traverse-to-child-via-edge-$e_j$ action is represented as $\\mathbf {e_j}$, choose-node-i is represented as $\\mathbf {n_i}$ and pop-to-node-i is represented as $\\mathbf {n_i}+\\mathbf {p}$ where $\\mathbf {p}$ is a learned vector. The score for an action $a$ at time $t$ is calculated as a dot-product between the action representation and the LSTM state over the symbols generated in the plan so far. Thus, each decision takes into account the immediate surrounding of the node in the graph, and the plan structure generated so far.\n\nSpeed On a 7 edges graph, the planner of BIBREF0 takes an average of 250 seconds to generate a plan, while our planner takes 0.0025 seconds, 5 orders of magnitude faster.\n\nIn BIBREF0, the sentence plan trees were linearized into strings that were then fed to a neural machine translation decoder (OpenNMT) BIBREF6 with a copy mechanism. This linearization process is lossy, in the sense that the linearized strings do not explicitly distinguish between symbols that represent entities (e.g., BARACK_OBAMA) and symbols that represent relations (e.g., works-for). While this information can be deduced from the position of the symbol within the structure, there is a benefit in making it more explicit. In particular, the decoder needs to act differently when decoding relations and entities: entities are copied, while relations need to be verbalized. By making the typing information explicit to the decoder, we make it easier for it to generalize this behavior distinction and apply it also for unseen entities and relations. We thus expect the typing information to be especially useful for the unseen part of the evaluation set.\n\nWe incorporate typing information by concatenating to the embedding vector of each input symbol one of three embedding vectors, S, E or R, where S is concatenated to structural elements (opening and closing brackets), E to entity symbols and R to relation symbols.\n\nWhile the plan generation stage is guaranteed to be faithful to the input, the translation process from plans to text is based on a neural seq2seq model and may suffer from known issues with such models: hallucinating facts that do not exist in the input, repeating facts, or dropping facts. While the clear mapping between plans and text helps to reduce these issues greatly, the system in BIBREF0 still has 2% errors of these kinds.\n\nRecent work in neural text generation and summarization attempt to address these issues by trying to map the textual outputs back to structured predicates, and comparing these predicates to the input data. BIBREF7 uses a neural checklist model to avoid the repetition of facts and improve coverage. BIBREF8 generate $k$-best output candidates with beam search, and then try to map each candidate output back to the input structure using a reverse seq2seq model trained on the same data. They then select the highest scoring output candidate that best translates back to the input. BIBREF9 reconstructs the input in training time, by jointly learning a back-translation model and enforcing the back-translation to reconstruct the input. Both of these approaches are “soft” in the sense that they crucially rely on the internal dynamics or on the output of a neural network module that may or may not be correct.\n\nThe separation between planning and realization provided by the step-by-step framework allows incorporating a robust and straightforward verification step, that does not rely on brittle information extraction procedures or trust neural network models.\n\nThe plan-to-text generation handles each sentence individually and translates entities as copy operations. We thus have complete knowledge of the generated entities and their locations. We can then assess the correctness of an output sentence by comparing its sequence of entities to the entity sequence in the corresponding sentence plan, which is guaranteed to be complete. We then decode $k$-best outputs and rerank them based on their correctness scores, tie-breaking using model scores. We found empirically that, with a beam of size 5 we find at least one candidate with an exact match to the plan's entity sequence in 99.82% of the cases for seen entities and relations compared to 98.48% at 1-best, and 72.3% for cases of unseen entities and relations compared to 58.06% at 1-best. In the remaining cases, we set the system to continue searching by trying other plans, by going down the list of plans (when using the exhaustive planner of BIBREF0) or by sampling a new plan (when using the linear time planner suggested in this paper).\n\nThe step-by-step system generates entities by first generating an indexed entity symbols, and then lexicalizing each symbol to the string associated with this entity in the input structure (i.e., all occurrences of the entity 11TH MISSISSIPPI INFANTRY MONUMENT will be lexicalized with the full name rather than “it” or “the monument”). This results in correct but somewhat unnatural structures. In contrast, end-to-end neural generation systems are trained on text that includes referring expressions, and generate them naturally as part of the decoding process, resulting in natural looking text. However, the generated referring expressions are sometimes incorrect. BIBREF0 suggests the possibility of handling this with a post-processing referring-expression generation step (REG). Here, we propose a concrete REG module and demonstrate its effectiveness. One option is to use a supervised REG module BIBREF11, that is trained to lexicalize in-context mentions. Such an approach is sub-optimal for our setup as it is restricted to the entities and contexts it seen in training, and is prone to error on unseen entities and contexts.\n\nOur REG solution lexicalizes the first mention of each entity as its associated string and attempts to generate referring expressions to subsequent mentions. The generated referring expressions can take the form “Pron”, “X” or “the X” where Pron is a pronoun, and X is a word appearing in the entity's string (allowing, e.g., John, or the monument). We also allow referring to its entity with its entire associated string. We restrict the set of allowed pronouns for each entity according to its type (male, female, plural-animate, unknown-animate, inanimate). We then take, for each entity mention individually, the referring expression that receives the best language model score in context, using a strong unsupervised neural LM (BERT BIBREF12). The system is guaranteed to be correct in the sense that it will not generate wrong pronouns. It also has failure modes: it is possible for the system to generate ambiguous referring expressions (e.g., John is Bob's father. He works as a nurse.), and may lexicalize Boston University as Boston. We find that the second kind of mistake is rare as it is handled well by the language model. It can also be controlled by manually restricting the set of possible referring expression to each entity. Similarly, it is easy to extend the system to support other lexicalizations of entities by extending the sets of allowed lexicalizations (for example, supporting abbreviations, initials or nicknames) either as user-supplied inputs or using heuristics.\n\nWe evaluate each of the introduced components separately. Tables listing their interactions are available in the appendix. The appendix also lists some qualitative outputs. The main trends that we observe are:\n\nThe new planner causes a small drop in BLEU, but is orders of magnitude faster (§SECREF12).\n\nTyping information causes a negligible drop in BLEU overall, but improves results substantially for the unseen portion of the dataset (§SECREF13).\n\nThe verification step is effective at improving the faithfulness of the output, practically eliminating omitted and overgenerated facts, reducing the number of wrong facts, and increasing the number of correctly expressed facts. This is based on both manual and automatic evaluations. (§SECREF14).\n\nThe referring expression module is effective, with an intrinsic correctness of 92.2%. It substantially improves BLEU scores. (§SECREF16).\n\nWe evaluate on the WebNLG dataset BIBREF4, comparing to the step-by-step systems described in BIBREF0, which are state of the art. Due to randomness inherent in neural training, our reported automatic evaluation measures are based on an average of 5 training runs of each system (neural planner and neural realizer), each run with a different random seed.\n\nWe compare the exhaustive planner from BIBREF0 to our neural planner, by replacing the planner component in the BIBREF0 system. Moving to the neural planner exhibits a small drop in BLEU (46.882 dropped to 46.506). However, figure indicates 5 orders of magnitude (100,000x) speedup for graphs with 7 edges, and a linear growth in time for number of edges compared to exponential time for the exhaustive planner.\n\nWe repeat the coverage experiment in BIBREF0, counting the number of output texts that contain all the entities in the input graph, and, of these text, counting the ones in which the entities appear in the exact same order as the plan. Incorporating typing information reduced the number of texts not containing all entities by 18% for the seen part of the test set, and 16% for the unseen part. Moreover, for the text containing all entities, the number of texts that did not follow the plan's entity order is reduced by 46% for the seen part of the test set, and by 35% for the unseen part. We also observe a small drop in BLEU scores, which we attribute to some relations being verbalized more freely (though correctly).\n\nThe addition of output verification resulted in negligible changes in BLEU, reinforcing that automatic metrics are not sensitive enough to output accuracy. We thus performed manual analysis, following the procedure in BIBREF0. We manually inspect 148 samples from the seen part of the test set, containing 440 relations, counting expressed, omitted, wrong and over-generated (hallucinated) facts. We compare to the StrongNeural and BestPlan systems from BIBREF0. Results in Table indicate that the effectiveness of the verification process in ensuring correct output, reducing the already small number of ommited and overgenerated facts to 0 (with the exhaustive planner) and keeping it small (with the fast neural planner).\n\nWe manually reviewed 1,177 pairs of entities and referring expressions generated by the system. We find that 92.2% of the generated referring expressions refer to the correct entity.\n\nFrom the generated expressions, 325 (27.6%) were pronouns, 192 (16.3%) are repeating a one-token entity as is, and 505 (42.9%) are generating correct shortening of a long entity. In 63 (5.6%) of the cases the system did not find a good substitute and kept the entire entity intact. Finally, 92 (7.82%) are wrong referrals. Overall, 73.3% of the non-first mentions of entities were replaced with suitable shorter and more fluent expressions.\n\nAs can be seen in Table , using the REG module increases BLEU scores for both the exhaustive and the neural planner.\n\nWe adopt the planning-based neural generation framework of BIBREF0 and extend it to be orders of magnitude faster and produce more correct and more fluent text. We conclude that these extensions not only improve the system of BIBREF0 but also highlight the flexibility and advantages of the step-by-step framework for text generation.\n\nThis work was supported in part by the German Research Foundation through the German-Israeli Project Cooperation (DIP, grant DA 1600/1-1) and by a grant from Reverso and Theo Hoffenberg.\n\nWe report some additional results.\n\nWe introduced 4 components: neural planner instead of exhaustive one, adding type information, adding output verification stage, and incorporating a referring expression generation (REG). In Table we report BLEU scores BIBREF13 for all 16 combinations of components. The numbers are averages of 5 runs with different random seeds.\n\nWe perform further analysis of the errors of the unsupervised LM based REG module. We categorise all entities into 3 groups: (1) names of people; (2) locations (cities / counties / countries); and (3) places and objects.\n\nFor person names, the module did not produce any errors, selecting either a correct pronoun, or either the first or last name of a person, all valid refferences.\n\nFor location names, we observe two distinct error types, both relating to our module's restriction to predict a single MASK token. The first type is in cases like “city, country” or “county, country”, where the more specific location is not in the LM vocabulary, and cannot be predicted with a single token. For example, in “Punjab, Pakistan”, Punjab is not contained in the vocabulary as a single token, causing the model to select “Pakistan”, which we consider a mistake. The second type is when a city name is longer than a single token, as in “New York”. While it is common to refer to “New Jersey” as “Jersey”, it is wrong to refer to “New York” as either “New” or “York”, and as BERT can only fill in one MASK token, it chooses only one (in this case “York”).\n\nFinally, for places and objects, we also identify to mistake types. The first occurs for multi-token entities. While for some cases it is possible to select the correct one (i.e., “Agra Airport” $\\rightarrow $ “The Airport” or “Boston University” $\\rightarrow $ “The University”), in other cases it is not possible (i.e., “Baked Alaska”, where choosing either word does not produce a useful reference). The second type occurs with names of objects, like books titles. For example, for the entity “A Severed Wasp” we would like the model to predict “The Book”. However, as we only allow either pronouns or words from the original entity, the model cannot produce “The book”, producing the erroneous “The Wasp” instead.\n\nThe following output examples demonstrate the kinds of texts produces by the final system. The following outputs are correct, expressing all and only the facts from their input graphs. We enumerate them as number of facts:\n\nThe leader of Azerbaijan is Artur Rasizade.\n\nBaked Alaska, containing Sponge Cake, is from France.\n\nAbove The Veil, written by Garth Nix, is available in Hardcover and has 248 pages.\n\nThe Akita Museum Of Art is located in Japan where the Brazilians In Japan are an ethnic group. The Museum is located in Akita, Akita which is part of Akita Prefecture .\n\nThe AWH Engineering College in Kuttikkattoor, Kerala has Mahé, India to its northwest . The College was established in 2001 and has a staff of 250.\n\nAn example where the system failed, producing a wrong lexicalization of a fact is: “The AWH Engineering College is located in the state of Kerala, Kochi, in India. The largest city in India is Mumbai and the river is the Ganges”. In this example, the input entity Kochi refers to the leader of Kerala, and not tpo the location (although there is also a location by that name). The text lexicalizes this fact such that Kerala and Kochi are related, but with a relation of part-of, implying Kerala is in Kochi.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 77
+    },
+    {
+      "section": "Abstract",
+      "start": 79,
+      "end": 899
+    },
+    {
+      "section": "Introduction",
+      "start": 901,
+      "end": 2711
+    },
+    {
+      "section": "Step-by-step Generation",
+      "start": 2713,
+      "end": 3667
+    },
+    {
+      "section": "Fast and Verifiable Planner",
+      "start": 3669,
+      "end": 8013
+    },
+    {
+      "section": "Incorporating typing information for unseen entities and relations",
+      "start": 8015,
+      "end": 9240
+    },
+    {
+      "section": "Output verification",
+      "start": 9242,
+      "end": 9676
+    },
+    {
+      "section": "Output verification ::: Existing approaches: soft encouragement via neural modules.",
+      "start": 9678,
+      "end": 10588
+    },
+    {
+      "section": "Output verification ::: Our proposal: explicit verification.",
+      "start": 10590,
+      "end": 11886
+    },
+    {
+      "section": "Referring Expressions",
+      "start": 11888,
+      "end": 14521
+    },
+    {
+      "section": "Evaluation and Results",
+      "start": 14523,
+      "end": 15411
+    },
+    {
+      "section": "Evaluation and Results ::: Setup",
+      "start": 15413,
+      "end": 15768
+    },
+    {
+      "section": "Evaluation and Results ::: Neural Planner vs Exhaustive Planner",
+      "start": 15770,
+      "end": 16181
+    },
+    {
+      "section": "Evaluation and Results ::: Effect of Type Information",
+      "start": 16183,
+      "end": 16906
+    },
+    {
+      "section": "Evaluation and Results ::: Effect of Output Verification",
+      "start": 16908,
+      "end": 17632
+    },
+    {
+      "section": "Evaluation and Results ::: Referring Expression Module ::: Intrinsic evaluation of the REG module.",
+      "start": 17634,
+      "end": 18258
+    },
+    {
+      "section": "Evaluation and Results ::: Referring Expression Module ::: Effect on BLEU scores.",
+      "start": 18260,
+      "end": 18376
+    },
+    {
+      "section": "Conclusions",
+      "start": 18378,
+      "end": 18712
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 18714,
+      "end": 18936
+    },
+    {
+      "section": "Interaction of different components",
+      "start": 18938,
+      "end": 19268
+    },
+    {
+      "section": "REG Error Analysis",
+      "start": 19270,
+      "end": 21139
+    },
+    {
+      "section": "Output Examples",
+      "start": 21141,
+      "end": 22376
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.09986",
+    "arxiv_id": "1909.09986",
+    "source_url": "https://arxiv.org/abs/1909.09986",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

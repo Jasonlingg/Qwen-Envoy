@@ -1,0 +1,90 @@
+{
+  "doc_id": "qasper_1910_11235",
+  "title": "Rethinking Exposure Bias In Language Modeling",
+  "text": "Rethinking Exposure Bias In Language Modeling\n\nExposure bias describes the phenomenon that a language model trained under the teacher forcing schema may perform poorly at the inference stage when its predictions are conditioned on its previous predictions unseen from the training corpus. Recently, several generative adversarial networks (GANs) and reinforcement learning (RL) methods have been introduced to alleviate this problem. Nonetheless, a common issue in RL and GANs training is the sparsity of reward signals. In this paper, we adopt two simple strategies, multi-range reinforcing, and multi-entropy sampling, to amplify and denoise the reward signal. Our model produces an improvement over competing models with regards to BLEU scores and road exam, a new metric we designed to measure the robustness against exposure bias in language models.\n\nLikelihood-based language models with deep neural networks have been widely adopted to tackle language tasks BIBREF0, BIBREF1, BIBREF2, BIBREF3. By far, one of the most popular training strategies is teacher forcing, which derives from the general maximum likelihood estimation (MLE) principle BIBREF4. Under the teacher forcing schema, a model is trained to make predictions conditioned on ground-truth inputs. Although this strategy enables effective training of large neural networks, it is susceptible to aggravate exposure bias: a model may perform poorly at the inference stage, once its self-generated prefix diverges from the previously learned ground-truth data BIBREF5.\n\nA common approach to mitigate this problem is to impose supervision upon the model's own exploration. To this objective, existing literature have introduced REINFORCE BIBREF6 and actor-critic (AC) methods BIBREF7 (including language GANs BIBREF8), which offer direct feedback on a model's self-generated sequences, so the model can later, at the inference stage, deal with previously unseen exploratory paths. However, due to the well-known issue of reward sparseness and the potential noises in the critic's feedback, these methods are reported to risk compromising the generation quality, specifically in terms of precision.\n\nIn this paper, we adopt two simple strategies, multi-range reinforcing and multi-entropy sampling to overcome the reward sparseness during training. With the tricks applied, our model demonstrates a significant improvement over competing models. In addition, we propose road exam as a new metric to reveal a model's robustness against exposure bias.\n\nAs an early work to address exposure bias, BIBREF5 proposed a curriculum learning approach called scheduled sampling, which gradually replaces the ground-truth tokens with the model's own predictions while training. Later, BIBREF9 criticized this approach for pushing the model towards overfitting onto the corpus distribution based on the position of each token in the sequence, instead of learning about the prefix.\n\nIn recent RL-inspired works, BIBREF10 built on the REINFORCE algorithm to directly optimize the test-time evaluation metric score. BIBREF11 employed a similar approach by training a critic network to predict the metric score that the actor's generated sequence of tokens would obtain. In both cases, the reliance on a metric to accurately reflect the quality of generated samples becomes a major limitation. Such metrics are often unavailable and difficult to design by nature.\n\nIn parallel, adversarial training was introduced into language modeling by SeqGAN BIBREF8. This model consists of a generator pre-trained under MLE and a discriminator pre-trained to discern the generator's distribution from the real data. Follow-up works based on SeqGAN alter their training objectives or model architectures to enhance the guidance signal's informativeness. RankGAN replaces the absolute binary reward with a relative ranking score BIBREF12. LeakGAN allows the discriminator to “leak” its internal states to the generator at intermediate steps BIBREF13. BIBREF14 models a reward function using inverse reinforcement learning (IRL). While much progress have been made, we surprisingly observed that SeqGAN BIBREF8 shows more stable results in road exam in Section SECREF20. Therefore, we aim to amplify and denoise the reward signal in a direct and simple fashion.\n\nProblem Re-Formulation: Actor-Critic methods (ACs) consider language modeling as a generalized Markov Decision Process (MDP) problem, where the actor learns to optimize its policy guided by the critic, while the critic learns to optimize its value function based on the actor's output and external reward information.\n\nAs BIBREF15 points out, GAN methods can be seen as a special case of AC where the critic aims to distinguish the actor's generation from real data and the actor is optimized in an opposite direction to the critic.\n\nActor-Critic Training: In this work, we use a standard single-layer LSTM as the actor network. The training objective is to maximize the model's expected end rewards with policy gradient BIBREF16:\n\nThen, We use a CNN as the critic to predict the expected rewards for current generated prefix:\n\nIn practice, we perform a Monte-Carlo (MC) search with roll-out policy following BIBREF8 to sample complete sentences starting from each location in a predicted sequence and compute their end rewards. Empirically, we found out that the maximum, instead of average, of rewards in the MC search better represents each token's actor value and yields better results during training. Therefore, we compute the action value by:\n\nIn RL and GANs training, two major factors behind the unstable performance are the large variance and the update correlation during the sampling process BIBREF17, BIBREF18. We address these problems using the following strategies:\n\nMulti-Range Reinforcing: Our idea of multi-range supervision takes inspiration from deeply-supervised nets (DSNs) BIBREF19. Under deep supervision, intermediate layers of a deep neural network have their own training objectives and receive direct supervision simultaneously with the final decision layer. By design, lower layers in a CNN have smaller receptive fields, allowing them to make better use of local patterns. Our “multi-range\" modification enables the critic to focus on local n-gram information in the lower layers while attending to global structural information in the higher layers. This is a solution to the high variance problem, as the actor can receive amplified reward with more local information compared to BIBREF8.\n\nMulti-Entropy Sampling: Language GANs can be seen an online RL methods, where the actor is updated from data generated by its own policy with strong correlation. Inspired by BIBREF20, we empirically find that altering the entropy of the actor's sample distribution during training is beneficial to the AC network's robust performance. In specific, we alternate the temperature $\\tau $ to generate samples under different behavior policies. During the critic's training, the ground-truth sequences are assigned a perfect target value of 1. The samples obtained with $\\tau < 1$ are supposed to contain lower entropy and to diverge less from the real data, that they receive a higher target value close to 1. Those obtained with $\\tau > 1$ contain higher entropy and more errors that their target values are lower and closer to 0. This mechanism decorrelates updates during sequential sampling by sampling multiple diverse entropy distributions from actor synchronously.\n\nTable TABREF5 demonstrates an ablation study on the effectiveness of multi-range reinforcing (MR) and multi-entropy sampling (ME). We observe that ME improves $\\text{BLEU}_{\\text{F5}}$ (precision) significantly while MR further enhances $\\text{BLEU}_{\\text{F5}}$ (precision) and $\\text{BLEU}_{\\text{F5}}$ (recall). Detailed explanations of these metrics can be found in Section SECREF4.\n\nWe adopt three variations of BLEU metric from BIBREF14 to reflect precision and recall.\n\n$\\textbf {BLEU}_{\\textbf {F}}$, or forward BLEU, is a metric for precision. It uses the real test dataset as references to calculate how many n-grams in the generated samples can be found in the real data.\n\n$\\textbf {BLEU}_{\\textbf {B}}$, or backward BLEU, is a metric for recall. This metric takes both diversity and quality into computation. A model with severe mode collapse or diverse but incorrect outputs will receive poor scores in $\\text{BLEU}_{\\text{B}}$.\n\n$\\textbf {BLEU}_{\\textbf {HA}}$ is the harmonic mean of $\\text{BLEU}_{\\text{F}}$ and $\\text{BLEU}_{\\text{B}}$, given by:\n\nRoad Exam is a novel test we propose as a direct evaluation of exposure bias. In this test, a sentence prefix of length $K$, either taken from the training or testing dataset, is fed into the model under assessment to perform a sentence completion task. Thereby, the model is directed onto either a seen or an unseen “road\" to begin its generation. Because precision is the primary concern, we set $\\tau =0.5$ to sample high-confidence sentences from each model's distribution. We compare $\\text{BLEU}_{\\text{F}}$ of each model on both seen and unseen completion tasks and over a range of prefix lengths. By definition, a model with exposure bias should perform worse in completing sentences with unfamiliar prefix. The sentence completion quality should decay more drastically as the the unfamiliar prefix grows longer.\n\nWe evaluate on two datasets: EMNLP2017 WMT News and Google-small, a subset of Google One Billion Words .\n\nEMNLP2017 WMT News is provided in BIBREF21, a benchmarking platform for text generation models. We split the entire dataset into a training set of 195,010 sentences, a validation set of 83,576 sentences, and a test set of 10,000 sentences. The vocabulary size is 5,254 and the average sentence length is 27.\n\nGoogle-small is sampled and pre-processed from its the Google One Billion Words. It contains a training set of 699,967 sentences, a validation set of 200,000 sentences, and a test set of 99,985 sentences. The vocabulary size is 61,458 and the average sentence length is 29.\n\nWe implement a standard single-layer LSTM as the generator (actor) and a eight-layer CNN as the discriminator (critic). The LSTM has embedding dimension 32 and hidden dimension 256. The CNN consists of 8 layers with filter size 3, where the 3rd, 5th, and 8th layers are directly connected to the output layer for multi-range supervision. Other parameters are consistent with BIBREF21.\n\nAdam optimizer is deployed for both critic and actor with learning rate $10^{-4}$ and $5 \\cdot 10^{-3}$ respectively. The target values for the critic network are set to [0, 0.2, 0.4, 0.6, 0.8] for samples generated by the RNN with softmax temperatures [0.5, 0.75, 1.0, 1.25, 1.5].\n\nTable TABREF9 and Table TABREF10 compare models on EMNLP2017 WMT News and Google-small. Our model outperforms the others in $\\text{BLEU}_{\\text{F5}}$, $\\text{BLEU}_{\\text{B5}}$, and $\\text{BLEU}_{\\text{HA5}}$, indicating a high diversity and quality in its sample distribution. It is noteworthy that, LeakGAN and our model are the only two models to demonstrate improvements on $\\text{BLEU}_{\\text{B5}}$ over the teacher forcing baseline. The distinctive increment in recall indicates less mode collapse, which is a common problem in language GANs and ACs.\n\nFigure FIGREF16 demonstrates the road exam results on EMWT News. All models decrease in sampling precision (reflected via $\\text{BLEU}_{\\text{F4}}$) as the fed-in prefix length ($K$) increases, but the effect is stronger on the unseen test data, revealing the existence of exposure bias. Nonetheless, our model trained under ME and MR yields the best sentence quality and a relatively moderate performance decline.\n\nAlthough TF and SS demonstrate higher $\\text{BLEU}_{\\text{F5}}$ performance with shorter prefixes, their sentence qualities drop drastically on the test dataset with longer prefixes. On the other hand, GANs begin with lower $\\text{BLEU}_{\\text{F4}}$ precision scores but demonstrate less performance decay as the prefix grows longer and gradually out-perform TF. This robustness against unseen prefixes exhibits that supervision from a learned critic can boost a model's stability in completing unseen sequences.\n\nThe better generative quality in TF and the stronger robustness against exposure bias in GANs are two different objectives in language modeling, but they can be pursued at the same time. Our model's improvement in both perspectives exhibit one possibility to achieve the goal.\n\nWe have presented multi-range reinforcing and multi-entropy sampling as two training strategies built upon deeply supervised nets BIBREF19 and multi-entropy samplingBIBREF20. The two easy-to-implement strategies help alleviate the reward sparseness in RL training and tackle the exposure bias problem.\n\nThe authors are grateful for the supports by NSF IIS-1618477, NSF IIS-1717431, and a grant from Samsung Research America.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 45
+    },
+    {
+      "section": "Abstract",
+      "start": 47,
+      "end": 854
+    },
+    {
+      "section": "Introduction",
+      "start": 856,
+      "end": 2514
+    },
+    {
+      "section": "Related Works",
+      "start": 2516,
+      "end": 4296
+    },
+    {
+      "section": "Model Description",
+      "start": 4298,
+      "end": 7488
+    },
+    {
+      "section": "Model Description ::: Effectiveness of Multi-Range Reinforcing and Multi-Entropy Sampling",
+      "start": 7490,
+      "end": 7876
+    },
+    {
+      "section": "Model Evaluation ::: Modeling Capacity & Sentence Quality",
+      "start": 7878,
+      "end": 8553
+    },
+    {
+      "section": "Model Evaluation ::: Exposure Bias Attacks",
+      "start": 8555,
+      "end": 9375
+    },
+    {
+      "section": "Experiment ::: Datasets",
+      "start": 9377,
+      "end": 10065
+    },
+    {
+      "section": "Experiment ::: Implementation Details ::: Network Architecture:",
+      "start": 10067,
+      "end": 10451
+    },
+    {
+      "section": "Experiment ::: Implementation Details ::: Training Settings:",
+      "start": 10453,
+      "end": 10734
+    },
+    {
+      "section": "Experiment ::: Discussion",
+      "start": 10736,
+      "end": 12500
+    },
+    {
+      "section": "Conclusion",
+      "start": 12502,
+      "end": 12803
+    },
+    {
+      "section": "Conclusion ::: Acknowledgments",
+      "start": 12805,
+      "end": 12926
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1910.11235",
+    "arxiv_id": "1910.11235",
+    "source_url": "https://arxiv.org/abs/1910.11235",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

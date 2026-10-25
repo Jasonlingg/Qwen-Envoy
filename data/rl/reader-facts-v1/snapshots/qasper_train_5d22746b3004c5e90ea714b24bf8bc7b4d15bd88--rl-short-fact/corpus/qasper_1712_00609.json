@@ -1,0 +1,90 @@
+{
+  "doc_id": "qasper_1712_00609",
+  "title": "Improving Visually Grounded Sentence Representations with Self-Attention",
+  "text": "Improving Visually Grounded Sentence Representations with Self-Attention\n\nSentence representation models trained only on language could potentially suffer from the grounding problem. Recent work has shown promising results in improving the qualities of sentence representations by jointly training them with associated image features. However, the grounding capability is limited due to distant connection between input sentences and image features by the design of the architecture. In order to further close the gap, we propose applying self-attention mechanism to the sentence encoder to deepen the grounding effect. Our results on transfer tasks show that self-attentive encoders are better for visual grounding, as they exploit specific words with strong visual associations.\n\nRecent NLP studies have thrived on distributional hypothesis. More recently, there have been efforts in applying the intuition to larger semantic units, such as sentences, or documents. However, approaches based on distributional semantics are limited by the grounding problem BIBREF0 , which calls for techniques to ground certain conceptual knowledge in perceptual information.\n\nBoth NLP and vision communities have proposed various multi-modal learning methods to bridge the gap between language and vision. However, how general sentence representations can be benefited from visual grounding has not been fully explored yet. Very recently, BIBREF1 proposed a multi-modal encoder-decoder framework that, given an image caption, jointly predicts another caption and the features of associated image. The work showed promising results for further improving general sentence representations by grounding them visually. However, according to the model, visual association only occurs at the final hidden state of the encoder, potentially limiting the effect of visual grounding.\n\nAttention mechanism helps neural networks to focus on specific input features relevant to output. In the case of visually grounded multi-modal framework, applying such attention mechanism could help the encoder to identify visually significant words or phrases. We hypothesize that a language-attentive multi-modal framework has an intuitive basis on how humans mentally visualize certain concepts in sentences during language comprehension.\n\nIn this paper, we propose an enhanced multi-modal encoder-decoder model, in which the encoder attends to the input sentence and the decoders predict image features and the target sentence. We train the model on images and respective captions from COCO5K dataset BIBREF2 . We augment the state-of-the-art sentence representations with those produced by our model and conduct a series of experiments on transfer tasks to test the quality of sentence representations. Through detailed analysis, we confirm our hypothesis that self-attention help our model produce more feature-rich visually grounded sentence representations.\n\nSentence Representations. Since the inception of word embeddings BIBREF3 , extensive work have emerged for larger semantic units, such as sentences and paragraphs. These works range from deep neural models BIBREF4 to log-bilinear models BIBREF5 , BIBREF6 . A recent work proposed using supervised learning of a specific task as a leverage to obtain general sentence representation BIBREF7 .\n\nJoint Learning of Language and Vision. Convergence between computer vision and NLP researches have increasingly become common. Image captioning BIBREF8 , BIBREF9 , BIBREF10 , BIBREF11 and image synthesis BIBREF12 are two common tasks. There have been significant studies focusing on improving word embeddings BIBREF13 , BIBREF14 , phrase embeddings BIBREF15 , sentence embeddings BIBREF1 , BIBREF16 , language models BIBREF17 through multi-modal learning of vision and language. Among all studies, BIBREF1 is the first to apply skip-gram-like intuition (predicting multiple modalities from langauge) to joint learning of language and vision in the perspective of general sentence representations.\n\nAttention Mechanism in Multi-Modal Semantics. Attention mechanism was first introduced in BIBREF18 for neural machine translation. Similar intuitions have been applied to various NLP BIBREF19 , BIBREF20 , BIBREF21 and vision tasks BIBREF8 . BIBREF8 applied attention mechanism to images to bind specific visual features to language. Recently, self-attention mechanism BIBREF21 has been proposed for situations where there are no extra source of information to “guide the extraction of sentence embedding”. In this work, we propose a novel sentence encoder for the multi-modal encoder-decoder framework that leverages the self-attention mechanism. To the best of our knowledge, such attempt is the first among studies on joint learning of language and vision.\n\nGiven a data sample INLINEFORM0 , where INLINEFORM1 is the source caption, INLINEFORM2 is the target caption, and INLINEFORM3 is the hidden representation of the image, our goal is to predict INLINEFORM4 and INLINEFORM5 with INLINEFORM6 , and the hidden representation in the middle serves as the general sentence representation.\n\nWe base our model on the encoder-decoder framework introduced in BIBREF1 . A bidirectional Long Short-Term Memory (LSTM) BIBREF22 encodes an input sentence and produces a sentence representation for the input. A pair of LSTM cells encodes the input sequence in both directions and produce two final hidden states: INLINEFORM0 and INLINEFORM1 . The hidden representation of the entire sequence is produced by selecting maximum elements between the two hidden states: INLINEFORM2 .\n\nThe decoder calculates the probability of a target word INLINEFORM0 at each time step INLINEFORM1 , conditional to the sentence representation INLINEFORM2 and all target words before INLINEFORM3 . INLINEFORM4 .\n\nThe objective of the basic encoder-decoder model is thus the negative log-likelihood of the target sentence given all model parameters: INLINEFORM0 .\n\nGiven the source caption representation INLINEFORM0 and the relevant image representation INLINEFORM1 , we associate the two representations by projecting INLINEFORM2 into image feature space. We train the model to rank the similarity between predicted image features INLINEFORM3 and the target image features INLINEFORM4 higher than other pairs, which is achieved by ranking loss functions. Although margin ranking loss has been the dominant choice for training cross-modal feature matching BIBREF17 , BIBREF1 , BIBREF23 , we find that log-exp-sum pairwise ranking BIBREF24 yields better results in terms of evaluation performance and efficiency. Thus, the objective for ranking DISPLAYFORM0 \n\nwhere INLINEFORM0 is the set of negative examples and INLINEFORM1 is cosine similarity.\n\nLet INLINEFORM0 be the encoder hidden state at timestep INLINEFORM1 concatenated from two opposite directional LSTMs ( INLINEFORM2 is the dimensionality of sentence representations). Let INLINEFORM3 be the hidden state matrix where INLINEFORM4 -th column of INLINEFORM5 is INLINEFORM6 . The self-attention mechanism aims to learn attention weight INLINEFORM7 , i.e. how much attention must be paid to hidden state INLINEFORM8 , based on all hidden states INLINEFORM9 . Since there could be multiple ways to attend depending on desired features, we allow multiple attention vectors to be learned. Attention matrix INLINEFORM10 is a stack of INLINEFORM11 attention vectors, obtained through attention layers: INLINEFORM12 . INLINEFORM13 and INLINEFORM14 are attention parameters and INLINEFORM15 is a hyperparameter. The context matrix INLINEFORM16 is obtained by INLINEFORM17 . Finally, we compress the context matrix into a fixed size representation INLINEFORM18 by max-pooling all context vectors: INLINEFORM19 . Attended representation INLINEFORM20 and encoder-decoder representation INLINEFORM21 are concatenated into the final self-attentive sentence representation INLINEFORM22 . This hybrid representation replaces INLINEFORM23 and is used to predict image features (Section SECREF2 ) and target caption (Section SECREF1 ).\n\nFollowing the experimental design of BIBREF1 , we conduct experiments on three different learning objectives: Cap2All, Cap2Cap, Cap2Img. Under Cap2All, the model is trained to predict both the target caption and the associated image: INLINEFORM0 . Under Cap2Cap, the model is trained to predict only the target caption ( INLINEFORM1 ) and, under Cap2Img, only the associated image ( INLINEFORM2 ).\n\nWord embeddings INLINEFORM0 are initialized with GloVe BIBREF25 . The hidden dimension of each encoder and decoder LSTM cell ( INLINEFORM1 ) is 1024. We use Adam optimizer BIBREF26 and clip the gradients to between -5 and 5. Number of layers, dropout, and non-linearity for image feature prediction layers are 4, 0.3 and ReLU BIBREF27 respectively. Dimensionality of hidden attention layers ( INLINEFORM3 ) is 350 and number of attentions ( INLINEFORM4 ) is 30. We employ orthogonal initialization BIBREF28 for recurrent weights and xavier initialization BIBREF29 for all others. For the datasets, we use Karpathy and Fei-Fei's split for MS-COCO dataset BIBREF10 . Image features are prepared by extracting hidden representations at the final layer of ResNet-101 BIBREF30 . We evaluate sentence representation quality using SentEval BIBREF7 , BIBREF1 scripts. Mini-batch size is 128 and negative samples are prepared from remaining data samples in the same mini-batch.\n\nAdhering to the experimental settings of BIBREF1 , we concatenate sentence representations produced from our model with those obtained from the state-of-the-art unsupervised learning model (Layer Normalized Skip-Thoughts, ST-LN) BIBREF31 . We evaluate the quality of sentence representations produced from different variants of our encoders on well-known transfer tasks: movie review sentiment (MR) BIBREF32 , customer reviews (CR) BIBREF33 , subjectivity (SUBJ) BIBREF34 , opinion polarity (MPQA) BIBREF35 , paraphrase identification (MSRP) BIBREF36 , binary sentiment classification (SST) BIBREF37 , SICK entailment and SICK relatedness BIBREF38 .\n\nResults are shown in Table TABREF11 . Results show that incorporating self-attention mechanism in the encoder is beneficial for most tasks. However, original models were better in some tasks (CR, MPQA, MRPC), suggesting that self-attention mechanism could sometimes introduce noise in sentence features. Overall, utilizing self-attentive sentence representation further improves performances in 5 out of 8 tasks. Considering that models with self-attention employ smaller LSTM cells (1024) than those without (2048) (Section SECREF6 ), the performance improvements are significant. Results on COCO5K image and caption retrieval tasks (not included in the paper due to limited space) show comparable performances to other more specialized methods BIBREF10 , BIBREF39 .\n\nIn order to study the effects of incorporating self-attention mechanism in joint prediction of image and language features, we examine attention vectors for selected samples from MS-COCO dataset and compare them to associated images (Figure FIGREF13 ). For example, given the sentence “man in black shirt is playing guitar”, our model identifies words that have association with strong visual imagery, such as “man”, “black” and “guitar”. Given the second sentence, our model learned to attend to visually significant words such as “cat” and “bowl”. These findings show that visually grounding self-attended sentence representations helps to expose word-level visual features onto sentence representations BIBREF1 .\n\nIn this paper, we proposed a novel encoder that exploits self-attention mechanism. We trained the model using MS-COCO dataset and evaluated sentence representations produced by our model (combined with universal sentence representations) on several transfer tasks. Results show that the self-attention mechanism not only improves the qualities of general sentence representations but also guides the encoder to emphasize certain visually associable words, which helps to make visual features more prominent in the sentence representations. As future work, we intend to explore cross-modal attention mechanism to further intertwine language and visual information for the purpose of improving sentence representation quality.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 72
+    },
+    {
+      "section": "Abstract",
+      "start": 74,
+      "end": 780
+    },
+    {
+      "section": "Introduction",
+      "start": 782,
+      "end": 2926
+    },
+    {
+      "section": "Related Work",
+      "start": 2928,
+      "end": 4776
+    },
+    {
+      "section": "Proposed Method",
+      "start": 4778,
+      "end": 5107
+    },
+    {
+      "section": "Visually Grounded Encoder-Decoder Framework",
+      "start": 5109,
+      "end": 5951
+    },
+    {
+      "section": "Visual Grounding",
+      "start": 5953,
+      "end": 6735
+    },
+    {
+      "section": "Visual Grounding with Self-Attention",
+      "start": 6737,
+      "end": 8066
+    },
+    {
+      "section": "Learning Objectives",
+      "start": 8068,
+      "end": 8465
+    },
+    {
+      "section": "Implementation Details",
+      "start": 8467,
+      "end": 9435
+    },
+    {
+      "section": "Evaluation",
+      "start": 9437,
+      "end": 10086
+    },
+    {
+      "section": "Results",
+      "start": 10088,
+      "end": 10855
+    },
+    {
+      "section": "Attention Mechanism at Work",
+      "start": 10857,
+      "end": 11572
+    },
+    {
+      "section": "Conclusion and Future Work",
+      "start": 11574,
+      "end": 12298
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1712.00609",
+    "arxiv_id": "1712.00609",
+    "source_url": "https://arxiv.org/abs/1712.00609",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

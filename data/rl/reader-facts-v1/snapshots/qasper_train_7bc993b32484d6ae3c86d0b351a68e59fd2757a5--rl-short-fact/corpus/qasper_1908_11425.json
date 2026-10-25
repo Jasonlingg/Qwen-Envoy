@@ -1,0 +1,120 @@
+{
+  "doc_id": "qasper_1908_11425",
+  "title": "Classifying topics in speech when all you have is crummy translations.",
+  "text": "Classifying topics in speech when all you have is crummy translations.\n\nGiven a large amount of unannotated speech in a language with few resources, can we classify the speech utterances by topic? We show that this is possible if text translations are available for just a small amount of speech (less than 20 hours), using a recent model for direct speech-to-text translation. While the translations are poor, they are still good enough to correctly classify 1-minute speech segments over 70% of the time - a 20% improvement over a majority-class baseline. Such a system might be useful for humanitarian applications like crisis response, where incoming speech must be quickly assessed for further action.\n\nQuickly making sense of large amounts of linguistic data is an important application of language technology. For example, after the 2011 Japanese tsunami, natural language processing was used to quickly filter social media streams for messages about the safety of individuals, and to populate a person finder database BIBREF0. Japanese text is high-resource, but there are many cases where it would be useful to make sense of speech in low-resource languages. For example, in Uganda, as in many parts of the world, the primary source of news is local radio stations, which broadcast in many languages. A pilot study from the United Nations Global Pulse Lab identified these radio stations as a potentially useful source of information about a variety of urgent topics related to refugees, small-scale disasters, disease outbreaks, and healthcare BIBREF1. With many radio broadcasts coming in simultaneously, even simple classification of speech for known topics would be helpful to decision-makers working on humanitarian projects.\n\nRecent research has shown that it is possible train direct Speech-to-text Translation (ST) systems from speech paired only with translations BIBREF2, BIBREF3, BIBREF4. Since no transcription is required, this could be useful in very low-resource settings, even for languages with no writing systems. In realistic low-resource settings where only a few hours of training data is available, these systems produce poor translations BIBREF5, but it has long been recognized that there are good uses for bad translations BIBREF6. Could classifying the original speech be one of those uses?\n\nWe answer this question affirmatively: using ST to translate speech to text, we then classify by topic using supervised models (Figure FIGREF1). We test our method on a corpus of conversational Spanish speech paired with English text translations. Using an ST model trained on 20 hours of Spanish-English data, we are able to predict topics correctly 71% of the time. With even worse ST, we can still predict topics with an accuracy of 61%.\n\nWe use the method of BIBREF5 to train neural sequence-to-sequence Spanish-English ST models. As in that study, before training ST, we pre-train the models using English ASR data from the Switchboard Telephone speech corpus BIBREF7, which consists of around 300 hours of English speech and transcripts. This was reported to substantially improve translation quality when the training set for ST was only tens of hours.\n\nTo classify the translated documents, we first need a set of topic labels, which were not already available for our dataset. So, we initially discover a set of topics from the target-language training text using a topic model. To classify the translations of the test data, we choose the most probable topic according to the learned topic model. To train our topic model, we use Nonnegative Matrix Factorization BIBREF8, BIBREF9.\n\nWe use the Fisher Spanish speech corpus BIBREF11, which consists of 819 phone calls, with an average duration of 12 minutes, amounting to a total of 160 hours of data. We discard the associated transcripts and pair the speech with English translations BIBREF12, BIBREF13. To simulate a low-resource scenario, we sampled 90 calls (20h) of data (train20h) to train both ST and topic models, reserving 450 calls (100h) to evaluate topic models (eval100h). Our experiments required ST models of varying quality, so we also trained models with decreasing amounts of data: ST-10h, ST-5h, and ST-2.5h are trained on 10, 5, and 2.5 hours of data respectively, sampled from train20h. To evaluate ST only, we use the designated Fisher test set, as in previous work.\n\nIn the Fisher protocol, callers were prompted with one of 25 possible topics. It would seem appealing to use the prompts as topic labels, but we observed that many conversations quickly departed from the initial prompt and meandered from topic to topic. For example, one call starts: “Ok today's topic is marriage or we can talk about anything else...”. Within minutes, the topic shifts to jobs: “I'm working oh I do tattoos.” To isolate different topics within a single call, we split each call into 1 minute long segments to use as `documents'. This gives us 1K training and 5.5K test segments, but leaves us with no human-annotated topic labels for them.\n\nObtaining gold topic labels for our data would require substantial manual annotation, so we instead use the human translations from the 1K (train20h) training set utterances to train the NMF topic model with scikit-learn BIBREF14, and then use this model to infer topics on the evaluation set. These silver topics act as an oracle: they tell us what a topic model would infer if it had perfect translations. NMF and model hyperparameters are described in Appendix SECREF7.\n\nTo evaluate our ST models, we apply our ST model to test audio, and then predict topics from the translations using the NMF model trained on the human translations of the training data (Figure FIGREF1). To report accuracy we compare the predicted labels and silver labels, i.e., we ask whether the topic inferred from our predicted translation (ST) agrees with one inferred from a gold translation (human).\n\nTo put our topic modeling results in context, we first report ST results. Figure FIGREF9 plots the BLEU scores on the Fisher test set and on eval100h for Spanish-English ST models. The scores are very similar for both sets when computed using a single human reference; scores are 8 points higher on the Fisher test set if all 4 of its available references are used. The state-of-the-art BLEU score on the Fisher test set is 47.3 (using 4 references), reported by BIBREF3, who trained an ST model on the entire 160 hours of data in the Fisher training corpus. By contrast, 20 hour model (ST-20h) achieves a BLEU score of 18.1. Examining the translations (Table TABREF10), we see that while they are mediocre, they contain words that might enable correct topic classification.\n\nTurning to our main task of classification, we first review the set of topics discovered from the human translations of train20h (Table TABREF13). We explored different numbers of topics, and chose 10 after reviewing the results. We assigned a name to each topic after manually reviewing the most informative terms; for topics with less coherent sets of informative terms, we include misc in their names.\n\nWe argued above that the silver labels are sensible for evaluation despite not always matching the assigned call topic prompts, since they indicate what an automatic topic classifier would predict given correct translations and they capture finer-grained changes in topic. Table TABREF14 shows a few examples where the silver labels differ from the assigned call topic prompts. In the first example, the topic model was arguably incorrect, failing to pick up the prompt juries, and instead focusing on the other words, predicting intro-misc. But in the other examples, the topic model is reasonable, in fact correctly identifying the topic in the third example where the transcripts indicate that the annotation was wrong (specifying the topic prompt as music). The topic model also classifies a large proportion of discussions as intro-misc (typically at the start of the call) and family-misc (often where the callers stray from their assigned topic).\n\nOur analysis also supports our observation that discussed topics stray from the prompted topic in most speech segments. For example, among segments in the 17 training data calls with the prompt religion, only 36% have the silver label religion, and the most frequently assigned label is family-misc with 46%. Further details are in Appendix SECREF9.\n\nNow we turn to our main experiment. For each of the audio utterances in eval100h, we have four ST model translations: ST-2.5h, 5h, 10h, 20h (in increasing order of quality). We feed each of these into the topic model from Table TABREF13 to get the topic distribution and use the highest scoring topic as the predicted label.\n\nFigure FIGREF16 compares the frequencies of the silver labels with the predictions from the ST-20h model. The family-misc topic is predicted most often—almost 50% of the time. This is reasonable since this topic includes words associated with small talk. Other topics such as music, religion and welfare also occur with a high enough frequency to allow for a reasonable evaluation.\n\nFigure FIGREF17 shows the accuracy for all ST models, treating the silver topic labels as the correct topics. We use the family-misc topic as a majority class naive baseline, giving an accuracy of 49.6%. We observe that ST models trained on 10 hours or more of data outperform the naive-baseline by more than 10% absolute, with ST-20h scoring 71.8% and ST-10h scoring 61.6%. Those trained on less than 5 hours of data score close to or below that of the naive baseline: 51% for ST-5h and 48% for ST-2.5h.\n\nSince topics vary in frequency, we look at label-specific accuracy to see if the ST models are simply predicting frequent topics correctly. Figure FIGREF18 shows a normalized confusion matrix for the ST-20h model. Each row sums to 100%, representing the distribution of predicted topics for any given silver topic, so the numbers on the diagonal can be interpreted as the topic-wise recall. For example, a prediction of music recalls 88% of the relevant speech segments. We see that the model has an recall of more than 50% for all 10 topics, making it quite effective for our motivating task. The family-misc topic (capturing small-talk) is often predicted when other silver topics are present, with e.g. 23% of the silver dating topics predicted as family-misc.\n\nWe have shown that even low-quality ST can be useful for speech classification. Previous work has also looked at speech analysis without high-quality ASR. In a task quite related to ours, BIBREF15 showed how to cluster speech segments in a completely unsupervised way. In contrast, we learn to classify speech using supervision, but what is important about our result is it shows that a small amount of supervision goes a long way. A slightly different approach to quickly analysing speech is the established task of Keyword spotting BIBREF16, BIBREF17, which simply asks whether any of a specific set of keywords appears in each segment. Recent studies have extended the early work to end-to-end keyword spotting BIBREF18, BIBREF19 and to semantic keyword retrieval, where non-exact but relevant keyword matches are retrieved BIBREF20, BIBREF21, BIBREF22. In all these studies, the query and search languages are the same, while we consider the cross-lingual case.\n\nThere has been some limited work on cross-lingual keyword spotting BIBREF23, where ASR is cascaded with text-based cross-lingual retrieval. Some recent studies have attempted to use vision as a complementary modality to do cross-lingual retrieval BIBREF24, BIBREF25. But cross-lingual topic classification for speech has not been considered elsewhere, as far as we know.\n\nOur results show that poor speech translation can still be useful for speech classification in low-resource settings. By varying the amount of training data, we found that translations with a BLEU score as low as 13 are still able to correctly classify 61% of the speech segments.\n\nCross-lingual topic modeling may be useful when the target language is high-resource. Here, we learned target topics just from the 20 hours of translations, but in future work, we could use a larger text corpus in the high-resource language to learn a more general topic model covering a wider set of topics, and/or combine it with keyword lists curated for specific scenarios like disaster recovery BIBREF26.\n\nThis work was supported in part by a James S McDonnell Foundation Scholar Award and a Google faculty research award. We thank Ida Szubert, Marco Damonte, and Clara Vania for helpful comments on previous drafts of this paper.\n\nWe now describe how we learn topics using NMF. Given a set of text documents as input, the model will output (1) for each document, a distribution over the selected number of topics (henceforth, the document-topic distribution), and (2) for each topic, a distribution over the set of unique terms in the text (henceforth, the topic-term distribution).\n\nOur training set (train20h) has 1080 English sentences. We start by generating a tf-idf representation for each of these. The English text contains 170K tokens and 6K terms (vocabulary size). As we are looking for topics which are coarse-level categories, we do not use the entire vocabulary, but instead focus only on the high importance terms. We lowercase the English translations and remove all punctuation, and stopwords. We further remove the terms occurring in more than 10% of the documents and those which occur in less than 2 documents, keeping only the 1000 most frequent out of the remaining.\n\nAfter preprocessing the training set, we have a feature matrix $V$ with dimensions $1080\\times 1000$, where each row is a document, and each column represents the tf-idf scores over the 1000 selected terms. The feature matrix will be sparse as only a few terms would occur in a document, and will also be non-negative as tf-idf values are greater than or equal to 0.\n\nNMF is a matrix factorization method, which given the matrix $V$, factorizes it into two matrices: $W$ with dimensions $1080\\times t$ (long-narrow), and $H$ with dimensions $t\\times 1000$ (short-wide), where $t$ is a hyper-parameter. Figure FIGREF21 shows this decomposition when $t$ is set to 10.\n\nIn the context of topic modeling, $t$ is the number of topics we want to learn; $W$ is the document-topic distribution, where for each document (row) the column with the highest value is the most-likely topic; and $H$ is the topic-term distribution, where each row is a topic, and the columns with the highest values are terms most relevant to it.\n\nThe values for $W$ and $H$ are numerically approximated using a multiplicative update rule BIBREF27, with the Frobenius norm of the reconstruction error as the objective function. In this work, we use the machine-learning toolkit scikit-learn BIBREF14 for feature extraction, and to perform NMF, using default values as described at scikit-learn.org.\n\nUsing our topic-term distribution matrix $H$, we can now make topic predictions for new text input. Our evaluation set (eval100h) has 5376 English sentences. For each of these, we have the gold text, and also the ST model output. We preprocess and represent these using the same procedure as before (SECREF19) giving us the feature matrix $V^{^{\\prime }}_{gold}$ for gold, and $V^{^{\\prime }}_{ST}$ for ST output, each with dimensions $5376\\times 1000$. Our goal is to learn the document-topic distributions $W^{^{\\prime }}_{gold}$ and $W^{^{\\prime }}_{ST}$, where:\n\nThe values for each $W^{^{\\prime }}$ matrix are again numerically approximated using the same objective function as before, but keeping $H$ fixed.\n\nWe use the highest scoring topic for each document as the prediction. The silver labels are therefore computed as $argmax(W^{^{\\prime }}_{gold})$, and for ST as $argmax(W^{^{\\prime }}_{ST})$. We can now compute the accuracy over these two sets of predictions.\n\nFigure FIGREF24 shows the topics assigned to callers in the Fisher speech corpus. Some topic prompts overlap, for example, music-preference asks callers to discuss what kind of music they like to listen to, and music-social-message asks them to discuss the social impact of music. For both these topics, we would expect the text to contain similar terms. Similarly the topics cellphones-usage, tech-devices and telemarketing-spam also overlap. Such differences might be difficult for an unsupervised topic modeling algorithm to pick up.\n\nTable TABREF25 shows the topics learned by NMF by using human English translations from the entire 160 hours of training data as input, when the number of topics is set to 25. We observe that some new topics are found that were not discovered by the 20hr/10-topic model and that match the assigned topic prompts, such as juries and housing. However, there are also several incoherent topics, and we don't find a major improvement over the topics learned by just using 20 hours of training data, with the number of topics set to 10.\n\nTo measure how often speakers stray from assigned topic prompts, we take a closer look at the calls in train20h with the assigned prompt of religion. This is the most frequently assigned prompt in the Fisher dataset (17 calls in train20h). We also select this topic for further analysis as it contains terms which are strongly indicative, such as god, bible, etc. and should be relatively easier for our topic model to detect.\n\nFigure FIGREF26 shows the trend of discussion topics over time. Overall, only 36% of the total dialog segments in these calls have the silver label religion, and the most frequently assigned label is family-misc with 46%. We observe that the first segment is often labeled as intro-misc, around 70% of the time, which is expected as speakers begin by introducing themselves. Figure FIGREF26 shows that a similar trend emerges for calls assigned the prompt music (14 calls in train20h). Silver labels for music account for 45% of the call segments and family-misc for around 38%.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 70
+    },
+    {
+      "section": "Abstract",
+      "start": 72,
+      "end": 706
+    },
+    {
+      "section": "Introduction",
+      "start": 708,
+      "end": 2767
+    },
+    {
+      "section": "Methods ::: Speech-to-text translation.",
+      "start": 2769,
+      "end": 3186
+    },
+    {
+      "section": "Methods ::: Topic modeling and classification.",
+      "start": 3188,
+      "end": 3617
+    },
+    {
+      "section": "Experimental Setup ::: Data.",
+      "start": 3619,
+      "end": 4374
+    },
+    {
+      "section": "Experimental Setup ::: Fine-grained topic analysis.",
+      "start": 4376,
+      "end": 5915
+    },
+    {
+      "section": "Results ::: Spanish-English ST.",
+      "start": 5917,
+      "end": 6691
+    },
+    {
+      "section": "Results ::: Topic Modeling on training data.",
+      "start": 6693,
+      "end": 8403
+    },
+    {
+      "section": "Results ::: Topic classification on test data",
+      "start": 8405,
+      "end": 10383
+    },
+    {
+      "section": "Related work",
+      "start": 10385,
+      "end": 11722
+    },
+    {
+      "section": "Conclusions and future work",
+      "start": 11724,
+      "end": 12415
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 12417,
+      "end": 12641
+    },
+    {
+      "section": "Using NMF for topic modeling",
+      "start": 12643,
+      "end": 12994
+    },
+    {
+      "section": "Using NMF for topic modeling ::: Text processing",
+      "start": 12996,
+      "end": 13968
+    },
+    {
+      "section": "Using NMF for topic modeling ::: Learning topics",
+      "start": 13970,
+      "end": 14968
+    },
+    {
+      "section": "Using NMF for topic modeling ::: Making topic predictions",
+      "start": 14970,
+      "end": 15683
+    },
+    {
+      "section": "Using NMF for topic modeling ::: Silver labels and evaluation",
+      "start": 15685,
+      "end": 15944
+    },
+    {
+      "section": "Fisher corpus: assigned topics",
+      "start": 15946,
+      "end": 17015
+    },
+    {
+      "section": "Tracking topic drift over conversations",
+      "start": 17017,
+      "end": 18023
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1908.11425",
+    "arxiv_id": "1908.11425",
+    "source_url": "https://arxiv.org/abs/1908.11425",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

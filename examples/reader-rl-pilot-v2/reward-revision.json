@@ -1,0 +1,114 @@
+{
+  "schema_version": "reader-training-alias-revision-v1",
+  "reward_version": "reader-short-fact-reference-v2",
+  "parent_reward_version": "reader-short-fact-reference-v1",
+  "parent_bundle_sha256": "874bb479bb9cc67baf33bcc0788cfca330aee10638b5cc35ce9ded0e1be46d5f",
+  "parent_training_review_sha256": "9350a008a1832743ed60a4cde4518fa054af2b1343e706d5a8209b457b6a9c44",
+  "audit_manifest": "examples/verifiers-port/reader-reward-review-20261024/manifest.json",
+  "audit_manifest_sha256": "32bd4a01c55ca206ac677bfdedd2323dc961fab9b804860d42de38f9574a77e9",
+  "reviewer_kind": "model_assisted",
+  "reviewer_identity": "Codex assistant; exact serving model ID unavailable",
+  "reviewed_at": "2026-10-25",
+  "human_review": null,
+  "locked_evaluation_references_opened": false,
+  "scope": "Training-only finite aliases from the October 24 source review, with the ambiguous word/sentence representation question held. No semantic scorer or citation-rule change.",
+  "changes": [
+    {
+      "case_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31--rl-short-fact",
+      "original_card_sha256": "8f8d47655e2571d1b84546b72d026feb6fb24b190cbc4ff12c35822589be8f29",
+      "aliases": [
+        {
+          "source_review_row_id": "1080ed7731ce4766b8ac91507a70a8d6",
+          "variant": {
+            "answer": "300-hour database",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5"
+        },
+        {
+          "source_review_row_id": "5753bd387f604d15bd550ceea3dc489e",
+          "variant": {
+            "answer": "300 hours",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+      "original_card_sha256": "f13f2f2403a2bee153e64f4477c21e61e9f91090090f1316c4dd641c8b54b3d6",
+      "aliases": [
+        {
+          "source_review_row_id": "292919629c5e48c190fd5dcaf656270f",
+          "variant": {
+            "answer": "First place in German sub-task A macro F1 0.62",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9"
+        },
+        {
+          "source_review_row_id": "748cc9a4cca7463787fb9d251eeab0fe",
+          "variant": {
+            "answer": "my model gets a macro F1 score of 0.62 in subtask A",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703--rl-short-fact",
+      "original_card_sha256": "6b8a69f9bd0b041972ec692c479a04f60319433c6846d242da7a61af733faaba",
+      "aliases": [
+        {
+          "source_review_row_id": "ce07e42f0ef646ab8be0744ede2a7bf8",
+          "variant": {
+            "answer": "Neutral",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "a8205df4877aafd4b2e38b0c315fdef292b95bab365f66c1c2298f908592e3cd"
+        }
+      ]
+    },
+    {
+      "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+      "original_card_sha256": "dff98a011fd5764c2c3f93cf0d6ec4b158a7595d3ca3f19efad1c2338b114114",
+      "aliases": [
+        {
+          "source_review_row_id": "df1f4bd7052d40b18837c7acbfa922a7",
+          "variant": {
+            "answer": "Financial, Anxiety, PTSD, Abuse, Social",
+            "claim_ids": [
+              "requested_fact"
+            ]
+          },
+          "status": "proposal_only_not_active",
+          "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2"
+        }
+      ]
+    }
+  ],
+  "holds": [
+    {
+      "case_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b--rl-short-fact",
+      "original_card_sha256": "a5e943c571b08ea98c34ca316b7bf38daf10fa422c35db662b6cf4b274e7ac1d",
+      "reason": "Question does not specify word versus sentence representations; the paper discusses gating and BiLSTM/max-pooling for different targets. Hold the entire question rather than reward one interpretation."
+    }
+  ]
+}

@@ -1,0 +1,1571 @@
+{
+  "policy": {
+    "hypothesis": "Finite accepted-wording variants may reject source-supported complete answers.",
+    "decision_rule": "Classify each wording-rejected training answer against its question and submitted source evidence; propose aliases only for complete supported claims. Keep uncertain/incorrect/incomplete answers excluded. Do not change active reward keys or use locked evaluation. Estimate effects on mixed groups with all existing inspection/support checks still enforced.",
+    "reviewer_kind": "model_assisted",
+    "reviewer_identity": "Codex assistant; exact serving model ID not exported",
+    "independent_human_review": null,
+    "new_model_calls": false,
+    "gpu_required": false,
+    "active_reward_changed": false,
+    "locked_evaluation_references_reviewed": false
+  },
+  "rows": [
+    {
+      "row_id": "07a4675ac7ed485c99bffa0fc2b90900",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_0cf5132ac7904b7b81e17938d5815f70926a5180--rl-short-fact",
+      "question_id": "qasper_train_0cf5132ac7904b7b81e17938d5815f70926a5180",
+      "question": "What classification models were used?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/07a4675ac7ed485c99bffa0fc2b90900/rollout.json",
+      "rollout_sha256": "d51d01468ba0e806baffab6cd8f846268ba5c2fca740acc6e00655313a15425f",
+      "candidate_answer": "fastText",
+      "accepted_answers": [
+        {
+          "answer": "fastText and SVM BIBREF16",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "fastText and SVM",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "fastText and SVM BIBREF16.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "fastText and SVM.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What classification models were used? the supported short fact is fastText and SVM",
+          "support": [
+            {
+              "start": 16959,
+              "end": 17444,
+              "quote": "Text classification is a core task to many applications, like spam detection, sentiment analysis or smart replies. We used fastText and SVM BIBREF16 for preliminary experiments. We have pre-processed the text removing punctuation's and lowering the case. Facebook developers have developed fastText BIBREF17 which is a library for efficient learning of word representations and sentence classification. The reason we have used fastText is because of its promising results in BIBREF18 ."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 16859,
+          "end": 18059,
+          "quote": "e statistics clearly indicate the difference between polarity detection and stance classification.\n\nText classification is a core task to many applications, like spam detection, sentiment analysis or smart replies. We used fastText and SVM BIBREF16 for preliminary experiments. We have pre-processed the text removing punctuation's and lowering the case. Facebook developers have developed fastText BIBREF17 which is a library for efficient learning of word representations and sentence classification. The reason we have used fastText is because of its promising results in BIBREF18 .\n\nWe divided our training and testing data in the ratio of 8:2 for classification. As mentioned above we used fastText and SVM for both the classification tasks. We report accuracy for each class as it is a multi-label classification problem. The results are shown in Table 7 and Table 8. Also, the parameters used for fastText is described in Table 9.\n\nWe have not used hs (Hierarchical Soft-max) for binary classification, instead used regular softmax as it was giving better results in fastText.\n\nFor SVM, the features were the word vectors trained using word2vec BIBREF19 with dimesion size of 300 whereas for f",
+          "neighbor_start": 16509,
+          "neighbor_end": 18409,
+          "neighbor_text": "eakers take and task two is the classification of categories based on purpose. Stance classification differs from sentiment analysis. For instance, the number of speeches that were annotated as for i.e 919 had only 719 labelled as positive and the number of speeches that were annotated as against i.e 282 had only 89 as negatively labelled. So, these statistics clearly indicate the difference between polarity detection and stance classification.\n\nText classification is a core task to many applications, like spam detection, sentiment analysis or smart replies. We used fastText and SVM BIBREF16 for preliminary experiments. We have pre-processed the text removing punctuation's and lowering the case. Facebook developers have developed fastText BIBREF17 which is a library for efficient learning of word representations and sentence classification. The reason we have used fastText is because of its promising results in BIBREF18 .\n\nWe divided our training and testing data in the ratio of 8:2 for classification. As mentioned above we used fastText and SVM for both the classification tasks. We report accuracy for each class as it is a multi-label classification problem. The results are shown in Table 7 and Table 8. Also, the parameters used for fastText is described in Table 9.\n\nWe have not used hs (Hierarchical Soft-max) for binary classification, instead used regular softmax as it was giving better results in fastText.\n\nFor SVM, the features were the word vectors trained using word2vec BIBREF19 with dimesion size of 300 whereas for fastText, the features were the word vectors trained using character n-gram embedding. We have achieved considerably good results. We plan to annotate more and check if the accuracy increase any further. The limitation that we feel is the number of annotations being done. We approached the classification problem as one vs rest classification problem"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 16859,
+          "end": 18459
+        }
+      ],
+      "context_sha256": "c8017448ecb5dfbadfde3c703e595bc8c13785361f914e0f17bba92aaaa6a312",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "094cb23711aa4a40876beb6544bee21e",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+      "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+      "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/094cb23711aa4a40876beb6544bee21e/rollout.json",
+      "rollout_sha256": "51da3c34121c4512e10d990d75cb6c9b014cf34cfde4ce9292e5bf8bfa522e23",
+      "candidate_answer": "Frege's holistic and functional approach to meaning",
+      "accepted_answers": [
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What does Frege's holistic and functional approach to meaning states? the supported short fact is Only in the context of a sentence does a word have a meaning.",
+          "support": [
+            {
+              "start": 6675,
+              "end": 6936,
+              "quote": "Frege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "Semantic Holism and Word Representations in Artificial Neural Networks\n\nArtificial neural networks are a state-of-the-art solution for many problems in natural language processing. What can we learn about language and meaning from the way artificial neural networks represent it? Word representations obtained from the Skip-gram variant of the word2vec model exhibit interesting semantic properties. This is usually explained by referring to the general distributional hypothesis, which states that the meaning of the word is given by the contexts where it occurs. We propose a more specific approach based on Frege's holistic and functional approach to meaning. Taking Tugendhat's formal reinterpretation of Frege's work as a starting point, we demonstrate that it is analogical to the process of training the Skip-gram model and offers a possible explanation of its semantic properties.\n\n“Meaning is, therefore, something that words have in sentences; and it's something that sentences have in a language.” BIBREF0 On the other hand, meaning could also be something that words have on their own, with sentences being compositions and language a collection of words. This is the question of semantic",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "Semantic Holism and Word Representations in Artificial Neural Networks\n\nArtificial neural networks are a state-of-the-art solution for many problems in natural language processing. What can we learn about language and meaning from the way artificial neural networks represent it? Word representations obtained from the Skip-gram variant of the word2vec model exhibit interesting semantic properties. This is usually explained by referring to the general distributional hypothesis, which states that the meaning of the word is given by the contexts where it occurs. We propose a more specific approach based on Frege's holistic and functional approach to meaning. Taking Tugendhat's formal reinterpretation of Frege's work as a starting point, we demonstrate that it is analogical to the process of training the Skip-gram model and offers a possible explanation of its semantic properties.\n\n“Meaning is, therefore, something that words have in sentences; and it's something that sentences have in a language.” BIBREF0 On the other hand, meaning could also be something that words have on their own, with sentences being compositions and language a collection of words. This is the question of semantic holism versus atomism, which was important in the philosophy of language in the second half of the 20th century and has not been satisfyingly answered yet.\n\nArtificial neural networks are the state-of-the-art solution for many problems in natural language processing (and machine learning in general). They produce word representation with interesti"
+        },
+        {
+          "start": 6575,
+          "end": 7775,
+          "quote": "at it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it",
+          "neighbor_start": 6225,
+          "neighbor_end": 8125,
+          "neighbor_text": " context. Gottlob Frege has shown BIBREF9 that even such seemingly unambiguous words as numbers play distinct roles in different situations: “5 is a prime number” and “there are 5 cows on the meadow” are different at least in that the first “5” signifies a complete (abstract) object, while the second one needs to be supplemented with information that it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it plays a central role as one of the presupposed properties of language, holism may not need it. But it does not claim that words do not have meanining at all, only that it is derived (by some sort of decomposition) from the meaning of the whole.\n\nAlthough all artificial neural networks that work with language must have some way of representing it, "
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6575,
+          "end": 8175
+        }
+      ],
+      "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "1080ed7731ce4766b8ac91507a70a8d6",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31--rl-short-fact",
+      "question_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31",
+      "question": "How big is Switchboard-300 database?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/1080ed7731ce4766b8ac91507a70a8d6/rollout.json",
+      "rollout_sha256": "6c8a7cda4d1ab10baf0b7de1469ecfe06b3d07134f2df437334ccd486d5e261a",
+      "candidate_answer": "300-hour database",
+      "accepted_answers": [
+        {
+          "answer": "300-hour English conversational speech",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300 hours of English conversational speech",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300-hour English conversational speech.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300 hours of English conversational speech.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For How big is Switchboard-300 database? the supported short fact is 300-hour English conversational speech",
+          "support": [
+            {
+              "start": 6637,
+              "end": 6927,
+              "quote": "This study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 6537,
+          "end": 7737,
+          "quote": "e spectrogram along the time axis to perform data augmentation. It is closely related to BIBREF28.\n\nThis study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32.\n\nWe extract 80-dimensional log-Mel filterbank features over 25ms frames every 10ms from the input speech signal. The input audio is speed and/or tempo perturbed with 56 probability. Following BIBREF24, sequence noise mixed from up to 4 utterances is injected with 40% probability and 0.3 weight. The filterbank output is mean-and-variance normalized at the speaker level, and first ($\\Delta $) and second ($\\Delta \\Delta $) derivatives are also calculated. The final features presented to the network are also processed through a SpecAugment block that uses the SM policy BIBREF3 with $p=0.3$ and no time warping.\n\nThe encoder network comprises 8 bidirectional LSTM layers with 1536 nodes per direction per layer BIBREF33, BIBREF34. As shown in Fig. FIGREF1, each LSTM block in the encoder includes a residual",
+          "neighbor_start": 6187,
+          "neighbor_end": 8087,
+          "neighbor_text": "ation BIBREF25.\n\nWeight noise adds noise directly to the network parameters to improve generalization BIBREF26. This form of noise can be interpreted as a simplified form of Bayesian inference that optimizes a minimum description length loss BIBREF27.\n\nSpecAugment masks blocks of frequency channels and blocks of time steps BIBREF3 and also warps the spectrogram along the time axis to perform data augmentation. It is closely related to BIBREF28.\n\nThis study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32.\n\nWe extract 80-dimensional log-Mel filterbank features over 25ms frames every 10ms from the input speech signal. The input audio is speed and/or tempo perturbed with 56 probability. Following BIBREF24, sequence noise mixed from up to 4 utterances is injected with 40% probability and 0.3 weight. The filterbank output is mean-and-variance normalized at the speaker level, and first ($\\Delta $) and second ($\\Delta \\Delta $) derivatives are also calculated. The final features presented to the network are also processed through a SpecAugment block that uses the SM policy BIBREF3 with $p=0.3$ and no time warping.\n\nThe encoder network comprises 8 bidirectional LSTM layers with 1536 nodes per direction per layer BIBREF33, BIBREF34. As shown in Fig. FIGREF1, each LSTM block in the encoder includes a residual connection with a linear transformation that bypasses the LSTM, a 1024-dimensional linear reduction layer on the LSTM output, and batch-normalization (BN) of the block output. A pyramidal structure BIBREF31 in the first two LSTM layers reduces the frame rate by a factor of 4. The final dimension of the encoder output is 256, enforced by a linear b"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6537,
+          "end": 8137
+        }
+      ],
+      "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "270eecdb7f6c47d78faa892b15f610d5",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348--rl-short-fact",
+      "question_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348",
+      "question": "What data do they train the language models on?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/270eecdb7f6c47d78faa892b15f610d5/rollout.json",
+      "rollout_sha256": "cf4e0428d00603fa7c9e415401284051212b39a738756999734b59d446b7fb17",
+      "candidate_answer": "Japanese, Chinese, English, French, German, Spanish, Russian, Arabic, Portuguese, and Korean.",
+      "accepted_answers": [
+        {
+          "answer": "BABEL speech corpus",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "BABEL speech corpus.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What data do they train the language models on? the supported short fact is BABEL speech corpus",
+          "support": [
+            {
+              "start": 5179,
+              "end": 5540,
+              "quote": "In this work, the experiments are conducted using the BABEL speech corpus collected from the IARPA babel program. The corpus is mainly composed of conversational telephone speech (CTS) but some scripted recordings and far field recordings are presented as well. Table TABREF14 presents the details of the languages used in this work for training and evaluation."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1000,
+          "quote": "Multilingual sequence-to-sequence speech recognition: architecture, transfer learning, and language modeling\n\nSequence-to-sequence (seq2seq) approach for low-resource ASR is a relatively new direction in speech research. The approach benefits by performing model training without using lexicon and alignments. However, this poses a new problem of requiring more data compared to conventional DNN-HMM systems. In this work, we attempt to use data from 10 BABEL languages to build a multi-lingual seq2seq model as a prior model, and then port them towards 4 other BABEL languages using transfer learning approach. We also explore different architectures for improving the prior multilingual seq2seq model. The paper also discusses the effect of integrating a recurrent neural network language model (RNNLM) with a seq2seq model during decoding. Experimental results show that the transfer learning approach from the multilingual model shows substantial gains over monolingual models across all 4 BABEL ",
+          "neighbor_start": 0,
+          "neighbor_end": 1350,
+          "neighbor_text": "Multilingual sequence-to-sequence speech recognition: architecture, transfer learning, and language modeling\n\nSequence-to-sequence (seq2seq) approach for low-resource ASR is a relatively new direction in speech research. The approach benefits by performing model training without using lexicon and alignments. However, this poses a new problem of requiring more data compared to conventional DNN-HMM systems. In this work, we attempt to use data from 10 BABEL languages to build a multi-lingual seq2seq model as a prior model, and then port them towards 4 other BABEL languages using transfer learning approach. We also explore different architectures for improving the prior multilingual seq2seq model. The paper also discusses the effect of integrating a recurrent neural network language model (RNNLM) with a seq2seq model during decoding. Experimental results show that the transfer learning approach from the multilingual model shows substantial gains over monolingual models across all 4 BABEL languages. Incorporating an RNNLM also brings significant improvements in terms of %WER, and achieves recognition performance comparable to the models trained with twice more training data.\n\nThe sequence-to-sequence (seq2seq) model proposed in BIBREF0 , BIBREF1 , BIBREF2 is a neural architecture for performing sequence classification and later adop"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 5079,
+          "end": 6679
+        }
+      ],
+      "context_sha256": "3e3d5f0b3c1f8fc5f2bb2cecd1ab40ada3fa0a4a43c2761ba181521f9d50bcc3",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "292919629c5e48c190fd5dcaf656270f",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+      "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+      "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/292919629c5e48c190fd5dcaf656270f/rollout.json",
+      "rollout_sha256": "b4ea7492feba3d6132c26565b051067a63063c984959c210a601d0783a1f5252",
+      "candidate_answer": "First place in German sub-task A macro F1 0.62",
+      "accepted_answers": [
+        {
+          "answer": "macro F1 score of 0.62",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "macro F1 score of 0.62.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the performance of the model for the German sub-task A? the supported short fact is macro F1 score of 0.62",
+          "support": [
+            {
+              "start": 9092,
+              "end": 9374,
+              "quote": "The performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 8992,
+          "end": 9508,
+          "quote": "s of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more ",
+          "neighbor_start": 8642,
+          "neighbor_end": 9858,
+          "neighbor_text": "d Gradient boosted trees. Gradient boosted trees BIBREF32 are often the choice for systems where features are pre-extracted from the raw data. In the category of gradient boosted trees, Light Gradient Boosting Machine (LGBM) BIBREF33 is considered one of the most efficient in terms of memory footprint. Moreover, it has been part of winning solutions of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more balanced than English or German dataset. Hence, the results were around 0.78. As the dataset in German language was highly imbalanced, the results drops to 0.62. In subtask B, the highest F1 score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these"
+        },
+        {
+          "start": 9698,
+          "end": 10213,
+          "quote": " score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these models are not able to capture the context in the sentence. The subtask C was again a case of imbalanced dataset as targeted(TIN) label gets the highest F1 score in table TABREF21.\n\nIn this shared task, we experimented with zero-shot transfer learning on abusive text detection with pre-trained BERT and LASER sentence embeddings. We use an LGBM model to",
+          "neighbor_start": 9348,
+          "neighbor_end": 10471,
+          "neighbor_text": "and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more balanced than English or German dataset. Hence, the results were around 0.78. As the dataset in German language was highly imbalanced, the results drops to 0.62. In subtask B, the highest F1 score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these models are not able to capture the context in the sentence. The subtask C was again a case of imbalanced dataset as targeted(TIN) label gets the highest F1 score in table TABREF21.\n\nIn this shared task, we experimented with zero-shot transfer learning on abusive text detection with pre-trained BERT and LASER sentence embeddings. We use an LGBM model to train the embeddings to perform downstream task. Our model for German language got the first position. The results provided a strong baseline for further research in multilingual hate speech. We have also made the models public for use by other researchers."
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 8992,
+          "end": 10471
+        }
+      ],
+      "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "401e36211526402bab2c4b679e2815f3",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+      "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+      "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/401e36211526402bab2c4b679e2815f3/rollout.json",
+      "rollout_sha256": "4139944b30e0ba6eebe96a8d941999d46335883672227ff663fed9d1dc32686c",
+      "candidate_answer": "German sub-task A F1 score of 0.62",
+      "accepted_answers": [
+        {
+          "answer": "macro F1 score of 0.62",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "macro F1 score of 0.62.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the performance of the model for the German sub-task A? the supported short fact is macro F1 score of 0.62",
+          "support": [
+            {
+              "start": 9092,
+              "end": 9374,
+              "quote": "The performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 9024,
+          "end": 9064,
+          "quote": "e used LGBM as model for the downstream ",
+          "neighbor_start": 8674,
+          "neighbor_end": 9414,
+          "neighbor_text": "nt boosted trees BIBREF32 are often the choice for systems where features are pre-extracted from the raw data. In the category of gradient boosted trees, Light Gradient Boosting Machine (LGBM) BIBREF33 is considered one of the most efficient in terms of memory footprint. Moreover, it has been part of winning solutions of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models ar"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 8992,
+          "end": 10471
+        }
+      ],
+      "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "48a51e93df1946c58219b2812b4ed76d",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b--rl-short-fact",
+      "question_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b",
+      "question": "Which model architecture do they use to obtain representations?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/48a51e93df1946c58219b2812b4ed76d/rollout.json",
+      "rollout_sha256": "ee67c390b27d0611769982237978f8771261c4dabe9a24898b8aebf5aae80724",
+      "candidate_answer": "Standard BiLSTM with max-pooling",
+      "accepted_answers": [
+        {
+          "answer": "BiLSTM with max pooling",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "a BiLSTM with max pooling",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "BiLSTM with max pooling.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "a BiLSTM with max pooling.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For Which model architecture do they use to obtain representations? the supported short fact is BiLSTM with max pooling",
+          "support": [
+            {
+              "start": 8402,
+              "end": 8652,
+              "quote": "To enable sentence-level classification we need to obtain a sentence representation from the word vectors INLINEFORM0 . We achieved this by using a BiLSTM with max pooling, which was shown to be a good universal sentence encoding mechanism BIBREF13 ."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 9198,
+          "end": 9327,
+          "quote": "s BIBREF14 , and fine-tuned them during training. Refer to app:hyperparams for details on the other hyperparameters we used.\n\nWe ",
+          "neighbor_start": 8848,
+          "neighbor_end": 9677,
+          "neighbor_text": "t-enriched matrix representation of INLINEFORM4 obtained by feeding INLINEFORM5 to a BiLSTM of output dimension INLINEFORM6 . Lastly, INLINEFORM11 is the final sentence representation of INLINEFORM12 obtained by max-pooling INLINEFORM13 along the sequence dimension.\n\nFinally, we initialized the word representations INLINEFORM0 using GloVe embeddings BIBREF14 , and fine-tuned them during training. Refer to app:hyperparams for details on the other hyperparameters we used.\n\nWe trained our models for solving the Natural Language Inference (NLI) task in two datasets, SNLI BIBREF15 and MultiNLI BIBREF16 , and validated them in each corresponding development set (including the matched and mismatched development sets of MultiNLI).\n\nFor each dataset-method combination we trained 7 models initialized with different random seeds"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 8302,
+          "end": 9902
+        }
+      ],
+      "context_sha256": "45ba5462545d228f81adbc6ea230c63aac4c3274e9e9046f9e66224c1ffeef29",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "4a3426b0853846fb93826019e7da19c1",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+      "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+      "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/4a3426b0853846fb93826019e7da19c1/rollout.json",
+      "rollout_sha256": "97af69e5f3cb894a5a00525bfb47ff7a1820ff88b936806306f6383c36ba0930",
+      "candidate_answer": "Computational linguistic approaches to analyzing causality expressions and retrieving their relations今までにも個人的な意見や信念を持ったりについて調べる方法として提唱されている。",
+      "accepted_answers": [
+        {
+          "answer": "Axelrod's causal mapping method",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Axelrod's causal mapping method.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What are the causal mapping methods employed? the supported short fact is Axelrod's causal mapping method",
+          "support": [
+            {
+              "start": 16939,
+              "end": 17571,
+              "quote": "Axelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):"
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 16839,
+          "end": 18039,
+          "quote": "d it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the",
+          "neighbor_start": 16489,
+          "neighbor_end": 18389,
+          "neighbor_text": "l to the process of evaluating alternatives. Regardless of philosophical difficulties involved in the meaning of causation, people do evaluate complex policy alternatives in terms of the consequences a particular choice would cause, and ultimately of what the sum of these effects would be. Indeed, such causal analysis is built into our language, and it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the goals, and the ultimate utility of the decision maker can all be thought of as concept variables, and represented as points in the cognitive map. The real power of this approach appears when a cognitive map is pictured in graph form; it is then relatively easy to see how each of the concepts and causal relationships relate to each other, and to se"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 16839,
+          "end": 18439
+        }
+      ],
+      "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "5753bd387f604d15bd550ceea3dc489e",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31--rl-short-fact",
+      "question_id": "qasper_train_7efbe48e84894971d7cd307faf5f6dae9d38da31",
+      "question": "How big is Switchboard-300 database?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/5753bd387f604d15bd550ceea3dc489e/rollout.json",
+      "rollout_sha256": "71c032419749800ce7992e7b8b86a5d7ada77b9c4bcf8198e29136c2655597ad",
+      "candidate_answer": "300 hours",
+      "accepted_answers": [
+        {
+          "answer": "300-hour English conversational speech",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300 hours of English conversational speech",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300-hour English conversational speech.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "300 hours of English conversational speech.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For How big is Switchboard-300 database? the supported short fact is 300-hour English conversational speech",
+          "support": [
+            {
+              "start": 6637,
+              "end": 6927,
+              "quote": "This study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 6537,
+          "end": 7737,
+          "quote": "e spectrogram along the time axis to perform data augmentation. It is closely related to BIBREF28.\n\nThis study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32.\n\nWe extract 80-dimensional log-Mel filterbank features over 25ms frames every 10ms from the input speech signal. The input audio is speed and/or tempo perturbed with 56 probability. Following BIBREF24, sequence noise mixed from up to 4 utterances is injected with 40% probability and 0.3 weight. The filterbank output is mean-and-variance normalized at the speaker level, and first ($\\Delta $) and second ($\\Delta \\Delta $) derivatives are also calculated. The final features presented to the network are also processed through a SpecAugment block that uses the SM policy BIBREF3 with $p=0.3$ and no time warping.\n\nThe encoder network comprises 8 bidirectional LSTM layers with 1536 nodes per direction per layer BIBREF33, BIBREF34. As shown in Fig. FIGREF1, each LSTM block in the encoder includes a residual",
+          "neighbor_start": 6187,
+          "neighbor_end": 8087,
+          "neighbor_text": "ation BIBREF25.\n\nWeight noise adds noise directly to the network parameters to improve generalization BIBREF26. This form of noise can be interpreted as a simplified form of Bayesian inference that optimizes a minimum description length loss BIBREF27.\n\nSpecAugment masks blocks of frequency channels and blocks of time steps BIBREF3 and also warps the spectrogram along the time axis to perform data augmentation. It is closely related to BIBREF28.\n\nThis study focuses on Switchboard-300, a standard 300-hour English conversational speech recognition task. Our acoustic and text data preparation follows the Kaldi BIBREF29 s5c recipe. Our attention based seq2seq model is similar to BIBREF30, BIBREF31 and follows the structure of BIBREF32.\n\nWe extract 80-dimensional log-Mel filterbank features over 25ms frames every 10ms from the input speech signal. The input audio is speed and/or tempo perturbed with 56 probability. Following BIBREF24, sequence noise mixed from up to 4 utterances is injected with 40% probability and 0.3 weight. The filterbank output is mean-and-variance normalized at the speaker level, and first ($\\Delta $) and second ($\\Delta \\Delta $) derivatives are also calculated. The final features presented to the network are also processed through a SpecAugment block that uses the SM policy BIBREF3 with $p=0.3$ and no time warping.\n\nThe encoder network comprises 8 bidirectional LSTM layers with 1536 nodes per direction per layer BIBREF33, BIBREF34. As shown in Fig. FIGREF1, each LSTM block in the encoder includes a residual connection with a linear transformation that bypasses the LSTM, a 1024-dimensional linear reduction layer on the LSTM output, and batch-normalization (BN) of the block output. A pyramidal structure BIBREF31 in the first two LSTM layers reduces the frame rate by a factor of 4. The final dimension of the encoder output is 256, enforced by a linear b"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6537,
+          "end": 8137
+        }
+      ],
+      "context_sha256": "4202607927aee7c692b0ab5b663790869fd139c61a76e8a3af8bb6ebe18aa6a5",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "57dcf7a4614d4ce59a4061663a7f90ce",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+      "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+      "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/57dcf7a4614d4ce59a4061663a7f90ce/rollout.json",
+      "rollout_sha256": "fab56dc1798d2bc1d1cc65efce6f33d3f0ccbfaad53e7934c3e67e1fac986a5a",
+      "candidate_answer": "Fregean sentence holism",
+      "accepted_answers": [
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What does Frege's holistic and functional approach to meaning states? the supported short fact is Only in the context of a sentence does a word have a meaning.",
+          "support": [
+            {
+              "start": 6675,
+              "end": 6936,
+              "quote": "Frege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 6575,
+          "end": 7775,
+          "quote": "at it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it",
+          "neighbor_start": 6225,
+          "neighbor_end": 8125,
+          "neighbor_text": " context. Gottlob Frege has shown BIBREF9 that even such seemingly unambiguous words as numbers play distinct roles in different situations: “5 is a prime number” and “there are 5 cows on the meadow” are different at least in that the first “5” signifies a complete (abstract) object, while the second one needs to be supplemented with information that it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it plays a central role as one of the presupposed properties of language, holism may not need it. But it does not claim that words do not have meanining at all, only that it is derived (by some sort of decomposition) from the meaning of the whole.\n\nAlthough all artificial neural networks that work with language must have some way of representing it, "
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6575,
+          "end": 8175
+        }
+      ],
+      "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "65968a8dae4c4a9d8e9f017aa0bf8064",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348--rl-short-fact",
+      "question_id": "qasper_train_fb56743e942883d7e74a73c70bd11016acddc348",
+      "question": "What data do they train the language models on?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/65968a8dae4c4a9d8e9f017aa0bf8064/rollout.json",
+      "rollout_sha256": "35957422b095b43eef007caa9d9e06423e1b66c52e2f0d575e4106d637dabe1a",
+      "candidate_answer": "Passage evidence indicates extensive experimentation on BABEL speech corpora with limited language scores, but provides no quantity of training speech, dataset size, multilingual coverage, language families, or fine-grained training regime beyond label-subword CMUs.",
+      "accepted_answers": [
+        {
+          "answer": "BABEL speech corpus",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "BABEL speech corpus.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What data do they train the language models on? the supported short fact is BABEL speech corpus",
+          "support": [
+            {
+              "start": 5179,
+              "end": 5540,
+              "quote": "In this work, the experiments are conducted using the BABEL speech corpus collected from the IARPA babel program. The corpus is mainly composed of conversational telephone speech (CTS) but some scripted recordings and far field recordings are presented as well. Table TABREF14 presents the details of the languages used in this work for training and evaluation."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 5079,
+          "end": 6279,
+          "quote": "g paragraphs explain the encoder, attention decoder, CTC, and joint decoding used in our approach.\n\nIn this work, the experiments are conducted using the BABEL speech corpus collected from the IARPA babel program. The corpus is mainly composed of conversational telephone speech (CTS) but some scripted recordings and far field recordings are presented as well. Table TABREF14 presents the details of the languages used in this work for training and evaluation.\n\n80 dimensional Mel-filterbank (fbank) features are then extracted from the speech samples using a sliding window of size 25 ms with 10ms stride. KALDI toolkit BIBREF24 is used to perform the feature processing. The fbank features are then fed to a seq2seq model with the following configuration:\n\nThe Bi-RNN BIBREF25 models mentioned above uses a LSTM BIBREF26 cell followed by a projection layer (BLSTMP). In our experiments below, we use only a character-level seq2seq model trained by CTC and attention decoder. Thus in the following experiments we intend to use character error rate (% CER) as a suitable measure to analyze the model performance. However, in section SECREF26 we integrate a character-level RNNLM BIBREF27 with seq2se",
+          "neighbor_start": 4729,
+          "neighbor_end": 6629,
+          "neighbor_text": " mechanism is described later.\n\nSimilarly, INLINEFORM0 represents the posterior probability based on the CTC approach. DISPLAYFORM0 \n\nwhere INLINEFORM0 is a CTC state sequence composed of the original grapheme set and the additional blank symbol. INLINEFORM1 is a set of all possible sequences given the character sequence INLINEFORM2 .\n\nThe following paragraphs explain the encoder, attention decoder, CTC, and joint decoding used in our approach.\n\nIn this work, the experiments are conducted using the BABEL speech corpus collected from the IARPA babel program. The corpus is mainly composed of conversational telephone speech (CTS) but some scripted recordings and far field recordings are presented as well. Table TABREF14 presents the details of the languages used in this work for training and evaluation.\n\n80 dimensional Mel-filterbank (fbank) features are then extracted from the speech samples using a sliding window of size 25 ms with 10ms stride. KALDI toolkit BIBREF24 is used to perform the feature processing. The fbank features are then fed to a seq2seq model with the following configuration:\n\nThe Bi-RNN BIBREF25 models mentioned above uses a LSTM BIBREF26 cell followed by a projection layer (BLSTMP). In our experiments below, we use only a character-level seq2seq model trained by CTC and attention decoder. Thus in the following experiments we intend to use character error rate (% CER) as a suitable measure to analyze the model performance. However, in section SECREF26 we integrate a character-level RNNLM BIBREF27 with seq2seq model externally and showcase the performance in terms of word error rate (% WER). In this case the words are obtained by concatenating the characters and the space together for scoring with reference words. All experiments are implemented in ESPnet, end-to-end speech processing toolkit BIBREF28 .\n\nMultilingual approaches used in hybrid RNN/DNN-H"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 5079,
+          "end": 6679
+        }
+      ],
+      "context_sha256": "3e3d5f0b3c1f8fc5f2bb2cecd1ab40ada3fa0a4a43c2761ba181521f9d50bcc3",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "6dbb10c493dd4afabe045c9ddddf6cbf",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+      "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+      "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/6dbb10c493dd4afabe045c9ddddf6cbf/rollout.json",
+      "rollout_sha256": "e68cacf9fcd356408b07145c4a53dcf4351e3eba0d527d8f3339d2887636b831",
+      "candidate_answer": "causal mapping",
+      "accepted_answers": [
+        {
+          "answer": "Axelrod's causal mapping method",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Axelrod's causal mapping method.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What are the causal mapping methods employed? the supported short fact is Axelrod's causal mapping method",
+          "support": [
+            {
+              "start": 16939,
+              "end": 17571,
+              "quote": "Axelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):"
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 16839,
+          "end": 18039,
+          "quote": "d it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the",
+          "neighbor_start": 16489,
+          "neighbor_end": 18389,
+          "neighbor_text": "l to the process of evaluating alternatives. Regardless of philosophical difficulties involved in the meaning of causation, people do evaluate complex policy alternatives in terms of the consequences a particular choice would cause, and ultimately of what the sum of these effects would be. Indeed, such causal analysis is built into our language, and it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the goals, and the ultimate utility of the decision maker can all be thought of as concept variables, and represented as points in the cognitive map. The real power of this approach appears when a cognitive map is pictured in graph form; it is then relatively easy to see how each of the concepts and causal relationships relate to each other, and to se"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 16839,
+          "end": 18439
+        }
+      ],
+      "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "748cc9a4cca7463787fb9d251eeab0fe",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+      "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+      "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/748cc9a4cca7463787fb9d251eeab0fe/rollout.json",
+      "rollout_sha256": "00ca8f05b54c8622cd3e8f702402db80fd0aad5fb5536f2e43a83dfafa7de524",
+      "candidate_answer": "my model gets a macro F1 score of 0.62 in subtask A",
+      "accepted_answers": [
+        {
+          "answer": "macro F1 score of 0.62",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "macro F1 score of 0.62.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the performance of the model for the German sub-task A? the supported short fact is macro F1 score of 0.62",
+          "support": [
+            {
+              "start": 9092,
+              "end": 9374,
+              "quote": "The performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 8992,
+          "end": 10192,
+          "quote": "s of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more balanced than English or German dataset. Hence, the results were around 0.78. As the dataset in German language was highly imbalanced, the results drops to 0.62. In subtask B, the highest F1 score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these models are not able to capture the context in the sentence. The subtask C was again a case of imbalanced dataset as targeted(TIN) label gets the highest F1 score in table TABREF21.\n\nIn this shared task, we experimented with zero-shot transfer learning on abusive text detection with pre-trained BERT and LASER sentence embeddings. We",
+          "neighbor_start": 8642,
+          "neighbor_end": 10471,
+          "neighbor_text": "d Gradient boosted trees. Gradient boosted trees BIBREF32 are often the choice for systems where features are pre-extracted from the raw data. In the category of gradient boosted trees, Light Gradient Boosting Machine (LGBM) BIBREF33 is considered one of the most efficient in terms of memory footprint. Moreover, it has been part of winning solutions of many competition . Hence, we used LGBM as model for the downstream tasks in this competition.\n\nThe performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively.\n\nIn the results of subtask A, models are mainly affected by imbalance of the dataset. The training dataset of Hindi dataset was more balanced than English or German dataset. Hence, the results were around 0.78. As the dataset in German language was highly imbalanced, the results drops to 0.62. In subtask B, the highest F1 score reached was by the profane class for each language in table TABREF20. The model got confused between OFFN, HATE and PRFN labels which suggests that these models are not able to capture the context in the sentence. The subtask C was again a case of imbalanced dataset as targeted(TIN) label gets the highest F1 score in table TABREF21.\n\nIn this shared task, we experimented with zero-shot transfer learning on abusive text detection with pre-trained BERT and LASER sentence embeddings. We use an LGBM model to train the embeddings to perform downstream task. Our model for German language got the first position. The results provided a strong baseline for further research in multilingual hate speech. We have also made the models public for use by other researchers."
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 8992,
+          "end": 10471
+        }
+      ],
+      "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "94bcf864b4394f0a8fd679c7cd8b2403",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9--rl-short-fact",
+      "question_id": "qasper_train_6090d3187c41829613abe785f0f3665d9ecd90d9",
+      "question": "What does Frege's holistic and functional approach to meaning states?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/94bcf864b4394f0a8fd679c7cd8b2403/rollout.json",
+      "rollout_sha256": "09821e622053452dd9d7511699b2412c6bdbbf8c71da2075262514fc16dc7b37",
+      "candidate_answer": "Frege's holistic and functional approach to meaning",
+      "accepted_answers": [
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Only in the context of a sentence does a word have a meaning",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What does Frege's holistic and functional approach to meaning states? the supported short fact is Only in the context of a sentence does a word have a meaning.",
+          "support": [
+            {
+              "start": 6675,
+              "end": 6936,
+              "quote": "Frege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "Semantic Holism and Word Representations in Artificial Neural Networks\n\nArtificial neural networks are a state-of-the-art solution for many problems in natural language processing. What can we learn about language and meaning from the way artificial neural networks represent it? Word representations obtained from the Skip-gram variant of the word2vec model exhibit interesting semantic properties. This is usually explained by referring to the general distributional hypothesis, which states that the meaning of the word is given by the contexts where it occurs. We propose a more specific approach based on Frege's holistic and functional approach to meaning. Taking Tugendhat's formal reinterpretation of Frege's work as a starting point, we demonstrate that it is analogical to the process of training the Skip-gram model and offers a possible explanation of its semantic properties.\n\n“Meaning is, therefore, something that words have in sentences; and it's something that sentences have in a language.” BIBREF0 On the other hand, meaning could also be something that words have on their own, with sentences being compositions and language a collection of words. This is the question of semantic",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "Semantic Holism and Word Representations in Artificial Neural Networks\n\nArtificial neural networks are a state-of-the-art solution for many problems in natural language processing. What can we learn about language and meaning from the way artificial neural networks represent it? Word representations obtained from the Skip-gram variant of the word2vec model exhibit interesting semantic properties. This is usually explained by referring to the general distributional hypothesis, which states that the meaning of the word is given by the contexts where it occurs. We propose a more specific approach based on Frege's holistic and functional approach to meaning. Taking Tugendhat's formal reinterpretation of Frege's work as a starting point, we demonstrate that it is analogical to the process of training the Skip-gram model and offers a possible explanation of its semantic properties.\n\n“Meaning is, therefore, something that words have in sentences; and it's something that sentences have in a language.” BIBREF0 On the other hand, meaning could also be something that words have on their own, with sentences being compositions and language a collection of words. This is the question of semantic holism versus atomism, which was important in the philosophy of language in the second half of the 20th century and has not been satisfyingly answered yet.\n\nArtificial neural networks are the state-of-the-art solution for many problems in natural language processing (and machine learning in general). They produce word representation with interesti"
+        },
+        {
+          "start": 6575,
+          "end": 7775,
+          "quote": "at it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it",
+          "neighbor_start": 6225,
+          "neighbor_end": 8125,
+          "neighbor_text": " context. Gottlob Frege has shown BIBREF9 that even such seemingly unambiguous words as numbers play distinct roles in different situations: “5 is a prime number” and “there are 5 cows on the meadow” are different at least in that the first “5” signifies a complete (abstract) object, while the second one needs to be supplemented with information that it is cattle of which there are 5 specimens, otherwise the expression would not be grammatical.\n\nFrege promoted what we could call sentence holism: “Only in the context of a sentence does a word have a meaning.” BIBREF10 We will later use its modern reformulation to show an analogy with certain neural language models and therefore their holistic character.\n\nAnother group of arguments for holism consist of variations on the theme of impossibility of knowing or using a word without being able to use other words. For example, it could be argued that a person could not correctly use the word “mammal”, without also knowing (at least some of) “bird”, “animal” and kinds of animals. Therefore the meaning of words cannot be formed in isolation.\n\nSomething that is harder to explain under holism than under atomism is the fact that words refer to objects. If the meaning of words is given by other words, how is it connected to the world around us? However, not all words refer to something. And even if subscribing to holism makes explaining reference harder, it may be because it is a hard problem to explain.\n\nAnother thing that is simpler under atomism is compositionality. While in atomism it plays a central role as one of the presupposed properties of language, holism may not need it. But it does not claim that words do not have meanining at all, only that it is derived (by some sort of decomposition) from the meaning of the whole.\n\nAlthough all artificial neural networks that work with language must have some way of representing it, "
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6575,
+          "end": 8175
+        }
+      ],
+      "context_sha256": "6a0f74593a67de15715a2c2b718c616ca0bdd5eba96fd77e936d56d05c9243aa",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "c1247b31ac564244ab1aa2771c53e5e7",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+      "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+      "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/c1247b31ac564244ab1aa2771c53e5e7/rollout.json",
+      "rollout_sha256": "b8eb136453347369a1d5589982e7c3e616622c90c675315ef71d10b99ccbd320",
+      "candidate_answer": "Reddit\\n\\nsupervised-learning-targets\\n\\ncontent-category\\n\\nlength-filter\\n\\nstress Annotation-criterion\\n\\nattention-distraction-discomfort\\n\\ninitial מעורבות\\n\\",
+      "accepted_answers": [
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What categories does the dataset come from? the supported short fact is abuse, social, anxiety, PTSD, and financial",
+          "support": [
+            {
+              "start": 6441,
+              "end": 7184,
+              "quote": "We include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "Dreaddit: A Reddit Dataset for Stress Analysis in Social Media\n\nStress is a nigh-universal human experience, particularly in the online world. While stress can be a motivator, too much stress is associated with many negative health outcomes, making its identification useful across a range of domains. However, existing computational research typically only studies stress in domains such as speech, or in short genres such as Twitter. We present Dreaddit, a new text corpus of lengthy multi-domain social media data for the identification of stress. Our dataset consists of 190K posts from five different categories of Reddit communities; we additionally label 3.5K total segments taken from 3K posts using Amazon Mechanical Turk. We present preliminary supervised learning methods for identifying stress, both neural and traditional, and analyze the complexity and diversity of the data and characteristics of each category.\n\nIn our online world, social media users tweet, post, and message an incredible number of times each day, and the interconnected, information-heavy nature of our lives makes stress more prominent and easily observable than ever before. With many platforms such as Twitter, ",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "Dreaddit: A Reddit Dataset for Stress Analysis in Social Media\n\nStress is a nigh-universal human experience, particularly in the online world. While stress can be a motivator, too much stress is associated with many negative health outcomes, making its identification useful across a range of domains. However, existing computational research typically only studies stress in domains such as speech, or in short genres such as Twitter. We present Dreaddit, a new text corpus of lengthy multi-domain social media data for the identification of stress. Our dataset consists of 190K posts from five different categories of Reddit communities; we additionally label 3.5K total segments taken from 3K posts using Amazon Mechanical Turk. We present preliminary supervised learning methods for identifying stress, both neural and traditional, and analyze the complexity and diversity of the data and characteristics of each category.\n\nIn our online world, social media users tweet, post, and message an incredible number of times each day, and the interconnected, information-heavy nature of our lives makes stress more prominent and easily observable than ever before. With many platforms such as Twitter, Reddit, and Facebook, the scientific community has access to a massive amount of data to study the daily worries and stresses of people across the world.\n\nStress is a nearly universal phenomenon, and we have some evidence of its prevalence and recent increase. For example, the American Psychological Association (APA) has performed annual studies as"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        }
+      ],
+      "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "ce07e42f0ef646ab8be0744ede2a7bf8",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703--rl-short-fact",
+      "question_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703",
+      "question": "What is the class with highest error rate in SNLI-VE?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/ce07e42f0ef646ab8be0744ede2a7bf8/rollout.json",
+      "rollout_sha256": "214e81bca21c6d815bcb1e85c8b7862059dc7a8f2e68b1a7e1b16f3f6ccf4e29",
+      "candidate_answer": "Neutral",
+      "accepted_answers": [
+        {
+          "answer": "neutral class",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral class.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the class with highest error rate in SNLI-VE? the supported short fact is neutral class",
+          "support": [
+            {
+              "start": 1753,
+              "end": 2319,
+              "quote": "Xie also propose the SNLI-VE dataset as the first dataset for VTE. SNLI-VE is built from the textual entailment SNLI dataset BIBREF0 by replacing textual premises with the Flickr30k images that they originally described BIBREF2. However, images contain more information than their descriptions, which may entail or contradict the textual hypotheses (see Figure FIGREF3). As a result, the neutral class in SNLI-VE has substantial labelling errors. Vu BIBREF3 estimated ${\\sim }31\\%$ errors in this class, and ${\\sim }1\\%$ for the contradiction and entailment classes."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "e-SNLI-VE-2.0: Corrected Visual-Textual Entailment with Natural Language Explanations\n\nThe recently proposed SNLI-VE corpus for recognising visual-textual entailment is a large, real-world dataset for fine-grained multimodal reasoning. However, the automatic way in which SNLI-VE has been assembled (via combining parts of two related datasets) gives rise to a large number of errors in the labels of this corpus. In this paper, we first present a data collection effort to correct the class with the highest error rate in SNLI-VE. Secondly, we re-evaluate an existing model on the corrected corpus, which we call SNLI-VE-2.0, and provide a quantitative comparison with its performance on the non-corrected corpus. Thirdly, we introduce e-SNLI-VE-2.0, which appends human-written natural language explanations to SNLI-VE-2.0. Finally, we train models that learn from these explanations at training time, and output such explanations at testing time.\n\nInspired by textual entailment BIBREF0, Xie BIBREF1 introduced the visual-textual entailment (VTE) task, which considers semantic entailment between a premise image and a textual hypothesis. Semantic entailment consists in determining if the hypothe",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "e-SNLI-VE-2.0: Corrected Visual-Textual Entailment with Natural Language Explanations\n\nThe recently proposed SNLI-VE corpus for recognising visual-textual entailment is a large, real-world dataset for fine-grained multimodal reasoning. However, the automatic way in which SNLI-VE has been assembled (via combining parts of two related datasets) gives rise to a large number of errors in the labels of this corpus. In this paper, we first present a data collection effort to correct the class with the highest error rate in SNLI-VE. Secondly, we re-evaluate an existing model on the corrected corpus, which we call SNLI-VE-2.0, and provide a quantitative comparison with its performance on the non-corrected corpus. Thirdly, we introduce e-SNLI-VE-2.0, which appends human-written natural language explanations to SNLI-VE-2.0. Finally, we train models that learn from these explanations at training time, and output such explanations at testing time.\n\nInspired by textual entailment BIBREF0, Xie BIBREF1 introduced the visual-textual entailment (VTE) task, which considers semantic entailment between a premise image and a textual hypothesis. Semantic entailment consists in determining if the hypothesis can be concluded from the premise, and assigning to each pair of (premise image, textual hypothesis) a label among entailment, neutral, and contradiction. In Figure FIGREF3, the label for the first image-sentence pair is entailment, because the hypothesis states that “a bunch of people display different flags”, which can be clearly derived from"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        }
+      ],
+      "context_sha256": "a8205df4877aafd4b2e38b0c315fdef292b95bab365f66c1c2298f908592e3cd",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "d3efa78b04a04288baf77e4d21f99125",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376--rl-short-fact",
+      "question_id": "qasper_train_312417675b3dc431eb7e7b16a917b7fed98d4376",
+      "question": "What are the causal mapping methods employed?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/d3efa78b04a04288baf77e4d21f99125/rollout.json",
+      "rollout_sha256": "29785fc2dc436f7ef7b2a4fc41dc21cfa595cb8a9b778422aa70d92853ef38c8",
+      "candidate_answer": "Causal mapping method",
+      "accepted_answers": [
+        {
+          "answer": "Axelrod's causal mapping method",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "Axelrod's causal mapping method.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What are the causal mapping methods employed? the supported short fact is Axelrod's causal mapping method",
+          "support": [
+            {
+              "start": 16939,
+              "end": 17571,
+              "quote": "Axelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):"
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 16839,
+          "end": 18039,
+          "quote": "d it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the",
+          "neighbor_start": 16489,
+          "neighbor_end": 18389,
+          "neighbor_text": "l to the process of evaluating alternatives. Regardless of philosophical difficulties involved in the meaning of causation, people do evaluate complex policy alternatives in terms of the consequences a particular choice would cause, and ultimately of what the sum of these effects would be. Indeed, such causal analysis is built into our language, and it would be very difficult for us to think completely in other terms, even if we tried BIBREF18.\n\nAxelrod's causal mapping method comprises a set of conventions to graphically represent networks of causes and effects (the nodes in a network) as well as the qualitative aspects of this relation (the network’s directed edges, notably assertions of whether the causal linkage is positive or negative). These causes and effects are to be extracted from relevant sources by means of a series of heuristics and an encoding scheme (it should be noted that for this task Axelrod had human readers in mind). The graphs resulting from these efforts provide a structural overview of the relations among causal assertions (and thus beliefs):\n\nThe basic elements of the proposed system are quite simple. The concepts a person uses are represented as points, and the causal links between these concepts are represented as arrows between these points. This gives a pictorial representation of the causal assertions of a person as a graph of points and arrows. This kind of representation of assertions as a graph will be called a cognitive map. The policy alternatives, all of the various causes and effects, the goals, and the ultimate utility of the decision maker can all be thought of as concept variables, and represented as points in the cognitive map. The real power of this approach appears when a cognitive map is pictured in graph form; it is then relatively easy to see how each of the concepts and causal relationships relate to each other, and to se"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 16839,
+          "end": 18439
+        }
+      ],
+      "context_sha256": "f4e304f390df28c60de24e21ec655a8edad32cc54f8a9e489ec5173c6e582a74",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "db955e16853b4189ac009d13a8ca2d54",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+      "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+      "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/db955e16853b4189ac009d13a8ca2d54/rollout.json",
+      "rollout_sha256": "efe07cd8d7e29a10b8cdee7dcf168073fbce55355472453f48ef5fc2e7a02f3f",
+      "candidate_answer": "Psychology, Shopping, Sports, Travel, Technology",
+      "accepted_answers": [
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What categories does the dataset come from? the supported short fact is abuse, social, anxiety, PTSD, and financial",
+          "support": [
+            {
+              "start": 6441,
+              "end": 7184,
+              "quote": "We include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 6341,
+          "end": 7541,
+          "quote": " Posters in the financial subreddits generally seek financial or material help from other posters.\n\nWe include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior.\n\nThe average length of a post in our dataset is 420 tokens, much longer than most microblog data (e.g., Twitter's character limit as of this writing is 280 characters). While we label segments that are about 100 tokens long, we still have much additional data from the author on which to draw. We feel this is important because, while our goal in this pape",
+          "neighbor_start": 5991,
+          "neighbor_end": 7891,
+          "neighbor_text": "onship (often but not exclusively romantic) and seek advice for how to handle the situation.\n\nMental illness: anxiety and Post-Traumatic Stress Disorder (PTSD) domains. Posters in these subreddits seek advice about coping with mental illness and its symptoms, share support and successes, seek diagnoses, and so on.\n\nFinancial need: financial domain. Posters in the financial subreddits generally seek financial or material help from other posters.\n\nWe include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior.\n\nThe average length of a post in our dataset is 420 tokens, much longer than most microblog data (e.g., Twitter's character limit as of this writing is 280 characters). While we label segments that are about 100 tokens long, we still have much additional data from the author on which to draw. We feel this is important because, while our goal in this paper is to predict stress, having longer posts will ultimately allow more detailed study of the causes and effects of stress.\n\nIn tab:data-examples, we provide examples of labeled segments from the various domains in our dataset. The samples are fairly typical; the dataset contains mostly first-person narrative accounts of personal experiences and req"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6341,
+          "end": 7941
+        }
+      ],
+      "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "dd31bd662b97440c8c7d1d0d79be1004",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b--rl-short-fact",
+      "question_id": "qasper_train_65ad17f614b7345f0077424c04c94971c831585b",
+      "question": "Which model architecture do they use to obtain representations?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/dd31bd662b97440c8c7d1d0d79be1004/rollout.json",
+      "rollout_sha256": "504367c8511e2c68838a89509e478b604cbb3bfe274a5d08bf8c97d8ce66ca33",
+      "candidate_answer": "Gating Mechanism",
+      "accepted_answers": [
+        {
+          "answer": "BiLSTM with max pooling",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "a BiLSTM with max pooling",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "BiLSTM with max pooling.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "a BiLSTM with max pooling.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For Which model architecture do they use to obtain representations? the supported short fact is BiLSTM with max pooling",
+          "support": [
+            {
+              "start": 8402,
+              "end": 8652,
+              "quote": "To enable sentence-level classification we need to obtain a sentence representation from the word vectors INLINEFORM0 . We achieved this by using a BiLSTM with max pooling, which was shown to be a good universal sentence encoding mechanism BIBREF13 ."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "Gating Mechanisms for Combining Character and Word-level Word Representations: An Empirical Study\n\nIn this paper we study how different ways of combining character and word-level representations affect the quality of both final word and sentence representations. We provide strong empirical evidence that modeling characters improves the learned representations at the word and sentence levels, and that doing so is particularly useful when representing less frequent words. We further show that a feature-wise sigmoid gating mechanism is a robust method for creating representations that encode semantic similarity, as it performed reasonably well in several word similarity datasets. Finally, our findings suggest that properly capturing semantic similarity at the word level does not consistently yield improved performance in downstream sentence-level tasks. Our code is available at https://github.com/jabalazs/gating\n\nIncorporating sub-word structures like substrings, morphemes and characters to the creation of word representations significantly increases their quality as reflected both by intrinsic metrics and performance in a wide range of downstream tasks BIBREF0 , BIBREF1 , BIBREF2 , B",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "Gating Mechanisms for Combining Character and Word-level Word Representations: An Empirical Study\n\nIn this paper we study how different ways of combining character and word-level representations affect the quality of both final word and sentence representations. We provide strong empirical evidence that modeling characters improves the learned representations at the word and sentence levels, and that doing so is particularly useful when representing less frequent words. We further show that a feature-wise sigmoid gating mechanism is a robust method for creating representations that encode semantic similarity, as it performed reasonably well in several word similarity datasets. Finally, our findings suggest that properly capturing semantic similarity at the word level does not consistently yield improved performance in downstream sentence-level tasks. Our code is available at https://github.com/jabalazs/gating\n\nIncorporating sub-word structures like substrings, morphemes and characters to the creation of word representations significantly increases their quality as reflected both by intrinsic metrics and performance in a wide range of downstream tasks BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 .\n\nThe reason for this improvement is related to sub-word structures containing information that is usually ignored by standard word-level models. Indeed, when representing words as vectors extracted from a lookup table, semantically related words resulting from inflectional processes such as surf, surfing, and surfed, are treated as being i"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        }
+      ],
+      "context_sha256": "45ba5462545d228f81adbc6ea230c63aac4c3274e9e9046f9e66224c1ffeef29",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "df1f4bd7052d40b18837c7acbfa922a7",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523--rl-short-fact",
+      "question_id": "qasper_train_1ccfd288f746c35006f5847297ab52020729f523",
+      "question": "What categories does the dataset come from?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/df1f4bd7052d40b18837c7acbfa922a7/rollout.json",
+      "rollout_sha256": "fc5772869fa43e776df9bdf99e97a4fe14aa23bc80b87ce0c6fc82aed5cac520",
+      "candidate_answer": "Financial, Anxiety, PTSD, Abuse, Social",
+      "accepted_answers": [
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "abuse, social, anxiety, PTSD, and financial.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What categories does the dataset come from? the supported short fact is abuse, social, anxiety, PTSD, and financial",
+          "support": [
+            {
+              "start": 6441,
+              "end": 7184,
+              "quote": "We include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "Dreaddit: A Reddit Dataset for Stress Analysis in Social Media\n\nStress is a nigh-universal human experience, particularly in the online world. While stress can be a motivator, too much stress is associated with many negative health outcomes, making its identification useful across a range of domains. However, existing computational research typically only studies stress in domains such as speech, or in short genres such as Twitter. We present Dreaddit, a new text corpus of lengthy multi-domain social media data for the identification of stress. Our dataset consists of 190K posts from five different categories of Reddit communities; we additionally label 3.5K total segments taken from 3K posts using Amazon Mechanical Turk. We present preliminary supervised learning methods for identifying stress, both neural and traditional, and analyze the complexity and diversity of the data and characteristics of each category.\n\nIn our online world, social media users tweet, post, and message an incredible number of times each day, and the interconnected, information-heavy nature of our lives makes stress more prominent and easily observable than ever before. With many platforms such as Twitter, ",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "Dreaddit: A Reddit Dataset for Stress Analysis in Social Media\n\nStress is a nigh-universal human experience, particularly in the online world. While stress can be a motivator, too much stress is associated with many negative health outcomes, making its identification useful across a range of domains. However, existing computational research typically only studies stress in domains such as speech, or in short genres such as Twitter. We present Dreaddit, a new text corpus of lengthy multi-domain social media data for the identification of stress. Our dataset consists of 190K posts from five different categories of Reddit communities; we additionally label 3.5K total segments taken from 3K posts using Amazon Mechanical Turk. We present preliminary supervised learning methods for identifying stress, both neural and traditional, and analyze the complexity and diversity of the data and characteristics of each category.\n\nIn our online world, social media users tweet, post, and message an incredible number of times each day, and the interconnected, information-heavy nature of our lives makes stress more prominent and easily observable than ever before. With many platforms such as Twitter, Reddit, and Facebook, the scientific community has access to a massive amount of data to study the daily worries and stresses of people across the world.\n\nStress is a nearly universal phenomenon, and we have some evidence of its prevalence and recent increase. For example, the American Psychological Association (APA) has performed annual studies as"
+        },
+        {
+          "start": 6341,
+          "end": 7541,
+          "quote": " Posters in the financial subreddits generally seek financial or material help from other posters.\n\nWe include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior.\n\nThe average length of a post in our dataset is 420 tokens, much longer than most microblog data (e.g., Twitter's character limit as of this writing is 280 characters). While we label segments that are about 100 tokens long, we still have much additional data from the author on which to draw. We feel this is important because, while our goal in this pape",
+          "neighbor_start": 5991,
+          "neighbor_end": 7891,
+          "neighbor_text": "onship (often but not exclusively romantic) and seek advice for how to handle the situation.\n\nMental illness: anxiety and Post-Traumatic Stress Disorder (PTSD) domains. Posters in these subreddits seek advice about coping with mental illness and its symptoms, share support and successes, seek diagnoses, and so on.\n\nFinancial need: financial domain. Posters in the financial subreddits generally seek financial or material help from other posters.\n\nWe include ten subreddits in the five domains of abuse, social, anxiety, PTSD, and financial, as detailed in tab:data-spread, and our analysis focuses on the domain level. Using the PRAW API, we scrape all available posts on these subreddits between January 1, 2017 and November 19, 2018; in total, 187,444 posts. As we will describe in sec:annotation, we assign binary stress labels to 3,553 segments of these posts to form a supervised and semi-supervised training set. An example segment is shown in fig:stress-example. Highlighted phrases are indicators that the writer is stressed: the writer mentions common physical symptoms (nausea), explicitly names fear and dread, and uses language indicating helplessness and help-seeking behavior.\n\nThe average length of a post in our dataset is 420 tokens, much longer than most microblog data (e.g., Twitter's character limit as of this writing is 280 characters). While we label segments that are about 100 tokens long, we still have much additional data from the author on which to draw. We feel this is important because, while our goal in this paper is to predict stress, having longer posts will ultimately allow more detailed study of the causes and effects of stress.\n\nIn tab:data-examples, we provide examples of labeled segments from the various domains in our dataset. The samples are fairly typical; the dataset contains mostly first-person narrative accounts of personal experiences and req"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 6341,
+          "end": 7941
+        }
+      ],
+      "context_sha256": "a0f709e95ab52eccba32e97268ff2f5da26cdc88490a7519eda79c7df1ae36c2",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "e35fac7a24d24a96af23d893e9268350",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7--rl-short-fact",
+      "question_id": "qasper_train_d10e256f2f724ad611fd3ff82ce88f7a78bad7f7",
+      "question": "What is the performance of the model for the German sub-task A?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/e35fac7a24d24a96af23d893e9268350/rollout.json",
+      "rollout_sha256": "0979f2708549c34f7ad4c2a31c62fb962f0de626b32211a6fcb6a3222d4ae981",
+      "candidate_answer": "Review of Forgotten Parameters and Implementing Guidelines",
+      "accepted_answers": [
+        {
+          "answer": "macro F1 score of 0.62",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "macro F1 score of 0.62.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "0.62 macro F1.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the performance of the model for the German sub-task A? the supported short fact is macro F1 score of 0.62",
+          "support": [
+            {
+              "start": 9092,
+              "end": 9374,
+              "quote": "The performance of our models across different languages for sub-task A are shown in table TABREF19. Our model got the first position in the German sub-task with a macro F1 score of 0.62. The results of sub-task B and sub-task C is shown in table TABREF20 and TABREF21 respectively."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "HateMonitors: Language Agnostic Abuse Detection in Social Media\n\nReducing hateful and offensive content in online social media pose a dual problem for the moderators. On the one hand, rigid censorship on social media cannot be imposed. On the other, the free flow of such content cannot be allowed. Hence, we require efficient abusive language detection system to detect such harmful content in social media. In this paper, we present our machine learning model, HateMonitor, developed for Hate Speech and Offensive Content Identification in Indo-European Languages (HASOC), a shared task at FIRE 2019. We have used a Gradient Boosting model, along with BERT and LASER embeddings, to make the system language agnostic. Our model came at First position for the German sub-task A. We have also made our model public at this https URL .\n\nIn social media, abusive language denotes a text which contains any form of unacceptable language in a post or a comment. Abusive language can be divided into hate speech, offensive language and profanity. Hate speech is a derogatory comment that hurts an entire group in terms of ethnicity, race or gender. Offensive language is similar to derogatory comment, but ",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "HateMonitors: Language Agnostic Abuse Detection in Social Media\n\nReducing hateful and offensive content in online social media pose a dual problem for the moderators. On the one hand, rigid censorship on social media cannot be imposed. On the other, the free flow of such content cannot be allowed. Hence, we require efficient abusive language detection system to detect such harmful content in social media. In this paper, we present our machine learning model, HateMonitor, developed for Hate Speech and Offensive Content Identification in Indo-European Languages (HASOC), a shared task at FIRE 2019. We have used a Gradient Boosting model, along with BERT and LASER embeddings, to make the system language agnostic. Our model came at First position for the German sub-task A. We have also made our model public at this https URL .\n\nIn social media, abusive language denotes a text which contains any form of unacceptable language in a post or a comment. Abusive language can be divided into hate speech, offensive language and profanity. Hate speech is a derogatory comment that hurts an entire group in terms of ethnicity, race or gender. Offensive language is similar to derogatory comment, but it is targeted towards an individual. Profanity refers to any use of unacceptable language without a specific target. While profanity is the least threatening, hate speech has the most detrimental effect on the society.\n\nSocial media moderators are having a hard time in combating the rampant spread of hate speech as it is closely related to the oth"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        }
+      ],
+      "context_sha256": "b79181ed59265a18bb1525944626cd451f549f204b5831c8745b9eda8f5a44e9",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    },
+    {
+      "row_id": "e8004fef69b24037b6d9b96613188153",
+      "cycle": "cycle-2",
+      "case_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703--rl-short-fact",
+      "question_id": "qasper_train_a08b5018943d4428f067c08077bfff1af3de9703",
+      "question": "What is the class with highest error rate in SNLI-VE?\nFor this short-fact task, answer with only the requested name, number, or fact phrase; do not add explanation. Use the normal SUBMIT answer and citation format.",
+      "rollout_path": "out/reader-prime-no-work-cutoff-20261024/controller-integration/cycle-2/rollouts/e8004fef69b24037b6d9b96613188153/rollout.json",
+      "rollout_sha256": "ae27921730283761286b99aa20a8cd81a5bd953003a6381ca7fdee6742e24257",
+      "candidate_answer": "contradiction",
+      "accepted_answers": [
+        {
+          "answer": "neutral class",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral class.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        },
+        {
+          "answer": "neutral.",
+          "claim_ids": [
+            "requested_fact"
+          ]
+        }
+      ],
+      "required_claims": [
+        {
+          "id": "requested_fact",
+          "claim": "For What is the class with highest error rate in SNLI-VE? the supported short fact is neutral class",
+          "support": [
+            {
+              "start": 1753,
+              "end": 2319,
+              "quote": "Xie also propose the SNLI-VE dataset as the first dataset for VTE. SNLI-VE is built from the textual entailment SNLI dataset BIBREF0 by replacing textual premises with the Flickr30k images that they originally described BIBREF2. However, images contain more information than their descriptions, which may entail or contradict the textual hypotheses (see Figure FIGREF3). As a result, the neutral class in SNLI-VE has substantial labelling errors. Vu BIBREF3 estimated ${\\sim }31\\%$ errors in this class, and ${\\sim }1\\%$ for the contradiction and entailment classes."
+            }
+          ]
+        }
+      ],
+      "submitted_evidence": [
+        {
+          "start": 0,
+          "end": 1200,
+          "quote": "e-SNLI-VE-2.0: Corrected Visual-Textual Entailment with Natural Language Explanations\n\nThe recently proposed SNLI-VE corpus for recognising visual-textual entailment is a large, real-world dataset for fine-grained multimodal reasoning. However, the automatic way in which SNLI-VE has been assembled (via combining parts of two related datasets) gives rise to a large number of errors in the labels of this corpus. In this paper, we first present a data collection effort to correct the class with the highest error rate in SNLI-VE. Secondly, we re-evaluate an existing model on the corrected corpus, which we call SNLI-VE-2.0, and provide a quantitative comparison with its performance on the non-corrected corpus. Thirdly, we introduce e-SNLI-VE-2.0, which appends human-written natural language explanations to SNLI-VE-2.0. Finally, we train models that learn from these explanations at training time, and output such explanations at testing time.\n\nInspired by textual entailment BIBREF0, Xie BIBREF1 introduced the visual-textual entailment (VTE) task, which considers semantic entailment between a premise image and a textual hypothesis. Semantic entailment consists in determining if the hypothe",
+          "neighbor_start": 0,
+          "neighbor_end": 1550,
+          "neighbor_text": "e-SNLI-VE-2.0: Corrected Visual-Textual Entailment with Natural Language Explanations\n\nThe recently proposed SNLI-VE corpus for recognising visual-textual entailment is a large, real-world dataset for fine-grained multimodal reasoning. However, the automatic way in which SNLI-VE has been assembled (via combining parts of two related datasets) gives rise to a large number of errors in the labels of this corpus. In this paper, we first present a data collection effort to correct the class with the highest error rate in SNLI-VE. Secondly, we re-evaluate an existing model on the corrected corpus, which we call SNLI-VE-2.0, and provide a quantitative comparison with its performance on the non-corrected corpus. Thirdly, we introduce e-SNLI-VE-2.0, which appends human-written natural language explanations to SNLI-VE-2.0. Finally, we train models that learn from these explanations at training time, and output such explanations at testing time.\n\nInspired by textual entailment BIBREF0, Xie BIBREF1 introduced the visual-textual entailment (VTE) task, which considers semantic entailment between a premise image and a textual hypothesis. Semantic entailment consists in determining if the hypothesis can be concluded from the premise, and assigning to each pair of (premise image, textual hypothesis) a label among entailment, neutral, and contradiction. In Figure FIGREF3, the label for the first image-sentence pair is entailment, because the hypothesis states that “a bunch of people display different flags”, which can be clearly derived from"
+        },
+        {
+          "start": 1653,
+          "end": 2853,
+          "quote": "ypothesis stating that “people [are] running a marathon” contradicts the image with static people.\n\nXie also propose the SNLI-VE dataset as the first dataset for VTE. SNLI-VE is built from the textual entailment SNLI dataset BIBREF0 by replacing textual premises with the Flickr30k images that they originally described BIBREF2. However, images contain more information than their descriptions, which may entail or contradict the textual hypotheses (see Figure FIGREF3). As a result, the neutral class in SNLI-VE has substantial labelling errors. Vu BIBREF3 estimated ${\\sim }31\\%$ errors in this class, and ${\\sim }1\\%$ for the contradiction and entailment classes.\n\nXie BIBREF1 introduced the VTE task under the name of “visual entailment”, which could imply recognizing entailment between images only. This paper prefers to follow Suzuki BIBREF4 and call it “visual-textual entailment” instead, as it involves reasoning on image-sentence pairs.\n\nIn this work, we first focus on decreasing the error in the neutral class by collecting new labels for the neutral pairs in the validation and test sets of SNLI-VE, using Amazon Mechanical Turk (MTurk). To ensure high quality annotations, we used a se",
+          "neighbor_start": 1303,
+          "neighbor_end": 3203,
+          "neighbor_text": ") a label among entailment, neutral, and contradiction. In Figure FIGREF3, the label for the first image-sentence pair is entailment, because the hypothesis states that “a bunch of people display different flags”, which can be clearly derived from the image. On the contrary, the second image-sentence pair is labelled as contradiction, because the hypothesis stating that “people [are] running a marathon” contradicts the image with static people.\n\nXie also propose the SNLI-VE dataset as the first dataset for VTE. SNLI-VE is built from the textual entailment SNLI dataset BIBREF0 by replacing textual premises with the Flickr30k images that they originally described BIBREF2. However, images contain more information than their descriptions, which may entail or contradict the textual hypotheses (see Figure FIGREF3). As a result, the neutral class in SNLI-VE has substantial labelling errors. Vu BIBREF3 estimated ${\\sim }31\\%$ errors in this class, and ${\\sim }1\\%$ for the contradiction and entailment classes.\n\nXie BIBREF1 introduced the VTE task under the name of “visual entailment”, which could imply recognizing entailment between images only. This paper prefers to follow Suzuki BIBREF4 and call it “visual-textual entailment” instead, as it involves reasoning on image-sentence pairs.\n\nIn this work, we first focus on decreasing the error in the neutral class by collecting new labels for the neutral pairs in the validation and test sets of SNLI-VE, using Amazon Mechanical Turk (MTurk). To ensure high quality annotations, we used a series of quality control measures, such as in-browser checks, inserting trusted examples, and collecting three annotations per instance. Secondly, we re-evaluate current image-text understanding systems, such as the bottom-up top-down attention network (BUTD) BIBREF5 on VTE using our corrected dataset, which we call SNLI-VE-2.0.\n\nThirdly, we introdu"
+        }
+      ],
+      "inspected_windows": [
+        {
+          "start": 0,
+          "end": 1600
+        },
+        {
+          "start": 1653,
+          "end": 3253
+        }
+      ],
+      "context_sha256": "a8205df4877aafd4b2e38b0c315fdef292b95bab365f66c1c2298f908592e3cd",
+      "original_reward": {
+        "eligible": true,
+        "reward": 0.0,
+        "reason": "answer_not_in_reviewed_variants",
+        "support_authority": "attributed_reference_review_not_automatic_entailment"
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "doc_id": "qasper_1909_00153",
+  "title": "Adversarial Learning with Contextual Embeddings for Zero-resource Cross-lingual Classification and NER",
+  "text": "Adversarial Learning with Contextual Embeddings for Zero-resource Cross-lingual Classification and NER\n\nContextual word embeddings (e.g. GPT, BERT, ELMo, etc.) have demonstrated state-of-the-art performance on various NLP tasks. Recent work with the multilingual version of BERT has shown that the model performs very well in zero-shot and zero-resource cross-lingual settings, where only labeled English data is used to finetune the model. We improve upon multilingual BERT's zero-resource cross-lingual performance via adversarial learning. We report the magnitude of the improvement on the multilingual MLDoc text classification and CoNLL 2002/2003 named entity recognition tasks. Furthermore, we show that language-adversarial training encourages BERT to align the embeddings of English documents and their translations, which may be the cause of the observed performance gains.\n\nContextual word embeddings BIBREF0 , BIBREF1 , BIBREF2 have been successfully applied to various NLP tasks, including named entity recognition, document classification, and textual entailment. The multilingual version of BERT (which is trained on Wikipedia articles from 100 languages and equipped with a 110,000 shared wordpiece vocabulary) has also demonstrated the ability to perform `zero-resource' cross-lingual classification on the XNLI dataset BIBREF3 . Specifically, when multilingual BERT is finetuned for XNLI with English data alone, the model also gains the ability to handle the same task in other languages. We believe that this zero-resource transfer learning can be extended to other multilingual datasets.\n\nIn this work, we explore BERT's zero-resource performance on the multilingual MLDoc classification and CoNLL 2002/2003 NER tasks. We find that the baseline zero-resource performance of BERT exceeds the results reported in other work, even though cross-lingual resources (e.g. parallel text, dictionaries, etc.) are not used during BERT pretraining or finetuning. We apply adversarial learning to further improve upon this baseline, achieving state-of-the-art zero-resource results.\n\nThere are many recent approaches to zero-resource cross-lingual classification and NER, including adversarial learning BIBREF4 , BIBREF5 , BIBREF6 , BIBREF7 , using a model pretrained on parallel text BIBREF8 , BIBREF9 , BIBREF10 and self-training BIBREF11 . Due to the newness of the subject matter, the definition of `zero-resource' varies somewhat from author to author. For the experiments that follow, `zero-resource' means that, during model training, we do not use labels from non-English data, nor do we use human or machine-generated parallel text. Only labeled English text and unlabeled non-English text are used during training, and hyperparameters are selected using English evaluation sets.\n\nOur contributions are the following:\n\nLanguage-adversarial training BIBREF12 was proposed for generating bilingual dictionaries without parallel data. This idea was extended to zero-resource cross-lingual tasks in NER BIBREF5 , BIBREF6 and text classification BIBREF4 , where we would expect that language-adversarial techniques induce features that are language-independent.\n\nSelf-training, where an initial model is used to generate labels on an unlabeled corpus for the purpose of domain or cross-lingual adaptation, was studied in the context of text classification BIBREF11 and parsing BIBREF13 , BIBREF14 . A similar idea based on expectation-maximization, where the unobserved label is treated as a latent variable, has also been applied to cross-lingual text classification in BIBREF15 .\n\n BIBREF8 and BIBREF9 use the encoders from machine translation models as a starting point for task-specific finetuning, which permits various degrees of multilingual transfer. BIBREF10 add an additional masked translation task to the BERT pretraining process, and the authors observed an improvement in the cross-lingual setting over using the monolingual masked text task alone.\n\nWe present an overview of the adversarial training process in Figure FIGREF1 . We used the pretrained cased multilingual BERT model as the initialization for all of our experiments. Note that the BERT model has 768 units.\n\nWe always use the labeled English data of each corpus. We use the non-English text portion (without the labels) for the adversarial training.\n\nWe formulate the adversarial task as a binary classification problem (i.e. English versus non-English.) We add a language discriminator module which uses the BERT embeddings to classify whether the input sentence was written in English or the non-English language. We also add a generator loss which encourages BERT to produce embeddings that are difficult for the discriminator to classify correctly. In this way, the BERT model learns to generate embeddings that do not contain language-specific information.\n\nThe pseudocode for our procedure can be found in Algorithm SECREF11 . In the description that follows, we use a batch size of 1 for clarity.\n\nFor language-adversarial training for the classification task, we have 3 loss functions: the task-specific loss INLINEFORM0 , the generator loss INLINEFORM1 , and the discriminator loss INLINEFORM2 : INLINEFORM3 INLINEFORM4 \n\nwhere INLINEFORM0 is the number of classes for the task, INLINEFORM1 (dim: INLINEFORM2 ) is the task-specific prediction, INLINEFORM3 (dim: scalar) is the probability that the input is in English, INLINEFORM4 (dim: INLINEFORM5 ) is the mean-pooled BERT output embedding for the input word-pieces INLINEFORM6 , INLINEFORM7 is the BERT parameters, INLINEFORM8 (dim: INLINEFORM9 , INLINEFORM10 , INLINEFORM11 , scalar) are the output projections for the task-specific loss and discriminator respectively, INLINEFORM12 (dim: INLINEFORM13 ) is the one-hot vector representation for the task label and INLINEFORM14 (dim: scalar) is the binary label for the adversarial task (i.e. 1 or 0 for English or non-English).\n\nIn the case of NER, the task-specific loss has an additional summation over the length of the sequence: INLINEFORM0 INLINEFORM1 \n\nwhere INLINEFORM0 (dim: INLINEFORM1 ) is the prediction for the INLINEFORM2 word, INLINEFORM3 is the number of words in the sentence, INLINEFORM4 (dim: INLINEFORM5 ) is the matrix of one-hot entity labels, and INLINEFORM6 (dim: INLINEFORM7 ) refers to the BERT embedding of the INLINEFORM8 word.\n\nThe generator and discriminator losses remain the same for NER, and we continue to use the mean-pooled BERT embedding during adversarial training.\n\nWe then take the gradients with respect to the 3 losses and the relevant parameter subsets. The parameter subsets are INLINEFORM0 , INLINEFORM1 , and INLINEFORM2 . We apply the gradient updates sequentially at a 1:1:1 ratio.\n\nDuring BERT finetuning, the learning rates for the task loss, generator loss and discriminator loss were kept constant; we do not apply a learning rate decay.\n\nAll hyperparameters were tuned on the English dev sets only, and we use the Adam optimizer in all experiments. We report results based on the average of 4 training runs.\n\n[ht] Pseudocode for adversarial training on the multilingual text classification task. The batch size is set at 1 for clarity. The parameter subsets are INLINEFORM0 , INLINEFORM1 , and INLINEFORM2 . Input: pre-trained BERT model INLINEFORM3 , data iterators for English and the non-English language INLINEFORM4 , learning rates INLINEFORM5 for each loss function, initializations for discriminator output projection INLINEFORM6 , task-specific output projection INLINEFORM7 , and BERT parameters INLINEFORM8 [1] not converged INLINEFORM9 get English text and task-specific labels INLINEFORM10 INLINEFORM11 compute the prediction for the task INLINEFORM12 compute task-specific loss INLINEFORM13 update model based on task-specific loss INLINEFORM14 get non-English and English text INLINEFORM15 INLINEFORM16 discriminator prediction on non-English text INLINEFORM17 discriminator prediction on English text INLINEFORM18 compute discriminator loss INLINEFORM19 update model based on discriminator loss INLINEFORM20 INLINEFORM21 INLINEFORM22 INLINEFORM23 INLINEFORM24 compute generator loss INLINEFORM25 update model based on generator loss\n\nWe finetuned BERT on the English portion of the MLDoc corpus BIBREF16 . The MLDoc task is a 4-class classification problem, where the data is a class-balanced subset of the Reuters News RCV1 and RCV2 datasets. We used the english.train.1000 dataset for the classification loss, which contains 1000 labeled documents. For language-adversarial training, we used the text portion of german.train.10000, french.train.10000, etc. without the labels.\n\nWe used a learning rate of INLINEFORM0 for the task loss, INLINEFORM1 for the generator loss and INLINEFORM2 for the discriminator loss.\n\nIn Table TABREF13 , we report the classification accuracy for all of the languages in MLDoc. Generally, adversarial training improves the accuracy across all languages, and the improvement is sometimes dramatic versus the BERT non-adversarial baseline.\n\nIn Figure FIGREF15 , we plot the zero-resource German and Japanese test set accuracy as a function of the number of steps taken, with and without adversarial training. The plot shows that the variation in the test accuracy is reduced with adversarial training, which suggests that the cross-lingual performance is more consistent when adversarial training is applied. (We note that the batch size and learning rates are the same for all the languages in MLDoc, so the variation seen in Figure FIGREF15 are not affected by those factors.)\n\nWe finetuned BERT on the English portion of the CoNLL 2002/2003 NER corpus BIBREF19 . We followed the text preprocessing in BIBREF0 .\n\nWe used a learning rate of INLINEFORM0 for the task loss, INLINEFORM1 for the generator loss and INLINEFORM2 for the discriminator loss.\n\nIn Table TABREF19 , we report the F1 scores for all of the CoNLL NER languages. When combined with adversarial learning, the BERT cross-lingual F1 scores increased for German over the non-adversarial baseline, and the scores remained largely the same for Spanish and Dutch. Regardless, the BERT zero-resource performance far exceeds the results published in previous work.\n\n BIBREF17 and BIBREF18 do use some cross-lingual resources (like bilingual dictionaries) in their experiments, but it appears that BERT with multilingual pretraining performs better, even though it does not have access to cross-lingual information.\n\nIf language-adversarial training encourages language-independent features, then the English documents and their translations should be close in the embedding space. To examine this hypothesis, we take the English documents from the MLDoc training corpus and translate them into German, Spanish, French, etc. using Amazon Translate.\n\nWe construct the embeddings for each document using BERT models finetuned on MLDoc. We mean-pool each document embedding to create a single vector per document. We then calculate the cosine similarity between the embeddings for the English document and its translation. In Table TABREF21 , we observe that the median cosine similarity increases dramatically with adversarial training, which suggests that the embeddings became more language-independent.\n\nFor many of the languages examined, we were able to improve on BERT's zero-resource cross-lingual performance on the MLDoc classification and CoNLL NER tasks. Language-adversarial training was generally effective, though the size of the effect appears to depend on the task. We observed that adversarial training moves the embeddings of English text and their non-English translations closer together, which may explain why it improves cross-lingual performance.\n\nFuture directions include adding the language-adversarial task during BERT pre-training on the multilingual Wikipedia corpus, which may further improve zero-resource performance, and finding better stopping criteria for zero-resource cross-lingual tasks besides using the English dev set.\n\nWe would like to thank Jiateng Xie, Julian Salazar and Faisal Ladhak for the helpful comments and discussions.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 102
+    },
+    {
+      "section": "Abstract",
+      "start": 104,
+      "end": 882
+    },
+    {
+      "section": "Introduction",
+      "start": 884,
+      "end": 2834
+    },
+    {
+      "section": "Adversarial Learning",
+      "start": 2836,
+      "end": 3173
+    },
+    {
+      "section": "Self-training Techniques",
+      "start": 3175,
+      "end": 3593
+    },
+    {
+      "section": "Translation as Pretraining",
+      "start": 3595,
+      "end": 3974
+    },
+    {
+      "section": "Model Training",
+      "start": 3976,
+      "end": 8203
+    },
+    {
+      "section": "MLDoc Classification Results",
+      "start": 8205,
+      "end": 9580
+    },
+    {
+      "section": "CoNLL NER Results",
+      "start": 9582,
+      "end": 10477
+    },
+    {
+      "section": "Alignment of Embeddings for Parallel Documents",
+      "start": 10479,
+      "end": 11265
+    },
+    {
+      "section": "Discussion",
+      "start": 11267,
+      "end": 12019
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 12021,
+      "end": 12131
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.00153",
+    "arxiv_id": "1909.00153",
+    "source_url": "https://arxiv.org/abs/1909.00153",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

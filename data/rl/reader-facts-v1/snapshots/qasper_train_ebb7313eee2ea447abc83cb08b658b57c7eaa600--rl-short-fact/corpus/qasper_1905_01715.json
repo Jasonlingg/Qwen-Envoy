@@ -1,0 +1,85 @@
+{
+  "doc_id": "qasper_1905_01715",
+  "title": "A Parallel Corpus of Theses and Dissertations Abstracts",
+  "text": "A Parallel Corpus of Theses and Dissertations Abstracts\n\nIn Brazil, the governmental body responsible for overseeing and coordinating post-graduate programs, CAPES, keeps records of all theses and dissertations presented in the country. Information regarding such documents can be accessed online in the Theses and Dissertations Catalog (TDC), which contains abstracts in Portuguese and English, and additional metadata. Thus, this database can be a potential source of parallel corpora for the Portuguese and English languages. In this article, we present the development of a parallel corpus from TDC, which is made available by CAPES under the open data initiative. Approximately 240,000 documents were collected and aligned using the Hunalign tool. We demonstrate the capability of our developed corpus by training Statistical Machine Translation (SMT) and Neural Machine Translation (NMT) models for both language directions, followed by a comparison with Google Translate (GT). Both translation models presented better BLEU scores than GT, with NMT system being the most accurate one. Sentence alignment was also manually evaluated, presenting an average of 82.30% correctly aligned sentences. Our parallel corpus is freely available in TMX format, with complementary information regarding document metadata\n\nThe availability of cross-language parallel corpora is one of the basis of current Statistical and Neural Machine Translation systems (e.g. SMT and NMT). Acquiring a high-quality parallel corpus that is large enough to train MT systems, specially NMT ones, is not a trivial task, since it usually demands human curating and correct alignment. In light of that, the automated creation of parallel corpora from freely available resources is extremely important in Natural Language Processing (NLP), enabling the development of accurate MT solutions. Many parallel corpora are already available, some with bilingual alignment, while others are multilingually aligned, with 3 or more languages, such as Europarl BIBREF0 , from the European Parliament, JRC-Acquis BIBREF1 , from the European Commission, OpenSubtitles BIBREF2 , from movies subtitles.\n\nThe extraction of parallel sentences from scientific writing can be a valuable language resource for MT and other NLP tasks. The development of parallel corpora from scientific texts has been researched by several authors, aiming at translation of biomedical articles BIBREF3 , BIBREF4 , or named entity recognition of biomedical concepts BIBREF5 . Regarding Portuguese/English and English/Spanish language pairs, the FAPESP corpus BIBREF6 , from the Brazilian magazine revista pesquisa FAPESP, contains more than 150,000 aligned sentences per language pair, constituting an important language resource.\n\nIn Brazil, the governmental body responsible for overseeing post-graduate programs across the country, called CAPES, tracks every enrolled student and scientific production. In addition, CAPES maintains a freely accessible database of theses and dissertations produced by the graduate students (i.e. Theses and Dissertations Catalog - TDC) since 1987, with abstracts available since 2013. Under recent governmental efforts in data sharing, CAPES made TDC available in CSV format, making it easily accessible for data mining tasks. Recent data files, from 2013 to 2016, contain valuable information for NLP purposes, such as abstracts in Portuguese and English, scientific categories, and keywords. Thus, TDC can be an important source of parallel Portuguese/English scientific abstracts.\n\nIn this work, we developed a sentence aligned parallel corpus gathered from CAPES TDC comprised of abstracts in English and Portuguese spanning the years from 2013 to 2016. In addition, we included metadata regarding the respective theses and dissertations.\n\nIn this section, we detail the information retrieved from CAPES website, the filtering process, the sentence alignment, and the evaluation experiments. An overview of the steps employed in this article is shown in Figure FIGREF1 .\n\nThe TDC datasets are available in the CAPES open data website divided by years, from 2013 to 2016 in CSV and XLSX formats. We downloaded all CSV files from the respective website and loaded them into an SQL database for better manipulation. The database was then filtered to remove documents without both Portuguese and English abstracts, and additional metadata selected.\n\nAfter the initial filtering, the resulting documents were processed for language checking to make sure that there was no misplacing of English abstracts in the Portuguese field, or the other way around, removing the documents that presented such inconsistency. We also performed a case folding to lower case letters, since the TDC datasets present all fields with uppercase letters. In addition, we also removed newline/carriage return characters (i.e \\n and \\r), as they would interfere with the sentence alignment tool.\n\nFor sentence alignment, we used the LF aligner tool, a wrapper around the Hunalign tool BIBREF7 , which provides an easy to use and complete solution for sentence alignment, including pre-loaded dictionaries for several languages.\n\nHunalign uses Gale-Church sentence-length information to first automatically build a dictionary based on this alignment. Once the dictionary is built, the algorithm realigns the input text in a second iteration, this time combining sentence-length information with the dictionary. When a dictionary is supplied to the algorithm, the first step is skipped. A drawback of Hunalign is that it is not designed to handle large corpora (above 10 thousand sentences), causing large memory consumption. In these cases, the algorithm cuts the large corpus in smaller manageable chunks, which may affect dictionary building.\n\nThe parallel abstracts were supplied to the aligner, which performed sentence segmentation followed by sentence alignment. A small modification in the sentence segmentation algorithm was performed to handle the fact that all words are in lowercase letters, which originally prevented segmentation. After sentence alignment, the following post-processing steps were performed: (i) removal of all non-aligned sentences; (ii) removal of all sentences with fewer than three characters, since they are likely to be noise.\n\nTo evaluate the usefulness of our corpus for SMT purposes, we used it to train an automatic translator with Moses BIBREF8 . We also trained an NMT model using the OpenNMT system BIBREF9 , and used the Google Translate Toolkit to produce state-of-the-art comparison results. The produced translations were evaluated according to the BLEU score BIBREF10 .\n\nAlthough the Hunalign tool usually presents a good alignment between sentences, we also conducted a manual validation to evaluate the quality of the aligned sentences. We randomly selected 400 pairs of sentences. If the pair was fully aligned, we marked it as \"correct\"; if the pair was incompletely aligned, due to segmentation errors, for instance, we marked it as \"partial\"; otherwise, when the pair was incorrectly aligned, we marked it as \"no alignment\".\n\nIn this section, we present the corpus' statistics and quality evaluation regarding SMT and NMT systems, as well as the manual evaluation of sentence alignment.\n\nTable TABREF12 shows the statistics (i.e. number of documents and sentences) for the aligned corpus according to the 9 main knowledge areas defined by CAPES. The dataset is available in TMX format BIBREF11 , since it is the standard format for translation memories. We also made available the aligned corpus in an SQLite database in order to facilitate future stratification according to knowledge area, for instance. In this database, we included the following metadata information: year, university, title in Portuguese, type of document (i.e. theses or dissertation), keywords in both languages, knowledge areas and subareas according to CAPES, and URL for the full-text PDF in Portuguese. An excerpt of the corpus is shown in Table TABREF13 \n\nPrior to the MT experiments, sentences were randomly split in three disjoint datasets: training, development, and test. Approximately 13,000 sentences were allocated in the development and test sets, while the remaining was used for training. For the SMT experiment, we followed the instructions of Moses baseline system. For the NMT experiment, we used the Torch implementation to train a 2-layer LSTM model with 500 hidden units in both encoder and decoder, with 12 epochs. During translation, the option to replace UNK words by the word in the input language was used, since this is also the default in Moses.\n\nTable TABREF17 presents the BLEU scores for both translation directions with English and Portuguese on the development and test partitions for Moses and OpenNMT models. We also included the scores for Google Translate (GT) as a benchmark of a state-of-the-art system which is widely used.\n\nNMT model achieved better performance than the SMT one for EN INLINEFORM0 PT direction, with approximately 2.17 percentage points (pp) higher, while presenting almost the same score for PT INLINEFORM1 EN. When comparing our models to GT, both of them presented better BLEU scores, specially for the EN INLINEFORM2 PT direction, with values ranging from 1.27 pp to 4.30 pp higher than GT.\n\nWe highlight that these results may be due to two main factors: corpus size, and domain. Our corpus is fairly large for both SMT and NMT approaches, comprised of almost 1.3M sentences, which enables the development of robust models. Regarding domain, GT is a generic tool not trained for a specific domain, thus it may produce lower results than a domain specific model such as ours. Scientific writing usually has a strict writing style, with less variation than novels or speeches, for instance, favoring the development of tailored MT systems.\n\nBelow, we demonstrate some sentences translated by Moses and OpenNMT compared to the suggested human translation. One can notice that in fact NMT model tend to produce more fluent results, specially regarding verbal regency.\n\nHuman translation: this paper presents a study of efficiency and power management in a packaging industry and plastic films.\n\nOpenNMT: this work presents a study of efficiency and electricity management in a packaging industry and plastic films.\n\nMoses: in this work presents a study of efficiency and power management in a packaging industry and plastic films.\n\nGT: this paper presents a study of the efficiency and management of electric power in a packaging and plastic film industry.\n\nHuman translation: this fact corroborates the difficulty in modeling human behavior.\n\nOpenNMT: this fact corroborates the difficulty in modeling human behavior.\n\nMoses: this fact corroborated the difficulty in model the human behavior.\n\nGT: this fact corroborates the difficulty in modeling human behavior.\n\nWe manually validated the alignment quality for 400 sentences randomly selected from the parsed corpus and assigned quality labels according Section SECREF9 . From all the evaluated sentences, 82.30% were correctly aligned, while 13.33% were partially aligned, and 4.35% presented no alignment. The small percentage of no alignment is probably due to the use of Hunalign tool with the provided EN/PT dictionary.\n\nRegarding the partial alignment, most of the problems are result of segmentation issues previous to the alignment, which wrongly split the sentences. Since all words were case folded to lowercase letters, the segmenter lost an important source of information for the correct segmentation, generating malformed sentences. Some examples of partial alignment errors are shown in Table TABREF19 , where most senteces were truncated in the wrong part.\n\nWe developed a parallel corpus of theses and dissertations abstracts in Portuguese and English. Our corpus is based on the CAPES TDC dataset, which contains information regarding all theses and dissertations presented in Brazil from 2013 to 2016, including abstracts and other metadata.\n\nOur corpus was evaluated through SMT and NMT experiments with Moses and OpenNMT systems, presenting superior performance regarding BLEU score than Google Translate. The NMT model also presented superior results than the SMT one for the EN INLINEFORM0 PT translation direction. We also manually evaluated sentences regarding alignment quality, with average 82.30% of sentences correctly aligned.\n\nFor future work, we foresee the use of the presented corpus in mono and cross-language text mining tasks, such as text classification and clustering. As we included several metadata, these tasks can be facilitated. Other machine translation approaches can also be tested, including the concatenation of this corpus with other multi-domain ones.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 55
+    },
+    {
+      "section": "Abstract",
+      "start": 57,
+      "end": 1313
+    },
+    {
+      "section": "Introduction",
+      "start": 1315,
+      "end": 3813
+    },
+    {
+      "section": "Material and Methods",
+      "start": 3815,
+      "end": 4045
+    },
+    {
+      "section": "Document retrieval and parsing",
+      "start": 4047,
+      "end": 4942
+    },
+    {
+      "section": "Sentence alignment",
+      "start": 4944,
+      "end": 6308
+    },
+    {
+      "section": "Machine translation evaluation",
+      "start": 6310,
+      "end": 6663
+    },
+    {
+      "section": "Manual evaluation",
+      "start": 6665,
+      "end": 7124
+    },
+    {
+      "section": "Results and Discussion",
+      "start": 7126,
+      "end": 7286
+    },
+    {
+      "section": "Corpus statistics",
+      "start": 7288,
+      "end": 8033
+    },
+    {
+      "section": "Translation experiments",
+      "start": 8035,
+      "end": 10897
+    },
+    {
+      "section": "Sentence alignment quality",
+      "start": 10899,
+      "end": 11758
+    },
+    {
+      "section": "Conclusion and future work",
+      "start": 11760,
+      "end": 12788
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1905.01715",
+    "arxiv_id": "1905.01715",
+    "source_url": "https://arxiv.org/abs/1905.01715",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

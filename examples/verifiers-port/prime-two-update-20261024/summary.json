@@ -1,0 +1,116 @@
+{
+  "status": "two_actual_qwen_updates_both_fully_verified",
+  "two_update_gate_passed": true,
+  "actual_gradient_updates": 2,
+  "fully_verified_updates": 2,
+  "optimizer_counter_sequence": [
+    0,
+    1,
+    2
+  ],
+  "optimizer_parameter_states_per_checkpoint": 504,
+  "both_checkpoint_tensor_comparisons_passed": true,
+  "step_1_optimizer_preserved_in_cycle_2": true,
+  "native_update_metrics": {
+    "1": {
+      "step": 1,
+      "optim/lr": 1e-06,
+      "optim/grad_norm": 0.4014267325401306,
+      "loss/mean": 0.015441655181348324,
+      "perf/peak_memory": 35.341796875,
+      "gradient_update_seconds": 24.9
+    },
+    "2": {
+      "step": 2,
+      "optim/lr": 1e-06,
+      "optim/grad_norm": 0.11636517196893692,
+      "loss/mean": 0.003367449389770627,
+      "perf/peak_memory": 35.341796875,
+      "gradient_update_seconds": 22.0
+    }
+  },
+  "generation_requests": 139,
+  "reserved_tokens": 572022,
+  "all_generation_requests_returned": true,
+  "completed_training_episodes": 44,
+  "original_episodes_untrainable": true,
+  "all_episode_infrastructure_healthy": true,
+  "visited_training_questions": 11,
+  "mixed_groups": 2,
+  "cycle_2_uniform_zero_groups_skipped": 9,
+  "mechanical_reward_reasons": {
+    "reviewed_answer_and_support_matched": 4,
+    "no_verified_supported_terminal": 13,
+    "reviewed_support_missing_after_quote_clipping": 4,
+    "additional_citation_without_reviewed_support": 1,
+    "answer_not_in_reviewed_variants": 22
+  },
+  "semantic_quality_measured": false,
+  "held_out_model_evaluation_run": false,
+  "locked_reference_contents_reviewed": false,
+  "independent_human_review": null,
+  "ten_update_pilot_launched": false,
+  "verified_adapters": {
+    "1": {
+      "sha256": "a1984d390d333b64ddcb5753ce6647d578a4b7c1564bf3d8f7975ac48f9f3f03",
+      "local_path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-1/adapter"
+    },
+    "2": {
+      "sha256": "af5db09f6391e35f2ab8782ebb8d5ca5abb75537a50c291fa3af7d0b97479995",
+      "local_path": "out/reader-prime-no-work-cutoff-20261024/integration-gpu-receipts/cycle-2/adapter"
+    }
+  },
+  "adapter_promoted": false,
+  "uploaded": false,
+  "committed": false,
+  "native_work_seconds": 1783.3595278263092,
+  "separate_work_ceiling_seconds": 14400,
+  "rental_guard_maximum_lifetime_seconds": 7200,
+  "runtime_override_file": "examples/verifiers-port/prime-next-integration-policy.json",
+  "runtime_override_sha256": "a2b76f270376098f3ada0e15f48454ea76dfdc35c93af2fc098872dce073cdda",
+  "old_numeric_protocol_rewritten": false,
+  "original_protocol_sha256": "1d0038b7c5d2f84327ac1bdcf55d939bcbdbfcbf1d5a991d07ef81ffb05aa8d9",
+  "timing_change_alone_proven_to_cause_completion": false,
+  "ssh_read_retry_events": 0,
+  "cleanup": {
+    "pod": {
+      "id": "x40apwdixaelxi",
+      "absent": true
+    },
+    "network-volume": {
+      "id": "ie1httce8x",
+      "absent": true
+    }
+  },
+  "fresh_mcp_reads_both_404": true,
+  "owned_resource_lifetime_seconds": 2202.638113975525,
+  "estimated_spend_upper_usd": 1.162503449042638,
+  "actual_billed_amount_usd": null,
+  "billing_status": "provider returned no posted rows; not zero cost",
+  "native_tests_passed": 139,
+  "deployment_transport_and_guard_tests_passed": 8,
+  "latest_full_suite_passed": 2204,
+  "latest_full_suite_optional_skips": 16,
+  "full_suite_predates_this_run_on_unchanged_production_sources": true,
+  "identities": {
+    "base_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+    "v5_revision": "27b912a863ff914ad45baa03624d8911dc1e17fb",
+    "v5_sha256": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "prime_revision": "9e15490dcab1d506ce3462e69b8aa5dde45c6b3a",
+    "renderer_revision": "5d870d8eaa65114f5bef8a4cffc146fbcb418ec4",
+    "reward_version": "reader-short-fact-reference-v1",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "bundle_sha256": "874bb479bb9cc67baf33bcc0788cfca330aee10638b5cc35ce9ded0e1be46d5f",
+    "prompt_sha256": "1f752247467187689092c0366ac9923b077cd7c6df0ea6969bb21acabb994e16",
+    "seed": 42,
+    "group_size": 4
+  },
+  "existing_files_checked": 2493,
+  "changed_existing_files": [
+    "CODEX_HANDOFF.md"
+  ],
+  "source_bound_plan_valid": true,
+  "frozen_source_reference_manifest_valid": true,
+  "prelaunch_runtime_policy_unchanged": true,
+  "index_empty": true
+}

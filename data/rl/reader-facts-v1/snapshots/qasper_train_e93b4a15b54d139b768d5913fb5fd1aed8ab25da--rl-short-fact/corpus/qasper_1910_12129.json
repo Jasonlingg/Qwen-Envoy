@@ -1,0 +1,120 @@
+{
+  "doc_id": "qasper_1910_12129",
+  "title": "ViGGO: A Video Game Corpus for Data-To-Text Generation in Open-Domain Conversation",
+  "text": "ViGGO: A Video Game Corpus for Data-To-Text Generation in Open-Domain Conversation\n\nThe uptake of deep learning in natural language generation (NLG) led to the release of both small and relatively large parallel corpora for training neural models. The existing data-to-text datasets are, however, aimed at task-oriented dialogue systems, and often thus limited in diversity and versatility. They are typically crowdsourced, with much of the noise left in them. Moreover, current neural NLG models do not take full advantage of large training data, and due to their strong generalizing properties produce sentences that look template-like regardless. We therefore present a new corpus of 7K samples, which (1) is clean despite being crowdsourced, (2) has utterances of 9 generalizable and conversational dialogue act types, making it more suitable for open-domain dialogue systems, and (3) explores the domain of video games, which is new to dialogue systems despite having excellent potential for supporting rich conversations.\n\nThe recent adoption of deep learning methods in natural language generation (NLG) for dialogue systems resulted in an explosion of neural data-to-text generation models, which depend on large training data. These are typically trained on one of the few parallel corpora publicly available, in particular the E2E BIBREF0 and the WebNLG BIBREF1 datasets. Crowdsourcing large NLG datasets tends to be a costly and time-consuming process, making it impractical outside of task-oriented dialogue systems. At the same time, current neural NLG models struggle to replicate the high language diversity of the training sentences present in these large datasets, and instead they learn to produce the same generic type of sentences as with considerably less training data BIBREF2, BIBREF3, BIBREF4.\n\nMotivated by the rising interest in open-domain dialogue systems and conversational agents, we present ViGGO – a smaller but more comprehensive dataset in the video game domain, introducing several generalizable dialogue acts (DAs), making it more suitable for training versatile and more conversational NLG models. The dataset provides almost 7K pairs of structured meaning representations (MRs) and crowdsourced reference utterances about more than 100 video games. Table TABREF2 lists three examples.\n\nVideo games are a vast entertainment topic that can naturally be discussed in a casual conversation, similar to movies and music, yet in the dialogue systems community it does not enjoy popularity anywhere close to that of the latter two topics BIBREF5, BIBREF6, BIBREF7, BIBREF8, BIBREF9. Restaurants have served as the go-to topic in data-to-text NLG for decades, as they offer a sufficiently large set of various attributes and corresponding values to talk about. While they certainly can be a topic of a casual conversation, the existing restaurant datasets BIBREF10, BIBREF11, BIBREF12, BIBREF13, BIBREF14, BIBREF15 are geared more toward a task-oriented dialogue where a system tries to narrow down a restaurant based on the user's preferences and ultimately give a recommendation. Our new video game dataset is designed to be more conversational, and to thus enable neural models to produce utterances more suitable for an open-domain dialogue system.\n\nEven the most recent addition to the publicly available restaurant datasets for data-to-text NLG, the E2E dataset BIBREF0, suffers from the lack of a conversational aspect. It has become popular, thanks to its unprecedented size and multiple reference utterances per MR, for training end-to-end neural models, yet it only provides a single DA type. In contrast with the E2E dataset, ViGGO presents utterances of 9 different DAs.\n\nOther domains have been represented by task-oriented datasets with multiple DA types, for example the Hotel, Laptop, and TV datasets BIBREF16, BIBREF17. Nevertheless, the DAs in these datasets vary greatly in complexity, and their distribution is thus heavily skewed, typically with two or three similar DAs comprising almost the entire dataset. In our video game dataset, we omitted simple DAs, in particular those that do not require any slots, such as greetings or short prompts, and focused on a set of substantial DAs only.\n\nThe main contribution of our work is thus a new parallel data-to-text NLG corpus that (1) is more conversational, rather than information seeking or question answering, and thus more suitable for an open-domain dialogue system, (2) represents a new, unexplored domain which, however, has excellent potential for application in conversational agents, and (3) has high-quality, manually cleaned human-produced utterances.\n\nViGGO features more than 100 different video game titles, whose attributes were harvested using free API access to two of the largest online video game databases: IGDB and GiantBomb. Using these attributes, we generated a set of 2,300 structured MRs. The human reference utterances for the generated MRs were then crowdsourced using vetted workers on the Amazon Mechanical Turk (MTurk) platform BIBREF18, resulting in 6,900 MR-utterance pairs altogether. With the goal of creating a clean, high-quality dataset, we strived to obtain reference utterances with correct mentions of all slots in the corresponding MR through post-processing.\n\nThe MRs in the ViGGO dataset range from 1 to 8 slot-value pairs, and the slots come from a set of 14 different video game attributes. Table TABREF6 details how these slots may be distributed across the 9 different DAs. The inform DA, represented by 3,000 samples, is the most prevalent one, as the average number of slots it contains is significantly higher than that of all the other DAs. Figure FIGREF7 visualizes the MR length distribution across the entire dataset.\n\nThe slots can be classified into 5 general categories covering most types of information MRs typically convey in data-to-text generation scenarios: Boolean, Numeric, Scalar, Categorical, and List. The first 4 categories are common in other NLG datasets, such as E2E, Laptop, TV, and Hotel, while the List slots are unique to ViGGO. List slots have values which may comprise multiple items from a discrete list of possible items.\n\nWith neural language generation in mind, we crowdsourced 3 reference utterances for each MR so as to provide the models with the information about how the same content can be realized in multiple different ways. At the same time, this allows for a more reliable automatic evaluation by comparing the generated utterances with a set of different references each, covering a broader spectrum of correct ways of expressing the content given by the MR. The raw data, however, contains a significant amount of noise, as is inevitable when crowdsourcing. We therefore created and enforced a robust set of heuristics and regular expressions to account for typos, grammatical errors, undesirable abbreviations, unsolicited information, and missing or incorrect slot realizations.\n\nThe crowdsourcing of utterances on MTurk took place in three stages. After collecting one third of the utterances, we identified a pool of almost 30 workers who wrote the most diverse and natural-sounding sentences in the context of video games. We then filtered out all utterances of poor quality and had the qualified workers write new ones for the corresponding inputs. Finally, the remaining two thirds of utterances were completed by these workers exclusively.\n\nFor each DA we created a separate task in order to minimize the workers' confusion. The instructions contained several different examples, as well as counter-examples, and they situated the DA in the context of a hypothetical conversation. The video game attributes to be used were provided for the workers in the form of a table, with their order shuffled so as to avoid any kind of bias. Further details on the data collection and cleaning are included in the Appendix.\n\nDespite the fact that the ViGGO dataset is not very large, we strived to make the test set reasonably challenging. To this end, we ensured that, after delexicalizing the name and the developer slots, there were no common MRs between the train set and either of the validation or test set. We maintained a similar MR length and slot distribution across the three partitions. The distribution of DA types, on the other hand, is skewed slightly toward fewer inform DA instances and a higher proportion of the less prevalent DAs in the validation and test sets (see Figure FIGREF11). With the exact partition sizes indicated in the diagram, the final ratio of samples is approximately $7.5:1:1.5$.\n\nOur new dataset was constructed under different constraints than the E2E dataset. First, in ViGGO we did not allow any omissions of slot mentions, as those are not justifiable for data-to-text generation with no previous context, and it makes the evaluation ambiguous. Second, the MRs in ViGGO are grounded by real video game data, which can encourage richer and more natural-sounding reference utterances.\n\nWhile ViGGO is only 13% the size of the E2E dataset, the lexical diversity of its utterances is 77% of that in the E2E dataset, as indicated by the “delexicalized vocabulary” column in Table TABREF13. Part of the reason naturally is the presence of additional DAs in ViGGO, and therefore we also indicate the statistics in Table TABREF13 for the inform samples only. The average inform utterance length in ViGGO turns out to be over 30% greater, in terms of both words and sentences per utterance.\n\nFinally, we note that, unlike the E2E dataset, our test set does not place any specific emphasis on longer MRs. While the average number of slots per MR in the inform DAs are comparable to the E2E dataset, in general the video game MRs are significantly shorter. This is by design, as shorter, more focused responses are more conversational than consistently dense utterances.\n\nThe NLG model we use to establish a baseline for this dataset is a standard Transformer-based BIBREF19 sequence-to-sequence model. For decoding we employ beam search of width 10 ($\\alpha = 1.0$). The generated candidates are then reranked according to the heuristically determined slot coverage score. Before training the model on the ViGGO dataset, we confirmed on the E2E dataset that it performed on par with, or even slightly better than, the strong baseline models from the E2E NLG Challenge, namely, TGen BIBREF20 and Slug2Slug BIBREF21.\n\nWe evaluate our model's performance on the ViGGO dataset using the following standard NLG metrics: BLEU BIBREF22, METEOR BIBREF23, ROUGE-L BIBREF24, and CIDEr BIBREF25. Additionally, with our heuristic slot error rate (SER) metric we approximate the percentage of failed slot realizations (i.e., missed, incorrect, or hallucinated) across the test set. The results are shown in Table TABREF16.\n\nWe let two expert annotators with no prior knowledge of the ViGGO dataset evaluate the outputs of our model. Their task was to rate 240 shuffled utterances (120 generated utterances and 120 human references) each on naturalness and coherence using a 5-point Likert scale. We define naturalness as a measure of how much one would expect to encounter an utterance in a conversation with a human, as opposed to sounding robotic, while coherence measures its grammaticality and fluency. Out of the 120 MRs in each partition, 40 were of the inform type, with the other 8 DAs represented by 10 samples each. In addition to that, we had the annotators rate a sample of 80 utterances from the E2E dataset (40 generated and 40 references) as a sort of a baseline for the human evaluation.\n\nWith both datasets, our model's outputs were highly rated on both naturalness and coherence (see Table TABREF18). The scores for the ViGGO utterances were overall higher than those for the E2E ones, which we understand as an indication of the video game data being more fluent and conversational. At the same time, we observed that the utterances generated by our model tended to score higher than the reference utterances, though significantly more so for the E2E dataset. This is likely a consequence of the ViGGO dataset being cleaner and less noisy than the E2E dataset.\n\nIn an additional evaluation of ViGGO, we asked the annotators to classify the utterance samples into the 9 DA groups. For this task they were provided with a brief description of each DA type. The annotators identified the DA incorrectly in only 7% of the samples, which we interpret as a confirmation that our DAs are well-defined. Most of the mistakes can be ascribed to the inherent similarity of the recommend and the suggest DA, as well as to our model often generating give_opinion utterances that resemble the inform ones.\n\nAmong all 9 DAs, the one posing the greatest challenge for our model was give_opinion, due to its high diversity of reference utterances. Despite the occasional incoherence, it learned to produce rich and sensible utterances, for instance “Little Nightmares is a pretty good game. Tarsier Studios is a talented developer and the side view perspective makes it easy to play.”.\n\nSince our baseline model does not implement any form of a copy mechanism, it fails on instances with out-of-vocabulary terms, such as the values of the specifier slot in the test set. These, in fact, account for almost half of the errors indicated by the SER metric in Table TABREF16. Therefore, more robust models have good potential for improving on our scores.\n\nIn Table TABREF20 we demonstrate how the 9 DAs of the ViGGO dataset can support a natural multi-turn exchange on the topic of video games, as a part of a longer casual conversation on different topics. One caveat of using a language generator trained on this dataset in a dialogue system as-is is that multiple subsequent turns discussing the same video game would be repeating its full name. ViGGO was designed for grounded generation but without context, and therefore it is up to the dialogue manager to ensure that pronouns are substituted for the names whenever it would sound more natural in a dialogue. Alternately, the dataset can easily be augmented with automatically constructed samples which omit the name slot in the MR and replace the name with a pronoun in the reference utterance.\n\nIn this paper we presented a new parallel corpus for data-to-text NLG, which contains 9 dialogue acts, making it more conversational than other similar datasets. The crowdsourced utterances were thoroughly cleaned in order to obtain high-quality human references, which we hope will support the recent trend in research to train neural models on small but high-quality data, like humans can. This could possibly be achieved by transferring fundamental knowledge from larger available corpora, such as the E2E dataset, but perhaps by other, completely new, methods.\n\nIn Table TABREF22 we present one example of each DA in the ViGGO dataset, including the examples given in Table TABREF2.\n\nIn Section SECREF5 we mentioned that the slots in the ViGGO dataset can be classified into 5 general categories. Here we provide more detailed descriptions of the categories:\n\nBoolean – binary value, such as “yes”/“no” or “true”/“false” (e.g., has_multiplayer or available_on_steam),\n\nNumeric – value is a number or contains number(s) as the salient part (e.g., release_year or exp_release_date),\n\nScalar – values are on a distinct scale (e.g., rating or esrb),\n\nCategorical – takes on virtually any value, typically coming from a certain category, such as names or types (e.g., name or developer),\n\nList – similar to categorical, where the value can, however, consist of multiple individual items (e.g., genres or player_perspective).\n\nNote that in ViGGO the items in the value of a List slot are comma-separated, and therefore the individual items must not contain a comma. There are no restrictions as to whether the values are single-word or multi-word in any of the categories.\n\nWhen generating the MRs for the inform DA, we fixed the slot ratios: the name and genres slots were mandatory in every MR, the player_perspective and release_year were enforced in about half of the MRs, while the remaining slots are present in about 25% of the MRs. At the same time we imposed two constraints on the slot combinations: (1) whenever one of the Steam, Linux or Mac related boolean slots is present in an MR, the platforms slot must be included too, and (2) whenever either of the Linux or Mac slots was picked for an MR, the other one was automatically added too. These two constraints were introduced so as to encourage reference utterances with natural aggregations and contrast relations.\n\nThe remaining 8 DAs, however, contain significantly fewer slots each (see Table TABREF6). We therefore decided to have the MTurk workers select 5 unique slot combinations for each given video game before writing the corresponding utterances. Since for these DAs we collected less data, we tried to ensure in this way that we have a sufficient number of samples for those slot combinations that are most natural to be mentioned in each of the DAs. While fixing mandatory slots for each DA, we instructed the workers to choose 1 or 2 additional slots depending on the task. The data collection for MRs with only 1 additional slot and for those with 2 was performed separately, so as to prevent workers from taking the easy way out by always selecting just a single slot, given the option.\n\nLeaving the slot selection to crowdworkers yields a frequency distribution of all slot combinations, which presumably indicates the suitability of different slots to be mentioned together in a sentence. This meta-information can be made use of in a system's dialogue manager to sample from the observed slot combination distributions instead of sampling randomly or hard-coding the combinations. Figure FIGREF30 shows the distributions of the 8 slot pairs most commonly mentioned together in different DAs. These account for 53% of the selections among the 6 DAs that can take 2 additional slots besides the mandatory ones. We can observe some interesting trends in the distributions, such as that the developer + release_year combination was the most frequent one in the confirm DA, while fairly rare in most of the other DAs. This might be because this pair of a game's attributes is arguably the next best identifier of a game after its name.\n\nA large proportion of the raw data collected contained typos and various errors, as is inevitable when crowdsourcing. We took the following three steps to clean the data.\n\nFirst, we used regular expressions to enforce several standardization policies regarding special characters, punctuation, and the correction of undesired abbreviations/misspellings of standard domain-specific terms (e.g., we would change terms like “Play station” or “PS4” to the uniform “PlayStation”). At the same time, we removed or enforced hyphens uniformly in certain terms, for example, “single-player”. Although phrases such as “first person” should correctly have a hyphen when used as adjective, the turkers used this rule very inconsistently. In order to avoid model outputs being penalized during the evaluation by the arbitrary choice of a hyphen presence or absence in the reference utterances, we decided to remove the hyphen in all such phrases regardless of the noun/adjective use.\n\nSecond, we developed an extensive set of heuristics to identify slot-related errors. This process revealed the vast majority of missing or incorrect slot mentions, which we subsequently fixed according to the corresponding MRs. Turkers would sometimes also inject a piece of information which was not present in the MR, some of which is not even represented by any of the slots, e.g., plot or main characters. We remove this extraneous information from the utterances so as to avoid confusing the neural model. This step thus involved certain manual work and was thus performed jointly with the third step.\n\nFinally, we further resolved the remaining typos, grammatical errors, and unsolicited information.\n\nEven though on the small datasets we work with we do not necessarily expect the Transformer model to perform better than recurrent neural networks, we chose this model for its significantly faster training, without sacrificing the performance. For our experiments a small 2-layer Transformer with 8 heads proved to be sufficient. The input tokens are encoded into embeddings of size 256, and the target sequences were truncated to 60 tokens. The model performed best with dropout values of 0.2. For training of the Transformer models we used the Adam optimizer with a custom learning rate schedule including a brief linear warm-up and a cosine decay.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 82
+    },
+    {
+      "section": "Abstract",
+      "start": 84,
+      "end": 1027
+    },
+    {
+      "section": "Introduction",
+      "start": 1029,
+      "end": 4663
+    },
+    {
+      "section": "The ViGGO Dataset",
+      "start": 4665,
+      "end": 5302
+    },
+    {
+      "section": "The ViGGO Dataset ::: Meaning Representations",
+      "start": 5304,
+      "end": 6203
+    },
+    {
+      "section": "The ViGGO Dataset ::: Utterances",
+      "start": 6205,
+      "end": 6976
+    },
+    {
+      "section": "The ViGGO Dataset ::: Data Collection",
+      "start": 6978,
+      "end": 7916
+    },
+    {
+      "section": "The ViGGO Dataset ::: Train/Validation/Test Split",
+      "start": 7918,
+      "end": 8611
+    },
+    {
+      "section": "The ViGGO Dataset ::: ViGGO vs. E2E",
+      "start": 8613,
+      "end": 9896
+    },
+    {
+      "section": "Baseline System Evaluation",
+      "start": 9898,
+      "end": 10441
+    },
+    {
+      "section": "Baseline System Evaluation ::: Automatic Metrics",
+      "start": 10443,
+      "end": 10836
+    },
+    {
+      "section": "Baseline System Evaluation ::: Human Evaluation",
+      "start": 10838,
+      "end": 12724
+    },
+    {
+      "section": "Baseline System Evaluation ::: Qualitative Analysis",
+      "start": 12726,
+      "end": 13466
+    },
+    {
+      "section": "Discussion",
+      "start": 13468,
+      "end": 14264
+    },
+    {
+      "section": "Conclusion",
+      "start": 14266,
+      "end": 14830
+    },
+    {
+      "section": "Appendix ::: Additional ViGGO Dataset Examples",
+      "start": 14832,
+      "end": 14952
+    },
+    {
+      "section": "Appendix ::: Slot Categories",
+      "start": 14954,
+      "end": 15936
+    },
+    {
+      "section": "Appendix ::: Data Collection",
+      "start": 15938,
+      "end": 18379
+    },
+    {
+      "section": "Appendix ::: Dataset Cleaning",
+      "start": 18381,
+      "end": 20059
+    },
+    {
+      "section": "Appendix ::: Model Parameters",
+      "start": 20061,
+      "end": 20711
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1910.12129",
+    "arxiv_id": "1910.12129",
+    "source_url": "https://arxiv.org/abs/1910.12129",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

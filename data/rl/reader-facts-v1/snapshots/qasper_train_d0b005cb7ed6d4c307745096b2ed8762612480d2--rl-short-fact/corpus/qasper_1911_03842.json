@@ -1,0 +1,140 @@
+{
+  "doc_id": "qasper_1911_03842",
+  "title": "Queens are Powerful too: Mitigating Gender Bias in Dialogue Generation",
+  "text": "Queens are Powerful too: Mitigating Gender Bias in Dialogue Generation\n\nModels often easily learn biases present in the training data, and their predictions directly reflect this bias. We analyze the presence of gender bias in dialogue and examine the subsequent effect on generative chitchat dialogue models. Based on this analysis, we propose a combination of three techniques to mitigate bias: counterfactual data augmentation, targeted data collection, and conditional training. We focus on the multi-player text-based fantasy adventure dataset LIGHT as a testbed for our work. LIGHT contains gender imbalance between male and female characters with around 1.6 times as many male characters, likely because it is entirely collected by crowdworkers and reflects common biases that exist in fantasy or medieval settings. We show that (i) our proposed techniques mitigate gender bias by balancing the genderedness of generated dialogue utterances; and (ii) they work particularly well in combination. Further, we show through various metrics---such as quantity of gendered words, a dialogue safety classifier, and human evaluation---that our models generate less gendered, but still engaging chitchat responses.\n\nSince machine learning algorithms learn to model patterns present in training datasets, what they learn is affected by data quality. Analysis has found that model predictions directly reflect the biases found in training datasets, such as image classifiers learning to associate ethnicity with specific activities BIBREF1. Recent work in natural language processing has found similar biases, such as in word embeddings BIBREF2, BIBREF3, BIBREF4, object classification BIBREF5, natural language inference BIBREF6, and coreference resolution BIBREF7. Less work has focused on the biases present in dialogue utterances BIBREF8, BIBREF9, despite bias being clearly present in human interactions, and the rapid development of dialogue agents for real-world use-cases, such as interactive assistants. In this work we aim to address this by focusing on mitigating gender bias.\n\nWe use the dialogue dataset from the LIGHT text adventure world BIBREF0 as a testbed for our investigation into de-biasing dialogues. The dataset consists of a set of crowd-sourced locations, characters, and objects, which form the backdrop for the dialogues between characters. In the dialogue creation phase, crowdworkers are presented with personas for characters—which themselves were written by other crowdworkers—that they should enact; the dialogues the crowdworkers generate from these personas form the dialogue dataset. Dialogue datasets are susceptible to reflecting the biases of the crowdworkers as they are often collected solely via crowdsourcing. Further, the game's medieval setting may encourage crowdworkers to generate text which accentuates the historical biases and inequalities of that time period BIBREF10, BIBREF11. However, despite the fact that the dialogues take place in a fantasy adventure world, LIGHT is a game and thus we are under no obligation to recreate historical biases in this environment, and can instead use creative license to shape it into a fun world with gender parity.\n\nWe use the dialogues in LIGHT because we find that it is highly imbalanced with respect to gender: there are over 60% more male-gendered characters than female. We primarily address the discrepancy in the representation of male and female genders, although there are many characters that are gender neutral (like “trees\") or for which the gender could not be determined. We did not find any explicitly identified non-binary characters. We note that this is a bias in and of itself, and should be addressed in future work. We show that training on gender biased data leads existing generative dialogue models to amplify gender bias further. To offset this, we collect additional in-domain personas and dialogues to balance gender and increase the diversity of personas in the dataset. Next, we combine this approach with Counterfactual Data Augmentation and methods for controllable text generation to mitigate the bias in dialogue generation. Our proposed techniques create models that produce engaging responses with less gender bias.\n\nRecent work in dialogue incorporates personas, or personality descriptions that ground speaker's chat, such as I love fishing BIBREF12, BIBREF13, BIBREF14, BIBREF15, BIBREF16. Personas have been shown to increase engagingness and improve consistency. However, they can be a starting point for bias BIBREF17, BIBREF18, BIBREF9, as bias in the personas propagates to subsequent conversations.\n\nAnalyzing the personas in LIGHT qualitatively, we find many examples of bias. For example, the character girl contains the line I regularly clean and cook dinner. Further examples are given in Table TABREF1.\n\nWe quantitatively analyze bias by first examining whether the existing personas are offensive, and second, evaluating their gender balance. To assess the pervasiveness of unsafe content present in personas, we asked three independent annotators to examine each character's persona for potentially offensive content. If annotators selected that the content was offensive or maybe offensive, they were asked to place it in one of four categories – racist, sexist, classist, other – and to provide a reason for their response. Just over 2% of personas were flagged by at least one annotator, and these personas are removed from the dataset.\n\nWe further examined gender bias in personas. Annotators were asked to label the gender of each character based on their persona description (choosing “neutral\" if it was not explicit in the persona). This annotation is possible because some personas include lines such as I am a young woman, although the majority of personas do not mention an explicit gender. Annotators found nearly 50% more male-gendered characters than female-gendered characters (Table TABREF5).\n\nWhile annotators labeled personas as explicitly male, female, or gender-neutral, gender bias may still exist in personas beyond explicit sentences such as I am a young man. For example, personas can contain gendered references such as I want to follow in my father's footsteps rather than mother's footsteps. These relational nouns BIBREF19, BIBREF20 such as father encode a specific relationship that can be gender biased. In this example, that relationship would be between the character and a man, rather than a woman. We analyzed the frequency of references to other gendered characters in the personas by counting the appearance of gendered words using the list compiled by BIBREF21 (for example he vs. she), and find that men are disproportionately referred to in the personas: there are nearly 3x as many mentions of men than women.\n\nAfter analyzing the bias in LIGHT personas, we go on to analyze the bias in dialogues created from those personas and how to quantify it.\n\nIn our analysis, we found many examples of biased utterances in the data used to train dialogue agents. For example, the character with a queen persona utters the line I spend my days embroidery and having a talk with the ladies. Another character in a dialogue admires a sultry wench with fire in her eyes. An example of persona bias propagating to the dialogue can be found in Table TABREF2.\n\nSexism is clearly present in many datasets BIBREF9, but finding a good way to measure sexism, especially at scale, can be challenging. A simple answer would be to rely on crowdworkers operating under their own notions of “sexism” to annotate the dialogues. However, in our experience, crowdworkers hold a range of views, often different from ours, as to what counts as sexism, making mere human evaluation far from sufficient. Note that the original LIGHT personas and dialogues were generated by crowdworkers, leaving little reason to believe that crowdworkers will be proficient at spotting the sexism that they themselves embued the dataset with in the first place. Therefore, we supplement our crowdworker-collected human annotations of gender bias with additional quantitative measurements: we measure the ratio of gendered words (taken from the union of several existing gendered word lists that were each created through either automatic means, or by experts BIBREF21, BIBREF22, BIBREF23), and we run an existing dialogue safety classifier BIBREF24 to measure offensiveness of the dialogues.\n\nWe explore both data augmentation and algorithmic methods to mitigate bias in generative Transformer dialogue models. We describe first our modeling setting and then the three proposed techniques for mitigating bias. Using (i) counterfactual data augmentation BIBREF25 to swap gendered words and (ii) additional data collection with crowdworkers, we create a gender-balanced dataset. Further, (iii) we describe a controllable generation method which moderates the male and female gendered words it produces.\n\nFollowing BIBREF0, in all of our experiments we fine-tune a large, pre-trained Transformer encoder-decoder neural network on the dialogues in the LIGHT dataset. The model was pre-trained on Reddit conversations, using a previously existing Reddit dataset extracted and obtained by a third party and made available on pushshift.io. During pre-training, models were trained to generate a comment conditioned on the full thread leading up to the comment. Comments containing URLs or that were under 5 characters in length were removed from the corpus, as were all child comments, resulting in approximately $2,200$ million training examples. The model is a 8 layer encoder, 8 layer decoder with 512 dimensional embeddings and 16 attention heads, and is based on the ParlAI implementation of BIBREF26. For generation, we decode sequences with beam search with beam size 5.\n\nOne of the solutions that has been proposed for mitigating gender bias on the word embedding level is Counterfactual Data Augmentation (CDA) BIBREF25. We apply this method by augmenting our dataset with a copy of every dialogue with gendered words swapped using the gendered word pair list provided by BIBREF21. For example, all instances of grandmother are swapped with grandfather.\n\nTo create a more gender-balanced dataset, we collect additional data using a Positive-Bias Data Collection (Pos. Data) strategy.\n\nThere are a larger number of male-gendered character personas than female-gendered character personas (see Section SECREF2), so we balance existing personas using gender-swapping. For every gendered character in the dataset, we ask annotators to create a new character with a persona of the opposite gender that is otherwise identical except for referring nouns or pronouns. Additionally, we ask annotators to swap the gender of any characters that are referred to in the persona text for a given character.\n\nAs discussed in Section SECREF2, it is insufficient to simply balance references to men and women in the dataset, as there may be bias in the form of sexism. While it is challenging to detect sexism, we attempt to offset this type of bias by collecting a set of interesting and independent characters. We do this by seeding workers with examples like adventurer with the persona I am an woman passionate about exploring a world I have not yet seen. I embark on ambitious adventures. We give the additional instruction to attempt to create diverse characters. Even with this instruction, crowdworkers still created roughly 3x as many male-gendered characters as female-gendered characters. We exclude male-gendered characters created in this fashion.\n\nIn combination with the gender swapped personas above, this yields a new set of 2,676 character personas (compared to 1,877 from the original dataset), for which the number of men and women and the number of references to male or female gendered words is roughly balanced: see Table TABREF5.\n\nFinally, we collect additional dialogues with these newly created gender balanced character personas, favoring conversations that feature female gendered characters to offset the imbalance in the original data. We added further instructions for annotators to be mindful of gender bias during their conversations, and in particular to assume equality between genders – social, economic, political, or otherwise – in this fantasy setting. In total, we collect 507 new dialogues containing 6,658 new dialogue utterances in total (about 6% of the size of the full LIGHT dataset).\n\nBias in dialogue can manifest itself in various forms, but one form is the imbalanced use of gendered words. For example, LIGHT contains far more male-gendered words than female-gendered words rather than an even split between words of both genders. To create models that can generate a gender-balanced number of gendered words, we propose Conditional Training (CT) for controlling generative model output BIBREF27, BIBREF28, BIBREF29, BIBREF30. Previous work proposed a mechanism to train models with specific control tokens so models learn to associate the control token with the desired text properties BIBREF28, then modifying the control tokens during inference to produce the desired result.\n\nPrior to training, each dialogue response is binned into one of four bins – $\\text{F}^{0/+}\\text{M}^{0/+}$ – where $\\text{F}^{0}$ indicates that there are zero female gendered words in the response and $\\text{F}^{+}$ indicates the presence of at least one female gendered word. The gendered words are determined via an aggregation of existing lists of gendered nouns and adjectives from BIBREF21, BIBREF22, BIBREF23. The bins are used to train a conditional model by appending a special token (indicating the bin for the target response) to the end of the input which is given to the encoder. At inference time, the bins can be manipulated to produce dialogue outputs with various quantities of gendered words.\n\nWe train generative Transformer models using each of these methods – Counterfactual Data Augmentation that augments with swaps of gendered words (CDA, §SECREF19), adding new dialogues (Positive-Bias Data Collection, §SECREF20), and controllable generation to control the quantity of gendered words (CT, §SECREF24) – and finally combine all of these methods together (ALL).\n\nExisting Transformer generative dialogue models BIBREF31, BIBREF32, BIBREF0 are trained to take as input the dialogue context and generate the next utterance. Previous work has shown that machine learning models reflect the biases present in data BIBREF4, BIBREF3, and that these biases can be easy to learn compared to more challenging reasoning BIBREF2, BIBREF33. Generative models often use beam search or top-k sampling BIBREF34 to decode, and these methods are well-known to produce generic text BIBREF35, which makes them susceptible statistical biases present in datasets.\n\nAs shown in Table TABREF11, we find that existing models actually amplify bias. When the trained model generates gendered words (i.e., words from our gendered word list), it generates male-gendered words the vast majority of the time – even on utterances for which it is supposed to generate only female-gendered words (i.e., the gold label only contains female-gendered words), it generates male-gendered words nearly $78\\%$ of the time.\n\nAdditionally, following BIBREF8, we run an offensive language classifier on the gold responses and the model generated utterances (Table TABREF16) and find that the model produces more offensive utterances than exist in the dataset.\n\nWe analyze the performance of the various techniques by dividing the test set using the four genderedness bins – $\\text{F}^{0}\\text{M}^{0}$, $\\text{F}^{0}\\text{M}^{+}$, $\\text{F}^{+}\\text{M}^{0}$, and $\\text{F}^{+}\\text{M}^{+}$ – and calculate the F1 word overlap with the gold response, the percentage of gendered words generated (% gend. words), and the percentage of male-gendered words generated (relative to the sum total of gendered words generated by the model). We compare to the gold labels from the test set and a baseline model that does not use any of the bias mitigation techniques. Results for all methods are displayed in Table TABREF11.\n\nEach of the methods we explore improve in % gendered words, % male bias, and F1 over the baseline Transformer generation model, but we find combining all methods in one – the ALL model is the most advantageous. While ALL has more data than CDA and CT, more data alone is not enough — the Positive-Bias Data Collection model does not achieve as good results. Both the CT and ALL models benefit from knowing the data split ($\\text{F}^{0}\\text{M}^{0}$, for example), and both models yield a genderedness ratio closest to ground truth.\n\nOur proposed CT method can be used to control the use of gendered words in generated dialogues. We examine the effect of such training by generating responses on the test set by conditioning the ALL model on a singular bin for all examples. Results are shown in Figure FIGREF12. Changing the bin radically changes the genderedness of generated text without significant changes to F1.\n\nExamples of generated text from both the baseline and the ALL model are shown in Table TABREF31. The baseline model generates male-gendered words even when the gold response contains no gendered words or only female-gendered words, even generating unlikely sequences such as “my name is abigail. i am the king of this kingdom.\".\n\nUsing a dialogue safety classifier BIBREF24, we find that our proposed de-biased models are rated as less offensive compared to the baseline generative Transformer and the LIGHT data (see Table TABREF16).\n\nFinally, we use human evaluation to compare the quality of our de-biasing methods. We use the dialogue evaluation system Acute-Eval BIBREF36 to ask human evaluators to compare two conversations from different models and decide which model is more biased and which model is more engaging. Following Acute-Eval, we collect 100 human and model paired chats. Conversations from a human and baseline model are compared to conversations from a human and the ALL model with all generations set to the $\\text{F}^{0}\\text{M}^{0}$ gender-neutral control bin. Evaluators are asked which model is more engaging and for which model they find it more difficult to predict the gender of the speaker. We found that asking about difficulty of predicting a speaker's gender was much more effective than asking evaluators to evaluate sexism or gender bias. Figure FIGREF17 shows that evaluators rate the ALL model harder to predict the gender of (statistically significant at $p < 0.01$) while engagingness does not change. Our proposed methods are able to mitigate gender bias without degrading dialogue quality.\n\nWe analyze gender bias in dialogue and propose a general purpose method for understanding and mitigating bias in character personas and their associated dialogues. We present techniques using data augmentation and controllable generation to reduce gender bias in neural language generation for dialogue. We use the dataset LIGHT as a testbed for this work. By integrating these methods together, our models provide control over how gendered dialogue is and decrease the offensiveness of the generated utterances. Overall, our proposed methodology reduces the effect of bias while maintaining dialogue engagingness.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 70
+    },
+    {
+      "section": "Abstract",
+      "start": 72,
+      "end": 1212
+    },
+    {
+      "section": "Introduction",
+      "start": 1214,
+      "end": 4237
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Character Personas",
+      "start": 4239,
+      "end": 4629
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Character Personas ::: Qualitative Examination.",
+      "start": 4631,
+      "end": 4838
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Character Personas ::: Quantitative Examination.",
+      "start": 4840,
+      "end": 6787
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Dialogue Utterances",
+      "start": 6789,
+      "end": 6926
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Dialogue Utterances ::: Qualitative Examination.",
+      "start": 6928,
+      "end": 7321
+    },
+    {
+      "section": "Sources of Bias in Dialogue Datasets ::: Bias in Dialogue Utterances ::: Measuring Bias.",
+      "start": 7323,
+      "end": 8421
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue",
+      "start": 8423,
+      "end": 8930
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Models",
+      "start": 8932,
+      "end": 9800
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Counterfactual Data Augmentation",
+      "start": 9802,
+      "end": 10185
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Positive-Bias Data Collection",
+      "start": 10187,
+      "end": 10315
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Positive-Bias Data Collection ::: Gender-swapping Existing Personas",
+      "start": 10317,
+      "end": 10824
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Positive-Bias Data Collection ::: New and Diverse characters",
+      "start": 10826,
+      "end": 11868
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Positive-Bias Data Collection ::: New dialogues",
+      "start": 11870,
+      "end": 12445
+    },
+    {
+      "section": "Methodology: Mitigating Bias in Generative Dialogue ::: Conditional Training",
+      "start": 12447,
+      "end": 13856
+    },
+    {
+      "section": "Results",
+      "start": 13858,
+      "end": 14230
+    },
+    {
+      "section": "Results ::: Bias is Amplified in Generation",
+      "start": 14232,
+      "end": 15485
+    },
+    {
+      "section": "Results ::: Genderedness of Generated Text",
+      "start": 15487,
+      "end": 16672
+    },
+    {
+      "section": "Results ::: Conditional Training Controls Gendered Words",
+      "start": 16674,
+      "end": 17387
+    },
+    {
+      "section": "Results ::: Safety of Generated Text",
+      "start": 17389,
+      "end": 17593
+    },
+    {
+      "section": "Results ::: Human Evaluation",
+      "start": 17595,
+      "end": 18689
+    },
+    {
+      "section": "Conclusion",
+      "start": 18691,
+      "end": 19305
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1911.03842",
+    "arxiv_id": "1911.03842",
+    "source_url": "https://arxiv.org/abs/1911.03842",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

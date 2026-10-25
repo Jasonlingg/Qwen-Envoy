@@ -1,0 +1,105 @@
+{
+  "doc_id": "qasper_1909_00578",
+  "title": "SUM-QE: a BERT-based Summary Quality Estimation Model",
+  "text": "SUM-QE: a BERT-based Summary Quality Estimation Model\n\nWe propose SumQE, a novel Quality Estimation model for summarization based on BERT. The model addresses linguistic quality aspects that are only indirectly captured by content-based approaches to summary evaluation, without involving comparison with human references. SumQE achieves very high correlations with human ratings, outperforming simpler models addressing these linguistic aspects. Predictions of the SumQE model can be used for system development, and to inform users of the quality of automatically produced summaries and other types of generated text.\n\nQuality Estimation (QE) is a term used in machine translation (MT) to refer to methods that measure the quality of automatically translated text without relying on human references BIBREF0, BIBREF1. In this study, we address QE for summarization. Our proposed model, Sum-QE, successfully predicts linguistic qualities of summaries that traditional evaluation metrics fail to capture BIBREF2, BIBREF3, BIBREF4, BIBREF5. Sum-QE predictions can be used for system development, to inform users of the quality of automatically produced summaries and other types of generated text, and to select the best among summaries output by multiple systems.\n\nSum-QE relies on the BERT language representation model BIBREF6. We use a pre-trained BERT model adding just a task-specific layer, and fine-tune the entire model on the task of predicting linguistic quality scores manually assigned to summaries. The five criteria addressed are given in Figure FIGREF2. We provide a thorough evaluation on three publicly available summarization datasets from NIST shared tasks, and compare the performance of our model to a wide variety of baseline methods capturing different aspects of linguistic quality. Sum-QE achieves very high correlations with human ratings, showing the ability of BERT to model linguistic qualities that relate to both text content and form.\n\nSummarization evaluation metrics like Pyramid BIBREF5 and ROUGE BIBREF3, BIBREF2 are recall-oriented; they basically measure the content from a model (reference) summary that is preserved in peer (system generated) summaries. Pyramid requires substantial human effort, even in its more recent versions that involve the use of word embeddings BIBREF8 and a lightweight crowdsourcing scheme BIBREF9. ROUGE is the most commonly used evaluation metric BIBREF10, BIBREF11, BIBREF12. Inspired by BLEU BIBREF4, it relies on common $n$-grams or subsequences between peer and model summaries. Many ROUGE versions are available, but it remains hard to decide which one to use BIBREF13. Being recall-based, ROUGE correlates well with Pyramid but poorly with linguistic qualities of summaries. BIBREF14 proposed a regression model for measuring summary quality without references. The scores of their model correlate well with Pyramid and Responsiveness, but text quality is only addressed indirectly.\n\nQuality Estimation is well established in MT BIBREF15, BIBREF0, BIBREF1, BIBREF16, BIBREF17. QE methods provide a quality indicator for translation output at run-time without relying on human references, typically needed by MT evaluation metrics BIBREF4, BIBREF18. QE models for MT make use of large post-edited datasets, and apply machine learning methods to predict post-editing effort scores and quality (good/bad) labels.\n\nWe apply QE to summarization, focusing on linguistic qualities that reflect the readability and fluency of the generated texts. Since no post-edited datasets – like the ones used in MT – are available for summarization, we use instead the ratings assigned by human annotators with respect to a set of linguistic quality criteria. Our proposed models achieve high correlation with human judgments, showing that it is possible to estimate summary quality without human references.\n\nWe use datasets from the NIST DUC-05, DUC-06 and DUC-07 shared tasks BIBREF7, BIBREF19, BIBREF20. Given a question and a cluster of newswire documents, the contestants were asked to generate a 250-word summary answering the question. DUC-05 contains 1,600 summaries (50 questions x 32 systems); in DUC-06, 1,750 summaries are included (50 questions x 35 systems); and DUC-07 has 1,440 summaries (45 questions x 32 systems).\n\nThe submitted summaries were manually evaluated in terms of content preservation using the Pyramid score, and according to five linguistic quality criteria ($\\mathcal {Q}1, \\dots , \\mathcal {Q}5$), described in Figure FIGREF2, that do not involve comparison with a model summary. Annotators assigned scores on a five-point scale, with 1 and 5 indicating that the summary is bad or good with respect to a specific $\\mathcal {Q}$. The overall score for a contestant with respect to a specific $\\mathcal {Q}$ is the average of the manual scores assigned to the summaries generated by the contestant. Note that the DUC-04 shared task involved seven $\\mathcal {Q}$s, but some of them were found to be highly overlapping and were grouped into five in subsequent years BIBREF20. We address these five criteria and use DUC data from 2005 onwards in our experiments.\n\nIn Sum-QE, each peer summary is converted into a sequence of token embeddings, consumed by an encoder $\\mathcal {E}$ to produce a (dense vector) summary representation $h$. Then, a regressor $\\mathcal {R}$ predicts a quality score $S_{\\mathcal {Q}}$ as an affine transformation of $h$:\n\nNon-linear regression could also be used, but a linear (affine) $\\mathcal {R}$ already performs well. We use BERT as our main encoder and fine-tune it in three ways, which leads to three versions of Sum-QE.\n\nThe first version of Sum-QE uses five separate estimators, one per quality score, each having its own encoder $\\mathcal {E}_i$ (a separate BERT instance generating $h_i$) and regressor $\\mathcal {R}_i$ (a separate linear regression layer on top of the corresponding BERT instance):\n\nThe second version of Sum-QE uses one estimator to predict all five quality scores at once, from a single encoding $h$ of the summary, produced by a single BERT instance. The intuition is that $\\mathcal {E}$ will learn to create richer representations so that $\\mathcal {R}$ (an affine transformation of $h$ with 5 outputs) will be able to predict all quality scores:\n\nwhere $\\mathcal {R}(h)[i]$ is the $i$-th element of the vector returned by $\\mathcal {R}$.\n\nThe third version of Sum-QE is similar to BERT-FT-M-1, but we now use five different linear (affine) regressors, one per quality score:\n\nAlthough BERT-FT-M-5 is mathematically equivalent to BERT-FT-M-1, in practice these two versions of Sum-QE produce different results because of implementation details related to how the losses of the regressors (five or one) are combined.\n\nThis is very similar to Sum-QE but now $\\mathcal {E}$ is a stack of BiGRU s with self-attention BIBREF21, instead of a BERT instance. The final summary representation ($h$) is the sum of the resulting context-aware token embeddings ($h = \\sum _i a_i h_i$) weighted by their self-attention scores ($a_i$). We again have three flavors: one single-task (BiGRU-ATT-S-1) and two multi-task (BiGRU-ATT-M-1 and BiGRU-ATT-M-5).\n\nThis baseline is the ROUGE version that performs best on each dataset, among the versions considered by BIBREF13. Although ROUGE focuses on surface similarities between peer and reference summaries, we would expect properties like grammaticality, referential clarity and coherence to be captured to some extent by ROUGE versions based on long $n$-grams or longest common subsequences.\n\nFor a peer summary, a reasonable estimate of $\\mathcal {Q}1$ (Grammaticality) is the perplexity returned by a pre-trained language model. We experiment with the pre-trained GPT-2 model BIBREF22, and with the probability estimates that BERT can produce for each token when the token is treated as masked (BERT-FR-LM). Given that the grammaticality of a summary can be corrupted by just a few bad tokens, we compute the perplexity by considering only the $k$ worst (lowest LM probability) tokens of the peer summary, where $k$ is a tuned hyper-parameter.\n\nBERT training relies on two tasks: predicting masked tokens and next sentence prediction. The latter seems to be aligned with the definitions of $\\mathcal {Q}3$ (Referential Clarity), $\\mathcal {Q}4$ (Focus) and $\\mathcal {Q}5$ (Structure & Coherence). Intuitively, when a sentence follows another with high probability, it should involve clear referential expressions and preserve the focus and local coherence of the text. We, therefore, use a pre-trained BERT model (BERT-FR-NS) to calculate the sentence-level perplexity of each summary:\n\nwhere $p(s_i|s_{i-1})$ is the probability that BERT assigns to the sequence of sentences $\\left< s_{i-1}, s \\right>$, and $n$ is the number of sentences in the peer summary.\n\nTo evaluate our methods for a particular $\\mathcal {Q}$, we calculate the average of the predicted scores for the summaries of each particular contestant, and the average of the corresponding manual scores assigned to the contestant's summaries. We measure the correlation between the two (predicted vs. manual) across all contestants using Spearman's $\\rho $, Kendall's $\\tau $ and Pearson's $r$.\n\nWe train and test the Sum-QE and BiGRU-ATT versions using a 3-fold procedure. In each fold, we train on two datasets (e.g., DUC-05, DUC-06) and test on the third (e.g., DUC-07). We follow the same procedure with the three BiGRU-based models. Hyper-perameters are tuned on a held out subset from the training set of each fold.\n\nTable TABREF23 shows Spearman's $\\rho $, Kendall's $\\tau $ and Pearson's $r$ for all datasets and models. The three fine-tuned BERT versions clearly outperform all other methods. Multi-task versions seem to perform better than single-task ones in most cases. Especially for $\\mathcal {Q}4$ and $\\mathcal {Q}5$, which are highly correlated, the multi-task BERT versions achieve the best overall results. BiGRU-ATT also benefits from multi-task learning.\n\nThe correlation of Sum-QE with human judgments is high or very high BIBREF23 for all $\\mathcal {Q}$s in all datasets, apart from $\\mathcal {Q}2$ in DUC-05 where it is only moderate. Manual scores for $\\mathcal {Q}2$ in DUC-05 are the highest among all $\\mathcal {Q}$s and years (between 4 and 5) and with the smallest standard deviation, as shown in Table TABREF24. Differences among systems are thus small in this respect, and although Sum-QE predicts scores in this range, it struggles to put them in the correct order, as illustrated in Figure FIGREF26.\n\nBEST-ROUGE has a negative correlation with the ground-truth scores for $\\mathcal {Q}$2 since it does not account for repetitions. The BiGRU-based models also reach their lowest performance on $\\mathcal {Q}$2 in DUC-05. A possible reason for the higher relative performance of the BERT-based models, which achieve a moderate positive correlation, is that BiGRU captures long-distance relations less effectively than BERT, which utilizes Transformers BIBREF24 and has a larger receptive field. A possible improvement would be a stacked BiGRU, since the states of higher stack layers have a larger receptive field as well.\n\nThe BERT multi-task versions perform better with highly correlated qualities like $\\mathcal {Q}4$ and $\\mathcal {Q}5$ (as illustrated in Figures 2 to 4 in the supplementary material). However, there is not a clear winner among them. Mathematical equivalence does not lead to deterministic results, especially when random initialization and stochastic learning algorithms are involved. An in-depth exploration of this point would involve further investigation, which will be part of future work.\n\nWe propose a novel Quality Estimation model for summarization which does not require human references to estimate the quality of automatically produced summaries. Sum-QE successfully predicts qualitative aspects of summaries that recall-oriented evaluation metrics fail to approximate. Leveraging powerful BERT representations, it achieves high correlations with human scores for most linguistic qualities rated, on three different datasets. Future work involves extending the Sum-QE model to capture content-related aspects, either in combination with existing evaluation metrics (like Pyramid and ROUGE) or, preferably, by identifying important information in the original text and modelling its preservation in the proposed summaries. This would preserve Sum-QE's independence from human references, a property of central importance in real-life usage scenarios and system development settings.\n\nThe datasets used in our experiments come from the NIST DUC shared tasks which comprise newswire articles. We believe that Sum-QE could be easily applied to other domains. A small amount of annotated data would be needed for fine-tuning – especially in domains with specialized vocabulary (e.g., biomedical) – but the model could also be used out of the box. A concrete estimation of performance in this setting will be part of future work. Also, the model could serve to estimate linguistic qualities other than the ones in the DUC dataset with mininum effort.\n\nFinally, Sum-QE could serve to assess the quality of other types of texts, not only summaries. It could thus be applied to other text generation tasks, such as natural language generation and sentence compression.\n\nWe would like to thank the anonymous reviewers for their helpful feedback on this work. The work has been partly supported by the Research Center of the Athens University of Economics and Business, and by the French National Research Agency under project ANR-16-CE33-0013.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 53
+    },
+    {
+      "section": "Abstract",
+      "start": 55,
+      "end": 619
+    },
+    {
+      "section": "Introduction",
+      "start": 621,
+      "end": 1966
+    },
+    {
+      "section": "Related Work",
+      "start": 1968,
+      "end": 3864
+    },
+    {
+      "section": "Datasets",
+      "start": 3866,
+      "end": 5148
+    },
+    {
+      "section": "Methods ::: The Sum-QE Model",
+      "start": 5150,
+      "end": 5643
+    },
+    {
+      "section": "Methods ::: The Sum-QE Model ::: Single-task (BERT-FT-S-1):",
+      "start": 5645,
+      "end": 5926
+    },
+    {
+      "section": "Methods ::: The Sum-QE Model ::: Multi-task with one regressor (BERT-FT-M-1):",
+      "start": 5928,
+      "end": 6387
+    },
+    {
+      "section": "Methods ::: The Sum-QE Model ::: Multi-task with 5 regressors (BERT-FT-M-5):",
+      "start": 6389,
+      "end": 6764
+    },
+    {
+      "section": "Methods ::: Baselines ::: BiGRU s with attention:",
+      "start": 6766,
+      "end": 7185
+    },
+    {
+      "section": "Methods ::: Baselines ::: ROUGE:",
+      "start": 7187,
+      "end": 7571
+    },
+    {
+      "section": "Methods ::: Baselines ::: Language model (LM):",
+      "start": 7573,
+      "end": 8125
+    },
+    {
+      "section": "Methods ::: Baselines ::: Next sentence prediction:",
+      "start": 8127,
+      "end": 8843
+    },
+    {
+      "section": "Experiments",
+      "start": 8845,
+      "end": 9569
+    },
+    {
+      "section": "Results",
+      "start": 9571,
+      "end": 11698
+    },
+    {
+      "section": "Conclusion and Future Work",
+      "start": 11700,
+      "end": 13375
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 13377,
+      "end": 13649
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.00578",
+    "arxiv_id": "1909.00578",
+    "source_url": "https://arxiv.org/abs/1909.00578",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

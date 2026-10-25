@@ -1,0 +1,90 @@
+{
+  "doc_id": "qasper_1904_02357",
+  "title": "Plan, Write, and Revise: an Interactive System for Open-Domain Story Generation",
+  "text": "Plan, Write, and Revise: an Interactive System for Open-Domain Story Generation\n\nStory composition is a challenging problem for machines and even for humans. We present a neural narrative generation system that interacts with humans to generate stories. Our system has different levels of human interaction, which enables us to understand at what stage of story-writing human collaboration is most productive, both to improving story quality and human engagement in the writing process. We compare different varieties of interaction in story-writing, story-planning, and diversity controls under time constraints, and show that increased types of human collaboration at both planning and writing stages results in a 10-50% improvement in story quality as compared to less interactive baselines. We also show an accompanying increase in user engagement and satisfaction with stories as compared to our own less interactive systems and to previous turn-taking approaches to interaction. Finally, we find that humans tasked with collaboratively improving a particular characteristic of a story are in fact able to do so, which has implications for future uses of human-in-the-loop systems.\n\nCollaborative human-machine story-writing has had a recent resurgence of attention from the research community BIBREF0 , BIBREF1 . It represents a frontier for AI research; as a research community we have developed convincing NLP systems for some generative tasks like machine translation, but lag behind in creative areas like open-domain storytelling. Collaborative open-domain storytelling incorporates human interactivity for one of two aims: to improve human creativity via the aid of a machine, or to improve machine quality via the aid of a human. Previously existing approaches treat the former aim, and have shown that storytelling systems are not yet developed enough to help human writers. We attempt the latter, with the goal of investigating at what stage human collaboration is most helpful.\n\ngordon2009sayanything use an information retrieval based system to write by alternating turns between a human and their system. clark2018mil use a similar turn-taking approach to interactivity, but employ a neural model for generation and allow the user to edit the generated sentence before accepting it. They find that users prefer a full-sentence collaborative setup (vs. shorter fragments) but are mixed with regard to the system-driven approach to interaction. roemmele2017eval experiment with a user-driven setup, where the machine doesn't generate until the user requests it to, and then the user can edit or delete at will. They leverage user-acceptance or rejection of suggestions as a tool for understanding the characteristics of a helpful generation. All of these systems involve the user in the story-writing process, but lack user involvement in the story-planning process, and so they lean on the user's ability to knit a coherent overall story together out of locally related sentences. They also do not allow a user to control the novelty or “unexpectedness” of the generations, which clark2018mil find to be a weakness. Nor do they enable iteration; a user cannot revise earlier sentences and have the system update later generations. We develop a system that allows a user to interact in all of these ways that were limitations in previous systems; it enables involvement in planning, editing, iterative revising, and control of novelty. We conduct experiments to understand which types of interaction are most effective for improving stories and for making users satisfied and engaged. We have two main interfaces that enable human interaction with the computer. There is cross-model interaction, where the machine does all the composition work, and displays three different versions of a story written by three distinct models for a human to compare. The user guides generation by providing a topic for story-writing and by tweaking decoding parameters to control novelty, or diversity. The second interface is intra-model interaction, where a human can select the model to interact with (potentially after having chosen it via cross-model), and can collaborate at all stages to jointly create better stories. The full range of interactions available to a user is: select a model, provide a topic, change diversity of content, collaborate on the planning for the story, and collaborate on the story sentences. It is entirely user-driven, as the users control how much is their own work and how much is the machine's at every stage. It supports revision; a user can modify an earlier part of a written story or of the story plan at any point, and observe how this affects later generations.\n\nFigure FIGREF3 shows a diagram of the interaction system. The dotted arrows represent optional user interactions.\n\nrequires the user to enter a topic, such as “the not so haunted house”, and can optionally vary the diversity used in the Storyline Planner or the Story Writer. Diversity numbers correspond directly to softmax temperatures, which we restrict to a reasonable range, determined empirically. The settings are sent to the Storyline Planner module, which generates a storyline for the story in the form of a sequence of phrases as per the method of yao2018plan. Everything is then sent to the Story Writer, which will return three stories.\n\nenables advanced interactions with one story system of the user's choice. The Storyline Planner returns either one storyline phrase or many, and composes the final storyline out of the combination of phrases the system generated, the user has written, and edits the user has made. These are sent to the Story Writer, which returns either a single sentence or a full story as per user's request. The process is flexible and iterative. The user can choose how much or little content they want to provide, edit, or re-generate, and they can return to any step at any time until they decide they are done.\n\nTo enable interactive flexibility, the system must handle open-domain user input. User input is lower-cased and tokenized to match the model training data via spaCy. Model output is naively detokenized via Moses BIBREF2 based on feedback from users that this was more natural. User input OOV handling is done via WordNet BIBREF3 by recursively searching for hypernyms and hyponyms (in that order) until either an in-vocabulary word is found or until a maximum distance from the initial word is reached. We additionally experimented with using cosine similarity to GloVe vectors BIBREF4 , but found that to be slower and not qualitatively better for this domain.\n\nFigure FIGREF10 shows screenshots for both the cross-model and intra-model modes of interaction. Figure FIGREF10 shows that the cross-model mode makes clear the differences between different model generations for the same topic. Figure FIGREF10 shows the variety of interactions a user can take in intra-model interaction, and is annotated with an example-in-action. User inserted text is underlined in blue, generated text that has been removed by the user is in grey strike-through. The refresh symbol marks areas that the user re-generated to get a different sentence (presumably after being unhappy with the first result). As can be seen in this example, minor user involvement can result in a significantly better story.\n\nAll models for both the Storyline Planner and Story Writer modules are conditional language models implemented with LSTMs based on merity2018regularizing. These are 3-stacked LSTMs that include weight-dropping, weight-tying, variable length back propagation with learning rate adjustment, and Averaged Stochastic Gradient Descent (ASGD). They are trained on the ROC dataset BIBREF5 , which after lowercasing and tokenization has a vocabulary of 38k. Storyline Phrases are extracted as in yao2018plan via the RAKE algorithm BIBREF6 which results in a slightly smaller Storyline vocabulary of 31k. The Storyline Planner does decoding via sampling to encourage creative exploration. The Story Writer has an option to use one or all three systems, all of which decode via beamsearch and are detailed below.\n\nThe Title-to-Story system is a baseline, which generates directly from topic.\n\nThe Plan-and-Write system adopts the static model in yao2018plan to use the storyline to supervise story-writing.\n\nPlan-and-Revise is a new system that combines the strengths of yao2018plan and holtzman2018learning. It supplements the Plan-and-Write model by training two discriminators on the ROC data and using them to re-rank the LSTM generations to prefer increased creativity and relevance. Thus the decoding objective of this system becomes INLINEFORM0 where INLINEFORM1 is the conditional language model probability of the LSTM, INLINEFORM2 is the discriminator scoring function, and INLINEFORM3 is the learned weight of that discriminator. At each timestep all live beam hypotheses are scored and re-ranked. Discriminator weights are learnt by minimizing Mean Squared Error on the difference between the scores of gold standard and generated story sentences.\n\nWe experiment with six types of interaction: five variations created by restricting different capabilities of our system, and a sixth turn-taking baseline that mimics the interaction of the previous work BIBREF1 , BIBREF7 . We choose our experiments to address the research questions: What type of interaction is most engaging? Which type results in the best stories? Can a human tasked with correcting for certain weaknesses of a model successfully do so? The variations on interactions that we tested are:\n\nWe expand experiment 5 to answer the question of whether a human-in-the-loop interactive system can address specific shortcomings of generated stories. We identify three types of weaknesses common to generation systems – Creativity, Relevance, and Causal & Temporal Coherence, and conduct experiments where the human is instructed to focus on improving specifically one of them. The targeted human improvement areas intentionally match the Plan-and-Revise discriminators, so that, if successful, the \"human discriminator\" data can assist in training the machine discriminators. All experiments (save experiment 2, which lets the user pick between models) use the Plan-and-Revise system.\n\nWe recruit 30 Mechanical Turk workers per experiment (270 unique workers total) to complete story writing tasks with the system. We constrain them to ten minutes of work (five for writing and five for a survey) and provide them with a fixed topic to control this factor across experiments. They co-create a story and complete a questionnaire which asks them to self-report on their engagement, satisfaction, and perception of story quality. For the additional focused error-correction experiments, we instruct Turkers to try to improve the machine-generated stories with regard to the given aspect, under the same time constraints. As an incentive, they are given a small bonus if they are later judged to have succeeded.\n\nWe then ask a separate set of Turkers to rate the stories for overall quality and the three improvement areas. All ratings are on a five-point scale. We collect two ratings per story, and throw out ratings that disagree by more than 2 points. A total of 11% of ratings were thrown out, leaving four metrics across 241 stories for analysis.\n\nWe have shown that all levels of human-computer collaboration improve story quality across all metrics, compared to a baseline computer-only story generation system. We have also shown that flexible interaction, which allows the user to return to edit earlier text, improves the specific metrics of creativity and causal-temporal coherence above previous rigid turn-taking approaches. We find that, as well as improving story quality, more interaction makes users more engaged and likely to use the system again. Users tasked with collaborating to improve a specific story quality were able to do so, as judged by independent readers.\n\nAs the demo system has successfully used an ensemble of collaborative discriminators to improve the same qualities that untrained human users were able to improve even further, this suggests promising future research into human-collaborative stories as training data for new discriminators. It could be used both to strengthen existing discriminators and to develop novel ones, since discriminators are extensible to arbitrarily many story aspects.\n\nWe thank the anonymous reviewers for their feedback, as well as the members of the PLUS lab for their thoughts and iterative testing. This work is supported by Contract W911NF-15- 1-0543 with the US Defense Advanced Research Projects Agency (DARPA).\n\nThe three-minute video demonstrating the interaction capabilities of the system can be viewed at https://youtu.be/-hGd2399dnA. (Same video as linked in the paper footnote).\n\nDefault diversity (Softmax Temperature) for Storyline Planner is 0.5, for Story Writer it is None (as beamsearch is used an thus can have but does not require a temperature). Beam size for all Story Writer models is 5. Additionally, Storyline Phrases are constrained to be unique (unless a user duplicates them), and Beamsearch is not normalized by length (both choices determined empirically).\n\nWe follow the parameters used in yao2018plan and merity2018regularizing.\n\nFollowing are examples of the materials used in doing Mechanical Turk User Studies. Figure FIGREF37 is an example of the All + Creative focused experiment for story-writing. The instructions per experiment differ across all, but the template is the same. Figure FIGREF38 is the survey for ranking stories across various metrics. This remains constant save that story order was shuffled every time to control for any effects of the order a story was read in.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 79
+    },
+    {
+      "section": "Abstract",
+      "start": 81,
+      "end": 1186
+    },
+    {
+      "section": "Introduction",
+      "start": 1188,
+      "end": 4705
+    },
+    {
+      "section": "System Overview",
+      "start": 4707,
+      "end": 6622
+    },
+    {
+      "section": "Web Interface",
+      "start": 6624,
+      "end": 7349
+    },
+    {
+      "section": "Model Design",
+      "start": 7351,
+      "end": 9100
+    },
+    {
+      "section": "Experiments",
+      "start": 9102,
+      "end": 10297
+    },
+    {
+      "section": "Details",
+      "start": 10299,
+      "end": 11361
+    },
+    {
+      "section": "Conclusions and Future Work",
+      "start": 11363,
+      "end": 12447
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 12449,
+      "end": 12698
+    },
+    {
+      "section": "Demo Video",
+      "start": 12700,
+      "end": 12872
+    },
+    {
+      "section": "Decoding",
+      "start": 12874,
+      "end": 13268
+    },
+    {
+      "section": "Training",
+      "start": 13270,
+      "end": 13342
+    },
+    {
+      "section": "Mechanical Turk Materials",
+      "start": 13344,
+      "end": 13801
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1904.02357",
+    "arxiv_id": "1904.02357",
+    "source_url": "https://arxiv.org/abs/1904.02357",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

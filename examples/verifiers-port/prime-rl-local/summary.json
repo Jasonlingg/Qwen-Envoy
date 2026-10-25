@@ -1,0 +1,350 @@
+{
+  "schema": "envoy-native-prime-rl-contract-v1",
+  "verified_at": "2026-10-23T16:29:03.192817+00:00",
+  "hypothesis": "Frozen Docker investigator supplies exact raw native token traces, masked action-only training samples and complete-group rewards without a custom trainer.",
+  "decision": "Native local data handoff passes; keep real training disabled pending bounded Linux/GPU update proof.",
+  "scope": "Authored actions and synthetic probabilities; in-memory test copies only, never on-policy training data.",
+  "prime_rl": {
+    "version": "0.10.0",
+    "revision": "9e15490dcab1d506ce3462e69b8aa5dde45c6b3a",
+    "install": "immutable GitHub source archive",
+    "source_archives": [
+      {
+        "url": "https://github.com/PrimeIntellect-ai/prime-rl/archive/9e15490dcab1d506ce3462e69b8aa5dde45c6b3a.tar.gz",
+        "archive_info": {}
+      },
+      {
+        "url": "https://github.com/PrimeIntellect-ai/prime-rl/archive/9e15490dcab1d506ce3462e69b8aa5dde45c6b3a.tar.gz",
+        "archive_info": {},
+        "subdirectory": "packages/prime-rl-configs"
+      }
+    ]
+  },
+  "stack": {
+    "prime-rl-configs": "0.4.0",
+    "verifiers": "0.4.0",
+    "renderers": "0.1.12",
+    "transformers": "5.6.2",
+    "torch": "2.10.0",
+    "tokenizers": "0.22.2",
+    "openai": "2.54.0"
+  },
+  "host": {
+    "python": "3.12.6",
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "device": "CPU"
+  },
+  "tokenizer_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "renderer": {
+    "name": "default",
+    "enable_thinking": false,
+    "saved_prefixes_match": "9/9"
+  },
+  "sampling": {
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": -1,
+    "min_p": 0.0,
+    "max_tokens": 1024,
+    "retries": 0,
+    "random_seed": null,
+    "seed_reason": "authored deterministic HTTP fixtures; separate real tiny CPU sampler check seeds 17/101/102/103"
+  },
+  "data": {
+    "bundle": "data/rl/reader-facts-v1",
+    "source": "allenai/qasper",
+    "revision": "13b496d2a5359329b110e3419628de3cf791843b",
+    "role": "train",
+    "distinct_questions_in_docker_contract": 1,
+    "reward": "reader-short-fact-reference-v1",
+    "review": "implementing-assistant, not independent human review",
+    "limits": "annotation-assisted passage scopes and finite answer variants; not semantic/retrieval/generalization evaluation"
+  },
+  "native_export": {
+    "samples": 6,
+    "microbatches": 3,
+    "sampled_tokens": 250,
+    "synthetic_probabilities": true,
+    "optimizer_updates": 0
+  },
+  "scenarios": [
+    {
+      "scenario": "good",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": true,
+      "reward": 1.0,
+      "inspection_steps": 2,
+      "request_count": 3,
+      "original_trace_trainable": false,
+      "infrastructure_ok": true,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 28,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "9c541fb63cf7ac654bbe9a7fb145e09f2330c29e8a43d9c0f7985a4419827213",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 3093,
+          "fixture_completion_tokens": 31,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "0f0cd678ece263aa83931bbeb1474d0a499daed085af824da5f14bfc50f49ada",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 3,
+          "prompt_tokens": 3513,
+          "fixture_completion_tokens": 66,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "14dc5c005030b9bff9090a89be4e1b75655b9b73fe7420a1582379b76f43b501",
+          "synthetic_probabilities": true
+        }
+      ]
+    },
+    {
+      "scenario": "bad",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": true,
+      "reward": 0.0,
+      "inspection_steps": 2,
+      "request_count": 3,
+      "original_trace_trainable": false,
+      "infrastructure_ok": true,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 28,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "9c541fb63cf7ac654bbe9a7fb145e09f2330c29e8a43d9c0f7985a4419827213",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 3093,
+          "fixture_completion_tokens": 31,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "0f0cd678ece263aa83931bbeb1474d0a499daed085af824da5f14bfc50f49ada",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 3,
+          "prompt_tokens": 3513,
+          "fixture_completion_tokens": 66,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "cb082e2e1660ec87776c157f0868bc9a78138d2b7c32e4f0d6159631a945132b",
+          "synthetic_probabilities": true
+        }
+      ]
+    },
+    {
+      "scenario": "fenced",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": true,
+      "reward": 1.0,
+      "inspection_steps": 2,
+      "request_count": 3,
+      "original_trace_trainable": false,
+      "infrastructure_ok": true,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 32,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "c07d502c6c728352757027f95d971d7adebe98f3ea778105fd019064506a1693",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 3097,
+          "fixture_completion_tokens": 31,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "0f0cd678ece263aa83931bbeb1474d0a499daed085af824da5f14bfc50f49ada",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 3,
+          "prompt_tokens": 3517,
+          "fixture_completion_tokens": 66,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "14dc5c005030b9bff9090a89be4e1b75655b9b73fe7420a1582379b76f43b501",
+          "synthetic_probabilities": true
+        }
+      ]
+    },
+    {
+      "scenario": "recover",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": true,
+      "reward": 1.0,
+      "inspection_steps": 2,
+      "request_count": 4,
+      "original_trace_trainable": false,
+      "infrastructure_ok": true,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 8,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "10716bcc08ebd212833fae7c7dcb2cd86012e26358722877737b4a548147b7f2",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 2734,
+          "fixture_completion_tokens": 28,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "9c541fb63cf7ac654bbe9a7fb145e09f2330c29e8a43d9c0f7985a4419827213",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 3,
+          "prompt_tokens": 3142,
+          "fixture_completion_tokens": 31,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "0f0cd678ece263aa83931bbeb1474d0a499daed085af824da5f14bfc50f49ada",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 4,
+          "prompt_tokens": 3562,
+          "fixture_completion_tokens": 66,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "14dc5c005030b9bff9090a89be4e1b75655b9b73fe7420a1582379b76f43b501",
+          "synthetic_probabilities": true
+        }
+      ]
+    },
+    {
+      "scenario": "provider_fail",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": false,
+      "reward": null,
+      "inspection_steps": 1,
+      "request_count": 2,
+      "original_trace_trainable": false,
+      "infrastructure_ok": false,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 28,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "9c541fb63cf7ac654bbe9a7fb145e09f2330c29e8a43d9c0f7985a4419827213",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 3093,
+          "fixture_completion_tokens": 0,
+          "recorded_error": {
+            "type": "ProviderError",
+            "message": "Error code: 503 - {'error': {'message': 'fixture provider failure'}}",
+            "status_code": 503
+          },
+          "captured_raw_text_sha256": null,
+          "synthetic_probabilities": true
+        }
+      ]
+    },
+    {
+      "scenario": "bad_metadata",
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "question_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679",
+      "episode_ok": false,
+      "reward": null,
+      "inspection_steps": 1,
+      "request_count": 2,
+      "original_trace_trainable": false,
+      "infrastructure_ok": false,
+      "actions": [
+        {
+          "turn": 1,
+          "prompt_tokens": 2685,
+          "fixture_completion_tokens": 28,
+          "recorded_error": null,
+          "captured_raw_text_sha256": "9c541fb63cf7ac654bbe9a7fb145e09f2330c29e8a43d9c0f7985a4419827213",
+          "synthetic_probabilities": true
+        },
+        {
+          "turn": 2,
+          "prompt_tokens": 3093,
+          "fixture_completion_tokens": 31,
+          "recorded_error": {
+            "type": "MalformedGenerateResponseError",
+            "message": "Engine response completion token count (31) does not match logprob count (30).",
+            "traceback": "Traceback (most recent call last):\n  File \"/Users/jasonling/Documents/GitHub/rlm-explorer/out/prime-rl-local-20261023/venv/lib/python3.12/site-packages/verifiers/v1/interception/server.py\", line 809, in sample\n    call_response = await session.client.get_response(\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jasonling/Documents/GitHub/rlm-explorer/out/prime-rl-local-20261023/venv/lib/python3.12/site-packages/verifiers/v1/clients/train.py\", line 443, in get_response\n    result = await generate(\n             ^^^^^^^^^^^^^^^\n  File \"/Users/jasonling/Documents/GitHub/rlm-explorer/out/prime-rl-local-20261023/venv/lib/python3.12/site-packages/renderers/client.py\", line 369, in generate\n    completion_logprobs = _parse_completion_logprobs(choice, completion_ids)\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/jasonling/Documents/GitHub/rlm-explorer/out/prime-rl-local-20261023/venv/lib/python3.12/site-packages/renderers/client.py\", line 152, in _parse_completion_logprobs\n    raise MalformedGenerateResponseError(\nrenderers.client.MalformedGenerateResponseError: Engine response completion token count (31) does not match logprob count (30).\n"
+          },
+          "captured_raw_text_sha256": null,
+          "synthetic_probabilities": true
+        }
+      ]
+    }
+  ],
+  "tests": {
+    "focused_passed": 52,
+    "focused_seconds": 28.33,
+    "prime_module_cases": 25,
+    "dependency_check": "177 packages compatible",
+    "ruff": "passed",
+    "full_suite_status": "passed",
+    "full_passed": 2122,
+    "full_skipped": 3,
+    "full_warnings": 3,
+    "full_seconds": 103.97,
+    "skipped_modules_pass_in_native_environment": true
+  },
+  "original_traces_untrainable": true,
+  "gpu_launches": 0,
+  "paid_calls": 0,
+  "optimizer_updates": 0,
+  "pretrained_model_weights_loaded": false,
+  "real_v5_rollouts": 0,
+  "trainer_import_boundary": "ModuleNotFoundError: ring_flash_attn in CPU-only environment; native loss/update not executed or mocked.",
+  "remaining": [
+    "Exact V5 LoRA load/reference identity and numeric sampler/scorer parity",
+    "CUDA memory fit, forward/backward, update and save/reload",
+    "Explicit trainer loss selection and strict group gate wiring in future launch driver",
+    "Approved paid budget and verified shutdown",
+    "Held-out model evaluation before improvement claims"
+  ],
+  "independent_human_review": null,
+  "new_code": {
+    "runtime_lines_added_this_pass": 45,
+    "test_lines_added_this_pass": 321,
+    "current_implementation_lines": 497,
+    "current_test_lines": 847,
+    "total_new_python_lines": 1344
+  },
+  "cleanup": {
+    "all_owned_containers_absent": true,
+    "owned_container_count": 52,
+    "includes_failed_intermediate_attempts": true
+  },
+  "preservation": {
+    "prior_files": 2372,
+    "preserved_prior_files": 2368,
+    "changed_prior_files": [
+      "docs/VERIFIERS_PORT.md",
+      "examples/verifiers-port/README.md",
+      "src/training/verifiers_adapter.py",
+      "CODEX_HANDOFF.md"
+    ],
+    "frozen_runtime_files_unchanged": 29,
+    "dataset_unchanged": true,
+    "original_user_dirty_files_unchanged": true,
+    "head_unchanged": true,
+    "index_empty": true,
+    "commits_created": 0
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "model": {
+    "name": "/workspace/smoke/base/b968826d9c46dd6066d109eabc6255188de91218",
+    "trust_remote_code": false,
+    "vlm": null,
+    "conversion_dir": null,
+    "seq_len": 8192,
+    "attn": "flash_attention_2",
+    "compile": null,
+    "fusions": {
+      "enabled": [
+        "gate_up",
+        "qkv"
+      ],
+      "shard_fused_on_dim1": false
+    },
+    "ac": {
+      "mode": "full",
+      "freq": 1,
+      "targets": null
+    },
+    "ac_offloading": {
+      "max_inflight_activations": 5
+    },
+    "offload": "none",
+    "reshard_after_forward": true,
+    "dp_replicate": 1,
+    "ep": "auto",
+    "moe": {
+      "compute": {
+        "apply_to": "all",
+        "type": "bf16",
+        "backend": "torch"
+      },
+      "dispatch": {
+        "type": "torch",
+        "transport": "bf16"
+      }
+    },
+    "cp": 1,
+    "cp_style": "ring",
+    "optimization_dtype": "float32",
+    "reduce_dtype": "float32",
+    "moe_router_dtype": "float32",
+    "reduce_scatter_max_input_buffers": 1,
+    "quantization": null,
+    "dsa_backend": "tilelang",
+    "dsv4_kv_precision": "fp8",
+    "freeze_moe_router": true,
+    "lora": {
+      "rank": 4,
+      "alpha": 8.0,
+      "dropout": 0.0,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "up_proj",
+        "down_proj",
+        "gate_proj"
+      ],
+      "modules_to_save": []
+    },
+    "debug": {
+      "num_layers": null,
+      "random_init": false,
+      "force_balanced_routing": false
+    },
+    "fused_lm_head_token_chunk_size": 8192
+  },
+  "tokenizer": {
+    "name": "/workspace/smoke/base/b968826d9c46dd6066d109eabc6255188de91218",
+    "trust_remote_code": false,
+    "chat_template": null
+  },
+  "data": {
+    "fake": null,
+    "num_workers": 1
+  },
+  "loss": {
+    "type": "ppo",
+    "ratio_low": 0.8,
+    "ratio_high": 1.2,
+    "max_importance_ratio": 10000.0,
+    "adv_tau": 1.0
+  },
+  "optim": {
+    "lr": 1e-06,
+    "weight_decay": 0.0,
+    "max_norm": 1.0,
+    "type": "adamw",
+    "betas1": 0.9,
+    "betas2": 0.999
+  },
+  "scheduler": {
+    "type": "constant"
+  },
+  "ckpt": {
+    "output_dir": null,
+    "interval": 1,
+    "keep_last": null,
+    "keep_interval": null,
+    "skip_scheduler": false,
+    "skip_dataloader": false,
+    "skip_optimizer": false
+  },
+  "resume": {
+    "step": null,
+    "dir": "/workspace/smoke/init/step_0"
+  },
+  "weight_broadcast": {
+    "timeout": 180,
+    "type": "filesystem"
+  },
+  "rollout_transport": {
+    "type": "filesystem"
+  },
+  "log": {
+    "level": "info",
+    "vf_level": "info",
+    "json_logging": false,
+    "log_data": false,
+    "interval": 10.0,
+    "ranks_filter": [
+      0
+    ]
+  },
+  "monitors": {
+    "wandb": null,
+    "file": {
+      "path": "metrics.jsonl",
+      "chunk_bytes": 5368709120,
+      "compress": true,
+      "float_decimals": 4
+    }
+  },
+  "output_dir": "/workspace/smoke/train",
+  "matmul_precision": "high",
+  "max_steps": 1,
+  "enable_router_replay": false,
+  "memory_profiler_path": null,
+  "gc": {
+    "interval": 50
+  },
+  "trace_path": null,
+  "dist_timeout_seconds": 900,
+  "heartbeat": null,
+  "control": null,
+  "env_vars": {}
+}

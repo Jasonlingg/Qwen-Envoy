@@ -23,7 +23,8 @@ DOC = re.compile(r"\bqasper_[0-9]{4}_[0-9]{4,5}\b")
 QID = re.compile(r"\bqasper_(?:train|test|validation)_[0-9a-f]{40}\b")
 PAPER = re.compile(r"^[0-9]{4}\.[0-9]{4,5}$")
 SKIP = {"corpus", "documents", "snapshots", "archive", "hf-upload", "site-packages", ".git"}
-ID_KEYS = {"id", "question_id", "question_ids", "selected_question_ids", "doc_id", "doc_ids",
+ID_KEYS = {"id", "case_id", "context_id", "question_id", "question_ids",
+           "selected_question_ids", "doc_id", "doc_ids",
            "target_doc_ids", "required_doc_ids", "reserved_paper_ids", "paper_ids",
            "source_paper_id", "qasper_paper_id", "selected_target_paper_ids", "question"}
 REQUIRED = ["data/sft/qasper-v2/train.jsonl", "data/sft/qasper-v2/val.jsonl",
@@ -39,7 +40,9 @@ REQUIRED = ["data/sft/qasper-v2/train.jsonl", "data/sft/qasper-v2/val.jsonl",
     "benchmarks/envoybench/data/test_candidate/benchmark.json",
     "out/research/qasper-rl-v1/train-v2/benchmark.json",
     "out/research/qasper-annotation-scale-v1/source/benchmark.json",
-    "out/research/qasper-train-pilot-v2/questions.json"]
+    "out/research/qasper-train-pilot-v2/questions.json",
+    "data/rl/reader-facts-v1/cases.json", "data/rl/reader-facts-v1/source-review.json",
+    "data/rl/reader-facts-v1/historical-evaluation-reservations/questions.json"]
 
 
 def metadata_ids(value):
@@ -75,7 +78,7 @@ def inventory(root=ROOT):
         if not (root / name).is_file():
             raise ValueError(f"missing required prior-data inventory source: {name}")
     files, all_docs, all_questions = [], set(), set()
-    for area in ("data/sft", "data/research", "out/research", "out/diagnostics",
+    for area in ("data/sft", "data/rl", "data/research", "out/research", "out/diagnostics",
                  "benchmarks/envoybench", "examples", "release"):
         for base, dirs, names in os.walk(root / area):
             dirs[:] = sorted(d for d in dirs if d not in SKIP and d != "research_reader_v1")
@@ -87,7 +90,8 @@ def inventory(root=ROOT):
                 eval_hint = any(s in relative.lower() for s in (
                     "test", "dev", "eval", "confirm", "holdout", "oracle", "abstention"))
                 metadata = name.endswith(".json") and (
-                    name.endswith(".manifest.json") or name in {"results.json", "cases.json"}
+                    name.endswith(".manifest.json") or name in {
+                        "results.json", "cases.json", "source-review.json"}
                     or (area == "data/research")
                     or name in {"benchmark.json", "questions.json"}
                     or (eval_hint and any(s in name for s in (
@@ -107,7 +111,7 @@ def inventory(root=ROOT):
     scanned = {f["path"] for f in files}
     if not set(REQUIRED) <= scanned:
         raise ValueError("inventory rules missed required sources")
-    return {"schema_version": "passage-pilot-exclusions-v2", "files": files,
+    return {"schema_version": "passage-pilot-exclusions-v3", "files": files,
             "excluded_doc_ids": sorted(all_docs), "excluded_question_ids": sorted(all_questions),
             "rules": "Conservative union of prepared training/candidate conversations and selected "
             "evaluation identifier fields in declared workspace roots. Indexed corpus files, "
@@ -117,9 +121,9 @@ def inventory(root=ROOT):
 
 
 def check_registry(registry, root=ROOT):
-    if registry.get("schema_version") != "passage-pilot-exclusions-v2":
+    if registry.get("schema_version") != "passage-pilot-exclusions-v3":
         raise ValueError("legacy or unknown exclusion registry; regenerate with structured "
-                         "benchmark training-pool coverage")
+                         "benchmark training-pool and RL role/rejection coverage")
     if not set(REQUIRED) <= {f["path"] for f in registry["files"]}:
         raise ValueError("incomplete exclusion registry")
     docs, questions = set(), set()

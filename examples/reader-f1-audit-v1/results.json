@@ -1,0 +1,1703 @@
+{
+  "version": "reader-f1-offline-audit-v1",
+  "source_manifest_sha256": "874bb479bb9cc67baf33bcc0788cfca330aee10638b5cc35ce9ded0e1be46d5f",
+  "source_revision": "13b496d2a5359329b110e3419628de3cf791843b",
+  "upstream_evaluator_sha256": "781aba7cd8e524bef4f0a1b4bf3504e5b02cb1d8d5bf32a8f0a89dfa83e86bfe",
+  "audit_script_sha256": "7c4ba93980208bf2984532dec7cf1db2f872d75bafc96df4823e4aeb6d08f54e",
+  "cases_sha256": "0257751b779cf8794e0571d44dd4a0a1c9587864a40042f021a2e289cc6852a4",
+  "rows": [
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "0385e6036af9be52a76989fea5b8cd5fa2af529fe791c6fe2c52133248da856a",
+      "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+      "candidate_answer": "decades 1900s–2010s",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "The Wiki Music dataset: A tool for computational analysis of popular music\n\nIs it possible use algorithms to find trends in the history of popular music? And is it possible to predict the characteristics of future music genres? In order to answer these questions, we produced a hand-crafted dataset with the intent to put together features about style, psychology, sociology and typology, annotated by music genre and indexed by time and decade. We collected a list of popular genres by decade from Wikipedia and scored music genres based on Wikipedia descriptions. Using statistical and machine learning techniques, we find trends in the musical preferences and use time series forecasting to evaluate the prediction of future music genres.\n\nUntil recent times, the research in popular music was mostly bound to a non-computational approach BIBREF0 but the availability of new data, models and algorithms helped the rise of new research trends. Computational analysis of music structure BIBREF1 is focused on parsing and annotate patters in music files; computational music generation BIBREF2 trains systems able to generate songs with specific music styles; computational sociology of music analyze"
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a80d4759b36ea33d0349b1ba76d68fc3c14a235c",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "038e58c079d5e25406fc63f5bfa8eb02244a52cc813336e83c26ddee5c0fe6b2",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "Russian",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3260,
+          "end": 3498,
+          "quote": "For the Russian language, with its rich morphology, lemmatizing the training and testing data for ELMo representations yields small but consistent improvements in the WSD task. This is unlike English, where the differences are negligible."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "15f7a5620abcfa8dbdc0981a28756fa17cc5958a17fb4e7dbacc218a571a7ba7",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "Garg et al. (2012)'s Bayesian monolingual model.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3595,
+          "end": 3867,
+          "quote": "We use the Bayesian model of garg2012unsupervised as our base monolingual model. The semantic roles are predicate-specific. To model the role ordering and repetition preferences, the role inventory for each predicate is divided into Primary and Secondary roles as follows:"
+        }
+      ],
+      "upstream_answer_f1": 0.375,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "15fd2c878708d7343e5389ba25e2b58714852d64c17ca9d71222525d7065bb19",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "15,000 sentences",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 11737,
+          "end": 12458,
+          "quote": "A parser model was trained for Hindi using the MSTParser BIBREF2 by a part of the the Hindi Dependency Treebank data (18708 sentences) from IIIT-Hyderabad BIBREF3 . A part of the Penn Treebank (28188 sentences) was used for training an English parser BIBREF4 . The treebanks were converted to MSTParser format from ConLL format for training. A part of the ILCI English-Hindi Tourism parallel corpus (1500 sentences) was used for training the classifiers. This corpus was POS-tagged using the Stanford POS Tagger BIBREF5 for English and using the Hindi POS Tagger BIBREF6 from IIIT-Hyderabad for Hindi. It was then automatically annotated with dependency parse trees by the parsers we had trained before English and Hindi."
+        }
+      ],
+      "upstream_answer_f1": 0.5,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "17aade9188eb468972028a94f7673dc081e72ab76f5302deb4beade008c4834d",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "MNIST",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 4770,
+          "end": 5767,
+          "quote": "Training Dataset UM Inventory BIBREF5 is a public dataset created by researchers from the University of Minnesota, containing about 37,500 training samples with 75 abbreviation terms. Existing work reports abbreviation disambiguation results on 50 abbreviation terms BIBREF6, BIBREF5, BIBREF17. However, after carefully reviewing this dataset, we found that it contains many samples where medical professionals disagree: wrong samples and uncategorized samples. Due to these mistakes and flaws of this dataset, we removed the erroneous samples and eventually selected 30 abbreviation terms as our training dataset that can be made public. Among all the abbreviation terms, we have 11,466 samples, and 93 term-sense pairs in total (on average 123.3 samples/term-sense pair and 382.2 samples/term). Some term-sense pairs are very popular with a larger number of training samples but some are not (typically less than 5), we call them rare-sense cases . More details can be found in Appendix SECREF7."
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "17ef9f063f0712289397244a742bbe936a014b02a952c50ca210cfb8632eea07",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "By manual annotation only",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 5942,
+          "end": 6367,
+          "quote": "UTD aims to automatically identify and cluster repeated terms (e.g. words or phrases) from speech. To circumvent the exhaustive DTW-based search limited by INLINEFORM0 time BIBREF6 , we exploit the scalable UTD framework in the Zero Resource Toolkit (ZRTools) BIBREF7 , which permits search in INLINEFORM1 time. We briefly describe the UTD procedures in ZRTools by four steps below, and full details can be found in BIBREF7 ."
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "2616c251b794a3fa7eb80bd4df51acc20aa5e953bd043f183d6e9e27083a2c3e",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "Japanese",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3260,
+          "end": 3498,
+          "quote": "For the Russian language, with its rich morphology, lemmatizing the training and testing data for ELMo representations yields small but consistent improvements in the WSD task. This is unlike English, where the differences are negligible."
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "3526812cd3639835f34309ffb983646f10832843ac234acddf0b00e1e02c0bde",
+      "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+      "candidate_answer": "1900s to 2010s",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 18679,
+          "end": 19879,
+          "quote": "r, 0=there is no bass sound; offbeat 1=the genre has a strong offbeat, 0=the genre has not offbeat\n\ntime: decade (classes between 1900s and 2010s) and year representative of the time when the genre became meainstream\n\nplace features: origin place 0=Australia, 0.025=west USA, 0.05=south USA, 0.075=north/east USA, 0.1=UK, 0.2=jamaica, 0.3=carribean, 0.4=latin america, 0.5=africa, 0.6=south EU, 0.65=north/east EU, 0.7=middle east, 0.8=India, 0.9=China/south asia, 1=Korea/north asia; place urban (0=the origin place is rural, 1=the origin place is urban), place poor (0=the origin place is poor, 1=the origin place is rich)\n\nmedia features: media mainstream (0=independent media, 1=mainstream media, 0.5=both), media live 0=sell recorded music, 1=sell live performance)\n\nemotion features: joy/sad (1=joy, 0=sad), anticipation/surprise (1=anticipation or already known, 0=surprise), anger/calm (1=anger, 0=calm).\n\nstyle features: novelty 0=derivative, 0.5=normal, 1=totally new characteristics and type retro 1=the genre is a revival, 0.5=normal, 0=the genre is not a revival, lyrics love/explicit 0.5=normal, 1=love lyrics, 0=explicit lyrics, style upbeat 1=extroverted and danceable, 0=introverted "
+        }
+      ],
+      "upstream_answer_f1": 0.5714285714285715,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.2857142857142857,
+      "character_coverage_f1_not_official": 0.1762917933130699,
+      "reference_scope": [
+        {
+          "annotation_id": "a80d4759b36ea33d0349b1ba76d68fc3c14a235c",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "40dd7092c217c50e427193b0c158470e66eb24f9bae680170c892a1aa3496530",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "Zero Resource Toolkit (ZRTools) BIBREF7",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 5942,
+          "end": 6367,
+          "quote": "UTD aims to automatically identify and cluster repeated terms (e.g. words or phrases) from speech. To circumvent the exhaustive DTW-based search limited by INLINEFORM0 time BIBREF6 , we exploit the scalable UTD framework in the Zero Resource Toolkit (ZRTools) BIBREF7 , which permits search in INLINEFORM1 time. We briefly describe the UTD procedures in ZRTools by four steps below, and full details can be found in BIBREF7 ."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "475e879ea63fcac8dda5f6aa525c40e93fb44ec6c3eb0c8df15d61945ff0f6d8",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "Using the Zero Resource Toolkit, ZRTools.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 5942,
+          "end": 6367,
+          "quote": "UTD aims to automatically identify and cluster repeated terms (e.g. words or phrases) from speech. To circumvent the exhaustive DTW-based search limited by INLINEFORM0 time BIBREF6 , we exploit the scalable UTD framework in the Zero Resource Toolkit (ZRTools) BIBREF7 , which permits search in INLINEFORM1 time. We briefly describe the UTD procedures in ZRTools by four steps below, and full details can be found in BIBREF7 ."
+        }
+      ],
+      "upstream_answer_f1": 0.8000000000000002,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "4df4f419c547bfa684e85c308211386631273ee203134ecd8e7340858d810c9e",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "A unidirectional LSTM without a CRF",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3308,
+          "end": 3556,
+          "quote": "The CRF module achieved the best result on the Thai sentence segmentation task BIBREF8 ; therefore, we adopt the Bi-LSTM-CRF model as our baseline. This paper makes the following three contributions to improve Bi-LSTM-CRF for sentence segmentation."
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "5138db6feb55cdad3f1470ebbd5f1e8309dfe2c958cfa9558053bfb3e452c2c0",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "UM Inventory",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 4770,
+          "end": 4771,
+          "quote": "T"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.002004008016032064,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "6437bc3b6b1ed75185202b338af5319b7ff6f000a2b7048796e9d280930a40e3",
+      "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+      "candidate_answer": "1900s to 2010s",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "The Wiki Music dataset: A tool for computational analysis of popular music\n\nIs it possible use algorithms to find trends in the history of popular music? And is it possible to predict the characteristics of future music genres? In order to answer these questions, we produced a hand-crafted dataset with the intent to put together features about style, psychology, sociology and typology, annotated by music genre and indexed by time and decade. We collected a list of popular genres by decade from Wikipedia and scored music genres based on Wikipedia descriptions. Using statistical and machine learning techniques, we find trends in the musical preferences and use time series forecasting to evaluate the prediction of future music genres.\n\nUntil recent times, the research in popular music was mostly bound to a non-computational approach BIBREF0 but the availability of new data, models and algorithms helped the rise of new research trends. Computational analysis of music structure BIBREF1 is focused on parsing and annotate patters in music files; computational music generation BIBREF2 trains systems able to generate songs with specific music styles; computational sociology of music analyze"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 18679,
+          "end": 19879,
+          "quote": "r, 0=there is no bass sound; offbeat 1=the genre has a strong offbeat, 0=the genre has not offbeat\n\ntime: decade (classes between 1900s and 2010s) and year representative of the time when the genre became meainstream\n\nplace features: origin place 0=Australia, 0.025=west USA, 0.05=south USA, 0.075=north/east USA, 0.1=UK, 0.2=jamaica, 0.3=carribean, 0.4=latin america, 0.5=africa, 0.6=south EU, 0.65=north/east EU, 0.7=middle east, 0.8=India, 0.9=China/south asia, 1=Korea/north asia; place urban (0=the origin place is rural, 1=the origin place is urban), place poor (0=the origin place is poor, 1=the origin place is rich)\n\nmedia features: media mainstream (0=independent media, 1=mainstream media, 0.5=both), media live 0=sell recorded music, 1=sell live performance)\n\nemotion features: joy/sad (1=joy, 0=sad), anticipation/surprise (1=anticipation or already known, 0=surprise), anger/calm (1=anger, 0=calm).\n\nstyle features: novelty 0=derivative, 0.5=normal, 1=totally new characteristics and type retro 1=the genre is a revival, 0.5=normal, 0=the genre is not a revival, lyrics love/explicit 0.5=normal, 1=love lyrics, 0=explicit lyrics, style upbeat 1=extroverted and danceable, 0=introverted "
+        }
+      ],
+      "upstream_answer_f1": 0.5714285714285715,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.19999999999999998,
+      "character_coverage_f1_not_official": 0.09220985691573927,
+      "reference_scope": [
+        {
+          "annotation_id": "a80d4759b36ea33d0349b1ba76d68fc3c14a235c",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "6613580f9f2d3af09d91bb7578b593211fa8c79fcafbd3449e9ba772e9e07f0e",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "Russian",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3260,
+          "end": 3261,
+          "quote": "F"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.008368200836820083,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "68c854f46d9069e2ecbb7623e6a2d24ad158eb504e808ca5c964f749f78abec4",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "187 threads and 1,400 tweets",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 12757,
+          "end": 13216,
+          "quote": "We have downloaded 1,873 Twitter conversation threads, roughly 14k tweets, from a publicly available resource that were previously pre-processed and have conversation threads extracted. A conversation in the dataset consists of at least 4 tweets. Even though, according to BIBREF23, Twitter is broadly applicable to public health research, our expectation is that it contains less therapeutic conversations in comparison to specialized on-line support forums."
+        }
+      ],
+      "upstream_answer_f1": 0.3333333333333333,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "6a309891e367b804a2715678becf40368be1b5a81f14f5996c3403ad7ca0bfd9",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "Bi-LSTM-CRF",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3308,
+          "end": 3556,
+          "quote": "The CRF module achieved the best result on the Thai sentence segmentation task BIBREF8 ; therefore, we adopt the Bi-LSTM-CRF model as our baseline. This paper makes the following three contributions to improve Bi-LSTM-CRF for sentence segmentation."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "6ca28b6b293051e92a1d9e32895cfbf0d03c279058a1535f11ea4eafc1ab80a9",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "UM Inventory",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 4770,
+          "end": 5767,
+          "quote": "Training Dataset UM Inventory BIBREF5 is a public dataset created by researchers from the University of Minnesota, containing about 37,500 training samples with 75 abbreviation terms. Existing work reports abbreviation disambiguation results on 50 abbreviation terms BIBREF6, BIBREF5, BIBREF17. However, after carefully reviewing this dataset, we found that it contains many samples where medical professionals disagree: wrong samples and uncategorized samples. Due to these mistakes and flaws of this dataset, we removed the erroneous samples and eventually selected 30 abbreviation terms as our training dataset that can be made public. Among all the abbreviation terms, we have 11,466 samples, and 93 term-sense pairs in total (on average 123.3 samples/term-sense pair and 382.2 samples/term). Some term-sense pairs are very popular with a larger number of training samples but some are not (typically less than 5), we call them rare-sense cases . More details can be found in Appendix SECREF7."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "74fe62b0ef6301516c2561cc4fe1baccbf6987b0d6fcefa3b577119378f38ebd",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "Zero Resource Toolkit (ZRTools) BIBREF7",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 5942,
+          "end": 5943,
+          "quote": "U"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.004694835680751174,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "7f03002a7c3467c02377ebb212d20b1a90067583e483fd00dd385056957fc025",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "A parallel corpus containing 1,500 sentences.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 11737,
+          "end": 12458,
+          "quote": "A parser model was trained for Hindi using the MSTParser BIBREF2 by a part of the the Hindi Dependency Treebank data (18708 sentences) from IIIT-Hyderabad BIBREF3 . A part of the Penn Treebank (28188 sentences) was used for training an English parser BIBREF4 . The treebanks were converted to MSTParser format from ConLL format for training. A part of the ILCI English-Hindi Tourism parallel corpus (1500 sentences) was used for training the classifiers. This corpus was POS-tagged using the Stanford POS Tagger BIBREF5 for English and using the Hindi POS Tagger BIBREF6 from IIIT-Hyderabad for Hindi. It was then automatically annotated with dependency parse trees by the parsers we had trained before English and Hindi."
+        }
+      ],
+      "upstream_answer_f1": 0.5714285714285715,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "80641cbbecbbdfb9c2ae2ec5fc517201f98e8e7a513600f4d527554ef0541f22",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "1,873 Twitter conversation threads, roughly 14k tweets",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 12757,
+          "end": 12758,
+          "quote": "W"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.004347826086956522,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "84ec9dd52c1928a670361c96f9f2415a39fb23dfab5cab94e88aec9326934582",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "Bi-LSTM-CRF",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3308,
+          "end": 3309,
+          "quote": "T"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.008032128514056224,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "9145cb420b9b8f6940cecb9723c3fe6d80eabd37075dc992bd05b6a5700a9f7a",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "correct classification rate (CCR)",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 6599,
+          "end": 6600,
+          "quote": "W"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.00303951367781155,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "train",
+      "kind": "exposed_diagnostic_only",
+      "origin": "real_saved_docker_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "926c80f4608920bba55a830a2be6279d1250b6fce6fb836f0599f46f3389218b",
+      "context_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+      "candidate_answer": "1900s through 2010s",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 1000,
+          "end": 1600,
+          "quote": "ocused on parsing and annotate patters in music files; computational music generation BIBREF2 trains systems able to generate songs with specific music styles; computational sociology of music analyzes databases annotated with metadata such as tempo, key, BPMs and similar (generally referred to as sonic features); even psychology of music use data to find new models.\n\nRecent papers in computational sociology investigated novelty in popular music, finding that artists who are highly culturally and geographically connected are more likely to create novel songs, especially when they span multiple"
+        }
+      ],
+      "upstream_answer_f1": 0.5714285714285715,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a80d4759b36ea33d0349b1ba76d68fc3c14a235c",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "98df195702bc3bb5fa039394b9a4c7278089ff19e69d700c744473bb42c453df",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "1,873 Twitter threads, comprising about 14,000 tweets.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 12757,
+          "end": 13216,
+          "quote": "We have downloaded 1,873 Twitter conversation threads, roughly 14k tweets, from a publicly available resource that were previously pre-processed and have conversation threads extracted. A conversation in the dataset consists of at least 4 tweets. Even though, according to BIBREF23, Twitter is broadly applicable to public health research, our expectation is that it contains less therapeutic conversations in comparison to specialized on-line support forums."
+        }
+      ],
+      "upstream_answer_f1": 0.5714285714285714,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "9b54e006cee1d698bb14d58377d8ea2f9e0f55d78e1d48d0b5a67d91875f23cd",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "The UM Inventory dataset.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 4770,
+          "end": 5767,
+          "quote": "Training Dataset UM Inventory BIBREF5 is a public dataset created by researchers from the University of Minnesota, containing about 37,500 training samples with 75 abbreviation terms. Existing work reports abbreviation disambiguation results on 50 abbreviation terms BIBREF6, BIBREF5, BIBREF17. However, after carefully reviewing this dataset, we found that it contains many samples where medical professionals disagree: wrong samples and uncategorized samples. Due to these mistakes and flaws of this dataset, we removed the erroneous samples and eventually selected 30 abbreviation terms as our training dataset that can be made public. Among all the abbreviation terms, we have 11,466 samples, and 93 term-sense pairs in total (on average 123.3 samples/term-sense pair and 382.2 samples/term). Some term-sense pairs are very popular with a larger number of training samples but some are not (typically less than 5), we call them rare-sense cases . More details can be found in Appendix SECREF7."
+        }
+      ],
+      "upstream_answer_f1": 0.8,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "9e03439d14ec666b05a3d0e1944ff56d3f17285d3fd485ffed56dca4ff399792",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "1500 sentences",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 11737,
+          "end": 11738,
+          "quote": "A"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.002770083102493075,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "a8652a2e08e1389102a9cea7d382478af488ef7171308b3aae3eca8b2d84c385",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "1,873 Twitter conversation threads, roughly 14k tweets",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 12757,
+          "end": 13216,
+          "quote": "We have downloaded 1,873 Twitter conversation threads, roughly 14k tweets, from a publicly available resource that were previously pre-processed and have conversation threads extracted. A conversation in the dataset consists of at least 4 tweets. Even though, according to BIBREF23, Twitter is broadly applicable to public health research, our expectation is that it contains less therapeutic conversations in comparison to specialized on-line support forums."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "real_but_insufficient_quote",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "b4c1bcb7eef2d1d071fbd50e57da4439e45a784cd3528d52702abe18bb7f4cf3",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "Bayesian model of garg2012unsupervised as our base monolingual model",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3595,
+          "end": 3596,
+          "quote": "W"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.007326007326007326,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "b901994ea0b4d2569f5601930eaa8904655102930991cdfbbc4f47c559bc51a6",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "They give Russian as an example.",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3260,
+          "end": 3498,
+          "quote": "For the Russian language, with its rich morphology, lemmatizing the training and testing data for ELMo representations yields small but consistent improvements in the WSD task. This is unlike English, where the differences are negligible."
+        }
+      ],
+      "upstream_answer_f1": 0.33333333333333337,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "bd158a30b96ff00f6603bbef8a22bdc6c03fc0d584a02878d707cc5bb825edcd",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "correct classification rate (CCR)",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 6599,
+          "end": 7256,
+          "quote": "We report the experimental results for our two tasks in terms of the correct classification rate (CCR). For sentiment analysis, we have a three-class problem (positive, negative, and neutral), where the classes are mutually exclusive. The CCR, averaged for a set of tweets, is defined to be the number of correctly-predicted sentiments over the number of groundtruth sentiments in these tweets. For NER, we consider that each tweet may reference up to four candidates, i.e., targeted entities. The CCR, averaged for a set of tweets, is the number of correctly predicted entities (candidates) over the number of groundtruth entities (candidates) in this set."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "cb100ed22332b3c3983603b67779a53f10aab8ae224924090eb22e53d8fac37d",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "1500 sentences",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 11737,
+          "end": 12458,
+          "quote": "A parser model was trained for Hindi using the MSTParser BIBREF2 by a part of the the Hindi Dependency Treebank data (18708 sentences) from IIIT-Hyderabad BIBREF3 . A part of the Penn Treebank (28188 sentences) was used for training an English parser BIBREF4 . The treebanks were converted to MSTParser format from ConLL format for training. A part of the ILCI English-Hindi Tourism parallel corpus (1500 sentences) was used for training the classifiers. This corpus was POS-tagged using the Stanford POS Tagger BIBREF5 for English and using the Hindi POS Tagger BIBREF6 from IIIT-Hyderabad for Hindi. It was then automatically annotated with dependency parse trees by the parsers we had trained before English and Hindi."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "cbfd8ffa06c541192d109f2df0cd93e9a740e017ef941140aeb82a401e610dbb",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "BLEU",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 6599,
+          "end": 7256,
+          "quote": "We report the experimental results for our two tasks in terms of the correct classification rate (CCR). For sentiment analysis, we have a three-class problem (positive, negative, and neutral), where the classes are mutually exclusive. The CCR, averaged for a set of tweets, is defined to be the number of correctly-predicted sentiments over the number of groundtruth sentiments in these tweets. For NER, we consider that each tweet may reference up to four candidates, i.e., targeted entities. The CCR, averaged for a set of tweets, is the number of correctly predicted entities (candidates) over the number of groundtruth entities (candidates) in this set."
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "d0824d8035d9ebfa64b0dd37c007d2c620b0715d631ea59116fe370f53d8be21",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "CCR (correct classification rate).",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 6599,
+          "end": 7256,
+          "quote": "We report the experimental results for our two tasks in terms of the correct classification rate (CCR). For sentiment analysis, we have a three-class problem (positive, negative, and neutral), where the classes are mutually exclusive. The CCR, averaged for a set of tweets, is defined to be the number of correctly-predicted sentiments over the number of groundtruth sentiments in these tweets. For NER, we consider that each tweet may reference up to four candidates, i.e., targeted entities. The CCR, averaged for a set of tweets, is the number of correctly predicted entities (candidates) over the number of groundtruth entities (candidates) in this set."
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "wrong_answer",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "d560c107165f08824ea3c45193577792693e20ec00d2da842ff29a5a92437548",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "A transformer decoder only",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3595,
+          "end": 3867,
+          "quote": "We use the Bayesian model of garg2012unsupervised as our base monolingual model. The semantic roles are predicate-specific. To model the role ordering and repetition preferences, the role inventory for each predicate is divided into Primary and Secondary roles as follows:"
+        }
+      ],
+      "upstream_answer_f1": 0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "reference",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 1.0,
+      "case_sha256": "d99cc35bc6dab3ec4499846ab19434693e2dbc5c62edc62b365f8290af8418a3",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "Bayesian model of garg2012unsupervised as our base monolingual model",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3595,
+          "end": 3867,
+          "quote": "We use the Bayesian model of garg2012unsupervised as our base monolingual model. The semantic roles are predicate-specific. To model the role ordering and repetition preferences, the role inventory for each predicate is divided into Primary and Secondary roles as follows:"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "paraphrase",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "f6b29c9e112398dec8820f7020b3e7e2857cb83a7ae0033568a97473b11d7014",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "A bidirectional LSTM with a CRF (Bi-LSTM-CRF).",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 3308,
+          "end": 3556,
+          "quote": "The CRF module achieved the best result on the Thai sentence segmentation task BIBREF8 ; therefore, we adopt the Bi-LSTM-CRF model as our baseline. This paper makes the following three contributions to improve Bi-LSTM-CRF for sentence segmentation."
+        }
+      ],
+      "upstream_answer_f1": 0.33333333333333337,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "3107bb4df94ec4bb22bc361a317a512fa6e969fd5c2a6540184d43adaca3842c",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "UM Inventory",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "A Neural Topic-Attention Model for Medical Term Abbreviation Disambiguation\n\nAutomated analysis of clinical notes is attracting increasing attention. However, there has not been much work on medical term abbreviation disambiguation. Such abbreviations are abundant, and highly ambiguous, in clinical documents. One of the main obstacles is the lack of large scale, balance labeled data sets. To address the issue, we propose a few-shot learning approach to take advantage of limited labeled data. Specifically, a neural topic-attention model is applied to learn improved contextualized sentence representations for medical term abbreviation disambiguation. Another vital issue is that the existing scarce annotations are noisy and missing. We re-examine and correct an existing dataset for training and collect a test set to evaluate the models fairly especially for rare senses. We train our model on the training set which contains 30 abbreviation terms as categories (on average, 479 samples and 3.24 classes in each term) selected from a public abbreviation disambiguation dataset, and then test on a manually-created balanced dataset (each class in each term has 15 samples). We show that enhanc"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 4670,
+          "end": 5870,
+          "quote": " compared a number of baseline methods including classical models and deep models comprehensively.\n\nTraining Dataset UM Inventory BIBREF5 is a public dataset created by researchers from the University of Minnesota, containing about 37,500 training samples with 75 abbreviation terms. Existing work reports abbreviation disambiguation results on 50 abbreviation terms BIBREF6, BIBREF5, BIBREF17. However, after carefully reviewing this dataset, we found that it contains many samples where medical professionals disagree: wrong samples and uncategorized samples. Due to these mistakes and flaws of this dataset, we removed the erroneous samples and eventually selected 30 abbreviation terms as our training dataset that can be made public. Among all the abbreviation terms, we have 11,466 samples, and 93 term-sense pairs in total (on average 123.3 samples/term-sense pair and 382.2 samples/term). Some term-sense pairs are very popular with a larger number of training samples but some are not (typically less than 5), we call them rare-sense cases . More details can be found in Appendix SECREF7.\n\nTesting Dataset Our testing dataset takes MIMIC-III BIBREF18 and PubMed as data sources. Here we are "
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.33333333333333337,
+      "character_coverage_f1_not_official": 0.5869885192817191,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "6389b8c81ac922e22265863e20b474707986d7c022dd00612733b46bbd316e77",
+      "context_id": "qasper_validation_a9a532399237b514c1227f2d6be8601474e669be--rl-short-fact",
+      "candidate_answer": "UM Inventory",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "A"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "6b3d8d7b0a97363f72bed0f1df94efbe9ebb71f2",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "b48a10eefbf4ebf6ff69df592f5809ec0b16fc3b934fd36fcd3809943500b2ee",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "1500 sentences",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "Prepositional Attachment Disambiguation Using Bilingual Parsing and Alignments\n\nIn this paper, we attempt to solve the problem of Prepositional Phrase (PP) attachments in English. The motivation for the work comes from NLP applications like Machine Translation, for which, getting the correct attachment of prepositions is very crucial. The idea is to correct the PP-attachments for a sentence with the help of alignments from parallel data in another language. The novelty of our work lies in the formulation of the problem into a dual decomposition based algorithm that enforces agreement between the parse trees from two languages as a constraint. Experiments were performed on the English-Hindi language pair and the performance improved by 10% over the baseline, where the baseline is the attachment predicted by the MSTParser model trained for English.\n\nPrepositional Phrase (PP) attachment disambiguation is an important problem in NLP, for it often gives rise to incorrect parse trees . Statistical parsers often predict incorrect attachment for prepositional phrases. For applications like Machine Translation, incorrect PP-attachment leads to serious errors in translation. Several approach"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 11637,
+          "end": 12837,
+          "quote": "data, and the features used were the same as in the set of classifiers for path length prediction.\n\nA parser model was trained for Hindi using the MSTParser BIBREF2 by a part of the the Hindi Dependency Treebank data (18708 sentences) from IIIT-Hyderabad BIBREF3 . A part of the Penn Treebank (28188 sentences) was used for training an English parser BIBREF4 . The treebanks were converted to MSTParser format from ConLL format for training. A part of the ILCI English-Hindi Tourism parallel corpus (1500 sentences) was used for training the classifiers. This corpus was POS-tagged using the Stanford POS Tagger BIBREF5 for English and using the Hindi POS Tagger BIBREF6 from IIIT-Hyderabad for Hindi. It was then automatically annotated with dependency parse trees by the parsers we had trained before English and Hindi.\n\nFor testing, we created a corpus of 100 parallel sentences and their word alignments from the Hindi-English Tourism parallel corpus. We manually annotated the instances of pp-attachment ambiguity. We examine the prediction for attachment of only these cases. The baseline system used is the attachment predicted by the parser models trained using the MSTParser. We ran experime"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.2857142857142857,
+      "character_coverage_f1_not_official": 0.4620314001922461,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "d7b58adacacba9587de290ae4f6ebb90f6566043e1ae682b18fb47f6c718b847",
+      "context_id": "qasper_validation_9cf070d6671ee4a6353f79a165aa648309e01295--rl-short-fact",
+      "candidate_answer": "1500 sentences",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "P"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "84bbcbb7febcb67a90d6318566300e9fccb603f7",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "abfbc559203a96be17b067999b69a359acf93c1e",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "f2d5b835f1f6772d1522b3ebc578d7eb2abf88c6fbbff0306f64a1a50c016f0e",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "correct classification rate (CCR)",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "Performance Comparison of Crowdworkers and NLP Tools onNamed-Entity Recognition and Sentiment Analysis of Political Tweets\n\nWe report results of a comparison of the accuracy of crowdworkers and seven NaturalLanguage Processing (NLP) toolkits in solving two important NLP tasks, named-entity recognition (NER) and entity-level sentiment(ELS) analysis. We here focus on a challenging dataset, 1,000 political tweets that were collected during the U.S. presidential primary election in February 2016. Each tweet refers to at least one of four presidential candidates,i.e., four named entities. The groundtruth, established by experts in political communication, has entity-level sentiment information for each candidate mentioned in the tweet. We tested several commercial and open-source tools. Our experiments show that, for our dataset of political tweets, the most accurate NER system, Google Cloud NL, performed almost on par with crowdworkers, but the most accurate ELS analysis system, TensiStrength, did not match the accuracy of crowdworkers by a large margin of more than 30 percent points.\n\nAs social media, specially Twitter, takes on an influential role in presidential elections in the U.S"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 6499,
+          "end": 7699,
+          "quote": "LP NER we used Ontonotes 5.0 NER model BIBREF27. For spaCy NER we used the `en_core_web_lg' model.\n\nWe report the experimental results for our two tasks in terms of the correct classification rate (CCR). For sentiment analysis, we have a three-class problem (positive, negative, and neutral), where the classes are mutually exclusive. The CCR, averaged for a set of tweets, is defined to be the number of correctly-predicted sentiments over the number of groundtruth sentiments in these tweets. For NER, we consider that each tweet may reference up to four candidates, i.e., targeted entities. The CCR, averaged for a set of tweets, is the number of correctly predicted entities (candidates) over the number of groundtruth entities (candidates) in this set.\n\nThe dataset of 1,000 randomly selected tweets contains more than twice as many tweets about Trump than about the other candidates. In the named-entity recognition experiment, the average CCR of crowdworkers was 98.6%, while the CCR of the automated systems ranged from 77.2% to 96.7%. For four of the automated systems, detecting the entity Trump was more difficult than the other entities (e.g., spaCy 72.7% for the entity Trump vs. above 9"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.2857142857142857,
+      "character_coverage_f1_not_official": 0.42983316977428854,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "e9835896ce79095bbe3e8a8c60b27736fecd88be71b80b3083a2d56ed15adccb",
+      "context_id": "qasper_validation_58c6737070ef559e9220a8d08adc481fdcd53a24--rl-short-fact",
+      "candidate_answer": "correct classification rate (CCR)",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "P"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "94c73cbec1e34fc4259966d4b4f8e6055847c426",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "985caea8e8b3bc069f0f482aa0f8a314012abff435a7b2409682862767a74856",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "1,873 Twitter conversation threads, roughly 14k tweets",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "Affective Behaviour Analysis of On-line User Interactions: Are On-line Support Groups more Therapeutic than Twitter?\n\nThe increase in the prevalence of mental health problems has coincided with a growing popularity of health related social networking sites. Regardless of their therapeutic potential, On-line Support Groups (OSGs) can also have negative effects on patients. In this work we propose a novel methodology to automatically verify the presence of therapeutic factors in social networking websites by using Natural Language Processing (NLP) techniques. The methodology is evaluated on On-line asynchronous multi-party conversations collected from an OSG and Twitter. The results of the analysis indicate that therapeutic factors occur more frequently in OSG conversations than in Twitter conversations. Moreover, the analysis of OSG conversations reveals that the users of that platform are supportive, and interactions are likely to lead to the improvement of their emotional state. We believe that our method provides a stepping stone towards automatic analysis of emotional states of users of online platforms. Possible applications of the method include provision of guidelines that hi"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 12657,
+          "end": 13857,
+          "quote": "he Twitter dataset. An example conversation from each data source is presented in Figure FIGREF19.\n\nWe have downloaded 1,873 Twitter conversation threads, roughly 14k tweets, from a publicly available resource that were previously pre-processed and have conversation threads extracted. A conversation in the dataset consists of at least 4 tweets. Even though, according to BIBREF23, Twitter is broadly applicable to public health research, our expectation is that it contains less therapeutic conversations in comparison to specialized on-line support forums.\n\nOur data has been developed by crawling and pre-processing an OSG web forum. The forum has a great variety of different groups such as depression, anxiety, stress, relationship, cancer, sexually transmitted diseases, etc. Each conversation starts with one post and can contain multiple comments. Each post or comment is represented by a poster, a timestamp, a list of users it is referencing to, thread id, a comment id and a conversation id. The thread id is the same for comments replying to each other, otherwise it is different. The thread id is increasing with time. Thus, it provides ordering among threads; whereas the timestamp pro"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.33333333333333337,
+      "character_coverage_f1_not_official": 0.3210912906610703,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "5f56e5c94adae20a107915be9f2b26bbe10c3554cdd8d27bfc9341ad09a83cab",
+      "context_id": "qasper_validation_33554065284110859a8ea3ca7346474ab2cab100--rl-short-fact",
+      "candidate_answer": "1,873 Twitter conversation threads, roughly 14k tweets",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "A"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "a3a5f60c6bc71228ec98801e8c704a57cdcd8d7d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a9438ae613708eeb48d3e7edb0c1062f01c3c73d",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "99db8d92b5870492628367d7d636aac85214ebf6d64d6b81b243aead33b63f25",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "Bayesian model of garg2012unsupervised as our base monolingual model",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "A Bayesian Model of Multilingual Unsupervised Semantic Role Induction\n\nWe propose a Bayesian model of unsupervised semantic role induction in multiple languages, and use it to explore the usefulness of parallel corpora for this task. Our joint Bayesian model consists of individual models for each language plus additional latent variables that capture alignments between roles across languages. Because it is a generative Bayesian model, we can do evaluations in a variety of scenarios just by varying the inference procedure, without changing the model, thereby comparing the scenarios directly. We compare using only monolingual data, using a parallel corpus, using a parallel corpus with annotations in the other language, and using small amounts of annotation in the target language. We find that the biggest impact of adding a parallel corpus to training is actually the increase in mono-lingual data, with the alignments to another language resulting in small improvements, even with labeled data for the other language.\n\nSemantic Role Labeling (SRL) has emerged as an important task in Natural Language Processing (NLP) due to its applicability in information extraction, question answering, "
+        },
+        {
+          "evidence_id": "E2",
+          "start": 3495,
+          "end": 4695,
+          "quote": "g steps:\n\nThe task we model, unsupervised semantic role induction, is the step 4 of this pipeline.\n\nWe use the Bayesian model of garg2012unsupervised as our base monolingual model. The semantic roles are predicate-specific. To model the role ordering and repetition preferences, the role inventory for each predicate is divided into Primary and Secondary roles as follows:\n\nFor example, the complete role sequence in a frame could be: INLINEFORM0 INLINEFORM1 , INLINEFORM2 , INLINEFORM3 , INLINEFORM4 , INLINEFORM5 , INLINEFORM6 , INLINEFORM7 , INLINEFORM8 INLINEFORM9 . The ordering is defined as the sequence of PRs, INLINEFORM10 INLINEFORM11 , INLINEFORM12 , INLINEFORM13 , INLINEFORM14 , INLINEFORM15 INLINEFORM16 . Each pair of consecutive PRs in an ordering is called an interval. Thus, INLINEFORM17 is an interval that contains two SRs, INLINEFORM18 and INLINEFORM19 . An interval could also be empty, for instance INLINEFORM20 contains no SRs. When we evaluate, these roles get mapped to gold roles. For instance, the PR INLINEFORM21 could get mapped to a core role like INLINEFORM22 , INLINEFORM23 , etc. or to a modifier role like INLINEFORM24 , INLINEFORM25 , etc. garg2012unsupervised rep"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.25,
+      "character_coverage_f1_not_official": 0.20359281437125748,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "ab68a9098cc314abb16fa8817d414608f55d21e2fafbea17ec7ecbf2da705fc4",
+      "context_id": "qasper_validation_50cc6c5f2dcf5fb87b56007f6a825fa7c90b64ed--rl-short-fact",
+      "candidate_answer": "Bayesian model of garg2012unsupervised as our base monolingual model",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "A"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "62a06fa86e30763bf67f1a05e25d4c4aad8f9b0f",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "01f3919b701b0fc387a98d048c108a29a2682e660702d85e14caef6360a63d0b",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "Bi-LSTM-CRF",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "Semi-supervised Thai Sentence Segmentation Using Local and Distant Word Representations\n\nA sentence is typically treated as the minimal syntactic unit used for extracting valuable information from a longer piece of text. However, in written Thai, there are no explicit sentence markers. We proposed a deep learning model for the task of sentence segmentation that includes three main contributions. First, we integrate n-gram embedding as a local representation to capture word groups near sentence boundaries. Second, to focus on the keywords of dependent clauses, we combine the model with a distant representation obtained from self-attention modules. Finally, due to the scarcity of labeled data, for which annotation is difficult and time-consuming, we also investigate and adapt Cross-View Training (CVT) as a semi-supervised learning technique, allowing us to utilize unlabeled data to improve the model representations. In the Thai sentence segmentation experiments, our model reduced the relative error by 7.4% and 10.5% compared with the baseline models on the Orchid and UGWC datasets, respectively. We also applied our model to the task of pronunciation recovery on the IWSLT English data"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 3208,
+          "end": 4408,
+          "quote": "cy in many NLP sequence tagging tasks, such as named entity recognition, POS tagging and chunking.\n\nThe CRF module achieved the best result on the Thai sentence segmentation task BIBREF8 ; therefore, we adopt the Bi-LSTM-CRF model as our baseline. This paper makes the following three contributions to improve Bi-LSTM-CRF for sentence segmentation.\n\nFirst, we propose adding n-gram embedding to Bi-LSTM-CRF due to its success in BIBREF8 and BIBREF12 . By including n-gram embedding, the model can capitalize on both approaches. First, the model gains the ability to extract past and future input features and sentence level tag information from Bi-LSTM-CRF; moreover, with the n-gram addition, it can also extract a local representation from n-gram embedding, which helps in capturing word groups that exist near sentence boundary. Although Jacovi A. et al. BIBREF13 reported that a convolutional neural network (CNN) can be used as an n-gram detector to capture local features, we chose n-gram embedding over a CNN due to its better accuracy, as will be shown in Section SECREF8 .\n\nSecond, we propose adding incorporative distant representation into the model via a self-attention mechanism, which c"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.5,
+      "character_coverage_f1_not_official": 0.21220484513952775,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "3eb04f3a2ea82696c43b3337f8d3dd5ca13879b369cc139bae1569c6967eef5d",
+      "context_id": "qasper_validation_f697d00a82750b14376fe20a5a2b249e98bebe9b--rl-short-fact",
+      "candidate_answer": "Bi-LSTM-CRF",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "S"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "0e5d934edfe0db7991620614f4ded483ebe9b7ba",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "a2bc13bfcc2f33197d555048154244bbb3b63fa8",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "af789e5b564d86a4b13064e4596450896f9fe8ad03f87fc77098e8b0c9771ae6",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "Russian",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "To lemmatize or not to lemmatize: how word normalisation affects ELMo performance in word sense disambiguation\n\nWe critically evaluate the widespread assumption that deep learning NLP models do not require lemmatized input. To test this, we trained versions of contextualised word embedding ELMo models on raw tokenized corpora and on the corpora with word tokens replaced by their lemmas. Then, these models were evaluated on the word sense disambiguation task. This was done for the English and Russian languages.  ::: The experiments showed that while lemmatization is indeed not necessary for English, the situation is different for Russian. It seems that for rich-morphology languages, using lemmatized training and testing data yields small but consistent improvements: at least for word sense disambiguation. This means that the decisions about text pre-processing before training ELMo should consider the linguistic nature of the language in question.\n\nDeep contextualised representations of linguistic entities (words and/or sentences) are used in many current state-of-the-art NLP systems. The most well-known examples of such models are arguably ELMo BIBREF0 and BERT BIBREF1.\n\nA long-stan"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 3160,
+          "end": 4360,
+          "quote": "essing still matters in some tasks, even for contemporary deep representation learning algorithms.\n\nFor the Russian language, with its rich morphology, lemmatizing the training and testing data for ELMo representations yields small but consistent improvements in the WSD task. This is unlike English, where the differences are negligible.\n\nELMo contextual word representations are learned in an unsupervised way through language modelling BIBREF0. The general architecture consists of a two-layer BiLSTM on top of a convolutional layer which takes character sequences as its input. Since the model uses fully character-based token representations, it avoids the problem of out-of-vocabulary words. Because of this, the authors explicitly recommend not to use any normalisation except tokenization for the input text. However, as we show below, while this is true for English, for other languages feeding ELMo with lemmas instead of raw tokens can improve WSD performance.\n\nWord sense disambiguation or WSD BIBREF4 is the NLP task consisting of choosing a word sense from a pre-defined sense inventory, given the context in which the word is used. WSD fits well into our aim to intrinsically evaluate "
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.2222222222222222,
+      "character_coverage_f1_not_official": 0.18043972706595907,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "53e30a9d83bde83a0c32756e1b81464e36009c98d78ac74bbb8d840f15105df3",
+      "context_id": "qasper_validation_22815878083ebd2f9e08bc33a5e733063dac7a0f--rl-short-fact",
+      "candidate_answer": "Russian",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "T"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "4777f06304cf7779e0285d51a80f45fddb26e499",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        },
+        {
+          "annotation_id": "785a0e64a5190a8e5704df05400526cb9f45ae17",
+          "fully_available_paragraphs": 0,
+          "total_paragraphs": 2
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "all_assigned_windows",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "1a6cd95e27d9bf8cef81b8e422a66de50455708232e67dedd86707b8ea5b4edd",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "Zero Resource Toolkit (ZRTools) BIBREF7",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1200,
+          "quote": "Topic Identification for Speech without ASR\n\nModern topic identification (topic ID) systems for speech use automatic speech recognition (ASR) to produce speech transcripts, and perform supervised classification on such ASR outputs. However, under resource-limited conditions, the manually transcribed speech required to develop standard ASR systems can be severely limited or unavailable. In this paper, we investigate alternative unsupervised solutions to obtaining tokenizations of speech in terms of a vocabulary of automatically discovered word-like or phoneme-like units, without depending on the supervised training of ASR systems. Moreover, using automatic phoneme-like tokenizations, we demonstrate that a convolutional neural network based framework for learning spoken document representations provides competitive performance compared to a standard bag-of-words representation, as evidenced by comprehensive topic ID evaluations on both single-label and multi-label classification tasks.\n\nTopic identification (topic ID) on speech aims to identify the topic(s) for given speech recordings, referred to as spoken documents, where the topics are a predefined set of classes or labels. This t"
+        },
+        {
+          "evidence_id": "E2",
+          "start": 5842,
+          "end": 7042,
+          "quote": "ve topic ID evaluations on both single-label and multi-label spoken document classification tasks.\n\nUTD aims to automatically identify and cluster repeated terms (e.g. words or phrases) from speech. To circumvent the exhaustive DTW-based search limited by INLINEFORM0 time BIBREF6 , we exploit the scalable UTD framework in the Zero Resource Toolkit (ZRTools) BIBREF7 , which permits search in INLINEFORM1 time. We briefly describe the UTD procedures in ZRTools by four steps below, and full details can be found in BIBREF7 .\n\nConstruct the sparse approximate acoustic similarity matrices between pairs of speech utterances.\n\nIdentify word repetitions via fast diagonal line search and segmental DTW.\n\nThe resulting matches are used to construct an acoustic similarity graph, where nodes represent the matching acoustic segments and edges reflect DTW distances.\n\nThreshold the graph edges, and each connected component of the graph is a cluster of acoustic segments, which produces a corresponding term (word/phrase) category.\n\n Finally, the cluster of each discovered term category consists of a list of term occurrences.\n\nNote that in the third step above, the weight on each graph edge can be exac"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.16666666666666669,
+      "character_coverage_f1_not_official": 0.3008849557522124,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    },
+    {
+      "role": "reward_validation",
+      "kind": "unrelated_first_character",
+      "origin": "authored_fixture_assumed_inspection_not_a_model_rollout",
+      "finite_reference_reward": 0.0,
+      "case_sha256": "4f48cacaba89623aae2a3110855ede0c9194ec48f2f382951379445ede91041e",
+      "context_id": "qasper_validation_021bfb7e180d67112b74f05ecb3fa13acc036c86--rl-short-fact",
+      "candidate_answer": "Zero Resource Toolkit (ZRTools) BIBREF7",
+      "candidate_evidence": [
+        {
+          "evidence_id": "E1",
+          "start": 0,
+          "end": 1,
+          "quote": "T"
+        }
+      ],
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0,
+      "reference_scope": [
+        {
+          "annotation_id": "c7cd2fa2ca3724dcd325959876b16a9671f010ed",
+          "fully_available_paragraphs": 1,
+          "total_paragraphs": 1
+        }
+      ]
+    }
+  ],
+  "by_kind": {
+    "all_assigned_windows": {
+      "count": 8,
+      "finite_reference_reward": 0.0,
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.29712301587301587,
+      "character_coverage_f1_not_official": 0.33713334027978514
+    },
+    "exposed_diagnostic_only": {
+      "count": 4,
+      "finite_reference_reward": 0.25,
+      "upstream_answer_f1": 0.4285714285714286,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.12142857142857141,
+      "character_coverage_f1_not_official": 0.0671254125572023
+    },
+    "paraphrase": {
+      "count": 8,
+      "finite_reference_reward": 0.0,
+      "upstream_answer_f1": 0.5980654761904761,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0
+    },
+    "real_but_insufficient_quote": {
+      "count": 8,
+      "finite_reference_reward": 0.0,
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 0.005072825405116003
+    },
+    "reference": {
+      "count": 8,
+      "finite_reference_reward": 1.0,
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0
+    },
+    "unrelated_first_character": {
+      "count": 8,
+      "finite_reference_reward": 0.0,
+      "upstream_answer_f1": 1.0,
+      "literal_quotes_as_paragraphs_f1": 0.0,
+      "overlap_mapped_paragraph_f1_not_official": 0.0,
+      "character_coverage_f1_not_official": 0.0
+    },
+    "wrong_answer": {
+      "count": 8,
+      "finite_reference_reward": 0.0,
+      "upstream_answer_f1": 0.10416666666666666,
+      "literal_quotes_as_paragraphs_f1": 1.0,
+      "overlap_mapped_paragraph_f1_not_official": 1.0,
+      "character_coverage_f1_not_official": 1.0
+    }
+  },
+  "training_ready": false,
+  "active_reward_changed": false,
+  "independent_human_review": null,
+  "new_model_calls": 0,
+  "gpu_activations": 0
+}

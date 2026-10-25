@@ -1,0 +1,90 @@
+{
+  "doc_id": "qasper_1909_06434",
+  "title": "Adaptive Scheduling for Multi-Task Learning",
+  "text": "Adaptive Scheduling for Multi-Task Learning\n\nTo train neural machine translation models simultaneously on multiple tasks (languages), it is common to sample each task uniformly or in proportion to dataset sizes. As these methods offer little control over performance trade-offs, we explore different task scheduling approaches. We first consider existing non-adaptive techniques, then move on to adaptive schedules that over-sample tasks with poorer results compared to their respective baseline. As explicit schedules can be inefficient, especially if one task is highly over-sampled, we also consider implicit schedules, learning to scale learning rates or gradients of individual tasks instead. These techniques allow training multilingual models that perform better for low-resource language pairs (tasks with small amount of data), while minimizing negative effects on high-resource tasks.\n\nMultiple tasks may often benefit from others by leveraging more available data. For natural language tasks, a simple approach is to pre-train embeddings BIBREF0, BIBREF1 or a language model BIBREF2, BIBREF3 over a large corpus. The learnt representations may then be used for upstream tasks such as part-of-speech tagging or parsing, for which there is less annotated data. Alternatively, multiple tasks may be trained simultaneously with either a single model or by sharing some model components. In addition to potentially benefit from multiple data sources, this approach also reduces the memory use. However, multi-task models of similar size as single-task baselines often under-perform because of their limited capacity. The underlying multi-task model learns to improve on harder tasks, but may hit a plateau, while simpler (or data poor) tasks can be over-trained (over-fitted). Regardless of data complexity, some tasks may be forgotten if the schedule is improper, also known as catastrophic forgetting BIBREF4.\n\nIn this paper, we consider multilingual neural machine translation (NMT), where both of the above pathological learning behaviors are observed, sub-optimal accuracy on high-resource, and forgetting on low-resource language pairs. Multilingual NMT models are generally trained by mixing language pairs in a predetermined fashion, such as sampling from each task uniformly BIBREF5 or in proportion to dataset sizes BIBREF6. While results are generally acceptable with a fixed schedule, it leaves little control over the performance of each task. We instead consider adaptive schedules that modify the importance of each task based on their validation set performance. The task schedule may be modified explicitly by controlling the probability of each task being sampled. Alternatively, the schedule may be fixed, with the impact of each task controlled by scaling the gradients or the learning rates. In this case, we highlight important subtleties that arise with adaptive learning rate optimizers such as Adam BIBREF7. Our proposed approach improves the low-resource pair accuracy while keeping the high resource accuracy intact within the same multi-task model.\n\nA common approach for multi-task learning is to train on each task uniformly BIBREF5. Alternatively, each task may be sampled following a fixed non-uniform schedule, often favoring either a specific task of interest or tasks with larger amounts of data BIBREF6, BIBREF8. Kipperwasser and Ballesteros BIBREF8 also propose variable schedules that increasingly favor some tasks over time. As all these schedules are pre-defined (as a function of the training step or amount of available training data), they offer limited control over the performance of all tasks. As such, we consider adaptive schedules that vary based on the validation performance of each task during training.\n\nTo do so, we assume that the baseline validation performance of each task, if trained individually, is known in advance. When training a multi-task model, validation scores are continually recorded in order to adjust task sampling probabilities. The unnormalized score $w_i$ of task $i$ is given by\n\nwhere $s_i$ is the latest validation BLEU score and $b_i$ is the (approximate) baseline performance. Tasks that perform poorly relative to their baseline will be over-sampled, and vice-versa for language pairs with good performance. The hyper-parameter $\\alpha $ controls how agressive oversampling is, while $\\epsilon $ prevents numerical errors and slightly smooths out the distribution. Final probabilities are simply obtained by dividing the raw scores by their sum.\n\nExplicit schedules may possibly be too restrictive in some circumstances, such as models trained on a very high number of tasks, or when one task is sampled much more often than others. Instead of explicitly varying task schedules, a similar impact may be achieved through learning rate or gradient manipulation. For example, the GradNorm BIBREF9 algorithm scales task gradients based on the magnitude of the gradients as well as on the training losses.\n\nAs the training loss is not always a good proxy for validation and test performance, especially compared to a single-task baseline, we continue using validation set performance to guide gradient scaling factors. Here, instead of the previous weighting schemes, we consider one that satisfies the following desiderata. In addition to favoring tasks with low relative validation performance, we specify that task weights are close to uniform early on, when performance is still low on all tasks. We also as set a minimum task weight to avoid catastrophic forgetting.\n\nTask weights $w_i, i=1,...,N$, follow\n\nwhere $S_i = \\frac{s_i}{b_i}$ and $\\overline{S}$ is the average relative score $(\\sum _{j=1}^N S_j)/N$. $\\gamma $ sets the floor to prevent catastrophic forgetting, $\\alpha $ adjusts how quickly and strongly the schedule may deviate from uniform, while a small $\\beta $ emphasizes deviations from the mean score. With two tasks, the task weights already sum up to two, as in GradNorm BIBREF9. With more tasks, the weights may be adjusted so their their sum matches the number of tasks.\n\nScaling either the gradients $g_t$ or the per-task learning rates $\\alpha $ is equivalent with standard stochastic gradient descent, but not with adaptive optimizers such as Adam BIBREF7, whose update rule is given in Eq. DISPLAY_FORM5.\n\nMoreover, sharing or not the optimizer accumulators (eg. running average of 1st and 2nd moment $\\hat{m}_t$ and $\\hat{v}_t$ of the gradients) is also impactful. Using separate optimizers and simultaneously scaling the gradients of individual tasks is ineffective. Indeed, Adam is scale-insensitive because the updates are divided by the square root of the second moment estimate $\\hat{v}_t$. The opposite scenario, a shared optimizer across tasks with scaled learning rates, is also problematic as the momentum effect ($\\hat{m}_t$) will blur all tasks together at every update. All experiments we present use distinct optimizers, with scaled learning rates. The converse, a shared optimizer with scaled gradients, could also potentially be employed.\n\nWe extract data from the WMT'14 English-French (En-Fr) and English-German (En-De) datasets. To create a larger discrepancy between the tasks, so that there is a clear dataset size imbalance, the En-De data is artificially restricted to only 1 million parallel sentences, while the full En-Fr dataset, comprising almost 40 million parallel sentences, is used entirely. Words are split into subwords units with a joint vocabulary of 32K tokens. BLEU scores are computed on the tokenized output with multi-bleu.perl from Moses BIBREF10.\n\nAll baselines are Transformer models in their base configuration BIBREF11, using 6 encoder and decoder layers, with model and hidden dimensions of 512 and 2048 respectively, and 8 heads for all attention layers. For initial multi-task experiments, all model parameters were shared BIBREF12, but performance was down by multiple BLEU points compared to the baselines. As the source language pair is the same for both tasks, in subsequent experiments, only the encoder is shared BIBREF5. For En-Fr, 10% dropout is applied as in BIBREF11. After observing severe overfitting on En-De in early experiments, the rate is increased to 25% for this lower-resource task. All models are trained on 16 GPUs, using Adam optimizer with a learning rate schedule (inverse square root BIBREF11) and warmup.\n\nThe main results are summarized in Table TABREF10. Considering the amount of training data, we trained single task baselines for 400K and 600K steps for En-De and En-Fr respectively, where multi-task models are trained for 900K steps after training. All reported scores are the average of the last 20 checkpoints. Within each general schedule type, model selection was performed by maximizing the average development BLEU score between the two tasks.\n\nWith uniform sampling, results improve by more than 1 BLEU point on En-De, but there is a significant degradation on En-Fr. Sampling En-Fr with a 75% probability gives similar results on En-De, but the En-Fr performance is now comparable to the baseline. Explicit adaptive scheduling behaves similarly on En-De and somewhat trails the En-Fr baseline.\n\nFor implicit schedules, GradNorm performs reasonably strongly on En-De, but suffers on En-Fr, although slightly less than with uniform sampling. Implicit validation-based scheduling still improves upon the En-De baseline, but less than the other approaches. On En-Fr, this approach performs about as well as the baseline and the multilingual model with a fixed 75% En-Fr sampling probability.\n\nOverall, adaptive approaches satisfy our desiderata, satisfactory performance on both tasks, but an hyper-parameter search over constant schedules led to slightly better results. One main appeal of adaptive models is their potential ability to scale much better to a very large number of tasks, where a large hyper-parameter search would prove prohibitively expensive.\n\nAdditional results are presented in the appendix.\n\nTo train multi-task vision models, Liu et al. BIBREF13 propose a similar dynamic weight average approach. Task weights are controlled by the ratio between a recent training loss and the loss at a previous time step, so that tasks that progress faster will be downweighted, while straggling ones will be upweighted. This approach contrasts with the curriculum learning framework proposed by Matiisen et al. BIBREF14, where tasks with faster progress are preferred. Loss progress, and well as a few other signals, were also employed by Graves et al. BIBREF15, which formulated curriculum learning as a multi-armed bandit problem. One advantage of using progress as a signal is that the final baseline losses are not needed. Dynamic weight average could also be adapted to employ a validation metric as opposed to the training loss. Alternatively, uncertainty may be used to adjust multi-task weights BIBREF16.\n\nSener and Volkun BIBREF17 discuss multi-task learning as a multi-objective optimization. Their objective tries to achieve Pareto optimality, so that a solution to a multi-task problem cannot improve on one task without hurting another. Their approach is learning-based, and contrarily to ours, doesn't require a somewhat ad-hoc mapping between task performance (or progress) and task weights. However, Pareto optimality of the training losses does not guarantee Pareto optimality of the evaluation metrics. Xu et al. present AutoLoss BIBREF18, which uses reinforcement learning to train a controller that determines the optimization schedule. In particular, they apply their framework to (single language pair) NMT with auxiliary tasks.\n\nWith implicit scheduling approaches, the effective learning rates are still dominated by the underlying predefined learning rate schedule. For single tasks, hypergradient descent BIBREF19 adjusts the global learning rate by considering the direction of the gradient and of the previous update. This technique could likely be adapted for multi-task learning, as long as the tasks are sampled randomly.\n\nTangentially, adaptive approaches may behave poorly if validation performance varies much faster than the rate at which it is computed. Figure FIGREF36 (appendix) illustrates a scenario, with an alternative parameter sharing scheme, where BLEU scores and task probabilities oscillate wildly. As one task is favored, the other is catastrophically forgotten. When new validation scores are computed, the sampling weights change drastically, and the first task now begins to be forgotten.\n\nWe have presented adaptive schedules for multilingual machine translation, where task weights are controlled by validation BLEU scores. The schedules may either be explicit, directly changing how task are sampled, or implicit by adjusting the optimization process. Compared to single-task baselines, performance improved on the low-resource En-De task and was comparable on high-resource En-Fr task.\n\nFor future work, in order to increase the utility of adaptive schedulers, it would be beneficial to explore their use on a much larger number of simultaneous tasks. In this scenario, they may prove more useful as hyper-parameter search over fixed schedules would become cumbersome.\n\nIn this appendix, we present the impact of various hyper-parameters for the different schedule types.\n\nFigure FIGREF11 illustrates the effect of sampling ratios in explicit constant scheduling. We vary the sampling ratio for a task from 10% to 90% and evaluated the development and test BLEU scores by using this fixed schedule throughout the training. Considering the disproportional dataset sizes between two tasks (1/40), oversampling high-resource task yields better overall performance for both tasks. While a uniform sampling ratio favors the low-resource task (50%-50%), more balanced results are obtained with a 75% - 25% split favoring the high-resource task.\n\nExplicit Dev-Based schedule results are illustrated in Figure FIGREF16 below, where we explored varying $\\alpha $ and $\\epsilon $ parameters, to control oversampling and forgetting.\n\nWe here present how the task weights, learning rates and validation BLEU scores are modified over time with an implicit schedule. For the implicit schedule hyper-parameters, we set $\\alpha =16$, $\\beta =0.1$, $\\gamma =0.05$ with baselines $b_i$ being 24 and 35 for En-De and En-Fr respectively. For the best performing model, we used inverse-square root learning rate schedule BIBREF11 with a learning rate of 1.5 and 40K warm-up steps.\n\nTask weights are adaptively changed by the scheduler during training (Figure FIGREF31 top-left), and predicted weights are used to adjust the learning rates for each task (Figure FIGREF31 top-right). Following Eq. DISPLAY_FORM3, computed relative scores for each task, $S_j$, are illustrated in Figure FIGREF31 bottom-left. Finally, progression of the validation set BLEU scores with their corresponding baselines (as solid horizontal lines) are given in in Figure FIGREF31 bottom-right.\n\nThis appendix presents a failed experiment with wildly varying oscillations. All encoder parameters were tied, as well as the first four layers of the decoder and the softmax. An explicit schedule was employed.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 43
+    },
+    {
+      "section": "Abstract",
+      "start": 45,
+      "end": 894
+    },
+    {
+      "section": "Introduction",
+      "start": 896,
+      "end": 3082
+    },
+    {
+      "section": "Explicit schedules",
+      "start": 3084,
+      "end": 4533
+    },
+    {
+      "section": "Implicit schedules",
+      "start": 4535,
+      "end": 6080
+    },
+    {
+      "section": "Implicit schedules ::: Optimization details",
+      "start": 6082,
+      "end": 7068
+    },
+    {
+      "section": "Experiments ::: Data",
+      "start": 7070,
+      "end": 7603
+    },
+    {
+      "section": "Experiments ::: Models",
+      "start": 7605,
+      "end": 8394
+    },
+    {
+      "section": "Experiments ::: Results",
+      "start": 8396,
+      "end": 10013
+    },
+    {
+      "section": "Discussion and other related work",
+      "start": 10015,
+      "end": 12549
+    },
+    {
+      "section": "Conclusion",
+      "start": 12551,
+      "end": 13233
+    },
+    {
+      "section": "Impact of hyper-parameters",
+      "start": 13235,
+      "end": 14086
+    },
+    {
+      "section": "Implicit validation-based scheduling progress",
+      "start": 14088,
+      "end": 15013
+    },
+    {
+      "section": "Possible training instabilities",
+      "start": 15015,
+      "end": 15225
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1909.06434",
+    "arxiv_id": "1909.06434",
+    "source_url": "https://arxiv.org/abs/1909.06434",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

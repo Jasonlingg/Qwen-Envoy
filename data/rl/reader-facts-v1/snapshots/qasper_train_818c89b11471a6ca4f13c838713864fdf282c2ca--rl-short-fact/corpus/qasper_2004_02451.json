@@ -1,0 +1,165 @@
+{
+  "doc_id": "qasper_2004_02451",
+  "title": "An analysis of the utility of explicit negative examples to improve the syntactic abilities of neural language models",
+  "text": "An analysis of the utility of explicit negative examples to improve the syntactic abilities of neural language models\n\nWe explore the utilities of explicit negative examples in training neural language models. Negative examples here are incorrect words in a sentence, such as\"barks\"in\"*The dogs barks\". Neural language models are commonly trained only on positive examples, a set of sentences in the training data, but recent studies suggest that the models trained in this way are not capable of robustly handling complex syntactic constructions, such as long-distance agreement. In this paper, using English data, we first demonstrate that appropriately using negative examples about particular constructions (e.g., subject-verb agreement) will boost the model's robustness on them, with a negligible loss of perplexity. The key to our success is an additional margin loss between the log-likelihoods of a correct word and an incorrect word. We then provide a detailed analysis of the trained models. One of our findings is the difficulty of object-relative clauses for RNNs. We find that even with our direct learning signals the models still suffer from resolving agreement across an object-relative clause. Augmentation of training sentences involving the constructions somewhat helps, but the accuracy still does not reach the level of subject-relative clauses. Although not directly cognitively appealing, our method can be a tool to analyze the true architectural limitation of neural models on challenging linguistic constructions.\n\nintro\n\nDespite not being exposed to explicit syntactic supervision, neural language models (LMs), such as recurrent neural networks, are able to generate fluent and natural sentences, suggesting that they induce syntactic knowledge about the language to some extent. However, it is still under debate whether such induced knowledge about grammar is robust enough to deal with syntactically challenging constructions such as long-distance subject-verb agreement. So far, the results for RNN language models (RNN-LMs) trained only with raw text are overall negative; prior work has reported low performance on the challenging test cases BIBREF0 even with the massive size of the data and model BIBREF1, or argue the necessity of an architectural change to track the syntactic structure explicitly BIBREF2, BIBREF3. Here the task is to evaluate whether a model assigns a higher likelihood on a grammatically correct sentence (UNKREF3) over an incorrect sentence (UNKREF5) that is minimally different from the original one BIBREF4.\n\n.5ex\n\nThe author that the guards like laughs.\n\n.5ex\n\nThe author that the guards like laugh.\n\nIn this paper, to obtain a new insight into the syntactic abilities of neural LMs, in particular RNN-LMs, we perform a series of experiments under a different condition from the prior work. Specifically, we extensively analyze the performance of the models that are exposed to explicit negative examples. In this work, negative examples are the sentences or tokens that are grammatically incorrect, such as (UNKREF5) above.\n\nSince these negative examples provide a direct learning signal on the task at test time it may not be very surprising if the task performance goes up. We acknowledge this, and argue that our motivation for this setup is to deepen understanding, in particular the limitation or the capacity of the current architectures, which we expect can be reached with such strong supervision. Another motivation is engineering: we could exploit negative examples in different ways, and establishing a better way will be of practical importance toward building an LM or generator that can be robust on particular linguistic constructions.\n\nThe first research question we pursue is about this latter point: what is a better method to utilize negative examples that help LMs to acquire robustness on the target syntactic constructions? Regarding this point, we find that adding additional token-level loss trying to guarantee a margin between log-probabilities for the correct and incorrect words (e.g., $\\log p(\\textrm {laughs} | h)$ and $\\log p(\\textrm {laugh} | h)$ for (UNKREF3)) is superior to the alternatives. On the test set of BIBREF0, we show that LSTM language models (LSTM-LMs) trained by this loss reach near perfect level on most syntactic constructions for which we create negative examples, with only a slight increase of perplexity about 1.0 point.\n\nPast work conceptually similar to us is BIBREF5, which, while not directly exploiting negative examples, trains an LM with additional explicit supervision signals to the evaluation task. They hypothesize that LSTMs do have enough capacity to acquire robust syntactic abilities but the learning signals given by the raw text are weak, and show that multi-task learning with a binary classification task to predict the upcoming verb form (singular or plural) helps models aware of the target syntax (subject-verb agreement). Our experiments basically confirm and strengthen this argument, with even stronger learning signals from negative examples, and we argue this allows to evaluate the true capacity of the current architectures. In our experiments (Section exp), we show that our margin loss achieves higher syntactic performance.\n\nAnother relevant work on the capacity of LSTMs is BIBREF6, which shows that by distilling from syntactic LMs BIBREF7, LSTM-LMs can be robust on syntax. We show that our LMs with the margin loss outperforms theirs in most of the aspects, further strengthening the capacity of LSTMs, and also discuss the limitation.\n\nThe latter part of this paper is a detailed analysis of the trained models and introduced losses. Our second question is about the true limitation of LSTM-LMs: are there still any syntactic constructions that the models cannot handle robustly even with our direct learning signals? This question can be seen as a fine-grained one raised by BIBREF5 with a stronger tool and improved evaluation metric. Among tested constructions, we find that syntactic agreement across an object relative clause (RC) is challenging. To inspect whether this is due to the architectural limitation, we train another LM on a dataset, on which we unnaturally augment sentences involving object RCs. Since it is known that object RCs are relatively rare compared to subject RCs BIBREF8, frequency may be the main reason for the lower performance. Interestingly, even when increasing the number of sentences with an object RC by eight times (more than twice of sentences with a subject RC), the accuracy does not reach the same level as agreement across a subject RC. This result suggests an inherent difficulty to track a syntactic state across an object RC for sequential neural architectures.\n\nWe finally provide an ablation study to understand the encoded linguistic knowledge in the models learned with the help of our method. We experiment under reduced supervision at two different levels: (1) at a lexical level, by not giving negative examples on verbs that appear in the test set; (2) at a construction level, by not giving negative examples about a particular construction, e.g., verbs after a subject RC. We observe no huge score drops by both. This suggests that our learning signals at a lexical level (negative words) strengthen the abstract syntactic knowledge about the target constructions, and also that the models can generalize the knowledge acquired by negative examples to similar constructions for which negative examples are not explicitly given. The result also implies that negative examples do not have to be complete and can be noisy, which will be appealing from an engineering perspective.\n\nThe most common evaluation metric of an LM is perplexity. Although neural LMs achieve impressive perplexity BIBREF9, it is an average score across all tokens and does not inform the models' behaviors on linguistically challenging structures, which are rare in the corpus. This is the main motivation to separately evaluate the models' syntactic robustness by a different task.\n\ntask As introduced in Section intro, the task for a model is to assign a higher probability to the grammatical sentence over the ungrammatical one, given a pair of minimally different sentences at a critical position affecting the grammaticality. For example, (UNKREF3) and (UNKREF5) only differ at a final verb form, and to assign a higher probability to (UNKREF3), models need to be aware of the agreement dependency between author and laughs over an RC.\n\nWhile initial work BIBREF4, BIBREF10 has collected test examples from naturally occurring sentences, this approach suffers from the coverage issue, as syntactically challenging examples are relatively rare. We use the test set compiled by BIBREF0, which consists of synthetic examples (in English) created by a fixed vocabulary and a grammar. This approach allows us to collect varieties of sentences with complex structures.\n\nThe test set is divided by a necessary syntactic ability. Many are about different patterns of subject-verb agreement, including local (UNKREF8) and non-local ones across a prepositional phrase or a subject/object RC, and coordinated verb phrases (UNKREF9). (UNKREF1) is an example of agreement across an object RC.\n\nThe senators smile/*smiles.\n\nThe senators like to watch television shows and are/*is twenty three years old.\n\nPrevious work has shown that non-local agreement is particularly challenging for sequential neural models BIBREF0.\n\nThe other patterns are reflexive anaphora dependencies between a noun and a reflexive pronoun (UNKREF10), and on negative polarity items (NPIs), such as ever, which requires a preceding negation word (e.g., no and none) at an appropriate scope (UNKREF11):\n\nThe authors hurt themselves/*himself.\n\nNo/*Most authors have ever been popular.\n\nNote that NPI examples differ from the others in that the context determining the grammaticality of the target word (No/*Most) does not precede it. Rather, the grammaticality is determined by the following context. As we discuss in Section method, this property makes it difficult to apply training with negative examples for NPIs for most of the methods studied in this work.\n\nAll examples above (UNKREF1–UNKREF11) are actual test sentences, and we can see that since they are synthetic some may sound somewhat unnatural. The main argument behind using this dataset is that even not very natural, they are still strictly grammatical, and an LM equipped with robust syntactic abilities should be able to handle them as human would do.\n\nlm\n\nFollowing the practice, we train LMs on the dataset not directly relevant to the test set. Throughout the paper, we use an English Wikipedia corpus assembled by BIBREF10, which has been used as training data for the present task BIBREF0, BIBREF6, consisting of 80M/10M/10M tokens for training/dev/test sets. It is tokenized and rare words are replaced by a single unknown token, amounting to the vocabulary size of 50,000.\n\nSince our focus in this paper is an additional loss exploiting negative examples (Section method), we fix the baseline LM throughout the experiments. Our baseline is a three-layer LSTM-LM with 1,150 hidden units at internal layers trained with the standard cross-entropy loss. Word embeddings are 400-dimensional, and input and output embeddings are tied BIBREF11. Deviating from some prior work BIBREF0, BIBREF1, we train LMs at sentence level as in sequence-to-sequence models BIBREF12. This setting has been employed in some previous work BIBREF3, BIBREF6.\n\nParameters are optimized by SGD. For regularization, we apply dropout on word embeddings and outputs of every layer of LSTMs, with weight decay of 1.2e-6, and anneal the learning rate by 0.5 if the validation perplexity does not improve successively, checking every 5,000 mini-batches. Mini-batch size, dropout weight, and initial learning rate are tuned by perplexity on the dev set of Wikipedia dataset.\n\nThe size of our three-layer LM is the same as the state-of-the-art LSTM-LM at document-level BIBREF9. BIBREF0's LSTM-LM is two-layer with 650 hidden units and word embeddings. Comparing two, since the word embeddings of our models are smaller (400 vs. 650) the total model sizes are comparable (40M for ours vs. 39M for theirs). Nonetheless, we will see in the first experiment that our carefully tuned three-layer model achieves much higher syntactic performance than their model (Section exp), being a stronger baseline to our extensions, which we introduce next.\n\nmethod\n\nNow we describe four additional losses for exploiting negative examples. The first two are existing ones, proposed for a similar purpose or under a different motivation. As far as we know, the latter two have not appeared in past work.\n\nWe note that we create negative examples by modifying the original Wikipedia training sentences. As a running example, let us consider the case where sentence (UNKREF19) exists in a mini-batch, from which we create a negative example (UNKREF21).\n\n.5ex\n\nAn industrial park with several companies is located in the close vicinity.\n\n.5ex\n\nAn industrial park with several companies are located in the close vicinity.\n\nBy a target word, we mean a word for which we create a negative example (e.g., is). We distinguish two types of negative examples: a negative token and a negative sentence; the former means a single incorrect word (e.g., are).\n\nThis is proposed by BIBREF5 to complement a weak inductive bias in LSTM-LMs for learning syntax. It is multi-task learning across the cross-entropy loss ($L_{lm}$) and an additional loss ($L_{add}$):\n\nwhere $\\beta $ is a relative weight for $L_{add}$. Given outputs of LSTMs, a linear and binary softmax layers predict whether the next token is singular or plural. $L_{add}$ is a loss for this classification, only defined for the contexts preceding a target token $x_{i}$:\n\nwhere $x_{1:i} = x_1 \\cdots x_{i}$ is a prefix sequence and $\\mathbf {h^*}$ is a set of all prefixes ending with a target word (e.g., An industrial park with several companies is) in the training data. $\\textrm {num}(x) \\in \\lbrace \\textrm {singular, plural} \\rbrace $ is a function returning the number of $x$. In practice, for each mini-batch for $L_{lm}$, we calculate $L_{add}$ for the same set of sentences and add these two to obtain a total loss for updating parameters.\n\nAs we mentioned in Section intro, this loss does not exploit negative examples explicitly; essentially a model is only informed of a key position (target word) that determines the grammaticality. This is rather an indirect learning signal, and we expect that it does not outperform the other approaches.\n\nThis is recently proposed BIBREF15 for resolving the repetition issue, a known problem for neural text generators BIBREF16. Aiming at learning a model that can suppress repetition, they introduce an unlikelihood loss, which is an additional loss at a token level and explicitly penalizes choosing words previously appeared in the current context.\n\nWe customize their loss for negative tokens $x_i^*$ (e.g., are in (UNKREF21)). Since this loss is added at token-level, instead of Eq. () the total loss is $L_{lm}$, which we modify as:\n\nwhere $\\textrm {neg}_t(\\cdot )$ returns negative tokens for a target $x_i$. $\\alpha $ controls the weight. $\\mathbf {x}$ is a sentence in the training data $D$. The unlikelihood loss strengthens the signal to penalize undesirable words in a context by explicitly reducing the likelihood of negative tokens $x_i^*$. This is more direct learning signal than the binary classification loss.\n\nWe propose a different loss, in which the likelihoods for correct and incorrect sentences are more tightly coupled. As in the binary classification loss, the total loss is given by Eq. (). We consider the following loss for $L_{add}$:\n\nwhere $\\delta $ is a margin value between the log-likelihood of original sentence $\\mathbf {x}$ and negative sentences $\\lbrace \\mathbf {x}_j^* \\rbrace $. $\\textrm {neg}_s(\\cdot )$ returns a set of negative sentences by modifying the original one. Note that we change only one token for each $\\mathbf {x}_j^*$, and thus may obtain multiple negative sentences from one $\\mathbf {x}$ when it contains multiple target tokens (e.g., she leaves there but comes back ...).\n\nComparing to the unlikelihood loss, not only decreasing the likelihood of a negative example, this loss tries to guarantee a minimal difference between the two likelihoods. The learning signal of this loss seems stronger in this sense; however, the token-level supervision is missing, which may provide a more direct signal to learn a clear contrast between correct and incorrect words. This is an empirical problem we pursue in the experiments.\n\nOur final loss is a combination of the previous two, by replacing $g(x_i)$ in the unlikelihood loss by a margin loss:\n\nEach method employs a few additional hyperparameters. For the binary classification ($\\beta $) and unlikelihood ($\\alpha $) losses, we select their values from $\\lbrace 1,10,100,1000\\rbrace $ that achieve the best average syntactic performance (we find $\\alpha =1000, \\beta =1$). For the two margin losses, we fix $\\beta =1.0$ and $\\alpha =1.0$ and only see the effects of margin values.\n\nscope Since our goal is to understand to what extent LMs can be sensitive to the target syntactic constructions by giving explicit supervision via negative examples, we only prepare negative examples on the constructions that are directly tested at evaluation. Specifically, we mark the following words in the training data, and create negative examples:\n\nTo create negative examples on subject-verb agreement, we mark all present verbs and change their numbers.\n\nWe also create negative examples on reflexive anaphora, by flipping between {themselves}$\\leftrightarrow ${himself, herself}.\n\nThese two are both related to the syntactic number of a target word. For binary classification we regard both as a target word, apart from the original work that only deals with subject-verb agreement BIBREF5. We use a single common linear layer for both constructions.\n\nIn this work, we do not create negative examples for NPIs. This is mainly for technical reasons. Among four losses, only the sentence-level margin loss can correctly handle negative examples for NPIs, essentially because other losses are token-level. For NPIs, left contexts do not have information to decide the grammaticality of the target token (a quantifier; no, most, etc.) (Section task). Instead, in this work, we use NPI test cases as a proxy to see possible negative (or positive) impacts as compensation for specially targeting some constructions. We will see that in particular for our margin losses, such negative effects are very small.\n\nexp\n\nWe first see the overall performance of baseline LMs as well as the effects of additional losses. Throughout the experiments, for each setting, we train five models from different random seeds and report the average score and standard deviation.\n\nThe main accuracy comparison across target constructions for different settings is presented in Table main. We first notice that our baseline LSTM-LMs (Section lm) perform much better than BIBREF0's LM. A similar observation is recently made by BIBREF6. This suggests that the original work underestimates the true syntactic ability induced by LSTM-LMs. The table also shows the results by their distilled LSTMs from RNNGs (Section intro).\n\nFor the two types of margin loss, which margin value should we use? Figure margin reports average accuracies within the same types of constructions. For both token and sentence-levels, the task performance increases with $\\delta $, but a too large value (15) causes a negative effect, in particular on reflexive anaphora. There is an increase of perplexity by both methods. However, this effect is much smaller for the token-level loss. In the following experiments, we fix the margin value to 10 for both, which achieves the best syntactic performance.\n\nWe see a clear tendency that our token-level margin achieves overall better performance. Unlikelihood loss does not work unless we choose a huge weight parameter ($\\alpha =1000$), but it does not outperform ours, with a similar value of perplexity. The improvements by binary-classification loss are smaller, indicating that the signals are weaker than other methods with explicit negative examples. Sentence-level margin loss is conceptually advantageous in that it can deal with any types of negative examples defined in a sentence including NPIs. We see that it is often competitive with token-level margin loss, but we see relatively a large increase of perplexity (4.9 points). This increase is observed by even smaller values (Figure margin). Understanding the cause of this degradation as well as alleviating it is an important future direction.\n\norc In Table main, the accuracies on dependencies across an object RC are relatively low. The central question in this experiment is whether this low performance is due to the limitation of current architectures, or other factors such as frequency. We base our discussion on the contrast between object (UNKREF45) and subject (UNKREF46) RCs:\n\nThe authors (that) the chef likes laugh.\n\nThe authors that like the chef laugh.\n\nImportantly, the accuracies for a subject RC are more stable, reaching 99.8% with the token-level margin loss, although the content words used in the examples are common.\n\nIt is known that object RCs are less frequent than subject RCs BIBREF8, BIBREF18, and it could be the case that the use of negative examples still does not fully alleviate this factor. Here, to understand the true limitation of the current LSTM architecture, we try to eliminate such other factors as much as possible under a controlled experiment.\n\nWe first inspect the frequencies of object and subject RCs in the training data, by parsing them with the state-of-the-art Berkeley neural parser BIBREF19. In total, while subject RCs occur 373,186 times, object RCs only occur 106,558 times. We create three additional training datasets by adding sentences involving object RCs to the original Wikipedia corpus (Section lm). To this end, we randomly pick up 30 million sentences from Wikipedia (not overlapped to any sentences in the original corpus), parse by the same parser, and filter sentences containing an object RC, amounting to 680,000 sentences. Among the test cases about object RCs, we compare accuracies on subject-verb agreement, to make a comparison with subject RCs. We also evaluate on “animate only” subset, which has a correspondence to the test cases for subject RC with only differences in word order and inflection (like (UNKREF45) and (UNKREF46); see footnote FOOTREF47). Of particular interest to us is the accuracy on these animate cases. Since the vocabularies are exactly the same, we hypothesize that the accuracy will reach the same level as that on subject RCs with our augmentation.\n\nHowever, for both all and animate cases, accuracies are below those for subject RCs (Figure orc). Although we see improvements from the original score (93.7), the highest average accuracy by the token-level margin loss on “animate” subset is 97.1 (“with that”), not beyond 99%. This result indicates some architectural limitation of LSTM-LMs in handling object RCs robustly at a near perfect level. Answering why the accuracy does not reach (almost) 100%, perhaps with other empirical properties or inductive biases BIBREF20, BIBREF21 is future work.\n\nOne distinguishing property of our margin loss, in particular token-level loss, is that it is highly lexical, making contrast explicitly between correct and incorrect words. This direct signal may make models acquire very specialized knowledge about each target word, not very generalizable one across similar words and occurring contexts. In this section, to get insights into the transferability of syntactic knowledge induced by our margin losses, we provide an ablation study by removing certain negative examples during training.\n\nWe perform two kinds of ablation. For token-level ablation (-Token), we avoid creating negative examples for all verbs that appear as a target verb in the test set. Another is construction-level (-Pattern), by removing all negative examples occurring in a particular syntactic pattern. We ablate a single construction at a time for -Pattern, from four non-local subject-verb dependencies (across a prepositional phrase (PP), subject RC, object RC, and long verb phrase (VP)). We hypothesize that models are less affected by token-level ablation, as knowledge transfer across words appearing in similar contexts is promoted by language modeling objective. We expect that construction-level supervision would be necessary to induce robust syntactic knowledge, as perhaps different phrases, e.g., a PP and a VP, are processed differently.\n\nFigure ablation is the main results. Across models, we restrict the evaluation on four non-local dependency constructions, which we selected as ablation candidates as well. For a model with -Pattern, we evaluate only on examples of construction ablated in the training (see caption). To our surprise, both -Token and -Pattern have similar effects, except “Across an ORC”, on which the degradation by -Pattern is larger. This may be related to the inherent difficulty of object RCs for LSTM-LMs that we verified in Section orc. For such particularly challenging constructions, models may need explicit supervision signals. We observe lesser score degradation by ablating prepositional phrases and subject RCs. This suggests that, for example, the syntactic knowledge strengthened for prepositional phrases with negative examples could be exploited to learn the syntactic patterns about subject RCs, even when direct learning signals on subject RCs are missing.\n\nWe see approximately 10.0 points score degradation on long VP coordination by both ablations. Does this mean that long VPs are particularly hard in terms of transferability? We find that the main reason for this drop, relative to other cases, are rather technical, essentially due to the target verbs used in the test cases. See Table vpcoordfirst,secondvp, which show that failed cases for the ablated models are often characterized by the existence of either like or likes. Excluding these cases (“other verbs” in Table secondvp), the accuracies reach 99.2 and 98.0 by -Token and -Pattern, respectively. These verbs do not appear in the test cases of other tested constructions. This result suggests that the transferability of syntactic knowledge to a particular word may depend on some characteristics of that word. We conjecture that the reason of weak transferability to likes and like is that they are polysemous; e.g., in the corpus, like is much more often used as a preposition and being used as a present tense verb is rare. This types of issues due to frequency may be one reason of lessening the transferability. In other words, like can be seen as a challenging verb to learn its usage only from the corpus, and our margin loss helps for such cases.\n\nWe have shown that by exploiting negative examples explicitly, the syntactic abilities of LSTM-LMs greatly improve, demonstrating a new capacity of handling syntax robustly. Given a success of our approach using negative examples, and our final analysis for transferability, which indicates that the negative examples do not have to be complete, one interesting future direction is to extend our approach to automatically inducing negative examples themselves in some way, possibly with orthographic and/or distributional indicators or others.\n\nWe would like to thank Naho Orita and the members of Computational Psycholinguistics Tokyo for their valuable suggestions and comments. This paper is based on results obtained from projects commissioned by the New Energy and Industrial Technology Development Organization (NEDO).",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 117
+    },
+    {
+      "section": "Abstract",
+      "start": 119,
+      "end": 1540
+    },
+    {
+      "section": "Introduction",
+      "start": 1542,
+      "end": 7689
+    },
+    {
+      "section": "Target Task and Setup",
+      "start": 7691,
+      "end": 8067
+    },
+    {
+      "section": "Target Task and Setup ::: Syntactic evaluation task",
+      "start": 8069,
+      "end": 8525
+    },
+    {
+      "section": "Target Task and Setup ::: Syntactic evaluation task ::: @!START@BIBREF0@!END@ test set",
+      "start": 8527,
+      "end": 10569
+    },
+    {
+      "section": "Target Task and Setup ::: Language models",
+      "start": 10571,
+      "end": 10573
+    },
+    {
+      "section": "Target Task and Setup ::: Language models ::: Training data",
+      "start": 10575,
+      "end": 10997
+    },
+    {
+      "section": "Target Task and Setup ::: Language models ::: Baseline LSTM-LM",
+      "start": 10999,
+      "end": 12532
+    },
+    {
+      "section": "Learning with Negative Examples",
+      "start": 12534,
+      "end": 13191
+    },
+    {
+      "section": "Learning with Negative Examples ::: Notations",
+      "start": 13193,
+      "end": 13419
+    },
+    {
+      "section": "Learning with Negative Examples ::: Negative Example Losses ::: Binary-classification loss",
+      "start": 13421,
+      "end": 14678
+    },
+    {
+      "section": "Learning with Negative Examples ::: Negative Example Losses ::: Unlikelihood loss",
+      "start": 14680,
+      "end": 15602
+    },
+    {
+      "section": "Learning with Negative Examples ::: Negative Example Losses ::: Sentence-level margin loss",
+      "start": 15604,
+      "end": 16753
+    },
+    {
+      "section": "Learning with Negative Examples ::: Negative Example Losses ::: Token-level margin loss",
+      "start": 16755,
+      "end": 16872
+    },
+    {
+      "section": "Learning with Negative Examples ::: Parameters",
+      "start": 16874,
+      "end": 17261
+    },
+    {
+      "section": "Learning with Negative Examples ::: Scope of Negative Examples",
+      "start": 17263,
+      "end": 18774
+    },
+    {
+      "section": "Experiments on Additional Losses",
+      "start": 18776,
+      "end": 19026
+    },
+    {
+      "section": "Experiments on Additional Losses ::: Naive LSTM-LMs perform well",
+      "start": 19028,
+      "end": 19467
+    },
+    {
+      "section": "Experiments on Additional Losses ::: Higher margin value is effective",
+      "start": 19469,
+      "end": 20022
+    },
+    {
+      "section": "Experiments on Additional Losses ::: Which additional loss works better?",
+      "start": 20024,
+      "end": 20876
+    },
+    {
+      "section": "Limitations of LSTM-LMs",
+      "start": 20878,
+      "end": 21822
+    },
+    {
+      "section": "Limitations of LSTM-LMs ::: Setup",
+      "start": 21824,
+      "end": 22987
+    },
+    {
+      "section": "Limitations of LSTM-LMs ::: Results",
+      "start": 22989,
+      "end": 23539
+    },
+    {
+      "section": "Do models generalize explicit supervision, or just memorize it?",
+      "start": 23541,
+      "end": 24075
+    },
+    {
+      "section": "Do models generalize explicit supervision, or just memorize it? ::: Setup",
+      "start": 24077,
+      "end": 24912
+    },
+    {
+      "section": "Do models generalize explicit supervision, or just memorize it? ::: Results",
+      "start": 24914,
+      "end": 27138
+    },
+    {
+      "section": "Conclusion",
+      "start": 27140,
+      "end": 27683
+    },
+    {
+      "section": "Acknowledges",
+      "start": 27685,
+      "end": 27964
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "2004.02451",
+    "arxiv_id": "2004.02451",
+    "source_url": "https://arxiv.org/abs/2004.02451",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

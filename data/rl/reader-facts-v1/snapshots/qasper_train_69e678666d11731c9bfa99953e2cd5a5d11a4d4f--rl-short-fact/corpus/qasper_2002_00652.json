@@ -1,0 +1,155 @@
+{
+  "doc_id": "qasper_2002_00652",
+  "title": "How Far are We from Effective Context Modeling ? An Exploratory Study on Semantic Parsing in Context",
+  "text": "How Far are We from Effective Context Modeling ? An Exploratory Study on Semantic Parsing in Context\n\nRecently semantic parsing in context has received a considerable attention, which is challenging since there are complex contextual phenomena. Previous works verified their proposed methods in limited scenarios, which motivates us to conduct an exploratory study on context modeling methods under real-world semantic parsing in context. We present a grammar-based decoding semantic parser and adapt typical context modeling methods on top of it. We evaluate 13 context modeling methods on two large complex cross-domain datasets, and our best model achieves state-of-the-art performances on both datasets with significant improvements. Furthermore, we summarize the most frequent contextual phenomena, with a fine-grained analysis on representative models, which may shed light on potential research directions.\n\nSemantic parsing, which translates a natural language sentence into its corresponding executable logic form (e.g. Structured Query Language, SQL), relieves users from the burden of learning techniques behind the logic form. The majority of previous studies on semantic parsing assume that queries are context-independent and analyze them in isolation. However, in reality, users prefer to interact with systems in a dialogue, where users are allowed to ask context-dependent incomplete questions BIBREF0. That arises the task of Semantic Parsing in Context (SPC), which is quite challenging as there are complex contextual phenomena. In general, there are two sorts of contextual phenomena in dialogues: Coreference and Ellipsis BIBREF1. Figure FIGREF1 shows a dialogue from the dataset SParC BIBREF2. After the question “What is id of the car with the max horsepower?”, the user poses an elliptical question “How about with the max mpg?”, and a question containing pronouns “Show its Make!”. Only when completely understanding the context, could a parser successfully parse the incomplete questions into their corresponding SQL queries.\n\nA number of context modeling methods have been suggested in the literature to address SPC BIBREF3, BIBREF4, BIBREF2, BIBREF5, BIBREF6. These methods proposed to leverage two categories of context: recent questions and precedent logic form. It is natural to leverage recent questions as context. Taking the example from Figure FIGREF1, when parsing $Q_3$, we also need to take $Q_1$ and $Q_2$ as input. We can either simply concatenate the input questions, or use a model to encode them hierarchically BIBREF4. As for the second category, instead of taking a bag of recent questions as input, it only considers the precedent logic form. For instance, when parsing $Q_3$, we only need to take $S_2$ as context. With such a context, the decoder can attend over it, or reuse it via a copy mechanism BIBREF4, BIBREF5. Intuitively, methods that fall into this category enjoy better generalizability, as they only rely on the last logic form as context, no matter at which turn. Notably, these two categories of context can be used simultaneously.\n\nHowever, it remains unclear how far we are from effective context modeling. First, there is a lack of thorough comparisons of typical context modeling methods on complex SPC (e.g. cross-domain). Second, none of previous works verified their proposed context modeling methods with the grammar-based decoding technique, which has been developed for years and proven to be highly effective in semantic parsing BIBREF7, BIBREF8, BIBREF9. To obtain better performance, it is worthwhile to study how context modeling methods collaborate with the grammar-based decoding. Last but not the least, there is limited understanding of how context modeling methods perform on various contextual phenomena. An in-depth analysis can shed light on potential research directions.\n\nIn this paper, we try to fulfill the above insufficiency via an exploratory study on real-world semantic parsing in context. Concretely, we present a grammar-based decoding semantic parser and adapt typical context modeling methods on top of it. Through experiments on two large complex cross-domain datasets, SParC BIBREF2 and CoSQL BIBREF6, we carefully compare and analyze the performance of different context modeling methods. Our best model achieves state-of-the-art (SOTA) performances on both datasets with significant improvements. Furthermore, we summarize and generalize the most frequent contextual phenomena, with a fine-grained analysis on representative models. Through the analysis, we obtain some interesting findings, which may benefit the community on the potential research directions. We will open-source our code and materials to facilitate future work upon acceptance.\n\nIn the task of semantic parsing in context, we are given a dataset composed of dialogues. Denoting $\\langle \\mathbf {x}_1,...,\\mathbf {x}_n\\rangle $ a sequence of natural language questions in a dialogue, $\\langle \\mathbf {y}_1,...,\\mathbf {y}_n\\rangle $ are their corresponding SQL queries. Each SQL query is conditioned on a multi-table database schema, and the databases used in test do not appear in training. In this section, we first present a base model without considering context. Then we introduce 6 typical context modeling methods and describe how we equip the base model with these methods. Finally, we present how to augment the model with BERT BIBREF10.\n\nWe employ the popularly used attention-based sequence-to-sequence architecture BIBREF11, BIBREF12 to build our base model. As shown in Figure FIGREF6, the base model consists of a question encoder and a grammar-based decoder. For each question, the encoder provides contextual representations, while the decoder generates its corresponding SQL query according to a predefined grammar.\n\nTo capture contextual information within a question, we apply Bidirectional Long Short-Term Memory Neural Network (BiLSTM) as our question encoder BIBREF13, BIBREF14. Specifically, at turn $i$, firstly every token $x_{i,k}$ in $\\mathbf {x}_{i}$ is fed into a word embedding layer $\\mathbf {\\phi }^x$ to get its embedding representation $\\mathbf {\\phi }^x{(x_{i,k})}$. On top of the embedding representation, the question encoder obtains a contextual representation $\\mathbf {h}^{E}_{i,k}=[\\mathop {{\\mathbf {h}}^{\\overrightarrow{E}}_{i,k}}\\,;{\\mathbf {h}}^{\\overleftarrow{E}}_{i,k}]$, where the forward hidden state is computed as following:\n\nThe decoder is grammar-based with attention on the input question BIBREF7. Different from producing a SQL query word by word, our decoder outputs a sequence of grammar rule (i.e. action). Such a sequence has one-to-one correspondence with the abstract syntax tree of the SQL query. Taking the SQL query in Figure FIGREF6 as an example, it is transformed to the action sequence $\\langle $ $\\rm \\scriptstyle {Start}\\rightarrow \\rm {Root}$, $\\rm \\scriptstyle {Root}\\rightarrow \\rm {Select\\ Order}$, $\\rm \\scriptstyle {Select}\\rightarrow \\rm {Agg}$, $\\rm \\scriptstyle {Agg}\\rightarrow \\rm {max\\ Col\\ Tab}$, $\\rm \\scriptstyle {Col}\\rightarrow \\rm {Id}$, $\\rm \\scriptstyle {Tab}\\rightarrow \\rm {CARS\\_DATA}$, $\\rm \\scriptstyle {Order}\\rightarrow \\rm {desc\\ limit\\ Agg}$, $\\rm \\scriptstyle {Agg}\\rightarrow \\rm {none\\ Col\\ Tab}$, $\\rm \\scriptstyle {Col}\\rightarrow \\rm {Horsepower}$, $\\rm \\scriptstyle {Tab}\\rightarrow \\rm {CARS\\_DATA}$ $\\rangle $ by left-to-right depth-first traversing on the tree. At each decoding step, a nonterminal is expanded using one of its corresponding grammar rules. The rules are either schema-specific (e.g. $\\rm \\scriptstyle {Col}\\rightarrow \\rm {Horsepower}$), or schema-agnostic (e.g. $\\rm \\scriptstyle {Start}\\rightarrow \\rm {Root}$). More specifically, as shown at the top of Figure FIGREF6, we make a little modification on $\\rm {Order}$-related rules upon the grammar proposed by BIBREF9, which has been proven to have better performance than vanilla SQL grammar. Denoting $\\mathbf {LSTM}^{\\overrightarrow{D}}$ the unidirectional LSTM used in the decoder, at each decoding step $j$ of turn $i$, it takes the embedding of the previous generated grammar rule $\\mathbf {\\phi }^y(y_{i,j-1})$ (indicated as the dash lines in Figure FIGREF6), and updates its hidden state as:\n\nwhere $\\mathbf {c}_{i,j-1}$ is the context vector produced by attending on each encoder hidden state $\\mathbf {h}^E_{i,k}$ in the previous step:\n\nwhere $\\mathbf {W}^e$ is a learned matrix. $\\mathbf {h}^{\\overrightarrow{D}}_{i,0}$ is initialized by the final encoder hidden state $\\mathbf {h}^E_{i,|\\mathbf {x}_{i}|}$, while $\\mathbf {c}_{i,0}$ is a zero-vector. For each schema-agnostic grammar rule, $\\mathbf {\\phi }^y$ returns a learned embedding. For schema-specific one, the embedding is obtained by passing its schema (i.e. table or column) through another unidirectional LSTM, namely schema encoder $\\mathbf {LSTM}^{\\overrightarrow{S}}$. For example, the embedding of $\\rm \\scriptstyle {Col}\\rightarrow \\rm {Id}$ is:\n\nAs for the output $y_{i,j}$, if the expanded nonterminal corresponds to schema-agnostic grammar rules, we can obtain the output probability of action ${\\gamma }$ as:\n\nwhere $\\mathbf {W}^o$ is a learned matrix. When it comes to schema-specific grammar rules, the main challenge is that the model may encounter schemas never appeared in training due to the cross-domain setting. To deal with it, we do not directly compute the similarity between the decoder hidden state and the schema-specific grammar rule embedding. Instead, we first obtain the unnormalized linking score $l(x_{i,k},\\gamma )$ between the $k$-th token in $\\mathbf {x}_i$ and the schema in action $\\gamma $. It is computed by both handcraft features (e.g. word exact match) BIBREF15 and learned similarity (i.e. dot product between word embedding and grammar rule embedding). With the input question as bridge, we reuse the attention score $a_{i,k}$ in Equation DISPLAY_FORM8 to measure the probability of outputting a schema-specific action $\\gamma $ as:\n\nTo take advantage of the question context, we provide the base model with recent $h$ questions as additional input. As shown in Figure FIGREF13, we summarize and generalize three ways to incorporate recent questions as context.\n\nThe method concatenates recent questions with the current question in order, making the input of the question encoder be $[\\mathbf {x}_{i-h},\\dots ,\\mathbf {x}_{i}]$, while the architecture of the base model remains the same. We do not insert special delimiters between questions, as there are punctuation marks.\n\nA dialogue can be seen as a sequence of questions which, in turn, are sequences of words. Considering such hierarchy, BIBREF4 employed a turn-level encoder (i.e. an unidirectional LSTM) to encode recent questions hierarchically. At turn $i$, the turn-level encoder takes the previous question vector $[\\mathbf {h}^{\\overleftarrow{E}}_{i-1,1},\\mathbf {h}^{\\overrightarrow{E}}_{i-1,|\\mathbf {x}_{i-1}|}]$ as input, and updates its hidden state to $\\mathbf {h}^{\\overrightarrow{T}}_{i}$. Then $\\mathbf {h}^{\\overrightarrow{T}}_{i}$ is fed into $\\mathbf {LSTM}^E$ as an implicit context. Accordingly Equation DISPLAY_FORM4 is rewritten as:\n\nSimilar to Concat, BIBREF4 allowed the decoder to attend over all encoder hidden states. To make the decoder distinguish hidden states from different turns, they further proposed a relative distance embedding ${\\phi }^{d}$ in attention computing. Taking the above into account, Equation DISPLAY_FORM8 is as:\n\nwhere $t{\\in }[0,\\dots ,h]$ represents the relative distance.\n\nTo jointly model the decoder attention in token-level and question-level, inspired by the advances of open-domain dialogue area BIBREF16, we propose a gate mechanism to automatically compute the importance of each question. The importance is computed by:\n\nwhere $\\lbrace \\mathbf {V}^{g},\\mathbf {W}^g,\\mathbf {U}^g\\rbrace $ are learned parameters and $0\\,{\\le }\\,t\\,{\\le }\\,h$. As done in Equation DISPLAY_FORM17 except for the relative distance embedding, the decoder of Gate also attends over all the encoder hidden states. And the question-level importance $\\bar{g}_{i-t}$ is employed as the coefficient of the attention scores at turn $i\\!-\\!t$.\n\nBesides recent questions, as mentioned in Section SECREF1, the precedent SQL can also be context. As shown in Figure FIGREF27, the usage of $\\mathbf {y}_{i-1}$ requires a SQL encoder, where we employ another BiLSTM to achieve it. The $m$-th contextual action representation at turn $i\\!-\\!1$, $\\mathbf {h}^A_{i-1,m}$, can be obtained by passing the action sequence through the SQL encoder.\n\nAttention over $\\mathbf {y}_{i-1}$ is a straightforward method to incorporate the SQL context. Given $\\mathbf {h}^A_{i-1,m}$, we employ a similar manner as Equation DISPLAY_FORM8 to compute attention score and thus obtain the SQL context vector. This vector is employed as an additional input for decoder in Equation DISPLAY_FORM7.\n\nTo reuse the precedent generated SQL, BIBREF5 presented a token-level copy mechanism on their non-grammar based parser. Inspired by them, we propose an action-level copy mechanism suited for grammar-based decoding. It enables the decoder to copy actions appearing in $\\mathbf {y}_{i-1}$, when the actions are compatible to the current expanded nonterminal. As the copied actions lie in the same semantic space with the generated ones, the output probability for action $\\gamma $ is a mix of generating ($\\mathbf {g}$) and copying ($\\mathbf {c}$). The generating probability $P(y_{i,j}\\!=\\!{\\gamma }\\,|\\,\\mathbf {g})$ follows Equation DISPLAY_FORM10 and DISPLAY_FORM11, while the copying probability is:\n\nwhere $\\mathbf {W}^l$ is a learned matrix. Denoting $P^{copy}_{i,j}$ the probability of copying at decoding step $j$ of turn $i$, it can be obtained by $\\sigma (\\mathbf {W}^{c}\\mathbf {h}^{\\overrightarrow{D}}_{i,j}+\\mathbf {b}^{c})$, where $\\lbrace \\mathbf {W}^{c},\\mathbf {b}^{c}\\rbrace $ are learned parameters and $\\sigma $ is the sigmoid function. The final probability $P(y_{i,j}={\\gamma })$ is computed by:\n\nBesides the action-level copy, we also introduce a tree-level copy mechanism. As illustrated in Figure FIGREF27, tree-level copy mechanism enables the decoder to copy action subtrees extracted from $\\mathbf {y}_{i-1}$, which shrinks the number of decoding steps by a large margin. Similar idea has been proposed in a non-grammar based decoder BIBREF4. In fact, a subtree is an action sequence starting from specific nonterminals, such as ${\\rm Select}$. To give an example, $\\langle $ $\\rm \\scriptstyle {Select}\\rightarrow \\rm {Agg}$, $\\rm \\scriptstyle {Agg}\\rightarrow \\rm {max\\ Col\\ Tab}$, $\\rm \\scriptstyle {Col}\\rightarrow \\rm {Id}$, $\\rm \\scriptstyle {Tab}\\rightarrow \\rm {CARS\\_DATA}$ $\\rangle $ makes up a subtree for the tree in Figure FIGREF6. For a subtree $\\upsilon $, its representation $\\phi ^{t}(\\upsilon )$ is the final hidden state of SQL encoder, which encodes its corresponding action sequence. Then we can obtain the output probability of subtree $\\upsilon $ as:\n\nwhere $\\mathbf {W}^t$ is a learned matrix. The output probabilities of subtrees are normalized together with Equation DISPLAY_FORM10 and DISPLAY_FORM11.\n\nWe employ BERT BIBREF10 to augment our model via enhancing the embedding of questions and schemas. We first concatenate the input question and all the schemas in a deterministic order with [SEP] as delimiter BIBREF17. For instance, the input for $Q_1$ in Figure FIGREF1 is “What is id ... max horsepower? [SEP] CARS_NAMES [SEP] MakeId ... [SEP] Horsepower”. Feeding it into BERT, we obtain the schema-aware question representations and question-aware schema representations. These contextual representations are used to substitute $\\phi ^x$ subsequently, while other parts of the model remain the same.\n\nWe conduct experiments to study whether the introduced methods are able to effectively model context in the task of SPC (Section SECREF36), and further perform a fine-grained analysis on various contextual phenomena (Section SECREF40).\n\nTwo large complex cross-domain datasets are used: SParC BIBREF2 consists of 3034 / 422 dialogues for train / development, and CoSQL BIBREF6 consists of 2164 / 292 ones. The average turn numbers of SParC and CoSQL are $3.0$ and $5.2$, respectively.\n\nWe evaluate each predicted SQL query using exact set match accuracy BIBREF2. Based on it, we consider three metrics: Question Match (Ques.Match), the match accuracy over all questions, Interaction Match (Int.Match), the match accuracy over all dialogues, and Turn $i$ Match, the match accuracy over questions at turn $i$.\n\nOur implementation is based on PyTorch BIBREF18, AllenNLP BIBREF19 and the library transformers BIBREF20. We adopt the Adam optimizer and set the learning rate as 1e-3 on all modules except for BERT, for which a learning rate of 1e-5 is used BIBREF21. The dimensions of word embedding, action embedding and distance embedding are 100, while the hidden state dimensions of question encoder, grammar-based decoder, turn-level encoder and SQL encoder are 200. We initialize word embedding using Glove BIBREF22 for non-BERT models. For methods which use recent $h$ questions, $h$ is set as 5 on both datasets.\n\nWe consider three models as our baselines. SyntaxSQL-con and CD-Seq2Seq are two strong baselines introduced in the SParC dataset paper BIBREF2. SyntaxSQL-con employs a BiLSTM model to encode dialogue history upon the SyntaxSQLNet model (analogous to our Turn) BIBREF23, while CD-Seq2Seq is adapted from BIBREF4 for cross-domain settings (analogous to our Turn+Tree Copy). EditSQL BIBREF5 is a STOA baseline which mainly makes use of SQL attention and token-level copy (analogous to our Turn+SQL Attn+Action Copy).\n\nTaking Concat as a representative, we compare the performance of our model with other models, as shown in Table TABREF34. As illustrated, our model outperforms baselines by a large margin with or without BERT, achieving new SOTA performances on both datasets. Compared with the previous SOTA without BERT on SParC, our model improves Ques.Match and Int.Match by $10.6$ and $5.4$ points, respectively.\n\nTo conduct a thorough comparison, we evaluate 13 different context modeling methods upon the same parser, including 6 methods introduced in Section SECREF2 and 7 selective combinations of them (e.g., Concat+Action Copy). The experimental results are presented in Figure FIGREF37. Taken as a whole, it is very surprising to observe that none of these methods can be consistently superior to the others. The experimental results on BERT-based models show the same trend. Diving deep into the methods only using recent questions as context, we observe that Concat and Turn perform competitively, outperforming Gate by a large margin. With respect to the methods only using precedent SQL as context, Action Copy significantly surpasses Tree Copy and SQL Attn in all metrics. In addition, we observe that there is little difference in the performance of Action Copy and Concat, which implies that using precedent SQL as context gives almost the same effect with using recent questions. In terms of the combinations of different context modeling methods, they do not significantly improve the performance as we expected.\n\nAs mentioned in Section SECREF1, intuitively, methods which only use the precedent SQL enjoys better generalizability. To validate it, we further conduct an out-of-distribution experiment to assess the generalizability of different context modeling methods. Concretely, we select three representative methods and train them on questions at turn 1 and 2, whereas test them at turn 3, 4 and beyond. As shown in Figure FIGREF38, Action Copy has a consistently comparable or better performance, validating the intuition. Meanwhile, Concat appears to be strikingly competitive, demonstrating it also has a good generalizability. Compared with them, Turn is more vulnerable to out-of-distribution questions.\n\nIn conclusion, existing context modeling methods in the task of SPC are not as effective as expected, since they do not show a significant advantage over the simple concatenation method.\n\nBy a careful investigation on contextual phenomena, we summarize them in multiple hierarchies. Roughly, there are three kinds of contextual phenomena in questions: semantically complete, coreference and ellipsis. Semantically complete means a question can reflect all the meaning of its corresponding SQL. Coreference means a question contains pronouns, while ellipsis means the question cannot reflect all of its SQL, even if resolving its pronouns. In the fine-grained level, coreference can be divided into 5 types according to its pronoun BIBREF1. Ellipsis can be characterized by its intention: continuation and substitution. Continuation is to augment extra semantics (e.g. ${\\rm Filter}$), and substitution refers to the situation where current question is intended to substitute particular semantics in the precedent question. Substitution can be further branched into 4 types: explicit vs. implicit and schema vs. operator. Explicit means the current question provides contextual clues (i.e. partial context overlaps with the precedent question) to help locate the substitution target, while implicit does not. On most cases, the target is schema or operator. In order to study the effect of context modeling methods on various phenomena, as shown in Table TABREF39, we take the development set of SParC as an example to perform our analysis. The analysis begins by presenting Ques.Match of three representative models on above fine-grained types in Figure FIGREF42. As shown, though different methods have different strengths, they all perform poorly on certain types, which will be elaborated below.\n\nDiving deep into the coreference (left of Figure FIGREF42), we observe that all methods struggle with two fine-grained types: definite noun phrases and one anaphora. Through our study, we find the scope of antecedent is a key factor. An antecedent is one or more entities referred by a pronoun. Its scope is either whole, where the antecedent is the precedent answer, or partial, where the antecedent is part of the precedent question. The above-mentioned fine-grained types are more challenging as their partial proportion are nearly $40\\%$, while for demonstrative pronoun it is only $22\\%$. It is reasonable as partial requires complex inference on context. Considering the 4th example in Table TABREF39, “one” refers to “pets” instead of “age” because the accompanying verb is “weigh”. From this observation, we draw the conclusion that current context modeling methods do not succeed on pronouns which require complex inference on context.\n\nAs for ellipsis (right of Figure FIGREF42), we obtain three interesting findings by comparisons in three aspects. The first finding is that all models have a better performance on continuation than substitution. This is expected since there are redundant semantics in substitution, while not in continuation. Considering the 8th example in Table TABREF39, “horsepower” is a redundant semantic which may raise noise in SQL prediction. The second finding comes from the unexpected drop from implicit(substitution) to explicit(substitution). Intuitively, explicit should surpass implicit on substitution as it provides more contextual clues. The finding demonstrates that contextual clues are obviously not well utilized by the context modeling methods. Third, compared with schema(substitution), operator(substitution) achieves a comparable or better performance consistently. We believe it is caused by the cross-domain setting, which makes schema related substitution more difficult.\n\nThe most related work is the line of semantic parsing in context. In the topic of SQL, BIBREF24 proposed a context-independent CCG parser and then applied it to do context-dependent substitution, BIBREF3 applied a search-based method for sequential questions, and BIBREF4 provided the first sequence-to-sequence solution in the area. More recently, BIBREF5 presented a edit-based method to reuse the precedent generated SQL. With respect to other logic forms, BIBREF25 focuses on understanding execution commands in context, BIBREF26 on question answering over knowledge base in a conversation, and BIBREF27 on code generation in environment context. Our work is different from theirs as we perform an exploratory study, not fulfilled by previous works.\n\nThere are also several related works that provided studies on context. BIBREF17 explored the contextual representations in context-independent semantic parsing, and BIBREF28 studied how conversational agents use conversation history to generate response. Different from them, our task focuses on context modeling for semantic parsing. Under the same task, BIBREF1 summarized contextual phenomena in a coarse-grained level, while BIBREF0 performed a wizard-of-oz experiment to study the most frequent phenomena. What makes our work different from them is that we not only summarize contextual phenomena by fine-grained types, but also perform an analysis on context modeling methods.\n\nThis work conducts an exploratory study on semantic parsing in context, to realize how far we are from effective context modeling. Through a thorough comparison, we find that existing context modeling methods are not as effective as expected. A simple concatenation method can be much competitive. Furthermore, by performing a fine-grained analysis, we summarize two potential directions as our future work: incorporating common sense for better pronouns inference, and modeling contextual clues in a more explicit manner. By open-sourcing our code and materials, we believe our work can facilitate the community to debug models in a fine-grained level and make more progress.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 100
+    },
+    {
+      "section": "Abstract",
+      "start": 102,
+      "end": 913
+    },
+    {
+      "section": "Introduction",
+      "start": 915,
+      "end": 4749
+    },
+    {
+      "section": "Methodology",
+      "start": 4751,
+      "end": 5419
+    },
+    {
+      "section": "Methodology ::: Base Model",
+      "start": 5421,
+      "end": 5805
+    },
+    {
+      "section": "Methodology ::: Base Model ::: Question Encoder",
+      "start": 5807,
+      "end": 6448
+    },
+    {
+      "section": "Methodology ::: Base Model ::: Grammar-based Decoder",
+      "start": 6450,
+      "end": 9997
+    },
+    {
+      "section": "Methodology ::: Recent Questions as Context",
+      "start": 9999,
+      "end": 10226
+    },
+    {
+      "section": "Methodology ::: Recent Questions as Context ::: Concat",
+      "start": 10228,
+      "end": 10540
+    },
+    {
+      "section": "Methodology ::: Recent Questions as Context ::: Turn",
+      "start": 10542,
+      "end": 11549
+    },
+    {
+      "section": "Methodology ::: Recent Questions as Context ::: Gate",
+      "start": 11551,
+      "end": 12200
+    },
+    {
+      "section": "Methodology ::: Precedent SQL as Context",
+      "start": 12202,
+      "end": 12591
+    },
+    {
+      "section": "Methodology ::: Precedent SQL as Context ::: SQL Attn",
+      "start": 12593,
+      "end": 12924
+    },
+    {
+      "section": "Methodology ::: Precedent SQL as Context ::: Action Copy",
+      "start": 12926,
+      "end": 14042
+    },
+    {
+      "section": "Methodology ::: Precedent SQL as Context ::: Tree Copy",
+      "start": 14044,
+      "end": 15179
+    },
+    {
+      "section": "Methodology ::: BERT Enhanced Embedding",
+      "start": 15181,
+      "end": 15783
+    },
+    {
+      "section": "Experiment & Analysis",
+      "start": 15785,
+      "end": 16020
+    },
+    {
+      "section": "Experiment & Analysis ::: Experimental Setup ::: Dataset",
+      "start": 16022,
+      "end": 16269
+    },
+    {
+      "section": "Experiment & Analysis ::: Experimental Setup ::: Evaluation Metrics",
+      "start": 16271,
+      "end": 16592
+    },
+    {
+      "section": "Experiment & Analysis ::: Experimental Setup ::: Implementation Detail",
+      "start": 16594,
+      "end": 17199
+    },
+    {
+      "section": "Experiment & Analysis ::: Experimental Setup ::: Baselines",
+      "start": 17201,
+      "end": 17714
+    },
+    {
+      "section": "Experiment & Analysis ::: Model Comparison",
+      "start": 17716,
+      "end": 20123
+    },
+    {
+      "section": "Experiment & Analysis ::: Fine-grained Analysis",
+      "start": 20125,
+      "end": 21735
+    },
+    {
+      "section": "Experiment & Analysis ::: Fine-grained Analysis ::: Coreference",
+      "start": 21737,
+      "end": 22681
+    },
+    {
+      "section": "Experiment & Analysis ::: Fine-grained Analysis ::: Ellipsis",
+      "start": 22683,
+      "end": 23666
+    },
+    {
+      "section": "Related Work",
+      "start": 23668,
+      "end": 25105
+    },
+    {
+      "section": "Conclusion & Future Work",
+      "start": 25107,
+      "end": 25783
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "2002.00652",
+    "arxiv_id": "2002.00652",
+    "source_url": "https://arxiv.org/abs/2002.00652",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

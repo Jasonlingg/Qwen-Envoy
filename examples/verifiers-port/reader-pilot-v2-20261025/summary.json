@@ -1,0 +1,209 @@
+{
+  "schema": "reader-pilot-v2-attempt-20261025",
+  "status": "incomplete_collection_transport_failure",
+  "decision": "retain_original_v5_no_model_improvement_claim",
+  "authorization": {
+    "authorized": true,
+    "authorization": "User: \"ok sure is this for the acutal trianing\", approving the immediately preceding explicit $8 estimated / 3h45 proposal for ten actual GRPO updates and the 12-question paired comparison.",
+    "protocol_sha256": "6946e67ff7433495310813c88ccc630b01ab7012a2ed44745b51fa7657964d66",
+    "budget_usd": 8,
+    "maximum_lifetime_seconds": 13500,
+    "additional_paid_retries_authorized": false,
+    "commits_authorized": false
+  },
+  "protocol": "examples/reader-rl-pilot-v2/protocol.json",
+  "protocol_sha256": "6946e67ff7433495310813c88ccc630b01ab7012a2ed44745b51fa7657964d66",
+  "reward_revision_sha256": "a9be09e6e4cc10b1391bde1b3929a44b3aade312b7612afdf8a5333c8794206b",
+  "training_plan_sha256": "9b6cd14c9ef8012120c834846781a581e94387ef7be79558d2285100fad12c54",
+  "gpu_plan_sha256": "4e4e6cd2269c42f53887521bc7e524e588bb1b5742b84860ec172ce8896b7153",
+  "requested_updates": 10,
+  "verified_updates": 3,
+  "optimizer_state_count": 504,
+  "optimizer_counters": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "attempted_update_4": false,
+  "native_result_receipt_present": false,
+  "steps": [
+    {
+      "step": 1,
+      "rewards": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "case_id": "qasper_train_61c9f97ee1ac5a4b8654aa152f05f22e153e7e6e--rl-short-fact",
+      "scorer": {
+        "tokens": 587,
+        "mean": 0.00545884296298027,
+        "max": 0.18135619163513184
+      },
+      "verified": {
+        "step": 1,
+        "optimizer_sha256": "ff522666d2d4add3e69948a0d9782b811d9476d605d3d43ee9af50a904390ef8",
+        "optimizer_steps": [
+          1
+        ],
+        "reload_matches_export": true,
+        "startup_matches_sampled_policy": true,
+        "adapter_sha256": "f5a2a18f2d32b1c70ec8bb355acb4b8740533363a6a7aae698cbdcb7552f0234"
+      },
+      "trainer_step_seconds": 26.28885253984481
+    },
+    {
+      "step": 2,
+      "rewards": [
+        1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "case_id": "qasper_train_2b78052314cb730824836ea69bc968df7964b4e4--rl-short-fact",
+      "scorer": {
+        "tokens": 591,
+        "mean": 0.00516757695004344,
+        "max": 0.11576509475708008
+      },
+      "verified": {
+        "step": 2,
+        "optimizer_sha256": "14ee21ee1b428beb6c7c622fb3e612210c55ae9913d1feee7ee20f81b2a3c178",
+        "optimizer_steps": [
+          2
+        ],
+        "reload_matches_export": true,
+        "startup_matches_sampled_policy": true,
+        "adapter_sha256": "f6be04b997249a63bbe50aa3abd6ef28c4d9e0afd5734a4c87bd73af2cf7d5d5"
+      },
+      "trainer_step_seconds": 23.752708042040467
+    },
+    {
+      "step": 3,
+      "rewards": [
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "case_id": "qasper_train_43878a6a8fc36aaae29d95815355aaa7d25c3b53--rl-short-fact",
+      "scorer": {
+        "tokens": 587,
+        "mean": 0.007029705680906773,
+        "max": 0.18603825569152832
+      },
+      "verified": {
+        "step": 3,
+        "optimizer_sha256": "66ab5faab8b5f2eb0cfd150e25dd9f1a032c119b681bc45128460048e10dee73",
+        "optimizer_steps": [
+          3
+        ],
+        "reload_matches_export": true,
+        "startup_matches_sampled_policy": true,
+        "adapter_sha256": "29827073a808bbb81f0819336c2f7766024c3e97c09e4ac5272ba286f5ef553d"
+      },
+      "trainer_step_seconds": 25.74819941818714
+    }
+  ],
+  "collection": {
+    "attempted_questions": 23,
+    "complete_groups": 22,
+    "mixed_groups": 3,
+    "episodes": 92,
+    "healthy_episodes": 91,
+    "raw_traces_all_untrainable": true,
+    "generation_requests": 297,
+    "returned_requests": 296,
+    "failed_or_uncertain_requests": 1,
+    "reserved_tokens": 1223340,
+    "reservations_are_actual_generated_tokens": false,
+    "mechanical_rewards": {
+      "one": 6,
+      "zero": 85
+    },
+    "mechanical_rewards_are_semantic_judgments": false
+  },
+  "failure": {
+    "question_id": "qasper_train_b974523a6cbd3cdc1fa924243ccc9711bbc7070d",
+    "episode_id": "5988388c6bb748428eabdfd6842093a0",
+    "call": {
+      "model": "envoy",
+      "sampling": {
+        "temperature": 1.0,
+        "top_p": 1.0,
+        "max_tokens": 1024,
+        "top_k": -1,
+        "min_p": 0.0,
+        "seed": 133
+      },
+      "endpoint": "/chat/completions",
+      "time": {
+        "start": 1792949405.119647,
+        "end": 1792949951.689733
+      },
+      "error": {
+        "type": "ProviderError",
+        "message": "Error code: 502 - {'error': 'ReadTimeout'}",
+        "status_code": 502
+      }
+    },
+    "engine_request_ordinal": 297,
+    "request_saved": true,
+    "engine_response_saved": false,
+    "most_likely_cause": "local_controller_clamshell_sleep_disrupted_native_transport",
+    "evidence": "macOS pmset records clamshell sleep at 13:30:00 and sleep at 13:30:05 -0400; failed generation started 13:30:05.119647; resumed DarkWake at 13:38:49, ProviderError at 13:39:11.689733.",
+    "limits": "Not GPU OOM or optimizer failure evidence; exact upstream network/server state during sleep unobserved.",
+    "paid_retry": false
+  },
+  "evaluation": {
+    "candidate_frozen": false,
+    "locked_references_opened": false,
+    "heldout_episodes": 0,
+    "model_assisted_claim_review": null,
+    "independent_human_review": null,
+    "quality_result": null
+  },
+  "cost": {
+    "cost_kind": "estimated_not_invoice",
+    "conservative_combined_hourly_bound_usd": 1.9,
+    "owned_interval_seconds": 6174.646018505096,
+    "owned_interval_start_epoch": 1792945897.414371,
+    "deletion_proof_file_mtime_epoch": 1792952072.0603895,
+    "estimated_upper_bound_usd_before_tax": 3.258840954211023,
+    "provider_invoice_complete": false
+  },
+  "cleanup": {
+    "pod": "r4bp0gb1wv49sc",
+    "temporary_volume": "qgcgohq7tk",
+    "fresh_provider_reads": "both_404",
+    "owned_docker_containers": 92,
+    "all_owned_containers_absent": true,
+    "unrelated_resources_changed": false
+  },
+  "artifacts": {
+    "operational_directory": "out/reader-prime-pilot-v2-20261025",
+    "training_gpu_receipt_archive_sha256": "8c3df2c8434255b2927b524b75bdc3063c07ee0905e332617064023d207651a2",
+    "portable_adapters_saved_locally": true,
+    "full_optimizer_state_retained": false,
+    "promotion": false,
+    "upload": false,
+    "git_commit": false
+  },
+  "limitations": [
+    "Ten-update experiment incomplete; no comparison or answer-quality inference.",
+    "Local independent watchdog can be suspended by laptop sleep; not a provider-enforced dollar cap.",
+    "As-run driver did not promptly request deletion on failed collection; resource persisted until explicit saved-artifact stop marker at 18:14 UTC.",
+    "Deployment-only follow-up cleanup wrapper tested offline; not run against a live GPU.",
+    "Before another paid attempt, use an always-on Docker controller and sleep-independent resource deadline; requires new approval."
+  ],
+  "validation": {
+    "focused_controller_watchdog_deployment_passed": 32,
+    "full_passed": 2224,
+    "full_optional_skips": 17,
+    "full_existing_warnings": 3,
+    "native_preparation_passed": 183,
+    "human_review": null
+  }
+}

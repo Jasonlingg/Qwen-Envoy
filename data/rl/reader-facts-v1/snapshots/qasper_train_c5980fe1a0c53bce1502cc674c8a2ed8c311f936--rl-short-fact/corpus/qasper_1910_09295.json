@@ -1,0 +1,150 @@
+{
+  "doc_id": "qasper_1910_09295",
+  "title": "Localization of Fake News Detection via Multitask Transfer Learning",
+  "text": "Localization of Fake News Detection via Multitask Transfer Learning\n\nThe use of the internet as a fast medium of spreading fake news reinforces the need for computational tools that combat it. Techniques that train fake news classifiers exist, but they all assume an abundance of resources including large labeled datasets and expert-curated corpora, which low-resource languages may not have. In this paper, we show that Transfer Learning (TL) can be used to train robust fake news classifiers from little data, achieving 91% accuracy on a fake news dataset in the low-resourced Filipino language, reducing the error by 14% compared to established few-shot baselines. Furthermore, lifting ideas from multitask learning, we show that augmenting transformer-based transfer techniques with auxiliary language modeling losses improves their performance by adapting to stylometry. Using this, we improve TL performance by 4-6%, achieving an accuracy of 96% on our best model. We perform ablations that establish the causality of attention-based TL techniques to state-of-the-art results, as well as the model's capability to learn and predict via stylometry. Lastly, we show that our method generalizes well to different types of news articles, including political news, entertainment news, and opinion articles.\n\nThere is a growing interest in research revolving around automated fake news detection and fact checking as its need increases due to the dangerous speed fake news spreads on social media BIBREF0. With as much as 68% of adults in the United States regularly consuming news on social media, being able to distinguish fake from non-fake is a pressing need.\n\nNumerous recent studies have tackled fake news detection with various techniques. The work of BIBREF1 identifies and verifies the stance of a headline with respect to its content as a first step in identifying potential fake news, achieving an accuracy of 89.59% on a publicly available article stance dataset. The work of BIBREF2 uses a deep learning approach and integrates multiple sources to assign a degree of “fakeness” to an article, beating representative baselines on a publicly-available fake news dataset.\n\nMore recent approaches also incorporate newer, novel methods to aid in detection. The work of BIBREF3 handles fake news detection as a specific case of cross-level stance detection. In addition, their work also uses the presence of an “inverted pyramid” structure as an indicator of real news, using a neural network to encode a given article's structure.\n\nWhile these approaches are valid and robust, most, if not all, modern fake news detection techniques assume the existence of large, expertly-annotated corpora to train models from scratch. Both BIBREF1 and BIBREF3 use the Fake News Challenge dataset, with 49,972 labeled stances for each headline-body pairs. BIBREF2, on the other hand, uses the LIAR dataset BIBREF4, which contains 12,836 labeled short statements as well as sources to support the labels.\n\nThis requirement for large datasets to effectively train fake news detection models from scratch makes it difficult to adapt these techniques into low-resource languages. Our work focuses on the use of Transfer Learning (TL) to evade this data scarcity problem.\n\nWe make three contributions.\n\nFirst, we construct the first fake news dataset in the low-resourced Filipino language, alleviating data scarcity for research in this domain.\n\nSecond, we show that TL techniques such as ULMFiT BIBREF5, BERT BIBREF6, and GPT-2 BIBREF7, BIBREF8 perform better compared to few-shot techniques by a considerable margin.\n\nThird, we show that auxiliary language modeling losses BIBREF9, BIBREF10 allows transformers to adapt to the stylometry of downstream tasks, which produces more robust fake news classifiers.\n\nWe provide a baseline model as a comparison point, using a few-shot learning-based technique to benchmark transfer learning against methods designed with low resource settings in mind. After which, we show three TL techniques that we studied and adapted to the task of fake news detection.\n\nWe use a siamese neural network, shown to perform state-of-the-art few-shot learning BIBREF11, as our baseline model.\n\nA siamese network is composed of weight-tied twin networks that accept distinct inputs, joined by an energy function, which computes a distance metric between the representations given by both twins. The network could then be trained to differentiate between classes in order to perform classification BIBREF11.\n\nWe modify the original to account for sequential data, with each twin composed of an embedding layer, a Long-Short Term Memory (LSTM) BIBREF12 layer, and a feed-forward layer with Rectified Linear Unit (ReLU) activations.\n\nEach twin embeds and computes representations for a pair of sequences, with the prediction vector $p$ computed as:\n\nwhere $o_i$ denotes the output representation of each siamese twin $i$ , $W_{\\textnormal {out}}$ and $b_{\\textnormal {out}}$ denote the weight matrix and bias of the output layer, and $\\sigma $ denotes the sigmoid activation function.\n\nULMFiT BIBREF5 was introduced as a TL method for Natural Language Processing (NLP) that works akin to ImageNet BIBREF13 pretraining in Computer Vision.\n\nIt uses an AWD-LSTM BIBREF14 pretrained on a language modeling objective as a base model, which is then finetuned to a downstream task in two steps.\n\nFirst, the language model is finetuned to the text of the target task to adapt to the task syntactically. Second, a classification layer is appended to the model and is finetuned to the classification task conservatively. During finetuning, multiple different techniques are introduced to prevent catastrophic forgetting.\n\nULMFiT delivers state-of-the-art performance for text classification, and is notable for being able to set comparable scores with as little as 1000 samples of data, making it attractive for use in low-resource settings BIBREF5.\n\nBERT is a Transformer-based BIBREF15 language model designed to pretrain “deep bidirectional representations” that can be finetuned to different tasks, with state-of-the-art results achieved in multiple language understanding benchmarks BIBREF6.\n\nAs with all Transformers, it draws power from a mechanism called “Attention” BIBREF16, which allows the model to compute weighted importance for each token in a sequence, effectively pinpointing context reference BIBREF15. Precisely, we compute attention on a set of queries packed as a matrix $Q$ on key and value matrices $K$ and $V$, respectively, as:\n\nwhere $d_{k}$ is the dimensions of the key matrix $K$. Attention allows the Transformer to refer to multiple positions in a sequence for context at any given time regardless of distance, which is an advantage over Recurrent Neural Networks (RNN).\n\nBERT's advantage over ULMFiT is its bidirectionality, leveraging both left and right context using a pretraining method called “Masked Language Modeling.” In addition, BERT also benefits from being deep, allowing it to capture more context and information. BERT-Base, the smallest BERT model, has 12 layers (768 units in each hidden layer) and 12 attention heads for a total of 110M parameters. Its larger sibling, BERT-Large, has 24 layers (1024 units in each hidden layer) and 16 attention heads for a total of 340M parameters.\n\nThe GPT-2 BIBREF8 technique builds up from the original GPT BIBREF7. Its main contribution is the way it is trained. With an improved architecture, it learns to do multiple tasks by just training on vanilla language modeling.\n\nArchitecture-wise, it is a Transformer-based model similar to BERT, with a few differences. It uses two feed-forward layers per transformer “block,” in addition to using “delayed residuals” which allows the model to choose which transformed representations to output.\n\nGPT-2 is notable for being extremely deep, with 1.5B parameters, 10x more than the original GPT architecture. This gives it more flexibility in learning tasks unsupervised from language modeling, especially when trained on a very large unlabeled corpus.\n\nBERT and GPT-2 both lack an explicit “language model finetuning step,” which gives ULMFiT an advantage where it learns to adapt to the stylometry and linguistic features of the text used by its target task. Motivated by this, we propose to augment Transformer-based TL techniques with a language model finetuning step.\n\nMotivated by recent advancements in multitask learning, we finetune the model to the stylometry of the target task at the same time as we finetune the classifier, instead of setting it as a separate step. This produces two losses to be optimized together during training, and ensures that no task (stylometric adaptation or classification) will be prioritized over the other. This concept has been proposed and explored to improve the performance of transfer learning in multiple language tasks BIBREF9, BIBREF10.\n\nWe show that this method improves performance on both BERT and GPT-2, given that it learns to adapt to the idiosyncracies of its target task in a similar way that ULMFiT also does.\n\nWe work with a dataset composed of 3,206 news articles, each labeled real or fake, with a perfect 50/50 split between 1,603 real and fake articles, respectively. Fake articles were sourced from online sites that were tagged as fake news sites by the non-profit independent media fact-checking organization Verafiles and the National Union of Journalists in the Philippines (NUJP). Real articles were sourced from mainstream news websites in the Philippines, including Pilipino Star Ngayon, Abante, and Bandera.\n\nFor preprocessing, we only perform tokenization on our dataset, specifically “Byte-Pair Encoding” (BPE) BIBREF17. BPE is a form of fixed-vocabulary subword tokenization that considers subword units as the most primitive form of entity (i.e. a token) instead of canonical words (i.e. “I am walking today” $\\rightarrow $ “I am walk ##ing to ##day”). BPE is useful as it allows our model to represent out-of-vocabulary (OOV) words unlike standard tokenization. In addition, it helps language models in learning morphologically-rich languages as it now treats morphemes as primary enitites instead of canonical word tokens.\n\nFor training/finetuning the classifiers, we use a 70%-30% train-test split of the dataset.\n\nTo pretrain BERT and GPT-2 language models, as well as an AWD-LSTM language model for use in ULMFiT, a large unlabeled training corpora is needed. For this purpose, we construct a corpus of 172,815 articles from Tagalog Wikipedia which we call WikiText-TL-39 BIBREF18. We form training-validation-test splits of 70%-15%-15% from this corpora.\n\nPreprocessing is similar to the fake news dataset, with the corpus only being lightly preprocessed and tokenized using Byte-Pair Encoding.\n\nCorpus statistics for the pretraining corpora are shown on table TABREF17.\n\nWe train a siamese recurrent neural network as our baseline. For each twin, we use 300 dimensions for the embedding layer and a hidden size of 512 for all hidden state vectors.\n\nTo optimize the network, we use a regularized cross-entropy objective of the following form:\n\nwhere y$(x_1, x_2)$ = 1 when $x_1$ and $x_2$ are from the same class and 0 otherwise. We use the Adam optimizer BIBREF19 with an initial learning rate of 1e-4 to train the network for a maximum of 500 epochs.\n\nWe pretrain a cased BERT-Base model using our prepared unlabeled text corpora using Google's provided pretraining scripts. For the masked language model pretraining objective, we use a 0.15 probability of a word being masked. We also set the maximum number of masked language model predictions to 20, and a maximum sequence length of 512. For training, we use a learning rate of 1e-4 and a batch size of 256. We train the model for 1,000,000 steps with 10,000 steps of learning rate warmup for 157 hours on a Google Cloud Tensor processing Unit (TPU) v3-8.\n\nFor GPT-2, we pretrain a GPT-2 Transformer model on our prepared text corpora using language modeling as its sole pretraining task, according to the specifications of BIBREF8. We use an embedding dimension of 410, a hidden dimension of 2100, and a maximum sequence length of 256. We use 10 attention heads per multihead attention block, with 16 blocks composing the encoder of the transformer. We use dropout on all linear layers to a probability of 0.1. We initialize all parameters to a standard deviation of 0.02. For training, we use a learning rate of 2.5e-4, and a batch size of 32, much smaller than BERT considering the large size of the model. We train the model for 200 epochs with 1,000 steps of learning rate warmup using the Adam optimizer. The model was pretrained for 178 hours on a machine with one NVIDIA Tesla V100 GPU.\n\nFor ULMFiT, we pretrain a 3-layer AWD-LSTM model with an embedding size of 400 and a hidden size of 1150. We set the dropout values for the embedding, the RNN input, the hidden-to-hidden transition, and the RNN output to (0.1, 0.3, 0.3, 0.4) respectively. We use a weight dropout of 0.5 on the LSTM’s recurrent weight matrices. The model was trained for 30 epochs with a learning rate of 1e-3, a batch size of 128, and a weight decay of 0.1. We use the Adam optimizer and use slanted triangular learning rate schedules BIBREF5. We train the model on a machine with one NVIDIA Tesla V100 GPU for a total of 11 hours.\n\nFor each pretraining scheme, we checkpoint models every epoch to preserve a copy of the weights such that we may restore them once the model starts overfitting. This is done as an extra regularization technique.\n\nWe finetune our models to the target fake news classification task using the pretrained weights with an appended classification layer or head.\n\nFor BERT, we append a classification head composed of a single linear layer followed by a softmax transformation to the transformer model. We then finetune our BERT-Base model on the fake news classification task for 3 epochs, using a batch size of 32, and a learning rate of 2e-5.\n\nFor GPT-2, our classification head is first comprised of a layer normalization transform, followed by a linear layer, then a softmax transform. We finetune the pretrained GPT-2 transformer for 3 epochs, using a batch size of 32, and a learning rate of 3e-5.\n\nFor ULMFiT, we perform language model finetuning on the fake news dataset (appending no extra classification heads yet) for a total of 10 epochs, using a learning rate of 1e-2, a batch size of 80, and weight decay of 0.3. For the final ULMFiT finetuning stage, we append a compound classification head (linear $\\rightarrow $ batch normalization $\\rightarrow $ ReLU $\\rightarrow $ linear $\\rightarrow $ batch normalization $\\rightarrow $ softmax). We then finetune for 5 epochs, gradually unfreezing layers from the last to the first until all layers are unfrozen on the fourth epoch. We use a learning rate of 1e-2 and set Adam's $\\alpha $ and $\\beta $ parameters to 0.8 and 0.7, respectively.\n\nTo show the efficacy of Multitask Finetuning, we augment BERT and GPT-2 to use this finetuning setup with their classification heads. We finetune both models to the target task for 3 epochs, using a batch size of 32, and a learning rate of 3e-5. For optimization, we use Adam with a warmup steps of 10% the number of steps, comprising 3 epochs.\n\nTo study the generalizability of the model to different news domains, we test our models against test cases not found in the training dataset. We mainly focus on three domains: political news, opinion articles, and entertainment/gossip articles. Articles used for testing are sourced from the same websites that the training dataset was taken from.\n\nOur baseline model, the siamese recurrent network, achieved an accuracy of 77.42% on the test set of the fake news classification task.\n\nThe transfer learning methods gave comparable scores. BERT finetuned to a final 87.47% accuracy, a 10.05% improvement over the siamese network's performance. GPT-2 finetuned to a final accuracy of 90.99%, a 13.57% improvement from the baseline performance. ULMFiT finetuning gave a final accuracy of 91.59%, an improvement of 14.17% over the baseline Siamese Network.\n\nWe could see that TL techniques outperformed the siamese network baseline, which we hypothesize is due to the intact pretrained knowledge in the language models used to finetune the classifiers. The pretraining step aided the model in forming relationships between text, and thus, performed better at stylometric based tasks with little finetuning.\n\nThe model results are all summarized in table TABREF26.\n\nOne of the most surprising results is that BERT and GPT-2 performed worse than ULMFiT in the fake news classification task despite being deeper models capable of more complex relationships between data.\n\nWe hypothesize that ULMFiT achieved better accuracy because of its additional language model finetuning step. We provide evidence for this assumption with an additional experiment that shows a decrease in performance when the language model finetuning step is removed, droppping ULMFiT's accuracy to 78.11%, making it only perform marginally better than the baseline model. Results for this experiment are outlined in Table TABREF28\n\nIn this finetuning stage, the model is said to “adapt to the idiosyncracies of the task it is solving” BIBREF5. Given that our techniques rely on linguistic cues and features to make accurate predictions, having the model adapt to the stylometry or “writing style” of an article will therefore improve performance.\n\nWe used a multitask finetuning technique over the standard finetuning steps for BERT and GPT-2, motivated by the advantage that language model finetuning provides to ULMFiT, and found that it greatly improves the performance of our models.\n\nBERT achieved a final accuracy of 91.20%, now marginally comparable to ULMFiT's full performance. GPT-2, on the other hand, finetuned to a final accuracy of 96.28%, a full 4.69% improvement over the performance of ULMFiT. This provides evidence towards our hypothesis that a language model finetuning step will allow transformer-based TL techniques to perform better, given their inherent advantage in modeling complexity over more shallow models such as the AWD-LSTM used by ULMFiT. Rersults for this experiment are outlined in Table TABREF30.\n\nSeveral ablation studies are performed to establish causation between the model architectures and the performance boosts in the study.\n\nAn ablation on pretraining was done to establish evidence that pretraining before finetuning accounts for a significant boost in performance over the baseline model. Using non-pretrained models, we finetune for the fake news classification task using the same settings as in the prior experiments.\n\nIn Table TABREF32, it can be seen that generative pretraining via language modeling does account for a considerable amount of performance, constituting 44.32% of the overall performance (a boost of 42.67% in accuracy) in the multitasking setup, and constituting 43.93% of the overall performance (a boost of 39.97%) in the standard finetuning setup.\n\nThis provides evidence that the pretraining step is necessary in achieving state-of-the-art performance.\n\nAn ablation study was done to establish causality between the multiheaded nature of the attention mechanisms and state-of-the-art performance. We posit that since the model can refer to multiple context points at once, it improves in performance.\n\nFor this experiment, we performed several pretraining-finetuning setups with varied numbers of attention heads using the multitask-based finetuning scheme. Using a pretrained GPT-2 model, attention heads were masked with zero-tensors to downsample the number of positions the model could attend to at one time.\n\nAs shown in Table TABREF34, reducing the number of attention heads severely decreases multitasking performance. Using only one attention head, thereby attending to only one context position at once, degrades the performance to less than the performance of 10 heads using the standard finetuning scheme. This shows that more attention heads, thereby attending to multiple different contexts at once, is important to boosting performance to state-of-the-art results.\n\nWhile increasing the number of attention heads improves performance, keeping on adding extra heads will not result to an equivalent boost as the performance plateaus after a number of heads.\n\nAs shown in Figure FIGREF35, the performance boost of the model plateaus after 10 attention heads, which was the default used in the study. While the performance of 16 heads is greater than 10, it is only a marginal improvement, and does not justify the added costs to training with more attention heads.\n\nTo supplement our understanding of the features our models learn and establish empirical difference in their stylometries, we use two stylometric tests traditionally used for authorship attribution: Mendenhall's Characteristic Curves BIBREF20 and John Burrow's Delta Method BIBREF21.\n\nWe provide a characteristic curve comparison to establish differences between real and fake news. For the rest of this section, we refer to the characteristic curves on Figure FIGREF36.\n\nWhen looking at the y-axis, there is a big difference in word count. The fake news corpora has twice the amount of words as the real news corpora. This means that fake news articles are at average lengthier than real news articles. The only differences seen in the x-axis is the order of appearance of word lengths 6, 7, and 1. The characteristic curves also exhibit differences in trend. While the head and tail look similar, the body show different trends. When graphing the corpora by news category, the heads and tails look similar to the general real and fake news characteristic curve but the body exhibits a trend different from the general corpora. This difference in trend may be attributed to either a lack of text data to properly represent real and fake news or the existence of a stylistic difference between real and fake news.\n\nWe also use Burrow’s Delta method to see a numeric distance between text samples. Using the labeled news article corpora, we compare samples outside of the corpora towards real and fake news to see how similar they are in terms of vocabulary distance. The test produces smaller distance for the correct label, which further reaffirms our hypothesis that there is a stylistic difference between the labels. However, the difference in distance between real and fake news against the sample is not significantly large. For articles on politics, business, entertainment, and viral events, the test generates distances that are significant. Meanwhile news in the safety, sports, technology, infrastructure, educational, and health categories have negligible differences in distance. This suggests that some categories are written similarly despite veracity.\n\nAll the TL techniques were pretrained with a language modeling-based task. While language modeling has been empirically proven as a good pretraining task, we surmise that other pretraining tasks could replace or support it.\n\nSince automatic fake news detection uses stylometric information (i.e. writing style, language cues), we predict that the task could benefit from pretraining objectives that also learn stylometric information such as authorship attribution.\n\nWhen testing on three different types of articles (Political News, Opinion, Entertainment/Gossip), we find that writing style is a prominent indicator for fake articles, supporting previous findings regarding writing style in fake news detection BIBREF22.\n\nSupported by our findings on the stylometric differences of fake and real news, we show that the model predicts a label based on the test article's stylometry. It produces correct labels when tested on real and fake news.\n\nWe provide further evidence that the models learn stylometry by testing on out-of-domain articles, particularly opinion and gossip articles. While these articles aren't necessarily real or fake, their stylometries are akin to real and fake articles respectively, and so are classified as such.\n\nIn this paper, we show that TL techniques can be used to train robust fake news classifiers in low-resource settings, with TL methods performing better than few-shot techniques, despite being a setting they are designed in mind with.\n\nWe also show the significance of language model finetuning for tasks that involve stylometric cues, with ULMFiT performing better than transformer-based techniques with deeper language model backbones. Motivated by this, we augment the methodology with a multitask learning-inspired finetuning technique that allowed transformer-based transfer learning techniques to adapt to the stylometry of a target task, much like ULMFiT, resulting in better performance.\n\nFor future work, we propose that more pretraining tasks be explored, particularly ones that learn stylometric information inherently (such as authorship attribution).\n\nThe authors would like to acknowledge the efforts of VeraFiles and the National Union of Journalists in the Philippines (NUJP) for their work covering and combating the spread of fake news.\n\nWe are partially supported by Google's Tensoflow Research Cloud (TFRC) program. Access to the TPU units provided by the program allowed the BERT models in this paper, as well as the countless experiments that brought it to fruition, possible.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 67
+    },
+    {
+      "section": "Abstract",
+      "start": 69,
+      "end": 1308
+    },
+    {
+      "section": "Introduction",
+      "start": 1310,
+      "end": 3800
+    },
+    {
+      "section": "Methods",
+      "start": 3802,
+      "end": 4091
+    },
+    {
+      "section": "Methods ::: Baseline",
+      "start": 4093,
+      "end": 5098
+    },
+    {
+      "section": "Methods ::: ULMFiT",
+      "start": 5100,
+      "end": 5953
+    },
+    {
+      "section": "Methods ::: BERT",
+      "start": 5955,
+      "end": 7335
+    },
+    {
+      "section": "Methods ::: GPT-2",
+      "start": 7337,
+      "end": 8086
+    },
+    {
+      "section": "Methods ::: Multitask Finetuning",
+      "start": 8088,
+      "end": 9103
+    },
+    {
+      "section": "Experimental Setup ::: Fake News Dataset",
+      "start": 9105,
+      "end": 10328
+    },
+    {
+      "section": "Experimental Setup ::: Pretraining Corpora",
+      "start": 10330,
+      "end": 10888
+    },
+    {
+      "section": "Experimental Setup ::: Siamese Network Training",
+      "start": 10890,
+      "end": 11370
+    },
+    {
+      "section": "Experimental Setup ::: Transfer Pretraining",
+      "start": 11372,
+      "end": 13597
+    },
+    {
+      "section": "Experimental Setup ::: Finetuning",
+      "start": 13599,
+      "end": 15324
+    },
+    {
+      "section": "Experimental Setup ::: Generalizability Across Domains",
+      "start": 15326,
+      "end": 15674
+    },
+    {
+      "section": "Results and Discussion ::: Classification Results",
+      "start": 15676,
+      "end": 16587
+    },
+    {
+      "section": "Results and Discussion ::: Language Model Finetuning Significance",
+      "start": 16589,
+      "end": 17541
+    },
+    {
+      "section": "Results and Discussion ::: Multitask-based Finetuning",
+      "start": 17543,
+      "end": 18328
+    },
+    {
+      "section": "Ablation Studies",
+      "start": 18330,
+      "end": 18464
+    },
+    {
+      "section": "Ablation Studies ::: Pretraining Effects",
+      "start": 18466,
+      "end": 19220
+    },
+    {
+      "section": "Ablation Studies ::: Attention Head Effects",
+      "start": 19222,
+      "end": 20744
+    },
+    {
+      "section": "Stylometric Tests",
+      "start": 20746,
+      "end": 22913
+    },
+    {
+      "section": "Further Discussions ::: Pretraining Tasks",
+      "start": 22915,
+      "end": 23380
+    },
+    {
+      "section": "Further Discussions ::: Generalizability Across Domains",
+      "start": 23382,
+      "end": 24155
+    },
+    {
+      "section": "Conclusion",
+      "start": 24157,
+      "end": 25019
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 25021,
+      "end": 25454
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "1910.09295",
+    "arxiv_id": "1910.09295",
+    "source_url": "https://arxiv.org/abs/1910.09295",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}

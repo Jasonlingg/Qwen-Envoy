@@ -1,0 +1,80 @@
+{
+  "schema_version": "verifiers-reader-compatibility-v1",
+  "version": "0.4.0",
+  "adapter_tests": {
+    "passed": 13,
+    "seconds": 18.92
+  },
+  "shared_code_focused_tests": {
+    "passed": 75,
+    "seconds": 9.73
+  },
+  "existing_full_suite": {
+    "passed": 2159,
+    "skipped_optional_modules": 1,
+    "warnings": 25,
+    "seconds": 167.09
+  },
+  "controls": [
+    {
+      "case_id": "qasper_train_95bb3ea4ebc3f2174846e8d422abc076e1407d6a--rl-short-fact",
+      "variant": "unchanged_saved_control",
+      "native_model_requests": 3,
+      "source_inspections": 2,
+      "all_payloads_matched": true,
+      "packet_matched_except_uuid": true,
+      "reward": 1.0,
+      "training_eligible": false
+    },
+    {
+      "case_id": "qasper_train_43878a6a8fc36aaae29d95815355aaa7d25c3b53--rl-short-fact",
+      "variant": "unchanged_saved_control",
+      "native_model_requests": 3,
+      "source_inspections": 2,
+      "all_payloads_matched": true,
+      "packet_matched_except_uuid": true,
+      "reward": 1.0,
+      "training_eligible": false
+    },
+    {
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "variant": "unchanged_saved_control",
+      "native_model_requests": 3,
+      "source_inspections": 2,
+      "all_payloads_matched": true,
+      "packet_matched_except_uuid": true,
+      "reward": 1.0,
+      "training_eligible": false
+    },
+    {
+      "case_id": "qasper_train_32ba4d2d15194e889cbc9aa1d21ff1aa6fa27679--rl-short-fact",
+      "variant": "fenced_first_action",
+      "native_model_requests": 3,
+      "source_inspections": 2,
+      "all_payloads_matched": true,
+      "packet_matched_except_uuid": true,
+      "reward": 1.0,
+      "training_eligible": false
+    }
+  ],
+  "failure": {
+    "ok": false,
+    "numeric_reward_assigned": false,
+    "previous_source_inspections_retained": 1,
+    "requests": 2,
+    "all_owned_containers_absent": true
+  },
+  "native_training_verified": false,
+  "new_model_inference_calls": 0,
+  "paid_calls": 0,
+  "gpu_launches": 0,
+  "optimizer_updates": 0,
+  "model_improvement_measured": false,
+  "human_review": null,
+  "limitations": [
+    "Scripted controls do not measure responses to new feedback",
+    "Finite-reference reward is not a general semantic judge",
+    "EvalClient traces have no exact sampled training tokens or probabilities",
+    "TrainClient and prime-rl integration are explicitly blocked pending separate proof"
+  ]
+}

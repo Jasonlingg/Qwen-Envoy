@@ -1,0 +1,40 @@
+{
+  "schema_version": "training_wording_review_v1",
+  "scope": "saved_training_only_fixed_outputs",
+  "review_policy": {
+    "hypothesis": "Finite accepted-wording variants may reject source-supported complete answers.",
+    "decision_rule": "Classify each wording-rejected training answer against its question and submitted source evidence; propose aliases only for complete supported claims. Keep uncertain/incorrect/incomplete answers excluded. Do not change active reward keys or use locked evaluation. Estimate effects on mixed groups with all existing inspection/support checks still enforced.",
+    "reviewer_kind": "model_assisted",
+    "reviewer_identity": "Codex assistant; exact serving model ID not exported",
+    "independent_human_review": null,
+    "new_model_calls": false,
+    "gpu_required": false,
+    "active_reward_changed": false,
+    "locked_evaluation_references_reviewed": false
+  },
+  "reviewed_wording_rejections": 22,
+  "classification_counts": {
+    "incomplete": 7,
+    "complete_source_supported_answer": 7,
+    "unsupported_or_irrelevant": 7,
+    "ambiguous_question_target": 1
+  },
+  "proposed_aliases": 7,
+  "original_positive_episodes": 4,
+  "counterfactual_positive_episodes": 7,
+  "original_mixed_groups": 2,
+  "counterfactual_mixed_groups": 4,
+  "groups_total": 11,
+  "counterfactual_new_reward_reasons_for_proposals": {
+    "reviewed_answer_and_support_matched": 3,
+    "additional_citation_without_reviewed_support": 2,
+    "reviewed_support_missing_after_quote_clipping": 2
+  },
+  "active_reward_keys_changed": false,
+  "new_model_calls": 0,
+  "new_gpu_seconds": 0,
+  "optimizer_updates": 0,
+  "evaluation_references_opened": false,
+  "independent_human_review": null,
+  "interpretation": "Fixed saved outputs rescored with proposed finite aliases, not a rerun of policy behavior and not evidence of learned improvement. Model-assisted training-data review, not human gold."
+}

@@ -1,0 +1,145 @@
+{
+  "doc_id": "qasper_2002_06675",
+  "title": "Speech Corpus of Ainu Folklore and End-to-end Speech Recognition for Ainu Language",
+  "text": "Speech Corpus of Ainu Folklore and End-to-end Speech Recognition for Ainu Language\n\nAinu is an unwritten language that has been spoken by Ainu people who are one of the ethnic groups in Japan. It is recognized as critically endangered by UNESCO and archiving and documentation of its language heritage is of paramount importance. Although a considerable amount of voice recordings of Ainu folklore has been produced and accumulated to save their culture, only a quite limited parts of them are transcribed so far. Thus, we started a project of automatic speech recognition (ASR) for the Ainu language in order to contribute to the development of annotated language archives. In this paper, we report speech corpus development and the structure and performance of end-to-end ASR for Ainu. We investigated four modeling units (phone, syllable, word piece, and word) and found that the syllable-based model performed best in terms of both word and phone recognition accuracy, which were about 60% and over 85% respectively in speaker-open condition. Furthermore, word and phone accuracy of 80% and 90% has been achieved in a speaker-closed setting. We also found out that a multilingual ASR training with additional speech corpora of English and Japanese further improves the speaker-open test accuracy.\n\nAutomatic speech recognition (ASR) technology has been made a dramatic progress and is currently brought to a pratical levels of performance assisted by large speech corpora and the introduction of deep learning techniques. However, this is not the case for low-resource languages which do not have large corpora like English and Japanese have. There are about 5,000 languages in the world over half of which are faced with the danger of extinction. Therefore, constructing ASR systems for these endangered languages is an important issue.\n\nThe Ainu are an indigenous people of northern Japan and Sakhakin in Russia, but their language has been fading away ever since the Meiji Restoration and Modernization. On the other hand, active efforts to preserve their culture have been initiated by the Government of Japan, and exceptionally large oral recordings have been made. Nevertheless, a majority of the recordings have not been transcribed and utilized effectively. Since transcribing them requires expertise in the Ainu language, not so many people are able to work on this task. Hence, there is a strong demand for an ASR system for the Ainu language. We started a project of Ainu ASR and this article is the first report of this project.\n\nWe have built an Ainu speech corpus based on data provided by the Ainu Museum and the Nibutani Ainu Culture Museum. The oral recordings in this data consist of folklore and folk songs, and we chose the former to construct the ASR model. The end-to-end method of speech recognition has been proposed recently and has achieved performance comparable to that of the conventional DNN-HMM hybrid modeling BIBREF0, BIBREF1, BIBREF2. End-to-end systems do not have a complex hierarchical structure and do not require expertise in target languages such as their phonology and morphology. In this study we adopt the attention mechanism BIBREF3, BIBREF4 and combine it with Connectionist Temporal Classification (CTC) BIBREF5, BIBREF6. In this work, we investigate the modeling unit and utilization of corpora of other languages.\n\nThis section briefly overviews the background of the data collection, the Ainu language, and its writing system. After that, we describe how Ainu recordings are classified and review previous works dealing with the Ainu language.\n\nThe Ainu people had total population of about 20,000 in the mid-19th century BIBREF7 and they used to live widely distributed in the area that includes Hokkaido, Sakhalin, and the Kuril Islands. The number of native speakers, however, rapidly decreased through the assimilation policy after late 19th century. At present, there are only less than 10 native speakers, and UNESCO listed their language as critically endangered in 2009 BIBREF8. In response to this situation, Ainu folklore and songs have been actively recorded since the late 20th century in efforts initiated by the Government of Japan. For example, the Ainu Museum started audio recording of Ainu folklore in 1976 with the cooperation of a few Ainu elders which resulted in the collection of speech data with the total duration of roughly 700 hours. This kind of data should be a key to the understanding of Ainu culture, but most of it is not transcribed and fully studied yet.\n\nThe Ainu language is an agglutinative language and has some similarities to Japanese. However, its genealogical relationship with other languages has not been clearly understood yet. Among its features such as closed syllables and personal verbal affixes, one important feature is that there are many compound words. For example, a word atuykorkamuy (means “a sea turtle”) can be disassembled into atuy (“the sea”), kor (“to have”), and kamuy (“god”).\n\nAlthough the Ainu people did not traditionally have a writing system, the Ainu language is currently written following the examples in a reference book “Akor itak” BIBREF9. With this writing system, it is transcribed with sixteen Roman letters {a, c, e, h, i, k, m, n, o, p, r, s, t, u, w, y}. Since each of these letters correspond to a unique pronunciation, we call them “phones” for convenience. In addition, the symbol {=} is used for connecting a verb and a personal affix and { ' } is used to represent the pharyngeal stop. For the purpose of transcribing recordings, consonant symbols {b, d, g, z} are additionally used to transcribe Japanese sounds the speakers utter. The symbols { _ , __ } are used to transcribe drops and liaisons of phones. An example is shown below.\n\nThe Ainu oral traditions are classified into three types: “yukar” (heroic epics), “kamuy yukar” (mythic epics), and “uwepeker” (prose tales). Yukar and kamuy yukar are recited in the rhythm while uwepeker is not. In this study we focus on the the prose tales as the first step.\n\nThere have so far been a few studies dealing with the Ainu language. ainulrec built a dependency tree bank in the scheme of Universal Dependencies. postag developed tools for part-of-speech (POS) tagging and word segmentation. Ainu speech recognition was tried by ainutrans with 2.5 hours of Ainu folklore data even though the Ainu language was not their main target. Their phone error rare was about 40% which is not an accuracy level for practical use yet.\n\nIt appears that there has not been a substantial Ainu speech recognition study yet that utilizes corpora of a reasonable size. Therefore, our first step was to build a speech corpus for ASR based on the data sets provided by the Ainu Museum and the Nibutani Ainu Culture Museum.\n\nIn this section we explain the content of the data sets and how we modified it for our ASR corpus.\n\nThe corpus we have prepared for ASR in this study is composed of text and speech. Table 1 shows the number of episodes and the total speech duration for each speaker. Among the total of eight speakers, the data of the speakers KM and UT is from the Ainu Museum, and the rest is from Nibutani Ainu Culture Museum. All speakers are female. The length of the recording for a speaker varies depending on the circumstances at the recording times. A sample text and its English translation are shown in Table 2.\n\nFor efficient training of ASR model, we have made some modifications to the provided data. First, from the transcripts explained in Section 2.1, the symbols {_ , __ , '} have been removed as seen in the example below.\n\nThough the equal symbol (`=') does not represent a sound, we keep it because it is used in almost all of the Ainu documents and provides grammatical information.\n\nTo train an ASR system, the speech data needs to be segmented into a set of manageable chunks. For the ease of automatic processing, we chose to segment speech into inter-pausal units (IPUs) BIBREF10which is a stretch of speech bounded by pauses. The number of IPUs for each speaker is shown in Table 1.\n\nIn this section, the two approaches to end-to-end speech recognition that we adopt in this work are summarized. Then, we introduce four modeling units we explained, i.e., phone, syllable, word piece, and word. We also discuss multilingual training that we adopt for tackling the low resource problem.\n\nEnd-to-end models have an architecture much simpler than that of conventional DNN-HMM hybrid models. Since they predict character or word symbols directly from acoustic features, pronunciation dictionaries and language modeling are not required explicitly. In this paper, we utilize two kinds of end-to-end models, namely, Connectionist Temporal Classification (CTC) and the attention-based encoder-decoder model.\n\nCTC augments the output symbol set with the “blank” symbol `$\\phi $'. It outputs symbols by contracting frame-wise outputs from recurrent neural networks (RNNs). This is done by first collapsed repeating symbols and then removing all blank symbols as in the following example:\n\nThe probability of an output sequence $\\mathbf {L}$ for an input acoustic feature sequence $\\mathbf {X}$, where $|\\mathbf {L}| < |\\mathbf {X}|$, is defined as follows.\n\n$\\mathcal {B}$ is a function to contract the outputs of RNNs, so $\\mathcal {B}^{-1}(\\mathbf {L})$ means the set of symbol sequences which is reduced to $\\mathbf {L}$. The model is trained to maximize (1).\n\nThe attention-based encoder-decoder model is another method for mapping between two sequences with different lengths. It has two RNNs called the “encoder” and the “decoder”. In naive encoder-decoder model, the encoder converts the input sequence into a single context vector which is the last hidden state of the encoder RNN from which the decoder infers output symbols. In an attention-based model, the context vector $\\mathbf {c}_l$ at $l$-th decoding step is the sum of the product of all encoder outputs $h_1, ... , h_\\mathrm {T}$ and the $l$-th attention weight $\\alpha _{1,l}, ... , \\alpha _{\\mathrm {T},l}$ as shown in (2). Here, $\\mathrm {T}$ is the length of the encoder output.\n\nThe attention weights $\\alpha _{1,l}, ... , \\alpha _{\\mathrm {T},l}$ indicates the relative importances of the encoder output frames for the $l$-th decoding step and the model parameters to generate these weights are determined in an end-to-end training.\n\nIn our model, the attention-based model and the CTC share the encoder and are optimized simultaneously as shown in Figure 1.BIBREF11 Long Short-Term Memory (LSTM) BIBREF12 is used for RNNs in the encoder and the decoder.\n\nIn the conventional DNN-HMM hybrid modeling, the acoustic model outputs probabilities triphone states from each acoustic feature which is converted into the most likely word sequence. An end-to-end model, on the other hand, has some degree of freedom in the modeling unit other than phones, and there are some studies that use characters or words as a unit BIBREF13, BIBREF14. A word unit based end-to-end model can take long context into consideration at the inference time, but it has the data sparsity problem due to its large vocabulary size. Though phone unit based model does not have such a problem, it cannot grasp so long context. It depends on the size of available corpora to decide which to adopt. In addition to these both models, a word piece unit, which is defined by automatically dividing a word into frequent parts, has been proposed BIBREF15, BIBREF16, and its vocabulary size can be determined almost freely.\n\nIn this paper, we investigate the modeling unit for the end-to-end Ainu speech recognition since the optimal unit for this size of corpus is not obvious. BIBREF17 It is presupposed that all units can be converted into word units automatically. The candidates are phone, syllable, word piece (WP), and word. Examples of them are shown in Table 3 and the details of each unit are described below.\n\nAs mentioned in Section 2.1, we regard the Roman letters as phones. `=' and the special symbol `$\\langle $wb$\\rangle $', which means a word boundary, are added to make it possible to convert the output into a sequence of words like the `original' in Table 3.\n\nA syllable of the Ainu language takes the form of either V, CV, VC, or CVC, where `C' and `V' mean consonant and vowel, respectively. The phones {a, e, i, o, u} are vowels and the rest of the Roman letters in Section 2.2 are consonants. In this work, every word is divided into syllables by the following procedure.\n\nA word with a single letter is unchanged.\n\nTwo consecutive Cs and Vs are given a syllable boundary between them.\n\nR$^*${CC, VV}R$^*$$\\rightarrow $ R$^*${C-C, V-V}R$^*$\n\n(R $$ {C, V})\n\nPut a syllable boundary after the segment-initial V if it is following by at least two phones.\n\nVCR$^+$$\\rightarrow $ V-CR$^+$\n\nPut a syllable boundary after CV repeatedly from left to right until only CV or CVC is left.\n\n(CV)$^*${CV, CVC} $\\rightarrow $ (CV-)$^*${CV, CVC}\n\nIn addition, `=' and `$\\langle $wb$\\rangle $' are added as explained in Section 4.2.1. through the model training process.\n\nThis procedure does not always generate a morphologically relevant syllable segmentation. For example, a word isermakus (meaning “(for a god) to protect from behind”) is divided as i-ser-ma-kus, but the right syllabification is i-ser-mak-us.\n\nThe byte pair encoding (BPE) BIBREF18 and the unigram language modeling BIBREF19 are alternative methods for dividing a word into word pieces. The former repeatedly replaces the most common character pair with a new single symbol until the vocabulary becomes the intended size. The latter decides the segmentation to maximize the likelihood of occurrence of the sequence. We adopt the latter and use the open-source software SentencePiece BIBREF20. With this tool, `$\\langle $wb$\\rangle $' and other units are often merged to constitute a single piece as seen in Table 3.\n\nThe original text can be segmented into words separated by spaces. To make the vocabulary smaller for the ease of training, `=' is treated as a word and infrequent words are replaced with a special label `$\\langle $unk$\\rangle $'. As seen in Table 3, `a=saha' is dealt with as three words (`a', `=', `saha') and the word `kokopan' is replaced with `$\\langle $unk$\\rangle $'.\n\nWhen an enough amount of data is not available for the target languages, the ASR model training can be enhanced by taking advantage of data from other languages BIBREF21, BIBREF22. There are some similarities between Ainu and Japanese language BIBREF23. For instance, both have almost the same set of vowels and do not have consonant clusters (like `str' of `strike' in English). Hence, the multilingual training with a Japanese corpus is expected to be effective. In addition, an English corpus is used for the purpose of comparison. The corpora used are the JNAS corpus BIBREF24 (in Japanese) and the WSJ corpus BIBREF25 (in English). JNAS comprises roughly 80 hours from 320 speakers, and WSJ has about 70 hours of speech from 280 speakers.\n\nIn the multilingual training, the encoder and the attention module are shared among the Ainu ASR model and the models for other languages, and they are trained using data for all languages. Figure 2 shows the architecture for the multilingual learning with two corpora. When the input acoustic features are from the Ainu ASR corpus, they go through the shared encoder and attention module and are delivered into the decoder on the left side in Figure 2 as a context vector. In this case, the right-side decoder is not trained.\n\nIn this section the setting and results of ASR experiments are described and the results are discussed.\n\nThe ASR experiments were performed in speaker-open condition as well as speaker-closed condition.\n\nIn the speaker-closed condition, two episodes were set aside from each speaker as development and test sets. Thereafter, the total sizes of the development and test sets turns out to be 1585 IPUs spanning 2 hours 23 minutes and 1841 IPUs spanning 2 hours and 48 minutes respectively. The ASR model is trained with the rest data. In the speaker-open condition, all the data except for the test speaker's were used for training As it would be difficult to train the model if all of the data of speaker KM or UT were removed, experiments using their speaker-open conditions were not conducted.\n\nThe input acoustic features were 120-dimensional vectors made by frame stacking BIBREF26 three 40-dimensional log-mel filter banks features at contiguous time frames. The window length and the frame shift were set to be 25ms and 10ms. The encoder was composed of five BiLSTM layers and the attention-based decoder had a single layer of LSTM. Each LSTM had 320 cells and their weights were randomly initialized using a uniform distribution DBLP:journals/corr/HeZR015 with biases of zero. The fully connected layers were initialized following $\\mathcal {U}{(-0.1, 0.1)}$. The weight decay BIBREF27 whose rate was $10^{-5}$ and the dropout BIBREF28 following $\\mathcal {B}e(0.2)$ were used to alleviate overfitting. The parameters were optimized with Adam BIBREF29. The learning rate was $10^{-3}$ at first and was multiplied by $10^{-1}$ at the beginning of 31st and 36th epoch BIBREF30. The mini-batch size was 30 and the utterances (IPUs) were sorted in an ascending order of length. To stabilize the training, we removed utterances longer than 12 seconds.\n\nThe loss function of the model was a linear sum of the loss from CTC and the attention-based decoder,\n\nwhere $\\lambda $ was set to be 0.5. Through all experiments, the phone labels are used to train the auxiliary CTC task because it is reported that the hierarchical architecture, using few and general labels in the auxiliary task, improves the performance BIBREF31.\n\nStrictly speaking, the number of each modeling units depends on the training set, but there are roughly 25-phone, 500-syllable, and 5,000-word units including special symbols that represent the start and end of a sentence. The words occurring less than twice were replaced with `$\\langle $unk$\\rangle $'. The vocabulary size for word piece modeling was set to be 500. These settings were based on the results of preliminary experiments with the development set.\n\nFor the multilingual training, we made three training scripts by concatenating the script of Ainu and other languages (JNAS, WSJ, JNAS and WSJ). The model was trained by these scripts until 30th epoch. From 31$^{\\rm {st}}$ and 40th epoch, the model was fine-turned by the Ainu script. Phone units are used for JNAS and WSJ throughout the experiments.\n\nTable 4 shows the phone error rates (PERs) and word error rates (WERs) for the speaker-closed and speaker-open settings. The `average' is weighted by the numbers of tokens in the ground truth transcriptions for speaker-wise evaluation sets.\n\nThe word recognition accuracy reached about 80% in the speaker-closed setting. In the speaker-open setting it was 60% on average and varied greatly from speaker to speaker (from 50% to 70%). The best phone accuracies in the speaker-closed and speaker-open settings were about 94% and 86%. Regardless of the settings, the syllable-based modeling yielded the best WER and PER. This suggests that syllables provide reasonable coverage and constraints for the Ainu language in a corpus of this size.\n\nThe PERs of the word unit model were larger than those of other units. This is because the word model often outputs the `$\\langle $unk$\\rangle $' symbols while other unit models are able to output symbols similar in sound as below.\n\nIn this example, the PER of the syllable model is 5% and that of the word model is 30% even though the WERs are the same. (The output of the syllable model is rewritten into words using the `$\\langle $wb$\\rangle $' symbol.)\n\nWERs are generally much larger than PERs and it is further aggravated with the Ainu language. This is because, as mentioned in Section 2.1, the Ainu language has a lot of compound words and the model may be confused about whether the output is multiple words or a single compound word. The actual outputs frequently contain errors as below. The WER of this example is 57% though the PER is zero.\n\nThe results of multilingual training in which the modeling unit is syllables are presented in Table 5. All error rates are the weighted averages of all evaluated speakers. Here, `+ both' represents the result of training with both JNAS and WSJ corpora. The multilingual training is effective in the speaker-open setting, providing a relative WER improvement of 10%. The JNAS corpus was more helpful than the WSJ corpus because of the similarities between Ainu and Japanese language.\n\nIn this study, we first developed a speech corpus for Ainu ASR and then, using the end-to-end model with CTC and the attention mechanism, compared four modeling units: phones, syllables, word pieces, and words. The best performance was obtained with the syllable unit, with which WERs in the speaker-closed and speaker-open settings were respectively about 20% and 40% while PERs were about 6% and 14%. Multilingual training using the JNAS improved the performance in the speaker-open setting. Future tasks include reducing the between-speaker performance differences by using speaker adaptation techniques.\n\nThe data sets used in this study are provided by the Ainu Museum and Nibutani Ainu Culture Museum. The authors would like to thank Prof. Osami Okuda of Sapporo Gakuin University for his useful advices on the Ainu language.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 82
+    },
+    {
+      "section": "Abstract",
+      "start": 84,
+      "end": 1300
+    },
+    {
+      "section": "Introduction",
+      "start": 1302,
+      "end": 3365
+    },
+    {
+      "section": "Overview of the Ainu Language",
+      "start": 3367,
+      "end": 3596
+    },
+    {
+      "section": "Overview of the Ainu Language ::: Background",
+      "start": 3598,
+      "end": 4542
+    },
+    {
+      "section": "Overview of the Ainu Language ::: The Ainu Language and its Writing System",
+      "start": 4544,
+      "end": 5776
+    },
+    {
+      "section": "Overview of the Ainu Language ::: Types of Ainu Recordings",
+      "start": 5778,
+      "end": 6055
+    },
+    {
+      "section": "Overview of the Ainu Language ::: Previous Work",
+      "start": 6057,
+      "end": 6795
+    },
+    {
+      "section": "Ainu Speech Corpus",
+      "start": 6797,
+      "end": 6895
+    },
+    {
+      "section": "Ainu Speech Corpus ::: Numbers of Speakers and Episodes",
+      "start": 6897,
+      "end": 7402
+    },
+    {
+      "section": "Ainu Speech Corpus ::: Data Annotation",
+      "start": 7404,
+      "end": 8089
+    },
+    {
+      "section": "End-to-end Speech Recognition",
+      "start": 8091,
+      "end": 8391
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: End-to-end Modeling",
+      "start": 8393,
+      "end": 10626
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Modeling Units",
+      "start": 10628,
+      "end": 11952
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Modeling Units ::: Phone",
+      "start": 11954,
+      "end": 12212
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Modeling Units ::: Syllable",
+      "start": 12214,
+      "end": 13355
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Modeling Units ::: Word Piece",
+      "start": 13357,
+      "end": 13928
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Modeling Units ::: Word",
+      "start": 13930,
+      "end": 14304
+    },
+    {
+      "section": "End-to-end Speech Recognition ::: Multilingual Training",
+      "start": 14306,
+      "end": 15577
+    },
+    {
+      "section": "Experimental Evaluation",
+      "start": 15579,
+      "end": 15682
+    },
+    {
+      "section": "Experimental Evaluation ::: Data Setup",
+      "start": 15684,
+      "end": 16373
+    },
+    {
+      "section": "Experimental Evaluation ::: Experimental Setting",
+      "start": 16375,
+      "end": 18615
+    },
+    {
+      "section": "Experimental Evaluation ::: Results",
+      "start": 18617,
+      "end": 20693
+    },
+    {
+      "section": "Summary",
+      "start": 20695,
+      "end": 21302
+    },
+    {
+      "section": "Acknowledgement",
+      "start": 21304,
+      "end": 21526
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "train",
+    "qasper_paper_id": "2002.06675",
+    "arxiv_id": "2002.06675",
+    "source_url": "https://arxiv.org/abs/2002.06675",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0",
+    "source_revision": "13b496d2a5359329b110e3419628de3cf791843b"
+  }
+}
