@@ -1,0 +1,15 @@
+% Project entry; requires hyperref and xcolor from the parent resume.
+% Error counts describe the selected 40-question September 30 comparison,
+% not full-test QASPER or a general answer-quality improvement.
+\textbf{QASPER Agent Studio: Qwen-Envoy Research Agents}
+\hfill
+\textit{\textcolor[RGB]{80, 80, 80}{
+\href{https://github.com/Jasonlingg/Qwen-Envoy}{GitHub Link}}}
+
+\begin{itemize}
+\item \textbf{Agent Infrastructure:} Built a \textbf{Docker}-sandboxed Python research agent with search, read, and citation tools, \textbf{vLLM} inference, \textbf{MCP} integration, and a Studio interface for inspecting saved execution traces
+
+\item \textbf{SFT \& Evaluation:} Fine-tuned \textbf{Qwen3-8B} with \textbf{TRL} and rank-4 \textbf{QLoRA} on \textbf{35} curated, replay-verified trajectories; measured error-affected episodes falling from \textbf{22/40 to 1/40} on a selected QASPER subset, while supported answers remained \textbf{3/20}
+
+\item \textbf{Post-Training Systems:} Integrated \textbf{Prime-RL} and \textbf{Verifiers} for a GRPO pilot with three verified updates, checkpoint reloads, and optimizer-state continuity checks; enforced token-exact train/inference prefix alignment in per-action SFT
+\end{itemize}

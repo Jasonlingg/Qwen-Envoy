@@ -1,5 +1,496 @@
 # Envoy / Qwen research-agent handoff
 
+> **October 25: commit authorization and unused-code review completed.**
+> User explicitly authorized committing the accumulated work after an unused-code
+> check, superseding earlier no-commit instructions for this work. Review:
+> docs/PRECOMMIT_REVIEW_20261025.md. No unused runtime code was established;
+> ReaderEnv is a dynamically loaded plugin, and offline reward candidates retain
+> documented reproduction commands/tests. Withdrawn custom backend remains absent.
+> Verified 160 native tests and 2224 full tests / 17 optional skips; Ruff, artifact
+> checks and frozen source-bound plan pass. No paid work or cloud deployment.
+> Work grouped into sandbox selection, training/evidence, and README/resume/status
+> commits. Preserve the three original untracked October16 plan/spec inputs.
+> Ignored out/ adapters, deployment drivers, connection files and environments
+> stay local. Protected legacy files unchanged. No push authorized or performed.
+
+
+> **October 25 cloud-controller move: inspected and scoped; not deployed.**
+> User asked to move the controller/guard into the cloud and whether it is a big
+> lift. [Deployment proposal](docs/READER_CLOUD_CONTROLLER.md): reuse existing
+> external Docker controller on a real Linux CPU VM, keep native GPU training,
+> supervise controller and watchdog separately, save outputs before teardown and
+> prove SSH/laptop-disconnect tolerance with CPU-only scripted work first. No
+> model/reward/harness rewrite. Provider/VM choice and combined CPU/GPU/storage
+> price remain unresolved; an async question asks existing VM vs temporary VM.
+> No machine, model call, training retry, upload or commit started. Prior $8 GPU
+> pilot approval does not authorize another attempt or silently added CPU costs.
+> Important provider check: installed CLI has no --terminate-after. Official
+> v2.12 release/current plugin say removed because backend did not enforce it;
+> older local golden paths recommending it are stale. Cloud watchdog survives
+> laptop sleep, but same-VM services do not survive controller-VM loss; separate
+> external deadline needed for that stronger guarantee. All implementation and
+> prior run receipts remain unchanged; preparation is a design, not live proof.
+
+
+> **October 25 final: paid pilot stopped after three verified updates; GPU deleted.**
+> [Actual report](docs/READER_RL_PILOT_20261025.md),
+> [receipts](examples/verifiers-port/reader-pilot-v2-20261025/summary.json).
+> Actual native GRPO from original V5: all 504 optimizer counters 0 -> 1 -> 2 -> 3;
+> each full reload/export/startup check and native token scorer passed. Update-4
+> collection failed: request297 received 502 ReadTimeout, no fourth trainer run.
+> macOS Clamshell Sleep at13:30:00/05 coincides with failed request13:30:05.1196;
+> most likely the sleeping local Docker controller interrupted SSH/native transport.
+> No GPU OOM/optimizer-failure evidence; exact upstream state unobserved.
+> 23 questions attempted, 22 full groups/3mixed, 92episodes/91healthy; originals
+> untrainable. 297requests (296returned/1uncertain), 1,223,340 reserved tokens.
+> Held-out references remain CLOSED; no partial candidate selection or evaluation.
+> KEEP ORIGINAL V5; no answer-quality/model-improvement claim, upload or paid retry.
+> All three adapters and logs exported and SHA-checked under
+> out/reader-prime-pilot-v2-20261025/. Step3 SHA
+> 29827073a808bbb81f0819336c2f7766024c3e97c09e4ac5272ba286f5ef553d.
+> Portable adapters only: full optimizer checkpoints deleted, no exact resume.
+> Driver failure did not immediately request resource deletion; idle allocation
+> persisted until explicit stop after full laptop wake/evidence export (~35min
+> after recorded failure). A deployment-only fatal export/stop wrapper is now
+> tested offline, as-run driver preserved; not used during this failed attempt.
+> IMPORTANT: local watchdog/caffeinate also depend on awake laptop. Before a new
+> paid run, require always-on Docker controller and sleep-independent resource
+> deadline, plus new explicit authorization. No provider-enforced dollar cap.
+> Owned Pod r4bp0gb1wv49sc and volume qgcgohq7tk deleted by watchdog; fresh MCP
+> reads both404, all92owned Docker containers absent. Unrelated resources untouched.
+> 102.91min lifetime / $3.26 conservative estimate beforetax. Provider has posted
+> $1.4329332167 asof18:17:51UTC; incomplete invoice, not total actual cost.
+> 32focused guard/controller/deployment checks pass; full2224pass/17optionalskips,
+> three existing SWIG warnings. Prep native183 passed. Frozen sources preserved;
+> of2534pre-existing files only this handoff changed. No staging/commits.
+> Historical ACTIVE notices below are superseded by this final notice.
+
+
+> **October 25 ACTIVE paid pilot: two of ten updates fully verified; cycle 3 collecting.**
+> User approved $8 estimated / 3h45 for actual ten-update training and the 12-question
+> paired comparison. No new paid retry or commit. Authorization and live files:
+> out/reader-prime-pilot-v2-20261025/. Native work /workspace/reader-training on
+> owned Pod r4bp0gb1wv49sc, temporary STANDARD 600GB volume qgcgohq7tk, US-WA-1.
+> GPU: A100 SXM 80GB, $1.79/h; 80GB root disk; conservative combined bound $1.90/h.
+> Independent caffeinate/watchdog PID 98006; deadline 1792959397.414371 UTC epoch
+> (20:16:37 UTC). Local detached driver PID 1323, remote native parent PID 515.
+> Neither resource is cleaned up yet. Only these owned resources may be removed.
+> SSH direct 195.26.233.82:57698, key ~/.ssh/id_ed25519; connection.json is saved.
+> Bootstrap initially failed because image USER appuser could not write SSH host
+> keys. Same Pod repaired with passwordless sudo entrypoint; server and GPU verified.
+> Pinned assets/software passed. Source-bound v2 plans use 80 eligible training
+> questions, four samples/group, temp/top-p 1, seed42, LR1e-6, native GRPO/LoRA,
+> exactly ten verified updates selected at step ten. No partial candidate unlock.
+> Verified optimizer counters 0->1->2, native startup/export reloads pass. Scorers:
+> step1 587 tokens / mean .005459 / max .181356; step2 591 / .005168 / .115765.
+> First adapter SHA f5a2a18f2d32b1c70ec8bb355acb4b8740533363a6a7aae698cbdcb7552f0234;
+> step2 f6be04b997249a63bbe50aa3abd6ef28c4d9e0afd5734a4c87bd73af2cf7d5d5.
+> Training driver already running: DO NOT re-run it or resample. Read monitor.py,
+> training-orchestration.log and controller-training/ for current progress. All
+> raw episodes stay untrainable; only complete healthy mixed groups are admitted.
+> References still CLOSED. Once ten updates finish: freeze candidate on GPU, copy
+> session locally, explicitly open/review all 12 references BEFORE model outputs,
+> run both arms through local Docker + SSH native engine, export masked claim review.
+> Same frozen v2 protocol and success rule; no checkpoint search. Keep judgments
+> model-assisted with human review null. Capture adapters/receipts before cleanup.
+> No commits/upload/model improvement claimed. Full 2224/17 optional skips and
+> native183 passed during preparation; production code unchanged since then.
+
+> **October 25: v2 training revision and bounded pilot prepared; GPU not launched.**
+> [Protocol/runbook](examples/reader-rl-pilot-v2/README.md),
+> [protocol](examples/reader-rl-pilot-v2/protocol.json),
+> [reward revision](examples/reader-rl-pilot-v2/reward-revision.json).
+> Explicit opt-in `reader-short-fact-reference-v2`: six exact reviewed phrases
+> across four training cards. The ambiguous word/sentence representation question
+> is held entirely, alongside the earlier incomplete financial-data question:
+> 80 eligible questions. Original bundle/keys, v1 protocol and audit receipts stay
+> intact; support spans, inspection/citation gates, prompt and Docker are unchanged.
+> New protocol selection binds the revision through prepared controller/GPU plans,
+> Verifiers tasks/rewards and paired evaluation. Default tasksets remain v1.
+> Saved 44-output replay: positives 4 -> 7, mixed 2/11 -> 4/11. On the eligible
+> subset (40 episodes), positives 3 -> 6 and mixed 1/10 -> 3/10. This is fixed-output
+> reward coverage, not model improvement. Originals remain untrainable.
+> Ten updates from original pinned V5, final step ten only, same 12 locked papers /
+> 24 paired episodes and original quality decision rule. No repeat integration run.
+> Proposal: **$8 estimated / 13,500s (3h45) total owned lifetime**, training 10,800s,
+> evaluation 1,800s, setup/export/cleanup 900s. Requests/tokens unchanged (training
+> 1,024 / 8,388,608; evaluation 288 / 2,359,296). At most $1.92/h combined, 10%
+> cost headroom. Fresh catalog A100 SXM 80GB Secure $1.79/h, US-WA-1 LOW stock;
+> STANDARD volume supported. Price-read saved; stock not reserved, root-disk/price
+> and availability need a final launch check. Observed-pattern estimate fits, but
+> a 25% time margin does not fit 3h45: completion is not guaranteed. Stop incomplete
+> if a guard trips; no partial candidate unlock or automatic extra paid retry.
+> **New $8 allowance is NOT authorized.** Matching explicit authorization receipt
+> is required by the updated independent watchdog; false template cannot activate
+> it. Default watchdog retains old $5/two-hour limits. No paid resources, model
+> calls, optimizer updates, locked reference contents, commits, uploads or promotion
+> during preparation. Human review null. Existing user edits and all 29 frozen
+> runtime files preserved. Source-bound old execution plans are historical and must
+> be regenerated for the new implementation; old receipts were not rewritten.
+> Tests: 183 native focused pass; 2,224 full pass / 17 optional skips. One new test's
+> optional Verifiers version handling was fixed; it passes under pinned 0.4.0 and
+> skips in the incompatible main environment. Saved case-study checker, Ruff and
+> diff checks pass. Prepared local plan and helpers: out/reader-pilot-v2-prep-20261025/.
+> Next decision: explicit approval of the increased budget, then fresh provisioning
+> with an independent guard, one pilot and comparison, and publish the outcome.
+
+> **October 24 follow-up: offline wording audit and cost projection complete.**
+> [Report](docs/READER_REWARD_REVIEW_20261024.md),
+> [audit summary](examples/verifiers-port/reader-reward-review-20261024/summary.json).
+> Model-assisted review of all 22 training wording rejections: 7 complete answers
+> supported in the reviewed paper source, 7 incomplete, 7 unsupported/irrelevant,
+> 1 ambiguous word-versus-sentence representation target. Human review null.
+> Seven proposed exact aliases tested only in memory; all existing citation gates
+> retained. Three gain reward; four still fail required-span/extra-citation checks.
+> Fixed 44 saved outputs: positives 4 -> 7, mixed groups 2/11 -> 4/11. This cannot
+> predict policy behavior or prove model improvement. Raw episodes stay untrainable.
+> No active reward/key/runtime changes, model calls, paid resources, training,
+> held-out reference review, uploads or commits during this audit.
+> Native timing includes checkpoint/process overhead: ten-update training plus
+> setup/export and the existing 30m evaluation allowance projects 3.09h / $5.88
+> at the previous $1.90/h planning rate, $7.35 with a 25% time margin. Counterfactual
+> alias scenario 2.66h / $5.05, optimistic every-group-mixed case 2.38h / $4.53.
+> These are rough historical extrapolations, not quotes or enforceable ceilings.
+> **Do not launch the unchanged ten-update plan:** every scenario exceeds its
+> one-hour training and two-hour rental limits. Original protocol/budget untouched.
+> Next: review/version training-only aliases, resolve/hold the ambiguous question,
+> then prepare a pilot with mutually consistent update count, timing and budget.
+> Evaluation stays locked; larger paid work needs separate authorization.
+> 55 focused tests pass; full 44-episode scorer replay and 29 frozen runtime hashes
+> checked. Of 2,515 pre-existing files only this handoff changed; user edits intact.
+
+> **October 24 latest: two-update native Qwen integration gate PASSED.**
+> [Report](docs/PRIME_RL_TWO_UPDATE_20261024.md),
+> [receipts](examples/verifiers-port/prime-two-update-20261024/summary.json).
+> Two real updates and both fresh full DCP reloads passed. All 504 optimizer
+> counters **0 -> 1 -> 2**, exact moment/state carryover between cycles, native
+> sampled-token scorers and startup/export tensor checks passed. Native result
+> verified_updates=2, no unverified attempts. Updates 24.9s / 22.0s; peak 35.34GiB.
+> 139 calls / 572,022 reserved tokens, all returned; 44 healthy original untrainable
+> Docker episodes over 11 training questions. Nine uniform-zero groups skipped
+> before cycle-2 mixed [1,0,0,0]; cycle 1 [1,1,1,0]. Reward categories are mechanical,
+> not semantic grades. No held-out outputs/reference review, human review or
+> model-improvement claim. Ten-update pilot/paired evaluation not launched.
+> Prospective timing override used (14,400s native ceiling later than rental
+> guard); actual native work 1,783s, narrowly within old 30m in this attempt.
+> Do not claim a controlled timing improvement. Source/reward/runtime unchanged.
+> Portable adapters and logs: out/reader-prime-no-work-cutoff-20261024/. Final
+> step-2 SHA af5db09f6391e35f2ab8782ebb8d5ca5abb75537a50c291fa3af7d0b97479995;
+> retained locally for diagnostics, no promotion/upload. Full optimizer checkpoints
+> deleted with temporary volume after verification/evidence export. Watchdog
+> deleted Pod x40apwdixaelxi and volume ie1httce8x; fresh MCP reads both 404, all
+> 44 local owned Docker containers absent. About $1.16 estimated, invoice pending.
+> Current native 139 / deployment 8 tests pass; latest full 2,204 / 16 skips predates
+> this retry on unchanged production sources. No commits. Next: assess sparse
+> signal and a feasible larger-run budget before any ten-update/quality run.
+
+> **October 24 next-check configuration: remove the separate 30-minute cutoff.**
+> User requested “set no time limit then.” Prepared a fresh two-update plan and
+> deployment driver at `out/reader-prime-no-work-cutoff-20261024/`; no new GPU or
+> paid run was started by this configuration change. The native API requires a
+> finite ceiling: 14,400 seconds is deliberately later than the existing rental
+> guard's maximum 7,200 seconds, so it cannot stop work before that guard. Driver
+> execution requires a current independent watchdog heartbeat and the unchanged
+> estimated $5 rental bound. This is not an unlimited-spend authorization or a
+> provider-enforced dollar cap. Requests/tokens remain 256 / 2,097,152. Eight
+> transport/guard tests pass. The prospective integration timing override is
+> `examples/verifiers-port/prime-next-integration-policy.json`; historical numeric
+> protocol/results are untouched. Reader/reward/native trainer unchanged. Use this
+> fresh driver/plan for a future launch; do not restart the prior timed-out plan.
+
+> **October 24 latest retry: two actual Qwen updates, one fully verified.**
+> [Report](docs/PRIME_RL_MONITOR_RETRY_20261024.md),
+> [receipts](examples/verifiers-port/prime-monitor-retry-20261024/summary.json).
+> Full-model initializer/DCP counters: all 504 start at **0**, update-1 fresh
+> native reload has **1**, and cycle-2 preparation preserves the exact optimizer
+> fingerprint/counter **1**. Step 1 tensor export/startup checks passed. Both native
+> scorers passed. Real updates: 26.8s / 21.5s, peak 35.34GiB, finite loss/gradient.
+> **Two-update gate incomplete:** unchanged 1,800s work deadline killed step-2
+> checkpoint save; no committed metadata, no counter-2/full reload proof. Do not
+> resume/promote that partial checkpoint. Native result verified_updates=1.
+> 139 calls / 570,969 reserved tokens; 44 healthy original untrainable Docker
+> episodes across 11 training questions. Cycle 2 skipped nine uniform-zero groups
+> before [1,0,0,0]. Reward reasons: 24 unknown accepted-wording, 4 missing reviewed
+> support, 13 no verified terminal, 3 matches; these are not semantic grades.
+> Monitor recovered two live SSH connection timeouts without experiment/model
+> retries. No ten-update pilot, held-out model/reference review, quality claim or
+> paid retry after stop. Watchdog deleted Pod amuoal2bmzfp2z and volume nkk6nbdrz7;
+> fresh MCP reads both 404; all 44 local Docker containers absent. About $1.21
+> estimated this attempt; actual invoice pending. Current native 139 / transport 4
+> tests pass; latest full 2,204 / 16 skips predates this retry on unchanged sources.
+> Operational directory: out/reader-prime-monitor-retry-20261024/; step-1 verified
+> adapter SHA 0e870e3110bb5f68909be5830ff8564f6e4305869aa9f386a1bb4368a3261a29
+> retained locally for diagnostics only. No commits/upload. Next: review sparse
+> reward reasons and checkpoint/runtime budget before another paid integration;
+> keep strict gates. Old notices below are historical and superseded here.
+
+> **October 24 later check: tiny CUDA counter diagnostic passed; Qwen gate incomplete.**
+> [Report](docs/PRIME_RL_COUNTER_CHECK_20261024.md),
+> [receipts](examples/verifiers-port/prime-counter-check-20261024/summary.json).
+> Fresh corrected-code plans and exact GPU preflight passed. An SSH status read
+> exited 255 during inference startup; deployment cleanup terminated the native
+> parent before generation. This attempt: **0 Qwen calls / 0 attempted or verified
+> updates**, no new adapter, no ten-update pilot or held-out evaluation. Underlying
+> SSH disconnect detail was not captured. A separate tiny CUDA AdamW/DCP test on
+> the actual A100/torch2.13 stack passed **0 -> 1 -> 2**, three checkpoint reloads
+> and exact equality with fresh AdamW weights. This is not Qwen/DTensor/Prime-RL
+> integration proof. Deployment-only read monitor now has bounded read retries
+> and stderr receipts (four authored tests); not yet live-training verified.
+> Repaired driver/tests: `out/reader-prime-counter-check-20261024/`. Do not reuse
+> the started plans. Watchdog deleted live Pod qptbwk1qk67kx5 and volume 0rdp3k2d1m;
+> fresh MCP reads both 404. About $0.33 estimated this attempt; actual invoice rows
+> pending. No additional paid retry after this stop. **139 native / 2,204 full
+> tests passed**, 16 optional skips; sources/protocol unchanged, no commits/upload.
+
+> **October 24: integration attempt stopped; optimizer bootstrap repaired locally.**
+> [Actual report](docs/PRIME_RL_INTEGRATION_20261024.md),
+> [receipts](examples/verifiers-port/prime-rl-integration-20261024/summary.json).
+> Real V5 -> external local Docker -> native scorer -> one actual gradient update;
+> four episodes on one training question, rewards [0,1,1,0], 15 calls / 62,002
+> reserved tokens. Scorer mean .00362124 / max .20048976 passed .03/.25. Update
+> 26.7s, peak 35.3GiB, finite loss/gradient. **Zero verified updates**: fresh native
+> DCP reload found AdamW step 2 at progress 1. Initial native DCP had already
+> materialized a dummy zero-gradient AdamW step (all 504 counters at 1).
+> Strict gate stopped before update two. No ten-update pilot or held-out outcomes.
+> Reproduced get_state_dict's side effect on the actual GPU stack and inspected
+> actual checkpoint scalar states. Local initializer fix permits only fresh
+> zero-decay AdamW, verifies unchanged weights/zero moments, normalizes dummy step
+> to zero before saving. No native optimizer/loss/trainer patch or weakened gate.
+> Real CPU PyTorch DCP round-trip and first-real-update equality regression passes;
+> corrected GPU path remains unverified. No extra paid retry after failure.
+> Pod dgnq9xllg9jecw and volume sjnuc6xqu3 **deleted, fresh GETs both 404**.
+> Watchdog early cleanup refused mismatched MCP/CLI timestamp string formats;
+> explicit MCP fallback removed resources. Timestamp normalization/regression fixed
+> locally; do not claim that automatic live deletion succeeded. Conservative
+> time/rate estimate $0.95; actual billed amount pending (provider rows not posted).
+> Raw receipts/failed forensic adapter in out/reader-prime-integration-20261024/;
+> no promotion/Hub upload/commit. All 29 reader runtime/data/reference hashes and
+> numerical protocol unchanged; held-out refs unopened. Large optimizer files were
+> deleted with temporary storage after evidence export. Next: repaired bounded
+> two-update gate, then a full-run projection including measured checkpoint I/O.
+> Final repair validation: **139 native tests / 2,204 full passed**, 16 optional
+> skips; native has three expected CPU DCP warnings, full has three existing SWIG
+> warnings. Ruff/diff clean. Original edits and 29 frozen reader files/data hashes
+> preserved. Real CLI post-deletion absence reads pass idempotently, not a live
+> deletion test. Old source-bound launch plans are stale; prepare new ones for a
+> future authorized trial. Current artifact manifest explicitly says post-failure
+> local repair, with prior manifest SHA and unchanged numerical protocol hash.
+
+> **October 24: bounded external-controller integration launched.**
+> User said “ok go” after the two-update / conditional-ten-update explanation.
+> Current allowance: $5 estimated, at most two hours owned GPU lifetime, one A100
+> 80GB; generation/update/workload ceilings remain the unchanged protocol's.
+> [External-controller runbook](docs/PRIME_RL_EXTERNAL_CONTROLLER.md).
+> `prime_controller` is a hash-bound file handoff to the existing native collector;
+> Python still executes only in local frozen Docker. GPU stages keep native
+> scoring/training/optimizer/process cleanup. Default same-host mode is retained.
+> An independent local caffeinated watchdog scopes deletion to creation receipts.
+> It is not provider-enforced and needs local/control-plane availability.
+> Live temporary Pod `dgnq9xllg9jecw`, volume `sjnuc6xqu3` (600GB, US-WA-1).
+> Fresh reads: A100 $1.79/hour, standard volume $0.07/GB/month; projection < $4
+> before tax at two hours. Current image digest was revalidated against GHCR bytes.
+> Pre-launch **136 native / 2,202 full passed**, 16 skips / three existing warnings;
+> Ruff/diff clean. All 29 frozen runtime and original data/reference hashes intact.
+> Logs/ownership/watchdog/launch scripts: `out/reader-prime-integration-20261024/`.
+> At this entry: image startup only, no new optimizer update or held-out outcome.
+> Check actual latest runtime receipts before assuming completion. No Git commits.
+
+> **October 24: paired RL evaluation collection/review wired locally.**
+> User approved the next local step; no paid compute, new Qwen generation,
+> optimizer update, Hub upload or Git commit. [Runbook](docs/READER_PAIRED_EVALUATION.md).
+> `src.training.reader_evaluation` freezes only the complete predeclared V5-start
+> ten-update pilot after checking all ten adapter/optimizer/scorer/load receipts,
+> then copies hash-bound adapters/receipts into a portable controller session.
+> Explicit reference export/review is gated after candidate freeze and before
+> generation. Locked reference contents remain unopened in this preparation pass.
+> The numerical protocol remains byte-identical (SHA `1d0038b7…05aa8d9`).
+> New unscored evaluation tasks use the same native renderer/token transport and
+> frozen Docker reader; ordinary training rejects evaluation-session tasks.
+> Shared durable 288-request/2,359,296-token/1,800-second caps, V5-first order,
+> paired seeds, no retries/replacements, persisted failures and owned cleanup.
+> VF omits task state in its JSON: saved records explicitly retain Docker packets.
+> Masked review export preserves raw traces/private arm mapping; claim inventory,
+> requested-fact review, source bindings and original semantic/resource thresholds
+> are required. Missing billed cost/startup/lifetime receipts stays inconclusive.
+> Quote checks, strict reward, official F1 and fixture success do not prove support
+> or model gain. Existing secondary scorers are not auto-run by this new command.
+> Independent human review remains null unless an actual human supplies it.
+> Loopback-only engine forwarding supports local Docker plus remote native
+> inference for evaluation; native adapter loading records path/RPC/bytes identity,
+> not engine tensor attestation. No actual SSH/GPU connection made this pass.
+> Found/fixed a GPU-preflight blocker: Prime-RL is a namespace package with an
+> empty `__file__`; both source checks now locate a real native module, retaining
+> the same seven source hashes. Training plans now enforce exact seed-42 order.
+> **Remaining launch gates:** consecutive training updates require Docker and CUDA
+> together with the current launcher; a newly rented GPU container is not certified.
+> Split training orchestration is not implemented by this evaluation work. Also
+> install/verify the separate provider lifetime/cost watchdog and obtain fresh paid
+> authorization. Proposed $5/two-hour allowance remains unauthorized. No paid
+> allowance from the completed one-update smoke is reusable.
+> Isolated native suite: **115 passed**, including authored replies through real
+> Docker for both arms and native admin HTTP with explicitly mocked GPU identity.
+> These fixtures are untrainable, not Qwen inference or GPU evidence. New valid
+> preparation plans retain 81 training questions and the 12-paper evaluation lock.
+> Logs/plans: `out/reader-paired-prep-20261024/`. Earlier edits, frozen runtime/data,
+> and protocol preserved; artifact manifest records the prior manifest SHA.
+> Full **2,182 passed / 16 optional skips / three existing SWIG warnings**;
+> Ruff/diff clean. All 29 frozen runtime hashes and source/reference hashes remain
+> intact; earlier user edits preserved. Detailed validation is in the runbook.
+
+> **October 24: bounded RL pilot protocol and training-label review prepared.**
+> User approved continuing RL; this pass prepares evaluation/success criteria
+> and reviews training labels, without paid compute or commits.
+> [Protocol/runbook](docs/READER_RL_PILOT.md),
+> [bound artifacts](examples/reader-rl-pilot-v1/README.md).
+> Follow-up implementing-assistant review covers all 82 training questions,
+> accepted variants and supporting excerpts, not full papers or independent human
+> review. One paper has the accepted incomplete alias `the public financial news
+> dataset released by`: hold that entire training question. Frozen source/keys/
+> strict reward remain unchanged; 81 questions are eligible for this pilot.
+> `reviewed_training_ids()` binds every card to the attributed review; the bounded
+> launch driver captures its hash and rejects reintroduced holds. The generic
+> taskset still inventories 82 train questions. Regenerate older prepared plans;
+> their source/review hashes are stale. No held training question becomes eval.
+> Locked 12 model-evaluation references remain unopened except byte hashing.
+> Proposal: two-update integration gate, then fresh original-V5 ten-update native
+> pilot and same-12-paper paired evaluation. Step ten only; no checkpoint search.
+> Positive pilot gate: net +3 fully supported answers, <=1 supported regression,
+> zero newly unsupported questions/count increase or execution-failure increase,
+> bounded tokens/latency. This is a provisional engineering signal, not statistical
+> significance or broad model improvement. Human review remains null.
+> $5 estimated / two-hour single-GPU budget is a **proposal, not authorization**;
+> fresh pricing/storage, resource watchdog and Docker layout must be verified.
+> Retained integration+training optimizer checkpoints need 464 GiB free disk
+> beyond installed assets. Paired evaluation/review-pack runtime wiring is still
+> pending; consecutive GPU updates remain unverified. No new paid run/Hub upload.
+> Focused **34 passed**, isolated native **87 passed**, full **2,157 passed /
+> 16 skipped / three existing warnings**; Ruff/diff clean. Logs and preparation
+> plans: `out/reader-rl-pilot-prep-20261024/`. All 29 runtime and frozen data/
+> reference hashes unchanged; earlier user edits preserved. No Git commits.
+
+> **October 24: repeatable sequential native RL launcher implemented locally.**
+> User approved implementing the repeatable path after the one-update smoke;
+> this pass does not authorize more paid compute or commits.
+> [Runbook](docs/PRIME_RL_REPEATABLE_RUN.md). `python -m src.training.prime_run`
+> prepares a source/model/prompt/reward-bound plan, then an explicit local-GPU
+> mode runs cold inference → complete mixed group in frozen Docker → native
+> scoring → one native update → optimizer-resumable checkpoint verification.
+> Subsequent cycles load the prior verified adapter and check optimizer-state
+> continuity. Native trainer/loss/optimizer remain unchanged; generic VF training
+> is still blocked and raw traces remain untrainable. Strict finite reward stays
+> active; guarded F1 remains separate. Training-role questions only, seed 42;
+> validation/locked evaluation not sampled. Global request/token/time/update
+> limits, durable nonrefundable reservations, failure stop, process/container
+> cleanup; no cloud provisioning or provider dollar guarantee. The last adapter
+> is cold-loaded only if there is another cycle. Two metadata-only public Hub
+> reads pin base file identities and V5 config; no weights downloaded.
+> Local isolated native suite **79 passed**; budget/process/asset/optimizer-state
+> fixtures **21 passed**; final full suite **2,149 passed / 16 skipped**, three
+> existing SWIG warnings. Ruff clean; all 29 runtime files and frozen RL source/
+> reference hashes unchanged; all prior tracked user changes preserved, index empty.
+> Initial concurrent native/full run had Docker preflight
+> failures before inference; isolated native rerun passes without relaxing checks.
+> Logs and prepared plan: `out/reader-prime-repeatable-20261024/`. Three new
+> implementation modules, one test module and two added native integration tests;
+> full GPU checkpoint stages have not been executed with this new driver.
+> Next gate is a separately budgeted two-update GPU run, then a predeclared
+> quality comparison. No new model inference, GPU jobs, updates, Hub upload or Git
+> commits. Independent human review null; no model-improvement claim.
+
+> **October 24: guarded-F1 prototype passes authored development controls; not enabled.**
+> User proposed combining F1 with checks and a shorter final answer.
+> [Probe](examples/reader-guarded-f1-v1/README.md): 74 authored controls on the
+> same eight reward-validation papers plus four saved training-role episodes.
+> A 32-word answer cap only fixes repetition. Numeric/unit/negation guards block
+> the earlier exploits; pairing counts with nearby recognized units also blocks
+> the swapped threads/tweets stress case. All six declared development checks
+> pass; all eight reference answers and proposed paraphrases retain their credit.
+> Fixed vocabulary/proximity heuristics remain limited and were iterated on these
+> cases; no independent semantic validation/generalization or quality claim.
+> Prototype only lives under examples; current reward and training path unchanged.
+> No model/API/GPU calls, updates or commits. Focused 47 passed; eight direct parser
+> checks pass; Ruff clean; all 29 runtime/source-reference hashes unchanged.
+
+> **October 23: gated Answer F1 tested; candidate rejected, not enabled.**
+> [Report](docs/READER_F1_AUDIT.md),
+> [69 per-record results](examples/reader-f1-reward-v1/results.json).
+> User authorized testing the proposed F1-plus-existing-support-gate reward.
+> Same eight reward-validation papers: 65 authored controls; four saved real
+> training-role episodes are exposed diagnostics only. Evidence gates reject all
+> 32 tiny/uninspected/extra/broad controls. Proposed paraphrases average .598,
+> but upstream normalization gives `15.00 sentences` full credit against reference
+> `1500 sentences`; negated references average .827. The predeclared development
+> gate fails. Keep official F1 as a metric and the existing narrow finite reward
+> as the current baseline; do not wire this candidate into training. The evidence
+> gate checks attributed support ranges, not arbitrary-answer entailment. No
+> new model/API/GPU calls or optimizer steps, no commits or locked-eval scoring.
+> Optional raw-record fixture export defaults off; all 36 old semantic-audit cases
+> reproduce unchanged. Focused 47 passed; full suite 2,128 passed / 16 skipped,
+> three existing SWIG warnings; Ruff clean. All 29 runtime hashes and frozen
+> source/reference hashes unchanged; previous user changes preserved.
+
+> **October 23: offline F1 reward audit; no reward switch.**
+> [Report](docs/READER_F1_AUDIT.md),
+> [52 per-case results](examples/reader-f1-audit-v1/results.json).
+> User asked whether reference matching/Evidence F1 is enough. On eight existing
+> reward-validation papers, any-overlap paragraph mapping gives full credit to
+> all eight one-character citations; wrong answers retain perfect evidence scores
+> when their quotes stay unchanged. Official Answer F1, literal paragraph matching
+> and explicitly nonofficial overlap/character metrics are kept separate. Four
+> saved training-question episodes are exposed diagnostics, not evaluation.
+> Evidence F1 alone is not adopted for the current answer-and-short-quote task.
+> Next minimal proposal: continuous Answer F1 behind existing inspection and
+> attributed-reference-support checks; still needs local validation and is not
+> enabled. LLM reward stays on hold; no paid judge call is needed for that local
+> comparison. Active reward/runtime/data unchanged; all 29 runtime hashes and
+> frozen source manifest pass. No model/GPU calls or commits. Focused 39 passed;
+> full suite 2,120 passed / 16 skipped, three existing SWIG warnings; Ruff clean.
+
+> **October 23: QASPER semantic-reward candidate prepared; not enabled.**
+> [Design/status](docs/READER_SEMANTIC_REWARD.md),
+> [audit pack](examples/reader-semantic-reward-v1/README.md).
+> User approved pursuing human-calibrated RLAIF and emphasized that QASPER already
+> contains answers. The candidate uses all original text answer/evidence annotations,
+> not the finite accepted-answer whitelist. Three separate axes cover correctness,
+> support and citation relevance; uncertain/malformed verdicts never become numeric
+> negative rewards. 32 authored controls on eight reward-validation papers plus four
+> saved real training-role Qwen episodes are exported; exposed episodes are excluded
+> from the calibration gate. Human fields remain null, judgments empty, zero API/GPU
+> calls. Current reward/runtime/data unchanged, no Git commits. Focused 36 passed;
+> full suite 2,117 passed / 16 skipped; final contract 8 passed, Ruff clean.
+> A fresh <=$0.50 Nebius diagnostic allowance was requested via
+> the pending question; do not dispatch until the user answers. The previous hosted
+> judge allowance stays consumed. Independent human validation and verified live
+> judge configuration remain required; training_ready stays false.
+
+> **October 23: real native Prime-RL GPU smoke passed; resources removed.**
+> [GPU report](docs/PRIME_RL_GPU_SMOKE.md),
+> [saved receipts](examples/verifiers-port/prime-rl-smoke/README.md).
+> User authorized Runpod and a bounded smoke, with checkpoint upload afterward.
+> One A100 SXM4 80GB at $1.79/hour ran V5 generation and native training sequentially.
+> Four real Docker reader episodes produced rewards [0,0,1,0], 12 branches and 553
+> sampled loss tokens. Sampler/scorer delta mean .00237037, max .18167973 passed
+> preset .03/.25 gates. Native centered-GRPO advantages + PPO clipped surrogate,
+> one AdamW update at 1e-6: 23.33 seconds, finite loss/gradient, peak 35.34 GiB.
+> All 504 adapter matrices changed and reloaded exactly; startup policy matched V5,
+> original V5 SHA unchanged; portable adapter cold-loaded into vLLM.
+> Private Hub adapter: `jasonlingg/qwen-envoy-v5-reader-rl-smoke-20261023`, commit
+> `ef297bcc832dc949483fb1c99f83c7f2f3a4e89d`; downloaded SHA verified.
+> Native packed probabilities required renderer submodule revision 5d870d8 rather
+> than release 0.1.12; pin and regression checks added. First seven failed calls
+> were discarded and remain counted in the total 19/64 dispatches. No tolerance,
+> prompt, reward, scope or frozen runtime changes. Complete groups only; native
+> trainer/optimizer unchanged. Generic production training remains blocked.
+> Full suite 2,109 passed / 16 skipped / three warnings; native suite 56 passed;
+> final token regression 13 passed. All 29 runtime files and user dirty files preserved.
+> Pod osmoo0a2gzjqd9 and temporary volume q3egk3botx each freshly confirmed 404.
+> Conservative GPU estimate $1.225 for 41.06 minutes including image pull, plus
+> short-lived storage; itemized billing had not posted. No further paid run is
+> authorized by this result. No quality/semantic-accuracy/model-gain claim; one
+> question and narrow reviewed reference reward are engineering smoke only.
+> No Git commits. Independent human review null. See
+> [the local integration report](docs/PRIME_RL_LOCAL_CHECK.md) for the authored controls.
+
 > **October 22: local RL reward/setup validation; training remains blocked.**
 > User approved validating reward and training setup before an RL retry, not
 > a paid/GPU launch. Scope `269c56f`, candidate/preflight `50393d7`, scientific-unit

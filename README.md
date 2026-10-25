@@ -1,10 +1,15 @@
 # QASPER Agent Studio — a Qwen Envoy case study
 
-Train and inspect a small model that answers research-paper questions through
-Python tools. Qwen Envoy searches, reads, and cites frozen paper text; Studio
-exposes its answers, source spans, and complete **Runs → Questions → Trace**.
-The engineering contribution is the executable environment, supervised
-trajectories, evaluation, and failure analysis.
+Qwen Envoy is a bounded document-research worker: **Qwen3-8B writes Python to
+search, inspect, and cite research papers inside Docker**. The surrounding
+controller supplies observations, enforces limits, and records each action.
+QASPER Agent Studio makes saved answers, source spans, errors, and complete
+**Runs → Questions → Trace** inspectable. Companion MCP servers expose paper
+research and experiment planning to a larger assistant.
+
+This repository connects the worker, execution harness, post-training, evaluation,
+and inspection interfaces. Its demonstrated benchmark task is answering questions
+about an **assigned paper**, rather than finding papers across the open web.
 
 The questions and paper annotations come from **QASPER, by Dasigi et al.
 (2021), licensed CC BY 4.0**. This project adapts QASPER to a bounded code-tool
@@ -13,7 +18,17 @@ affiliated with or endorsed by QASPER or AllenAI. See the
 [data provenance](benchmarks/envoybench/data/README.md). Existing `envoybench`
 package names and repository/demo URLs remain unchanged.
 
-**October 13 follow-up:** a fresh-base v6 QLoRA pilot used replayed trajectories
+**October 25 training update:** a native **Prime-RL + Verifiers GRPO** pilot
+completed **three of ten planned updates**, starting from the original v5
+adapter. All three passed checkpoint reload, sampled-policy alignment, and
+optimizer-state checks. Collection for update four failed with a transport timeout
+coinciding with laptop lid sleep. The GPU and temporary volume were deleted;
+adapters and receipts were saved. **The held-out comparison did not run, and no
+RL answer-quality improvement is established.** See the
+[run report](docs/READER_RL_PILOT_20261025.md). Moving the controller into the cloud
+is [scoped but not deployed](docs/READER_CLOUD_CONTROLLER.md).
+
+**October 13 SFT follow-up:** a fresh-base v6 QLoRA pilot used replayed trajectories
 and a new, paper-disjoint 24-question QASPER test subset. Blinded,
 model-assisted review found **5/17** supported answers for v6, versus **4/17**
 for v5 and **2/17** for base. V6 passed only **2/7** insufficient-evidence
@@ -36,6 +51,7 @@ paper answers.
 [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
 [research-to-decision log](docs/RESEARCH_DECISION_LOG.md) ·
 [training evidence](release/qwen-v5-training/README.md) ·
+[latest GRPO attempt](docs/READER_RL_PILOT_20261025.md) ·
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
 **Scope:** a text-only QASPER agent study with reproducible saved results.
@@ -45,6 +61,71 @@ sets, but still has unreviewed QASPER references and provisional answer
 judgments. Earlier Obsidian and systems-map prototypes remain historical work.
 The [study release](release/qasper-agent-study/README.md) separates original
 QASPER answer scoring from provisional support judgments.
+
+## How the parts fit together
+
+| Part | Responsibility | Implementation / evidence |
+| --- | --- | --- |
+| Data | QASPER papers, questions, answers and evidence annotations; separate training and evaluation splits | [SFT data](data/sft/qasper-v5/README.md), [RL task pool](data/rl/reader-facts-v1/README.md) |
+| Qwen worker and harness | Model chooses Python actions; controller executes them in restricted Docker and returns observations | [Investigator](src/product/qwen_investigator.py), [tools](src/env/tools.py), [sandbox](src/env/repl.py) |
+| Post-training | TRL/rank-4 QLoRA SFT; native Prime-RL/Verifiers GRPO continuation | [SFT recipe](release/qwen-v5-training/README.md), [native launcher](src/training/prime_run.py), [Docker rollout adapter](src/training/reader_rollout.py) |
+| Evaluation | Matched saved runs, execution diagnostics, official QASPER Answer F1 and separately attributed support judgments | [Comparison](benchmarks/envoybench/COMPARISON_2026_09_30.md), [paired RL protocol](docs/READER_PAIRED_EVALUATION.md) |
+| Interfaces | MCP tools for another assistant; Studio for inspecting saved evaluation runs | [Research MCP](docs/ARXIV_RESEARCH_MCP.md), [experiment planning](docs/ML_EXPERIMENT_MCP.md), [Studio launcher](scripts/launch_studio.py) |
+
+```text
+QASPER training split → SFT / GRPO → Qwen checkpoint
+                                          |
+Assigned-paper question → controller ↔ model inference endpoint
+                              |
+                       Docker document tools
+                              |
+                    answer + evidence + trace
+
+Saved evaluation runs → Agent Studio
+Larger assistant → research MCP → source tools / optional Qwen investigator
+```
+
+Training changes model weights; the harness controls execution; evaluation checks
+the resulting behavior; Studio displays saved results. They are connected parts
+of one project. The newest GRPO artifacts are saved separately and are **not
+automatically loaded into Studio**. The MCP's source tools can also operate
+without a Qwen endpoint. Exact citation spans establish provenance, not semantic
+support or answer correctness.
+
+In the latest training deployment, Docker, collection and the resource watchdog
+ran on the Mac, while native inference and training ran on a Runpod GPU. That
+layout requires the Mac to stay **plugged in, awake, with its lid open and Docker
+running** throughout the job. Cloud placement of the controller is pending;
+neither SSH detachment on the GPU nor a local watchdog removes this dependency.
+Opening the saved Studio requires no GPU and makes no model calls.
+
+## Post-training: what has actually run
+
+The pinned v5 checkpoint was trained using **TRL SFT and rank-4 QLoRA** on
+**35 curated, replay-verified training conversations**, with nine validation
+conversations. They expand into 106 training and 26 validation next-action targets.
+Of all 44 conversations, seven retain original teacher trajectories and 37 contain
+assistant-authored repairs that were executed again against the tools. Calling
+all 35 training conversations unmodified Claude demonstrations would be inaccurate.
+Per-action supervision masks earlier context and checks token-for-token equality
+between training and inference prefixes. See the
+[data card](data/sft/qasper-v5/README.md) and
+[observed training evidence](release/qwen-v5-training/README.md).
+
+The newer RL path uses the existing Docker investigator through a Verifiers
+plugin, with Prime-RL owning the native GRPO trainer and optimizer. The latest
+attempt verified all **504 optimizer states at steps 0 → 1 → 2 → 3**, preserved
+policy/checkpoint continuity, and retained raw traces separately from admitted
+training batches. It attempted 23 training questions and recorded 92 episodes;
+91 were infrastructure-healthy and one failed in transport. Only three complete
+mixed-reward groups were admitted. The training-only reward checks finite accepted
+short answers and reviewed inspected evidence; it is not a general semantic judge.
+
+The ten-update pilot and its 12-question paired comparison remain incomplete.
+Original v5 remains the reference checkpoint; there is no automatic promotion of
+the partial RL adapters. Native training checks and increased reward alone cannot
+establish better research answers. [Actual results and limitations](docs/READER_RL_PILOT_20261025.md)
+are separate from the [prospective protocol](examples/reader-rl-pilot-v2/protocol.json).
 
 ## Open the demo
 
@@ -312,6 +393,8 @@ SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","st
 | Paper reader | Frozen text snapshots, optional endpoint inference, saved evidence and traces |
 | Token logprobs | Recorded in a separate small diagnostic; no calibrated correctness score |
 | Qwen v5 training recipe | Pinned adapter and observed QLoRA settings documented in the model card |
+| Native Prime-RL / Verifiers continuation | Three verified updates; ten-update pilot and held-out comparison incomplete; no RL quality gain claimed |
+| Cloud controller | Proposed; current training placement still depends on an awake Mac running Docker |
 | Retrieval, thinking, and prefix-cache comparisons | Prepared protocols; no completed comparative result claimed |
 | Historical training and Obsidian/map demos | Retained for reproducibility; outside the current release scope |
 | Hackathon submission | Separate historical draft; not a completed submission |
