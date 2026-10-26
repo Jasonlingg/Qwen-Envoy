@@ -1,0 +1,108 @@
+{
+  "protocol_commit": "15b79c4",
+  "question": "Can two Qwen v5 reader requests share one A5000, and do recorded rounds justify a latency win? What is the cheapest useful next test?",
+  "model": "gpt-6.1-sol (Codex CLI declaration; provider snapshot not attested)",
+  "setup": {
+    "tool": "scripts/demo_experiment_mode.py",
+    "output": "/private/tmp/envoy-serving-paired-20261026",
+    "wall_seconds": 3.983642209,
+    "mcp_calls": 20,
+    "model_calls": 0,
+    "gpu_activations": 0,
+    "record_id": "experiment_17efae04540247c98fe877d631465b28"
+  },
+  "arms": {
+    "baseline": {
+      "exit_code": 0,
+      "wall_seconds": 29.731761458097026,
+      "timed_out": false,
+      "usage": {
+        "input_tokens": 133811,
+        "cached_input_tokens": 108800,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 843,
+        "reasoning_output_tokens": 12
+      },
+      "tool_calls": [
+        {
+          "type": "command_execution",
+          "name": "/bin/zsh -lc \"rg --files -g 'AGENTS.md' -g '*qwen*' -g '*round*' -g '*experiment*' -g '*README*' -g '*result*' -g '*release*'\"",
+          "exit_code": 0,
+          "error": null
+        },
+        {
+          "type": "command_execution",
+          "name": "/bin/zsh -lc 'cat AGENTS.md examples/two-reader-profile/README.md examples/two-reader-profile/automatic-live-1/README.md examples/two-reader-profile/retry-1/README.md examples/two-reader-profile/log-repair/README.md examples/two-reader-profile/automation-repair/README.md'",
+          "exit_code": 0,
+          "error": null
+        },
+        {
+          "type": "command_execution",
+          "name": "/bin/zsh -lc \"cat examples/two-reader-profile/automatic-live-1/README.md examples/two-reader-profile/automatic-live-1/outcome.json; rg -n 'tim|serial|concurrent|assess|overlap|memory|running|token' examples/two-reader-profile/automatic-live-1/result.json src/eval/reader_profile.py\"",
+          "exit_code": 0,
+          "error": null
+        },
+        {
+          "type": "command_execution",
+          "name": "/bin/zsh -lc \"sed -n '55,100p' src/eval/reader_profile.py; sed -n '115,170p' src/eval/reader_profile.py; sed -n '182,222p' src/eval/reader_profile.py\"",
+          "exit_code": 0,
+          "error": null
+        }
+      ],
+      "events_sha256": "39dc90194b67525c0777db498a6b0db402a98b2141ccd5c209b5ff12bcbf9c25"
+    },
+    "mcp": {
+      "exit_code": 0,
+      "wall_seconds": 25.157005291897804,
+      "timed_out": false,
+      "usage": {
+        "input_tokens": 137184,
+        "cached_input_tokens": 96128,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 634,
+        "reasoning_output_tokens": 0
+      },
+      "tool_calls": [
+        {
+          "type": "mcp_tool_call",
+          "name": "find_related_experiments",
+          "exit_code": null,
+          "error": null
+        },
+        {
+          "type": "mcp_tool_call",
+          "name": "resume_experiment",
+          "exit_code": null,
+          "error": null
+        },
+        {
+          "type": "mcp_tool_call",
+          "name": "get_experiment",
+          "exit_code": null,
+          "error": null
+        }
+      ],
+      "events_sha256": "b41d68dbe530e06910b3c4230f1db05cb0410ac935e3bf9ef9c240d7fa63b774"
+    }
+  },
+  "comparison": {
+    "mcp_wall_ratio": 0.8461323533539467,
+    "mcp_total_token_ratio": 1.0234972596432337,
+    "severe_unsupported_speedup_claims": {
+      "baseline": 0,
+      "mcp": 0
+    },
+    "main_conclusions_correct": {
+      "baseline": true,
+      "mcp": true
+    },
+    "pilot_signal": false,
+    "reason": "MCP met neither <=70% wall-time nor <=70% total-token gate."
+  },
+  "limitations": [
+    "Single historical task with a previously curated MCP record.",
+    "Codex CLI token usage includes cached input; it is not a billed-cost comparison.",
+    "One run per arm; wall-time difference has no uncertainty estimate.",
+    "The past RL failure was not present in the MCP and was not tested."
+  ]
+}

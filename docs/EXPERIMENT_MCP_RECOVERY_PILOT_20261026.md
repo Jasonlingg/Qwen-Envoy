@@ -32,4 +32,41 @@ general productivity advantage. Setup/import time is reported separately.
 
 ## Results
 
-Pending both fresh runs. This protocol is committed before either starts.
+The protocol was committed as `15b79c4` before either fresh run. The replayed
+MCP record was `experiment_17efae04540247c98fe877d631465b28`; rebuilding it
+from saved artifacts took 3.98 seconds and 20 local MCP calls, with no model or
+GPU call. That setup time is excluded from both answer times. Both read-only
+Codex CLI sessions used `gpt-6.1-sol`, finished under the 180-second cap, and
+had no failed tool calls.
+
+| Arm | Wall time | Tool reads | Input + output tokens, including cached input | Severe speedup errors |
+| --- | ---: | ---: | ---: | ---: |
+| Repository files | 29.73 s | 4 | 134,654 | 0 |
+| Experiment MCP | 25.16 s | 3 | 137,818 | 0 |
+
+Both answers correctly said that two requests overlapped in one engine on one
+A5000, while the recorded rounds did **not** establish a latency win. They
+quoted the pair timings (3.423/3.355 s and 3.829/2.850 s) and the first
+round's 0.068-second difference against 0.4-second polling uncertainty. Both
+identified limitations of the short, repeated inputs. The MCP arm explicitly
+identified the retrospective reconstruction and suggested reviewing saved
+evidence and answers before more GPU spending. The repository arm suggested a
+saved timing audit and a bounded repeat first, with representative answers as
+a later generalization test. Thus neither answer fully performed the
+predeclared next-test check in exactly the stated order; the MCP answer was
+closer to its evidence/answer-review part. Neither made a severe unsupported
+speedup claim.
+
+The MCP arm used 84.6% of repository wall time but 102.3% of its reported
+input-plus-output tokens. It missed both predeclared 70% efficiency gates, so
+the **single-case pilot signal is negative**. The 4.57-second difference is
+only one observation per arm, with no uncertainty estimate. CLI usage includes
+cached tokens and is not a billed-cost comparison. The MCP arm benefited from
+an existing curated record; creating that record is separate work. A previous
+RL failure was absent from the store, so this pilot says nothing about whether
+MCP could recover that experiment. It does not establish a general advantage
+over reading the repository.
+
+Prompts, complete machine-readable CLI events, final answers, and the result
+summary are saved in
+[`examples/experiment-mcp-recovery-pilot-20261026/`](../examples/experiment-mcp-recovery-pilot-20261026/).
