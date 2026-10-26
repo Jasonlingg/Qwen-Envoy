@@ -146,10 +146,13 @@ def parse_args(argv=None):
     parser.add_argument("--library-root", type=Path, default=ROOT / "out/arxiv-mcp-live-library")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "reports/arxiv-mcp-live-20261016.json")
+    parser.add_argument("--detail-output", type=Path,
+                        default=ROOT / "out/arxiv-mcp-live-detail.json",
+                        help="Path for the full local responses; use a fresh path for a new run")
     return parser.parse_args(argv)
 
 
-def compact_report(report, raw_sha256):
+def compact_report(report, raw_sha256, *, raw_detail_path="out/arxiv-mcp-live-detail.json"):
     """Keep hashes for full source text and at most eight quoted words per paper."""
     def scrub(value):
         if isinstance(value, list):
@@ -173,20 +176,23 @@ def compact_report(report, raw_sha256):
                 row["excerpt_start"], row["excerpt_end"] = (
                     original["start"], original["start"] + words[-1].end())
                 seen.add(original["arxiv_id"])
-    compact["raw_detail_path"] = "out/arxiv-mcp-live-detail.json"
+    compact["raw_detail_path"] = str(raw_detail_path)
     compact["raw_detail_sha256"] = raw_sha256
     return compact
 
 
 def main() -> None:
     args = parse_args()
+    if args.output.resolve() == args.detail_output.resolve():
+        raise ValueError("Compact report and full detail must use different paths")
     library, discovery, network = build_sources(args.library_root)
     report = asyncio.run(run_smoke(library, discovery))
     report["network"] = network
-    detail = ROOT / "out/arxiv-mcp-live-detail.json"
+    detail = args.detail_output
     detail.parent.mkdir(parents=True, exist_ok=True)
     detail.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    public = compact_report(report, hashlib.sha256(detail.read_bytes()).hexdigest())
+    public = compact_report(report, hashlib.sha256(detail.read_bytes()).hexdigest(),
+                            raw_detail_path=detail)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(public, indent=2, ensure_ascii=False) + "\n",
                            encoding="utf-8")

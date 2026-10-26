@@ -46,6 +46,14 @@ def test_smoke_has_no_paid_option():
         smoke.parse_args(["--paid"])
 
 
+def test_smoke_accepts_separate_detail_output(tmp_path):
+    args = smoke.parse_args(["--library-root", str(tmp_path / "library"),
+                             "--output", str(tmp_path / "summary.json"),
+                             "--detail-output", str(tmp_path / "detail.json")])
+    assert args.detail_output == tmp_path / "detail.json"
+    assert args.output != args.detail_output
+
+
 def test_fetch_budget_and_pdf_bound(tmp_path, monkeypatch):
     seen = []
 
@@ -84,3 +92,5 @@ def test_public_report_hashes_source_text_and_bounds_quotes():
     excerpts = [row["excerpt"] for row in public["review_passages"] if "excerpt" in row]
     assert len(excerpts) == 1 and len(excerpts[0].split()) == 8
     assert raw["tools"][0]["result"]["abstract"] == quote
+    assert smoke.compact_report(raw, "raw-hash", raw_detail_path="out/new-detail.json")[
+        "raw_detail_path"] == "out/new-detail.json"

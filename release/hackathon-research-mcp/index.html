@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Qwen Envoy · Research MCP</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0d1218; --panel:#18212a; --line:#34424e;
+      --ink:#ecf2ef; --muted:#a5b5bd; --accent:#7ee3ba; --amber:#f1c879; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(circle at 75% -10%,#25483f 0,#0d1218 44%);
+      color:var(--ink); font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; }
+    a { color:var(--accent); }
+    header,main,footer { max-width:1120px; margin:auto; padding:24px; }
+    header { display:flex; justify-content:space-between; gap:20px; align-items:center; }
+    .brand { font-weight:800; letter-spacing:.08em; font-size:.8rem; color:var(--accent); }
+    .tag { color:var(--muted); font-size:.85rem; border:1px solid var(--line);
+      padding:6px 11px; border-radius:100px; }
+    h1 { font-size:clamp(2.4rem,6vw,5rem); line-height:1.04; letter-spacing:-.055em;
+      margin:28px 0 16px; max-width:940px; }
+    h2 { margin:0 0 14px; font-size:1.18rem; letter-spacing:-.02em; }
+    p { margin:0 0 16px; }
+    .lead { color:#d2dedd; max-width:720px; font-size:1.18rem; }
+    .small,.meta { color:var(--muted); font-size:.85rem; }
+    .hero { padding:30px 0 36px; }
+    .badges { display:flex; flex-wrap:wrap; gap:9px; margin:24px 0; }
+    .badge { border:1px solid var(--line); background:#17252a; border-radius:9px;
+      padding:8px 12px; color:#d8ebe3; font-size:.82rem; }
+    .grid { display:grid; grid-template-columns:1.1fr .9fr; gap:16px; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:16px;
+      padding:23px; box-shadow:0 8px 30px #0002; }
+    .question { font-size:1.65rem; line-height:1.24; letter-spacing:-.025em; }
+    .eyebrow { font-size:.72rem; text-transform:uppercase; letter-spacing:.12em;
+      color:var(--accent); font-weight:750; margin-bottom:10px; }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:18px 0; }
+    button { font:inherit; cursor:pointer; text-align:left; border:1px solid var(--line);
+      color:var(--ink); background:#17232b; border-radius:12px; padding:14px; }
+    button:hover,button[aria-selected="true"] { border-color:var(--accent);
+      background:#1b3732; }
+    button strong { display:block; font-size:.9rem; }
+    button span { display:block; color:var(--muted); font-size:.75rem; }
+    .detail { min-height:265px; }
+    blockquote { margin:14px 0; padding:14px 17px; border-left:3px solid var(--accent);
+      background:#111d23; color:#dce9e4; white-space:pre-wrap; }
+    code { overflow-wrap:anywhere; color:#c1eeda; }
+    .warning { border-left:3px solid var(--amber); padding:10px 13px;
+      background:#342b1d; color:#f5dfb7; margin-top:15px; font-size:.9rem; }
+    .review { margin-top:16px; }
+    .review strong { color:var(--amber); }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+    footer { padding-top:48px; padding-bottom:50px; color:var(--muted); font-size:.86rem; }
+    @media(max-width:720px) { .grid,.two { grid-template-columns:1fr; }
+      .flow { grid-template-columns:repeat(2,1fr); } header { align-items:flex-start; } }
+  </style>
+</head>
+<body>
+  <header><div class="brand">QWEN ENVOY / RESEARCH MCP</div>
+    <div class="tag">Recorded live run · October 26, 2026</div></header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">A personal ML engineering workflow</div>
+      <h1>Research that remembers the next decision.</h1>
+      <p class="lead">Find a paper, inspect the source, record the uncertainty,
+        and resume the experiment later. Nemotron on Nebius can explain a selected
+        public passage; the final decision remains yours.</p>
+      <div class="badges">
+        <div class="badge">8 real MCP calls</div><div class="badge">1 Nebius Token Factory call</div>
+        <div class="badge">1,028 reported tokens</div><div class="badge">Claim support reviewed separately</div>
+      </div>
+      <p class="small">This page inspects a saved run. It does not make live model calls.
+        The <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/scripts/demo_hackathon_research_mcp.py">local test build</a>
+        runs the MCP workflow, and <a href="demo.json">the original report</a> is available for inspection.</p>
+    </section>
+    <div class="grid">
+      <section class="panel"><div class="eyebrow">The question</div>
+        <p class="question">Should our document-research agent use executable Python actions?</p>
+        <p class="small">The saved note treats CodeAct as a relevant paper, not proof
+          that changing this project's harness would improve its results.</p>
+      </section>
+      <section class="panel"><div class="eyebrow">Why memory matters</div>
+        <h2>The next session starts with evidence, not a blank chat.</h2>
+        <p>Local word-overlap lookup returns the experiment ID. Resume loads its
+          saved research, source receipts, status and unresolved test. A separate
+          completed serving experiment shows how the same record format preserves
+          an <em>inconclusive</em> result after restart.</p>
+      </section>
+    </div>
+    <nav class="flow" aria-label="Inspect workflow stages">
+      <button type="button" data-step="source" aria-selected="true"><strong>01 · Source</strong><span>Versioned paper passage</span></button>
+      <button type="button" data-step="record"><strong>02 · Record</strong><span>Immutable research note</span></button>
+      <button type="button" data-step="nemotron"><strong>03 · Explain</strong><span>NVIDIA on Nebius</span></button>
+      <button type="button" data-step="resume"><strong>04 · Resume</strong><span>Later-session recall</span></button>
+    </nav>
+    <section class="panel detail" id="detail" aria-live="polite">Loading saved run…</section>
+    <div class="two">
+      <section class="panel"><div class="eyebrow">The trust boundary</div>
+        <h2>Provenance is checked. Meaning is reviewed.</h2>
+        <p>The MCP verifies exact paper offsets and saved artifact hashes. Nemotron
+          references only supplied evidence IDs. These checks cannot tell whether
+          a passage actually supports a claim or a method transfers to this workload.</p>
+      </section>
+      <section class="panel"><div class="eyebrow">What the demo proves</div>
+        <h2>One working handoff, with limits visible.</h2>
+        <p>The run shows public-paper retrieval, durable research, cross-session
+          recall and a real Token Factory response. It is not a benchmark against
+          ordinary browsing, and it does not prove fine-tuned Qwen improved.</p>
+      </section>
+    </div>
+  </main>
+  <footer>Qwen Envoy · <a href="https://github.com/Jasonlingg/Qwen-Envoy">source and setup</a>
+    · <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/docs/HACKATHON_SUBMISSION_2026.md">method and limitations</a></footer>
+  <script>
+    const detail = document.getElementById('detail');
+    const buttons = [...document.querySelectorAll('[data-step]')];
+    const node = (tag, text, className) => {
+      const item = document.createElement(tag);
+      item.textContent = text;
+      if (className) item.className = className;
+      return item;
+    };
+    function show(data, step) {
+      detail.replaceChildren();
+      buttons.forEach(button => button.setAttribute('aria-selected', String(button.dataset.step === step)));
+      const item = data.explanation;
+      if (step === 'source') {
+        detail.append(node('div','01 / Verified public paper','eyebrow'),
+          node('h2','CodeAct · arXiv 2402.01030v4'),
+          node('p','The MCP opened the versioned paper, ranked passages and retrieved these exact source characters.'),
+          node('blockquote',data.quote+' […]'));
+        const link = document.createElement('a'); link.href = data.paper_source_url;
+        link.textContent = 'Open source paper ↗'; link.rel = 'noopener noreferrer';
+        detail.append(link);
+      } else if (step === 'record') {
+        detail.append(node('div','02 / Durable research note','eyebrow'),
+          node('h2','A proposal with an unresolved test'),
+          node('p','Recorded finding: CodeAct proposes executable Python actions that can adapt after observations; applicability to this document task remains untested.'),
+          node('p','Next test: compare code actions with fixed tool calls on matched tasks. Measure execution failures, answer support, latency and cost.'),
+          node('p','Research note SHA-256: '+data.research_note_sha256,'meta'));
+      } else if (step === 'nemotron') {
+        detail.append(node('div','03 / NVIDIA Nemotron on Nebius Token Factory','eyebrow'),
+          node('h2','A bounded explanation from the saved passage'),
+          node('p',item.explanation.answer),
+          node('p','Reported usage: '+item.usage.prompt_tokens+' input + '+item.usage.completion_tokens+' output tokens. One request; no automatic retry.','meta'));
+        const review = node('div','Claim review: the passage supports Python actions and revision after observations. It reports outperforming alternatives, but does not establish that the specific benchmark comparator was predefined JSON. Transfer to document research is untested.','warning review');
+        detail.append(review);
+      } else {
+        detail.append(node('div','04 / Related work after a new session','eyebrow'),
+          node('h2','The next question finds the saved record'),
+          node('p','Query: “Python code actions for document agents”'),
+          node('p','Match type: '+data.related_match_kind+' · Experiment ID: '+data.related_experiment_id),
+          node('p','Resume loads the saved note and remaining uncertainty. Local word overlap helps navigation; it does not judge relevance or answer quality.'));
+      }
+    }
+    fetch('demo.json').then(response => {
+      if (!response.ok) throw new Error('Saved demo unavailable');
+      return response.json();
+    }).then(data => {
+      buttons.forEach(button => button.addEventListener('click', () => show(data, button.dataset.step)));
+      show(data,'source');
+    }).catch(error => { detail.textContent = error.message+'; read demo.json directly.'; });
+  </script>
+</body>
+</html>
