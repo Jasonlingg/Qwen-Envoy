@@ -6,6 +6,7 @@ on:
     paths:
       - 'release/envoybench-v0.1/**'
       - 'release/qasper-agent-study/**'
+      - 'release/hackathon-research-mcp/**'
       - 'scripts/reproduce_case_study.py'
       - '.github/workflows/studio-pages.yml'
   workflow_dispatch:
@@ -36,6 +37,8 @@ jobs:
         run: |
           mkdir -p _site
           cp release/qasper-agent-study/studio.html _site/index.html
+          mkdir -p _site/research-mcp
+          cp release/hackathon-research-mcp/index.html release/hackathon-research-mcp/demo.json _site/research-mcp/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v4
         with:
