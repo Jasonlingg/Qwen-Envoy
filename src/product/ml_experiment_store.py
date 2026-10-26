@@ -21,6 +21,15 @@ from src.product.ml_experiment_outcomes import ExperimentOutcomes
 from src.product.ml_experiment_research_notes import ExperimentResearchNotes
 
 _ID = re.compile(r"experiment_[0-9a-f]{32}")
+_WORD = re.compile(r"[a-z0-9]+")
+_STOP = frozenset({"a", "an", "and", "are", "can", "do", "for", "how", "i", "in",
+                   "is", "it", "of", "on", "or", "our", "the", "to", "we", "what",
+                   "with", "would"})
+
+
+def _terms(value: str) -> set[str]:
+    return {word for word in _WORD.findall(value.lower())
+            if len(word) > 1 and word not in _STOP}
 
 
 def _identifier(value: str) -> str:
@@ -188,3 +197,43 @@ class ExperimentStore(ExperimentOutcomes, ExperimentResearchNotes):
                                       *[r.recorded_at for _, r in research]])})
         summaries.sort(key=lambda item: (item["updated_at"], item["experiment_id"]), reverse=True)
         return {"experiments": summaries[:limit], "truncated": len(summaries) > limit}
+
+    def find_related(self, question: str, limit: int = 5) -> dict:
+        """Find prior records by visible word overlap; never infer semantic relevance."""
+        if not isinstance(question, str) or not 3 <= len(question.strip()) <= 500:
+            raise ValueError("question must contain 3..500 characters")
+        if type(limit) is not int or not 1 <= limit <= 10:
+            raise ValueError("limit must be an integer in 1..10")
+        query = _terms(question)
+        if not query:
+            raise ValueError("question needs at least one searchable term")
+        matches = []
+        with self.files.locked() as directory:
+            for name in os.listdir(directory):
+                if not name.startswith("experiment_") or not name.endswith(".json"):
+                    continue
+                experiment_id = _identifier(name[:-5])
+                index, revisions, plan, records, research = self._load(directory, experiment_id)
+                brief = revisions[-1].brief
+                fields = ((brief.question, 4), (brief.hypothesis or "", 2),
+                          (brief.proposed_change or "", 2),
+                          (" ".join(brief.unknowns), 1))
+                hits = {term for value, _ in fields for term in query & _terms(value)}
+                score = sum(weight * len(query & _terms(value)) for value, weight in fields)
+                if not score:
+                    continue
+                latest = records[-1][1] if records else None
+                matches.append({"experiment_id": experiment_id,
+                    "question": brief.question, "matched_terms": sorted(hits),
+                    "score": score, "status": "frozen" if plan else "draft",
+                    "revision": len(revisions),
+                    "latest_run_id": latest.result.run_id if latest else None,
+                    "latest_assessment": latest.assessment.overall if latest else None,
+                    "latest_data_kind": latest.result.data_kind if latest else None,
+                    "latest_research_note_id": research[-1][1].note.note_id if research else None,
+                    "result_count": len(records), "research_note_count": len(research)})
+        matches.sort(key=lambda row: (-row["score"], row["experiment_id"]))
+        return {"query": question, "match_kind": "local_word_overlap",
+                "matches": matches[:limit], "truncated": len(matches) > limit,
+                "warning": "Word overlap is a navigation aid, not a relevance or quality judgment. "
+                           "Inspect a matched experiment and its evidence before reuse."}

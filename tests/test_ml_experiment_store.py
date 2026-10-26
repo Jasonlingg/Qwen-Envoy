@@ -21,6 +21,26 @@ def test_question_first_draft_survives_restart_and_keeps_revision_history(tmp_pa
     assert store.get(first["experiment_id"])["brief"]["question"] != "Caller mutation"
 
 
+def test_related_search_recalls_prior_questions_without_claiming_semantics(tmp_path):
+    store = ExperimentStore(tmp_path)
+    memory = store.save_brief({"question": "Can paged KV cache reduce inference memory?"})
+    latency = store.save_brief({"question": "Can speculative decoding reduce latency?"})
+    unrelated = store.save_brief({"question": "How should we train a speech encoder?"})
+    found = ExperimentStore(tmp_path).find_related("Will paged KV cache lower memory?")
+    assert [row["experiment_id"] for row in found["matches"]] == [memory["experiment_id"]]
+    assert found["matches"][0]["matched_terms"] == ["cache", "kv", "memory", "paged"]
+    assert found["match_kind"] == "local_word_overlap"
+    assert "not a relevance" in found["warning"]
+    assert latency["experiment_id"] != unrelated["experiment_id"]
+
+
+@pytest.mark.parametrize("question,limit", [("a?", 5), ("the and", 5),
+                                           ("valid question", True), ("valid question", 11)])
+def test_related_search_rejects_unbounded_or_empty_queries(tmp_path, question, limit):
+    with pytest.raises(ValueError):
+        ExperimentStore(tmp_path).find_related(question, limit)
+
+
 def test_freeze_binds_exact_plan_and_protects_criteria(tmp_path):
     store = ExperimentStore(tmp_path)
     draft = store.save_brief(complete_brief())

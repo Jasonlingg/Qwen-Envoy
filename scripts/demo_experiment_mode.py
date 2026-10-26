@@ -30,6 +30,7 @@ from src.product.ml_experiment_models import ExperimentBrief  # noqa: E402
 from src.product.ml_experiment_results import ExperimentResult  # noqa: E402
 
 TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
+         "find_related_experiments",
          "freeze_experiment_plan", "record_experiment_result", "record_experiment_research",
          "resume_experiment", "search_papers", "get_citations", "open_paper",
          "find_evidence", "get_passage"}
@@ -105,6 +106,8 @@ async def run_demo(output: Path, *, source_root=ROOT):
 
         # New stdio process and client; no memory from the first server survives.
         async with Client(parameters) as restarted:
+            related = await call(restarted, 2, "find_related_experiments", {
+                "question": "What did we learn about A5000 reader request latency?"})
             resumed = await call(restarted, 2, "resume_experiment", {"experiment_id": key})
             full = await call(restarted, 2, "get_experiment", {"experiment_id": key})
             repeated = await call(restarted, 2, "record_experiment_result", result_args)
@@ -118,7 +121,9 @@ async def run_demo(output: Path, *, source_root=ROOT):
                 "experiment_id": key, "expected_revision": 2, "brief": brief}, rejected=True)
             after = await call(restarted, 2, "get_experiment", {"experiment_id": key})
     selected = full["selected_result"]
-    if (selected != recorded["selected_result"] or selected != repeated["selected_result"]
+    if (related["matches"][0]["experiment_id"] != key
+            or related["matches"][0]["latest_assessment"] != "inconclusive"
+            or selected != recorded["selected_result"] or selected != repeated["selected_result"]
             or full != after or old_research["selected_research_note"] != prior_note
             or repeated_note["selected_research_note"] != decision["selected_research_note"]):
         raise ValueError("Restart, retry or rejected changes altered immutable content")
@@ -139,6 +144,7 @@ async def run_demo(output: Path, *, source_root=ROOT):
         "experiment_id": key, "plan_sha256": full["plan_sha256"],
         "result_sha256": selected["sha256"], "tools": sorted(inventory), "calls": calls,
         "restart_verified": True, "idempotent_retries_verified": True,
+        "cross_session_related_recall_verified": True,
         "conflicting_result_and_frozen_edit_rejected": True,
         "research_note_count": resumed["research_note_count"],
         "result_count": resumed["result_count"], "assessment": assessment,

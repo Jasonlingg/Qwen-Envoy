@@ -59,7 +59,8 @@ def test_complete_recorded_loop_restart_retry_and_conflict_rejection(tmp_path):
     assert report["research_note_count"] == 2 and report["result_count"] == 1
     assert report["model_calls"] == report["gpu_activations"] == 0
     assert report["network_source_calls"] == 0
-    assert len(report["calls"]) == 15
+    assert len(report["calls"]) == 16
+    assert report["cross_session_related_recall_verified"]
     assert sum(c["expected_rejection"] for c in report["calls"]) == 2
     assert {c["session"] for c in report["calls"]} == {1, 2}
     resumed = json.loads((target / "resume.json").read_text())
