@@ -95,12 +95,32 @@ The first run may fetch public arXiv text. It writes `report.json` with MCP call
 the exact selected passage, saved record ID and related-work result. To run the
 optional NVIDIA step, put `NEBIUS_API_KEY` in the environment or ignored `.env`,
 use a **new** output directory and append `--live-nebius`. That opt-in path makes
-one bounded paid call. It does not activate a GPU. A separate complete
-result-and-restart demonstration is:
+one bounded paid call. It does not activate a GPU.
+
+On macOS Python installations without a configured CA bundle, a cold arXiv
+fetch may report `CERTIFICATE_VERIFY_FAILED`. Point `SSL_CERT_FILE` at a trusted
+bundle such as `$(python -c 'import certifi; print(certifi.where())')`, then use a
+new output directory for the retry. Do not disable TLS verification.
+
+A separate complete result-and-restart demonstration is:
 
 ```sh
 python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo
 ```
+
+### Clean-checkout verification, October 26
+
+A fresh public clone installed `.[mcp,vault]` in a new Python 3.13 virtual
+environment. With a trusted CA bundle configured on this macOS host, the
+no-key research demo fetched CodeAct into a cold cache and completed **7/7 MCP
+calls**, with **zero model requests** and no tool errors. The independent
+experiment-record demo completed **20 MCP calls across two processes** and
+preserved an inconclusive result and decision thread; its deliberate conflicting
+write checks were rejected as expected. It made **zero model requests and GPU
+activations**. An initial cold fetch without a configured CA bundle returned
+`CERTIFICATE_VERIFY_FAILED`; the demo now exposes the underlying source error
+instead of only saying the paper was unavailable. These checks do not repeat
+the historical paid Nemotron call.
 
 ## Video outline, under three minutes
 
@@ -122,9 +142,14 @@ python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo
   saved output and does not make live calls. The repository's local test build
   is the working MCP route. The existing QASPER Studio is a separate interface.
 - The [public repository](https://github.com/Jasonlingg/Qwen-Envoy) currently
-  displays an **MIT license** in GitHub's About panel. Verify setup from a clean
-  clone. Keep a no-key source-and-memory path available free through
+  displays an **MIT license** in GitHub's About panel. The clean-clone no-key
+  path above works; keep it available free through
   the judging period; never expose the Nebius API key.
+- The optional live Nemotron path requires a private Nebius key. The public
+  inspector shows a recorded response and cannot make a new model request.
+  Judge access to the live path, and whether the current test build fully meets
+  the event's platform-access expectation, remain unresolved. Do not expose an
+  unrestricted paid key or describe the static page as live inference.
 - Enter the track, text, repository URL, demo URL, video URL, and honest Nebius
   feedback on Devpost. Explain the substantial new work above.
 - Obtain independent human review before claiming any semantic answer-quality

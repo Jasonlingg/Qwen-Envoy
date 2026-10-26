@@ -66,7 +66,9 @@ async def run(output: Path, library_root: Path, *, live_nebius=False):
         async with Client(create_server(store, library, discovery, nemotron_key=key)) as client:
             opened = await call(client, "open_paper", {"arxiv_id": PAPER})
             if opened["status"] != "ok":
-                raise ValueError("Public paper was unavailable")
+                source = opened.get("source", "public source")
+                detail = opened.get("detail", opened["status"])
+                raise ValueError(f"Public paper was unavailable ({source}): {detail}")
             found = await call(client, "find_evidence", {"query":
                 "executable Python code actions revise observations multi-turn",
                 "arxiv_ids": [PAPER], "top_k": 3})

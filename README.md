@@ -30,6 +30,13 @@ python scripts/demo_hackathon_research_mcp.py \
 
 The first run may fetch public arXiv text. To connect an assistant to the full
 workflow, use the [MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client).
+If a macOS Python installation reports `CERTIFICATE_VERIFY_FAILED` on a cold
+paper fetch, set `SSL_CERT_FILE` to a trusted CA bundle before rerunning. For
+example, the installed `certifi` package provides one:
+
+```bash
+export SSL_CERT_FILE="$(python -c 'import certifi; print(certifi.where())')"
+```
 
 ## Qwen agent research case study
 
