@@ -1,7 +1,8 @@
 # Qwen Envoy Research MCP — hackathon submission draft
 
-**Track:** Best Apps and Agents. **Status:** working local test build and a prepared
-saved-run web inspector; the new page and video still need publication. The [official rules](https://nebiusglobalaihackathon.devpost.com/rules)
+**Track:** Best Apps and Agents. **Status:** working local test build and a
+[published saved-run inspector](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/);
+the video and Devpost entry remain open. The [official rules](https://nebiusglobalaihackathon.devpost.com/rules)
 list the deadline as **October 30, 2026, 10:00 a.m. PDT**. Target an internal
 finish by October 28 to leave time for recording and submission.
 
@@ -114,12 +115,10 @@ python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo
 
 ## Submission gates still open
 
-- Publish the prepared MCP saved-run inspector at
-  `https://jasonlingg.github.io/Qwen-Envoy/research-mcp/` and a public YouTube
-  video under three minutes. The existing hosted QASPER Studio is a different
-  interface and does not itself demonstrate this MCP workflow. The repository's
-  local test build is the working MCP route; the inspector displays its saved
-  output and does not make live calls.
+- Publish a public YouTube video under three minutes. The research MCP inspector
+  is live at `https://jasonlingg.github.io/Qwen-Envoy/research-mcp/`; it displays
+  saved output and does not make live calls. The repository's local test build
+  is the working MCP route. The existing QASPER Studio is a separate interface.
 - The [public repository](https://github.com/Jasonlingg/Qwen-Envoy) currently
   displays an **MIT license** in GitHub's About panel. Verify setup from a clean
   clone. Keep a no-key source-and-memory path available free through

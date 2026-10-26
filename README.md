@@ -8,8 +8,8 @@ Nemotron 3.5 Lightning explanation runs through Nebius Token Factory. Source-byt
 artifact checks establish provenance; a person still has to assess whether a
 claim is supported and whether a method helps their workload.
 
-**Start with the research MCP:** [saved-run inspector](release/hackathon-research-mcp/index.html)
-(published at `/research-mcp/` when GitHub Pages deploys this release) ·
+**Start with the research MCP:** [public saved-run inspector](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
+[standalone inspector](release/hackathon-research-mcp/index.html) ·
 [local demo and submission evidence](docs/HACKATHON_SUBMISSION_2026.md) ·
 [experiment-mode guide](docs/EXPERIMENT_MODE.md) ·
 [cross-paper justifications](docs/RESEARCH_JUSTIFICATIONS.md). The inspector shows a saved
