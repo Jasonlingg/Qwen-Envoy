@@ -33,6 +33,9 @@ paper answers.
 
 **Start here:** [short findings report](docs/QASPER_AGENT_STUDY.md) ·
 [public demo](https://jasonlingg.github.io/Qwen-Envoy/) ·
+[research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
+[research MCP portfolio walkthrough](docs/PORTFOLIO_SHOWCASE.md) ·
+[Nebius hackathon research MCP demo](docs/HACKATHON_SUBMISSION_2026.md) ·
 [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
 [research-to-decision log](docs/RESEARCH_DECISION_LOG.md) ·
 [training evidence](release/qwen-v5-training/README.md) ·
