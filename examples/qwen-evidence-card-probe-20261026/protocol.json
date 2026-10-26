@@ -1,0 +1,19 @@
+{
+  "hypothesis": "RL step 9 or V5 can extract useful, source-grounded paper evidence cards for the research MCP",
+  "expected_signal": "At least 2 of 3 cards per arm have valid schema, exact quotation, and reviewed claim support; neither comparator paper falsely claims a direct domain-mixing experiment",
+  "decision_rule": "Use as draft-only reader only if an arm passes all three cases on schema and quote, at least 2 of 3 on claim-level support, and correctly marks both DCLM and FineWeb as non-direct comparisons. Otherwise keep Qwen outside the evidence-card loop.",
+  "data_kind": "exposed_development",
+  "question": "What evidence supports adding domain mixing to quality-filtered web data for language-model pretraining?",
+  "case_ids": [
+    "weborganizer",
+    "dclm",
+    "fineweb"
+  ],
+  "corpus_revision": {
+    "2502.10341v3": "f1d3d345c2134ac28087e37621f3defbcf69eb0c61d22358fa49bf51c668c2e0",
+    "2406.11794v4": "e49cfb4cf5206dbaaa68d10035d792766c7bc592aaa9b1d3c9a5db4a666262f8",
+    "2406.17557v2": "766ab7f7761267e238fa441b58998f2b0e8ab38d6e4ffcf61ff3b1959089574d"
+  },
+  "prompt_sha256": "b8c71317532c8d25fdefa33fe561f945efc0508bc7e028ed71732694c7bc15f6",
+  "note": "A tiny development probe, not held-out model validation or proof of model improvement."
+}
