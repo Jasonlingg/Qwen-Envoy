@@ -11,7 +11,8 @@ claim is supported and whether a method helps their workload.
 **Start with the research MCP:** [saved-run inspector](release/hackathon-research-mcp/index.html)
 (hosted at `/research-mcp/` after this branch is merged) ·
 [local demo and submission evidence](docs/HACKATHON_SUBMISSION_2026.md) ·
-[experiment-mode guide](docs/EXPERIMENT_MODE.md). The inspector shows a saved
+[experiment-mode guide](docs/EXPERIMENT_MODE.md) ·
+[cross-paper justifications](docs/RESEARCH_JUSTIFICATIONS.md). The inspector shows a saved
 run; the MCP service is the working tool interface.
 
 To try the public-paper and local-memory path without an API key or model call:
@@ -29,6 +30,8 @@ each run; `report.json` records the MCP calls and source passage. The separate
 example replays a complete research-to-result record without a model call.
 The Nebius explanation requires an explicit `--live-nebius` opt-in and an API
 key; see the [demo instructions](docs/HACKATHON_SUBMISSION_2026.md).
+For a no-model comparison that challenges one paper against quality-curation
+baselines, run [the WebOrganizer walkthrough](docs/RESEARCH_JUSTIFICATIONS.md).
 
 ## QASPER Agent Studio — a separate Qwen Envoy case study
 

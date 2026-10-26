@@ -28,6 +28,10 @@ The distinguishing workflow is the handoff from **research to a measured next
 decision**, not an isolated paper summary. The host can find a prior experiment
 by local word overlap, inspect its actual result and unresolved questions, and
 avoid treating a cited paper as proof that a method worked in this workload.
+An optional [cross-paper justification packet](RESEARCH_JUSTIFICATIONS.md) now
+requires a simpler baseline, at least two source-verified papers, a non-supporting
+comparison, transfer gaps and a matched test rule. The relations remain
+caller-authored and need claim-level review; the packet is not a consensus vote.
 
 ## Significant updates in this submission period
 
