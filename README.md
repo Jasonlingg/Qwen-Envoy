@@ -24,6 +24,20 @@ python scripts/demo_hackathon_research_mcp.py \
   --output out/my-research-demo
 ```
 
+To use the complete research workflow from an MCP host, register one stdio
+server from this checkout (with the same Python environment used above):
+
+```bash
+claude mcp add envoy-research -- "$(command -v python)" \
+  "$(pwd)/scripts/research_justification_mcp.py"
+```
+
+The [generic MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client)
+works for hosts other than Claude. This server includes paper discovery, source
+inspection, experiment records, decision recall and cross-paper justification.
+It starts without a model endpoint or API key; searching or opening a new paper
+uses the public arXiv network.
+
 The first run may download public arXiv text. Use a fresh output directory for
 each run; `report.json` records the MCP calls and source passage. The separate
 `python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo`

@@ -19,6 +19,38 @@ Point your MCP client at this script instead of `experiment_mode_mcp.py` when
 you want the packet tool. It uses the same local record and paper-cache roots.
 This companion entry point does not configure optional Qwen or Nemotron tools.
 
+## Connect an MCP client
+
+From the repository root, after `pip install -e '.[mcp,vault]'`, Claude Code can
+register the complete local workflow with the Python environment you installed:
+
+```bash
+claude mcp add envoy-research -- "$(command -v python)" \
+  "$(pwd)/scripts/research_justification_mcp.py"
+```
+
+For another stdio MCP host, use its equivalent of this configuration. Replace
+both absolute paths with your installed Python and checkout paths:
+
+```json
+{
+  "mcpServers": {
+    "envoy-research": {
+      "command": "/absolute/path/to/python",
+      "args": ["/absolute/path/to/rlm-explorer/scripts/research_justification_mcp.py"]
+    }
+  }
+}
+```
+
+The default local stores are `~/.envoy/ml-experiments` and
+`~/.envoy/arxiv-library`; pass explicit `--store-root` and `--library-root`
+arguments if you want other locations. Register this one server rather than a
+second copy of `experiment_mode_mcp.py`, since both expose the same record and
+paper tools. Starting the server makes no model or network request. Source
+search and open calls can fetch public arXiv pages; local record and recall
+calls work from saved data.
+
 For a substantive proposal, first define the local decision and the cheapest
 plausible baseline. Search for the target paper, then deliberately search for
 stronger baselines, conflicting results and relevant scope differences. Open the
