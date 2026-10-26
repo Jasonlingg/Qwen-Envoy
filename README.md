@@ -1,4 +1,36 @@
-# QASPER Agent Studio — a Qwen Envoy case study
+# Qwen Envoy Research MCP — from paper evidence to experiment results
+
+For the Nebius × NVIDIA hackathon, this repository includes a personal MCP
+workflow for ML engineers: find a public paper, inspect an exact passage, save
+what it does and does not support, plan a test, attach the measured result, and
+recall that decision in a later session. The optional NVIDIA Nemotron 3.5
+Lightning explanation runs through Nebius Token Factory. Source-byte and
+artifact checks establish provenance; a person still has to assess whether a
+claim is supported and whether a method helps their workload.
+
+**Start with the research MCP:** [saved-run inspector](release/hackathon-research-mcp/index.html)
+(hosted at `/research-mcp/` after this branch is merged) ·
+[local demo and submission evidence](docs/HACKATHON_SUBMISSION_2026.md) ·
+[experiment-mode guide](docs/EXPERIMENT_MODE.md). The inspector shows a saved
+run; the MCP service is the working tool interface.
+
+To try the public-paper and local-memory path without an API key or model call:
+
+```bash
+pip install -e '.[mcp,vault]'
+python scripts/demo_hackathon_research_mcp.py \
+  --library-root ~/.envoy/arxiv-library \
+  --output out/my-research-demo
+```
+
+The first run may download public arXiv text. Use a fresh output directory for
+each run; `report.json` records the MCP calls and source passage. The separate
+`python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo`
+example replays a complete research-to-result record without a model call.
+The Nebius explanation requires an explicit `--live-nebius` opt-in and an API
+key; see the [demo instructions](docs/HACKATHON_SUBMISSION_2026.md).
+
+## QASPER Agent Studio — a separate Qwen Envoy case study
 
 Train and inspect a small model that answers research-paper questions through
 Python tools. Qwen Envoy searches, reads, and cites frozen paper text; Studio
