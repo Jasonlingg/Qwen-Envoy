@@ -21,6 +21,8 @@ stdio processes using committed research and measured serving artifacts. It
 saves a question, attaches prior research, freezes a clearly retrospective
 analysis, records measurements, saves the decision and resumes after restart.
 It also finds that experiment from a related question in the restarted session,
+records an explicitly agent-proposed decision to defer a latency claim, and
+finds that decision thread after restart. It
 checks safe retries and rejected history edits. It makes no source
 network calls, model calls, GPU launches or generated-code executions.
 
@@ -28,6 +30,8 @@ Open `out/my-experiment-demo/RESUME.md` for the next conversation, `EXPERIMENT.m
 for the readable record, or `complete-record.json` for the full structured view.
 The output includes the local `records`, selected `exports`, and all MCP call
 responses. An existing output directory is refused rather than overwritten.
+`decision-thread.json` contains the stated choice and hashes of the exact run
+and research note used as its basis. It is not a human-approved conclusion.
 
 The [completed example](../examples/experiment-mode-complete/README.md) links
 the earlier live paper investigation and actual Qwen serving measurements.
@@ -115,6 +119,13 @@ For example:
 5. After a separately authorized test, it attaches supplied measurements through
    `record_experiment_result`. Resuming returns the current setup, latest research,
    latest supplied result and remaining unknowns for the next conversation.
+6. For a question spanning multiple attempts, call `create_decision_thread` with
+   its first experiment, then `link_decision_experiment` for later attempts.
+   `record_decision` appends an adopt/reject/defer statement with explicit
+   experiment, run and/or research-note IDs. Use `author_kind: "agent_proposed"`
+   for the assistant's interpretation. Use `"user_reported"` only when the user
+   actually states the choice; this field is caller-declared, not proof of review.
+   `find_decision_threads` and `get_decision_thread` recover it next session.
 
 These are host workflow instructions, not an automatic scheduler or an execution
 engine. The host chooses tools and interprets outcomes. It does not automatically
@@ -168,11 +179,22 @@ experiment context to it. Private context needs authorization before external de
 
 ## Resume and storage
 
-Everything is linked by experiment ID; there is no global active experiment that
+Every experiment is linked by explicit ID; there is no global active experiment that
 could mix two clients. Briefs, source-checked research notes and supplied results
 use the existing locked, atomic, content-addressed store. Notes have their own
 append-only index entries and do not consume brief revisions. Interrupted writes
 leave the prior index usable. Source receipts remain available after source removal.
+
+A decision thread has its own ID and immutable event chain in the same local
+store. It groups existing experiment IDs without editing their plans or results.
+Each stated choice snapshots the hashes of its selected brief, plan, run and/or
+research note. A new choice appends an event; it does not overwrite an older
+choice. The thread does not assert that a cited finding is semantically correct,
+that a run was scientifically valid, or that a caller-declared user choice was
+independently confirmed. Search is bounded word overlap on thread questions;
+inspect the returned thread and experiments before relying on a match. Back up
+the store together with its paper cache and selected artifact exports; an
+automated portable export is not yet included.
 
 `resume_experiment` returns a bounded text recap plus the current revision/hash,
 frozen-plan hash, note/result counts and latest IDs. Long sections are explicitly
@@ -190,7 +212,7 @@ semantic support stays unreviewed.
 
 Tests use real MCP clients and temporary stores with fixture paper sources.
 They verify persistence, evidence checks, revision binding, frozen-plan/result
-preservation, safe retries, concurrent notes, corruption handling and resumption
+preservation, decision-thread history, safe retries, concurrent notes, corruption handling and resumption
 across a real stdio-server restart. They do not test live Qwen research or show
 a productivity or benchmark improvement.
 

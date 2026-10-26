@@ -1,4 +1,53 @@
-# QASPER Agent Studio — a Qwen Envoy case study
+# Qwen Envoy Research MCP — from paper evidence to experiment results
+
+For the Nebius × NVIDIA hackathon, this repository includes a personal MCP
+workflow for ML engineers: find a public paper, inspect an exact passage, save
+what it does and does not support, plan a test, attach the measured result, and
+link related attempts and stated decisions across sessions. The optional NVIDIA
+Nemotron 3.5 Lightning explanation runs through Nebius Token Factory. Source-byte and
+artifact checks establish provenance; a person still has to assess whether a
+claim is supported and whether a method helps their workload.
+
+**Start with the research MCP:** [saved-run inspector](release/hackathon-research-mcp/index.html)
+(published at `/research-mcp/` when GitHub Pages deploys this release) ·
+[local demo and submission evidence](docs/HACKATHON_SUBMISSION_2026.md) ·
+[experiment-mode guide](docs/EXPERIMENT_MODE.md) ·
+[cross-paper justifications](docs/RESEARCH_JUSTIFICATIONS.md). The inspector shows a saved
+run; the MCP service is the working tool interface.
+
+To try the public-paper and local-memory path without an API key or model call:
+
+```bash
+pip install -e '.[mcp,vault]'
+python scripts/demo_hackathon_research_mcp.py \
+  --library-root ~/.envoy/arxiv-library \
+  --output out/my-research-demo
+```
+
+To use the complete research workflow from an MCP host, register one stdio
+server from this checkout (with the same Python environment used above):
+
+```bash
+claude mcp add envoy-research -- "$(command -v python)" \
+  "$(pwd)/scripts/research_justification_mcp.py"
+```
+
+The [generic MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client)
+works for hosts other than Claude. This server includes paper discovery, source
+inspection, experiment records, decision recall and cross-paper justification.
+It starts without a model endpoint or API key; searching or opening a new paper
+uses the public arXiv network.
+
+The first run may download public arXiv text. Use a fresh output directory for
+each run; `report.json` records the MCP calls and source passage. The separate
+`python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo`
+example replays a complete research-to-result record without a model call.
+The Nebius explanation requires an explicit `--live-nebius` opt-in and an API
+key; see the [demo instructions](docs/HACKATHON_SUBMISSION_2026.md).
+For a no-model comparison that challenges one paper against quality-curation
+baselines, run [the WebOrganizer walkthrough](docs/RESEARCH_JUSTIFICATIONS.md).
+
+## QASPER Agent Studio — a separate Qwen Envoy case study
 
 Qwen Envoy is a bounded document-research worker: **Qwen3-8B writes Python to
 search, inspect, and cite research papers inside Docker**. The surrounding

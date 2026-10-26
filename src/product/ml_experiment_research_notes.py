@@ -11,6 +11,7 @@ from src.product.ml_experiment_io import decode, encode
 from src.product.ml_experiment_models import ResearchPointer, Timestamped
 from src.product.ml_experiment_receipts import EvidenceReceipt, check_receipts
 from src.product.ml_experiment_types import Digest, ExperimentID, Key, RecordModel, Reference, Text
+from src.product.research_justification import ResearchJustification, validate_paper_comparison
 
 
 class ResearchFinding(RecordModel):
@@ -29,6 +30,7 @@ class ResearchNote(RecordModel):
     data_kind: Literal["recorded", "synthetic"] = "recorded"
     semantic_support: Literal["not_reviewed"] = "not_reviewed"
     proposal_status: Literal["not_executed_or_validated"] = "not_executed_or_validated"
+    justification: ResearchJustification | None = None
 
     @model_validator(mode="after")
     def valid_references(self):
@@ -37,6 +39,8 @@ class ResearchNote(RecordModel):
             raise ValueError("Duplicate research reference ID")
         if any(set(item.reference_ids) - set(ids) for item in self.findings):
             raise ValueError("Research finding names an unknown reference")
+        if self.justification is not None:
+            validate_paper_comparison(self.justification, self.references)
         return self
 
 

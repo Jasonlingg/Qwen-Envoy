@@ -59,7 +59,7 @@ def test_complete_recorded_loop_restart_retry_and_conflict_rejection(tmp_path):
     assert report["research_note_count"] == 2 and report["result_count"] == 1
     assert report["model_calls"] == report["gpu_activations"] == 0
     assert report["network_source_calls"] == 0
-    assert len(report["calls"]) == 16
+    assert len(report["calls"]) == 20
     assert report["cross_session_related_recall_verified"]
     assert sum(c["expected_rejection"] for c in report["calls"]) == 2
     assert {c["session"] for c in report["calls"]} == {1, 2}
@@ -68,6 +68,11 @@ def test_complete_recorded_loop_restart_retry_and_conflict_rejection(tmp_path):
     assert "artifact_measurement_verified" in resumed["context"]
     assert "unknown" in resumed["context"] and "semantic support" in resumed["warning"]
     full = json.loads((target / "complete-record.json").read_text())
+    decision = json.loads((target / "decision-thread.json").read_text())
+    assert decision["thread_id"] == report["decision_thread_id"]
+    assert decision["latest_decision"]["choice"]["outcome"] == "defer"
+    assert decision["latest_decision"]["basis_receipts"][0]["result_sha256"] == (
+        report["result_sha256"])
     assert full["selected_result"]["assessment"] == report["assessment"]
     assert full["selected_research_note"]["note"]["semantic_support"] == "not_reviewed"
     assert full["selected_research_note"]["brief_revision"] == 2

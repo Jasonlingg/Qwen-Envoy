@@ -1,0 +1,72 @@
+{
+  "base": "Qwen/Qwen3-8B",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "seed": 42,
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 320,
+    "enable_thinking": false
+  },
+  "input_sha256": "135f346a30b31d84f9a1f7a4beaef81e14f8e779ca99d7d8b867ce2259082505",
+  "adapters": {
+    "v5": "7afba233aecc9fb9f1f23638514e309d139caf5c55d81af4138a05edd89d62a3",
+    "rl9": "a2a773caf222aa34becbeb2f886ce553c0aefa0871783fa17efe8da0557ca810"
+  },
+  "hardware": "NVIDIA A40",
+  "results": [
+    {
+      "case_id": "weborganizer",
+      "adapter": "v5",
+      "elapsed_seconds": 8.28,
+      "completion_tokens": 140,
+      "raw": "{\n  \"method\": \"domain mixing\",\n  \"comparator\": \"quality filter\",\n  \"measured_outcome\": \"average accuracy of FineWeb-Edu increases from 54.2% to 56.2%\",\n  \"limitation\": \"not reported in passage\",\n  \"quote\": \"Even more compelling, we find that our optimized domain mixtures work well with quality filters and further enhance their performance. Notably, the average accuracy of FineWeb-Edu increases from 54.2% to 56.2% when adding domain mixing—almost doubling the gain of FineWeb-Edu over a 51.6% baseline accuracy.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    },
+    {
+      "case_id": "weborganizer",
+      "adapter": "rl9",
+      "elapsed_seconds": 7.53,
+      "completion_tokens": 140,
+      "raw": "{\n  \"method\": \"domain mixing\",\n  \"comparator\": \"quality filter\",\n  \"measured_outcome\": \"average accuracy of FineWeb-Edu increases from 54.2% to 56.2%\",\n  \"limitation\": \"not reported in passage\",\n  \"quote\": \"Even more compelling, we find that our optimized domain mixtures work well with quality filters and further enhance their performance. Notably, the average accuracy of FineWeb-Edu increases from 54.2% to 56.2% when adding domain mixing—almost doubling the gain of FineWeb-Edu over a 51.6% baseline accuracy.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    },
+    {
+      "case_id": "dclm",
+      "adapter": "v5",
+      "elapsed_seconds": 7.25,
+      "completion_tokens": 129,
+      "raw": "{\n  \"method\": \"model-based filtering\",\n  \"comparator\": \"no direct comparison to domain mixing\",\n  \"measured_outcome\": \"64% 5-shot accuracy on MMLU with 2.6T training tokens\",\n  \"limitation\": \"The passage does not report a direct experiment on adding domain mixing to quality-filtered web data for language-model pretraining.\",\n  \"quote\": \"Participants in the DCLM benchmark can experiment with data curation strategies such as deduplication, filtering, and data mixing at model scales ranging from 412M to 7B parameters.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    },
+    {
+      "case_id": "dclm",
+      "adapter": "rl9",
+      "elapsed_seconds": 6.93,
+      "completion_tokens": 129,
+      "raw": "{\n  \"method\": \"model-based filtering\",\n  \"comparator\": \"no direct comparison to domain mixing\",\n  \"measured_outcome\": \"64% 5-shot accuracy on MMLU with 2.6T training tokens\",\n  \"limitation\": \"The passage does not report a direct experiment on adding domain mixing to quality-filtered web data for language-model pretraining.\",\n  \"quote\": \"Participants in the DCLM benchmark can experiment with data curation strategies such as deduplication, filtering, and data mixing at model scales ranging from 412M to 7B parameters.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    },
+    {
+      "case_id": "fineweb",
+      "adapter": "v5",
+      "elapsed_seconds": 5.49,
+      "completion_tokens": 98,
+      "raw": "{\n  \"method\": \"not reported in passage\",\n  \"comparator\": \"not reported in passage\",\n  \"measured_outcome\": \"not reported in passage\",\n  \"limitation\": \"The passage does not report a direct experiment on adding domain mixing to quality-filtered web data for language-model pretraining.\",\n  \"quote\": \"LLMs pretrained on FineWeb-Edu exhibit dramatically better performance on knowledge- and reasoning-intensive benchmarks like MMLU and ARC.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    },
+    {
+      "case_id": "fineweb",
+      "adapter": "rl9",
+      "elapsed_seconds": 5.24,
+      "completion_tokens": 98,
+      "raw": "{\n  \"method\": \"not reported in passage\",\n  \"comparator\": \"not reported in passage\",\n  \"measured_outcome\": \"not reported in passage\",\n  \"limitation\": \"The passage does not report a direct experiment on adding domain mixing to quality-filtered web data for language-model pretraining.\",\n  \"quote\": \"LLMs pretrained on FineWeb-Edu exhibit dramatically better performance on knowledge- and reasoning-intensive benchmarks like MMLU and ARC.\"\n}",
+      "schema_valid": true,
+      "quote_exact": true
+    }
+  ]
+}

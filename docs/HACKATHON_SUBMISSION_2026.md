@@ -28,6 +28,10 @@ The distinguishing workflow is the handoff from **research to a measured next
 decision**, not an isolated paper summary. The host can find a prior experiment
 by local word overlap, inspect its actual result and unresolved questions, and
 avoid treating a cited paper as proof that a method worked in this workload.
+An optional [cross-paper justification packet](RESEARCH_JUSTIFICATIONS.md) now
+requires a simpler baseline, at least two source-verified papers, a non-supporting
+comparison, transfer gaps and a matched test rule. The relations remain
+caller-authored and need claim-level review; the packet is not a consensus vote.
 
 ## Significant updates in this submission period
 
@@ -46,6 +50,11 @@ model-evaluation case study.
   research, one artifact-bound result, related-work lookup after restart,
   idempotent retries and conflict rejection. The result was **inconclusive**
   on latency, and the replay made no fresh source or model requests.
+- **Decision-memory extension:** the current 20-call stdio replay also saves a
+  separate, agent-proposed decision to defer a latency-win claim. After restart,
+  the MCP finds that decision thread and checks that it still points to the
+  exact saved result and research note. This is a record-integrity check, not
+  evidence that the recommendation is useful or human-approved.
 - **Research-to-Nemotron live path:** eight MCP calls; CodeAct paper opened,
   exact passage and research note saved, related record recalled, and **one**
   Nemotron 3.5 Lightning Token Factory request submitted successfully. Usage was
