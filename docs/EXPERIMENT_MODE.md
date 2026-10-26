@@ -20,7 +20,8 @@ Choose a new output directory. This runs the real combined MCP through two
 stdio processes using committed research and measured serving artifacts. It
 saves a question, attaches prior research, freezes a clearly retrospective
 analysis, records measurements, saves the decision and resumes after restart.
-It also checks safe retries and rejected history edits. It makes no source
+It also finds that experiment from a related question in the restarted session,
+checks safe retries and rejected history edits. It makes no source
 network calls, model calls, GPU launches or generated-code executions.
 
 Open `out/my-experiment-demo/RESUME.md` for the next conversation, `EXPERIMENT.md`
@@ -78,6 +79,18 @@ No endpoint, tokenizer, Docker or GPU is needed for this mode. Starting it makes
 no model calls and provisions nothing. Paper search/open tools make bounded
 network calls when invoked; local record/resume tools make none.
 
+For an explicit public-paper explanation, set `NEBIUS_API_KEY` in the environment
+or ignored repository `.env` and add `--enable-nemotron` to the server command.
+This exposes `explain_experiment_research(experiment_id, note_id)`. It sends the
+selected research question, findings, uncertainties and at most five saved,
+verified public-paper spans (12 KB packet maximum) to NVIDIA Nemotron 3.5
+Lightning on Nebius Token Factory in one request, with at most 1800 output
+tokens and no automatic retry. Use it only on notes safe to disclose to Nebius.
+It does not send local run artifact values or activate a GPU. This tool incurs
+Token Factory usage when invoked; source and
+record tools still work without a key. Its claim-to-source ID check proves only
+reference integrity. Review each claim's meaning before relying on it.
+
 ## Conversation and tools
 
 For example:
@@ -85,9 +98,10 @@ For example:
 > I want to improve throughput for this model and workload. Here is my setup
 > and baseline. Help me decide what to try next.
 
-1. The host calls `save_experiment_brief` with the question and known setup.
-   This creates an explicit experiment ID. On return, use `list_experiments`
-   and `resume_experiment(experiment_id)` to retrieve the intended experiment.
+1. The host calls `find_related_experiments` to surface prior local records by
+   word overlap, then `resume_experiment(experiment_id)` for any promising ID.
+   The lookup is a navigation aid, not semantic relevance. If the question is
+   new, `save_experiment_brief` records it with known setup and an explicit ID.
 2. It investigates an uncertainty with ordinary web tools for documentation,
    model cards and repositories, or the five paper tools here:
    `search_papers`, `get_citations`, `open_paper`, `find_evidence`, `get_passage`.
