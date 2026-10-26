@@ -1,0 +1,144 @@
+{
+  "cases": [
+    {
+      "task_id": 1,
+      "A": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "All required components and the unset GRPO reward-agreement threshold are preserved. New local 22-to-1 execution-error and 3/20 support figures, plus a model identifier, are absent from the initial answer.",
+        "new_unsupported_detail": true
+      },
+      "B": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves the few-shot baseline, paired 40-question review, 6/20 and no-loss gates, 1/40 error limit, 1.20x latency/cost limits, and unset future GRPO thresholds. The rationale adds local trajectory and outcome figures absent from the initial answer.",
+        "new_unsupported_detail": true
+      }
+    },
+    {
+      "task_id": 2,
+      "A": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves BM25 baseline, separate hybrid and reranker tests, 3/40 gain, at-most-one lost span, no answer-support loss, 2-hit reranker gate, and unset latency ceiling. The uncertainty section adds CORD-19 and pseudo-label specifics absent from the initial answer.",
+        "new_unsupported_detail": true
+      },
+      "B": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves BM25 baseline, matched evidence-set comparison, 3/20 complete-hit gate, no supported-answer loss, p95 <= 1.25x BM25, and 2-hit reranker gate; source-backed rationale remains.",
+        "new_unsupported_detail": false
+      }
+    },
+    {
+      "task_id": 3,
+      "A": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves conditional caching-first recommendation, disabled-feature baseline, shared and distinct prefix strata, all latency and reuse thresholds, and source-backed rationale.",
+        "new_unsupported_detail": false
+      },
+      "B": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves caching-first recommendation, off/on paired replay, 10% p50 gate, p95 and quality safeguards, low-hit inconclusive condition, and unset memory ceiling. The uncertainty section adds KVFlow hardware/workflow specifics absent from the initial answer.",
+        "new_unsupported_detail": true
+      }
+    },
+    {
+      "task_id": 4,
+      "A": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves iterative-reading recommendation and fallback, whole-paper comparator, 40-question matched test, no lower answer support, at-most-1/40 missed-evidence increase, and 25% token reduction. The uncertainty section adds study-method and development-set characterizations absent from the initial answer.",
+        "new_unsupported_detail": true
+      },
+      "B": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves iterative default and broader-section access, whole-paper baseline and infeasible stratum, 3/20 or equal-support-plus-25% gate, <=1/40 extra errors, and whole-paper 3-answer/90%-fit gates.",
+        "new_unsupported_detail": false
+      }
+    },
+    {
+      "task_id": 5,
+      "A": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves failure-correction priority, teacher comparator, 50/50 blinded review, later equal-count held-out SFT test, 10/50 or 25%-per-hour gate, and no later unsupported-answer increase. The uncertainty section asserts no direct head-to-head study, which the initial answer did not establish.",
+        "new_unsupported_detail": true
+      },
+      "B": {
+        "recovery_success": true,
+        "component_checks": {
+          "recommendation": true,
+          "baseline": true,
+          "matched_test": true,
+          "decision_rule": true,
+          "source_backed_rationale": true
+        },
+        "reason": "Preserves student-failure priority, teacher/existing-trajectory baseline, 50/50 review and replay, 10/50 useful-supervision gate, and explicitly unset training threshold. The uncertainty section adds benchmark/teacher characterizations absent from the initial answer.",
+        "new_unsupported_detail": true
+      }
+    }
+  ],
+  "limitations": [
+    "This is a blinded semantic-fidelity comparison of recovered text against initial text only; no sources, local measurements, or external claims were independently verified.",
+    "new_unsupported_detail flags factual additions absent from the initial answer; they do not assert the added details are false.",
+    "Missing local measurements were allowed to remain unknown."
+  ]
+}

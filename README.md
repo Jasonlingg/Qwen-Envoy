@@ -49,6 +49,10 @@ baselines, run [the WebOrganizer walkthrough](docs/RESEARCH_JUSTIFICATIONS.md).
 The [single-case decision evaluation](docs/RESEARCH_DECISION_EVAL_20261026.md)
 records discovery, claim review, restart recovery and the remaining training gate;
 it is not a measured win over ordinary browsing.
+The [five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md)
+compares the MCP with ordinary web research plus Markdown notes. Both arms
+recovered all five decisions; the MCP did not meet the predeclared claim-support
+or recovery advantage gates.
 
 ## QASPER Agent Studio — a separate Qwen Envoy case study
 

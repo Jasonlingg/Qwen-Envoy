@@ -1,0 +1,98 @@
+[
+  {
+    "task_id": 1,
+    "recommendation": "Prioritize targeted, manually corrected supervised examples; defer training and do not schedule another GRPO run now.",
+    "rationale": "The user-reported development observation is that 35 replay-verified trajectories and v5 SFT reduced execution-error episodes from 22 to 1 across 40 questions, while provisional supported-answer passes remained 3/20 answerable cases for both base and v5. The corrected research note cautions that SFT on modest sets of long demonstrations may overfit, and the cited Med-RLVR reward verifies outcome correctness and format in medical multiple choice. These sources do not establish a semantic support reward for this paper reader, so further GRPO lacks a validated success signal.",
+    "baseline": "Existing Qwen3-8B code-execution reader, 35 replay-verified trajectories and v5 SFT checkpoint, under the current no-training policy. The brief leaves its formal baseline field null.",
+    "matched_test": "First independently review the 20 answerable development cases, classify unsupported answers and execution faults, and draft and replay corrections for distinct answer-support failures. Before any later training, hold out named questions and compare corrected-example SFT with GRPO at equal compute only if a semantic reward has been validated.",
+    "decision_rule": "No training decision threshold is set. Proceed to GRPO only if its reward agrees with independent human support judgments on a prespecified validation set; the agreement threshold is explicitly unset. Later model improvement requires a named held-out supported-answer comparison.",
+    "uncertainty": "The 3/20 support result is provisional and lacks independent review. Cited work addresses math, software tasks, and medical multiple choice rather than this reader; small-set SFT may overfit. The proposal has not been run.",
+    "missing_info": [
+      "Independent support judgments and named held-out question IDs",
+      "Validated semantic reward and required agreement threshold",
+      "Checkpoint identifier, corpus revision, decoding settings, hardware, and seed",
+      "Formal baseline, candidate, evaluation sample, procedure, metrics, budget, and criteria"
+    ],
+    "source_urls": [
+      "https://arxiv.org/abs/2510.25992v3",
+      "https://arxiv.org/abs/2502.19655v1"
+    ]
+  },
+  {
+    "task_id": 2,
+    "recommendation": "Keep BM25 as the production baseline; test BM25 plus dense rank fusion. Evaluate reranking as a separate ablation.",
+    "rationale": "The recorded SciRet finding reports hybrid BM25+dense recall gains on a scientific corpus, while an MS MARCO cross-encoder reduced precision in its tested setup. Lit3R combines sparse and dense retrieval with reranking for literature-grounded QA. Those findings motivate testing fusion while requiring local evidence-span and answer-quality checks before adopting either change.",
+    "baseline": "Current BM25 passage search with the same paper segmentation and passage budget. The formal baseline field remains null.",
+    "matched_test": "On identical long-paper questions and cached passages, compare BM25, BM25+dense fusion, then fusion+reranker. Blindly assess whether required answer-support spans enter top-k and whether a fixed reader produces supported answers; measure local indexing, retrieval, and end-to-end latency.",
+    "decision_rule": "Promote hybrid only if it recovers at least 3 more support spans among 40 questions, loses no more than 1 span BM25 found, and does not reduce independently reviewed supported answers. Add reranking only if it yields at least 2 further support-span hits beyond hybrid. The latency ceiling is unset pending hardware measurement.",
+    "uncertainty": "SciRet uses CORD-19 with pseudo-relevance labels, so its scores do not predict this paper QA workload. A generic cross-encoder may reduce precision. Local retrieval and reranking costs and independently reviewed outcomes are unknown; the proposal has not been run.",
+    "missing_info": [
+      "Named question IDs, required support spans, and independent answer reviews",
+      "Local indexing and latency measurements plus acceptable latency ceiling",
+      "Checkpoint identifier, corpus revision, decoding settings, hardware, and seed",
+      "Formal baseline, candidate, evaluation sample, procedure, metrics, budget, and criteria"
+    ],
+    "source_urls": [
+      "https://arxiv.org/abs/2608.03860v1",
+      "https://arxiv.org/abs/2609.16912v1"
+    ]
+  },
+  {
+    "task_id": 3,
+    "recommendation": "Measure prefix reuse and test prefix caching first for two concurrent readers; defer speculative decoding until decode time is shown to dominate.",
+    "rationale": "The corrected KVFlow note says prefix-cache gains shrink as outputs grow because decoding dominates runtime. The cited speculative-decoding paper targets serial autoregressive decode steps through draft-and-verify generation. This suggests checking whether shared prompt prefixes and prefill time are substantial in the actual two-reader workload before testing a draft model.",
+    "baseline": "Current two-reader serving configuration with cache disabled or cold prefixes, holding model, prompts, decoding, and concurrency fixed. The formal baseline field remains null.",
+    "matched_test": "Replay the same paired two-reader workload with prefix cache off and on, alternating order. Include short and long outputs; log shared-token fraction, time to first token, decode tokens per second, end-to-end p50/p95 latency, KV memory, and cache-hit rate.",
+    "decision_rule": "Keep caching only if warm-cache end-to-end p50 improves by at least 10% without p95 or answer-quality regression. Mark the result inconclusive if shared-prefix hit rate is low. An acceptable KV-memory increase is explicitly unset.",
+    "uncertainty": "KVFlow studied larger multi-agent workflows and up to H100-class hardware; speculative decoding depends on a useful draft model. Neither directly measures this two-Qwen3-8B setup. Prefix overlap, latency decomposition, memory cost, and outcomes are unmeasured.",
+    "missing_info": [
+      "Measured shared-prefix hit rate and prefill/decode time split",
+      "Acceptable KV-memory ceiling and precise p95/quality regression tolerances",
+      "Checkpoint identifier, workload/question IDs, corpus revision, decoding settings, hardware, and seed",
+      "Formal baseline, candidate, evaluation sample, procedure, metrics, budget, and criteria"
+    ],
+    "source_urls": [
+      "https://arxiv.org/abs/2507.07400v1",
+      "https://arxiv.org/abs/2211.17192v2"
+    ]
+  },
+  {
+    "task_id": 4,
+    "recommendation": "Test iterative search and inspection of selected passages with explicit evidence-coverage checks and broader-paper fallback on uncertain or multi-hop cases.",
+    "rationale": "The recorded QASPER discourse-retrieval finding reports 99.6% of its best zero-shot baseline performance with 26% of its tokens. The cited FinanceBench finding documents failures where the right long document was found but relevant pages or chunks were missed. Together they motivate a token-saving selected-passage test with explicit missed-evidence safeguards.",
+    "baseline": "One pass supplying the whole available paper text to the same reader and answer prompt, within an equalized context budget. The formal baseline field remains null.",
+    "matched_test": "On the same 40 questions, compare full-paper input with bounded iterative search/read using the same model and output limits. Independently label required evidence spans, supported-answer quality, missed-evidence cases, input tokens, latency, and execution errors.",
+    "decision_rule": "Adopt selected-passage reading only if independently reviewed supported-answer passes are no lower than full-paper, missed required evidence rises by at most 1/40, and median input tokens fall by at least 25%. Interpret small-sample uncertainty explicitly.",
+    "uncertainty": "The QASPER discourse study used different models and a structured retriever. Selected passages can omit global or multi-hop context. The 40 questions form a development comparison, not a held-out leaderboard; the proposal has not been run.",
+    "missing_info": [
+      "Independent evidence-span and supported-answer review on the 40 questions",
+      "Named question IDs and exact context/token budgets",
+      "Checkpoint identifier, corpus revision, decoding settings, hardware, and seed",
+      "Formal baseline, candidate, evaluation sample, procedure, metrics, budget, and criteria"
+    ],
+    "source_urls": [
+      "https://arxiv.org/abs/2311.13565v1",
+      "https://arxiv.org/abs/2602.17981v1"
+    ]
+  },
+  {
+    "task_id": 5,
+    "recommendation": "Prioritize manually corrected student-reader failures, especially unsupported answers after successful execution; retain a smaller teacher-trace sample as a comparator.",
+    "rationale": "The recorded PROOF-Gen finding says generate-and-filter teacher data discards hard failed scenarios and proposes recovering passing traces from failures. The recorded SRC finding uses bounded teacher review to locate harmful deviations in student agent branches. This supports testing whether corrections of actual student failures produce more useful, support-checked supervision than generic teacher traces.",
+    "baseline": "Generate-and-filter teacher traces or continue with the existing 35 verified trajectories without targeted correction. The formal baseline field remains null.",
+    "matched_test": "Use capacity for 100 reviews on 50 student failure cases and 50 teacher-generated traces from matched questions. Blind reviewers label executable validity, evidence location, support, and novel corrective action; replay corrected traces. If later training is authorized, compare equal-size datasets on named held-out questions.",
+    "decision_rule": "Favor corrected failures for the next dataset only if at least 10 more of its 50 reviewed cases yield replay-valid, independently support-checked useful supervision than the matched teacher set. Any later training threshold is explicitly unset pending a held-out evaluation protocol.",
+    "uncertainty": "The cited agent studies use web/tool benchmarks and different teachers; their near misses may differ from paper-QA support failures. Manual correction quality and review time per case are unmeasured. The proposal has not been run.",
+    "missing_info": [
+      "Identity and matching procedure for 50 failure cases and 50 teacher traces",
+      "Independent reviewers and rubric for useful support-checked supervision",
+      "Correction time per case and later held-out training decision threshold",
+      "Checkpoint identifier, corpus revision, decoding settings, hardware, and seed",
+      "Formal baseline, candidate, evaluation sample, procedure, metrics, budget, and criteria"
+    ],
+    "source_urls": [
+      "https://arxiv.org/abs/2608.23911v1",
+      "https://arxiv.org/abs/2606.12485v2"
+    ]
+  }
+]

@@ -1,0 +1,300 @@
+{
+  "reviewer_type": "independent_assistant_blind_to_arm",
+  "review_date": "2026-10-26",
+  "rubric": {
+    "claim_score": "0 unsupported/contradicted; 1 partly supported or named comparator missing; 2 directly supported in paper/document context",
+    "decision_score": "0 baseline or matched test absent; 1 both present but numerical acceptance threshold unset; 2 baseline, matched test and threshold specified"
+  },
+  "cases": [
+    {
+      "task_id": 1,
+      "question": "More supervised examples or another small GRPO run?",
+      "A": {
+        "claim_scores": [
+          {
+            "claim": "The SRL authors caution that SFT on modest sets of long demonstrations may overfit and report that both SFT and outcome-based RL struggle on challenging tasks.",
+            "score": 2,
+            "reason": "SRL introduction §1 discusses modest-scale long demonstrations, overfitting, and failure of SFT/outcome RL on difficult reasoning.",
+            "source_checked": "https://arxiv.org/abs/2510.25992v3"
+          },
+          {
+            "claim": "Med-RLVR uses an outcome correctness and format verifier for its medical multiple-choice reward.",
+            "score": 2,
+            "reason": "Med-RLVR §2 specifies format check and gold option-letter correctness reward.",
+            "source_checked": "https://arxiv.org/abs/2502.19655v1"
+          }
+        ],
+        "decision_score": 1,
+        "decision_reason": "Existing v5/trajectory baseline and a matched review/later comparison are named, but numerical training and reward-agreement gates are explicitly unset.",
+        "severe_unsupported_claims": [],
+        "comments": "Appropriately defers training. SRL/Med-RLVR concern different tasks and rewards, so they do not establish corrected SFT superiority here."
+      },
+      "B": {
+        "claim_scores": [
+          {
+            "claim": "DeepSeekMath GRPO replaces PPO’s learned value-model baseline with scores from multiple outputs to the same question.",
+            "score": 2,
+            "reason": "DeepSeekMath §4.1.1 defines group-score baseline in place of PPO critic.",
+            "source_checked": "https://arxiv.org/html/2402.03300"
+          },
+          {
+            "claim": "DeepSeekMath’s reported RL phase used about 144,000 math questions and sampled 64 outputs per question.",
+            "score": 2,
+            "reason": "DeepSeekMath §4.2 gives about 144K RL questions and 64 sampled outputs per question.",
+            "source_checked": "https://arxiv.org/html/2402.03300"
+          },
+          {
+            "claim": "ReTool trained a code-integrated cold-start SFT model before applying RL with interleaved code execution.",
+            "score": 2,
+            "reason": "ReTool §2 gives cold-start code-integrated SFT followed by interleaved code-execution RL.",
+            "source_checked": "https://arxiv.org/html/2504.11536"
+          },
+          {
+            "claim": "ReTool used a rule-based final-answer correctness reward against ground truth and did not include code executability in that reward.",
+            "score": 2,
+            "reason": "ReTool §2.3.1 defines rule-based final-answer accuracy reward and explicitly excludes code-executability reward.",
+            "source_checked": "https://arxiv.org/html/2504.11536"
+          },
+          {
+            "claim": "DeepSeek-R1’s authors say reward reliability is central to RL and that reliable signals are hard to construct for open-ended tasks.",
+            "score": 2,
+            "reason": "DeepSeek-R1 §6 and §G.1 discuss reward reliability and difficulty for open-ended tasks.",
+            "source_checked": "https://arxiv.org/html/2501.12948"
+          },
+          {
+            "claim": "DeepSeek-R1’s authors report reward hacking with a helpfulness reward: reward rose while Codeforces performance fell.",
+            "score": 2,
+            "reason": "DeepSeek-R1 §B.5 and Figure 6 show helpfulness reward rising while Codeforces performance falls.",
+            "source_checked": "https://arxiv.org/html/2501.12948"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Fixed v5/few-shot comparator, paired 40-question review, and explicit support, error, latency, and cost thresholds are given; later GRPO gate remains unset.",
+        "severe_unsupported_claims": [],
+        "comments": "Appropriately treats the +3/20 gate as a development pilot and requires a separate held-out test; no causal SFT-versus-GRPO result is claimed."
+      }
+    },
+    {
+      "task_id": 2,
+      "question": "BM25 alone or hybrid retrieval plus reranking for long research papers?",
+      "A": {
+        "claim_scores": [
+          {
+            "claim": "SciRet reports hybrid BM25 plus dense recall gains in its scientific corpus, while an MS MARCO cross-encoder reduced precision in its tested setup.",
+            "score": 1,
+            "reason": "SciRet abstract supports hybrid recall/robustness relative to sparse and dense systems and lower reranker precision; the claim omits the sparse/dense comparator and pseudo-label qualification.",
+            "source_checked": "https://arxiv.org/abs/2608.03860v1"
+          },
+          {
+            "claim": "Lit3R combines sparse and dense retrieval with reranking for literature-grounded QA.",
+            "score": 2,
+            "reason": "Lit3R abstract describes BM25 sparse+dense retrieval and cross-encoder reranking for literature QA.",
+            "source_checked": "https://arxiv.org/abs/2609.16912v1"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "BM25 baseline, paired three-way retrieval test, and numerical evidence-hit/answer thresholds are specified; latency ceiling remains unset.",
+        "severe_unsupported_claims": [],
+        "comments": "SciRet pseudo-labels favor its hybrid retrieval; a QASPER evidence and answer review is needed. D3/other sources do not license a production switch."
+      },
+      "B": {
+        "claim_scores": [
+          {
+            "claim": "QASPER pairs full research papers with human-selected supporting evidence, allowing evidence retrieval to be evaluated separately from answer generation.",
+            "score": 2,
+            "reason": "QASPER abstract states full-paper questions with human answer evidence.",
+            "source_checked": "https://arxiv.org/abs/2105.03011"
+          },
+          {
+            "claim": "SciRet found hybrid retrieval more robust than sparse or dense alone in its scientific corpus, but its pseudo-relevance labels were derived from the hybrid system.",
+            "score": 2,
+            "reason": "SciRet abstract explicitly compares sparse, dense, hybrid and discloses hybrid-derived pseudo-relevance labels.",
+            "source_checked": "https://arxiv.org/abs/2608.03860"
+          },
+          {
+            "claim": "SciRet reported that an MS MARCO-trained cross-encoder reduced precision on its scientific corpus.",
+            "score": 2,
+            "reason": "SciRet abstract explicitly reports lower precision with MS MARCO cross-encoder.",
+            "source_checked": "https://arxiv.org/abs/2608.03860"
+          },
+          {
+            "claim": "A QASPER study examined a retriever-ranker-reader pipeline and reported that stage choices affected answer quality.",
+            "score": 2,
+            "reason": "ACL Anthology abstract states retriever-ranker-reader experiments on QASPER and effects of stage modeling choices on answer prediction.",
+            "source_checked": "https://aclanthology.org/2022.wiesp-1.8/"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "BM25 comparator, fixed-budget ablations, and evidence-hit plus p95 thresholds are specified.",
+        "severe_unsupported_claims": [],
+        "comments": "Acknowledges SciRet label bias and measures this corpus. Complete human-evidence-set hit is stronger than a single-span proxy."
+      }
+    },
+    {
+      "task_id": 3,
+      "question": "Prefix caching or speculative decoding for two concurrent Qwen3-8B readers?",
+      "A": {
+        "claim_scores": [
+          {
+            "claim": "vLLM prefix caching reuses KV cache for matching prefixes and reduces prefill work, but it does not reduce decoding time.",
+            "score": 2,
+            "reason": "vLLM APC introduction and Limits say matched-prefix KV reuse skips prefill and does not reduce decode time.",
+            "source_checked": "https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/"
+          },
+          {
+            "claim": "vLLM documents speculative decoding primarily as a way to reduce inter-token latency for medium-to-low-QPS, memory-bound workloads.",
+            "score": 2,
+            "reason": "vLLM Speculative Decoding guide introduction names inter-token latency and medium-to-low-QPS memory-bound workload.",
+            "source_checked": "https://docs.vllm.ai/en/latest/features/speculative_decoding/index.html"
+          },
+          {
+            "claim": "A serving study found speculative-decoding speedups often shrink as server load rises and depend on draft acceptance and model sizes.",
+            "score": 2,
+            "reason": "Latency-model abstract reports load-sensitive speedups and dependence on acceptance and model sizes.",
+            "source_checked": "https://arxiv.org/abs/2605.15051"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Cache-off baseline, same two-client replay, and TTFT/end-to-end/prefix-reuse thresholds are specified.",
+        "severe_unsupported_claims": [],
+        "comments": "vLLM documentation supports the mechanism, not a speedup for this exact two-reader workload. Prefix identity, cache hits, and decode fraction must be measured."
+      },
+      "B": {
+        "claim_scores": [
+          {
+            "claim": "KVFlow reports that its prefix-cache gains shrink as outputs grow because decoding dominates runtime.",
+            "score": 2,
+            "reason": "KVFlow §4.1 results explicitly state relative gain declines as output tokens grow because decode dominates.",
+            "source_checked": "https://arxiv.org/abs/2507.07400v1"
+          },
+          {
+            "claim": "Speculative decoding targets serial autoregressive decode steps by drafting and verifying multiple tokens in parallel.",
+            "score": 2,
+            "reason": "Speculative Decoding abstract explains serial decoding and parallel draft verification.",
+            "source_checked": "https://arxiv.org/abs/2211.17192v2"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Cache-off baseline, paired replay, and p50/p95/quality threshold are specified; memory budget remains unset.",
+        "severe_unsupported_claims": [],
+        "comments": "KVFlow tests a different multi-agent cache-management system; its output-length trend is mechanistically relevant but not a measured Qwen3-8B gain."
+      }
+    },
+    {
+      "task_id": 4,
+      "question": "Entire long paper or iterative selected-passage inspection for paper QA?",
+      "A": {
+        "claim_scores": [
+          {
+            "claim": "On QASPER evidence retrieval, the D3 authors report 99.6% of their best zero-shot baseline performance using 26% of its tokens.",
+            "score": 1,
+            "reason": "D3 §5.1 reports 99.6% Evidence-F1 performance at 26% token use versus Map-Reduce Optimized; the claim omits that named comparator and that this is evidence retrieval, not answer correctness.",
+            "source_checked": "https://arxiv.org/abs/2311.13565v1"
+          },
+          {
+            "claim": "The FinanceBench paper identifies missed relevant pages or chunks despite finding the correct long document.",
+            "score": 2,
+            "reason": "FinanceBench abstract explicitly identifies correct-document retrieval with missed answer page/chunk.",
+            "source_checked": "https://arxiv.org/abs/2602.17981v1"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Whole-paper comparator, same-question test, and answer/evidence/token thresholds are specified.",
+        "severe_unsupported_claims": [],
+        "comments": "D3 is an evidence-retrieval result for a structured summary of the entire paper, not a direct test of iterative selected-passage inspection. The local matched test is essential."
+      },
+      "B": {
+        "claim_scores": [
+          {
+            "claim": "Long-context model performance can degrade when relevant information sits in the middle of a long input.",
+            "score": 2,
+            "reason": "Lost in the Middle abstract reports degradation for evidence positioned in the middle of long context.",
+            "source_checked": "https://arxiv.org/abs/2307.03172"
+          },
+          {
+            "claim": "A QASPER document-QA system explicitly separated text extraction, evidence retrieval, and answer generation and reported a 7.19 Answer-F1 gain over its baselines.",
+            "score": 1,
+            "reason": "DRC abstract reports three stages and +7.19 Answer-F1 over existing baselines; the claim does not identify the particular baseline/comparison.",
+            "source_checked": "https://arxiv.org/abs/2210.01959"
+          },
+          {
+            "claim": "LongRAG argues that passage chunking can lose global context and noisy retrieval can obscure evidence, motivating some access to broader structure.",
+            "score": 2,
+            "reason": "LongRAG abstract identifies global-context loss from chunking and noise from poor retrieval.",
+            "source_checked": "https://arxiv.org/abs/2410.18050"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Whole-paper comparator, paired feasible-paper test, and support/token/failure thresholds are specified.",
+        "severe_unsupported_claims": [],
+        "comments": "Lost-in-the-Middle and DRC support caution about whole-paper input and retrieval, but neither measures this code-execution reader. Feasibility stratum handles context limits."
+      }
+    },
+    {
+      "task_id": 5,
+      "question": "Teacher-generated trajectories or manually corrected failures when 100 more can be reviewed?",
+      "A": {
+        "claim_scores": [
+          {
+            "claim": "ROSS argues historical rollouts contain mistakes and redundant actions that should not all be imitated, and applies supervision selectively.",
+            "score": 2,
+            "reason": "ROSS abstract says historical rollouts may include mistakes, abandoned attempts, and redundant actions, motivating selected-loss supervision.",
+            "source_checked": "https://arxiv.org/abs/2609.35954"
+          },
+          {
+            "claim": "Reflective Recovery turns failed prefixes into recovery examples and reports gains on mathematical reasoning benchmarks.",
+            "score": 2,
+            "reason": "Reflective Recovery abstract describes failed prefixes converted to recovery data and math-benchmark gains.",
+            "source_checked": "https://arxiv.org/abs/2609.19156"
+          },
+          {
+            "claim": "SCoRe found offline supervised correction traces can suffer distribution mismatch and behavior collapse, so corrected traces are not guaranteed to teach recovery.",
+            "score": 2,
+            "reason": "SCoRe abstract explicitly reports distribution mismatch and behavior collapse for offline correction-trace SFT.",
+            "source_checked": "https://arxiv.org/abs/2409.12917"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Teacher-trace comparator, matched 50/50 review, and example-yield or yield-per-hour threshold are specified.",
+        "severe_unsupported_claims": [],
+        "comments": "Recovery studies support the concept but do not prove manual corrections beat teacher traces on paper QA. Screening and later held-out SFT test remain necessary."
+      },
+      "B": {
+        "claim_scores": [
+          {
+            "claim": "PROOF-Gen reports that generate-and-filter teacher data discards hard failed scenarios and proposes recovering passing traces from failures.",
+            "score": 2,
+            "reason": "PROOF-Gen abstract describes generate-and-filter discarding failed hard cases and per-scenario recovery of passing teacher traces.",
+            "source_checked": "https://arxiv.org/abs/2608.23911v1"
+          },
+          {
+            "claim": "The SRC study uses bounded teacher review to locate harmful deviations in student agent branches.",
+            "score": 2,
+            "reason": "SRC abstract describes fixed-horizon teacher branch review to localize first harmful deviation.",
+            "source_checked": "https://arxiv.org/abs/2606.12485v2"
+          }
+        ],
+        "decision_score": 2,
+        "decision_reason": "Teacher-trace comparator, matched 50/50 review, and useful-supervision yield threshold are specified; later training threshold is unset.",
+        "severe_unsupported_claims": [],
+        "comments": "PROOF-Gen recovers failed teacher scenarios and SRC reviews web-agent branches; neither directly establishes manual student-failure correction superiority here."
+      }
+    }
+  ],
+  "sources_could_not_open": [],
+  "review_limitations": [
+    "This review uses only the anonymized cases file and cited primary paper/document pages; it does not verify local project measurements, human evidence labels, or feasibility of proposed tests.",
+    "Several qualitative facts were verified from paper abstracts; numeric and methodological claims were checked in full-text sections where needed. An accurate source claim does not itself prove benefit for this Qwen workload."
+  ],
+  "summary": {
+    "claim_score_counts": {
+      "1": 3,
+      "2": 26
+    },
+    "decision_score_counts": {
+      "1": 1,
+      "2": 9
+    },
+    "severe_unsupported_claim_count": 0
+  }
+}

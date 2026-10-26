@@ -1,0 +1,374 @@
+[
+  {
+    "task_id": "M1",
+    "question": "With no new GPU budget yet, invest next in more supervised examples or another small GRPO run?",
+    "start_utc": "2026-10-26T20:34:24.034077+00:00",
+    "end_utc": "2026-10-26T20:38:34.240319+00:00",
+    "queries": [
+      {
+        "query": "supervised fine tuning versus reinforcement learning verifiable rewards reasoning small data Qwen",
+        "start_utc": "2026-10-26T20:34:24.034077+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "supervised fine tuning versus reinforcement learning verifiable rewards reasoning small data Qwen",
+        "start_utc": "2026-10-26T20:34:46.079399+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "supervised fine tuning versus reinforcement learning verifiable rewards reasoning small data Qwen",
+        "start_utc": "2026-10-26T20:35:01.298683+00:00",
+        "result_status": "ok"
+      }
+    ],
+    "sources": [
+      {
+        "arxiv_id": "2510.25992v3",
+        "url": "https://arxiv.org/abs/2510.25992v3",
+        "title": "Supervised Reinforcement Learning: From Expert Trajectories to Step-wise Reasoning",
+        "coverage": "html_paragraphs"
+      },
+      {
+        "arxiv_id": "2502.19655v1",
+        "url": "https://arxiv.org/abs/2502.19655v1",
+        "title": "Med-RLVR: Emerging Medical Reasoning from a 3B base model via reinforcement Learning",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "tool_calls": {
+      "total": 11,
+      "counts": {
+        "search_papers": 3,
+        "open_paper": 2,
+        "find_evidence": 1,
+        "get_passage": 2,
+        "save_experiment_brief": 1,
+        "record_experiment_research": 2
+      },
+      "failed_client_parse": 2,
+      "failed_server": 0,
+      "log_path": "/private/tmp/envoy-pilot-M-20261026/mcp_calls.jsonl"
+    },
+    "recommendation": "Invest the next annotation effort in targeted, manually corrected supervised examples, while deferring all training until supported-answer labels and a held-out comparison exist. Do not schedule another GRPO run now.",
+    "claims": [
+      {
+        "text": "The SRL authors caution that SFT on modest sets of long demonstrations may overfit and report that both SFT and outcome-based RL struggle on challenging tasks.",
+        "source_url": "https://arxiv.org/abs/2510.25992v3",
+        "source_locator": "2510.25992v3:chars:4501-5401"
+      },
+      {
+        "text": "Med-RLVR uses an outcome correctness and format verifier for its medical multiple-choice reward.",
+        "source_url": "https://arxiv.org/abs/2502.19655v1",
+        "source_locator": "2502.19655v1:chars:6911-7811"
+      }
+    ],
+    "baseline": "The existing 35 replay-verified trajectories and v5 SFT checkpoint; retain the current no-training policy.",
+    "matched_test": "Without GPU, independently review the 20 answerable development cases, categorize unsupported answers and execution faults, and draft/replay corrections for distinct answer-support failures. Before any later training, hold out named questions and compare an equal-compute corrected-example SFT run with a GRPO run only if a semantic reward can be validated.",
+    "decision_rule": "Training threshold explicitly unset until named held-out tasks and independent human support judgments exist. Proceed to GRPO only after its reward agrees with human support judgments on a prespecified validation set; agreement threshold currently unset.",
+    "uncertainty": "The cited studies concern math, software tasks, and medical multiple choice, not this paper reader. The 3/20 provisional answer result has not been independently reviewed. SFT can overfit small demonstrations.",
+    "experiment_id": "experiment_ae045f04d20c4f0ca0556bf189c49584",
+    "research_note_id": "M1_research_corrected_20261026",
+    "failures": [
+      "First two search_papers responses were lost due to local MCP client response-attribute parsing errors; both searches executed and count against cap.",
+      "An initial research note had overbroad wording for one source span; a corrected append-only note was saved and is the referenced note.",
+      "None of the proposed matched tests was executed; no paid APIs, GPU, or training were used."
+    ]
+  },
+  {
+    "task_id": "M2",
+    "question": "For long papers, keep BM25 passage search or test hybrid retrieval plus reranking?",
+    "start_utc": "2026-10-26T20:34:25.193338+00:00",
+    "end_utc": "2026-10-26T20:38:17.790641+00:00",
+    "queries": [
+      {
+        "query": "hybrid BM25 dense retrieval reranking scientific papers long document question answering",
+        "start_utc": "2026-10-26T20:34:25.193338+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "hybrid BM25 dense retrieval reranking scientific papers long document question answering",
+        "start_utc": "2026-10-26T20:34:46.210973+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "hybrid BM25 dense retrieval reranking scientific papers long document question answering",
+        "start_utc": "2026-10-26T20:35:01.818101+00:00",
+        "result_status": "candidates"
+      }
+    ],
+    "sources": [
+      {
+        "arxiv_id": "2608.03860v1",
+        "url": "https://arxiv.org/abs/2608.03860v1",
+        "title": "SciRet: A Compute-Aware Empirical Study of Retrieval and Reranking for Scientific RAG",
+        "coverage": "html_paragraphs"
+      },
+      {
+        "arxiv_id": "2609.16912v1",
+        "url": "https://arxiv.org/abs/2609.16912v1",
+        "title": "Lit3R: Retrieve-Relate-Read for Evidence-Grounded Question Answering over Scientific Literature",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "tool_calls": {
+      "total": 10,
+      "counts": {
+        "search_papers": 3,
+        "open_paper": 2,
+        "find_evidence": 1,
+        "get_passage": 2,
+        "save_experiment_brief": 1,
+        "record_experiment_research": 1
+      },
+      "failed_client_parse": 2,
+      "failed_server": 0,
+      "log_path": "/private/tmp/envoy-pilot-M-20261026/mcp_calls.jsonl"
+    },
+    "recommendation": "Keep BM25 as the production baseline and test BM25 plus dense rank fusion. Treat reranking as a separate ablation, not part of the default candidate.",
+    "claims": [
+      {
+        "text": "SciRet reports hybrid BM25 plus dense recall gains in its scientific corpus, while an MS MARCO cross-encoder reduced precision in its tested setup.",
+        "source_url": "https://arxiv.org/abs/2608.03860v1",
+        "source_locator": "2608.03860v1:chars:7925-8625"
+      },
+      {
+        "text": "Lit3R combines sparse and dense retrieval with reranking for literature-grounded QA.",
+        "source_url": "https://arxiv.org/abs/2609.16912v1",
+        "source_locator": "2609.16912v1:chars:0-800"
+      }
+    ],
+    "baseline": "Current BM25 passage search with the same segmentation and passage budget.",
+    "matched_test": "On identical long-paper questions and cached passages, compare BM25, BM25+dense fusion, then fusion+reranker. Blindly assess whether answer-support spans enter the top-k and whether the fixed reader gives supported answers; measure local indexing, retrieval, and end-to-end latency.",
+    "decision_rule": "Promote hybrid only if it recovers at least 3 more support spans among 40 questions and loses no more than 1 span found by BM25, with no decrease in independently reviewed supported answers. Reranker must improve at least 2 additional support-span hits beyond hybrid; latency ceiling unset pending hardware measurement.",
+    "uncertainty": "SciRet uses CORD-19 with pseudo-relevance labels, so its retrieval scores are not a QASPER prediction. A generic cross-encoder may reduce precision in this domain; paper-specific retrieval and reranking costs are unknown.",
+    "experiment_id": "experiment_b84cb2c959034dd0ad96d5565f4521be",
+    "research_note_id": "M2_research_20261026",
+    "failures": [
+      "First two search_papers responses were lost due to local MCP client response-attribute parsing errors; both searches executed and count against cap.",
+      "None of the proposed matched tests was executed; no paid APIs, GPU, or training were used."
+    ]
+  },
+  {
+    "task_id": "M3",
+    "question": "For two concurrent Qwen3-8B readers, focus next latency test on prefix caching or speculative decoding?",
+    "start_utc": "2026-10-26T20:34:28.128606+00:00",
+    "end_utc": "2026-10-26T20:38:34.252203+00:00",
+    "queries": [
+      {
+        "query": "prefix caching versus speculative decoding concurrent LLM serving latency shared prompts",
+        "start_utc": "2026-10-26T20:34:28.128606+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "prefix caching versus speculative decoding concurrent LLM serving latency shared prompts",
+        "start_utc": "2026-10-26T20:34:47.565668+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "prefix caching versus speculative decoding concurrent LLM serving latency shared prompts",
+        "start_utc": "2026-10-26T20:35:02.530611+00:00",
+        "result_status": "candidates"
+      }
+    ],
+    "sources": [
+      {
+        "arxiv_id": "2507.07400v1",
+        "url": "https://arxiv.org/abs/2507.07400v1",
+        "title": "KVFlow: Efficient Prefix Caching for Accelerating LLM-Based Multi-Agent Workflows",
+        "coverage": "html_paragraphs"
+      },
+      {
+        "arxiv_id": "2211.17192v2",
+        "url": "https://arxiv.org/abs/2211.17192v2",
+        "title": "Fast Inference from Transformers via Speculative Decoding",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "tool_calls": {
+      "total": 11,
+      "counts": {
+        "search_papers": 3,
+        "open_paper": 2,
+        "find_evidence": 1,
+        "get_passage": 2,
+        "save_experiment_brief": 1,
+        "record_experiment_research": 2
+      },
+      "failed_client_parse": 2,
+      "failed_server": 0,
+      "log_path": "/private/tmp/envoy-pilot-M-20261026/mcp_calls.jsonl"
+    },
+    "recommendation": "Measure prefix reuse and prefix caching first for two concurrent readers; defer speculative decoding until output decode time is shown to dominate.",
+    "claims": [
+      {
+        "text": "KVFlow reports that its prefix-cache gains shrink as outputs grow because decoding dominates runtime.",
+        "source_url": "https://arxiv.org/abs/2507.07400v1",
+        "source_locator": "2507.07400v1:chars:24656-25256"
+      },
+      {
+        "text": "Speculative decoding targets serial autoregressive decode steps by drafting and verifying multiple tokens in parallel.",
+        "source_url": "https://arxiv.org/abs/2211.17192v2",
+        "source_locator": "2211.17192v2:chars:993-1793"
+      }
+    ],
+    "baseline": "Current two-reader serving configuration with cache disabled or cold prefixes, same model, prompts, decoding, and concurrency.",
+    "matched_test": "Replay the same two-reader paired workload with prefix cache off and on, alternating order and logging shared-token fraction, time to first token, decode tokens per second, end-to-end p50/p95 latency, KV memory, and cache-hit rate. Include short and long outputs.",
+    "decision_rule": "Keep caching only if warm-cache end-to-end p50 falls by at least 10% without p95 or answer-quality regression; mark the result inconclusive if shared-prefix hit rate is low. The acceptable KV-memory increase is explicitly unset until measured.",
+    "uncertainty": "The prefix-caching paper uses larger multi-agent workflows and up to H100 class hardware; speculative decoding results depend on a useful draft model. Neither directly measures two Qwen3-8B readers.",
+    "experiment_id": "experiment_548c072147af4b73baedcbac8fb96da0",
+    "research_note_id": "M3_research_corrected_20261026",
+    "failures": [
+      "First two search_papers responses were lost due to local MCP client response-attribute parsing errors; both searches executed and count against cap.",
+      "An initial research note had overbroad wording for one source span; a corrected append-only note was saved and is the referenced note.",
+      "None of the proposed matched tests was executed; no paid APIs, GPU, or training were used."
+    ]
+  },
+  {
+    "task_id": "M4",
+    "question": "For paper QA, whole long paper or iterative selected-passage search/inspection?",
+    "start_utc": "2026-10-26T20:34:31.092484+00:00",
+    "end_utc": "2026-10-26T20:38:17.799749+00:00",
+    "queries": [
+      {
+        "query": "long document question answering iterative retrieval search passages versus full context papers",
+        "start_utc": "2026-10-26T20:34:31.092484+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "long document question answering iterative retrieval search passages versus full context papers",
+        "start_utc": "2026-10-26T20:34:48.404798+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "long document question answering iterative retrieval search passages versus full context papers",
+        "start_utc": "2026-10-26T20:35:03.624352+00:00",
+        "result_status": "candidates"
+      }
+    ],
+    "sources": [
+      {
+        "arxiv_id": "2311.13565v1",
+        "url": "https://arxiv.org/abs/2311.13565v1",
+        "title": "Drilling Down into the Discourse Structure with LLMs for Long Document Question Answering",
+        "coverage": "html_paragraphs"
+      },
+      {
+        "arxiv_id": "2602.17981v1",
+        "url": "https://arxiv.org/abs/2602.17981v1",
+        "title": "Decomposing Retrieval Failures in RAG for Long-Document Financial Question Answering",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "tool_calls": {
+      "total": 10,
+      "counts": {
+        "search_papers": 3,
+        "open_paper": 2,
+        "find_evidence": 1,
+        "get_passage": 2,
+        "save_experiment_brief": 1,
+        "record_experiment_research": 1
+      },
+      "failed_client_parse": 2,
+      "failed_server": 0,
+      "log_path": "/private/tmp/envoy-pilot-M-20261026/mcp_calls.jsonl"
+    },
+    "recommendation": "Use iterative search and inspection of selected passages, with explicit evidence coverage checks and a fallback to broader paper inspection on uncertain or multi-hop cases.",
+    "claims": [
+      {
+        "text": "On QASPER evidence retrieval, the D3 authors report 99.6% of their best zero-shot baseline performance using 26% of its tokens.",
+        "source_url": "https://arxiv.org/abs/2311.13565v1",
+        "source_locator": "2311.13565v1:chars:22435-23535"
+      },
+      {
+        "text": "The FinanceBench paper identifies missed relevant pages or chunks despite finding the correct long document.",
+        "source_url": "https://arxiv.org/abs/2602.17981v1",
+        "source_locator": "2602.17981v1:chars:1587-2587"
+      }
+    ],
+    "baseline": "One pass supplying the whole available paper text to the same reader and answer prompt, within an equalized context budget.",
+    "matched_test": "On the same 40 questions, compare full-paper input with bounded iterative search/read at equal model and output limits. Independently mark required evidence spans, supported-answer quality, missed-evidence cases, input tokens, latency, and execution errors.",
+    "decision_rule": "Adopt selected-passage reading if independently reviewed supported-answer passes are no lower than full-paper, missed required evidence increases by at most 1/40, and median input tokens fall by at least 25%. Treat small sample uncertainty explicitly.",
+    "uncertainty": "The QASPER discourse study tested different models and a structured retriever; selected passages can omit global or multi-hop context. The project question set is a development comparison, not a held-out leaderboard.",
+    "experiment_id": "experiment_9ac3f52176504f4fa8ef971044ffab11",
+    "research_note_id": "M4_research_20261026",
+    "failures": [
+      "First two search_papers responses were lost due to local MCP client response-attribute parsing errors; both searches executed and count against cap.",
+      "None of the proposed matched tests was executed; no paid APIs, GPU, or training were used."
+    ]
+  },
+  {
+    "task_id": "M5",
+    "question": "With capacity to review ~100 more trajectories, prioritize teacher-generated traces or manually corrected failure cases?",
+    "start_utc": "2026-10-26T20:34:34.573607+00:00",
+    "end_utc": "2026-10-26T20:38:17.804548+00:00",
+    "queries": [
+      {
+        "query": "correcting failure trajectories versus teacher generated demonstrations tool use agent fine tuning",
+        "start_utc": "2026-10-26T20:34:34.573607+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "correcting failure trajectories versus teacher generated demonstrations tool use agent fine tuning",
+        "start_utc": "2026-10-26T20:34:49.640965+00:00",
+        "result_status": "client_parse_error"
+      },
+      {
+        "query": "correcting failure trajectories versus teacher generated demonstrations tool use agent fine tuning",
+        "start_utc": "2026-10-26T20:35:04.860280+00:00",
+        "result_status": "candidates"
+      }
+    ],
+    "sources": [
+      {
+        "arxiv_id": "2608.23911v1",
+        "url": "https://arxiv.org/abs/2608.23911v1",
+        "title": "PROOF-Gen: From Optimized Data to Better Distillation",
+        "coverage": "html_paragraphs"
+      },
+      {
+        "arxiv_id": "2606.12485v2",
+        "url": "https://arxiv.org/abs/2606.12485v2",
+        "title": "Speculative Rollback Correction for Quality-Diverse Web Agent Imitation",
+        "coverage": "html_paragraphs"
+      }
+    ],
+    "tool_calls": {
+      "total": 10,
+      "counts": {
+        "search_papers": 3,
+        "open_paper": 2,
+        "find_evidence": 1,
+        "get_passage": 2,
+        "save_experiment_brief": 1,
+        "record_experiment_research": 1
+      },
+      "failed_client_parse": 2,
+      "failed_server": 0,
+      "log_path": "/private/tmp/envoy-pilot-M-20261026/mcp_calls.jsonl"
+    },
+    "recommendation": "Prioritize manually corrected failure cases from the student reader, especially unsupported answers with successful execution. Retain a smaller teacher-trace sample as a comparator.",
+    "claims": [
+      {
+        "text": "PROOF-Gen reports that generate-and-filter teacher data discards hard failed scenarios and proposes recovering passing traces from failures.",
+        "source_url": "https://arxiv.org/abs/2608.23911v1",
+        "source_locator": "2608.23911v1:chars:0-1100"
+      },
+      {
+        "text": "The SRC study uses bounded teacher review to locate harmful deviations in student agent branches.",
+        "source_url": "https://arxiv.org/abs/2606.12485v2",
+        "source_locator": "2606.12485v2:chars:1571-2571"
+      }
+    ],
+    "baseline": "Generate-and-filter teacher traces or the existing 35 verified trajectories without targeted correction.",
+    "matched_test": "Use the review budget on 50 student failure cases and 50 teacher-generated traces from matched questions. Blind reviewers label executable validity, evidence location, support, and novel corrective action; replay each corrected trace. If later training is authorized, compare equal-size datasets on named held-out questions.",
+    "decision_rule": "Favor corrected failures for the next dataset only if at least 10 more of 50 reviewed cases provide replay-valid, independently support-checked useful supervision than the matched teacher set. Training threshold is explicitly unset pending a held-out evaluation protocol.",
+    "uncertainty": "The cited agent studies use web or tool benchmarks and different teachers; manual correction quality and time per case are unmeasured. A near-miss in those studies may differ from a paper-QA support failure.",
+    "experiment_id": "experiment_64097b1be5c0499da0a126d6c47c6ec5",
+    "research_note_id": "M5_research_20261026",
+    "failures": [
+      "First two search_papers responses were lost due to local MCP client response-attribute parsing errors; both searches executed and count against cap.",
+      "None of the proposed matched tests was executed; no paid APIs, GPU, or training were used."
+    ]
+  }
+]

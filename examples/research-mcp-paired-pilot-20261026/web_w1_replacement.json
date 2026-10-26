@@ -1,0 +1,74 @@
+[
+  {
+    "task_id": "1",
+    "question": "With no new GPU budget yet, should the next investment be more supervised examples or another small GRPO run?",
+    "start_utc": "2026-10-26 20:36:07 UTC",
+    "end_utc": "2026-10-26 20:37:24 UTC",
+    "queries": [
+      "DeepSeekMath Pushing the Limits of Mathematical Reasoning in Open Language Models GRPO arxiv paper",
+      "DeepSeek R1 Incentivizing Reasoning Capability in LLMs via Reinforcement Learning cold start SFT arxiv",
+      "ReTool Reinforcement Learning for Strategic Tool Use in LLMs arxiv paper code interpreter"
+    ],
+    "sources": [
+      "https://arxiv.org/html/2402.03300",
+      "https://arxiv.org/html/2504.11536",
+      "https://arxiv.org/html/2501.12948"
+    ],
+    "tool_calls": {
+      "total": 7,
+      "web_calls": 3,
+      "web_search_queries": 3,
+      "unique_primary_source_documents_opened": 3,
+      "web_find_calls": 1,
+      "clock_calls": 2,
+      "local_write_and_validation_calls": 2,
+      "details": [
+        "clock.current_time (start)",
+        "web.search_query (3 queries in one call)",
+        "web.open (3 primary papers in one call)",
+        "web.find (six within-document lookups in one call)",
+        "clock.current_time (progress timestamp)",
+        "exec_command (write and validate note/JSON)",
+        "exec_command (correct development/held-out distinction and validate)"
+      ]
+    },
+    "recommendation": "Spend the next scarce budget on human review of answer support and a small number of failure-targeted, verified supervised trajectories; defer another GRPO run. This is a priority for evidence collection and data curation, not a claim that adding examples will necessarily improve the model.",
+    "claims": [
+      {
+        "text": "DeepSeekMath GRPO replaces PPO’s learned value-model baseline with scores from multiple outputs to the same question.",
+        "source_url": "https://arxiv.org/html/2402.03300",
+        "source_locator": "§4.1.1, lines 263–266"
+      },
+      {
+        "text": "DeepSeekMath’s reported RL phase used about 144,000 math questions and sampled 64 outputs per question.",
+        "source_url": "https://arxiv.org/html/2402.03300",
+        "source_locator": "§4.2, lines 312–314"
+      },
+      {
+        "text": "ReTool trained a code-integrated cold-start SFT model before applying RL with interleaved code execution.",
+        "source_url": "https://arxiv.org/html/2504.11536",
+        "source_locator": "§2.1, lines 55–60"
+      },
+      {
+        "text": "ReTool used a rule-based final-answer correctness reward against ground truth and did not include code executability in that reward.",
+        "source_url": "https://arxiv.org/html/2504.11536",
+        "source_locator": "§2.3.1, lines 81–86"
+      },
+      {
+        "text": "DeepSeek-R1’s authors say reward reliability is central to RL and that reliable signals are hard to construct for open-ended tasks.",
+        "source_url": "https://arxiv.org/html/2501.12948",
+        "source_locator": "§G.1, lines 1600–1603"
+      },
+      {
+        "text": "DeepSeek-R1’s authors report reward hacking with a helpfulness reward: reward rose while Codeforces performance fell.",
+        "source_url": "https://arxiv.org/html/2501.12948",
+        "source_locator": "§B.5, lines 1175–1178"
+      }
+    ],
+    "baseline": "Before training, compare the current v5 checkpoint with the same checkpoint given a compact, fixed few-shot prompt containing reviewed tool-use-and-evidence demonstrations. Keep the question set, corpus, decoding, and scoring identical; exclude test-question content from demonstrations.",
+    "matched_test": "On the same frozen 40 development questions, blindly review answer support for the 20 answerable items, and record execution-error episodes, latency, and inference cost for all 40. Compare current v5 with the no-training few-shot baseline using paired question-level results. Reserve separate, unseen questions before any later SFT model is promoted; do not call the 40-question development result a held-out effect, or treat source span presence or replay success as answer correctness.",
+    "decision_rule": "Predeclared development-pilot gate, not a significance claim: prioritize preparing a small targeted SFT dataset if the reviewed few-shot baseline improves supported-answer passes from v5’s 3/20 to at least 6/20 on the same answerable development items, loses none of the three currently passing items, keeps execution-error episodes at or below 1/40, and keeps median latency and inference cost each at or below 1.20× v5. Train when compute exists, then require a separately reserved matched held-out test before claiming model improvement. Reconsider GRPO only after a blinded audit shows a reliable reward that tracks supported-answer judgments on unseen outputs and a small matched rollout shows nontrivial reward variation; the numerical agreement/variation threshold for that future GRPO gate is explicitly unset pending labeled samples.",
+    "uncertainty": "The 3/20 supported-answer counts are provisional, the sample is small, and no causal comparison of additional SFT versus GRPO exists for this specific Qwen3-8B reader. The cited math/tool-RL studies use different tasks, model scales, and verifiable ground-truth rewards, so their gains do not transfer directly. The proposed +3/20 threshold is a practical pilot rule rather than a statistical confidence bound.",
+    "note_path": "/private/tmp/envoy-pilot-W1-replacement-20261026/w1.md"
+  }
+]
