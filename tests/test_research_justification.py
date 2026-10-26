@@ -83,6 +83,9 @@ def test_saved_justification_survives_restart_without_source_cache(tmp_path):
             assert [entry["quote"] for entry in packet["compared_findings"]] == [
                 ref["quote"] for ref in note["references"]]
             assert all(entry["source_sha256"] for entry in packet["compared_findings"])
+            assert [(entry["span_start"], entry["span_end"])
+                    for entry in packet["compared_findings"]] == [
+                        (ref["start"], ref["end"]) for ref in note["references"]]
             assert packet["semantic_review"] == "not_reviewed"
             assert "not a consensus score" in packet["warning"]
         shutil.rmtree(library.papers_dir)

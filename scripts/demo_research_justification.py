@@ -30,11 +30,11 @@ SOURCES = (
     ("2406.11794", "dclm", "model-based filtering is key to assembling",
      "high-quality training set.",
      "qualifies", "Model-based filtering was a key data-curation intervention.",
-     "Model-based quality filtering", "Other data curation recipes"),
+     "Model-based quality filtering", "Not specified by the selected passage"),
     ("2406.17557", "fineweb", "LLMs pretrained on FineWeb-Edu exhibit",
      "like MMLU and ARC.",
      "qualifies", "FineWeb-Edu improves knowledge and reasoning benchmarks.",
-     "Educational-quality filtering", "Unfiltered FineWeb"),
+     "Educational-quality filtering", "Not specified by the selected passage"),
 )
 
 

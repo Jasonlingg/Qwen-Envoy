@@ -70,6 +70,7 @@ def justification_packet(selected_research_note: dict) -> dict:
             raise ValueError("Compared paper is missing a verified source receipt")
         findings.append({**item, "arxiv_id": ref["arxiv_id"],
                          "source_url": receipt["metadata"]["source_url"],
+                         "span_start": ref["start"], "span_end": ref["end"],
                          "quote": receipt["value"],
                          "source_sha256": receipt["source_sha256"],
                          "coverage": receipt["metadata"]["coverage"]})
