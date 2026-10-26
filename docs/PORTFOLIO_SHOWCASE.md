@@ -1,6 +1,6 @@
 # Personal ML research MCP — portfolio walkthrough
 
-This is the MCP part of Qwen Envoy: a personal research-to-experiment record for an ML engineer. An assistant can search papers, inspect versioned passages, save a question and source-linked findings, freeze the agreed test, attach measured results, then resume the decision in a later session. The host assistant reasons over the evidence; the MCP checks source bytes, artifact bindings, revisions and result arithmetic. Qwen reading is an optional, separately configured worker, not a requirement for the core workflow.
+This is the main product in the Qwen Envoy repository: a personal research-to-experiment MCP for an ML engineer. An assistant can search papers, inspect versioned passages, save a question and source-linked findings, freeze the agreed test, attach measured results, then resume the decision in a later session. The host assistant reasons over the evidence; the MCP checks source bytes, artifact bindings, revisions and result arithmetic. The Qwen agent is a separate training/evaluation case study. An experimental passage-reader tool may be configured explicitly, but the core workflow and this demo do not call Qwen.
 
 ```text
 ML question → recall related attempts → paper search/open/passages
@@ -44,7 +44,11 @@ productivity advantage over ordinary Codex browsing.
 
 > **Qwen Envoy research MCP** — Built a personal ML research workflow that links versioned arXiv evidence, immutable experiment plans, artifact-bound measurements, and restart-safe decision records through MCP. Verified live paper discovery and exact passage provenance, then demonstrated a complete 15-call research-to-result flow across two server processes with safe retries and retained uncertainty.
 
-If there is room for a second bullet, describe the separate Qwen agent and [QASPER case study](TECHNICAL_CASE_STUDY.md). Keep its model-evaluation numbers separate from this MCP's product claims.
+If there is room for a second bullet, describe the separate Qwen agent and
+[QASPER case study](TECHNICAL_CASE_STUDY.md). Keep its model-evaluation
+numbers separate from this MCP's product claims. The optional reader has not
+passed a sufficient evidence-quality evaluation, so do not present it as a
+production research worker.
 
 ## What is proved, and what remains
 

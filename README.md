@@ -1,4 +1,37 @@
-# Qwen Envoy — training and evaluating a research agent
+# Qwen Envoy Research MCP — evidence that survives the experiment
+
+**The main product is a personal research-to-experiment MCP for ML engineers.**
+An assistant can find and inspect public papers, save source-linked findings,
+freeze a test plan, attach measured results, and recover the decision in a later
+session. The MCP checks source bytes, record revisions, and selected result
+artifacts; a person still has to judge whether a paper supports a claim.
+
+[Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
+[Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·
+[Read the workflow and limits](docs/EXPERIMENT_MODE.md) ·
+[See the hackathon run](docs/HACKATHON_SUBMISSION_2026.md)
+
+The core source-and-memory workflow runs without a model endpoint. An optional
+Nemotron explanation uses Nebius Token Factory only when explicitly invoked.
+The saved demo includes that Nemotron call; **it does not run Qwen**. The
+[five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md) did not
+show better decisions or recall than ordinary web research plus Markdown notes.
+The demonstrated value is an inspectable, source-bound experiment record, not
+a proven research-quality advantage.
+
+To run the source-and-memory demo locally without a model or API key:
+
+```bash
+pip install -e '.[mcp,vault]'
+python scripts/demo_hackathon_research_mcp.py \
+  --library-root ~/.envoy/arxiv-library \
+  --output out/my-research-demo
+```
+
+The first run may fetch public arXiv text. To connect an assistant to the full
+workflow, use the [MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client).
+
+## Qwen agent research case study
 
 **A reproducible ML-agent engineering study.** I built a Qwen3-8B agent that
 writes Python to search, read, and cite papers inside Docker, fine-tuned it with
@@ -24,6 +57,9 @@ Official QASPER Answer F1, refusal behavior, and the limitations of this
 comparison are reported separately in the [findings](docs/QASPER_AGENT_STUDY.md).
 The three-update GRPO pilot did not reach its held-out quality evaluation;
 it provides no additional model-improvement claim.
+This study is separate from the Research MCP demo. A Qwen passage reader exists
+as an experimental, explicitly configured tool, but it is not required for the
+MCP workflow or established as a reliable automatic evidence-card writer.
 
 ## What is here
 
@@ -65,17 +101,6 @@ the snapshot offline, download
 [studio.html](release/qasper-agent-study/studio.html) and open it in a browser.
 For local source review and optional live investigations, use the
 [full Studio setup](PROJECT_GUIDE.md#open-the-demo).
-
-## Companion research MCP
-
-The repository also contains a personal MCP for finding public papers, saving
-source-linked ML experiment decisions, recording outcomes, and recalling them
-later. [Try the saved workflow](docs/EXPERIMENT_MODE.md) or
-[inspect its demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/).
-A [five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md)
-did **not** show better decisions or recovery than ordinary web research plus
-Markdown notes. The MCP is a working experiment-record interface, not a proven
-research-quality improvement.
 
 For setup instructions, source maps, historical experiments, and detailed
 limitations, see the [full project guide](PROJECT_GUIDE.md). For the shortest

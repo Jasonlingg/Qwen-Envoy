@@ -23,7 +23,9 @@ question, findings and uncertainties with at most five verified spans, and no
 local run artifact values. Use this opt-in tool only on notes safe to disclose
 to Nebius. One capped request returns an explanation
 with claim-to-evidence IDs; a reviewer still judges semantic support. Qwen remains
-an optional code-execution reader, and no Qwen quality gain is claimed here.
+part of a separate agent-training case study. An experimental Qwen passage-reader
+tool can be configured separately, but this demo does not invoke it and no Qwen
+quality gain is claimed here.
 
 The distinguishing workflow is the handoff from **research to a measured next
 decision**, not an isolated paper summary. The host can find a prior experiment
@@ -36,12 +38,11 @@ caller-authored and need claim-level review; the packet is not a consensus vote.
 
 ## Significant updates in this submission period
 
-The pre-existing Qwen document agent was extended with the versioned arXiv MCP,
-source receipts, experiment briefs, frozen plans, artifact-bound result records,
-restart-safe research notes, cross-experiment recall, and the opt-in Nemotron
-Token Factory explanation path. The new product path addresses a personal ML
-engineering workflow; the older QASPER Agent Studio remains a separate saved
-model-evaluation case study.
+This repository added the versioned arXiv MCP, source receipts, experiment
+briefs, frozen plans, artifact-bound result records, restart-safe research
+notes, cross-experiment recall, and the opt-in Nemotron Token Factory
+explanation path. The Research MCP is the product submitted here. QASPER Agent
+Studio documents the separate Qwen training and evaluation research.
 
 ## Recorded demo evidence, October 26
 
