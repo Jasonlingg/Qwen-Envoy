@@ -80,7 +80,8 @@ judge-facing wording above uses the narrower supported description.
 
 ## Reproduce the local test build
 
-Install the repository's `mcp` and `vault` extras per [README](../README.md).
+Install the repository's `mcp` and `vault` extras per the
+[full project guide](../PROJECT_GUIDE.md).
 For a no-model research-and-memory run using an existing public-paper cache:
 
 ```sh
