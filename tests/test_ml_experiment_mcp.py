@@ -14,7 +14,8 @@ from tests.ml_experiment_result_fixtures import paired_result, planned_brief  # 
 from tests.test_ml_experiment_evidence import sources  # noqa: E402
 from tests.test_ml_experiment_outcomes import attach_measurements  # noqa: E402
 
-TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments", "freeze_experiment_plan",
+TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
+         "find_related_experiments", "freeze_experiment_plan",
          "record_experiment_result"}
 
 
@@ -28,7 +29,7 @@ def test_question_first_tools_annotations_errors_and_freeze(tmp_path):
             for tool in tools:
                 assert tool.annotations.open_world_hint is False
                 assert tool.annotations.read_only_hint == (tool.name in {
-                    "get_experiment", "list_experiments"})
+                    "get_experiment", "list_experiments", "find_related_experiments"})
             assert "Start with the user's" in client.instructions
             assert "not semantic support" in client.instructions
             saved = await client.call_tool("save_experiment_brief", {
@@ -56,6 +57,10 @@ def test_question_first_tools_annotations_errors_and_freeze(tmp_path):
             assert unknown.is_error
             listing = (await client.call_tool("list_experiments", {})).structured_content
             assert listing["experiments"][0]["experiment_id"] == key
+            related = (await client.call_tool("find_related_experiments", {
+                "question": "Would a smaller model help?"})).structured_content
+            assert related["matches"][0]["experiment_id"] == key
+            assert related["match_kind"] == "local_word_overlap"
 
     asyncio.run(body())
 

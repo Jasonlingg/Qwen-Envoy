@@ -55,7 +55,8 @@ async def run_demo(*, store_root: Path, artifact_root: Path, library_root: Path,
 
     async with Client(parameters) as client:
         inventory = sorted(t.name for t in (await client.list_tools()).tools)
-        if len(inventory) != 5 or "record_experiment_result" not in inventory:
+        if len(inventory) != 6 or not {"record_experiment_result",
+                                         "find_related_experiments"}.issubset(inventory):
             raise ValueError("Unexpected planning MCP tool inventory")
         await call(client, "list_experiments", {})
         draft = await call(client, "save_experiment_brief", {

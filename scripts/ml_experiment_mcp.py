@@ -36,8 +36,8 @@ Compare alternatives and applicability to this workload, then propose one small 
 Distinguish paper claims, observed results, your hypotheses, and untested recommendations.
 Save the brief behind the conversation; explain the proposal and unknowns to the user.
 Freeze only when the user agrees to the exact proposed plan. Freezing grants no
-permission to execute, train, provision resources, or spend. All tools here are local,
-make zero model/network calls, and do not run experiments. Recorded results are
+permission to execute, train, provision resources, or spend. Base record tools
+are local, make zero model/network calls, and do not run experiments. Recorded results are
 compared mechanically against frozen criteria; this is not a scientific verdict.
 Record failed/missing cases, unknown costs, and warm/cold timing honestly. Never
 invent human review. Historical outcomes remain retrospective. Record synthetic
@@ -124,6 +124,12 @@ def register_experiment_tools(server: MCPServer, store: ExperimentStore) -> None
     def list_experiments(limit: StrictInt = 20) -> dict[str, Any]:
         """List up to 100 recent experiment summaries with IDs and a truncation indicator."""
         return store.list(limit)
+
+    @server.tool(annotations=READ)
+    @_errors
+    def find_related_experiments(question: str, limit: StrictInt = 5) -> dict[str, Any]:
+        """Find prior experiment IDs by bounded local word overlap; inspect before reuse."""
+        return store.find_related(question, limit)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
