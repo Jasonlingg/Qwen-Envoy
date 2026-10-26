@@ -33,7 +33,9 @@ TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
          "find_related_experiments",
          "freeze_experiment_plan", "record_experiment_result", "record_experiment_research",
          "resume_experiment", "search_papers", "get_citations", "open_paper",
-         "find_evidence", "get_passage"}
+         "find_evidence", "get_passage", "create_decision_thread",
+         "find_decision_threads", "get_decision_thread", "link_decision_experiment",
+         "record_decision"}
 
 
 async def run_demo(output: Path, *, source_root=ROOT):
@@ -103,11 +105,29 @@ async def run_demo(output: Path, *, source_root=ROOT):
             decision_args = {"experiment_id": key, "expected_revision": 2,
                              "note": decision_note}
             decision = await call(client, 1, "record_experiment_research", decision_args)
+            thread = await call(client, 1, "create_decision_thread", {
+                "question": "Should we claim a latency win from concurrent Qwen readers?",
+                "experiment_id": key})
+            thread_id = thread["thread_id"]
+            stated_choice = {"decision_id": "defer_latency_claim", "outcome": "defer",
+                "rationale": "Concurrent admission worked, but the recorded pair times "
+                             "do not establish a latency win.",
+                "revisit_when": "Run representative matched reader tasks with complete "
+                                "latency and answer-quality measurements.",
+                "author_kind": "agent_proposed",
+                "basis": [{"experiment_id": key, "run_id": result["run_id"],
+                           "research_note_id": "measurement_decision"}]}
+            thread = await call(client, 1, "record_decision", {"thread_id": thread_id,
+                "expected_revision": 1, "decision": stated_choice})
 
         # New stdio process and client; no memory from the first server survives.
         async with Client(parameters) as restarted:
             related = await call(restarted, 2, "find_related_experiments", {
                 "question": "What did we learn about A5000 reader request latency?"})
+            related_decisions = await call(restarted, 2, "find_decision_threads", {
+                "question": "Qwen reader latency claim"})
+            resumed_decision = await call(restarted, 2, "get_decision_thread", {
+                "thread_id": thread_id})
             resumed = await call(restarted, 2, "resume_experiment", {"experiment_id": key})
             full = await call(restarted, 2, "get_experiment", {"experiment_id": key})
             repeated = await call(restarted, 2, "record_experiment_result", result_args)
@@ -123,6 +143,10 @@ async def run_demo(output: Path, *, source_root=ROOT):
     selected = full["selected_result"]
     if (related["matches"][0]["experiment_id"] != key
             or related["matches"][0]["latest_assessment"] != "inconclusive"
+            or related_decisions["matches"][0]["thread_id"] != thread_id
+            or resumed_decision != thread
+            or resumed_decision["latest_decision"]["basis_receipts"][0]["result_sha256"]
+            != recorded["selected_result"]["sha256"]
             or selected != recorded["selected_result"] or selected != repeated["selected_result"]
             or full != after or old_research["selected_research_note"] != prior_note
             or repeated_note["selected_research_note"] != decision["selected_research_note"]):
@@ -142,6 +166,7 @@ async def run_demo(output: Path, *, source_root=ROOT):
     report = {"schema_version": "completed-experiment-mode-demo-v1",
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "experiment_id": key, "plan_sha256": full["plan_sha256"],
+        "decision_thread_id": thread_id,
         "result_sha256": selected["sha256"], "tools": sorted(inventory), "calls": calls,
         "restart_verified": True, "idempotent_retries_verified": True,
         "cross_session_related_recall_verified": True,
@@ -157,6 +182,7 @@ async def run_demo(output: Path, *, source_root=ROOT):
             "Qwen research usefulness and model improvement remain unestablished."]}
     (output / "report.json").write_bytes(encoded(report))
     (output / "complete-record.json").write_bytes(encoded(full))
+    (output / "decision-thread.json").write_bytes(encoded(resumed_decision))
     (output / "resume.json").write_bytes(encoded(resumed))
     (output / "EXPERIMENT.md").write_text(full["markdown"].rstrip() + "\n")
     (output / "RESUME.md").write_text(resumed["context"] + "\n\n" + resumed["warning"] + "\n")

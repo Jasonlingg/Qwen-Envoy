@@ -26,6 +26,7 @@ from scripts.ml_experiment_mcp import (
     register_experiment_tools,
 )
 from src.product.arxiv_library import ArxivLibrary
+from src.product.decision_threads import DecisionChoice, DecisionThreads
 from src.product.experiment_context import resume_context
 from src.product.experiment_discovery import ExperimentDiscovery
 from src.product.experiment_nemotron import explain_public_research
@@ -55,6 +56,10 @@ Research notes are append-only context. They do not revise a hypothesis, freeze
 a plan, execute a test, or replace measurements. A later plan change requires an
 explicit brief revision or a successor if the plan is frozen. Record actual supplied
 measurements with record_experiment_result against the frozen plan, then resume.
+Group related attempts with a decision thread. A decision is a caller-stated
+choice linked to exact experiment/run/note IDs, not a model-verified conclusion.
+Mark author_kind=user_reported only when the user actually supplied that choice.
+Use a new decision event to change course; never rewrite an earlier choice.
 Preserve conflicting evidence and unknowns. Findings and proposed tests are
 unreviewed. External URLs are references only; this server does not fetch them.
 Use get_experiment for full or older records if resume context is truncated.
@@ -65,6 +70,43 @@ def create_server(store, library, discovery, *, passage_reader=None, nemotron_ke
                   nemotron_transport=None):
     server = MCPServer("Envoy Experiment Mode", instructions=INSTRUCTIONS + MODE)
     register_experiment_tools(server, store)
+    decisions = DecisionThreads(store.files.root, store)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def create_decision_thread(question: str, experiment_id: str) -> dict[str, Any]:
+        """Start a durable decision question linked to an existing experiment."""
+        return decisions.create(question, experiment_id)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def find_decision_threads(question: str, limit: StrictInt = 5) -> dict[str, Any]:
+        """Find candidate decision questions by local word overlap only."""
+        return decisions.find(question, limit)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def get_decision_thread(thread_id: str) -> dict[str, Any]:
+        """Read stated choices, linked attempts and immutable basis receipts."""
+        return decisions.get(thread_id)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def link_decision_experiment(thread_id: str, expected_revision: StrictInt,
+                                 experiment_id: str) -> dict[str, Any]:
+        """Append another existing experiment attempt to a decision thread."""
+        return decisions.link(thread_id, expected_revision, experiment_id)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def record_decision(thread_id: str, expected_revision: StrictInt,
+                        decision: DecisionChoice) -> dict[str, Any]:
+        """Append a stated adopt/reject/defer choice bound to selected records.
+
+        Author kind is caller-declared, not proof of human review or correctness.
+        """
+        return decisions.record(thread_id, expected_revision,
+                                decision.model_dump(mode="json"))
     if nemotron_key:
         @server.tool(annotations=REMOTE)
         @_errors

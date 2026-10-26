@@ -46,6 +46,11 @@ model-evaluation case study.
   research, one artifact-bound result, related-work lookup after restart,
   idempotent retries and conflict rejection. The result was **inconclusive**
   on latency, and the replay made no fresh source or model requests.
+- **Decision-memory extension:** the current 20-call stdio replay also saves a
+  separate, agent-proposed decision to defer a latency-win claim. After restart,
+  the MCP finds that decision thread and checks that it still points to the
+  exact saved result and research note. This is a record-integrity check, not
+  evidence that the recommendation is useful or human-approved.
 - **Research-to-Nemotron live path:** eight MCP calls; CodeAct paper opened,
   exact passage and research note saved, related record recalled, and **one**
   Nemotron 3.5 Lightning Token Factory request submitted successfully. Usage was

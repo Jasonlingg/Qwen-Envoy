@@ -3,8 +3,8 @@
 For the Nebius × NVIDIA hackathon, this repository includes a personal MCP
 workflow for ML engineers: find a public paper, inspect an exact passage, save
 what it does and does not support, plan a test, attach the measured result, and
-recall that decision in a later session. The optional NVIDIA Nemotron 3.5
-Lightning explanation runs through Nebius Token Factory. Source-byte and
+link related attempts and stated decisions across sessions. The optional NVIDIA
+Nemotron 3.5 Lightning explanation runs through Nebius Token Factory. Source-byte and
 artifact checks establish provenance; a person still has to assess whether a
 claim is supported and whether a method helps their workload.
 
