@@ -46,6 +46,9 @@ The Nebius explanation requires an explicit `--live-nebius` opt-in and an API
 key; see the [demo instructions](docs/HACKATHON_SUBMISSION_2026.md).
 For a no-model comparison that challenges one paper against quality-curation
 baselines, run [the WebOrganizer walkthrough](docs/RESEARCH_JUSTIFICATIONS.md).
+The [single-case decision evaluation](docs/RESEARCH_DECISION_EVAL_20261026.md)
+records discovery, claim review, restart recovery and the remaining training gate;
+it is not a measured win over ordinary browsing.
 
 ## QASPER Agent Studio — a separate Qwen Envoy case study
 

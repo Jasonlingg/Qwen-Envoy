@@ -1,0 +1,70 @@
+{
+  "experiment_id": "experiment_3c1a5d0452504b21b0cb91e759eea90a",
+  "research_note_id": "weborganizer_quality_comparison",
+  "research_note_sha256": "c20a1247184b0ac86afb240875dc7c657f43c80dc5d6f7494d08714340946c3c",
+  "question": "Should domain mixing be added to our Qwen post-training data curation?",
+  "candidate_method": "Domain mixing after quality filtering",
+  "simpler_baseline": "Quality filtering alone",
+  "compared_findings": [
+    {
+      "reference_id": "weborganizer",
+      "relation": "supports",
+      "reported_finding": "Domain mixing improved FineWeb-Edu in the reported pretraining setup.",
+      "intervention": "Domain mixing added to FineWeb-Edu filtering",
+      "comparator": "FineWeb-Edu filtering alone",
+      "setting": "Web-text pretraining; model, data and task differ from Qwen SFT.",
+      "transfer_limit": "No direct evidence of a gain on our Qwen post-training task.",
+      "independence_note": "Related corpora and evaluations; independence needs review.",
+      "arxiv_id": "2502.10341v3",
+      "source_url": "https://arxiv.org/abs/2502.10341v3",
+      "span_start": 6309,
+      "span_end": 6481,
+      "quote": "Notably, the average accuracy of FineWeb-Edu increases from 54.2% to 56.2% when adding domain mixing—almost doubling the gain of FineWeb-Edu over a 51.6% baseline accuracy.",
+      "source_sha256": "f1d3d345c2134ac28087e37621f3defbcf69eb0c61d22358fa49bf51c668c2e0",
+      "coverage": "html_paragraphs"
+    },
+    {
+      "reference_id": "dclm",
+      "relation": "qualifies",
+      "reported_finding": "Model-based filtering was a key data-curation intervention.",
+      "intervention": "Model-based quality filtering",
+      "comparator": "Not specified by the selected passage",
+      "setting": "Web-text pretraining; model, data and task differ from Qwen SFT.",
+      "transfer_limit": "No direct evidence of a gain on our Qwen post-training task.",
+      "independence_note": "Related corpora and evaluations; independence needs review.",
+      "arxiv_id": "2406.11794v4",
+      "source_url": "https://arxiv.org/abs/2406.11794v4",
+      "span_start": 595,
+      "span_end": 666,
+      "quote": "model-based filtering is key to assembling a high-quality training set.",
+      "source_sha256": "e49cfb4cf5206dbaaa68d10035d792766c7bc592aaa9b1d3c9a5db4a666262f8",
+      "coverage": "html_paragraphs"
+    },
+    {
+      "reference_id": "fineweb",
+      "relation": "qualifies",
+      "reported_finding": "FineWeb-Edu improves knowledge and reasoning benchmarks.",
+      "intervention": "Educational-quality filtering",
+      "comparator": "Not specified by the selected passage",
+      "setting": "Web-text pretraining; model, data and task differ from Qwen SFT.",
+      "transfer_limit": "No direct evidence of a gain on our Qwen post-training task.",
+      "independence_note": "Related corpora and evaluations; independence needs review.",
+      "arxiv_id": "2406.17557v2",
+      "source_url": "https://arxiv.org/abs/2406.17557v2",
+      "span_start": 818,
+      "span_end": 956,
+      "quote": "LLMs pretrained on FineWeb-Edu exhibit dramatically better performance on knowledge- and reasoning-intensive benchmarks like MMLU and ARC.",
+      "source_sha256": "766ab7f7761267e238fa441b58998f2b0e8ab38d6e4ffcf61ff3b1959089574d",
+      "coverage": "html_paragraphs"
+    }
+  ],
+  "transfer_gaps": [
+    "The cited results concern pretraining, not our SFT task.",
+    "The model scale, corpus and evaluation differ."
+  ],
+  "cheapest_matched_test": "On a fixed Qwen training pool, compare quality-only against quality plus mixing with equal tokens, steps and evaluation.",
+  "decision_rule": "Before training, set a minimum worthwhile supported-answer gain and error/cost ceilings; adopt mixing only if the matched result meets them after claim-level review.",
+  "user_reported_context": "The user reports that an author privately emphasized data quality; this is not a published source finding.",
+  "semantic_review": "not_reviewed",
+  "warning": "Source hashes and exact quotes establish provenance only. Relations, reported effects, paper independence, transfer, and the proposed test are caller-authored and need claim-level review. This packet is not a consensus score or an experiment result."
+}

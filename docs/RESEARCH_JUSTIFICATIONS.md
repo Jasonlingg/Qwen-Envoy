@@ -117,3 +117,7 @@ that quality filtering matters in their own settings, not a direct comparison
 with WebOrganizer's domain mixing. The broader transfer and paper-dependence
 claims were not independently validated. Independent human claim-level review
 was not performed.
+
+The [data-mixing workflow evaluation](RESEARCH_DECISION_EVAL_20261026.md) adds
+a real search probe, fresh-process recovery and claim-by-claim assistant review.
+It also records the missing numerical decision threshold before any training.
