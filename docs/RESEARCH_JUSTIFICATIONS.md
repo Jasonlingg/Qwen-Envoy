@@ -17,7 +17,14 @@ python scripts/research_justification_mcp.py \
 
 Point your MCP client at this script instead of `experiment_mode_mcp.py` when
 you want the packet tool. It uses the same local record and paper-cache roots.
-This companion entry point does not configure optional Qwen or Nemotron tools.
+This companion entry point keeps Qwen optional. Add `--enable-nemotron` and a
+private `NEBIUS_API_KEY` only when you want the bounded public-paper explanation
+and question-draft tools. The question draft additionally requires a per-call
+`share_local_context=true` flag because it sends selected local summaries to
+Nebius. Starting the server itself makes no paid request.
+If the key lives in a different checkout's ignored `.env`, add
+`--nebius-env-file /absolute/path/to/.env`; only the `NEBIUS_API_KEY` value is
+read from that file. Do not put the key itself in MCP configuration.
 
 ## Connect an MCP client
 
@@ -61,6 +68,9 @@ second copy of `experiment_mode_mcp.py`, since both expose the same record and
 paper tools. Starting the server makes no model or network request. Source
 search and open calls can fetch public arXiv pages; local record and recall
 calls work from saved data.
+
+For a paper → attempt → outcome research trail, see the
+[question-first workflow](EXPERIMENT_MODE.md#question-first-research-trail).
 
 For a substantive proposal, first define the local decision and the cheapest
 plausible baseline. Search for the target paper, then deliberately search for

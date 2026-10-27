@@ -117,6 +117,23 @@ def test_companion_stdio_server_reads_a_saved_packet(tmp_path):
     asyncio.run(exercise())
 
 
+def test_companion_loads_nebius_key_file_without_making_a_request(tmp_path):
+    library, _, _, _ = setup(tmp_path)
+    env_file = tmp_path / "private.env"
+    env_file.write_text("NEBIUS_API_KEY=fixture-key\n")
+    parameters = StdioServerParameters(command=sys.executable,
+        args=[str(SCRIPT), "--store-root", str(tmp_path / "records"),
+              "--library-root", str(library.root), "--enable-nemotron",
+              "--nebius-env-file", str(env_file)], cwd=str(tmp_path))
+
+    async def exercise():
+        async with Client(parameters) as client:
+            tools = {tool.name for tool in (await client.list_tools()).tools}
+            assert {"get_research_justification", "draft_research_question"} <= tools
+
+    asyncio.run(exercise())
+
+
 @pytest.mark.parametrize("change", ["same_paper", "external", "all_support", "fake_review",
                                     "unknown_reference", "missing_baseline"])
 def test_unsupported_comparison_is_rejected_without_write(tmp_path, change):

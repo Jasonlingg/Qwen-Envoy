@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -22,9 +23,11 @@ from src.product.paper_discovery import PaperDiscovery  # noqa: E402
 from src.product.research_justification import justification_packet  # noqa: E402
 
 
-def create_server(store, library, discovery):
+def create_server(store, library, discovery, *, nemotron_key=None,
+                  nemotron_transport=None):
     """Add one read-only view while retaining the pinned experiment-mode file."""
-    server = experiment_server(store, library, discovery)
+    server = experiment_server(store, library, discovery, nemotron_key=nemotron_key,
+                               nemotron_transport=nemotron_transport)
 
     @server.tool(annotations=LOCAL)
     @_errors
@@ -44,12 +47,25 @@ def main():
     parser.add_argument("--store-root", type=Path, default=Path("~/.envoy/ml-experiments"))
     parser.add_argument("--library-root", type=Path, default=Path("~/.envoy/arxiv-library"))
     parser.add_argument("--artifact-root", type=Path)
+    parser.add_argument("--enable-nemotron", action="store_true",
+                        help="Opt in to bounded Nebius tools; calls still require invocation")
+    parser.add_argument("--nebius-env-file", type=Path,
+                        help="Read only NEBIUS_API_KEY from this existing private .env file")
     args = parser.parse_args()
+    nemotron_key = None
+    if args.enable_nemotron:
+        from dotenv import dotenv_values
+        path = args.nebius_env_file or ROOT / ".env"
+        nemotron_key = os.environ.get("NEBIUS_API_KEY") or dotenv_values(path).get(
+            "NEBIUS_API_KEY")
+        if not nemotron_key:
+            parser.error("--enable-nemotron needs NEBIUS_API_KEY")
     library = ArxivLibrary(args.library_root.expanduser())
     store = ExperimentStore(args.store_root, evidence_resolver=EvidenceResolver(
         library_root=library.root, artifact_root=args.artifact_root))
     discovery = ExperimentDiscovery(PaperDiscovery(library.root / "discovery-cache"))
-    create_server(store, library, discovery).run(transport="stdio")
+    create_server(store, library, discovery,
+                  nemotron_key=nemotron_key).run(transport="stdio")
 
 
 if __name__ == "__main__":
