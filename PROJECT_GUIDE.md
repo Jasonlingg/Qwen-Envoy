@@ -658,7 +658,6 @@ is preserved as experiment history, not the current release's validation status.
 | `scripts/train_grpo_custom.py` | Custom GRPO loop for the historical MuSiQue experiment |
 | `scripts/run_eval.py` | Shared policy evaluation entry point |
 | `scripts/research_vault.py` | Immutable Markdown/PDF/Obsidian snapshot import and export |
-| `scripts/viewer.py` | Earlier general-purpose trajectory viewer; separate from Studio |
 
 See the [current code map](docs/REPOSITORY_LAYOUT.md) for the saved-viewer,
 live-reader, and historical-prototype boundaries.
@@ -727,38 +726,11 @@ CHECKPOINT_PATH=/path/to/adapter/final \
 See [docs/GPU_TRAINING_READINESS.md](docs/GPU_TRAINING_READINESS.md) before starting a GPU run and
 [docs/EVAL_RUNBOOK.md](docs/EVAL_RUNBOOK.md) before comparing checkpoints.
 
-### Earlier trajectory UI
+### Command-line evaluation
 
-This is the older general-purpose viewer, not the Studio release entry point.
-
-The viewer can run an agent live, stream every Python action and tool result, and browse saved
-evaluation transcripts. It discovers the synthetic, MuSiQue, QASPER, AI-paper, and imported-vault
-corpora available under `out/research/`. Select a saved question or type a new one. **Watch
-Replay** runs bundled, recorded trajectories without loading a model or using an API key. The
-selector includes two paired three-checkpoint Qwen cases and a Claude reference trace; each is
-labeled by source and review status in the UI.
-
-```bash
-pip install -e ".[viewer]"
-python scripts/viewer.py
-# Open http://127.0.0.1:8000
-```
-
-The UI reads its policy list from the shared registry rather than hardcoding Qwen or Claude. To use
-an OpenAI-compatible vLLM, Ollama, LM Studio, or hosted endpoint:
-
-```bash
-export ENVOY_MODEL_ENDPOINT=http://localhost:8000/v1
-export ENVOY_MODEL_ID=Qwen/Qwen3-8B
-
-# Useful for a Qwen3 model served by vLLM:
-export ENVOY_MODEL_EXTRA_JSON='{"chat_template_kwargs":{"enable_thinking":false}}'
-
-python scripts/viewer.py --port 8001
-# Viewer: http://127.0.0.1:8001 (separate from the model endpoint on port 8000)
-```
-
-The same adapter works in the command-line evaluator:
+The earlier live trajectory viewer is [archived](docs/ARCHIVED_PROTOTYPES.md).
+Use [Agent Studio](#open-the-demo) for the maintained run and trace interface.
+The OpenAI-compatible adapter still works in the command-line evaluator:
 
 ```bash
 python scripts/run_eval.py \
@@ -769,9 +741,9 @@ python scripts/run_eval.py \
   --no-vector-index
 ```
 
-At the harness boundary, a policy only needs `act(observation) -> action` and `reset()`. The
-environment, REPL, tools, transcript format, UI, and scoring code do not depend on the provider or
-model family.
+At the harness boundary, a policy only needs `act(observation) -> action` and `reset()`.
+The environment, REPL, tools, transcript format, and scoring code do not depend
+on the provider or model family.
 
 ## Agent tools
 

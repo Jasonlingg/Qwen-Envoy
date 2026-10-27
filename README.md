@@ -114,6 +114,6 @@ For local source review and optional live investigations, use the
 For setup instructions, source maps, historical experiments, and detailed
 limitations, see the [full project guide](PROJECT_GUIDE.md). For the shortest
 technical narrative, read the [case study](docs/TECHNICAL_CASE_STUDY.md).
-Retired weekly-digest and Obsidian drafting code is documented in
+Retired weekly-digest, Obsidian drafting, and live-viewer code is documented in
 [archived prototypes](docs/ARCHIVED_PROTOTYPES.md); it is not part of the
 current Studio or Research MCP runtime.

@@ -3,7 +3,7 @@
 The current release is **QASPER Agent Studio**, a saved, inspectable case study
 of the Qwen base/v5 paper-agent evaluation. The local Studio opens recorded runs
 without an endpoint or GPU. Live paper investigation is a separate, opt-in path;
-opening the viewer never starts a model run.
+opening Studio never starts a model run.
 
 | Area | Responsibility |
 | --- | --- |
@@ -27,10 +27,11 @@ maintained tree; their source can be recovered from Git at `5240090`. See
 evidence remain in place. Commands in those dated product documents refer to the
 earlier checkout.
 
-Shared vault import, graph, research and staging utilities remain where retained
-callers need them. The weekly digest implementation is historical work, not a
-completed product gate for this release. This bounded cleanup does not change
-model weights, active rewards, frozen execution code or published results.
+Shared vault import and research utilities remain where retained callers need
+them. The weekly digest, graph, draft-staging harness, and earlier live viewer
+are archived in Git. The current Studio and MCPs do not use those prototypes.
+This cleanup does not change model weights, active rewards, frozen execution
+code or published results.
 
 Run the offline artifact check with `python scripts/reproduce_case_study.py`.
 The main launcher and release status are described in the [README](../README.md).

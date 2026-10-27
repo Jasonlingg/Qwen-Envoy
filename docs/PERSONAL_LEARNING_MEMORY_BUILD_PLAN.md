@@ -113,7 +113,7 @@ user which subjects they want to revisit.
 The existing [vault importer/exporter](../src/research/vault.py),
 [code-execution environment](../src/env/document_env.py),
 [evaluation harness](../src/eval/harness.py),
-[replay viewer](../scripts/viewer.py), and
+[historical replay viewer](https://github.com/Jasonlingg/Qwen-Envoy/blob/92df497/scripts/viewer.py), and
 [offline-tested Nemotron bridge](../scripts/explain_code_exec_nebius.py) are
 reusable. A [localhost product slice](PERSONAL_MEMORY_LOCAL_DEMO.md) now
 provides capture, dated source review, explicit append-only approval, and later

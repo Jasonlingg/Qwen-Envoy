@@ -1,5 +1,10 @@
 # Envoy demo and evidence
 
+> Historical walkthrough for the retired general-purpose viewer. Its source is
+> available at [commit `92df497`](https://github.com/Jasonlingg/Qwen-Envoy/tree/92df497).
+> For the maintained saved-run interface, open [QASPER Agent Studio](../README.md#qwen-agent-research-case-study).
+> Commands below require the historical checkout.
+
 Envoy is a research prototype: Qwen writes Python in a persistent environment to
 search papers, inspect passages, and submit an answer with evidence. It is not yet
 an unattended weekly research assistant. The demo below uses **recorded Qwen

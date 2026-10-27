@@ -1,5 +1,10 @@
 # GPU readiness and portfolio plan
 
+> Historical readiness audit. Its references to the old live trajectory viewer
+> describe the pre-archive checkout at `92df497`; the maintained interface is
+> QASPER Agent Studio. The numerical and dependency observations below are
+> dated findings, not current launch instructions.
+
 Assessment date: 2026-09-10. Repository HEAD: `3f57a12`, with existing uncommitted trainer, test, and research-document changes. This assessment did not alter application or training code.
 
 ## Repair pass completed: 2026-09-10

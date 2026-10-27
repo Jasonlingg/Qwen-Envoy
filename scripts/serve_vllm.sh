@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Serve the QASPER SFT adapter over an OpenAI-compatible endpoint with vLLM.
 #
-# Run this ON the GPU box. The client (viewer.py / run_eval.py --policy
-# openai_compatible) then talks to it over HTTP and needs no GPU itself.
+# Run this ON the GPU box. An OpenAI-compatible client such as
+# run_eval.py --policy openai_compatible talks to it over HTTP and needs no
+# GPU itself.
 #
 # One vLLM process holds ONE copy of the base weights and serves many concurrent
 # requests via continuous batching. That is the only path that scales to several

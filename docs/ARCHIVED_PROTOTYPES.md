@@ -1,4 +1,22 @@
-# Archived personal-memory and map prototypes
+# Archived product prototypes
+
+## October 26 follow-up: old live viewer
+
+The earlier FastAPI/WebSocket trajectory viewer (`scripts/viewer.py`), its
+HTML template, and `Dockerfile.web` are no longer maintained. QASPER Agent
+Studio is the current run/trace interface. No current MCP/Studio code or
+GitHub Pages workflow uses the old viewer. Recover its source at `92df497`;
+the dated [walkthrough](DEMO_AND_EVIDENCE.md) is retained as a historical
+record. The recorded replay JSON examples and their offline builder remain
+available for inspecting the earlier SFT continuation case.
+
+The `src/research/knowledge_tool.py` wrapper stays: several saved experiment
+plans pin its source hash, even though current runtime code does not call it.
+This removal cuts 1,053 HTML/Python/Dockerfile lines. Forty-one focused
+Studio, MCP, wrapper, and release tests pass. Release hashes and the case-study
+recount pass. The full clean-checkout suite remains at 1,995 passes, 19 skips,
+34 failures and 26 errors, with the exact same 60 failing/error test identities
+as before this viewer cleanup; see the preceding section for the baseline causes.
 
 ## October 26 follow-up: weekly publication path
 
