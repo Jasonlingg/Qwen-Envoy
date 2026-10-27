@@ -1,5 +1,10 @@
 # Evidence-gated research harness: design
 
+> Historical design. Its `src/harness/` evidence-to-draft prototype was archived
+> on October 26, 2026 and is available at
+> [commit `a67d97a`](https://github.com/Jasonlingg/Qwen-Envoy/tree/a67d97a).
+> The maintained Qwen code-execution harness and Research MCP are separate.
+
 Status: proposed, 2026-09-29. This specifies the target system; it is not a claim that the full pipeline currently works. The supporting architecture research and current-code audit are in [the architecture decision](RESEARCH_LIBRARY_HARNESS_ARCHITECTURE_20260928.md).
 
 Implementation update, 2026-09-29: `src/harness/` contains the atomic inbox writer, a frozen-source evidence verifier, a structural question-note gate, an outside-vault run record, and a CPU-only fixture replay. The replay does not use live Qwen or Nemotron. It receives fixture-controlled returned document IDs because the Docker sandbox lacks a host tool-call ledger. Existing direct vault writers have not been migrated. This is a historical prototype; see [the repository map](REPOSITORY_LAYOUT.md) for the current release boundary.

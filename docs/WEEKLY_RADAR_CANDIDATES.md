@@ -1,5 +1,10 @@
 # Weekly radar candidate collector
 
+> Historical prototype. The collector and its CLI were removed from the
+> maintained checkout on October 26, 2026. Run the commands below only from
+> [commit `a67d97a`](https://github.com/Jasonlingg/Qwen-Envoy/tree/a67d97a).
+> Current Research MCP paper discovery uses `src/product/paper_discovery.py`.
+
 This CPU stage collects arXiv metadata for a pinned topic profile. It creates a
 version-aware candidate store for later ranking and human review. It does not
 judge relevance, download full papers, write a digest, or prove that Qwen has

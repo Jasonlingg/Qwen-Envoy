@@ -1,5 +1,9 @@
 # Offline weekly AI-paper digest writer
 
+> Historical prototype. The digest writer and its CLI were removed from the
+> maintained checkout on October 26, 2026. Run the commands below only from
+> [commit `a67d97a`](https://github.com/Jasonlingg/Qwen-Envoy/tree/a67d97a).
+
 This is a focused, local publication step for the [weekly research radar](WEEKLY_RESEARCH_RADAR.md).
 It turns an explicitly human-reviewed selection from one frozen public-paper snapshot into
 Obsidian Markdown paper notes and one ISO-week digest. An `agent_authored_draft` selection may be

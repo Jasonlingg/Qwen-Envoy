@@ -1,5 +1,11 @@
 # Weekly AI research radar
 
+> Historical product plan. The weekly collector and digest writer were archived
+> on October 26, 2026; this document's earlier "active scope" wording describes
+> that former direction. See [archived prototypes](ARCHIVED_PROTOTYPES.md) for
+> recovery. The maintained product is QASPER Agent Studio plus the optional
+> research/experiment MCP tools.
+
 > September 28 corpus clarification: the initial Obsidian research library is
 > built from reviewed public-paper notes because the user has no existing note
 > collection. Qwen searches and reads the frozen original papers; the host

@@ -1,5 +1,41 @@
 # Archived personal-memory and map prototypes
 
+## October 26 follow-up: weekly publication path
+
+The weekly digest writer, weekly paper-radar collector, and frozen-vault graph
+were also retired from the maintained checkout. These were isolated historical
+product paths, not dependencies of QASPER Agent Studio, the paper Research MCP,
+the experiment-record MCP, or the Qwen investigator. Their implementations and
+dedicated tests remain recoverable at commit `a67d97a`:
+
+- `src/product/weekly_digest.py`, `scripts/weekly_digest.py`,
+  `tests/test_weekly_digest.py`;
+- `src/research/radar.py`, `scripts/weekly_radar_candidates.py`,
+  `tests/test_research_radar.py`;
+- `src/product/graph.py`, `tests/test_product_graph.py`.
+
+The same cleanup retired `src/harness/`, the former CPU-only
+evidence-to-Obsidian draft/staging prototype, and its six dedicated tests.
+It is distinct from the maintained Docker code-execution and V1/V2 replay
+harnesses. The current replay-checkpoint and vault-import boundary tests remain.
+
+Their historical design notes and saved data remain in the repository. Commands
+in those notes require the earlier checkout. This retirement does not mean the
+weekly digest usability gate was achieved. The current arXiv paper discovery is
+implemented separately in `src/product/paper_discovery.py`.
+
+This follow-up removes 2,441 implementation lines and 1,899 dedicated test
+lines across 21 files. It leaves all tracked `data/`, `examples/`, `release/`,
+`benchmarks/`, and `reports/` files unchanged. Fifty focused tests for the
+surviving replay, vault boundary, Qwen investigator, MCPs, and case study pass.
+The full clean-checkout suite has 1,995 passes, 19 optional skips, 34 failures,
+and 26 errors. The pre-cleanup checkout has the **same 60 failing/error test
+identities** (2,099 passes before removing 104 retired-feature cases). Those
+existing failures include missing ignored QASPER datasets and run artifacts,
+historical frozen-runtime hash mismatches, and a stale corpus-count assertion.
+They are not a passing full-suite result; the removed files do not account for
+the failures. Release hashes and the saved case-study recount still pass.
+
 October 25, 2026. The user authorized removing historical product prototypes to
 reduce the maintained code surface. The complete earlier implementation remains
 in Git at **`5240090`**; this cleanup does not duplicate that code in another active
