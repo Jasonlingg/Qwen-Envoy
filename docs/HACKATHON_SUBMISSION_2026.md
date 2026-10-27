@@ -79,6 +79,19 @@ correctly marks transfer to our document-research workload as untested. This is
 an assistant review of one claim, **not independent human validation**. The
 judge-facing wording above uses the narrower supported description.
 
+## Nebius/NVIDIA feedback for the submission form
+
+Nemotron 3.5 Lightning on Token Factory worked as an optional explanation step
+over a small, verified public-paper packet. The successful request reported 755
+input and 273 output tokens. A preceding 600-output-token attempt reached its
+limit without a usable explanation; allowing up to 1,800 output tokens produced
+the saved response. The model still overstated one comparison relative to the
+selected passage, so the application keeps claim review separate from citation
+integrity. For a personal MCP, a provider-enforced hard spend cap would make it
+safer to give judges public access to live inference without exposing an
+unrestricted key. This is feedback from two attempts, not a reliability or
+latency benchmark.
+
 ## Reproduce the local test build
 
 Install the repository's `mcp` and `vault` extras per the
@@ -125,13 +138,13 @@ the historical paid Nemotron call.
 ## Video outline, under three minutes
 
 1. **Problem (15 s):** Show a real ML question and the lost-context failure.
-2. **Research (45 s):** Open CodeAct through MCP, inspect exact passage and the
-   saved research note. Point out the source-span check and uncertainty.
-3. **Nebius (30 s):** Invoke the opt-in Nemotron tool, show model ID, token usage,
-   explanation and the claim-level caveat. State that the earlier capped attempt
-   failed and was fixed.
-4. **Memory (45 s):** Restart the MCP host, ask a related question, retrieve the
-   record, show its measured outcome is inconclusive, and inspect the next test.
+2. **Research (45 s):** Run the no-key MCP source demo, open CodeAct, inspect
+   the exact passage and saved research note, and show its uncertainty.
+3. **Nebius (30 s):** Show the **saved response from the earlier live** Nemotron
+   Token Factory call, including model ID, token usage and claim-level caveat.
+   Label it recorded; do not imply the public inspector makes a new call.
+4. **Memory (45 s):** Run the record demo, show its second-process resume,
+   retrieve the inconclusive measured outcome and inspect the next test.
 5. **Boundaries (20 s):** No Qwen improvement or Codex-web productivity win is
    claimed. Explain the intended personal use and what remains manual.
 
