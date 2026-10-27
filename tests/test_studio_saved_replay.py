@@ -21,6 +21,22 @@ def test_saved_trace_replay_steps_and_resets_without_network() -> None:
             page.on("request", lambda request: requests.append(request.url))
             page.on("pageerror", lambda error: errors.append(str(error)))
             page.goto(page_path.as_uri())
+            rows = page.locator(".run-table tbody tr")
+            assert rows.nth(0).locator("td").nth(4).inner_text() == "Not recorded"
+            nemotron = rows.filter(has_text="Nemotron Ultra Nebius").first.locator("td")
+            assert nemotron.nth(4).inner_text() == "$2.0354"
+            assert [nemotron.nth(index).inner_text() for index in (5, 6, 7)] == [
+                "Not reviewed", "Not reviewed", "Not reviewed",
+            ]
+            bm25 = rows.filter(has_text="BM25 + Qwen v5").first.locator("td")
+            assert bm25.nth(5).inner_text() == "Not reviewed"
+            assert bm25.nth(7).inner_text() == "20 / 20 · labels"
+            assert bm25.nth(8).inner_text() == "No code"
+            smoke = rows.nth(5).locator("td")
+            assert smoke.nth(3).inner_text() == "Unscored"
+            assert smoke.nth(4).inner_text() == "Not recorded"
+            assert smoke.nth(5).inner_text() == "Unscored"
+            assert smoke.nth(8).inner_text() == "Not tallied"
             page.locator(".run-select", has_text=re.compile(r"^Qwen Base$")).first.click()
             page.locator(".question-select").first.click()
             turns = page.locator("#lanes .turn-entry").count()

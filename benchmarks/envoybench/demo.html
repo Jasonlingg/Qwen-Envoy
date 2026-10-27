@@ -82,6 +82,7 @@
     .retrieval-passages .evidence-item { margin: 5px 0; max-height: 220px; overflow: auto; }
     .metric-pass { color: var(--pass); }
     .metric-error { color: var(--fail); }
+    .metric-unavailable { color: var(--muted); }
     .disclosure > summary, .token-panel > summary, .full-paper > summary, .generated-reasoning > summary { cursor: pointer; padding: 7px 0; font-size: 11px; font-weight: 550; }
     .secondary-details { margin-top: 4px; }
     .secondary-details > summary { color: var(--muted); }
@@ -327,7 +328,7 @@
         <ul id="promotion-reasons" style="font-size: 12px; line-height: 1.6; color: var(--muted)"></ul>
       </div>
       </details>
-      <details class="disclosure secondary-details"><summary>What these scores mean</summary><p class="metrics-note">Official QASPER Answer F1 (0–100) measures token overlap with the source answer annotations, using the official evaluator on this selected subset. It is separate from provisional AI support reviews and is not a full QASPER leaderboard result. A valid quoted span does not establish that the answer follows from it. Passes include correct refusals. Dev smoke runs have no quality score; an em dash means a metric was not reported. Episode time includes the recorded execution setup.</p></details>
+      <details class="disclosure secondary-details"><summary>What these scores mean</summary><p class="metrics-note">Official QASPER Answer F1 (0–100) measures token overlap with the source answer annotations, using the official evaluator on this selected subset. It is separate from provisional AI support reviews and is not a full QASPER leaderboard result. A valid quoted span does not establish that the answer follows from it. AI passes include correct refusals. BM25 refusal counts use exact “unanswerable” submissions and the source answerability labels; they are not AI support judgments. “Not reviewed” means answer support has no review, “Not recorded” means no cost estimate was saved, and dev smoke runs are unscored. Episode time includes the recorded execution setup.</p></details>
     </section>
 
     <section class="section" id="cases" aria-labelledby="cases-heading" hidden>
@@ -1079,6 +1080,14 @@
         const estimated = count(record(active.usage_budget).estimated_usd);
         return estimated === null ? "Cost unavailable" : `$${estimated.toFixed(4)}`;
       }
+      function unavailableMetric(entry, kind) {
+        if (kind === "cost") return "Not recorded";
+        if (kind === "execution") return incompleteRun(entry.active) ? "Incomplete" : "Not tallied";
+        if (entry.diagnostic) return "Unscored";
+        if (incompleteRun(entry.active)) return "Incomplete";
+        if (kind === "review") return "Not reviewed";
+        return "Not scored";
+      }
       function incompleteRunDetails(entry) {
         const completion = record(entry.active.completion);
         const identity = record(list(record(entry.active.provenance).model_identities).find((item) => item.key === entry.model.key));
@@ -1132,7 +1141,7 @@
         byId("archive-heading").textContent = "Runs";
         byId("provenance-heading").textContent = "Run details";
         byId("archive-note-heading").textContent = level === "model" ? "AI-graded · provisional." : level === "human" ? "Human-reviewed." : "Saved runs.";
-        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; BM25 answer support is unreviewed. Fixed BM25 + one answer is a separate architecture from the code-agent runs. Qwen and Nemotron differ in provider, serving context, and runtime, so their results are not a controlled comparison. Dev smoke runs have no quality score.";
+        byId("archive-note-body").textContent = "Official Answer F1 uses the selected QASPER references. AI support reviews remain provisional; Nemotron and BM25 answer support is unreviewed. BM25 refusal counts use QASPER answerability labels, not AI support review. Qwen and Nemotron differ in provider, serving context, and runtime, so their results are not a controlled comparison. Dev smoke runs are unscored.";
         const container = byId("model-cards"); clear(container);
         const scroll = add(container, "div", "run-table-scroll");
         const table = add(scroll, "table", "run-table");
@@ -1143,20 +1152,34 @@
           const incomplete = incompleteRun(entry.active);
           const metrics = incomplete ? {} : record(entry.model.metrics);
           const total = count(entry.active.question_denominator);
+          const retrieval = retrievalRun(entry.active);
+          const savedCost = count(record(entry.active.usage_budget).estimated_usd);
+          const retrievalSummary = retrieval ? list(record(record(state.data.active).retrieval_baseline).models)
+            .find((model) => model.key === entry.model.key) : null;
+          const labelRefusals = count(record(retrievalSummary).correct_refusals);
+          const unanswerableCount = retrieval ? list(entry.active.cases)
+            .filter((item) => item.answerability === "insufficient").length : null;
           const row = add(body, "tr");
           const name = add(row, "td");
           const button = add(name, "button", "run-select", printable(entry.model.label || titleCase(entry.model.key)));
           button.dataset.runId = entry.id;
           button.type = "button"; button.addEventListener("click", () => openRun(entry));
-          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", retrievalRun(entry.active) ? "Fixed BM25 + one answer · support unreviewed" : incomplete ? "Incomplete · budget stop" : amendedRun(entry.active) ? "Amended continuation · support unreviewed" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
+          add(name, "small", incomplete ? "run-kind incomplete" : "run-kind", retrieval ? "Fixed BM25 + one answer · support unreviewed" : incomplete ? "Incomplete · budget stop" : amendedRun(entry.active) ? "Amended continuation · support unreviewed" : entry.diagnostic ? "Dev smoke · unscored" : entry.supplementary ? "Supplementary run · support unreviewed" : "Paired paper-agent evaluation");
           add(row, "td", "", String(record(entry.active.provenance).created_at_utc || "—").slice(0, 10));
           add(row, "td", "", incomplete ? `${integer(record(entry.active.completion).finished)}/${integer(record(entry.active.completion).planned)} finished` : integer(total));
-          add(row, "td", "", answerF1(metrics.qasper_answer_f1));
-          add(row, "td", "", entry.supplementary && (incomplete || amendedRun(entry.active)) ? estimatedCost(entry.active) : "—");
-          add(row, "td", count(metrics.pass) === null ? "" : "metric-pass", count(metrics.pass) === null ? "—" : `${integer(metrics.pass)} / ${integer(total)}`);
-          add(row, "td", "", count(metrics.answerable_pass) === null ? "—" : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
-          add(row, "td", "", count(metrics.unanswerable_pass) === null ? "—" : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
-          add(row, "td", !retrievalRun(entry.active) && count(metrics.execution_error_episode_rate) > 0 ? "metric-error" : "", retrievalRun(entry.active) ? "N/A" : rate(metrics.execution_error_episode_rate));
+          const f1 = answerF1(metrics.qasper_answer_f1);
+          add(row, "td", f1 === "—" ? "metric-unavailable" : "", f1 === "—" ? unavailableMetric(entry, "score") : f1);
+          add(row, "td", savedCost === null ? "metric-unavailable" : "", savedCost === null ? unavailableMetric(entry, "cost") : estimatedCost(entry.active));
+          add(row, "td", count(metrics.pass) === null ? "metric-unavailable" : "metric-pass", count(metrics.pass) === null ? unavailableMetric(entry, "review") : `${integer(metrics.pass)} / ${integer(total)}`);
+          add(row, "td", count(metrics.answerable_pass) === null ? "metric-unavailable" : "", count(metrics.answerable_pass) === null ? unavailableMetric(entry, "review") : `${integer(metrics.answerable_pass)} / ${integer(metrics.answerable_reviewed)}`);
+          const refusal = add(row, "td", count(metrics.unanswerable_pass) === null && labelRefusals === null ? "metric-unavailable" : "",
+            retrieval && labelRefusals !== null ? `${integer(labelRefusals)} / ${integer(unanswerableCount)} · labels`
+              : count(metrics.unanswerable_pass) === null ? unavailableMetric(entry, "review")
+              : `${integer(metrics.unanswerable_pass)} / ${integer(metrics.unanswerable_reviewed)}`);
+          if (retrieval && labelRefusals !== null) refusal.title = "Exact 'unanswerable' submissions on questions labeled unanswerable in QASPER; not an AI support review.";
+          const errorRate = rate(metrics.execution_error_episode_rate);
+          add(row, "td", retrieval || errorRate === "—" ? "metric-unavailable" : count(metrics.execution_error_episode_rate) > 0 ? "metric-error" : "",
+            retrieval ? "No code" : errorRate === "—" ? unavailableMetric(entry, "execution") : errorRate);
           row.addEventListener("click", (event) => { if (event.target !== button) button.click(); });
         });
         renderBaselines(active);
