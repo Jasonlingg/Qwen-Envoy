@@ -1,5 +1,21 @@
 # Archived product prototypes
 
+## October 27 follow-up: superseded script entry points
+
+Three unreferenced launchers were removed from `scripts/` (294 Python lines):
+`build_qasper_demonstrations.py`, `generate_teacher_trajectories.py`, and
+`replay_teacher_trajectories.py`. The generator targets the older JSON-action
+research agent. The replay launcher belongs to an earlier code-execution teacher
+workflow, but ran model-authored Python in a host-local REPL rather than the
+current Docker replay. The demonstration wrapper called a retained research
+builder but had no current caller. Their source is recoverable from commit
+`5b44a5d`.
+
+No surviving test, script, or maintained README invokes these launchers. The
+underlying research modules, current Docker environment, SFT recipe, datasets,
+and saved release artifacts remain unchanged. This removes old entry points,
+not their recorded results.
+
 ## October 27 follow-up: isolated experiment scripts
 
 Fourteen one-off diagnostic, comparison, and review scripts were removed from
