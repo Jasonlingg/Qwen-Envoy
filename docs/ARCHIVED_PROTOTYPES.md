@@ -1,5 +1,29 @@
 # Archived product prototypes
 
+## October 27 follow-up: isolated experiment scripts
+
+Fourteen one-off diagnostic, comparison, and review scripts were removed from
+`scripts/` (1,848 Python lines). None had a surviving script, test, or documented
+command that invokes its CLI. Their source is recoverable from commit `e5b0e6d`:
+
+- QASPER GRPO analysis and review: `analyze_qasper_grpo_eval.py`,
+  `judge_qasper_grpo_semantic_review.py`,
+  `prepare_qasper_grpo_semantic_review.py`,
+  `prepare_qasper_multi_system_review.py`, and
+  `score_qasper_grpo_semantic_review.py`.
+- Earlier comparisons and diagnostics: `compare_claude_qwen_qasper.py`,
+  `prepare_qwen_learning_diagnostic.py`,
+  `run_learning_loop_inference_diagnostic.py`,
+  `run_learning_loop_model_sweep.py`, `run_qwen_learning_diagnostic.py`,
+  `run_research_json_ablation.py`, and `score_qasper_smoke.py`.
+- Historical teacher and escalation helpers: `make_teacher_review_template.py`
+  and `resolve_envoy_escalations.py`.
+
+The shared scoring, training, replay, MCP, and Studio modules remain. The
+Nebius continuation and merge scripts remain because their provenance tests
+exercise the published reference run. No saved artifact or experiment result
+was changed by this cleanup.
+
 ## October 26 follow-up: old live viewer
 
 The earlier FastAPI/WebSocket trajectory viewer (`scripts/viewer.py`), its
