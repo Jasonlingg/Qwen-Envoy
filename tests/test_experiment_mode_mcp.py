@@ -22,7 +22,8 @@ TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
          "resume_experiment", "search_papers", "get_citations", "open_paper",
          "find_evidence", "get_passage", "create_decision_thread",
          "find_decision_threads", "get_decision_thread", "link_decision_experiment",
-         "record_decision"}
+         "record_decision", "start_research_question", "find_research_questions",
+         "get_research_question", "link_paper_to_result", "record_question_view"}
 
 
 def test_real_mcp_question_research_revision_result_restart_and_resume(tmp_path):
@@ -42,7 +43,8 @@ def test_real_mcp_question_research_revision_result_restart_and_resume(tmp_path)
                 assert tool.annotations.read_only_hint == (name in {
                     "resume_experiment", "get_experiment", "list_experiments",
                     "find_related_experiments", "find_decision_threads",
-                    "get_decision_thread", "search_papers",
+                    "get_decision_thread", "find_research_questions",
+                    "get_research_question", "search_papers",
                     "get_citations", "open_paper", "find_evidence", "get_passage"})
             saved = await client.call_tool("save_experiment_brief", {
                 "brief": {"question": "Reduce inference memory?"}})

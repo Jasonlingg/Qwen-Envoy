@@ -19,7 +19,10 @@ from src.product.ml_experiment_directories import open_directory
 MAX_BYTES = 256 * 1_024
 _LOCKS: dict[Path, threading.RLock] = {}
 _GUARD = threading.Lock()
-_NAME = re.compile(r"(?:experiment_[0-9a-f]{32}|decision_[0-9a-f]{32}|object_[0-9a-f]{64})\.json")
+_NAME = re.compile(
+    r"(?:experiment_[0-9a-f]{32}|decision_[0-9a-f]{32}|question_[0-9a-f]{32}"
+    r"|object_[0-9a-f]{64})\.json"
+)
 
 
 def _tree(value, max_bytes=MAX_BYTES) -> None:

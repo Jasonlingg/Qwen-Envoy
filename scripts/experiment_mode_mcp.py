@@ -34,6 +34,7 @@ from src.product.ml_experiment_evidence import EvidenceResolver
 from src.product.ml_experiment_research_notes import ResearchNote
 from src.product.ml_experiment_store import ExperimentStore
 from src.product.paper_discovery import PaperDiscovery
+from src.product.research_questions import PaperToResult, ResearchQuestions, ViewRevision
 
 MODE = """
 Experiment mode connects research to the user's ongoing ML experiment.
@@ -58,6 +59,13 @@ explicit brief revision or a successor if the plan is frozen. Record actual supp
 measurements with record_experiment_result against the frozen plan, then resume.
 Group related attempts with a decision thread. A decision is a caller-stated
 choice linked to exact experiment/run/note IDs, not a model-verified conclusion.
+For a question-first second brain, start_research_question needs only the user's
+question. After saving a paper research note and an actual attempt/result, use
+link_paper_to_result to say what method was tried and what happened. The MCP
+checks the exact saved paper span and result identities, not whether the paper
+caused the outcome. Record the current view and unresolved next question with
+record_question_view. Resume with get_research_question; search old questions
+with find_research_questions. Treat agent-proposed views as drafts.
 Mark author_kind=user_reported only when the user actually supplied that choice.
 Use a new decision event to change course; never rewrite an earlier choice.
 Preserve conflicting evidence and unknowns. Findings and proposed tests are
@@ -71,6 +79,44 @@ def create_server(store, library, discovery, *, passage_reader=None, nemotron_ke
     server = MCPServer("Envoy Experiment Mode", instructions=INSTRUCTIONS + MODE)
     register_experiment_tools(server, store)
     decisions = DecisionThreads(store.files.root, store)
+    questions = ResearchQuestions(store.files.root, store)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def start_research_question(question: str) -> dict[str, Any]:
+        """Open a durable question before any paper or experiment is linked."""
+        return questions.start(question)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def find_research_questions(query: str | None = None,
+                                limit: StrictInt = 20) -> dict[str, Any]:
+        """Find prior questions by local word overlap, or list recent questions."""
+        return questions.find(query, limit)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def get_research_question(question_id: str) -> dict[str, Any]:
+        """Read the paper-to-result trail, dated views and unresolved next question."""
+        return questions.get(question_id)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def link_paper_to_result(question_id: str, expected_revision: StrictInt,
+                             link: PaperToResult) -> dict[str, Any]:
+        """Link one verified paper passage to one saved experiment result.
+
+        The stated 'led to' interpretation is caller-authored, not proven causation.
+        """
+        return questions.link(question_id, expected_revision, link.model_dump(mode="json"))
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def record_question_view(question_id: str, expected_revision: StrictInt,
+                             view: ViewRevision) -> dict[str, Any]:
+        """Append a dated current view and next question; never overwrite history."""
+        return questions.record_view(question_id, expected_revision,
+                                     view.model_dump(mode="json"))
 
     @server.tool(annotations=SAVE)
     @_errors
