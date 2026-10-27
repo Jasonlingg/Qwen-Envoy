@@ -8,6 +8,14 @@ fill in a form or choose a question from a predefined list.
 This entry point combines the existing experiment store and model-free paper
 tools. It is separate from the published QASPER Agent Studio case study.
 
+For previous work, call `find_prior_experiments` first. It searches the
+[curated experiment atlas](EXPERIMENT_ATLAS.md) without a model or network call.
+`get_prior_experiment` returns one attempt, observation, decision and source
+list; `read_prior_experiment_source` reads a bounded excerpt from a listed
+artifact by index. These are read-only historical records, not an automatic
+import into the writable experiment store. Review original sources before
+using an atlas summary to make a new claim.
+
 ## Question-first research trail
 
 The same MCP now lets an assistant start with a question before there is a test

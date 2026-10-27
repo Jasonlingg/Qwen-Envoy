@@ -37,7 +37,8 @@ TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
          "find_decision_threads", "get_decision_thread", "link_decision_experiment",
          "record_decision", "start_research_question", "find_research_questions",
          "get_research_question", "consider_research_paper", "link_paper_to_result",
-         "record_question_view"}
+         "record_question_view", "find_prior_experiments", "get_prior_experiment",
+         "read_prior_experiment_source"}
 
 
 async def run_demo(output: Path, *, source_root=ROOT):

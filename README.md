@@ -11,10 +11,10 @@ inspect the saved model traces.
 
 An assistant can also remember a new question, find and inspect papers, record
 why one seemed relevant, and link it to a later experiment result through the
-research MCP. This is an optional interface, not the experiment atlas or an
-automatic import of earlier runs. Its source-byte and artifact checks establish
-provenance; a person still has to judge whether a paper supports a claim or
-led to an outcome.
+research MCP. It can search the atlas's 11 prior experiments and read their
+listed source artifacts through bounded, read-only tools. Those prior runs are
+indexed from the repository, not copied into mutable experiment records. A
+person still has to judge whether a paper supports a claim or led to an outcome.
 
 [Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
 [Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·

@@ -27,6 +27,7 @@ from scripts.ml_experiment_mcp import (
 )
 from src.product.arxiv_library import ArxivLibrary
 from src.product.decision_threads import DecisionChoice, DecisionThreads
+from src.product.experiment_atlas import ExperimentAtlas
 from src.product.experiment_context import resume_context
 from src.product.experiment_discovery import ExperimentDiscovery
 from src.product.experiment_nemotron import explain_public_research
@@ -44,6 +45,12 @@ from src.product.research_questions import (
 
 MODE = """
 Experiment mode connects research to the user's ongoing ML experiment.
+Start with find_prior_experiments for the curated historical runs already in
+this repository. get_prior_experiment returns the attempt, measured observation,
+decision and saved-source list. read_prior_experiment_source opens only a listed
+artifact, in bounded chunks. These are read-only summaries, not imported mutable
+experiment records; inspect the primary source and its review status before
+making a new claim. Search uses word overlap, not semantic relevance.
 Find prior attempts with find_related_experiments, then resume_experiment with
 a chosen ID. Create a question-only draft with save_experiment_brief when needed.
 The related search is local word overlap, not a semantic or quality judgment.
@@ -85,11 +92,33 @@ Use get_experiment for full or older records if resume context is truncated.
 
 
 def create_server(store, library, discovery, *, passage_reader=None, nemotron_key=None,
-                  nemotron_transport=None):
+                  nemotron_transport=None, atlas=None):
     server = MCPServer("Envoy Experiment Mode", instructions=INSTRUCTIONS + MODE)
     register_experiment_tools(server, store)
     decisions = DecisionThreads(store.files.root, store)
     questions = ResearchQuestions(store.files.root, store)
+    atlas = atlas or ExperimentAtlas(ROOT)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def find_prior_experiments(query: str | None = None,
+                               limit: StrictInt = 12) -> dict[str, Any]:
+        """Search the source-linked archive of previous runs, without model calls."""
+        return atlas.find(query, limit)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def get_prior_experiment(atlas_id: str) -> dict[str, Any]:
+        """Read one curated prior attempt, observed result and source list."""
+        return atlas.get(atlas_id)
+
+    @server.tool(annotations=LOCAL)
+    @_errors
+    def read_prior_experiment_source(atlas_id: str, source_index: StrictInt,
+                                     start: StrictInt = 0,
+                                     length: StrictInt = 4_000) -> dict[str, Any]:
+        """Read up to 8000 bytes from a listed local evidence file by index."""
+        return atlas.read_source(atlas_id, source_index, start, length)
 
     @server.tool(annotations=SAVE)
     @_errors

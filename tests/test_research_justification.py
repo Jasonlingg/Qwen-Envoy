@@ -134,6 +134,33 @@ def test_companion_loads_nebius_key_file_without_making_a_request(tmp_path):
     asyncio.run(exercise())
 
 
+def test_companion_exposes_prior_runs_and_their_saved_source(tmp_path):
+    library, store, _, _ = setup(tmp_path)
+
+    async def exercise():
+        async with Client(create_server(store, library, FakeDiscovery())) as client:
+            names = {tool.name for tool in (await client.list_tools()).tools}
+            assert {"find_prior_experiments", "get_prior_experiment",
+                    "read_prior_experiment_source"} <= names
+            found = await client.call_tool("find_prior_experiments", {"query": "hybrid"})
+            assert not found.is_error
+            ids = {row["atlas_id"] for row in found.structured_content["matches"]}
+            assert "hybrid-v5-live" in ids
+            selected = await client.call_tool("get_prior_experiment", {
+                "atlas_id": "hybrid-v5-live"})
+            assert not selected.is_error
+            assert selected.structured_content["sources"][0]["path"].startswith("examples/")
+            source = await client.call_tool("read_prior_experiment_source", {
+                "atlas_id": "hybrid-v5-live", "source_index": 0, "length": 500})
+            assert not source.is_error
+            assert "V5 with matched hybrid-selected passages" in source.structured_content["text"]
+            rejected = await client.call_tool("read_prior_experiment_source", {
+                "atlas_id": "../escape", "source_index": 0})
+            assert rejected.is_error
+
+    asyncio.run(exercise())
+
+
 @pytest.mark.parametrize("change", ["same_paper", "external", "all_support", "fake_review",
                                     "unknown_reference", "missing_baseline"])
 def test_unsupported_comparison_is_rejected_without_write(tmp_path, change):
