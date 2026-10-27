@@ -8,6 +8,51 @@ fill in a form or choose a question from a predefined list.
 This entry point combines the existing experiment store and model-free paper
 tools. It is separate from the published QASPER Agent Studio case study.
 
+## Question-first research trail
+
+The same MCP now lets an assistant start with a question before there is a test
+plan or run. `start_research_question` creates its own durable ID. The assistant
+can inspect a paper, save a verified span in an experiment research note, then
+call `consider_research_paper` to record why it may matter and what remains
+uncertain. After a measured attempt is recorded, `link_paper_to_result` connects
+the exact note/reference ID to the exact saved run ID and states what was tried,
+what happened, and what to check next. `record_question_view` appends a dated
+current view; it never rewrites an earlier one. `find_research_questions` and
+`get_research_question` recover the trail in a later assistant session.
+
+The link is a **reported research path**, not proof that a paper caused a result.
+The server checks the saved paper span and result hashes, and labels synthetic
+results explicitly. It cannot verify the caller's interpretation or whether a
+claim follows from the quote. An assistant-generated view stays marked
+`agent_proposed`; use `user_reported` only for a view the user actually stated.
+
+Try one real example from this repository:
+
+```sh
+python scripts/demo_research_question.py --output out/my-question-demo
+```
+
+The first run opens the versioned PagedAttention paper through the bounded
+arXiv source tool. It links one checked passage to the saved Qwen two-request
+serving diagnostic, records the **inconclusive** latency outcome, and recovers
+the question after an MCP restart. Inspect `question.json` and `report.json` in
+the new output directory. The example makes no model requests, GPU calls or
+training runs; it does not establish that PagedAttention improved this setup.
+On macOS, configure a trusted CA bundle as described in the project README if
+the initial paper fetch reports a certificate error.
+
+With `--enable-nemotron`, `draft_research_question(question_id,
+share_local_context=true)` makes one bounded Nemotron request over a selected
+question, recent paper passages, saved run summaries and the current view. The
+per-call flag explicitly permits disclosing that local context to Nebius.
+The request uses at most a 12 KB packet and asks for at most 1,800 output tokens;
+there is no automatic retry. The output is an **unreviewed, unsaved draft** with
+mechanically checked evidence IDs. Review its claims before using it, and save
+an accepted view through `record_question_view` separately. No paid Nemotron
+call was needed to validate this feature; tests use a fake transport. A hard
+provider-enforced dollar cap is not established, so the new live path has not
+been smoke-tested against a paid endpoint.
+
 ## Try the completed workflow
 
 With Python 3.11 and the repository's `mcp` and `vault` extras installed:
@@ -94,6 +139,9 @@ It does not send local run artifact values or activate a GPU. This tool incurs
 Token Factory usage when invoked; source and
 record tools still work without a key. Its claim-to-source ID check proves only
 reference integrity. Review each claim's meaning before relying on it.
+The question-first draft above has a different disclosure boundary: it can send
+selected **local result summaries** only with its per-call flag. Use the
+public-paper explanation tool when private run details should stay local.
 
 ## Conversation and tools
 

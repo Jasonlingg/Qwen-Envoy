@@ -1,10 +1,11 @@
-# Qwen Envoy Research MCP — evidence that survives the experiment
+# Qwen Envoy Research MCP — a second brain for research questions
 
-**The main product is a personal research-to-experiment MCP for ML engineers.**
-An assistant can find and inspect public papers, save source-linked findings,
-freeze a test plan, attach measured results, and recover the decision in a later
-session. The MCP checks source bytes, record revisions, and selected result
-artifacts; a person still has to judge whether a paper supports a claim.
+**The main product is a personal, question-first research MCP for ML engineers.**
+An assistant can remember a question, find and inspect papers, record why one
+seemed relevant, link it to a later experiment and result, and recover the dated
+view and next open question in a new session. The MCP checks source bytes,
+record revisions and selected result artifacts; a person still has to judge
+whether a paper supports a claim or led to an outcome.
 
 [Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
 [Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·
@@ -13,7 +14,8 @@ artifacts; a person still has to judge whether a paper supports a claim.
 [See the hackathon run](docs/HACKATHON_SUBMISSION_2026.md)
 
 The core source-and-memory workflow runs without a model endpoint. An optional
-Nemotron explanation uses Nebius Token Factory only when explicitly invoked.
+Nemotron explanation or question draft uses Nebius Token Factory only when
+explicitly invoked; sharing local result summaries needs a per-call flag.
 The saved demo includes that Nemotron call; **it does not run Qwen**. The
 [five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md) did not
 show better decisions or recall than ordinary web research plus Markdown notes.
@@ -28,6 +30,13 @@ python scripts/demo_hackathon_research_mcp.py \
   --library-root ~/.envoy/arxiv-library \
   --output out/my-research-demo
 ```
+
+For a concrete paper → attempted method → measured result → next question trail,
+run `python scripts/demo_research_question.py --output out/my-question-demo`.
+It uses the saved Qwen serving diagnostic and retrieves one versioned public
+paper; the recorded latency result remains **inconclusive**. The
+[question-first guide](docs/EXPERIMENT_MODE.md#question-first-research-trail)
+explains the MCP tools and the optional Nemotron boundary.
 
 The first run may fetch public arXiv text. To connect an assistant to the full
 workflow, use the [MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client).
