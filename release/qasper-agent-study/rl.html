@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Post-training lab · QASPER Agent Studio</title>
+  <style>
+    :root { color-scheme: dark; font: 15px/1.55 system-ui, sans-serif; color: #e2e8f0; background: #0b1220; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: #93c5fd; text-underline-offset: 3px; }
+    a:focus-visible, summary:focus-visible { outline: 2px solid #93c5fd; outline-offset: 3px; }
+    header, main, footer { width: min(1060px, calc(100% - 32px)); margin-inline: auto; }
+    header { padding: 24px 0 18px; border-bottom: 1px solid #2b3b51; }
+    header nav { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 13px; }
+    header nav a { text-decoration: none; }
+    h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; letter-spacing: -.035em; margin: 26px 0 12px; }
+    h2 { font-size: 21px; margin: 0 0 10px; }
+    h3 { font-size: 16px; margin: 0 0 8px; }
+    p { margin: 0 0 12px; }
+    .lede { max-width: 790px; color: #cbd5e1; font-size: 17px; }
+    .eyebrow, .label { color: #94a3b8; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    main { padding: 28px 0 42px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .card { border: 1px solid #2b3b51; border-radius: 8px; padding: 20px; background: #111b2b; min-width: 0; }
+    .card p:last-child { margin-bottom: 0; }
+    .status { display: inline-block; border-radius: 4px; padding: 3px 7px; color: #fbbf24; background: #422e0d; font-size: 12px; font-weight: 650; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
+    .metric { padding: 11px; border: 1px solid #2b3b51; border-radius: 5px; background: #0b1220; }
+    .metric strong { display: block; font-size: 23px; line-height: 1.2; }
+    .metric span { color: #94a3b8; font-size: 12px; }
+    .section { margin-top: 18px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px solid #2b3b51; }
+    th { color: #94a3b8; font-size: 12px; font-weight: 600; }
+    td:first-child { font-weight: 650; }
+    .note { color: #94a3b8; font-size: 13px; }
+    .source-links { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 13px; }
+    details { border-top: 1px solid #2b3b51; padding-top: 12px; margin-top: 14px; }
+    summary { cursor: pointer; font-weight: 600; }
+    details p { margin-top: 12px; }
+    footer { border-top: 1px solid #2b3b51; padding: 18px 0 30px; color: #94a3b8; font-size: 12px; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Navigation">
+      <a href="https://jasonlingg.github.io/Qwen-Envoy/">← QASPER Agent Studio</a>
+      <a href="https://github.com/Jasonlingg/Qwen-Envoy">Source repository</a>
+    </nav>
+    <p class="eyebrow" style="margin-top: 24px">Saved experiment evidence · no live model calls</p>
+    <h1>Post-training lab</h1>
+    <p class="lede">Two Qwen reinforcement-learning attempts, with the outcome and stopping rule visible beside the training receipts. These runs test the document-research worker; they do not establish a better Research MCP or a general model improvement.</p>
+  </header>
+  <main>
+    <div class="grid">
+      <section class="card" aria-labelledby="grpo-title">
+        <p class="label">September 2026 · centered GRPO</p>
+        <h2 id="grpo-title">A development gain that did not generalize</h2>
+        <p><span class="status">Not promoted</span></p>
+        <p>Five Qwen updates completed. Checkpoint 2 beat unchanged SFT on a consumed 40-question development set, then went through a pre-registered paper-disjoint confirmation on 40 questions from 39 unseen papers.</p>
+        <div class="metrics">
+          <div class="metric"><strong>0.4563 → 0.5485</strong><span>Development automatic reward, SFT → selected RL checkpoint</span></div>
+          <div class="metric"><strong>0.3462 → 0.3531</strong><span>Confirmation automatic reward, SFT → RL</span></div>
+          <div class="metric"><strong>13 → 12</strong><span>Confirmation semantic passes out of 40, assistant review</span></div>
+          <div class="metric"><strong>0 / 1 / 39</strong><span>RL semantic wins / losses / ties on confirmation</span></div>
+        </div>
+        <p class="note">The automatic confirmation difference was +0.0069, with a paired 95% bootstrap interval of −0.0169 to 0.0375. The identity-blind semantic review was done by a Codex assistant, not an independent human reviewer. The automatic reward can miss semantic errors.</p>
+        <div class="source-links">
+          <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/docs/QASPER_RL_EXPERIMENT.md">Training and selection record</a>
+          <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/docs/QASPER_GRPO_CONFIRMATION.md">Confirmation protocol and result</a>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="prime-title">
+        <p class="label">October 2026 · Prime RL native GRPO</p>
+        <h2 id="prime-title">Three verified updates; quality gate remained closed</h2>
+        <p><span class="status">Incomplete pilot · original V5 retained</span></p>
+        <p>Starting from the pinned V5 Qwen adapter, the pilot planned ten updates followed by a locked 12-question paired comparison. Three updates and fresh reloads passed. Collection for update four ended with a 502 ReadTimeout; no fourth trainer step ran.</p>
+        <div class="metrics">
+          <div class="metric"><strong>3 / 10</strong><span>Verified / required updates</span></div>
+          <div class="metric"><strong>0 → 1 → 2 → 3</strong><span>Optimizer counters across all 504 states</span></div>
+          <div class="metric"><strong>91 / 92</strong><span>Healthy / recorded training episodes</span></div>
+          <div class="metric"><strong>0 / 24</strong><span>Held-out evaluation episodes / planned paired episodes</span></div>
+        </div>
+        <p class="note">The training reward and scorer checks show that optimization happened, not that answers improved. The most likely transport interruption was laptop sleep; the GPU/server state during that interval was not observed. The partial adapters were saved locally for diagnosis, not promoted or uploaded.</p>
+        <div class="source-links">
+          <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/docs/READER_RL_PILOT_20261025.md">Actual run report</a>
+          <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/examples/verifiers-port/reader-pilot-v2-20261025/summary.json">Machine-readable summary</a>
+          <a href="https://github.com/Jasonlingg/Qwen-Envoy/blob/main/examples/reader-rl-pilot-v2/protocol.json">Predeclared protocol</a>
+        </div>
+      </section>
+    </div>
+    <section class="card section" aria-labelledby="steps-title">
+      <h2 id="steps-title">Prime RL update receipts</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Update</th><th scope="col">Selected group rewards</th><th scope="col">Native scorer mean / max delta</th><th scope="col">Checkpoint reload</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>0, 0, 1, 1</td><td>0.005459 / 0.181356</td><td>Passed; counter 1</td></tr>
+            <tr><td>2</td><td>1, 0, 1, 1</td><td>0.005168 / 0.115765</td><td>Passed; counter 2</td></tr>
+            <tr><td>3</td><td>0, 0, 1, 0</td><td>0.007030 / 0.186038</td><td>Passed; counter 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top: 12px">Each row has a non-uniform training group and a verified adapter reload. These are training diagnostics, not held-out answer scores. The 10-update selection rule prohibited evaluating a partial checkpoint.</p>
+      <details>
+        <summary>What would establish an improvement?</summary>
+        <p>The unfinished Prime RL pilot would need a frozen final checkpoint, both V5 and RL answers on the same 12 locked papers, reviewed source support for each material claim, and the predeclared execution, latency, and token gates. A new paid run also needs an always-on controller and a sleep-independent resource deadline. The September confirmation already showed why a development reward gain is insufficient.</p>
+      </details>
+    </section>
+  </main>
+  <footer>QASPER is by Dasigi et al. (2021), CC BY 4.0. This independent case study adapts its paper questions; it is not an official QASPER leaderboard result.</footer>
+</body>
+</html>

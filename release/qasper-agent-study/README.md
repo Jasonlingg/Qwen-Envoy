@@ -11,6 +11,8 @@ attribution and separating answer overlap from evidence support.
 The [current standalone Studio](studio.html) includes the completed fixed-BM25
 baseline on its first page, with saved questions and passages for both Qwen
 checkpoints. It is a read-only snapshot; opening it makes no model calls.
+The [post-training lab](rl.html) shows the saved GRPO confirmation and incomplete
+Prime RL pilot with their stopping decisions; it also makes no model calls.
 
 **QASPER is by Dasigi et al. (2021), licensed CC BY 4.0.** This is an independent
 adaptation, not an original question benchmark, official QASPER leaderboard

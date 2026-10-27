@@ -48,6 +48,7 @@ questions. The saved actions, observations, answers, and scoring artifacts are
 open to inspect.
 
 [Open the interactive Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) ·
+[Inspect the saved RL lab](https://jasonlingg.github.io/Qwen-Envoy/rl.html) ·
 [Read the findings](docs/QASPER_AGENT_STUDY.md) ·
 [Inspect the training evidence](release/qwen-v5-training/README.md) ·
 [Reproduce the saved analysis](#reproduce-the-results)
