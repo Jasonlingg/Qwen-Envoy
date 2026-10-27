@@ -29,6 +29,17 @@ claude mcp add envoy-research -- "$(command -v python)" \
   "$(pwd)/scripts/research_justification_mcp.py"
 ```
 
+For Codex, register the same server from the repository root:
+
+```bash
+codex mcp add envoy-research -- "$(command -v python)" \
+  "$(pwd)/scripts/research_justification_mcp.py"
+```
+
+The repository's [experiment-decision skill](../.codex/skills/envoy-research-decision/SKILL.md)
+guides Codex on when to use these tools. It does not connect the server by
+itself, start a model, or save a record until the assistant calls an MCP tool.
+
 For another stdio MCP host, use its equivalent of this configuration. Replace
 both absolute paths with your installed Python and checkout paths:
 

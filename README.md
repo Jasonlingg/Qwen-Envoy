@@ -8,6 +8,7 @@ artifacts; a person still has to judge whether a paper supports a claim.
 
 [Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
 [Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·
+[Use the Codex decision skill](.codex/skills/envoy-research-decision/SKILL.md) ·
 [Read the workflow and limits](docs/EXPERIMENT_MODE.md) ·
 [See the hackathon run](docs/HACKATHON_SUBMISSION_2026.md)
 
