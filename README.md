@@ -1,11 +1,20 @@
-# Qwen Envoy Research MCP — a second brain for research questions
+# Qwen Envoy — saved experiments and research tools
 
-**The main product is a personal, question-first research MCP for ML engineers.**
-An assistant can remember a question, find and inspect papers, record why one
-seemed relevant, link it to a later experiment and result, and recover the dated
-view and next open question in a new session. The MCP checks source bytes,
-record revisions and selected result artifacts; a person still has to judge
-whether a paper supports a claim or led to an outcome.
+**Start with the experiments we actually ran.** The
+[experiment atlas](docs/EXPERIMENT_ATLAS.md) connects Qwen training, evaluation,
+retrieval, RL, serving and research-tool pilots to their saved results and open
+questions. Read it directly in this repository; no MCP connection is needed.
+The [QASPER Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) lets you
+inspect the saved model traces.
+
+## Optional research MCP
+
+An assistant can also remember a new question, find and inspect papers, record
+why one seemed relevant, and link it to a later experiment result through the
+research MCP. This is an optional interface, not the experiment atlas or an
+automatic import of earlier runs. Its source-byte and artifact checks establish
+provenance; a person still has to judge whether a paper supports a claim or
+led to an outcome.
 
 [Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
 [Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·

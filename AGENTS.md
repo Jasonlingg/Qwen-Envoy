@@ -1,5 +1,19 @@
 # Envoy agent guide
 
+## Current experiment-reading direction — October 26, 2026
+
+The user wants a direct second-brain view of **previous experiment evidence**,
+without requiring an MCP connection. For questions about what was tried or what
+to do next, start with `docs/EXPERIMENT_ATLAS.md`, then inspect its linked
+primary artifacts. Treat the atlas as a curated index, not a new evaluation or
+an exhaustive import of ignored local `out/` files. The research MCP remains an
+optional interface. Do not convert experiment chronology or a paper-to-run link
+into a causal claim, and preserve the independent-review distinctions below.
+
+The older October 9 release scope below describes the prior finishing pass. The
+user's later request authorizes this experiment atlas, while retaining the
+case-study safeguards and restrictions on unapproved paid or training runs.
+
 ## Current release scope — October 9, 2026
 
 The user chose to finish Qwen-Envoy as a public technical case study: the trained
