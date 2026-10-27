@@ -5,6 +5,32 @@ specific uncertainty, propose a small test, then interpret supplied results.
 The assistant saves the context behind that conversation. You do not need to
 fill in a form or choose a question from a predefined list.
 
+## Browse the research history in Obsidian
+
+Create a local Obsidian vault from the curated experiment atlas and the saved
+Envoy research records:
+
+```sh
+python scripts/export_research_vault.py
+```
+
+Open `out/envoy-research-vault` as a folder vault in Obsidian, then start at
+`Home.md`. Its linked notes include the eleven curated historical attempts,
+copies of their listed primary artifacts, and any experiment, research-question,
+or decision-thread records found in the two default local stores
+(`~/.envoy/ml-experiments` and `~/.envoy/research-second-brain/records`). Search,
+backlinks, and Graph view work on the exported notes. The exporter makes no model
+or network call and does not alter the source records.
+
+Run `python scripts/export_research_vault.py --refresh` after new records are
+saved. Refresh replaces only the generated folders and `Home.md` inside a vault
+previously created by this script; keep your own notes elsewhere in that vault.
+Use `--output /path/to/vault` to choose another location, and repeat `--store
+/path/to/records` for custom record stores. The export is a reading copy, not a
+bidirectional sync: edit Envoy records through the MCP and regenerate the vault.
+Copied artifacts and source hashes show where claims came from; they do not
+independently establish answer correctness or paper-to-result causation.
+
 This entry point combines the existing experiment store and model-free paper
 tools. It is separate from the published QASPER Agent Studio case study.
 
