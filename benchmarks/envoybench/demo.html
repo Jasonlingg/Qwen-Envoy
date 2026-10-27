@@ -142,6 +142,8 @@
     .answer-details > summary { color: var(--muted); padding-bottom: 0; }
     .trace-wrap { border: 1px solid var(--border); border-radius: 3px; padding: 0 9px 9px; background: var(--surface); min-width: 0; }
     .trace-wrap > summary { font-size: 11px; padding: 8px 0; }
+    .replay-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 5px 0 9px; }
+    .replay-progress { color: var(--muted); font: 10px var(--mono); margin-left: 5px; }
     .trace-head, .transcript-lanes .lane-head { display: none; }
     .trace-source { font-size: 10px; color: var(--muted); }
     .lane > .trace-source { margin: 0; padding: 5px 9px; }
@@ -336,6 +338,14 @@
       <details id="trace-inspector" class="disclosure trace-wrap" open>
         <summary>Trace · code, tools & tokens</summary>
         <div class="trace-head"><span class="trace-source">Each turn shows generated code and its tool results. The source label below identifies full traces or excerpts.</span></div>
+        <div id="replay-controls" class="replay-controls" aria-label="Saved trace playback">
+          <button id="replay-start" class="step-button" type="button">Replay from start</button>
+          <button id="replay-prev" class="step-button" type="button" disabled>← Step</button>
+          <button id="replay-play" class="step-button" type="button" disabled>Play</button>
+          <button id="replay-next" class="step-button" type="button" disabled>Step →</button>
+          <button id="replay-all" class="step-button" type="button" disabled>Show all</button>
+          <span id="replay-progress" class="replay-progress" role="status" aria-live="polite">Select a recorded question</span>
+        </div>
         <div id="lanes" class="lanes transcript-lanes"></div>
       </details>
     </section>
@@ -384,7 +394,7 @@
     (() => {
       "use strict";
       const byId = (id) => document.getElementById(id);
-      const state = { data: null, caseIndex: -1, selectedRun: null, caseFilter: "all", caseQuery: "", traceCache: new Map(), traceAllowed: false, review: null, reviewIndex: 0, reviewBusy: false, reviewDirty: false, sourceCache: new Map(), blindReview: null, blindIndex: 0, blindBusy: false, blindDirty: false, blindSourceCache: new Map(), blindActive: false, snapshot: Boolean(document.getElementById("envoybench-data")) };
+      const state = { data: null, caseIndex: -1, selectedRun: null, caseFilter: "all", caseQuery: "", traceCache: new Map(), traceAllowed: false, replay: { active: false, step: 0, timer: null }, review: null, reviewIndex: 0, reviewBusy: false, reviewDirty: false, sourceCache: new Map(), blindReview: null, blindIndex: 0, blindBusy: false, blindDirty: false, blindSourceCache: new Map(), blindActive: false, snapshot: Boolean(document.getElementById("envoybench-data")) };
 
       function node(tag, className, value) {
         const element = document.createElement(tag);
@@ -1109,6 +1119,7 @@
         byId("back-to-runs").focus({preventScroll: true});
       }
       function showRuns() {
+        resetReplay();
         const selectedId = state.selectedRun?.id;
         state.selectedRun = null; state.caseIndex = -1; state.traceCache.clear();
         byId("archive").hidden = false; byId("cases").hidden = true;
@@ -1175,8 +1186,8 @@
         if (systemFor(item, model).status === "not_attempted") return "Question not attempted · no saved trajectory";
         if (retrievalRun(currentActive())) return "Saved BM25 passages and one answer request · no model-authored search or code";
         const kind = traceCacheEntry(item, model)?.kind;
-        if (kind === "full" || state.selectedRun?.diagnostic) return "Full saved trajectory · no replay or live inference";
-        if (state.snapshot && currentActive().trace_scope === "full_saved_trajectories") return "Full exported trajectory · no replay or live inference";
+        if (kind === "full" || state.selectedRun?.diagnostic) return "Full saved trajectory · playback only, no live inference";
+        if (state.snapshot && currentActive().trace_scope === "full_saved_trajectories") return "Full exported trajectory · playback only, no live inference";
         if (state.snapshot) return "Static export · saved excerpts; long responses clipped at 1,800 characters";
         if (kind === "loading") return "Saved excerpts shown while the full trajectory loads";
         return "Saved excerpts · full trajectory unavailable in this view";
@@ -1308,6 +1319,7 @@
         }
       }
       function renderCaseAndTrajectory() {
+        resetReplay();
         const active = currentActive();
         const item = filteredCases(active).some(({ index }) => index === state.caseIndex) ? currentCase() : null;
         renderCaseChoices(active);
@@ -1317,6 +1329,7 @@
         if (!item) {
           add(main, "p", "none", list(active.cases).length ? "Select a question to open its transcript." : "No recorded questions are available.");
           clear(byId("lanes")); clear(byId("answer-lanes"));
+          updateReplay();
           return;
         }
         const navigation = add(main, "div", "question-navigation");
@@ -1468,6 +1481,46 @@
       function renderTrajectory(item, models) {
         const lanes = byId("lanes"); clear(lanes);
         models.forEach((model) => renderLane(lanes, item, model, true));
+        updateReplay();
+      }
+
+      function replayLength() {
+        return Math.max(0, ...[...document.querySelectorAll("#lanes .transcript")]
+          .map((transcript) => transcript.querySelectorAll(".turn-entry").length));
+      }
+      function stopReplayTimer() {
+        if (state.replay.timer !== null) clearInterval(state.replay.timer);
+        state.replay.timer = null;
+      }
+      function resetReplay() {
+        stopReplayTimer();
+        state.replay.active = false;
+        state.replay.step = 0;
+        updateReplay();
+      }
+      function updateReplay() {
+        const replay = state.replay;
+        const length = replayLength();
+        replay.step = Math.min(replay.step, length);
+        document.querySelectorAll("#lanes .transcript").forEach((transcript) => {
+          transcript.querySelectorAll(".turn-entry").forEach((entry, index) => {
+            entry.hidden = replay.active && index >= replay.step;
+          });
+        });
+        byId("replay-start").disabled = !length;
+        byId("replay-prev").disabled = !replay.active || replay.step === 0;
+        byId("replay-next").disabled = !replay.active || replay.step >= length;
+        byId("replay-play").disabled = !replay.active || replay.step >= length;
+        byId("replay-play").textContent = replay.timer === null ? "Play" : "Pause";
+        byId("replay-all").disabled = !replay.active;
+        byId("replay-progress").textContent = !length ? "No recorded turns" : replay.active
+          ? `Step ${replay.step} / ${length} · saved trace, no model call`
+          : `${length} saved turns · all visible`;
+      }
+      function advanceReplay() {
+        state.replay.step = Math.min(state.replay.step + 1, replayLength());
+        if (state.replay.step >= replayLength()) stopReplayTimer();
+        updateReplay();
       }
 
       function renderProvenance(provenance) {
@@ -1579,6 +1632,16 @@
       byId("reference-finalize").addEventListener("click", finalizeReferenceReview);
       byId("blind-finalize").addEventListener("click", finalizeBlindReview);
       byId("download-report").addEventListener("click", downloadReport);
+      byId("replay-start").addEventListener("click", () => { stopReplayTimer(); state.replay.active = true; state.replay.step = 0; updateReplay(); });
+      byId("replay-prev").addEventListener("click", () => { stopReplayTimer(); state.replay.step = Math.max(0, state.replay.step - 1); updateReplay(); });
+      byId("replay-next").addEventListener("click", () => { stopReplayTimer(); advanceReplay(); });
+      byId("replay-play").addEventListener("click", () => {
+        if (state.replay.timer !== null) { stopReplayTimer(); updateReplay(); return; }
+        if (state.replay.step >= replayLength()) return;
+        state.replay.timer = setInterval(advanceReplay, 900);
+        updateReplay();
+      });
+      byId("replay-all").addEventListener("click", () => { resetReplay(); });
       byId("back-to-runs").addEventListener("click", showRuns);
       byId("runs-nav").addEventListener("click", showRuns);
       document.querySelector('a[href="#benchmark-details"]').addEventListener("click", () => { byId("benchmark-details").open = true; });

@@ -11,6 +11,11 @@ attribution and separating answer overlap from evidence support.
 The [current standalone Studio](studio.html) includes the completed fixed-BM25
 baseline on its first page, with saved questions and passages for both Qwen
 checkpoints. It is a read-only snapshot; opening it makes no model calls.
+Open a run and question, then use **Replay from start** in the trace inspector
+to reveal recorded turns one step at a time. Play, pause, step backward or
+forward, and Show all work on saved actions and observations only; they do not
+execute Python or ask the model for new actions. The trace label says whether
+that view contains the full saved trajectory or excerpts.
 The [post-training lab](rl.html) shows the saved GRPO confirmation and incomplete
 Prime RL pilot with their stopping decisions; it also makes no model calls.
 
