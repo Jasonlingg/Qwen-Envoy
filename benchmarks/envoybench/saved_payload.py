@@ -245,31 +245,6 @@ def _token_diagnostic_payload(run_dir: Path, dataset: Path) -> dict:
     }
 
 
-def _load_web_evidence_report(path: Path) -> dict:
-    """Read one completed local pilot artifact; never fetch or recompute it."""
-    if not path.is_file():
-        raise ValueError(f"Web-evidence report is not a local file: {path}")
-    if path.stat().st_size > 10 * 1024 * 1024:
-        raise ValueError("Web-evidence report exceeds the 10 MiB display limit")
-    report = _read_json(path)
-    if not isinstance(report, dict):
-        raise ValueError("Web-evidence report must be a JSON object")
-    if report.get("schema_version") != "web-evidence-report-v1":
-        raise ValueError("Unsupported web-evidence report schema")
-    if report.get("status") != "complete":
-        raise ValueError("Web-evidence report must be complete before display")
-    if not isinstance(report.get("aggregate"), dict) or not isinstance(report.get("cases"), list):
-        raise ValueError("Web-evidence report is missing aggregate metrics or cases")
-    if any(
-        not isinstance(case, dict)
-        or not isinstance(case.get("facts"), list)
-        or any(not isinstance(fact, dict) for fact in case["facts"])
-        for case in report["cases"]
-    ):
-        raise ValueError("Web-evidence report contains an invalid case")
-    return report
-
-
 def _candidate_summary(dataset: Path) -> dict:
     index = _read_json(dataset / "manifest.json")
     if not isinstance(index, dict):

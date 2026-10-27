@@ -72,16 +72,10 @@ comparing scores. To replay the October 1 result, run `score` against the saved
 `out/envoybench/web-evidence-dev-v1-20261001/` capture, choosing a new output
 filename. That replay needs no internet access.
 
-To inspect the report in Studio:
-
-```bash
-python -m benchmarks.envoybench.demo --port 8766 \
-  --web-evidence-report out/envoybench/web-evidence-dev-v1-20261001/report.json
-```
-
-Open `http://127.0.0.1:8766/web-evidence`. This page reads one completed local
-report; it does not rerun fetches, search, or models. It is not shown in a blind
-model-review session.
+The older local Studio report page has been retired. Inspect the saved report
+JSON directly, or rerun the scoring command above against frozen capture bytes.
+Neither action starts a model. The pilot code and report schema remain available;
+the QASPER Agent Studio continues to show its separate saved model comparison.
 
 ## Frozen October 1, 2026 result
 

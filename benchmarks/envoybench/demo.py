@@ -31,7 +31,6 @@ from benchmarks.envoybench.reference_review import (
     save_reference_decision,
 )
 from benchmarks.envoybench.saved_payload import (
-    _load_web_evidence_report,
     _read_json,
     build_demo_payload,
 )
@@ -53,7 +52,6 @@ def create_app(
     judged_review_path: Path | None = None,
     paper_state_dir: Path = DEFAULT_PAPER_STATE,
     paper_models_path: Path | None = None,
-    web_evidence_report_path: Path | None = None,
     token_diagnostic_run: Path | None = None,
     supplementary_runs: list[Path] | None = None,
     qasper_scores: list[Path] | None = None,
@@ -75,10 +73,6 @@ def create_app(
         supplementary_runs=supplementary_runs, qasper_scores=qasper_scores,
     )
     app.state.verified_trace_store = verified_trace_store
-    app.state.web_evidence_report = (
-        _load_web_evidence_report(web_evidence_report_path)
-        if blind_review_dir is None and web_evidence_report_path is not None else None
-    )
     # Named checkpoints and live runs must not leak into a blind review session.
     if blind_review_dir is None:
         app.include_router(create_paper_router(paper_state_dir, paper_models_path))
@@ -94,18 +88,6 @@ def create_app(
         @app.get("/api/model-card", response_class=JSONResponse)
         def model_card() -> JSONResponse:
             return JSONResponse(_read_json(HERE / "model_card.json"))
-
-        @app.get("/web-evidence", response_class=HTMLResponse)
-        def web_evidence_page() -> HTMLResponse:
-            return HTMLResponse((HERE / "web_evidence.html").read_text(encoding="utf-8"))
-
-        @app.get("/api/web-evidence", response_class=JSONResponse)
-        def web_evidence_data() -> JSONResponse:
-            if app.state.web_evidence_report is None:
-                raise HTTPException(
-                    status_code=404, detail="No completed web-evidence report loaded"
-                )
-            return JSONResponse(app.state.web_evidence_report)
 
         @app.get("/api/demo/trace", response_class=JSONResponse)
         def full_saved_trace(
@@ -322,10 +304,6 @@ def main() -> int:
         help="operator model JSON for live paper runs; omitted means reader and saved runs only",
     )
     parser.add_argument(
-        "--web-evidence-report", type=Path,
-        help="completed local web-to-evidence pilot report JSON (read-only)",
-    )
-    parser.add_argument(
         "--token-diagnostic-run", type=Path,
         help="complete paired dev smoke directory; separate from benchmark quality scores",
     )
@@ -342,7 +320,6 @@ def main() -> int:
         judged_review_path=args.judged_review,
         paper_state_dir=args.paper_state_dir,
         paper_models_path=args.paper_models,
-        web_evidence_report_path=args.web_evidence_report,
         token_diagnostic_run=args.token_diagnostic_run,
         supplementary_runs=args.supplementary_run,
         qasper_scores=args.qasper_score,

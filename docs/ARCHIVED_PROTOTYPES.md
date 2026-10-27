@@ -1,5 +1,14 @@
 # Archived product prototypes
 
+## October 27 follow-up: local web-evidence viewer
+
+The local-only `/web-evidence` HTML page and its FastAPI report route were
+retired. The nine-source ingestion/retrieval pilot, its case manifest, CLI
+capture/scoring code, and recorded findings remain. The page was not part of
+the public GitHub Pages site or the QASPER model comparison. Its source is
+recoverable from commit `6c5907b`; the existing frozen Studio release HTML is
+unchanged.
+
 ## October 27 follow-up: superseded script entry points
 
 Three unreferenced launchers were removed from `scripts/` (294 Python lines):
