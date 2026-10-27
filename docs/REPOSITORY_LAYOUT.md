@@ -16,7 +16,8 @@ opening Studio never starts a model run.
 | `benchmarks/envoybench/run.py` | Paired inference runner. Historical imports from this module remain compatible. |
 | `benchmarks/envoybench/score.py`, `qasper_official.py` | Provisional mechanical/review scoring and the pinned official QASPER Answer F1 path. These measure different things. |
 | `src/env/`, `src/policies/`, `src/product/qwen_investigator.py` | Multi-step Python-action environment, model policies, and bounded paper investigator. The code-execution tool boundary stays `search()` / `read()` / `extract()`. |
-| `scripts/arxiv_research_mcp.py`, `scripts/ml_experiment_mcp.py` | Current paper-source and ML-experiment planning MCP entry points. |
+| `scripts/research_justification_mcp.py` | Optional combined research MCP entry point: curated prior experiments, question trails, experiment records and paper tools. The source and experiment MCP files remain reusable components. |
+| `docs/EXPERIMENT_ATLAS.md`, `src/product/experiment_atlas.py` | Curated index of 11 previous runs and bounded, read-only access to their saved source artifacts. This does not import every ignored local log. |
 | `src/training/`, `environments/envoy_reader/` | Source-bound reader tasks, Docker rollout collection, Verifiers plugin, native Prime-RL orchestration and paired evaluation. |
 | `src/product/memory.py`, `src/product/chat.py` | Small retained snapshot/metadata and provenance-review helpers. These modules no longer implement a memory-writing product or chat server. |
 | `release/` | Recorded training, run, review, and Studio artifacts. The case-study checker verifies their hashes; cleanup must not rewrite them. |

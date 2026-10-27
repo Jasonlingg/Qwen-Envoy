@@ -1,137 +1,102 @@
-# Qwen Envoy — saved experiments and research tools
+# Qwen Envoy
 
-**Start with the experiments we actually ran.** The
-[experiment atlas](docs/EXPERIMENT_ATLAS.md) connects Qwen training, evaluation,
-retrieval, RL, serving and research-tool pilots to their saved results and open
-questions. Read it directly in this repository; no MCP connection is needed.
-The [QASPER Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) lets you
-inspect the saved model traces.
+A reproducible case study of a **Qwen3-8B research agent** that writes Python to
+inspect papers in a Docker sandbox. It includes QLoRA training, paired saved
+evaluation, full action traces, and a read-only Studio. A separate personal
+research MCP connects papers to later experiment decisions.
 
-## Optional research MCP
-
-An assistant can also remember a new question, find and inspect papers, record
-why one seemed relevant, and link it to a later experiment result through the
-research MCP. It can search the atlas's 11 prior experiments and read their
-listed source artifacts through bounded, read-only tools. Those prior runs are
-indexed from the repository, not copied into mutable experiment records. A
-person still has to judge whether a paper supports a claim or led to an outcome.
-
-[Inspect the Research MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
-[Connect an MCP client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·
-[Use the Codex decision skill](.codex/skills/envoy-research-decision/SKILL.md) ·
-[Read the workflow and limits](docs/EXPERIMENT_MODE.md) ·
-[See the hackathon run](docs/HACKATHON_SUBMISSION_2026.md)
-
-The core source-and-memory workflow runs without a model endpoint. An optional
-Nemotron explanation or question draft uses Nebius Token Factory only when
-explicitly invoked; sharing local result summaries needs a per-call flag.
-The saved demo includes that Nemotron call; **it does not run Qwen**. The
-[five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md) did not
-show better decisions or recall than ordinary web research plus Markdown notes.
-The demonstrated value is an inspectable, source-bound experiment record, not
-a proven research-quality advantage.
-
-To run the source-and-memory demo locally without a model or API key:
-
-```bash
-pip install -e '.[mcp,vault]'
-python scripts/demo_hackathon_research_mcp.py \
-  --library-root ~/.envoy/arxiv-library \
-  --output out/my-research-demo
-```
-
-For a concrete paper → attempted method → measured result → next question trail,
-run `python scripts/demo_research_question.py --output out/my-question-demo`.
-It uses the saved Qwen serving diagnostic and retrieves one versioned public
-paper; the recorded latency result remains **inconclusive**. The
-[question-first guide](docs/EXPERIMENT_MODE.md#question-first-research-trail)
-explains the MCP tools and the optional Nemotron boundary.
-
-The first run may fetch public arXiv text. To connect an assistant to the full
-workflow, use the [MCP client configuration](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client).
-If a macOS Python installation reports `CERTIFICATE_VERIFY_FAILED` on a cold
-paper fetch, set `SSL_CERT_FILE` to a trusted CA bundle before rerunning. For
-example, the installed `certifi` package provides one:
-
-```bash
-export SSL_CERT_FILE="$(python -c 'import certifi; print(certifi.where())')"
-```
+[Open Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) ·
+[Read the findings](docs/QASPER_AGENT_STUDY.md) ·
+[Browse the experiment atlas](docs/EXPERIMENT_ATLAS.md) ·
+[Inspect the implementation](docs/TECHNICAL_CASE_STUDY.md)
 
 ## Qwen agent research case study
 
-**A reproducible ML-agent engineering study.** I built a Qwen3-8B agent that
-writes Python to search, read, and cite papers inside Docker, fine-tuned it with
-QLoRA, and evaluated base and trained checkpoints on the same 40 QASPER paper
-questions. The saved actions, observations, answers, and scoring artifacts are
-open to inspect.
+Base Qwen3-8B and a rank-4 QLoRA adapter attempted the **same 40 selected
+QASPER paper questions**. Every question named its target paper; this tests
+multi-step evidence inspection within a known document. QASPER's questions and
+annotations are by Dasigi et al. (2021), CC BY 4.0. This is a development
+study, not an original dataset or an official full-test leaderboard result.
 
-[Open the interactive Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) ·
-[Inspect the saved RL lab](https://jasonlingg.github.io/Qwen-Envoy/rl.html) ·
-[Read the findings](docs/QASPER_AGENT_STUDY.md) ·
-[Inspect the training evidence](release/qwen-v5-training/README.md) ·
-[Reproduce the saved analysis](#reproduce-the-results)
-
-| In the paired 40-question development run | Base Qwen3-8B | QLoRA v5 |
+| Recorded result | Base | Trained v5 |
 | --- | ---: | ---: |
-| Episodes with a recorded tool, runtime, or endpoint error | 22 | 1 |
-| Provisional supported answers on the 20 answerable questions | 3 | 3 |
+| Episodes with a tool, runtime, or endpoint error | 22/40 | 1/40 |
+| Provisional supported-answer passes on answerable questions | 3/20 | 3/20 |
+| Official Answer F1 on all selected questions | 19.92% | 30.69% |
+| Official Answer F1 on the 20 answerable questions | 29.83% | 21.37% |
 
-**Finding:** the trained checkpoint's run had far fewer execution and endpoint
-errors, but did not establish better source-supported answers on answerable
-questions.
-The support judgments are model-assisted and await independent human review.
-Official QASPER Answer F1, refusal behavior, and the limitations of this
-comparison are reported separately in the [findings](docs/QASPER_AGENT_STUDY.md).
-The three-update GRPO pilot did not reach its held-out quality evaluation;
-it provides no additional model-improvement claim.
-This study is separate from the Research MCP demo. A Qwen passage reader exists
-as an experimental, explicitly configured tool, but it is not required for the
-MCP workflow or established as a reliable automatic evidence-card writer.
+The trained run was substantially more reliable at executing actions, but it
+did **not** establish better source-supported answers on answerable questions.
+The provisional support judgments are model-assisted, not independently human
+reviewed. The overall F1 increase is driven by refusals and masks the lower
+answerable-only F1. The [findings report](docs/QASPER_AGENT_STUDY.md) explains
+the scoring, early-stopping pattern, and limits. A later reader GRPO pilot
+completed three verified updates but stopped before held-out evaluation; it
+provides no model-quality improvement claim.
+
+In the [Studio](https://jasonlingg.github.io/Qwen-Envoy/), choose a question to
+inspect the prompt, Python actions, tool observations, submitted answer, and
+saved assessment. The [training record](release/qwen-v5-training/README.md)
+pins the model and adapter identities; the
+[dataset card](data/sft/qasper-v5/README.md) describes the 35 training
+conversations. The [technical case study](docs/TECHNICAL_CASE_STUDY.md) walks
+through representative successes and failures.
 
 ## What is here
 
-- **Agent and environment:** Qwen writes one Python action at a time against
-  `search()`, `read()`, `extract()`, and passage tools. The controller executes
-  model-authored code in Docker, returns observations, and saves the trace.
-- **Post-training:** QLoRA SFT on 35 replay-verified training trajectories;
-  the [dataset card](data/sft/qasper-v5/README.md) and
-  [run record](release/qwen-v5-training/README.md) document how they were built.
-- **Evaluation:** matched saved base/v5 runs, mechanical execution diagnostics,
-  official QASPER answer scoring, and separately attributed provisional support
-  review. The [technical case study](docs/TECHNICAL_CASE_STUDY.md) explains
-  where these measurements disagree.
-- **Studio:** a read-only public view of runs, questions, answers, and full
-  action traces. Opening it makes no model calls and needs no GPU.
+| Path | Purpose |
+| --- | --- |
+| [`src/env/`](src/env/) | Paper tools and the Docker execution boundary for model-authored Python. |
+| [`src/policies/`](src/policies/) | Qwen policy and bounded model transport. |
+| [`data/sft/qasper-v5/`](data/sft/qasper-v5/) | Training/validation trajectories and provenance. |
+| [`release/qasper-agent-study/`](release/qasper-agent-study/) | Read-only Studio and packaged comparison evidence. |
+| [`release/envoybench-v0.1/`](release/envoybench-v0.1/) | Frozen paired runs and review artifacts. |
+| [`docs/EXPERIMENT_ATLAS.md`](docs/EXPERIMENT_ATLAS.md) | Eleven prior ML experiments, each linked to its saved result and open question. |
+| [`scripts/research_justification_mcp.py`](scripts/research_justification_mcp.py) | Optional personal research-memory MCP. |
 
-QASPER's questions and annotations are by Dasigi et al. (2021), CC BY 4.0.
-This project adapts them to a **known-paper** code-tool task: each question
-names its paper. These 40 inspected questions are development evidence, not an
-original benchmark or an official full-test QASPER leaderboard result.
-[Data provenance](benchmarks/envoybench/data/README.md) and the
-[release bundle](release/qasper-agent-study/README.md) give the exact scope.
+The atlas is a direct way to review previous SFT, retrieval, reader, RL, serving,
+and research-tool attempts. It is curated rather than an automatic import of
+every raw local log. The [repository map](docs/REPOSITORY_LAYOUT.md) separates
+maintained components from historical prototypes.
 
 ## Reproduce the results
 
-From the repository root, Python 3.10+ and the standard library are enough to
-recompute counts from saved outputs; no GPU, API key, or download is required:
+From the repository root, verify packaged hashes and recount the saved paired
+study with Python's standard library; this makes no model, GPU, or network call:
 
 ```bash
-python scripts/reproduce_case_study.py
+python -I -S scripts/reproduce_case_study.py
+```
+
+To recompute the selected-question official QASPER Answer F1 with project
+dependencies installed:
+
+```bash
 python -m benchmarks.envoybench.qasper_official score \
   --run-dir release/envoybench-v0.1/run
 ```
 
-The first command validates release hashes and reaggregates recorded review
-judgments; it does not independently judge answer support. The second runs the
-pinned official QASPER answer scorer on the selected 40 questions. To inspect
-the snapshot offline, download
-[studio.html](release/qasper-agent-study/studio.html) and open it in a browser.
-For local source review and optional live investigations, use the
-[full Studio setup](PROJECT_GUIDE.md#open-the-demo).
+The recount validates artifacts and arithmetic; it does not independently
+judge semantic support. For local Studio setup and full reproduction details,
+see the [project guide](PROJECT_GUIDE.md).
 
-For setup instructions, source maps, historical experiments, and detailed
-limitations, see the [full project guide](PROJECT_GUIDE.md). For the shortest
-technical narrative, read the [case study](docs/TECHNICAL_CASE_STUDY.md).
-Retired weekly-digest, Obsidian drafting, and live-viewer code is documented in
-[archived prototypes](docs/ARCHIVED_PROTOTYPES.md); it is not part of the
-current Studio or Research MCP runtime.
+## Optional research MCP
+
+The personal MCP searches the [experiment atlas](docs/EXPERIMENT_ATLAS.md),
+opens bounded excerpts from its listed source artifacts, and saves new
+question → paper → experiment → result trails. The paper/source and memory
+workflow works without Qwen or a GPU. Exact source matches establish
+provenance, not whether a quote supports a conclusion.
+
+[See the saved MCP demo](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
+[Connect a client](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) ·
+[Read the workflow](docs/EXPERIMENT_MODE.md)
+
+In a [five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md),
+this MCP did **not** improve decisions or recall over ordinary web research plus
+Markdown notes. Its demonstrated capability is a recoverable, source-linked
+experiment record; a broader productivity advantage remains unproven.
+
+Historical weekly-digest, Obsidian, and retired demo code is documented in
+[archived prototypes](docs/ARCHIVED_PROTOTYPES.md). Those paths are not part of
+the maintained Studio or research MCP runtime.

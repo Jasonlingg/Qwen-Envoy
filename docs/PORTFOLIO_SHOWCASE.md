@@ -1,6 +1,12 @@
-# Personal ML research MCP — portfolio walkthrough
+# Qwen Envoy — portfolio walkthrough
 
-This is the main product in the Qwen Envoy repository: a personal research-to-experiment MCP for an ML engineer. An assistant can search papers, inspect versioned passages, save a question and source-linked findings, freeze the agreed test, attach measured results, then resume the decision in a later session. The host assistant reasons over the evidence; the MCP checks source bytes, artifact bindings, revisions and result arithmetic. The Qwen agent is a separate training/evaluation case study. An experimental passage-reader tool may be configured explicitly, but the core workflow and this demo do not call Qwen.
+The strongest public evidence is the [Qwen agent case study](TECHNICAL_CASE_STUDY.md):
+a Docker-sandboxed code-execution worker, QLoRA training, saved paired evaluation,
+and inspectable traces. The personal research MCP is a complementary workflow
+for recalling prior experiments and recording paper-to-result decisions. It
+checks source bytes, artifact bindings, revisions and result arithmetic while
+the host assistant reasons over the evidence. The optional reader is not a
+proven automatic evidence-card writer; the core MCP workflow does not call Qwen.
 
 ```text
 ML question → recall related attempts → paper search/open/passages
@@ -42,13 +48,15 @@ productivity advantage over ordinary Codex browsing.
 
 ## Resume-ready wording
 
-> **Qwen Envoy research MCP** — Built a personal ML research workflow that links versioned arXiv evidence, immutable experiment plans, artifact-bound measurements, and restart-safe decision records through MCP. Verified live paper discovery and exact passage provenance, then demonstrated a complete 15-call research-to-result flow across two server processes with safe retries and retained uncertainty.
+> **Qwen Envoy** — Built a Docker-sandboxed Qwen3-8B paper agent, fine-tuned it
+> with QLoRA, and compared base and trained checkpoints on 40 selected QASPER
+> questions. Recorded-error episodes fell from 22/40 to 1/40; provisional
+> supported-answer passes on answerable questions stayed 3/20. Published saved
+> traces and an optional source-linked MCP for experiment recall.
 
-If there is room for a second bullet, describe the separate Qwen agent and
-[QASPER case study](TECHNICAL_CASE_STUDY.md). Keep its model-evaluation
-numbers separate from this MCP's product claims. The optional reader has not
-passed a sufficient evidence-quality evaluation, so do not present it as a
-production research worker.
+This wording reports a reliability observation, not a demonstrated answer-quality
+gain. The support judgments are model-assisted and await human review. Keep the
+MCP's product claims separate from the QASPER model-evaluation numbers.
 
 ## What is proved, and what remains
 
