@@ -42,17 +42,24 @@ def test_question_trail_survives_restart_and_rejects_false_links(tmp_path):
     opened = questions.start("Does a memory method help our Qwen reader?")
     question_id = opened["question_id"]
     assert opened["revision"] == 1 and opened["current_view"] is None
-    linked = questions.link(question_id, 1, link)
+    paper = {"paper_id": "memory_paper", "source": link["paper"],
+             "relevance": "It proposes a possible memory method.",
+             "limitation": "Its workload differs from our reader.",
+             "author_kind": "agent_proposed"}
+    considered = questions.consider_paper(question_id, 1, paper)
+    assert considered["considered_papers"][0]["receipt"]["quote"]
+    assert questions.consider_paper(question_id, 1, paper) == considered
+    linked = questions.link(question_id, 2, link)
     receipt = linked["paper_to_result_links"][0]["receipt"]
     assert receipt["paper_quote"] and receipt["paper_source_url"].startswith("https://")
     assert receipt["result_data_kind"] == "synthetic"
-    assert questions.link(question_id, 1, link) == linked  # Stable retry.
+    assert questions.link(question_id, 2, link) == linked  # Stable retry.
     with pytest.raises(ValueError, match="different immutable"):
-        questions.link(question_id, 2, {**link, "interpretation": "Changed"})
+        questions.link(question_id, 3, {**link, "interpretation": "Changed"})
     with pytest.raises(ValueError, match="Stale"):
-        questions.link(question_id, 1, {**link, "link_id": "another"})
+        questions.link(question_id, 2, {**link, "link_id": "another"})
     with pytest.raises(ValueError, match="verified paper span"):
-        questions.link(question_id, 2, {**link, "link_id": "bad_source",
+        questions.link(question_id, 3, {**link, "link_id": "bad_source",
                                       "paper": {**link["paper"], "reference_id": "missing"}})
     assert questions.get(question_id) == linked
 
@@ -61,10 +68,10 @@ def test_question_trail_survives_restart_and_rejects_false_links(tmp_path):
             "next_question": "What happens on matched real requests?",
             "basis_link_ids": [link["link_id"]], "author_kind": "agent_proposed"}
     with pytest.raises(ValueError, match="basis"):
-        questions.record_view(question_id, 2, {**view, "basis_link_ids": ["other"]})
-    updated = questions.record_view(question_id, 2, view)
+        questions.record_view(question_id, 3, {**view, "basis_link_ids": ["other"]})
+    updated = questions.record_view(question_id, 3, view)
     assert updated["current_view"]["view"]["next_question"].startswith("What happens")
-    assert questions.record_view(question_id, 2, view) == updated
+    assert questions.record_view(question_id, 3, view) == updated
     restarted = ResearchQuestions(root, ExperimentStore(root))
     assert restarted.get(question_id) == updated
     assert restarted.find("Qwen memory")["matches"][0]["question_id"] == question_id
@@ -81,8 +88,15 @@ def test_question_tools_work_over_mcp_after_restart(tmp_path):
                 "question": "Does the paper's memory idea help Qwen?"})
             assert not created.is_error
             key = created.structured_content["question_id"]
+            considered = await client.call_tool("consider_research_paper", {
+                "question_id": key, "expected_revision": 1,
+                "paper": {"paper_id": "memory_paper", "source": link["paper"],
+                          "relevance": "Potentially useful memory method.",
+                          "limitation": "Different workload.",
+                          "author_kind": "agent_proposed"}})
+            assert not considered.is_error
             linked = await client.call_tool("link_paper_to_result", {
-                "question_id": key, "expected_revision": 1, "link": link})
+                "question_id": key, "expected_revision": 2, "link": link})
             assert not linked.is_error
             assert linked.structured_content["paper_to_result_links"][0]["receipt"][
                 "result_data_kind"] == "synthetic"
@@ -91,7 +105,7 @@ def test_question_tools_work_over_mcp_after_restart(tmp_path):
             found = await client.call_tool("find_research_questions", {"query": "Qwen memory"})
             assert found.structured_content["matches"][0]["question_id"] == key
             current = await client.call_tool("get_research_question", {"question_id": key})
-            assert current.structured_content["revision"] == 2
+            assert current.structured_content["revision"] == 3
             rejected = await client.call_tool("record_question_view", {
                 "question_id": key, "expected_revision": 1,
                 "view": {"view_id": "stale", "statement": "Unknown", "reason": "Stale",

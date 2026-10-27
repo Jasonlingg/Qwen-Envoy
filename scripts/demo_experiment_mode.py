@@ -35,7 +35,9 @@ TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
          "resume_experiment", "search_papers", "get_citations", "open_paper",
          "find_evidence", "get_passage", "create_decision_thread",
          "find_decision_threads", "get_decision_thread", "link_decision_experiment",
-         "record_decision"}
+         "record_decision", "start_research_question", "find_research_questions",
+         "get_research_question", "consider_research_paper", "link_paper_to_result",
+         "record_question_view"}
 
 
 async def run_demo(output: Path, *, source_root=ROOT):

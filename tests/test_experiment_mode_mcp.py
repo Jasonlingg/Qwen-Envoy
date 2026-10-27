@@ -23,7 +23,8 @@ TOOLS = {"save_experiment_brief", "get_experiment", "list_experiments",
          "find_evidence", "get_passage", "create_decision_thread",
          "find_decision_threads", "get_decision_thread", "link_decision_experiment",
          "record_decision", "start_research_question", "find_research_questions",
-         "get_research_question", "link_paper_to_result", "record_question_view"}
+         "get_research_question", "consider_research_paper", "link_paper_to_result",
+         "record_question_view"}
 
 
 def test_real_mcp_question_research_revision_result_restart_and_resume(tmp_path):

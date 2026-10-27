@@ -34,7 +34,13 @@ from src.product.ml_experiment_evidence import EvidenceResolver
 from src.product.ml_experiment_research_notes import ResearchNote
 from src.product.ml_experiment_store import ExperimentStore
 from src.product.paper_discovery import PaperDiscovery
-from src.product.research_questions import PaperToResult, ResearchQuestions, ViewRevision
+from src.product.research_question_nemotron import draft_question
+from src.product.research_questions import (
+    ConsideredPaper,
+    PaperToResult,
+    ResearchQuestions,
+    ViewRevision,
+)
 
 MODE = """
 Experiment mode connects research to the user's ongoing ML experiment.
@@ -60,12 +66,16 @@ measurements with record_experiment_result against the frozen plan, then resume.
 Group related attempts with a decision thread. A decision is a caller-stated
 choice linked to exact experiment/run/note IDs, not a model-verified conclusion.
 For a question-first second brain, start_research_question needs only the user's
-question. After saving a paper research note and an actual attempt/result, use
-link_paper_to_result to say what method was tried and what happened. The MCP
+question. Use consider_research_paper after inspecting and saving a paper note;
+this records why it may matter and what it does not establish. After an attempt,
+use link_paper_to_result to say what method was tried and what happened. The MCP
 checks the exact saved paper span and result identities, not whether the paper
 caused the outcome. Record the current view and unresolved next question with
 record_question_view. Resume with get_research_question; search old questions
 with find_research_questions. Treat agent-proposed views as drafts.
+The optional draft_research_question tool sends a selected question, current view,
+paper passages and local result summaries to Nebius only with a per-call disclosure
+flag. Its output is an unreviewed draft and is never saved automatically.
 Mark author_kind=user_reported only when the user actually supplied that choice.
 Use a new decision event to change course; never rewrite an earlier choice.
 Preserve conflicting evidence and unknowns. Findings and proposed tests are
@@ -99,6 +109,14 @@ def create_server(store, library, discovery, *, passage_reader=None, nemotron_ke
     def get_research_question(question_id: str) -> dict[str, Any]:
         """Read the paper-to-result trail, dated views and unresolved next question."""
         return questions.get(question_id)
+
+    @server.tool(annotations=SAVE)
+    @_errors
+    def consider_research_paper(question_id: str, expected_revision: StrictInt,
+                                paper: ConsideredPaper) -> dict[str, Any]:
+        """Attach a verified paper passage and stated relevance before a test exists."""
+        return questions.consider_paper(question_id, expected_revision,
+                                        paper.model_dump(mode="json"))
 
     @server.tool(annotations=SAVE)
     @_errors
@@ -154,6 +172,19 @@ def create_server(store, library, discovery, *, passage_reader=None, nemotron_ke
         return decisions.record(thread_id, expected_revision,
                                 decision.model_dump(mode="json"))
     if nemotron_key:
+        @server.tool(annotations=REMOTE)
+        @_errors
+        def draft_research_question(question_id: str,
+                                    share_local_context: bool = False) -> dict[str, Any]:
+            """Ask Nemotron for one cited draft about this saved question.
+
+            Requires explicit per-call consent to disclose local context to Nebius;
+            one bounded paid request, no retry or automatic write.
+            """
+            options = ({"transport": nemotron_transport} if nemotron_transport else {})
+            return draft_question(questions, question_id, nemotron_key,
+                                  share_local_context=share_local_context, **options)
+
         @server.tool(annotations=REMOTE)
         @_errors
         def explain_experiment_research(experiment_id: str, note_id: str) -> dict[str, Any]:

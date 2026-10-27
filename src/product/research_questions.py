@@ -30,6 +30,22 @@ class ResultBasis(RecordModel):
     run_id: Key
 
 
+class ConsideredPaper(RecordModel):
+    paper_id: Key
+    source: PaperBasis
+    relevance: Text
+    limitation: Text
+    author_kind: Literal["user_reported", "agent_proposed"]
+
+
+class PaperReceipt(RecordModel):
+    note_sha256: Digest
+    note_data_kind: str
+    document_sha256: Digest
+    source_url: Text
+    quote: Text
+
+
 class PaperToResult(RecordModel):
     link_id: Key
     paper: PaperBasis
@@ -73,7 +89,9 @@ class QuestionEvent(RecordModel):
     revision: int = Field(ge=1)
     previous_sha256: Digest | None
     recorded_at: str
-    kind: Literal["opened", "paper_to_result", "view_recorded"]
+    kind: Literal["opened", "paper_considered", "paper_to_result", "view_recorded"]
+    paper: ConsideredPaper | None = None
+    paper_receipt: PaperReceipt | None = None
     link: PaperToResult | None = None
     receipt: LinkReceipt | None = None
     view: ViewRevision | None = None
@@ -81,11 +99,14 @@ class QuestionEvent(RecordModel):
     @model_validator(mode="after")
     def matching_payload(self):
         valid = {
-            "opened": self.link is None and self.receipt is None and self.view is None,
+            "opened": all(value is None for value in (
+                self.paper, self.paper_receipt, self.link, self.receipt, self.view)),
+            "paper_considered": self.paper is not None and self.paper_receipt is not None
+            and self.link is None and self.receipt is None and self.view is None,
             "paper_to_result": self.link is not None and self.receipt is not None
-            and self.view is None,
+            and self.paper is None and self.paper_receipt is None and self.view is None,
             "view_recorded": self.view is not None and self.link is None
-            and self.receipt is None,
+            and self.receipt is None and self.paper is None and self.paper_receipt is None,
         }
         if not valid[self.kind]:
             raise ValueError("Question event kind and payload disagree")
@@ -136,13 +157,17 @@ class ResearchQuestions:
             if index.question_id != question_id:
                 raise ValueError("Question identity mismatch")
             events, previous = [], None
-            link_ids, view_ids = set(), set()
+            paper_ids, link_ids, view_ids = set(), set(), set()
             for revision, sha in enumerate(index.events, 1):
                 event = QuestionEvent.model_validate(self.files.read_object(directory, sha))
                 if (event.question_id != question_id or event.revision != revision
                         or event.previous_sha256 != previous
                         or (revision == 1) != (event.kind == "opened")):
                     raise ValueError("Question event chain mismatch")
+                if event.paper:
+                    if event.paper.paper_id in paper_ids:
+                        raise ValueError("Duplicate considered paper")
+                    paper_ids.add(event.paper.paper_id)
                 if event.link:
                     if event.link.link_id in link_ids:
                         raise ValueError("Duplicate paper-to-result link")
@@ -166,6 +191,10 @@ class ResearchQuestions:
 
     @staticmethod
     def _view(index: QuestionIndex, events: list[QuestionEvent]) -> dict:
+        papers = [{"recorded_at": event.recorded_at,
+                   "paper": event.paper.model_dump(mode="json"),
+                   "receipt": event.paper_receipt.model_dump(mode="json")}
+                  for event in events if event.paper]
         links = [{"recorded_at": event.recorded_at,
                   "link": event.link.model_dump(mode="json"),
                   "receipt": event.receipt.model_dump(mode="json")}
@@ -175,7 +204,8 @@ class ResearchQuestions:
                  for event in events if event.view]
         return {"question_id": index.question_id, "question": index.question,
                 "revision": len(events), "created_at": events[0].recorded_at,
-                "updated_at": events[-1].recorded_at, "paper_to_result_links": links,
+                "updated_at": events[-1].recorded_at, "considered_papers": papers,
+                "paper_to_result_links": links,
                 "view_history": views, "current_view": views[-1] if views else None,
                 "warning": "Paper text and result hashes establish provenance, not causation "
                            "or semantic support. Link interpretations and author_kind are "
@@ -221,6 +251,7 @@ class ResearchQuestions:
                 index, events = self._load(directory, name[:-5])
                 view = self._view(index, events)
                 corpus = " ".join([index.question,
+                    *[row["paper"]["relevance"] for row in view["considered_papers"]],
                     *[row["link"]["method_tried"] for row in view["paper_to_result_links"]],
                     *[row["view"]["statement"] for row in view["view_history"]]])
                 hits = sorted(terms & _terms(corpus)) if query else []
@@ -228,6 +259,7 @@ class ResearchQuestions:
                     continue
                 matches.append({"question_id": index.question_id, "question": index.question,
                                 "revision": len(events), "updated_at": events[-1].recorded_at,
+                                "paper_count": len(view["considered_papers"]),
                                 "link_count": len(view["paper_to_result_links"]),
                                 "current_view": (view["current_view"]["view"]["statement"]
                                                  if view["current_view"] else None),
@@ -237,30 +269,71 @@ class ResearchQuestions:
         return {"query": query, "match_kind": "local_word_overlap" if query else "recent",
                 "matches": matches[:limit], "truncated": len(matches) > limit}
 
-    def _receipt(self, link: PaperToResult) -> LinkReceipt:
-        source = self.experiments.get(link.paper.experiment_id,
-                                      research_note_id=link.paper.research_note_id)
+    def _paper_receipt(self, basis: PaperBasis) -> PaperReceipt:
+        source = self.experiments.get(basis.experiment_id,
+                                      research_note_id=basis.research_note_id)
         note = source["selected_research_note"]
         if note is None:
             raise ValueError("Paper research note does not exist")
         passage = next((row for row in note["evidence_receipts"]
-                        if row["reference_id"] == link.paper.reference_id
+                        if row["reference_id"] == basis.reference_id
                         and row["verification"] == "paper_span_verified"), None)
         if passage is None:
             raise ValueError("Source reference is not a verified paper span")
+        return PaperReceipt(note_sha256=note["sha256"],
+                            note_data_kind=note["note"]["data_kind"],
+                            document_sha256=passage["source_sha256"],
+                            source_url=passage["metadata"]["source_url"],
+                            quote=passage["value"])
+
+    def _receipt(self, link: PaperToResult) -> LinkReceipt:
+        paper = self._paper_receipt(link.paper)
         target = self.experiments.get(link.result.experiment_id,
                                       run_id=link.result.run_id)
         result = target["selected_result"]
         if result is None:
             raise ValueError("Linked attempt has no recorded result")
-        return LinkReceipt(paper_note_sha256=note["sha256"],
-                           paper_note_data_kind=note["note"]["data_kind"],
-                           paper_document_sha256=passage["source_sha256"],
-                           paper_source_url=passage["metadata"]["source_url"],
-                           paper_quote=passage["value"],
+        return LinkReceipt(paper_note_sha256=paper.note_sha256,
+                           paper_note_data_kind=paper.note_data_kind,
+                           paper_document_sha256=paper.document_sha256,
+                           paper_source_url=paper.source_url,
+                           paper_quote=paper.quote,
                            result_sha256=result["sha256"],
                            result_data_kind=result["result"]["data_kind"],
                            result_assessment=result["assessment"]["overall"])
+
+    def consider_paper(self, question_id: str, expected_revision: int,
+                       paper: dict) -> dict:
+        parsed = ConsideredPaper.model_validate(decode(encode(paper)))
+        with self.files.locked() as directory:
+            index, events = self._load(directory, question_id)
+            existing = next((event for event in events if event.paper
+                             and event.paper.paper_id == parsed.paper_id), None)
+            if existing:
+                if existing.paper != parsed:
+                    raise ValueError("Paper ID already has different immutable content")
+                return self._view(index, events)
+            self._revision(expected_revision, len(events))
+        receipt = self._paper_receipt(parsed.source)
+        with self.files.locked() as directory:
+            index, events = self._load(directory, question_id)
+            existing = next((event for event in events if event.paper
+                             and event.paper.paper_id == parsed.paper_id), None)
+            if existing:
+                if existing.paper != parsed:
+                    raise ValueError("Paper ID already has different immutable content")
+                return self._view(index, events)
+            self._revision(expected_revision, len(events))
+            if len(events) >= 100:
+                raise ValueError("Question has reached its 100-event limit")
+            event = QuestionEvent(question_id=question_id, revision=len(events) + 1,
+                                  previous_sha256=index.events[-1], recorded_at=_now(),
+                                  kind="paper_considered", paper=parsed,
+                                  paper_receipt=receipt)
+            sha = self.files.object(directory, event.model_dump(mode="json"))
+            index = index.model_copy(update={"events": [*index.events, sha]})
+            self._write(directory, index)
+            return self._view(index, [*events, event])
 
     def link(self, question_id: str, expected_revision: int, link: dict) -> dict:
         parsed = PaperToResult.model_validate(decode(encode(link)))
