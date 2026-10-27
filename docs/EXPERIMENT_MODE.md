@@ -15,7 +15,8 @@ python scripts/export_research_vault.py
 ```
 
 Open `out/envoy-research-vault` as a folder vault in Obsidian, then start at
-`Home.md`. Its linked notes include the eleven curated historical attempts,
+`Home.md`. The home note links a byte-for-byte copy of the main project README,
+the eleven curated historical attempts,
 copies of their listed primary artifacts, and any experiment, research-question,
 or decision-thread records found in the two default local stores
 (`~/.envoy/ml-experiments` and `~/.envoy/research-second-brain/records`). Search,
@@ -28,6 +29,8 @@ previously created by this script; keep your own notes elsewhere in that vault.
 Use `--output /path/to/vault` to choose another location, and repeat `--store
 /path/to/records` for custom record stores. The export is a reading copy, not a
 bidirectional sync: edit Envoy records through the MCP and regenerate the vault.
+The exported README is a reading copy; its repository-relative links may require
+opening the original checkout. Refresh the vault after changing the README.
 Copied artifacts and source hashes show where claims came from; they do not
 independently establish answer correctness or paper-to-result causation.
 

@@ -13,6 +13,8 @@ def test_export_creates_real_linked_vault_and_refresh_preserves_user_note(tmp_pa
     counts = export(vault, [])
     assert counts == {"atlas": 11, "experiments": 0, "questions": 0, "decisions": 0}
     home = (vault / "Home.md").read_text()
+    assert "[[Attachments/README|Qwen Envoy README]]" in home
+    assert (vault / "Attachments" / "README.md").read_bytes() == (ROOT / "README.md").read_bytes()
     assert "[[Atlas/reader-rl-pilot|reader-rl-pilot]]" in home
     atlas_note = (vault / "Atlas" / "reader-rl-pilot.md").read_text()
     source_id = re.search(r"\[\[Sources/([0-9a-f]{16})\|Pilot report\]\]", atlas_note)
@@ -28,6 +30,7 @@ def test_export_creates_real_linked_vault_and_refresh_preserves_user_note(tmp_pa
     user_note.write_text("My private thought\n")
     assert export(vault, [], refresh=True) == counts
     assert user_note.read_text() == "My private thought\n"
+    assert (vault / "Attachments" / "README.md").read_bytes() == (ROOT / "README.md").read_bytes()
 
 
 def test_export_refuses_unmarked_existing_directory(tmp_path):

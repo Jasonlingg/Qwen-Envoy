@@ -18,6 +18,7 @@ opening Studio never starts a model run.
 | `src/env/`, `src/policies/`, `src/product/qwen_investigator.py` | Multi-step Python-action environment, model policies, and bounded paper investigator. The code-execution tool boundary stays `search()` / `read()` / `extract()`. |
 | `scripts/research_justification_mcp.py` | Optional combined research MCP entry point: curated prior experiments, question trails, experiment records and paper tools. The source and experiment MCP files remain reusable components. |
 | `docs/EXPERIMENT_ATLAS.md`, `src/product/experiment_atlas.py` | Curated index of 11 previous runs and bounded, read-only access to their saved source artifacts. This does not import every ignored local log. |
+| `scripts/export_research_vault.py` | One-way Obsidian export of the atlas and saved research/experiment records; it does not watch or synchronize a personal vault. |
 | `src/training/`, `environments/envoy_reader/` | Source-bound reader tasks, Docker rollout collection, Verifiers plugin, native Prime-RL orchestration and paired evaluation. |
 | `src/product/memory.py`, `src/product/chat.py` | Small retained snapshot/metadata and provenance-review helpers. These modules no longer implement a memory-writing product or chat server. |
 | `release/` | Recorded training, run, review, and Studio artifacts. The case-study checker verifies their hashes; cleanup must not rewrite them. |
@@ -30,7 +31,8 @@ earlier checkout.
 
 Shared vault import and research utilities remain where retained callers need
 them. The weekly digest, graph, draft-staging harness, and earlier live viewer
-are archived in Git. The current Studio and MCPs do not use those prototypes.
+are archived in Git. The current Studio and MCPs do not use those prototypes;
+the Obsidian research-history export is a separate maintained script.
 This cleanup does not change model weights, active rewards, frozen execution
 code or published results.
 
