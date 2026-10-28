@@ -56,7 +56,8 @@ async def run_demo(output: Path, *, source_root=ROOT):
     for name, value in bundle.items():
         (exports / name).write_bytes(encoded(value))
     parameters = StdioServerParameters(command=sys.executable, cwd=str(ROOT), args=[
-        str(ROOT / "scripts/experiment_mode_mcp.py"), "--store-root", str(output / "records"),
+        str(ROOT / "scripts/experiment_mode_extended_mcp.py"),
+        "--store-root", str(output / "records"),
         "--artifact-root", str(exports), "--library-root", str(output / "library")],
         env={**os.environ, "HF_HUB_OFFLINE": "1", "TRANSFORMERS_OFFLINE": "1"})
     calls = []

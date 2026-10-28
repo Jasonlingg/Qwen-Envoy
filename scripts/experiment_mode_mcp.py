@@ -1,9 +1,8 @@
-"""Local experiment context and paper tools; optional Nemotron explanation."""
+"""Local experiment context plus model-free paper research, without GPU startup."""
 # ruff: noqa: E402
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -26,206 +25,38 @@ from scripts.ml_experiment_mcp import (
     register_experiment_tools,
 )
 from src.product.arxiv_library import ArxivLibrary
-from src.product.decision_threads import DecisionChoice, DecisionThreads
-from src.product.experiment_atlas import ExperimentAtlas
 from src.product.experiment_context import resume_context
 from src.product.experiment_discovery import ExperimentDiscovery
-from src.product.experiment_nemotron import explain_public_research
 from src.product.ml_experiment_evidence import EvidenceResolver
 from src.product.ml_experiment_research_notes import ResearchNote
 from src.product.ml_experiment_store import ExperimentStore
 from src.product.paper_discovery import PaperDiscovery
-from src.product.research_question_nemotron import draft_question
-from src.product.research_questions import (
-    ConsideredPaper,
-    PaperToResult,
-    ResearchQuestions,
-    ViewRevision,
-)
 
 MODE = """
 Experiment mode connects research to the user's ongoing ML experiment.
-Start with find_prior_experiments for the curated historical runs already in
-this repository. get_prior_experiment returns the attempt, measured observation,
-decision and saved-source list. read_prior_experiment_source opens only a listed
-artifact, in bounded chunks. These are read-only summaries, not imported mutable
-experiment records; inspect the primary source and its review status before
-making a new claim. Search uses word overlap, not semantic relevance.
-Find prior attempts with find_related_experiments, then resume_experiment with
-a chosen ID. Create a question-only draft with save_experiment_brief when needed.
-The related search is local word overlap, not a semantic or quality judgment.
-IDs are explicit: no shared active experiment.
+Create a question-only draft with save_experiment_brief, or list_experiments and
+resume_experiment with the chosen ID. IDs are explicit: no shared active experiment.
 Resume before researching or revising so you inspect prior attempts, setup and
 results. Use ordinary host web tools for repositories, model cards and docs; use
 paper tools when paper evidence is relevant. Do not research on every turn.
 Record useful findings with record_experiment_research against the brief revision
 you inspected. The host supplies this note explicitly; source calls do not save
 notes automatically. Qwen reports from a separately configured worker can be
-summarized the same way. The default server invokes no model or GPU. With explicit
-Nemotron opt-in, explain_experiment_research sends a bounded selected research
-question, findings, uncertainties and verified public-paper spans to Nebius.
-The tool makes one paid request and never sends local experiment artifact values.
-Invoke it only for notes whose text you are comfortable disclosing externally.
+summarized the same way. This server invokes no model or GPU. Do not send private
+experiment context to an external reader without authorization.
 Research notes are append-only context. They do not revise a hypothesis, freeze
 a plan, execute a test, or replace measurements. A later plan change requires an
 explicit brief revision or a successor if the plan is frozen. Record actual supplied
 measurements with record_experiment_result against the frozen plan, then resume.
-Group related attempts with a decision thread. A decision is a caller-stated
-choice linked to exact experiment/run/note IDs, not a model-verified conclusion.
-For a question-first second brain, start_research_question needs only the user's
-question. Use consider_research_paper after inspecting and saving a paper note;
-this records why it may matter and what it does not establish. After an attempt,
-use link_paper_to_result to say what method was tried and what happened. The MCP
-checks the exact saved paper span and result identities, not whether the paper
-caused the outcome. Record the current view and unresolved next question with
-record_question_view. Resume with get_research_question; search old questions
-with find_research_questions. Treat agent-proposed views as drafts.
-The optional draft_research_question tool sends a selected question, current view,
-paper passages and local result summaries to Nebius only with a per-call disclosure
-flag. Its output is an unreviewed draft and is never saved automatically.
-Mark author_kind=user_reported only when the user actually supplied that choice.
-Use a new decision event to change course; never rewrite an earlier choice.
 Preserve conflicting evidence and unknowns. Findings and proposed tests are
 unreviewed. External URLs are references only; this server does not fetch them.
 Use get_experiment for full or older records if resume context is truncated.
 """
 
 
-def create_server(store, library, discovery, *, passage_reader=None, nemotron_key=None,
-                  nemotron_transport=None, atlas=None):
+def create_server(store, library, discovery, *, passage_reader=None):
     server = MCPServer("Envoy Experiment Mode", instructions=INSTRUCTIONS + MODE)
     register_experiment_tools(server, store)
-    decisions = DecisionThreads(store.files.root, store)
-    questions = ResearchQuestions(store.files.root, store)
-    atlas = atlas or ExperimentAtlas(ROOT)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def find_prior_experiments(query: str | None = None,
-                               limit: StrictInt = 12) -> dict[str, Any]:
-        """Search the source-linked archive of previous runs, without model calls."""
-        return atlas.find(query, limit)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def get_prior_experiment(atlas_id: str) -> dict[str, Any]:
-        """Read one curated prior attempt, observed result and source list."""
-        return atlas.get(atlas_id)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def read_prior_experiment_source(atlas_id: str, source_index: StrictInt,
-                                     start: StrictInt = 0,
-                                     length: StrictInt = 4_000) -> dict[str, Any]:
-        """Read up to 8000 bytes from a listed local evidence file by index."""
-        return atlas.read_source(atlas_id, source_index, start, length)
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def start_research_question(question: str) -> dict[str, Any]:
-        """Open a durable question before any paper or experiment is linked."""
-        return questions.start(question)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def find_research_questions(query: str | None = None,
-                                limit: StrictInt = 20) -> dict[str, Any]:
-        """Find prior questions by local word overlap, or list recent questions."""
-        return questions.find(query, limit)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def get_research_question(question_id: str) -> dict[str, Any]:
-        """Read the paper-to-result trail, dated views and unresolved next question."""
-        return questions.get(question_id)
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def consider_research_paper(question_id: str, expected_revision: StrictInt,
-                                paper: ConsideredPaper) -> dict[str, Any]:
-        """Attach a verified paper passage and stated relevance before a test exists."""
-        return questions.consider_paper(question_id, expected_revision,
-                                        paper.model_dump(mode="json"))
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def link_paper_to_result(question_id: str, expected_revision: StrictInt,
-                             link: PaperToResult) -> dict[str, Any]:
-        """Link one verified paper passage to one saved experiment result.
-
-        The stated 'led to' interpretation is caller-authored, not proven causation.
-        """
-        return questions.link(question_id, expected_revision, link.model_dump(mode="json"))
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def record_question_view(question_id: str, expected_revision: StrictInt,
-                             view: ViewRevision) -> dict[str, Any]:
-        """Append a dated current view and next question; never overwrite history."""
-        return questions.record_view(question_id, expected_revision,
-                                     view.model_dump(mode="json"))
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def create_decision_thread(question: str, experiment_id: str) -> dict[str, Any]:
-        """Start a durable decision question linked to an existing experiment."""
-        return decisions.create(question, experiment_id)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def find_decision_threads(question: str, limit: StrictInt = 5) -> dict[str, Any]:
-        """Find candidate decision questions by local word overlap only."""
-        return decisions.find(question, limit)
-
-    @server.tool(annotations=LOCAL)
-    @_errors
-    def get_decision_thread(thread_id: str) -> dict[str, Any]:
-        """Read stated choices, linked attempts and immutable basis receipts."""
-        return decisions.get(thread_id)
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def link_decision_experiment(thread_id: str, expected_revision: StrictInt,
-                                 experiment_id: str) -> dict[str, Any]:
-        """Append another existing experiment attempt to a decision thread."""
-        return decisions.link(thread_id, expected_revision, experiment_id)
-
-    @server.tool(annotations=SAVE)
-    @_errors
-    def record_decision(thread_id: str, expected_revision: StrictInt,
-                        decision: DecisionChoice) -> dict[str, Any]:
-        """Append a stated adopt/reject/defer choice bound to selected records.
-
-        Author kind is caller-declared, not proof of human review or correctness.
-        """
-        return decisions.record(thread_id, expected_revision,
-                                decision.model_dump(mode="json"))
-    if nemotron_key:
-        @server.tool(annotations=REMOTE)
-        @_errors
-        def draft_research_question(question_id: str,
-                                    share_local_context: bool = False) -> dict[str, Any]:
-            """Ask Nemotron for one cited draft about this saved question.
-
-            Requires explicit per-call consent to disclose local context to Nebius;
-            one bounded paid request, no retry or automatic write.
-            """
-            options = ({"transport": nemotron_transport} if nemotron_transport else {})
-            return draft_question(questions, question_id, nemotron_key,
-                                  share_local_context=share_local_context, **options)
-
-        @server.tool(annotations=REMOTE)
-        @_errors
-        def explain_experiment_research(experiment_id: str, note_id: str) -> dict[str, Any]:
-            """Explain selected verified public paper spans with one capped Nebius call.
-
-            Sends the selected note's question, findings, uncertainties and bounded
-            public-paper text, never local run artifact values. Claims need human
-            support review. Invoking this tool incurs Token Factory usage.
-            """
-            options = ({"transport": nemotron_transport} if nemotron_transport else {})
-            return explain_public_research(store, experiment_id, note_id, nemotron_key,
-                                           **options)
     if passage_reader is not None:
         @server.tool(annotations=SAVE.model_copy(update={"open_world_hint": True}))
         @_errors
@@ -310,14 +141,7 @@ def main():
     parser.add_argument("--qwen-model")
     parser.add_argument("--qwen-checkpoint")
     parser.add_argument("--sandbox-image", default="rlm-sandbox")
-    parser.add_argument("--enable-nemotron", action="store_true",
-                        help="Opt in to one-call public-paper explanations on Nebius Token Factory")
     args = parser.parse_args()
-    if args.enable_nemotron:
-        from dotenv import load_dotenv
-        load_dotenv(ROOT / ".env", override=False)
-        if not os.environ.get("NEBIUS_API_KEY"):
-            parser.error("--enable-nemotron needs NEBIUS_API_KEY")
     library = ArxivLibrary(args.library_root.expanduser())
     store = ExperimentStore(args.store_root, evidence_resolver=EvidenceResolver(
         library_root=library.root, artifact_root=args.artifact_root))
@@ -351,9 +175,7 @@ def main():
                                                   library.root / "passage-reader-reports")
         except (ValueError, OSError, ImportError) as exc:
             parser.error(str(exc))
-    create_server(store, library, discovery, passage_reader=passage_reader,
-                  nemotron_key=os.environ.get("NEBIUS_API_KEY") if args.enable_nemotron
-                  else None).run(transport="stdio")
+    create_server(store, library, discovery, passage_reader=passage_reader).run(transport="stdio")
 
 
 if __name__ == "__main__":

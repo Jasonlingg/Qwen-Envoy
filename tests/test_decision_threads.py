@@ -6,7 +6,7 @@ import json
 import pytest
 from mcp import Client
 
-from scripts.experiment_mode_mcp import create_server
+from scripts.experiment_mode_extended_mcp import create_server
 from src.product.decision_threads import DecisionThreads
 from src.product.ml_experiment_store import ExperimentStore
 from tests.ml_experiment_result_fixtures import paired_result, planned_brief

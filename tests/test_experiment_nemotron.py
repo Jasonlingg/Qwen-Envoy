@@ -6,7 +6,7 @@ import json
 import pytest
 from mcp import Client
 
-from scripts.experiment_mode_mcp import create_server
+from scripts.experiment_mode_extended_mcp import create_server
 from src.product.experiment_nemotron import (
     ENDPOINT,
     MAX_OUTPUT_TOKENS,

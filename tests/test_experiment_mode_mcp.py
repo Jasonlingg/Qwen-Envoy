@@ -7,7 +7,7 @@ from pathlib import Path
 
 from mcp import Client, StdioServerParameters
 
-from scripts.experiment_mode_mcp import create_server
+from scripts.experiment_mode_extended_mcp import create_server
 from src.product.experiment_context import MAX_CONTEXT_CHARS
 from src.product.experiment_discovery import ExperimentDiscovery
 from src.product.ml_experiment_store import ExperimentStore
@@ -160,7 +160,7 @@ def test_resume_context_is_bounded_and_full_data_remains_accessible(tmp_path):
 
 
 def test_real_stdio_mode_starts_without_docker_tokenizer_or_endpoint(tmp_path):
-    script = Path(__file__).resolve().parents[1] / "scripts/experiment_mode_mcp.py"
+    script = Path(__file__).resolve().parents[1] / "scripts/experiment_mode_extended_mcp.py"
     library, _, _, refs = sources(tmp_path)
     root = tmp_path / "records"
     parameters = StdioServerParameters(command=sys.executable,

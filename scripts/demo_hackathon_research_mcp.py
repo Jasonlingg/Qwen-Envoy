@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.experiment_mode_mcp import create_server  # noqa: E402
+from scripts.experiment_mode_extended_mcp import create_server  # noqa: E402
 from src.product.arxiv_library import ArxivLibrary  # noqa: E402
 from src.product.experiment_discovery import ExperimentDiscovery  # noqa: E402
 from src.product.experiment_nemotron import (  # noqa: E402
