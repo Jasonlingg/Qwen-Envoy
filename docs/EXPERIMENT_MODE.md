@@ -5,6 +5,45 @@ specific uncertainty, propose a small test, then interpret supplied results.
 The assistant saves the context behind that conversation. You do not need to
 fill in a form or choose a question from a predefined list.
 
+## Open the local workbench
+
+To browse these records in a browser without configuring an MCP client,
+install the `viewer` extra and start the localhost workbench:
+
+```sh
+python -m pip install -e '.[viewer]'
+python scripts/launch_experiment_workbench.py
+```
+
+Open `http://127.0.0.1:8976`. Search the curated attempt atlas and your local
+experiment records, open a listed primary artifact, inspect a saved run and
+research note, then create a decision thread bound to that experiment. Recording
+a choice appends an immutable event with hashes of any selected run and note.
+Search for the same question after restarting the server to retrieve it. The
+default store is `~/.envoy/ml-experiments`; pass `--store-root /path/to/records`
+to inspect another store. The server binds only to localhost and makes no
+model, GPU, source-network or paid API calls.
+
+For a complete recorded-data example with a run and a decision, also install
+the `mcp` and `vault` extras (`python -m pip install -e '.[viewer,mcp,vault]'`).
+Execute the demo below in a **new** `out/` directory, then point the workbench
+at its `records` folder:
+
+```sh
+python scripts/demo_experiment_mode.py --output out/my-experiment-demo
+python scripts/launch_experiment_workbench.py \
+  --store-root out/my-experiment-demo/records
+```
+
+The atlas and experiment store are separate: historical atlas entries are
+read-only and cannot be used as the basis of a new decision without an actual
+experiment-store record. Search is word overlap, not semantic retrieval. The
+browser labels a saved decision as user-reported only when the person recording
+it explicitly confirms authorship; otherwise it is agent-proposed. The
+hashes and exact source bytes establish provenance, not whether a claim follows
+from the evidence. The workbench does not demonstrate better research decisions
+than web search plus Markdown notes.
+
 ## Browse the research history in Obsidian
 
 Create a local Obsidian vault from the curated experiment atlas and the saved
@@ -126,7 +165,7 @@ into the MCP: normal use starts from your own question.
 ## Start locally
 
 ```sh
-python scripts/experiment_mode_mcp.py \
+python scripts/experiment_mode_extended_mcp.py \
   --store-root ~/.envoy/ml-experiments \
   --library-root ~/.envoy/arxiv-library \
   --artifact-root /absolute/path/to/selected-sanitized-run-exports
@@ -148,7 +187,7 @@ these are configuration examples, not credentials or automatic installation.
     "envoy-experiments": {
       "command": "/absolute/path/to/python",
       "args": [
-        "/absolute/path/to/rlm-explorer/scripts/experiment_mode_mcp.py",
+        "/absolute/path/to/rlm-explorer/scripts/experiment_mode_extended_mcp.py",
         "--store-root", "~/.envoy/ml-experiments",
         "--library-root", "~/.envoy/arxiv-library"
       ]

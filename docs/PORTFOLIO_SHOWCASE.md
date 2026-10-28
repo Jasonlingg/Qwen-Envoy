@@ -68,7 +68,7 @@ The strongest next comparison is a paired set of real ML research decisions with
 
 ## Inspect the implementation
 
-- [Combined MCP and tool flow](EXPERIMENT_MODE.md) · [server entry point](../scripts/experiment_mode_mcp.py)
+- [Combined MCP and tool flow](EXPERIMENT_MODE.md) · [server entry point](../scripts/experiment_mode_extended_mcp.py)
 - [Versioned arXiv source tools and limits](ARXIV_RESEARCH_MCP.md) · [live source report](../reports/arxiv-mcp-live-20261016.json)
 - [Completed experiment example](../examples/experiment-mode-complete/README.md) · [source-to-draft walkthrough](../examples/experiment-mode-walkthrough/README.md)
 - [QASPER Agent Studio, a separate model case study](TECHNICAL_CASE_STUDY.md)

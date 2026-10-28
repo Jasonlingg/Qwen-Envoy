@@ -1,14 +1,27 @@
 # Qwen Envoy
 
-A reproducible case study of a **Qwen3-8B research agent** that writes Python to
-inspect papers in a Docker sandbox. It includes QLoRA training, paired saved
-evaluation, full action traces, and a read-only Studio. A separate personal
-research MCP connects papers to later experiment decisions.
+A personal **ML experiment second brain** for deciding what to try next with
+small language model agents. Its research MCP connects paper evidence, saved
+experiment results, and decisions across sessions. The Qwen3-8B paper agent is
+the first case study: it writes Python in Docker, with QLoRA training, paired
+evaluation, full action traces, and a read-only Studio. Engineers still choose
+and run experiments; Envoy does not autonomously retrain or promote a model.
 
 [Open Agent Studio](https://jasonlingg.github.io/Qwen-Envoy/) ·
 [Read the findings](docs/QASPER_AGENT_STUDY.md) ·
 [Browse the experiment atlas](docs/EXPERIMENT_ATLAS.md) ·
 [Inspect the implementation](docs/TECHNICAL_CASE_STUDY.md)
+
+## One experiment decision, end to end
+
+Suppose you want to know whether two Qwen readers can share one engine and
+reduce latency. The MCP can connect a verified PagedAttention paper passage to
+the saved two-reader serving run, recall that run after a restart, and record
+the decision to **defer a latency-win claim**: concurrent admission worked, but
+the measured pair times did not establish a reliable speedup. The paper is
+motivation, not proof of the run's outcome. [Try the local test build](PROJECT_GUIDE.md) ·
+[See the saved MCP inspector](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) ·
+[Read the source-linked record](docs/EXPERIMENT_ATLAS.md#paper--attempt--result-example).
 
 ## Qwen agent research case study
 
@@ -52,12 +65,27 @@ through representative successes and failures.
 | [`release/envoybench-v0.1/`](release/envoybench-v0.1/) | Frozen paired runs and review artifacts. |
 | [`docs/EXPERIMENT_ATLAS.md`](docs/EXPERIMENT_ATLAS.md) | Eleven prior ML experiments, each linked to its saved result and open question. |
 | [`scripts/research_justification_mcp.py`](scripts/research_justification_mcp.py) | Optional personal research-memory MCP. |
+| [`scripts/launch_experiment_workbench.py`](scripts/launch_experiment_workbench.py) | Local browser view for prior attempts, saved results and durable decisions. |
 | [`scripts/export_research_vault.py`](scripts/export_research_vault.py) | One-way export of the atlas and saved records as linked Obsidian notes. |
 
 The atlas is a direct way to review previous SFT, retrieval, reader, RL, serving,
 and research-tool attempts. It is curated rather than an automatic import of
 every raw local log. The [repository map](docs/REPOSITORY_LAYOUT.md) separates
 maintained components from historical prototypes.
+
+To try the complete local record in a browser, with no API key or GPU:
+
+```sh
+python -m pip install -e '.[viewer,mcp,vault]'
+python scripts/demo_experiment_mode.py --output out/my-experiment-demo
+python scripts/launch_experiment_workbench.py --store-root out/my-experiment-demo/records
+```
+
+Open `http://127.0.0.1:8976`, search **Qwen reader latency**, open the saved
+experiment and its measured run, then open the decision thread. It records
+**inconclusive**, not a speedup. Use a new output directory if you repeat the
+demo. The [workbench guide](docs/EXPERIMENT_MODE.md#open-the-local-workbench)
+explains the source and authorship boundaries.
 
 ## Reproduce the results
 

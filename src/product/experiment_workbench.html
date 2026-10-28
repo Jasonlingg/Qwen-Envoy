@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Envoy Experiment Workbench</title>
+  <link rel="stylesheet" href="/experiment_workbench.css">
+  <script src="/experiment_workbench.js" defer></script>
+</head>
+<body>
+  <header>
+    <p class="eyebrow">Qwen Envoy · local evidence</p>
+    <h1>Experiment Workbench</h1>
+    <p>Find what you tried, inspect the saved source, and record what you decide next.</p>
+  </header>
+  <main>
+    <form id="search-form" class="search">
+      <label for="query">Search past experiments and decisions</label>
+      <div class="search-row"><input id="query" type="search" maxlength="200" placeholder="e.g. Qwen reader latency" autocomplete="off"><button>Search</button></div>
+      <p class="hint">Search uses word overlap to find candidates. Read the original artifacts before relying on a result.</p>
+    </form>
+    <p id="message" role="status" aria-live="polite"></p>
+    <div class="columns">
+      <aside id="results" aria-label="Search results"></aside>
+      <article id="detail" aria-label="Selected record">
+        <p class="empty">Select a past attempt or saved experiment to inspect it.</p>
+      </article>
+    </div>
+  </main>
+  <footer>Local records only · No model or GPU calls · Source hashes establish provenance, not semantic support.</footer>
+</body>
+</html>

@@ -47,6 +47,13 @@ The first run may download public arXiv text. Use a fresh output directory for
 each run; `report.json` records the MCP calls and source passage. The separate
 `python scripts/demo_experiment_mode.py --output out/my-completed-experiment-demo`
 example replays a complete research-to-result record without a model call.
+Point the local workbench at that output, then open `http://127.0.0.1:8976`
+to inspect the result and decision in a browser:
+
+```bash
+python scripts/launch_experiment_workbench.py \
+  --store-root out/my-completed-experiment-demo/records
+```
 The Nebius explanation requires an explicit `--live-nebius` opt-in and an API
 key; see the [demo instructions](docs/HACKATHON_SUBMISSION_2026.md).
 For a no-model comparison that challenges one paper against quality-curation
@@ -79,15 +86,16 @@ affiliated with or endorsed by QASPER or AllenAI. See the
 [data provenance](benchmarks/envoybench/data/README.md). Existing `envoybench`
 package names and repository/demo URLs remain unchanged.
 
-**October 25 training update:** a native **Prime-RL + Verifiers GRPO** pilot
-completed **three of ten planned updates**, starting from the original v5
-adapter. All three passed checkpoint reload, sampled-policy alignment, and
-optimizer-state checks. Collection for update four failed with a transport timeout
-coinciding with laptop lid sleep. The GPU and temporary volume were deleted;
-adapters and receipts were saved. **The held-out comparison did not run, and no
-RL answer-quality improvement is established.** See the
-[run report](docs/READER_RL_PILOT_20261025.md). Moving the controller into the cloud
-is [scoped but not deployed](docs/READER_CLOUD_CONTROLLER.md).
+**October 26 training update:** a native **Prime-RL + Verifiers GRPO** pilot
+completed **nine of ten planned updates** from the original v5 adapter. A
+generation timeout interrupted update ten; the verified step-9 adapter was
+saved, but its optimizer state was not. A separate exploratory paired evaluation
+on twelve QASPER validation questions found **1/10 complete, source-supported
+answers in each arm** on the ten clear-reference questions. Two references were
+ambiguous, so the formal quality decision was inconclusive and **no RL
+answer-quality improvement is established**. See the [run report](docs/READER_RL_PILOT_20261026.md)
+and [paired result](docs/READER_STEP9_EXPLORATORY_20261026.md). The earlier
+[October 25 attempt](docs/READER_RL_PILOT_20261025.md) is retained separately.
 
 **October 13 SFT follow-up:** a fresh-base v6 QLoRA pilot used replayed trajectories
 and a new, paper-disjoint 24-question QASPER test subset. Blinded,
@@ -115,7 +123,7 @@ paper answers.
 [technical case study](docs/TECHNICAL_CASE_STUDY.md) ·
 [research-to-decision log](docs/RESEARCH_DECISION_LOG.md) ·
 [training evidence](release/qwen-v5-training/README.md) ·
-[latest GRPO attempt](docs/READER_RL_PILOT_20261025.md) ·
+[latest GRPO attempt](docs/READER_RL_PILOT_20261026.md) ·
 [detailed protocol](benchmarks/envoybench/COMPARISON_2026_09_30.md).
 
 **Scope:** a text-only QASPER agent study with reproducible saved results.
@@ -177,18 +185,16 @@ between training and inference prefixes. See the
 [observed training evidence](release/qwen-v5-training/README.md).
 
 The newer RL path uses the existing Docker investigator through a Verifiers
-plugin, with Prime-RL owning the native GRPO trainer and optimizer. The latest
-attempt verified all **504 optimizer states at steps 0 → 1 → 2 → 3**, preserved
-policy/checkpoint continuity, and retained raw traces separately from admitted
-training batches. It attempted 23 training questions and recorded 92 episodes;
-91 were infrastructure-healthy and one failed in transport. Only three complete
-mixed-reward groups were admitted. The training-only reward checks finite accepted
-short answers and reviewed inspected evidence; it is not a general semantic judge.
+plugin, with Prime-RL owning the native GRPO trainer and optimizer. The October
+26 attempt verified nine updates and recorded 163 episodes on 41 attempted
+training questions; only nine of 40 complete four-rollout groups had mixed
+rewards. The training-only reward checks finite accepted short answers and
+reviewed inspected evidence; it is not a general semantic judge.
 
-The ten-update pilot and its 12-question paired comparison remain incomplete.
-Original v5 remains the reference checkpoint; there is no automatic promotion of
-the partial RL adapters. Native training checks and increased reward alone cannot
-establish better research answers. [Actual results and limitations](docs/READER_RL_PILOT_20261025.md)
+The original ten-update pilot and its planned final-checkpoint evaluation remain
+incomplete. The separate saved-step-9 exploratory evaluation found no supported-
+answer gain on ten clear-reference questions. Original v5 remains the reference
+checkpoint; the step-9 adapter was not promoted. [Actual results and limitations](docs/READER_RL_PILOT_20261026.md)
 are separate from the [prospective protocol](examples/reader-rl-pilot-v2/protocol.json).
 
 ## Open the demo
@@ -457,7 +463,7 @@ SUBMIT: <answer> CITATIONS: ["<paper_id>"] EVIDENCE: [{"doc_id":"<paper_id>","st
 | Paper reader | Frozen text snapshots, optional endpoint inference, saved evidence and traces |
 | Token logprobs | Recorded in a separate small diagnostic; no calibrated correctness score |
 | Qwen v5 training recipe | Pinned adapter and observed QLoRA settings documented in the model card |
-| Native Prime-RL / Verifiers continuation | Three verified updates; ten-update pilot and held-out comparison incomplete; no RL quality gain claimed |
+| Native Prime-RL / Verifiers continuation | Nine verified updates; planned tenth update interrupted. Separate exploratory step-9 versus v5 comparison found 1/10 supported answers in each arm on clear references; no RL gain claimed |
 | Cloud controller | Proposed; current training placement still depends on an awake Mac running Docker |
 | Retrieval, thinking, and prefix-cache comparisons | Prepared protocols; no completed comparative result claimed |
 | Historical training and Obsidian/map demos | Training evidence retained; personal-memory and map apps archived in Git |

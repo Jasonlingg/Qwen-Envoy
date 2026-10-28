@@ -1,16 +1,18 @@
-# Qwen Envoy Research MCP — hackathon submission draft
+# Qwen Envoy — ML experiment second brain — hackathon submission draft
 
 **Track:** Best Apps and Agents. **Status:** working local test build and a
 [published saved-run inspector](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/);
-the video and Devpost entry remain open. The [official rules](https://nebiusglobalaihackathon.devpost.com/rules)
+the video and Devpost entry remain open. A localhost experiment workbench now
+shows saved evidence and durable decisions without an MCP host. The [official rules](https://nebiusglobalaihackathon.devpost.com/rules)
 list the deadline as **October 30, 2026, 10:00 a.m. PDT**. Target an internal
 finish by October 28 to leave time for recording and submission.
 
 ## Submission text
 
 ML engineers repeatedly investigate the same question across papers, runs and
-assistant sessions, then lose the evidence behind a decision. Qwen Envoy Research
-MCP is a personal research-to-experiment loop. An MCP host searches public papers,
+assistant sessions, then lose the evidence behind a decision. Qwen Envoy is a
+personal experiment second brain for improving small-model agents through
+human-directed, measured iterations. Its MCP searches public papers,
 opens versioned source text, records exact passages and uncertainties, freezes an
 agreed experiment plan, attaches measured results, and recalls a related attempt
 in a later session. Local records are immutable and content-addressed. The MCP
@@ -26,6 +28,12 @@ with claim-to-evidence IDs; a reviewer still judges semantic support. Qwen remai
 part of a separate agent-training case study. An experimental Qwen passage-reader
 tool can be configured separately, but this demo does not invoke it and no Qwen
 quality gain is claimed here.
+
+The demo follows one concrete decision: a PagedAttention passage motivated a
+two-reader Qwen serving test, whose saved measurements showed concurrent
+admission but no established latency advantage. A later session retrieves the
+result and records a decision to defer the speedup claim. This is a serving
+experiment, not proof that Qwen's answer quality improved.
 
 The distinguishing workflow is the handoff from **research to a measured next
 decision**, not an isolated paper summary. The host can find a prior experiment
@@ -135,6 +143,30 @@ activations**. An initial cold fetch without a configured CA bundle returned
 instead of only saying the paper was unavailable. These checks do not repeat
 the historical paid Nemotron call.
 
+**October 28 local recheck:** from this checkout, the no-key paper demo completed
+7/7 MCP calls and the experiment-record demo completed 20 calls across two
+processes, including the expected conflict rejections and an inconclusive
+decision recalled after restart. Both made zero model requests. The outputs
+are local ignored files under `out/hackathon-*-check-20261028/`; this is not a
+new clean-clone test or a new Nebius inference result. A first attempt wrote
+under macOS `/tmp`, which is a symlink and was correctly rejected by the
+experiment store. The documented `out/` paths worked.
+
+The offline case-study checker verified 22 packaged file hashes and recounted
+the 40 paired questions. The full local suite now passes: **2,099 passed,
+19 skipped** on October 28. The historical `experiment_mode_mcp.py` was restored
+byte-for-byte to its frozen SHA-256; newer atlas, decision and optional Nemotron
+tools moved to `experiment_mode_extended_mcp.py`. The frozen replay guard still
+checks the original source bytes. A fresh post-change no-key check completed
+**7 paper MCP calls and 20 experiment MCP calls across two processes**, with
+zero model requests or GPU activations. The intentionally conflicting writes
+were rejected and the measured latency decision remained inconclusive.
+
+To inspect that decision interactively, run the [local workbench](EXPERIMENT_MODE.md#open-the-local-workbench)
+against the demo's `records` directory. It shows the baseline and candidate
+measurements and lets a person explicitly confirm authorship when recording a
+new decision. It does not call Nebius or establish a productivity advantage.
+
 ## Video outline, under three minutes
 
 1. **Problem (15 s):** Show a real ML question and the lost-context failure.
@@ -143,8 +175,8 @@ the historical paid Nemotron call.
 3. **Nebius (30 s):** Show the **saved response from the earlier live** Nemotron
    Token Factory call, including model ID, token usage and claim-level caveat.
    Label it recorded; do not imply the public inspector makes a new call.
-4. **Memory (45 s):** Run the record demo, show its second-process resume,
-   retrieve the inconclusive measured outcome and inspect the next test.
+4. **Memory (45 s):** Run the record demo, open the local workbench, inspect the
+   measured outcome and find the inconclusive decision after restart.
 5. **Boundaries (20 s):** No Qwen improvement or Codex-web productivity win is
    claimed. Explain the intended personal use and what remains manual.
 
@@ -163,6 +195,10 @@ the historical paid Nemotron call.
   Judge access to the live path, and whether the current test build fully meets
   the event's platform-access expectation, remain unresolved. Do not expose an
   unrestricted paid key or describe the static page as live inference.
+- The October 26 RL and exploratory reports linked from the atlas and project
+  guide are packaged with the bounded protocol, comparison and billing
+  receipts. The larger raw `out/` traces remain local and are not a public
+  reproduction bundle.
 - Enter the track, text, repository URL, demo URL, video URL, and honest Nebius
   feedback on Devpost. Explain the substantial new work above.
 - Obtain independent human review before claiming any semantic answer-quality

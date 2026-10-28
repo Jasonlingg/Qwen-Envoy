@@ -1,9 +1,10 @@
 # Repository map
 
-The current release is **QASPER Agent Studio**, a saved, inspectable case study
-of the Qwen base/v5 paper-agent evaluation. The local Studio opens recorded runs
-without an endpoint or GPU. Live paper investigation is a separate, opt-in path;
-opening Studio never starts a model run.
+The submission-facing product is a personal **ML experiment second brain** for
+research evidence, measured runs and later decisions. The research MCP is its
+working tool interface; the public research page inspects a saved run and makes
+no live model call. **QASPER Agent Studio** is the separate, inspectable Qwen
+base/v5 case study. Opening either saved-run page never starts a model run.
 
 The [script entry-point guide](../scripts/README.md) gives the shortest path
 to the maintained local commands. Other `scripts/` files include dated
@@ -11,6 +12,11 @@ experiment drivers and audits, not additional product launchers.
 
 | Area | Responsibility |
 | --- | --- |
+| `scripts/research_justification_mcp.py` | Main research MCP: paper discovery, source inspection, experiment records and decision recall. Nebius explanation is opt-in. |
+| `scripts/experiment_mode_extended_mcp.py` | Current combined experiment tools beneath the research MCP. `experiment_mode_mcp.py` retains the byte-for-byte historical replay implementation. |
+| `scripts/launch_experiment_workbench.py` | Localhost view of the atlas, experiment results and append-only decision threads. |
+| `scripts/demo_hackathon_research_mcp.py`, `scripts/demo_experiment_mode.py` | No-key paper and restart demos; the first script has a separate opt-in live Nebius path. |
+| `release/hackathon-research-mcp/` | Public inspector of a recorded paper/Nemotron run; it does not call the MCP or model live. |
 | `scripts/launch_studio.py` | Default local launcher. Loads the packaged Qwen runs and separately labeled Nebius reference run. `--live-nebius` enables an operator-configured live reader. |
 | `benchmarks/envoybench/demo.py` | FastAPI routes for the Studio, full saved traces, paper reader, and human review. |
 | `benchmarks/envoybench/saved_payload.py` | Validates saved run artifacts and builds the read-only Studio payload. |
@@ -20,7 +26,6 @@ experiment drivers and audits, not additional product launchers.
 | `benchmarks/envoybench/run.py` | Paired inference runner. Historical imports from this module remain compatible. |
 | `benchmarks/envoybench/score.py`, `qasper_official.py` | Provisional mechanical/review scoring and the pinned official QASPER Answer F1 path. These measure different things. |
 | `src/env/`, `src/policies/`, `src/product/qwen_investigator.py` | Multi-step Python-action environment, model policies, and bounded paper investigator. The code-execution tool boundary stays `search()` / `read()` / `extract()`. |
-| `scripts/research_justification_mcp.py` | Optional combined research MCP entry point: curated prior experiments, question trails, experiment records and paper tools. The source and experiment MCP files remain reusable components. |
 | `docs/EXPERIMENT_ATLAS.md`, `src/product/experiment_atlas.py` | Curated index of 11 previous runs and bounded, read-only access to their saved source artifacts. This does not import every ignored local log. |
 | `scripts/export_research_vault.py` | One-way Obsidian export of the atlas and saved research/experiment records; it does not watch or synchronize a personal vault. |
 | `src/training/`, `environments/envoy_reader/` | Source-bound reader tasks, Docker rollout collection, Verifiers plugin, native Prime-RL orchestration and paired evaluation. |
@@ -40,5 +45,6 @@ the Obsidian research-history export is a separate maintained script.
 This cleanup does not change model weights, active rewards, frozen execution
 code or published results.
 
-Run the offline artifact check with `python scripts/reproduce_case_study.py`.
-The main launcher and release status are described in the [README](../README.md).
+Run the no-key MCP demos from the [project guide](../PROJECT_GUIDE.md) or the
+offline case-study check with `python -I -S scripts/reproduce_case_study.py`.
+The submission status and limits are in the [hackathon draft](HACKATHON_SUBMISSION_2026.md).
