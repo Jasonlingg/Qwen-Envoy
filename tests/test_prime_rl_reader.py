@@ -91,6 +91,9 @@ def token_engine(tokenizer, actions, mode):
             probs = [{"token": f"token_id:{token}", "logprob": -1.0} for token in ids]
             if mode == "bad_metadata" and index == 1:
                 probs.pop()
+            if mode == "slow_first" and index == 0:
+                import time
+                time.sleep(31)
             self.reply(200, {"choices": [{"token_ids": ids,
                 "logprobs": {"content": probs}, "finish_reason": "stop"}]})
 
@@ -417,7 +420,8 @@ def test_repeatable_collector_uses_current_policy_receipt_and_native_step_two_tr
     asyncio.run(asyncio.wait_for(transfer(), timeout=15))
 
 
-def test_paired_evaluation_native_renderer_real_docker_is_unscored(tmp_path, monkeypatch):
+@pytest.mark.parametrize("slow", [False, True])
+def test_paired_evaluation_native_renderer_real_docker_is_unscored(tmp_path, monkeypatch, slow):
     """An explicit train-role scripted fixture, never the locked evaluation set."""
     from prime_rl.orchestrator.algo.base import iter_trainable_traces
 
@@ -435,7 +439,8 @@ def test_paired_evaluation_native_renderer_real_docker_is_unscored(tmp_path, mon
     session = {"bundle_sha256": ev.file_hash(ev.BUNDLE / "manifest.json"),
                "arms": {ev.ARMS[0]: "not_real_weights"}}
     monkeypatch.setattr(ev, "validate_session", lambda output: (session, [case]))
-    with token_engine(tokenizer, control["responses"], "good") as (engine, received):
+    mode = "slow_first" if slow else "good"
+    with token_engine(tokenizer, control["responses"], mode) as (engine, received):
         episode = asyncio.run(ev.collect_episode(
             tmp_path, case, snapshot, engine, ev.ARMS[0], session, 42))
     assert episode.ok and len(episode.traces) == 1

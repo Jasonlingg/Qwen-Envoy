@@ -50,8 +50,13 @@ def test_current_manifest_binds_local_repair_without_held_out_model_results():
     current = load(ROOT / "examples/reader-rl-pilot-v2/SHA256SUMS.json")
     assert current["parent_pilot_receipt_sha256"] == file_hash(
         ROOT / "examples/reader-rl-pilot-v1/SHA256SUMS.json")
+    exploratory = load(ROOT / "examples/reader-step9-eval-20261026/SHA256SUMS.json")
+    assert exploratory["parent_pilot_receipt_sha256"] == file_hash(
+        ROOT / "examples/reader-rl-pilot-v2/SHA256SUMS.json")
     for name, sha in record["artifacts"].items():
         expected = current["artifacts"][name] if name in current["superseded_source_paths"] else sha
+        if name in exploratory["superseded_source_paths"]:
+            expected = exploratory["artifacts"][name]
         assert file_hash(ROOT / name) == expected, name
     assert record["artifacts"]["examples/reader-rl-pilot-v1/protocol.json"] == (
         "1d0038b7c5d2f84327ac1bdcf55d939bcbdbfcbf1d5a991d07ef81ffb05aa8d9")

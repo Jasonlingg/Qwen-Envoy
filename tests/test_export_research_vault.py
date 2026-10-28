@@ -17,7 +17,7 @@ def test_export_creates_real_linked_vault_and_refresh_preserves_user_note(tmp_pa
     assert (vault / "Attachments" / "README.md").read_bytes() == (ROOT / "README.md").read_bytes()
     assert "[[Atlas/reader-rl-pilot|reader-rl-pilot]]" in home
     atlas_note = (vault / "Atlas" / "reader-rl-pilot.md").read_text()
-    source_id = re.search(r"\[\[Sources/([0-9a-f]{16})\|Pilot report\]\]", atlas_note)
+    source_id = re.search(r"\[\[Sources/([0-9a-f]{16})\|Initial pilot\]\]", atlas_note)
     assert source_id
     source_note = (vault / "Sources" / f"{source_id.group(1)}.md").read_text()
     original = ROOT / "docs" / "READER_RL_PILOT_20261025.md"

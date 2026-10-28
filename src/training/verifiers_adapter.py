@@ -146,7 +146,9 @@ class InterceptTransport:
         if len(self.payloads) >= 12:
             raise ValueError("compatibility request ceiling reached")
         self.payloads.append(copy.deepcopy(payload))
-        with httpx.Client(trust_env=False, follow_redirects=False, timeout=30) as client:
+        # The upstream native generation has a 120s whole-request bound. This
+        # outer local bridge must allow it to return its response or timeout.
+        with httpx.Client(trust_env=False, follow_redirects=False, timeout=135) as client:
             with client.stream(
                 "POST",
                 self.endpoint + "/chat/completions",

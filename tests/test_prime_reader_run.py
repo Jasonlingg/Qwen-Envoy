@@ -281,3 +281,65 @@ def test_pilot_cannot_change_predeclared_seed_or_question_order(tmp_path, mutati
     write(output / "plan.json", plan)
     with pytest.raises(ValueError, match="drift"):
         validate_plan(output)
+
+
+@pytest.mark.parametrize("mode", ["slow", "deadline", "drip"])
+def test_generation_waits_for_slow_response_but_bounds_total_wall_time(tmp_path, monkeypatch, mode):
+    """Real loopback I/O; only the slow case spends 26s to cross the old 25s limit."""
+    calls = []
+
+    class Engine(BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers["Content-Length"]))
+            calls.append(self.path)
+            body = b'{"choices":[]}'
+            try:
+                if mode == "slow":
+                    time.sleep(26)
+                elif mode == "deadline":
+                    time.sleep(.6)
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                if mode == "drip":
+                    for value in body:
+                        self.wfile.write(bytes([value]))
+                        self.wfile.flush()
+                        time.sleep(.08)
+                else:
+                    self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError):
+                pass
+
+        def log_message(self, *args):
+            pass
+
+    engine = ThreadingHTTPServer(("127.0.0.1", 0), Engine)
+    thread = threading.Thread(target=engine.serve_forever, daemon=True)
+    thread.start()
+    monkeypatch.setattr(prime_budget, "GENERATION_SECONDS", 120 if mode == "slow" else .3)
+    write(tmp_path / "started.json",
+          {"deadline": time.time() + (60 if mode != "deadline" else .25)})
+    begin = time.monotonic()
+    try:
+        with proxy(tmp_path, {"limits": {"requests": 3, "reserved_tokens": 8192}},
+                   {"version": 0}, engine=f"http://127.0.0.1:{engine.server_port}") as url:
+            with httpx.Client(trust_env=False, timeout=40) as client:
+                route = url.removesuffix("/v1") + "/inference/v1/generate"
+                response = client.post(route, json=payload())
+                assert response.status_code == (200 if mode == "slow" else 502)
+                if mode != "slow":
+                    assert time.monotonic() - begin < 2
+                    assert client.post(route, json=payload()).status_code == 502
+        ledger = json.loads((tmp_path / "dispatches.json").read_text())
+        assert calls == ["/inference/v1/generate"]
+        assert len(ledger["requests"]) == 1
+        assert ledger["reserved_tokens"] == 1027
+        assert ledger["closed"] is (mode != "slow")
+        assert ledger["requests"][0]["finished_at"] >= ledger["requests"][0]["started_at"]
+        if mode != "slow":
+            assert ledger["requests"][0]["error_kind"] == "TimeoutError"
+    finally:
+        engine.shutdown()
+        engine.server_close()
+        thread.join(timeout=5)

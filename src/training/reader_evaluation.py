@@ -44,13 +44,68 @@ IMPLEMENTATION = (
 )
 
 
-def freeze(training, output):
-    """Require a completed, originally initialized ten-update run before unlocking."""
+EXPLORATORY_ARMS = ("unchanged_v5", "final_rl_step_9")
+EXPLORATORY_KIND = "exploratory_saved_step_9"
+
+
+def evaluation_arms(session):
+    return EXPLORATORY_ARMS if session.get("evaluation_kind") == EXPLORATORY_KIND else ARMS
+
+
+def exploratory_contract(protocol, plan, result):
+    """An explicit new experiment; never reinterpret the incomplete parent pilot."""
+    parent = inside(ROOT, protocol["parent_training_protocol"])
+    original = load(parent)
+    required = {"plan.json", "started.json", "result.json"} | {
+        f"cycle-{n}/{name}" for n in range(1, 10)
+        for name in ("verified.json", "scorer.json", "loaded.json", "prepared.json",
+                     "microbatches.bin")}
+    if (set(protocol.get("training_evidence_sha256", {})) != required
+            or protocol.get("schema_version") != "reader-exploratory-step9-v1"
+            or protocol.get("evaluation_kind") != EXPLORATORY_KIND
+            or protocol.get("selected_checkpoint_step") != 9
+            or protocol.get("selected_checkpoint_sha256") in {None, V5_SHA}
+            or file_hash(parent) != protocol.get("parent_training_protocol_sha256")
+            or plan.get("pilot_protocol") != protocol["parent_training_protocol"]
+            or plan.get("pilot_protocol_sha256") != file_hash(parent)
+            or protocol.get("identities") != original["identities"]
+            or protocol.get("evaluation_question_ids") != original["evaluation_question_ids"]
+            or protocol.get("evaluation_paper_ids") != original["evaluation_paper_ids"]
+            or protocol.get("success_rule") != original["success_rule"]
+            or {k:v for k,v in protocol["phases"]["paired_evaluation"].items()
+                if k not in {"arms", "arm_order"}}
+               != {k:v for k,v in original["phases"]["paired_evaluation"].items()
+                   if k not in {"arms", "arm_order"}}
+            or protocol["phases"]["paired_evaluation"]["arms"] != list(EXPLORATORY_ARMS)
+            or protocol["phases"]["paired_evaluation"]["arm_order"] != list(EXPLORATORY_ARMS)
+            or result.get("verified_updates") != 9
+            or result.get("attempted_update_steps") != list(range(1,10))
+            or result.get("unverified_attempts_may_have_updated_weights") is not False
+            or result.get("all_recorded_containers_absent") is not True):
+        raise ValueError("invalid explicitly amended step-nine evaluation")
+    return original
+
+
+def freeze(training, output, *, exploratory_protocol=None, baseline=None):
+    """Freeze the original ten-update candidate or an explicitly amended saved step nine."""
     training, output = Path(training).resolve(), Path(output).resolve()
-    plan = validate_plan(training)
-    protocol_path = inside(ROOT, plan.get("pilot_protocol", PROTOCOL))
-    protocol = load(protocol_path)
-    phase = protocol["phases"]["training"]
+    if exploratory_protocol is None:
+        plan = validate_plan(training)
+        protocol_path = inside(ROOT, plan.get("pilot_protocol", PROTOCOL))
+        protocol = load(protocol_path)
+        training_protocol, steps, arms = protocol, 10, ARMS
+    else:
+        protocol_path = inside(ROOT, exploratory_protocol)
+        protocol, plan = load(protocol_path), load(training / "plan.json")
+        training_protocol = exploratory_contract(protocol, plan, load(training / "result.json"))
+        steps, arms = 9, EXPLORATORY_ARMS
+        for name, expected in protocol["training_evidence_sha256"].items():
+            if file_hash(inside(training, name)) != expected:
+                raise ValueError("archived training evidence drift")
+        if (file_hash(training / "cycle-9/adapter/adapter_model.safetensors")
+                != protocol["selected_checkpoint_sha256"]):
+            raise ValueError("exploratory candidate differs from predeclared step nine")
+    phase = training_protocol["phases"]["training"]
     expected_limits = dict(
         updates=10,
         requests=phase["max_generation_requests"],
@@ -61,15 +116,15 @@ def freeze(training, output):
     if (
         plan["limits"] != expected_limits
         or plan["v5_sha256"] != V5_SHA
-        or set(plan["train_case_ids"]) != set(protocol["training_case_ids"])
-        or result.get("verified_updates") != 10
-        or result.get("attempted_update_steps") != list(range(1, 11))
+        or set(plan["train_case_ids"]) != set(training_protocol["training_case_ids"])
+        or result.get("verified_updates") != steps
+        or result.get("attempted_update_steps") != list(range(1, steps + 1))
         or result.get("unverified_attempts_may_have_updated_weights") is not False
         or result.get("all_recorded_containers_absent") is not True
     ):
         raise ValueError("only the complete predeclared ten-update pilot can unlock evaluation")
     previous_sha, previous_optimizer = V5_SHA, None
-    for step in range(1, 11):
+    for step in range(1, steps + 1):
         verified = load(training / f"cycle-{step}/verified.json")
         loaded = load(training / f"cycle-{step}/loaded.json")
         prepared = load(training / f"cycle-{step}/prepared.json")
@@ -97,7 +152,7 @@ def freeze(training, output):
                        for k, limit in (("mean", .03), ("max", .25)))):
             raise ValueError("missing sampled-policy, optimizer or native scoring proof")
         previous_sha, previous_optimizer = verified["adapter_sha256"], verified["optimizer_sha256"]
-    candidate = training / "cycle-10/adapter"
+    candidate = training / f"cycle-{steps}/adapter"
     if file_hash(candidate / "adapter_model.safetensors") == V5_SHA:
         raise ValueError("candidate is unchanged V5")
     output.mkdir(parents=True, exist_ok=False)
@@ -105,13 +160,14 @@ def freeze(training, output):
     evidence.mkdir()
     for name in ["plan.json", "started.json", "result.json"] + [
         f"cycle-{n}/{receipt}.json"
-        for n in range(1, 11)
+        for n in range(1, steps + 1)
         for receipt in ("verified", "scorer", "loaded", "prepared")
     ]:
         target = evidence / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(training / name, target)
-    for arm, source in zip(ARMS, (Path(plan["assets"]) / "v5", candidate), strict=True):
+    baseline_source = Path(baseline) if baseline else Path(plan["assets"]) / "v5"
+    for arm, source in zip(arms, (baseline_source, candidate), strict=True):
         target = output / arm
         target.mkdir()
         for name in ("adapter_model.safetensors", "adapter_config.json"):
@@ -127,7 +183,9 @@ def freeze(training, output):
         "artifacts": files,
         "implementation_sha256": {n: file_hash(ROOT / n) for n in IMPLEMENTATION},
         "question_ids": protocol["evaluation_question_ids"],
-        "arms": {a: files[a + "/adapter_model.safetensors"] for a in ARMS},
+        "arms": {a: files[a + "/adapter_model.safetensors"] for a in arms},
+        "evaluation_kind": (EXPLORATORY_KIND if exploratory_protocol is not None
+                            else "predeclared_ten_update"),
         "training_eligible": False,
         "independent_human_review": None,
     }
@@ -141,6 +199,8 @@ def validate_session(output):
     session = load(output / "session.json")
     protocol_path = inside(ROOT, session.get("protocol_path", PROTOCOL))
     protocol = load(protocol_path)
+    arms = evaluation_arms(session)
+    steps = 9 if arms == EXPLORATORY_ARMS else 10
     if (
         session.get("schema") != "reader-paired-evaluation-v1"
         or session.get("protocol_sha256") != file_hash(protocol_path)
@@ -149,16 +209,16 @@ def validate_session(output):
         or session.get("frozen_runtime") != frozen_runtime()
         or session.get("question_ids") != protocol["evaluation_question_ids"]
         or session.get("training_eligible") is not False
-        or session.get("arms", {}).get(ARMS[0]) != V5_SHA
-        or session.get("arms", {}).get(ARMS[1]) in {None, V5_SHA}
-        or set(session.get("arms", {})) != set(ARMS)
+        or session.get("arms", {}).get(arms[0]) != V5_SHA
+        or session.get("arms", {}).get(arms[1]) in {None, V5_SHA}
+        or set(session.get("arms", {})) != set(arms)
         or set(session.get("implementation_sha256", {})) != set(IMPLEMENTATION)
     ):
         raise ValueError("evaluation session identity drift")
-    required = {f"{a}/{n}" for a in ARMS
+    required = {f"{a}/{n}" for a in arms
                 for n in ("adapter_model.safetensors", "adapter_config.json")}
     required |= {"training-evidence/" + n for n in ("plan.json", "started.json", "result.json")}
-    required |= {f"training-evidence/cycle-{n}/{receipt}.json" for n in range(1, 11)
+    required |= {f"training-evidence/cycle-{n}/{receipt}.json" for n in range(1, steps + 1)
                  for receipt in ("verified", "scorer", "loaded", "prepared")}
     if set(session["artifacts"]) != required:
         raise ValueError("evaluation lacks the complete frozen training/adapter evidence")
@@ -166,7 +226,17 @@ def validate_session(output):
         if file_hash(inside(output, name)) != expected:
             raise ValueError("frozen evaluation artifact changed: " + name)
     training = load(output / "training-evidence/plan.json")
-    if (inside(ROOT, training.get("pilot_protocol", PROTOCOL)) != protocol_path
+    if arms == EXPLORATORY_ARMS:
+        exploratory_contract(protocol, training, load(output / "training-evidence/result.json"))
+        for name, expected in protocol["training_evidence_sha256"].items():
+            if name.endswith("microbatches.bin"):
+                # Checked at freeze; batches are never used during evaluation.
+                continue
+            if file_hash(inside(output / "training-evidence", name)) != expected:
+                raise ValueError("frozen archived training evidence drift")
+        if session["arms"][arms[1]] != protocol["selected_checkpoint_sha256"]:
+            raise ValueError("exploratory adapter differs from the predeclared hash")
+    elif (inside(ROOT, training.get("pilot_protocol", PROTOCOL)) != protocol_path
             or (training.get("pilot_protocol") is not None
                 and training.get("pilot_protocol_sha256") != file_hash(protocol_path))):
         raise ValueError("evaluation protocol differs from the frozen training protocol")
@@ -174,7 +244,7 @@ def validate_session(output):
     if (revision is not None and file_hash(inside(ROOT, revision)) !=
             protocol["identities"].get("reward_revision_sha256")):
         raise ValueError("frozen training reward revision changed")
-    for arm in ARMS:
+    for arm in arms:
         if file_hash(output / arm / "adapter_model.safetensors") != session["arms"][arm]:
             raise ValueError("evaluation adapter changed")
     for name, expected in session["implementation_sha256"].items():
@@ -240,6 +310,11 @@ def open_references(output):
 def reference_review(output, cases):
     """Validate attribution and unchanged source/reference bindings, not semantics."""
     review = load(output / "reference-pack.json")
+    protocol = session_protocol(output)
+    ambiguous = set(protocol.get("reference_audit_ambiguous_question_ids", []))
+    diagnostic = (protocol.get("evaluation_kind") == EXPLORATORY_KIND
+                  and protocol.get("reference_ambiguity_policy")
+                  == "all12_diagnostic_collection_force_inconclusive")
     if (
         review.get("session_sha256") != file_hash(output / "session.json")
         or review.get("reviewer_kind") not in {"human", "model_assisted"}
@@ -260,8 +335,12 @@ def reference_review(output, cases):
             or row.get("scope") != case["scope"]
             or row.get("source_windows") != source_windows(case)
             or digest(row.get("reference")) != digest(load(reference))
-            or row.get("in_scope_answerable") is not True
-            or row.get("reference_unambiguous") is not True
+            or type(row.get("in_scope_answerable")) is not bool
+            or type(row.get("reference_unambiguous")) is not bool
+            or (not (diagnostic and case["question_id"] in ambiguous)
+                and (not row["in_scope_answerable"] or not row["reference_unambiguous"]))
+            or (diagnostic and case["question_id"] in ambiguous
+                and row["reference_unambiguous"])
             or not row.get("notes")
         ):
             raise ValueError("unresolved/stale reference review; evaluation remains inconclusive")
@@ -401,8 +480,9 @@ async def run_arm(output, arm, engine, tokenizer, backend_receipt):
     """
     output, tokenizer = Path(output).resolve(), Path(tokenizer).resolve()
     session, cases = validate_session(output)
+    arms = evaluation_arms(session)
     ref_sha = reference_review(output, cases)
-    if arm not in ARMS or tokenizer.name != BASE_REVISION or not tokenizer.is_dir():
+    if arm not in arms or tokenizer.name != BASE_REVISION or not tokenizer.is_dir():
         raise ValueError("unknown arm or unpinned local tokenizer")
     check_tokenizer(tokenizer)
     backend = load(backend_receipt)
@@ -416,10 +496,10 @@ async def run_arm(output, arm, engine, tokenizer, backend_receipt):
         or not backend.get("adapter_root", "").startswith("/")
     ):
         raise ValueError("explicit arm-specific native load/hardware receipt required")
-    if arm == ARMS[1] and not (output / ARMS[0] / "complete.json").exists():
+    if arm == arms[1] and not (output / arms[0] / "complete.json").exists():
         raise ValueError("V5 must complete before the RL arm")
-    if arm == ARMS[1]:
-        baseline = load(output / ARMS[0] / "complete.json")["backend"]
+    if arm == arms[1]:
+        baseline = load(output / arms[0] / "complete.json")["backend"]
         if any(backend[k] != baseline[k] for k in ("gpu", "versions")):
             raise ValueError("paired arms require comparable hardware and package versions")
     started = output / "started.json"
@@ -500,13 +580,14 @@ async def run_arm(output, arm, engine, tokenizer, backend_receipt):
 def export_review(output):
     """Derived identity-masked review pack; raw records and private mapping are retained."""
     output = Path(output)
-    _, cases = validate_session(output)
+    session, cases = validate_session(output)
+    arms = evaluation_arms(session)
     reference_review(output, cases)
     target = output / "output-review.json"
     if target.exists():
         raise FileExistsError("review pack already exists")
     rows, mapping = [], {}
-    for arm in ARMS:
+    for arm in arms:
         if not (output / arm / "complete.json").exists():
             raise ValueError("all 24 episodes required; partial runs remain inconclusive")
         for i, case in enumerate(cases):
@@ -584,8 +665,12 @@ def export_review(output):
 def summarize(output):
     """Apply the predeclared engineering gate to attributed claim-level judgments."""
     output = Path(output)
-    _, cases = validate_session(output)
+    session, cases = validate_session(output)
+    arms = evaluation_arms(session)
     reference_review(output, cases)
+    references = load(output / "reference-pack.json")
+    ambiguous = {r["question_id"] for r in references["rows"]
+                 if not r["reference_unambiguous"] or not r["in_scope_answerable"]}
     review, mapping = load(output / "output-review.json"), load(output / "private-arm-map.json")
     bindings = load(output / "output-review-bindings.json")
     for name, sha in bindings["telemetry_sha256"].items():
@@ -605,7 +690,7 @@ def summarize(output):
         or {r["review_id"] for r in review["rows"]} != set(mapping)
     ):
         raise ValueError("complete source-bound attributed paired review required")
-    cells = {a: {} for a in ARMS}
+    cells = {a: {} for a in arms}
     for row in review["rows"]:
         key = row["review_id"]
         source = {
@@ -628,10 +713,13 @@ def summarize(output):
                 type(row.get(k)) is not bool
                 for k in ("complete_correct_supported", "false_refusal", "unresolved")
             )
-            or row["unresolved"]
+            or (row["unresolved"] and row["question_id"] not in ambiguous)
             or not row.get("notes")
         ):
             raise ValueError("missing, uncertain or altered source-visible review")
+        if row["question_id"] in ambiguous and (
+                row["complete_correct_supported"] or not row["unresolved"]):
+            raise ValueError("ambiguous reference cannot count as a resolved correct answer")
         if (row.get("claim_inventory_complete") is not True
                 or not row.get("requested_fact_review")):
             raise ValueError("review all material claims and requested facts explicitly")
@@ -671,6 +759,7 @@ def summarize(output):
             raise ValueError("missing or incomparable episode telemetry")
         packet = load(path)["docker_episode"]["packet"]
         cells[arm][index] = {
+            "reference_ambiguous": row["question_id"] in ambiguous,
             "supported": row["complete_correct_supported"],
             "unsupported": unsupported,
             "false_refusal": row["false_refusal"],
@@ -678,7 +767,7 @@ def summarize(output):
             "reserved_tokens": measure["reserved_tokens"],
             "seconds": measure["seconds"],
         }
-    if any(set(cells[a]) != set(range(len(cases))) for a in ARMS):
+    if any(set(cells[a]) != set(range(len(cases))) for a in arms):
         raise ValueError("duplicate/missing paired questions")
     counts = {
         a: {
@@ -694,22 +783,22 @@ def summarize(output):
         for a, rows in cells.items()
     }
     pairs = [
-        {"question_id": c["question_id"], "v5": cells[ARMS[0]][i], "rl": cells[ARMS[1]][i]}
+        {"question_id": c["question_id"], "v5": cells[arms[0]][i], "rl": cells[arms[1]][i]}
         for i, c in enumerate(cases)
     ]
     wins = sum(p["rl"]["supported"] and not p["v5"]["supported"] for p in pairs)
     losses = sum(p["v5"]["supported"] and not p["rl"]["supported"] for p in pairs)
     newly_unsupported = sum(p["rl"]["unsupported"] and not p["v5"]["unsupported"] for p in pairs)
     ratios = {
-        "mean_reserved_token": counts[ARMS[1]]["reserved_tokens"]
-        / counts[ARMS[0]]["reserved_tokens"]
+        "mean_reserved_token": counts[arms[1]]["reserved_tokens"]
+        / counts[arms[0]]["reserved_tokens"]
     }
     for label, fn in (
         ("median_episode_latency", statistics.median),
         ("p95_episode_latency", lambda v: sorted(v)[math.ceil(0.95 * len(v)) - 1]),
     ):
-        ratios[label] = fn([c["seconds"] for c in cells[ARMS[1]].values()]) / fn(
-            [c["seconds"] for c in cells[ARMS[0]].values()]
+        ratios[label] = fn([c["seconds"] for c in cells[arms[1]].values()]) / fn(
+            [c["seconds"] for c in cells[arms[0]].values()]
         )
     rule = session_protocol(output)["success_rule"]
     positive = (
@@ -717,7 +806,7 @@ def summarize(output):
         and losses <= rule["maximum_supported_answer_regressions"]
         and newly_unsupported <= rule["maximum_new_unsupported_questions"]
         and all(
-            counts[ARMS[1]][k] <= counts[ARMS[0]][k] for k in ("unsupported", "execution_failure")
+            counts[arms[1]][k] <= counts[arms[0]][k] for k in ("unsupported", "execution_failure")
         )
         and all(ratios[k] <= rule["maximum_" + k + "_ratio"] for k in ratios)
     )
@@ -731,14 +820,19 @@ def summarize(output):
                 and math.isfinite(lifecycle[k]) and lifecycle[k] >= 0
                 for k in ("actual_spend_usd", "gpu_lifetime_seconds"))
         and lifecycle["gpu_lifetime_seconds"] > 0
-        and set(lifecycle.get("startup_seconds_by_arm", {})) == set(ARMS)
+        and set(lifecycle.get("startup_seconds_by_arm", {})) == set(arms)
         and all(type(v) in {int, float} and math.isfinite(v) and v >= 0
                 for v in lifecycle["startup_seconds_by_arm"].values())
     ))
     result = {
-        "decision": ("inconclusive_missing_lifecycle_cost" if not lifecycle_ok else
-                     "provisional_pilot_signal" if positive else "threshold_not_met"),
+        "decision": ("inconclusive_reference_ambiguity" if ambiguous else
+                     "inconclusive_missing_lifecycle_cost" if not lifecycle_ok else
+                     ("provisional_exploratory_signal" if arms == EXPLORATORY_ARMS
+                      else "provisional_pilot_signal") if positive else "threshold_not_met"),
         "answer_and_episode_resource_thresholds_met": positive,
+        "reference_ambiguous_question_ids": sorted(ambiguous),
+        "quality_conclusion_available": not ambiguous,
+        "evaluation_kind": session.get("evaluation_kind", "predeclared_ten_update"),
         "wins": wins,
         "losses": losses,
         "ties": len(cases) - wins - losses,
@@ -766,8 +860,9 @@ async def load_backend(output, arm, engine):
 
     output = Path(output).resolve()
     session, _ = validate_session(output)
+    arms = evaluation_arms(session)
     check_native_sources()
-    if arm not in ARMS or not torch.cuda.is_available() or torch.cuda.device_count() != 1:
+    if arm not in arms or not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         raise ValueError("one CUDA GPU and a known frozen evaluation arm required")
     versions = {
         n: metadata.version(n)
@@ -823,6 +918,7 @@ def main():
         "mode",
         choices=[
             "freeze",
+            "freeze-exploratory",
             "open-references",
             "collect-arm",
             "export-review",
@@ -832,12 +928,19 @@ def main():
     )
     parser.add_argument("output", type=Path)
     parser.add_argument("--training", type=Path)
-    parser.add_argument("--arm", choices=ARMS)
+    parser.add_argument("--arm", choices=tuple(dict.fromkeys(ARMS + EXPLORATORY_ARMS)))
+    parser.add_argument("--exploratory-protocol", type=Path)
+    parser.add_argument("--baseline", type=Path)
     parser.add_argument("--engine")
     parser.add_argument("--tokenizer", type=Path)
     parser.add_argument("--backend-receipt", type=Path)
     args = parser.parse_args()
-    if args.mode == "freeze":
+    if args.mode == "freeze-exploratory":
+        if not all((args.training, args.exploratory_protocol, args.baseline)):
+            parser.error("--training, --exploratory-protocol and --baseline required")
+        freeze(args.training, args.output, exploratory_protocol=args.exploratory_protocol,
+               baseline=args.baseline)
+    elif args.mode == "freeze":
         if not args.training:
             parser.error("--training required")
         freeze(args.training, args.output)

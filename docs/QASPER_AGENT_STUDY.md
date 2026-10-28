@@ -125,6 +125,33 @@ correctly while citing the adjacent, irrelevant passage. The
 [technical case study](TECHNICAL_CASE_STUDY.md#three-traces-worth-inspecting)
 walks through that failure and two contrasting traces.
 
+## Exploratory reader RL: a training-signal limit
+
+An [October 26 GRPO pilot](READER_RL_PILOT_20261026.md) started from v5 and
+collected four attempts on each of 40 training questions. Thirty-one groups
+received four zero rewards; nine mixed groups yielded verified optimizer
+updates. A request timeout stopped collection before update ten. In a separate
+[exploratory paired evaluation of saved step 9](READER_STEP9_EXPLORATORY_20261026.md),
+v5 and step 9 each gave a complete, source-supported answer on **1/10
+clear-reference questions**. Two other references were ambiguous, so the formal
+quality decision was inconclusive. This does not show an RL improvement or
+establish that sparse rewards alone caused the result.
+
+Rescoring the 160 rollouts in complete training groups found 113 with verified
+evidence but an answer outside the finite reviewed variants. The
+[training-signal audit](READER_RL_PILOT_20261026.md#retrospective-training-signal-audit-not-a-new-evaluation)
+shows why that count cannot be called 113 false negatives: it includes plausible
+paraphrases as well as incomplete and wrong answers.
+
+GRPO needs reward differences within a group to rank its sampled actions.
+The 8B model size is not the apparent constraint here: most groups supplied no
+relative signal, and the evaluation is too small for a reliable effect-size
+estimate. A [small search-agent RL study](https://arxiv.org/html/2609.28765v1)
+shows that smaller models can improve with substantially longer training and
+that reward shape matters; its results do not predict gains on scientific-paper
+reading. Further training under this exact recipe is on hold pending stronger
+reviewed answer-quality signal and a larger paper-disjoint evaluation.
+
 A pre-run runtime archive also has a two-successful-action refusal check, but
 this was bounded corrective feedback, not a hard minimum or a stopping rule.
 The environment-file hash matches the run manifest; the evidence-state module

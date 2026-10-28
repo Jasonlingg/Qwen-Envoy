@@ -1,5 +1,193 @@
 # Envoy / Qwen research-agent handoff
 
+> **FINAL October 26 exploratory step 9 evaluation.** User approved one bounded
+> inference-only comparison of verified RL step 9 and original V5 on the same
+> twelve frozen QASPER validation questions. Report:
+> `docs/READER_STEP9_EXPLORATORY_20261026.md`; protocol:
+> `examples/reader-step9-eval-20261026/protocol-reference-audit.json`;
+> local evidence: `out/reader-step9-eval-20261026/`. Source audit before any
+> model output found two ambiguous references (indices 0, 6), kept both, and
+> forced the overall decision `inconclusive_reference_ambiguity`.
+> Both arms completed all 12 Docker episodes. V5/step9 each had one complete,
+> correct, source-supported answer (one of ten clear references); no paired
+> supported-answer wins or losses. Unsupported-claim questions 5/6, where the
+> extra step9 unsupported answer was on ambiguous index 0; execution-error
+> episodes 0/0; false refusals 3/3. Incomplete packets 3/2. Pinned upstream
+> answer token F1 was 0.0937/0.0937 on all twelve and 0.1125/0.1125 on the
+> ten clear references. 72/72 generation requests returned; one took 60.2s
+> and would have exceeded the former 25s proxy limit. Reserved tokens 151970/
+> 142482; actual tokens 116912/108583. No evidence of a quality gain.
+> A trusted inference wrapper needed a Python `__main__` guard for vLLM child
+> processes; repaired before the first model request in the same rental. No
+> generation retry, training, checkpoint upload, promotion, or commit. Both
+> owned pods (A100 `iydj4t5dlaifcf`, CPU guard `aeijtcgn6bc6jk`) are deleted
+> and fresh provider GET returned 404. Maximum observed lifetimes were 842.8s
+> and 884.8s; conservative quoted-rate estimate about $0.47. Runpod billing
+> has posted no records for these IDs yet, so final actual spend is pending,
+> not $0. Model-assisted claim review is labelled; independent human review
+> remains null. Full local suite: 2168 passed, 19 skipped; focused native 68
+> passed, one deselected. The original ten-update pilot below remains incomplete
+> and its step9 optimizer state was not saved. Historical notices below predate
+> this explicit follow-up authorization.
+
+> **October26 follow-up: failure-prevention plan documented, not implemented.**
+> User asked how to prevent the timeout and to note it down. See “Preventing
+> recurrence before the next run” in docs/READER_RL_PILOT_20261026.md. First fix:
+> proposed120s generation deadline aligned across client/bridge/proxy/controller,
+> capped by remaining run time; verify delayed-response acceptance and genuine
+> timeout behavior offline. Follow-ups: durable request diagnostics, explicit
+> uncertain-request reconciliation, latest native optimizer/scheduler/controller
+> backup with hash verification and tested restore, budgeted storage retention.
+> Never silently retry or assign numeric rewards to infrastructure failures.
+> Current step9 optimizer state is gone; this plan cannot reconstruct it.
+> No runtime patch, GPU launch, training, evaluation, commit or upload in this
+> documentation-only follow-up. Preserve existing uncommitted work.
+
+> **FINAL October26: stopped after NINE verified RL updates; no held-out evaluation.**
+> docs/READER_RL_PILOT_20261026.md records the actual result. Current run
+> out/reader-prime-restart-20261026/ completed9nativeGRPOupdates from originalV5.
+> All nine local/exported adapter hashes, sampled-policy and optimizer continuity,
+> batch hashes, scoring, reload and startup proofs checked. Step9SHA
+> a2a773caf222aa34becbeb2f886ce553c0aefa0871783fa17efe8da0557ca810.
+> 41questions attempted,40complete groups/9mixed,163episodes/162healthy;
+> 526requests/525returned/1failed_or_uncertain,2173972reservedtokens. Originals
+> remain untrainable. During update10collection, request526 hit the local proxy's
+> 25second ReadTimeout. Recovered vLLM log shows continued generation around18
+> tokens/s until controlled SIGTERM. No sleep event in failure interval or
+> pre-failureOOM evidence. Long response plausible; unfinished text unknown.
+> No tenth gradient attempt, no numeric reward for failure, no retry. User's
+> no-rental-cutoff amendment was effective; this was a separate request timeout.
+> Fatal wrapper exported training-failure-gpu-receipts.tar.gz (357355190bytes,
+> SHA cc7ed032753d474ca4a84372f80b5fcec1a57655f0ee7f16db87e1f91bd77883),
+> extraction verified in gpu-recovered/. All9portable adapters saved; full optimizer
+> states excluded/deleted, so NOT an exact-resumable run. Final scoped cleanup
+> confirms all163local containers absent and fresh provider404 for GPU
+> udw64z1kqrfu7d, volume faaj8ilakr and CPUguard v1vavx85538xj5. No owned paid
+> resources remain. Original unrelated resources unchanged.
+> Evaluation user-authorized but ten-update freeze gate NOT met. wait-freeze
+> observer exited as designed; locked references CLOSED, zero evaluation episodes.
+> No evidence yet of model improvement or degradation. Do NOT run evaluate.py
+> collect, alter frozen receipts or quietly substitute step9. No upload/promotion.
+> Conservative all-owned lifetime estimate$4.07pretax; scoped provider billing
+> posted$2.0764532451through05:00UTC only, incomplete invoice. billing-receipt.json
+> and owned-cleanup-final.json retain raw reads. No further paid launch authorized.
+> Next possible action: fix/instrument the per-request timeout offline, then seek
+> a new bounded explicitly exploratory V5/step9 inference comparison; no need to
+> repeat training merely to evaluate saved weights. Existing ten-update protocol
+> remains incomplete. User must approve the new scope and rental budget first.
+> Focused evaluation/protocol27pass and lifecycle/fatal22pass; combined final
+> rerun49pass. Fixture paths repaired after deployment consumed .pending files.
+> Only docs and ignored deployment helpers changed; protected production/training/
+> reward files and original untracked plan/spec/checklist files preserved. No commit.
+> This FINAL notice supersedes all ACTIVE/queued notices below.
+
+> **October26 paired evaluation authorized after completed RL.**
+> User requested evaluation after training to determine improvement. Keep this
+> active turn through the frozen twelve-question V5 vs final-step10 comparison;
+> no new training or retry. Ignored run helper evaluate.py wait-freeze currently
+> waits for training-complete.json, freezes/exports the candidate using existing
+> reader_evaluation.freeze, then opens references for actual model-assisted
+> source review. Do not decode locked references or infer on a partial candidate.
+> After all twelve reference rows reviewed, evaluate.py collect starts two fresh
+> native engines sequentially on the SAME GPU, uses the unchanged local Docker
+> collector, then exports identity-masked claim review and requests owned cleanup.
+> Shared288request/2359296token/1800second evaluation caps, zero retries. All
+> claim review, official F1 diagnostics and reporting can finish locally after
+> cleanup. Never fill independent_human_review with model judgments.
+> Runtime receipts/helper source: out/reader-prime-restart-20261026/.
+
+> **October26 rental-timer amendment — current user authorization.**
+> User: “can we chage it so there no cut off right now”. Fixed rental deadline
+> removed for this already-running experiment only, superseding the earlier
+> 03:28Toronto/$8 rental cutoff. Original deadline and budget fields remain as
+> historical proposal values; explicit rental_timer_override in owned.json and
+> cloud-owned.json is effective. No fixed rental cost ceiling now; conservative
+> combined rate remains$1.92/hour. No new retry/resource or training extension.
+> Both deployed replacement guards verified time_cutoff_enabled=false and
+> effective_deadline=null: remote CPUguardPID1278, localwatchPID27324.
+> Localwatch now uses ignored run helper watch_no_cutoff.py +cutoff_policy.py;
+> tracked scripts/watch_reader_gpu.py unchanged. CPU lease linkPID3825 continues.
+> Failure/stop-now/180s controller-loss cleanup and the existing 30m grace after
+> training completion remain enabled. Experiment's ten-update/request/token/work
+> limits unchanged; DO NOT change frozen protocol or restart driverPID3826.
+> Last observed six verified updates and six portable adapters copied locally.
+> No quality result. Tests22pass, including no-deadline behavior past original
+> cutoff, unauthorized/other-resource override rejection and lease/stop cleanup.
+> Run receipts in out/reader-prime-restart-20261026/rental-timer-*.json.
+> Mac still must remain plugged in, awake, lid open with Docker running.
+> No new commit/upload or model-improvement claim.
+
+> **ACTIVE October25 night / October26 UTC: original V5 RL pilot restarted.**
+> User explicitly said “no lets jsut start RL,” choosing the existing unchanged
+> ten-update v2 pilot, $8 estimate / 3h45 total allowance. No hint/checklist test.
+> Run root: out/reader-prime-restart-20261026/. Authorization receipt binds the
+> same protocol SHA6946e67f... . Fresh controller/GPU plans; original V5 only,
+> no partial optimizer resume. Training driver PID3826, local watch PID1047,
+> CPU-guard lease link PID3825. DO NOT launch another driver or paid retry.
+> GPU udw64z1kqrfu7d: A100 SXM80GB Secure$1.79/h, US-WA-1,64GB root disk,
+> exact prior native image digestbd810178...; owned STANDARD600GB checkpoint
+> volume faaj8ilakr. Direct SSH195.26.233.39:57541, ~/.ssh/id_ed25519.
+> NEW independent CPU watchdog Pod v1vavx85538xj5 (cpu3c,2vCPU/4GB,$.06/h,
+> 10GB root). Combined conservative bound$1.92/h includes storage, within$8;
+> total rental clock starts CPUcreation03:43:16.931UTC and expires
+> **2026-10-26 07:28:16.931UTC / 03:28:16Toronto**, epoch1792999696.931.
+> CPU /guard/cloud_guard.py PID947, API ownership read verified; survived an
+> initiating SSH logout and fresh-session check. Trusted deployment only, no
+> model code/data. Provider key transferred via authenticated SSH into private
+> /guard/provider-key, never logged/copied to GPU or model Docker. Cloud guard
+> watches the three explicitly recorded IDs and deletes GPU, volume, then self.
+> Absolute deadline OR180s stale controller lease triggers cleanup. Lease helper
+> reattaches to the SAME guard, renews every20s, relays stop-now; abrupt driver
+> death without completion also requests stop, completed training allows at most
+> 30m for paired evaluation within absolute deadline. Existing local watch provides
+> a second cleanup path. API/guard-host outage can still delay cleanup; not a
+> provider-enforced dollar cap. Generated Python remains local restricted Docker.
+> Mac MUST remain plugged in, awake, lid open, Docker running for collection.
+> Deployment checks37pass plus26guard/driver tests; current full suite2156pass/
+> 19optional skips on unchanged production code. Pinned assets verified on GPU;
+> first native gradient step executed (26.3s, loss-.0038, gradnorm.1406,35.3GiB);
+> checkpoint/reload verification pending: **zero VERIFIED updates at this notice**.
+> 81returned calls/334243reserved tokens,24healthy original untrainable episodes,
+> six complete groups/one mixed. Native token scorer passed547tokens, mean.003116,
+> max.229170 against mean<=.03/max<=.25. No quality result or held-out generation/
+> reference opening. These are training/infrastructure diagnostics, not answer grades.
+> Read monitor.py, training-orchestration.log, controller-training/ and remote
+> /workspace/reader-training/. Stop marker ROOT/stop-now requests only owned
+> cleanup. After ten verified steps: frozen candidate, explicit reference/claim
+> review and unchanged12question paired evaluation required for any gain claim.
+> No commit, upload, production/reward/prompt edits; preserve all earlier
+> uncommitted checklist files and original three plan/spec inputs. No native
+> integration re-smoke, hint experiment, additional paid retry or promotion.
+
+> **October 25: separate checklist ablation prepared; no live inference or RL.**
+> User approved preparing a small generic hint/scaffolding comparison before another
+> RL attempt. Protocol: docs/READER_CHECKLIST_ABLATION.md; standalone experimental
+> runner: scripts/reader_scaffold.py. Original V5, first six eligible training
+> questions in seeded order, four attempts/arm/question (48 episodes), paired seeds,
+> alternate arm order. No gold hints, examples, optimizer or TrainSink. Frozen
+> runtime, reward, old protocols and locked evaluation remain unchanged. Control
+> prompt SHA1f752247... unchanged; candidate cff32d0f... appends only a checklist.
+> Hard576requests/4718592reservedtokens/1500collectionseconds; proposed new $2
+> estimate/45minute total rental at <=$1.90/hour combined is NOT authorized.
+> Fresh Runpod catalog A100 Secure$1.79/hour; no resource created. External resource
+> deadline/deletion guard must be verified before a paid launch; receipt boolean
+> only records that verification and does not establish it. Mac Docker controller
+> still requires power/awake/lid open; local timers do not survive laptop sleep.
+> Two real Docker fixed-action controls passed, two inspected passages each,
+> policy/observation/packet prompt hashes consistent, all owned containers absent.
+> All12initial inputs fit: control2676-2695tokens, checklist2880-2899 (+204).
+> Offline native token IDs matched the prior actual three-turn control episode.
+> This is formatting/sandbox validation, NOT evidence Qwen follows hints or that
+> RL converges faster. All48answers need source/claim review after live collection;
+> uniform-one groups are solved, exact reward/quotes do not prove semantic support.
+> Full2156pass/19optional skips; pinned native134focused pass; Ruff/diff checks pass.
+> Ready plan/receipts: out/reader-scaffold-v1-20261025/ready/. Earlier prep directories
+> are historical source-bound versions; do not run them. No live Qwen calls, paid
+> work, optimizer updates, commit, upload or quality claim. Three original untracked
+> plans/spec and protected files preserved. Next: new budget approval and verified
+> independent rental guard, then one bounded inference-only comparison; retain
+> original V5/control unless the prospective development decision rule passes.
+
 > **October 25: historical prototype cleanup completed.**
 > User approved a bounded cleanup of personal-memory and map demos. Recovery and
 > results: docs/ARCHIVED_PROTOTYPES.md; complete earlier source at 5240090.

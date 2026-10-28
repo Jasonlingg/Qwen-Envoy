@@ -319,6 +319,35 @@ This was identity-blind model-assisted review, not a base-versus-v5 comparison.
 The record shows that more continuation training did not reliably improve the
 selected evaluation; it does not isolate a causal explanation for the decline.
 
+An [October 26 exploratory reader-RL pilot](READER_RL_PILOT_20261026.md)
+tested a different intervention: GRPO starting from the v5 adapter. Forty
+QASPER training questions produced four rollouts each. Thirty-one groups had
+all-zero rewards, leaving nine groups with a within-group learning signal and
+nine verified optimizer updates. A request timeout prevented the planned tenth
+update. The [separate, bounded comparison of saved step 9](READER_STEP9_EXPLORATORY_20261026.md)
+found **1/10 complete, source-supported answers on clear-reference questions
+for both v5 and step 9**. Two additional reference questions were ambiguous,
+so the formal quality decision remained inconclusive. This is no evidence of
+an RL gain, and it is too small to estimate a reliable effect size or attribute
+the outcome solely to reward sparsity. The step-9 adapter was not promoted.
+Retrospective scoring of the 160 rollouts in complete training groups found
+113 verified evidence packets whose answers did not match the finite reviewed
+variants. That bucket includes both plausible paraphrases and incomplete or
+wrong answers; the [training-signal audit](READER_RL_PILOT_20261026.md#retrospective-training-signal-audit-not-a-new-evaluation)
+keeps them separate from proven reward errors.
+
+The research lesson is about **training signal, not an inherent limit of an
+8B model**. GRPO cannot rank four identical zero-reward rollouts within a
+group. A related small search-agent study trained Qwen3.5-0.8B for roughly
+180–310 steps across three seeds and found sparse exact-match reward weakest
+among its tested reward shapes at a matched horizon
+([paper](https://arxiv.org/html/2609.28765v1)). Its task, model, and reward
+differ, so its gains are not a forecast for this reader. Repeating the present
+40-question recipe has no defensible expected supported-answer gain; a further
+RL experiment first needs more reviewed answer-quality signal and a larger,
+paper-disjoint evaluation. That is a proposed research direction, not an
+achieved project result.
+
 For September 30, answerable quality did not improve, the grader changed, and
 independent reference/answer review remains unfinished. No model promotion is
 claimed. The [completed within-paper BM25 comparator](../release/qasper-agent-study/README.md#fixed-retrieval-baseline)

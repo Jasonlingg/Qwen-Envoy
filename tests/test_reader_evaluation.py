@@ -69,6 +69,9 @@ def synthetic_pair(tmp_path, monkeypatch):
     monkeypatch.setattr(ev, "validate_session", lambda output: ({}, cases))
     monkeypatch.setattr(ev, "reference_review", lambda output, cases: "synthetic_review")
     monkeypatch.setattr(ev, "source_windows", lambda c: [{"quote": "fixture source"}])
+    write(tmp_path / "reference-pack.json", {"rows": [
+        {"question_id": c["question_id"], "reference_unambiguous": True,
+         "in_scope_answerable": True} for c in cases]})
     for arm in ev.ARMS:
         (tmp_path / arm).mkdir()
         write(tmp_path / arm / "complete.json", {"episodes": 12})
@@ -308,3 +311,22 @@ def test_missing_actual_cost_cannot_become_positive_signal(synthetic_pair):
     result = ev.summarize(synthetic_pair)
     assert result["answer_and_episode_resource_thresholds_met"] is True
     assert result["decision"] == "inconclusive_missing_lifecycle_cost"
+
+
+def test_ambiguous_reference_keeps_all_pairs_and_forces_inconclusive(synthetic_pair):
+    grade_fixture(synthetic_pair)
+    references = load(synthetic_pair / "reference-pack.json")
+    references["rows"][0]["reference_unambiguous"] = False
+    write(synthetic_pair / "reference-pack.json", references)
+    review = load(synthetic_pair / "output-review.json")
+    for row in review["rows"]:
+        if row["question_id"] == "synthetic_question_0":
+            row.update(complete_correct_supported=False, unresolved=True)
+    write(synthetic_pair / "output-review.json", review)
+    result = ev.summarize(synthetic_pair)
+    assert result["decision"] == "inconclusive_reference_ambiguity"
+    assert result["quality_conclusion_available"] is False
+    assert len(result["pairs"]) == 12
+    assert result["reference_ambiguous_question_ids"] == ["synthetic_question_0"]
+    assert result["pairs"][0]["v5"]["supported"] is False
+    assert result["pairs"][0]["rl"]["supported"] is False

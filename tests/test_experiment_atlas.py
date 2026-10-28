@@ -18,8 +18,9 @@ def test_atlas_finds_prior_runs_and_reads_exact_listed_source():
     matches = atlas.find("hybrid retrieval")
     assert "hybrid-retrieval-offline" in {m["atlas_id"] for m in matches["matches"]}
     entry = atlas.get("reader-rl-pilot")
-    assert "Three of ten" in entry["observation"]
-    assert "not an answer-quality" in entry["decision"]
+    assert "nine verified updates" in entry["observation"]
+    assert "1/10 complete, source-supported answers in each arm" in entry["observation"]
+    assert "not established" in entry["decision"]
     source = atlas.read_source("reader-rl-pilot", 0, length=1_000)
     raw = (ROOT / source["path"]).read_bytes()
     assert source["sha256"] == hashlib.sha256(raw).hexdigest()
