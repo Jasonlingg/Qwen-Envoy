@@ -1,5 +1,18 @@
 # Archived product prototypes
 
+## October 28 follow-up: host-local teacher repair launchers
+
+`scripts/rebuild_teacher_trajectories.py` and
+`scripts/repair_teacher_completeness.py` were retired from the maintained
+script directory (207 Python lines). No surviving script, test, or documented
+command invokes either launcher. The first re-executed edited model-authored
+actions with `use_docker=False`; the second made fresh teacher-model calls for
+an earlier QASPER training pass. Neither is the current Docker replay or SFT
+entry point. Their source is recoverable from commit `54b69a6`.
+
+The saved training data, release artifacts, current Docker environment,
+replay checks, and training recipe remain unchanged.
+
 ## October 27 follow-up: local web-evidence viewer
 
 The local-only `/web-evidence` HTML page and its FastAPI report route were

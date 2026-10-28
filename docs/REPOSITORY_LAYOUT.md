@@ -5,6 +5,10 @@ of the Qwen base/v5 paper-agent evaluation. The local Studio opens recorded runs
 without an endpoint or GPU. Live paper investigation is a separate, opt-in path;
 opening Studio never starts a model run.
 
+The [script entry-point guide](../scripts/README.md) gives the shortest path
+to the maintained local commands. Other `scripts/` files include dated
+experiment drivers and audits, not additional product launchers.
+
 | Area | Responsibility |
 | --- | --- |
 | `scripts/launch_studio.py` | Default local launcher. Loads the packaged Qwen runs and separately labeled Nebius reference run. `--live-nebius` enables an operator-configured live reader. |
