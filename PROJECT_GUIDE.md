@@ -25,6 +25,17 @@ python scripts/launch_studio.py
 
 Studio loads saved runs by default; opening it does not launch inference. The [release README](release/qasper-agent-study/README.md) lists artifacts and checks. The [technical case study](docs/TECHNICAL_CASE_STUDY.md) explains the action loop, dataset, prefix bug, and failures. The [training record](release/qwen-v5-training/README.md) identifies the adapter. A new live run requires a compatible model endpoint, Docker, and the recorded configuration. Saved replay cannot measure how the model would respond to new feedback.
 
+The full test suite and new live QASPER runs also need the pinned paper corpus:
+
+```bash
+python -m pip install -e '.[dev,viewer,mcp,vault,qasper]'
+python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
+python -m pytest -q
+```
+
+The generated `dev/` and `test_candidate/` directories are ignored by Git.
+The saved Studio and offline case-study recount do not need this step.
+
 ## Research MCP
 
 The optional personal MCP exposes paper discovery, bounded source inspection, experiment records, and decision recall to a larger assistant:

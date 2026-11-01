@@ -39,7 +39,7 @@ python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
 ```
 
 This uses the pinned QASPER Arrow cache when available, or downloads the pinned
-dataset revision. `data/manifest.json` records the expected generated hashes.
-Both materialized splits are included in this case-study checkout so Studio,
-the runner, and tests work from a fresh clone. Their files remain hash-checked
-against the manifest. Future generated variants remain ignored unless added.
+dataset revision. `data/manifest.json` records the expected generated hashes;
+`dev/` and `test_candidate/` are ignored by git so source paper text is not
+accidentally committed. The saved Studio opens without materializing them;
+fresh live runs and the full test suite require this setup step.

@@ -90,6 +90,10 @@ jobs:
           python-version: '3.11'
           cache: pip
       - name: Install project and test dependencies
-        run: python -m pip install -e '.[dev,viewer,mcp,vault]'
+        run: python -m pip install -e '.[dev,viewer,mcp,vault,qasper]'
+      - name: Materialize pinned QASPER inputs
+        run: |
+          python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
+          git diff --exit-code -- benchmarks/envoybench/data/manifest.json
       - name: Run repository test suite
         run: python -m pytest -q

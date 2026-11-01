@@ -14,8 +14,14 @@
 
 ```bash
 python -I -S scripts/reproduce_case_study.py
+python -m pip install -e '.[dev,viewer,mcp,vault,qasper]'
+python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
 python -m pytest -q
 ```
+
+The first command checks saved results offline. The remaining commands set up
+the full test suite; QASPER paper text is generated from a pinned source and
+kept out of Git.
 
 ## What the saved study shows
 
