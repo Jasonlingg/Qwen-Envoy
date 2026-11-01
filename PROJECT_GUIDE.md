@@ -576,12 +576,15 @@ failure analysis, artifacts, and limits in
 
 ### Historical training approach
 
-The targeted SFT run distilled QASPER-grounded research trajectories into Qwen3-8B with rank-4 QLoRA:
+The targeted SFT run trained Qwen3-8B with rank-4 QLoRA on
+teacher-seeded, AI-repaired, replay-verified QASPER demonstrations:
 
 1. QASPER supplies paper questions, evidence, and expert answerability labels.
-2. A stronger teacher produces multi-step Python trajectories against the frozen corpus.
-3. The pipeline replays trajectories and checks that actions execute and cited documents exist;
-   QASPER's labels provide the answerability target.
+2. Earlier teacher traces seed the examples. Seven of 44 retain their original
+   actions; the editing assistant repaired 37 with references visible. This
+   construction was neither independent nor blind.
+3. The pipeline replays the resulting actions against the frozen corpus and checks
+   exact source references. Those mechanical checks do not prove answer support.
 4. Each assistant action becomes a next-action example containing its complete preceding history.
 5. Loss is applied only to the action tokens, using the same non-thinking Qwen3 chat prefix used at
    inference.

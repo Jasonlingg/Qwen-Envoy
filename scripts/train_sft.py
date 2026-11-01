@@ -32,9 +32,9 @@ app = typer.Typer()
 BASE_MODEL = "Qwen/Qwen3-8B"
 BASE_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
 
-# r=4, not 16: with ~190 short-assistant-span examples the dataset carries far
-# less information than even a rank-1 adapter can hold, so the binding risk is
-# memorisation, not capacity. Lower rank is free regularisation here.
+# r=4, not 16: v5 has 106 short training-action targets and 4,812 supervised
+# tokens. This is a small dataset; rank 4 limits adapter capacity, but it does
+# not by itself prevent memorisation or establish that this rank is optimal.
 # alpha tracks r to hold the alpha/r update scale at 2 — leaving alpha at 32
 # while dropping r would quadruple the effective step size on top of the LR.
 LORA_CONFIG = {

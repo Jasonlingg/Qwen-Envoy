@@ -1,4 +1,7 @@
-"""Collect SFT training data from high-reward Claude trajectories.
+"""Legacy collector for high-reward Claude-policy trajectories.
+
+This script is not the provenance or construction recipe for the v5 QASPER set;
+see data/sft/qasper-v5/README.md for its teacher-seeded, AI-repaired examples.
 
 Reads one or more run_*.json transcripts, filters to claude_policy episodes
 with corrected reward >= threshold, and formats each as a Qwen chat-template

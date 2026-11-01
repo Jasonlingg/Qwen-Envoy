@@ -21,8 +21,12 @@ a separate execution environment for that generated code.
 
 In the current implementation:
 
-- `DockerREPL` creates one container per episode, with networking disabled and a
-  default 512 MB memory limit.
+- The historical `DockerREPL` creates one container per episode, with networking
+  disabled and a default 512 MB memory limit. Its exact source is pinned by
+  archived experiment manifests and was not changed after those runs.
+- New arXiv MCP readers use `HardenedDockerREPL`, which adds one CPU, a 64-process
+  limit, dropped capabilities, no privilege escalation, and a read-only root
+  filesystem. A bounded 16 MB `/tmp` tmpfs holds the current step script.
 - The root `Dockerfile` uses a non-root `sandbox` user and copies the document
   corpus into the image. This REPL configuration does not mount the host workspace
   or forward the host's full environment into the container.
@@ -61,15 +65,18 @@ The current REPL invokes the Docker CLI through subprocesses.
 
 ## What remains to validate?
 
-Before relying on the Docker backend, build the root Dockerfile as `rlm-sandbox`
-on a machine with a working Docker engine and run a real container smoke test for
-corpus access, output isolation, failed-action recovery, timeouts, and cleanup.
-Because corpus data is copied at build time, rebuild the image when that data
-changes. Real Docker validation remains outstanding after the repair pass.
+On October 31, 2026, a local real-container smoke of the hardened backend
+confirmed startup, two-step state, root-filesystem write rejection, `/tmp`
+scratch writes, and cleanup. It did not validate every resource limit under
+adversarial load. The archived case-study runs used the historical backend.
+Rebuild the root image when its baked-in data changes; benchmark runs instead
+use a mounted frozen corpus.
 
-Both REPL backends still reconstruct state by replaying previous successful
-actions. Docker does not change that execution model or undo external side effects.
+Docker reconstructs state by replaying previous successful actions, so earlier
+actions run again at every step. This grows work with episode length and cannot
+undo side effects. The local worker keeps state in one process instead.
 
-Implementation: [REPL backends](../src/env/repl.py), [sandbox image](../Dockerfile),
+Implementation: [historical REPL backends](../src/env/repl.py),
+[hardened backend](../src/env/hardened_repl.py), [sandbox image](../Dockerfile),
 [REPL tests](../tests/test_repl.py). Training gates and verification results are in
 the [GPU readiness report](GPU_TRAINING_READINESS.md).

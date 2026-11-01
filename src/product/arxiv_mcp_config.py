@@ -7,11 +7,9 @@ import os
 from src.policies.bounded_http import bounded_transport
 from src.policies.code_execution import DEFAULT_MAX_TOKENS, clean_action
 from src.policies.openai_compatible import OpenAICompatiblePolicy
+from src.product.hardened_reader import HardenedQwenInvestigator
 from src.product.harness_v2 import clean_v2_action
-from src.product.qwen_investigator import (
-    QwenInvestigator,
-    effective_system_prompt,
-)
+from src.product.qwen_investigator import effective_system_prompt
 from src.product.reasoner import Reasoner
 
 NEBIUS_ENDPOINT = "https://api.tokenfactory.nebius.com/v1"
@@ -21,7 +19,8 @@ DEFAULT_NEMOTRON = "nvidia/Nemotron-3-Ultra-550b-a55b"
 def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str | None = None,
                  qwen_checkpoint: str | None = None, nemotron_model: str = DEFAULT_NEMOTRON,
                  harness_version: str = "v2", policy_transport=None,
-                 max_steps: int = 12, sandbox_image: str = "rlm-sandbox") -> QwenInvestigator | None:
+                 max_steps: int = 12, sandbox_image: str = "rlm-sandbox"
+                 ) -> HardenedQwenInvestigator | None:
     if kind == "none":
         return None
     if kind == "qwen":
@@ -54,7 +53,7 @@ def build_reader(kind: str, *, qwen_endpoint: str | None = None, qwen_model: str
                                       transport=(policy_transport if policy_transport is not None
                                                  else bounded_transport))
 
-    return QwenInvestigator(
+    return HardenedQwenInvestigator(
         policy_factory=policy,
         model_identity={**identity, "temperature": 0.0, "top_p": 1.0, "thinking": False,
                         "harness_version": harness_version, "max_tokens": DEFAULT_MAX_TOKENS},

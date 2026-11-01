@@ -79,3 +79,17 @@ jobs:
         run: python -m pip install 'pytest>=8,<9'
       - name: Test corruption and review-binding checks
         run: python -m pytest tests/test_reproduce_case_study.py tests/test_qasper_official.py -q
+
+  core-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install project and test dependencies
+        run: python -m pip install -e '.[dev,viewer,mcp,vault]'
+      - name: Run repository test suite
+        run: python -m pytest -q

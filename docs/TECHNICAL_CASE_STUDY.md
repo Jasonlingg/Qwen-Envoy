@@ -52,6 +52,9 @@ disables container networking and uses cumulative-script replay to carry state
 between turns. The local backend instead uses a long-lived worker. That
 implementation difference matters: the comparison used Docker, and backend
 parity is not assumed.
+New arXiv MCP runs use a separate [hardened Docker backend](../src/env/hardened_repl.py)
+with additional resource limits; those settings were not part of this saved
+comparison.
 
 September 30 evaluated **known-paper question answering**. Every question named
 the target paper and document ID, with 40 target papers inside a frozen

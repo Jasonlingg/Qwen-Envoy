@@ -1,5 +1,7 @@
 # Qwen Envoy
 
+[![Case study checks](https://github.com/Jasonlingg/Qwen-Envoy/actions/workflows/release-check.yml/badge.svg)](https://github.com/Jasonlingg/Qwen-Envoy/actions/workflows/release-check.yml)
+
 A personal **ML experiment second brain** for deciding what to try next with
 small language model agents. Its research MCP connects paper evidence, saved
 experiment results, and decisions across sessions. The Qwen3-8B paper agent is
@@ -11,6 +13,27 @@ and run experiments; Envoy does not autonomously retrain or promote a model.
 [Read the findings](docs/QASPER_AGENT_STUDY.md) ·
 [Browse the experiment atlas](docs/EXPERIMENT_ATLAS.md) ·
 [Inspect the implementation](docs/TECHNICAL_CASE_STUDY.md)
+
+## Start here: the active code path
+
+The repository also contains saved runs and historical prototypes. These three
+files show the released Qwen case study without requiring a tour of that history:
+
+1. [`scripts/train_sft.py`](scripts/train_sft.py) expands each reviewed trajectory
+   into next-action training examples and checks the inference chat prefix.
+2. [`src/env/repl.py`](src/env/repl.py) runs model-written Python in Docker for
+   evaluated episodes. Its cumulative-script replay re-executes earlier actions
+   and is a known efficiency and side-effect limitation. New arXiv MCP readers
+   use the stronger settings in [`src/env/hardened_repl.py`](src/env/hardened_repl.py);
+   archived evaluation runs retain their recorded Docker configuration.
+3. [`scripts/reproduce_case_study.py`](scripts/reproduce_case_study.py) checks the
+   saved artifacts and recounts the paired result without a GPU or API key.
+
+The v5 data is **teacher-seeded, AI-repaired, replay-verified demonstrations**:
+37 of 44 examples were repaired by Codex; seven retain the original teacher
+actions. Source and stopping review was performed by the editing assistant with
+references visible, not by an independent blind reviewer. See the
+[dataset card](data/sft/qasper-v5/README.md) for provenance.
 
 ## One experiment decision, end to end
 
