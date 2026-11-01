@@ -2,7 +2,7 @@
 
 This release accompanies the [short findings report](../../docs/QASPER_AGENT_STUDY.md)
 and [technical case study](../../docs/TECHNICAL_CASE_STUDY.md). The
-[research-to-decision log](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/RESEARCH_DECISION_LOG.md) records which
+[research-to-decision log](../../docs/RESEARCH_DECISION_LOG.md) records which
 papers informed a decision, which were later precedents, and what local tests
 showed. This release adapts existing
 QASPER paper questions to a bounded Python-tool agent, preserving source
