@@ -1,0 +1,54 @@
+{
+  "doc_id": "qasper_1706_00188",
+  "title": "Deep Learning for Hate Speech Detection in Tweets",
+  "text": "Deep Learning for Hate Speech Detection in Tweets\n\nHate speech detection on Twitter is critical for applications like controversial event extraction, building AI chatterbots, content recommendation, and sentiment analysis. We define this task as being able to classify a tweet as racist, sexist or neither. The complexity of the natural language constructs makes this task very challenging. We perform extensive experiments with multiple deep learning architectures to learn semantic word embeddings to handle this complexity. Our experiments on a benchmark dataset of 16K annotated tweets show that such deep learning methods outperform state-of-the-art char/word n-gram methods by ~18 F1 points.\n\nWith the massive increase in social interactions on online social networks, there has also been an increase of hateful activities that exploit such infrastructure. On Twitter, hateful tweets are those that contain abusive speech targeting individuals (cyber-bullying, a politician, a celebrity, a product) or particular groups (a country, LGBT, a religion, gender, an organization, etc.). Detecting such hateful speech is important for analyzing public sentiment of a group of users towards another group, and for discouraging associated wrongful activities. It is also useful to filter tweets before content recommendation, or learning AI chatterbots from tweets.\n\nThe manual way of filtering out hateful tweets is not scalable, motivating researchers to identify automated ways. In this work, we focus on the problem of classifying a tweet as racist, sexist or neither. The task is quite challenging due to the inherent complexity of the natural language constructs – different forms of hatred, different kinds of targets, different ways of representing the same meaning. Most of the earlier work revolves either around manual feature extraction BIBREF0 or use representation learning methods followed by a linear classifier BIBREF1 , BIBREF2 . However, recently deep learning methods have shown accuracy improvements across a large number of complex problems in speech, vision and text applications. To the best of our knowledge, we are the first to experiment with deep learning architectures for the hate speech detection task.\n\nIn this paper, we experiment with multiple classifiers such as Logistic Regression, Random Forest, SVMs, Gradient Boosted Decision Trees (GBDTs) and Deep Neural Networks(DNNs). The feature spaces for these classifiers are in turn defined by task-specific embeddings learned using three deep learning architectures: FastText, Convolutional Neural Networks (CNNs), Long Short-Term Memory Networks (LSTMs). As baselines, we compare with feature spaces comprising of char n-grams BIBREF0 , TF-IDF vectors, and Bag of Words vectors (BoWV).\n\nMain contributions of our paper are as follows: (1) We investigate the application of deep learning methods for the task of hate speech detection. (2) We explore various tweet semantic embeddings like char n-grams, word Term Frequency-Inverse Document Frequency (TF-IDF) values, Bag of Words Vectors (BoWV) over Global Vectors for Word Representation (GloVe), and task-specific embeddings learned using FastText, CNNs and LSTMs. (3) Our methods beat state-of-the-art methods by a large margin ( INLINEFORM0 18 F1 points better).\n\nWe first discuss a few baseline methods and then discuss the proposed approach. In all these methods, an embedding is generated for a tweet and is used as its feature representation with a classifier.\n\nBaseline Methods: As baselines, we experiment with three broad representations. (1) Char n-grams: It is the state-of-the-art method BIBREF0 which uses character n-grams for hate speech detection. (2) TF-IDF: TF-IDF are typical features used for text classification. (3) BoWV: Bag of Words Vector approach uses the average of the word (GloVe) embeddings to represent a sentence. We experiment with multiple classifiers for both the TF-IDF and the BoWV approaches.\n\nProposed Methods: We investigate three neural network architectures for the task, described as follows. For each of the three methods, we initialize the word embeddings with either random embeddings or GloVe embeddings. (1) CNN: Inspired by Kim et. al BIBREF3 's work on using CNNs for sentiment classification, we leverage CNNs for hate speech detection. We use the same settings for the CNN as described in BIBREF3 . (2) LSTM: Unlike feed-forward neural networks, recurrent neural networks like LSTMs can use their internal memory to process arbitrary sequences of inputs. Hence, we use LSTMs to capture long range dependencies in tweets, which may play a role in hate speech detection. (3) FastText: FastText BIBREF4 represents a document by average of word vectors similar to the BoWV model, but allows update of word vectors through Back-propagation during training as opposed to the static word representation in the BoWV model, allowing the model to fine-tune the word representations according to the task.\n\nAll of these networks are trained (fine-tuned) using labeled data with back-propagation. Once the network is learned, a new tweet is tested against the network which classifies it as racist, sexist or neither. Besides learning the network weights, these methods also learn task-specific word embeddings tuned towards the hate speech labels. Therefore, for each of the networks, we also experiment by using these embeddings as features and various other classifiers like SVMs and GBDTs as the learning method.\n\nWe experimented with a dataset of 16K annotated tweets made available by the authors of BIBREF0 . Of the 16K tweets, 3383 are labeled as sexist, 1972 as racist, and the remaining are marked as neither sexist nor racist. For the embedding based methods, we used the GloVe BIBREF5 pre-trained word embeddings. GloVe embeddings have been trained on a large tweet corpus (2B tweets, 27B tokens, 1.2M vocab, uncased). We experimented with multiple word embedding sizes for our task. We observed similar results with different sizes, and hence due to lack of space we report results using embedding size=200. We performed 10-Fold Cross Validation and calculated weighted macro precision, recall and F1-scores.\n\nWe use `adam' for CNN and LSTM, and `RMS-Prop' for FastText as our optimizer. We perform training in batches of size 128 for CNN & LSTM and 64 for FastText. More details on the experimental setup can be found from our publicly available source code.\n\nTable TABREF5 shows the results of various methods on the hate speech detection task. Part A shows results for baseline methods. Parts B and C focus on the proposed methods where part B contains methods using neural networks only, while part C uses average of word embeddings learned by DNNs as features for GBDTs. We experimented with multiple classifiers but report results mostly for GBDTs only, due to lack of space.\n\nAs the table shows, our proposed methods in part B are significantly better than the baseline methods in part A. Among the baseline methods, the word TF-IDF method is better than the character n-gram method. Among part B methods, CNN performed better than LSTM which was better than FastText. Surprisingly, initialization with random embeddings is slightly better than initialization with GloVe embeddings when used along with GBDT. Finally, part C methods are better than part B methods. The best method is “LSTM + Random Embedding + GBDT” where tweet embeddings were initialized to random vectors, LSTM was trained using back-propagation, and then learned embeddings were used to train a GBDT classifier. Combinations of CNN, LSTM, FastText embeddings as features for GBDTs did not lead to better results. Also note that the standard deviation for all these methods varies from 0.01 to 0.025.\n\nTo verify the task-specific nature of the embeddings, we show top few similar words for a few chosen words in Table TABREF7 using the original GloVe embeddings and also embeddings learned using DNNs. The similar words obtained using deep neural network learned embeddings clearly show the “hatred” towards the target words, which is in general not visible at all in similar words obtained using GloVe.\n\nIn this paper, we investigated the application of deep neural network architectures for the task of hate speech detection. We found them to significantly outperform the existing methods. Embeddings learned from deep neural network models when combined with gradient boosted decision trees led to best accuracy values. In the future, we plan to explore the importance of the user network features for the task.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 49
+    },
+    {
+      "section": "Abstract",
+      "start": 51,
+      "end": 697
+    },
+    {
+      "section": "Introduction",
+      "start": 699,
+      "end": 3297
+    },
+    {
+      "section": "Proposed Approach",
+      "start": 3299,
+      "end": 5489
+    },
+    {
+      "section": "Dataset and Experimental Settings",
+      "start": 5491,
+      "end": 6445
+    },
+    {
+      "section": "Results and Analysis",
+      "start": 6447,
+      "end": 8166
+    },
+    {
+      "section": "Conclusions",
+      "start": 8168,
+      "end": 8577
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1706.00188",
+    "arxiv_id": "1706.00188",
+    "source_url": "https://arxiv.org/abs/1706.00188",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

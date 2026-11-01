@@ -1,0 +1,179 @@
+{
+  "doc_id": "qasper_1911_12722",
+  "title": "A Fine-Grained Sentiment Dataset for Norwegian",
+  "text": "A Fine-Grained Sentiment Dataset for Norwegian\n\nWe introduce NoReC_fine, a dataset for fine-grained sentiment analysis in Norwegian, annotated with respect to polar expressions, targets and holders of opinion. The underlying texts are taken from a corpus of professionally authored reviews from multiple news-sources and across a wide variety of domains, including literature, games, music, products, movies and more. We here present a detailed description of this annotation effort. We provide an overview of the developed annotation guidelines, illustrated with examples, and present an analysis of inter-annotator agreement. We also report the first experimental results on the dataset, intended as a preliminary benchmark for further experiments.\n\nFine-grained sentiment analysis attempts to identify opinions expressed in text without resorting to more abstract levels of annotation, such as sentence- or document-level classification. Instead, opinions are assumed to have a holder (source), a target, and an opinion expression, which all together form an opinion.\n\nIn this work, we describe the annotation of a fine-grained sentiment dataset for Norwegian, NoReC$_\\text{\\textit {fine}}$, the first such dataset available in Norwegian. The underlying texts are taken from the Norwegian Review Corpus (NoReC) BIBREF0 – a corpus of professionally authored reviews from multiple news-sources and across a wide variety of domains, including literature, video games, music, products, movies, TV-series, stage performance, restaurants, etc. In Mae:Bar:Ovr:2019, a subset of the documents, dubbed NoReC$_\\text{\\textit {eval}}$, were annotated at the sentence-level, indicating whether or not a sentence contains an evaluation or not. These prior annotations did not include negative or positive polarity, however, as this can be mixed at the sentence-level. In this work, the previous annotation effort has been considerably extended to include the span of polar expressions and the corresponding targets and holders of the opinion. We also indicate the intensity of the positive or negative polarity on a three-point scale, along with a number of other attributes of the expressions. In addition to discussing annotation principles and examples, we also present the first experimental results on the dataset.\n\nThe paper is structured as follows. Section SECREF2 reviews related work, both in terms of related resources and work on computational modeling of fine-grained opinions. We then go on to discuss our annotation effort in Section SECREF3, where we describe annotation principles, discuss a number of examples and finally present statistics on inter-annotator agreement. Section SECREF5 presents our first experiments using this dataset for neural machine learning of fine-grained opinions, before Section SECREF6 discusses some future directions of research. Finally, Section SECREF7 summarizes the main contributions of the paper.\n\nFine-grained approaches to sentiment analysis include opinion mining BIBREF1, aspect-based sentiment BIBREF2, and targeted sentiment BIBREF3. Whereas document- and sentence-level sentiment analysis make the simplifying assumption that all polarity in the text is expressed towards a single entity, fine-grained approaches attempt to model the fact that polarity is directed towards entities (either implicitly or explicitly mentioned). In this section we provide a brief overview of related work, first in terms of datasets and then modeling.\n\nOne of the earliest datasets for fine-grained opinion mining is the MPQA corpus BIBREF1, which contains annotations of private states in English-language texts taken from the news domain. The authors propose a detailed annotation scheme in which annotators identify subjective expressions, as well as their targets and holders.\n\nWorking with sentiment in English consumer reviews, Top:Jak:Gur:10 annotate targets, holders and polar expressions, in addition to modifiers like negation, intensifiers and diminishers. The intensity of the polarity is marked on a three-point scale (weak, average, strong). In addition to annotating explicit expressions of subjective opinions, Top:Jak:Gur:10 annotate polar facts that may imply an evaluative opinion. A similar annotation scheme is followed by Van:Des:Hos:15, working on financial news texts in Dutch and English, also taking account of implicit expressions of sentiment in polar facts.\n\nThe SemEval 2014 shared task BIBREF4 proposes a different annotation scheme. Given an English tweet, the annotators identify targets, the aspect category they belong to, and the polarity expressed towards the target. They do not annotate holders or polar expressions.\n\nWhile most fine-grained sentiment datasets are in English, there are datasets available in several languages, such as German BIBREF5, Czech BIBREF6, Arabic, Chinese, Dutch, French, Russian, Spanish, Turkish BIBREF7, Hungarian BIBREF8, and Hindi BIBREF9. Additionally, there has been an increased effort to create fine-grained resources for low-resource languages, such as Basque and Catalan BIBREF10. No datasets for fine-grained SA have previously been created for Norwegian, however.\n\nFine-grained sentiment is most often approached as a sequence labeling problem BIBREF11, BIBREF3 or simplified to a classification problem when the target or aspect is given BIBREF4.\n\nState-of-the-art methods for fine-grained sentiment analysis tend to be transfer-learning approaches BIBREF12, often using pre-trained language models BIBREF13, BIBREF14 to improve model performance BIBREF15. Additionally, approaches which attempt to incorporate document- and sentence-level supervision via multi-task learning often lead to improvements BIBREF16.\n\nAlternatively, researchers have proposed attention-based methods which are adapted for fine-grained sentiment BIBREF17, BIBREF18. These methods make use of an attention mechanism BIBREF19 which allows the model to learn a weighted representation of sentences with respect to sentiment targets.\n\nFinally, there are approaches which create task-specific models for fine-grained sentiment. liang-etal-2019-aspectguided propose an aspect-specific gate to improve GRUs.\n\nIn the following we present our fine-grained sentiment annotation effort in more detail. We provide an overview of the annotation guidelines and present statistics on inter-annotator agreement. The complete set of guidelines is distributed with the corpus.\n\nWe build on the sentence-level annotation of evaluative sentences in the NoReC$_\\text{\\textit {eval}}$ -corpus BIBREF20, where two types of evaluative sentences were annotated: simple evaluative sentences (labeled EVAL), or the special case of evaluative fact-implied non-personal (FACT-NP) sentences. The EVAL label roughly comprises the three opinion categories described by Liu:15 as emotional, rational and fact-implied personal. Sentences including emotional responses (arousal) are very often evaluative and involve emotion terms, e. g. elske `love', like `like', hate `hate'. Sentences that lack the arousal we find in emotional sentences may also be evaluative, for instance by indicating worth and utilitarian value, e. g. nyttig `useful', verdt (penger, tid) `worth (money, time)'. In NoReC$_\\text{\\textit {eval}}$, a sentence is labeled as FACT-NP when it is a fact or a descriptive sentence but evaluation is implied, and the sentence does not involve any personal experiences or judgments.\n\nWhile previous work BIBREF21 only annotate sentences that are found to be `topic relevant', Mae:Bar:Ovr:2019 choose to annotate all sentiment-bearing sentences, but explicitly include a Not-on-Topic marker. This will allow for assessing the ability of models to reliably identify sentences that are not relevant but still evaluative.\n\nIn our current fine-grained annotation effort we annotate both the EVAL and FACT-NP sentences from the NoReC$_\\text{\\textit {eval}}$ corpus. Figure FIGREF4 provides an overview of the annotation scheme and the entities, relations and attributes annotated. Example annotations are provided in Figure FIGREF7, for an EVAL sentence, and Figure FIGREF8 for a FACT-NP. As we can see, positive or negative polarity is expressed by a relation between a polar expression and the target(s) of this expression and is further specified for its strength on a three-point scale, resulting in six polarity values, ranging from strong positive to strong negative. The holder of the opinion is also annotated if it is explicitly mentioned. Some of the annotated entities are further annotated with attributes indicating, for instance, if the opinion is not on topic (in accordance with the topic of the review) or whether the target or holder is implicit.\n\nA polar expression is the text span that contributes to the evaluative and polar nature of the sentence. For some sentences this may simply be expressed by a sentiment lexeme such as elsker `loves', forferdelig `awful' for EVAL type expressions. In the case of FACT-NP polar expressions, any objective description that is seen to reflect the holder's evaluation is chosen, as in Figure FIGREF8. Polar expressions may also include modifiers, including intensifiers such as very or modal elements such as should. Polar expressions are often adjectives, but verbs and nouns also frequently occur as polar expressions. In our annotation, the span of a polar expression should be large enough to capture all necessary information, without including irrelevant information. In order to judge what is relevant, annotators were asked to consider whether the strength and polarity of the expression would change if the span were reduced.\n\nThe annotation guidelines further describe a number of distinctions that should aid the annotator in determining the polar expression and its span. Certain punctuation marks, such as exclamation and question marks, can be used to modify the evaluative force of an expression, and are therefore included in the polar expression if this is the case.\n\nVerbs are only included if they contribute to the semantics of the polar expression. For example, in the sentence in Figure FIGREF12 the verb led `suffers' clearly contributes to the negative sentiment and is subsequently included in the span of the polar expression. High-frequent verbs like å være `to be' and å ha `to have' are generally not included in the polar expression, as shown in the example in Figure FIGREF7 above.\n\nPrepositions belonging to particle verbs and reflexive pronouns that occur with reflexive verbs are further included in the span. Verbs that signal the evaluation of the author but no polarity are not annotated, These verbs include synes `think' and mene `mean'.\n\nSentence-level adverbials such as heldigvis `fortunately', dessverre `unfortunately', often add evaluation and/or polarity to otherwise non-evaluative sentences. In our scheme, they are therefore annotated as part of the polar expression.\n\nCoordinated polar expressions are as a general rule treated as two separate expressions, as in the example in Figure FIGREF11 where there are two conjoined polar expressions with separate target relations to the target. In order to avoid multiple (unnecessary) discontinuous spans, conjunct expressions that share an element, are, however, included in the closest conjunct. An example of this is found in Figure FIGREF12, where the verbal construction led av `suffered from' has both syntactic and semantic scope over both the conjuncts (led av dårlig dialog `suffered from bad dialog' and led av en del overspill `suffered from some over-play'). If the coordinated expression is a fixed expression involving a coordination, the whole expression should be marked as one coherent entity.\n\nExpletive subjects are generally not included in the span of polar expressions. Furthermore, subjunctions should not be included unless excluding them alone leads to a discontinous span.\n\nThe intensity of a polar expression is indicated linguistically in several different ways. Some expressions are inherently strongly positive or negative, such as fabelaktig `fabulous', and katastrofal `catastrophic'. In other cases, various modifying elements shift the intensity towards either point of the scale, such as adverbs, e.g., uhyre `immensely' as in uhyre tynt `immensely thin'. Some examples of adverbs found with slightly positive or negative expressions are noe `somewhat', kanskje `maybe' and nok `probably'. The target of the expression can also influence the intensity, and the annotators were urged to consider the polar expressions in context.\n\nWe annotate the targets of polarity by explicitly marking target entities in the text and relating them to the corresponding polar expression via a target relation. In Figure 1 for instance we see that the polar expression svært stillegående `very quiet-going' is directed at the target disken `disk' and expresses a Strong Positive polarity. As a rule of thumb, the span of a target entity should be as short as possible whilst preserving all relevant information. This means that information that does not aid in identifying the target should not be included. Targets are only selected if they are canonical, meaning that they represent some common feature of the object under review.\n\nTarget identification is not always straightforward. Our guidelines therefore describe several guiding principles, as well as some more detailed rules of annotation. For instance, reviewed objects might have easily identifiable physical targets, e.g., a tablet can have the targets screen and memory. However, targets may also have more abstract properties, such as price or ease of use. A target can also be a property or aspect of another target. Following the tablet example above, the target screen can have the sub-aspects resolution, color quality, etc. We can imagine an aspect tree, spanning both upwards and downwards from the object being reviewed. When it comes to more formal properties of targets, they are typically nominal, but in theory they can also be expressed through adjectives or verbs. As a rule, only the most general aspect expressed in a sentence is labeled in our annotation scheme.\n\nBelow we review some of the most important principles described in our annotation guidelines relating to the targets of polarity.\n\nWhen the polar expression concerns the object being reviewed, we add the attribute Target-is-General. This applies both when the target is explicitly mentioned in the text and when it is implicit. The Target-is-General attribute is not used when a polar expression has a target that is at a lower ontological level than the object being reviewed, as for instance, in the case of the tablet's screen, given our previous example.\n\nA polar expression does not need to have an explicit target. Implicit targets are targets that do not appear in the same sentence as the polar expression it relates. We identify three types of implicit targets in our scheme: (i) implicit not-on-topic targets, (ii) implicit general targets and, (iii) implicit canonical aspect targets. A polar expression that refers to something other than what is being reviewed, is marked as Not-on-Topic, even if the reference is implicit. For marking a polar expression that is about the object being reviewed in general, the Target-is-General attribute is used. In cases where the polar expression relates to an implicit and less general, canonical aspect of the object being reviewed, the target remains unmarked.\n\nThere are several constructions where targets and polar expressions coincide. Like most Germanic languages, nominal compounding is highly productive in Norwegian and compounds are mostly written as one token. Adjective-noun compounds are fairly frequent and these may sometimes express both polar expression and target in one and the same token, e.g. favorittfilm `favourite-movie'. Since our annotation does not operate over sub-word tokens, these types of examples are marked as polar expressions.\n\nHolders of sentiment are not frequently expressed explicitly in our data, partly due to the genre of reviews, where the opinions expressed are generally assumed to be those of the author. When they do occur though, holders are commonly expressed as pronouns, but they can also be expressed as nouns such as forfatteren `the author', proper names, etc.\n\nFigure FIGREF19 shows an annotated example where the holder of the opinion Vi `We' is related to a polar expression. Note that this example also illustrates the treatment of discontinuous polar expressions. Discontinuous entities are indicated using a dotted line, as in Figure FIGREF19 where the polar words likte `liked' and godt `well' form a discontinuous polar expression. At times, authors may bring up the opinions of others when reviewing, and in these cases the holder will be marked with the attribute Not-First-Person.\n\nWe will here discuss some general issues that are relevant for several of the annotated entities and relations in our annotation effort.\n\nIn some cases, a polar expression and a target together form a polar expression directed at another target. If all targets in these cases are canonical, then the expressions are nested. Figure FIGREF22 shows an example sentence where the verb ødelegger `destroys' expresses a negative polarity towards the target spenningskurven `the tension curve' and the combination ødelegger spenningskurven `destroys the tension curve' serves as a polar expression which predicates a negative polarity of the target serien `the series'.\n\nComparative sentences can pose certain challenges because they involve the same polar expression having relations to two different targets, usually (but not necessarily) with opposite polarities. Comparative sentences are indicated by the use of comparative adjectival forms, and commonly also by the use of the comparative subjunction enn `than'. In comparative sentences like X er bedre enn Y `X is better than Y', X and Y are entities, and bedre `better' is the polar expression. In general we annotate X er bedre `X is better' as a polar expression modifying Y, and bedre enn Y `better than Y' as a polar expression modifying X. Here there should be a difference in polarity as well, indicating that X is better than Y. The annotated examples in Figure FIGREF24 shows the two layers of annotation invoked by a comparative sentence.\n\nDemonstratives and articles are generally not included in the span of any expressions, as exemplified by the demonstrative Denne `this' in the example in Figure FIGREF7 above, unless they are needed to resolve ambiguity. Quantifiers such as noen `some' , mange `many' on the other hand are always included if they contribute to the polarity of the sentence.\n\nThe annotation was performed by several student assistants with a background in linguistics and with Norwegian as their native language. 100 documents containing 2065 sentences were annotated doubly and disagreements were resolved before moving on. The remaining documents were annotated by one annotator. The doubly annotated documents were adjudicated by a third annotator different from the two first annotators. In the single annotation phase, all annotators were given the possibility to discuss difficult choices in joint annotator meetings, but were encouraged to take independent decisions based on the guidelines if possible. Annotation was performed using the web-based annotation tool Brat BIBREF22.\n\nIn this section, we examine inter-annotator agreement, which we report as $\\text{F}_1$-scores. As extracting opinion holders, targets, and opinion expressions at token-level is a difficult task, even for humans BIBREF1, we use soft evaluation metrics, specifically Binary Overlap and Proportional Overlap BIBREF23. Binary Overlap counts any overlapping predicted and gold span as correct. Proportional Overlap instead assigns precision as the ratio of overlap with the predicted span and recall as the ratio of overlap with the gold span, which reduces to token-level $\\text{F}_1$. Proportional Overlap is therefore a stricter metric than Binary Overlap.\n\nThe inter annotator agreement scores obtained in the first rounds of (double) annotation are reported in Table TABREF28. We find that even though annotators tend to agree on certain parts of the expressions, they agree less when it comes to exact spans. This reflects the annotators subjective experiences, and although an attempt has been made to follow the guidelines strictly, it seems to be difficult to reach high agreement scores. The binary polar expression score is the highest score (96% Binary $\\text{F}_1$). This is unsurprising, as we noted during annotation that there was strong agreement on the most central elements, even though there were certain disagreements when it comes to the exact span of a polar expression. As holder expressions tend to be short, the relatively low binary agreement might reflect the tendency of holder expressions to occur multiple times in the same sentence, creating some confusion over which of these expressions to choose.\n\nTable TABREF31 presents some relevant statistics for the resulting NoReC$_\\text{\\textit {fine}}$ dataset, providing the distribution of sentences, as well as holders, targets and polar expressions in the train, dev and test portions of the dataset, as well as the total counts for the dataset as a whole. We also report the average length of the different annotated categories. As we can see, the total of 7451 sentences that are annotated comprise almost 6949 polar expressions, 5289 targets, and 635 holders. In the following we present and discuss some additional core statistics of the annotations.\n\nFigure FIGREF32 plots the distribution of polarity labels and their intensity scores. We see that the intensities are clearly dominated by standard strength, while there are also 627 strong labels for positive. Regardless of intensity, we see that positive valence is more prominent than negative, and this reflects a similar skew for the document-level ratings in this data BIBREF0.\n\nThe slight intensity is infrequent, with 213 positive and 329 negative polar expressions with this label. This relative difference can be explained by the tendency to hedge negative statements more than positive ones BIBREF24. Strong negative is the minority class, with only 144 examples. Overall, the distribution of intensity scores in NoReC$_\\text{\\textit {fine}}$ is very similar to what is reported for other fine-grained sentiment datasets for English and Dutch BIBREF25.\n\nAs we can see from Table TABREF31, the average number of tokens spanned by a polar expression is 4.5. Interestingly, if we break this number down further, we find that the negative expressions are on average longer than the positives for all intensities: while the average length of negative expressions are 5.2, 4.1, and 5.4 tokens for standard, strong, and slight respectively, the corresponding counts for the positives are 4.1, 3.8, and 5.2. Overall, we see that the slight examples are the longest, often due to hedging strategies which include adverbial modifiers, e. g. `a bit', `maybe'.\n\nFinally, note that only 324 of the annotated polar expressions are of the type fact-implied non-personal.\n\nReturning to the token counts in Table TABREF31, we see that while references to holders are just one word on average (often just a pronoun), targets are two on average. However, not all targets and holders have a surface realization. There are 6314 polar expressions with an implicit holder and an additional 1660 with an implicit target.\n\nFinally, we note that there are 1118 examples where the target is further marked as Not-on-Topic and 213 where the holder is Not-First-Person.\n\nTo provide an idea of the difficulty of the task, here we report some preliminary experimental results for the new dataset, intended as benchmarks for further experiments. Casting the problem as a sequence labeling task, we train a model to jointly predict holders, targets and polar expressions. Below, we first describe the evaluation metrics and the experimental setup, before finally discussing the results.\n\nWe train a Bidirectional LSTM with a CRF inference layer, which has shown to be competitive for several other sequence labeling tasks BIBREF26, BIBREF27, BIBREF28. We use the IOB2 label encoding for sources, targets, and polar expressions, including the polarity of the latter, giving us nine tags in total. This naturally leads to a lossy representation of the original data, as the relations, nested annotations, and polar intensity are ignored.\n\nOur model uses a single BiLSTM layer (100 dim.) to extract features and then a CRF layer to make predictions. We train the model using Adam BIBREF29 for 40 epochs with a patience of 5, and use dropout to regularize both the BiLSTM (0.5) and CRF (0.3) layers. The word embeddings are 100 dimensional fastText SkipGram BIBREF30 vectors trained on the NoWaC corpus BIBREF31 and made available from the NLPL vector repository BIBREF32. The pre-trained embeddings are further fine-tuned during training. We report held-out test results for the model that achieves the best performance on the development set and use the standard train/development/test split provided with the dataset (shown in Table TABREF31). All results are reported using the Proportional and Binary precision, recall and $\\text{F}_1$ scores, computed as described in Section SECREF27 above.\n\nTable TABREF37 shows the results of the proportional and binary Overlap measures for precision, recall, and $\\text{F}_1$. The baseline model achieves modest results when compared to datasets that do not involve multiple domains BIBREF11, BIBREF10, with .41, .31, and .31 Proportional $\\text{F}_1$ on Holders, Targets, and Polarity Expressions, respectively (.41, .36, .56 Binary $\\text{F}_1$). However, this is still better than previous results on cross-domain datasets BIBREF33. The domain variation between documents leads to a lower overlap between Holders, Targets, and Polar Expressions seen in training and those at test time (56%, 28%, and 50%, respectively). We argue, however, that this is a more realistic situation regarding available data, and that it is important to move away from simplifications where training and test data are taken from the same distribution.\n\nIn follow-up work we plan to further enrich the annotations with additional compositional information relevant to sentiment, most importantly negation but also other forms of valence shifters. Although our data already contains multiple domains, it is still all within the genre of reviews, and while we plan to test cross-domain effects within the existing data we would also like to add annotations for other different genres and text types, like editorials.\n\nIn terms of modeling, we also aim to investigate approaches that better integrate the various types of annotated information (targets, holders, polar expressions, and more) and the relations between them when making predictions, for example in the form of multi-task learning. Modeling techniques employing attention or aspect-specific gates that have provided state-of-the-art results for English provide an additional avenue for future experimentation.\n\nThis paper has introduced a new dataset for fine-grained sentiment analysis, the first such dataset available for Norwegian. The data, dubbed NoReC$_\\text{\\textit {fine}}$, comprise a subset of documents in the Norwegian Review Corpus, a collection of professional reviews across multiple domains. The annotations mark polar expressions with positive/negative valence together with an intensity score, in addition to the holders and targets of the expressed opinion. Both subjective and objective expressions can be polar, and a special class of objective expressions called fact-implied non-personal expressions are given a separate label. The annotations also indicate whether holders are first-person (i.e. the author) and whether targets are on-topic. Beyond discussing the principles guiding the annotations and describing the resulting dataset, we have also presented a series of first classification results, providing benchmarks for further experiments. The dataset, including the annotation guidelines, are made publicly available.\n\nThis work has been carried out as part of the SANT project (Sentiment Analysis for Norwegian Text), funded by the Research Council of Norway (grant number 270908). We also want to express our gratitude to the annotators: Tita Enstad, Anders Næss Evensen, Helen Ørn Gjerdrum, Petter Mæhlum, Lilja Charlotte Storset, Carina Thanh-Tam Truong, and Alexandra Wittemann.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 46
+    },
+    {
+      "section": "Abstract",
+      "start": 48,
+      "end": 750
+    },
+    {
+      "section": "Introduction",
+      "start": 752,
+      "end": 2939
+    },
+    {
+      "section": "Related Work",
+      "start": 2941,
+      "end": 3483
+    },
+    {
+      "section": "Related Work ::: Datasets",
+      "start": 3485,
+      "end": 5174
+    },
+    {
+      "section": "Related Work ::: Modeling",
+      "start": 5176,
+      "end": 6190
+    },
+    {
+      "section": "Annotations",
+      "start": 6192,
+      "end": 6448
+    },
+    {
+      "section": "Annotations ::: Sentence-level annotations",
+      "start": 6450,
+      "end": 7787
+    },
+    {
+      "section": "Annotations ::: Expression-level annotations",
+      "start": 7789,
+      "end": 8728
+    },
+    {
+      "section": "Annotations ::: Polar Expressions",
+      "start": 8730,
+      "end": 9658
+    },
+    {
+      "section": "Annotations ::: Polar Expressions ::: Polar expression span",
+      "start": 9660,
+      "end": 11916
+    },
+    {
+      "section": "Annotations ::: Polar Expressions ::: Polar expression intensity",
+      "start": 11918,
+      "end": 12581
+    },
+    {
+      "section": "Annotations ::: Targets",
+      "start": 12583,
+      "end": 14311
+    },
+    {
+      "section": "Annotations ::: Targets ::: General Targets",
+      "start": 14313,
+      "end": 14740
+    },
+    {
+      "section": "Annotations ::: Targets ::: Implicit Targets",
+      "start": 14742,
+      "end": 15495
+    },
+    {
+      "section": "Annotations ::: Targets ::: Polar-target Combinations",
+      "start": 15497,
+      "end": 15996
+    },
+    {
+      "section": "Annotations ::: Holders",
+      "start": 15998,
+      "end": 16880
+    },
+    {
+      "section": "Annotations ::: General",
+      "start": 16882,
+      "end": 17018
+    },
+    {
+      "section": "Annotations ::: General ::: Nesting",
+      "start": 17020,
+      "end": 17544
+    },
+    {
+      "section": "Annotations ::: General ::: Comparatives",
+      "start": 17546,
+      "end": 18381
+    },
+    {
+      "section": "Annotations ::: General ::: Determiners",
+      "start": 18383,
+      "end": 18740
+    },
+    {
+      "section": "Annotations ::: Annotation Procedure",
+      "start": 18742,
+      "end": 19452
+    },
+    {
+      "section": "Annotations ::: Inter-Annotator Agreement",
+      "start": 19454,
+      "end": 21080
+    },
+    {
+      "section": "Corpus Statistics",
+      "start": 21082,
+      "end": 21684
+    },
+    {
+      "section": "Corpus Statistics ::: Distribution of valence and intensity",
+      "start": 21686,
+      "end": 23252
+    },
+    {
+      "section": "Corpus Statistics ::: Distribution of holders, targets and polar expressions",
+      "start": 23254,
+      "end": 23737
+    },
+    {
+      "section": "Experiments",
+      "start": 23739,
+      "end": 24150
+    },
+    {
+      "section": "Experiments ::: Experimental Setup",
+      "start": 24152,
+      "end": 25457
+    },
+    {
+      "section": "Experiments ::: Results",
+      "start": 25459,
+      "end": 26337
+    },
+    {
+      "section": "Future Work",
+      "start": 26339,
+      "end": 27255
+    },
+    {
+      "section": "Summary",
+      "start": 27257,
+      "end": 28297
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 28299,
+      "end": 28663
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1911.12722",
+    "arxiv_id": "1911.12722",
+    "source_url": "https://arxiv.org/abs/1911.12722",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "doc_id": "qasper_1903_10318",
+  "title": "Fine-tune BERT for Extractive Summarization",
+  "text": "Fine-tune BERT for Extractive Summarization\n\nBERT, a pre-trained Transformer model, has achieved ground-breaking performance on multiple NLP tasks. In this paper, we describe BERTSUM, a simple variant of BERT, for extractive summarization. Our system is the state of the art on the CNN/Dailymail dataset, outperforming the previous best-performed system by 1.65 on ROUGE-L. The codes to reproduce our results are available at https://github.com/nlpyang/BertSum\n\nSingle-document summarization is the task of automatically generating a shorter version of a document while retaining its most important information. The task has received much attention in the natural language processing community due to its potential for various information access applications. Examples include tools which digest textual content (e.g., news, social media, reviews), answer questions, or provide recommendations.\n\nThe task is often divided into two paradigms, abstractive summarization and extractive summarization. In abstractive summarization, target summaries contains words or phrases that were not in the original text and usually require various text rewriting operations to generate, while extractive approaches form summaries by copying and concatenating the most important spans (usually sentences) in a document. In this paper, we focus on extractive summarization.\n\nAlthough many neural models have been proposed for extractive summarization recently BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 , BIBREF6 , BIBREF7 , the improvement on automatic metrics like ROUGE has reached a bottleneck due to the complexity of the task. In this paper, we argue that, BERT BIBREF0 , with its pre-training on a huge dataset and the powerful architecture for learning complex features, can further boost the performance of extractive summarization .\n\nIn this paper, we focus on designing different variants of using BERT on the extractive summarization task and showing their results on CNN/Dailymail and NYT datasets. We found that a flat architecture with inter-sentence Transformer layers performs the best, achieving the state-of-the-art results on this task.\n\nLet $d$ denote a document containing several sentences $[sent_1, sent_2, \\cdots , sent_m]$ , where $sent_i$ is the $i$ -th sentence in the document. Extractive summarization can be defined as the task of assigning a label $y_i \\in \\lbrace 0, 1\\rbrace $ to each $sent_i$ , indicating whether the sentence should be included in the summary. It is assumed that summary sentences represent the most important content of the document.\n\nTo use BERT for extractive summarization, we require it to output the representation for each sentence. However, since BERT is trained as a masked-language model, the output vectors are grounded to tokens instead of sentences. Meanwhile, although BERT has segmentation embeddings for indicating different sentences, it only has two labels (sentence A or sentence B), instead of multiple sentences as in extractive summarization. Therefore, we modify the input sequence and embeddings of BERT to make it possible for extracting summaries.\n\nAs illustrated in Figure 1, we insert a [CLS] token before each sentence and a [SEP] token after each sentence. In vanilla BERT, The [CLS] is used as a symbol to aggregate features from one sentence or a pair of sentences. We modify the model by using multiple [CLS] symbols to get features for sentences ascending the symbol.\n\nWe use interval segment embeddings to distinguish multiple sentences within a document. For $sent_i$ we will assign a segment embedding $E_A$ or $E_B$ conditioned on $i$ is odd or even. For example, for $[sent_1, sent_2, sent_3, sent_4, sent_5]$ we will assign $[E_A, E_B, E_A,E_B, E_A]$ .\n\nThe vector $T_i$ which is the vector of the $i$ -th [CLS] symbol from the top BERT layer will be used as the representation for $sent_i$ .\n\nAfter obtaining the sentence vectors from BERT, we build several summarization-specific layers stacked on top of the BERT outputs, to capture document-level features for extracting summaries. For each sentence $sent_i$ , we will calculate the final predicted score $\\hat{Y}_i$ . The loss of the whole model is the Binary Classification Entropy of $\\hat{Y}_i$ against gold label $Y_i$ . These summarization layers are jointly fine-tuned with BERT.\n\nLike in the original BERT paper, the Simple Classifier only adds a linear layer on the BERT outputs and use a sigmoid function to get the predicted score: \n\n$$\\hat{Y}_i = \\sigma (W_oT_i+b_o)$$   (Eq. 7) \n\nwhere $\\sigma $ is the Sigmoid function.\n\nInstead of a simple sigmoid classifier, Inter-sentence Transformer applies more Transformer layers only on sentence representations, extracting document-level features focusing on summarization tasks from the BERT outputs: \n\n$$\\tilde{h}^l=\\mathrm {LN}(h^{l-1}+\\mathrm {MHAtt}(h^{l-1}))\\\\\nh^l=\\mathrm {LN}(\\tilde{h}^l+\\mathrm {FFN}(\\tilde{h}^l))$$   (Eq. 9) \n\nwhere $h^0=\\mathrm {PosEmb}(T)$ and $T$ are the sentence vectors output by BERT, $\\mathrm {PosEmb}$ is the function of adding positional embeddings (indicating the position of each sentence) to $T$ ; $\\mathrm {LN}$ is the layer normalization operation BIBREF8 ; $\\mathrm {MHAtt}$ is the multi-head attention operation BIBREF1 ; the superscript $l$ indicates the depth of the stacked layer.\n\nThe final output layer is still a sigmoid classifier: \n\n$$\\hat{Y}_i = \\sigma (W_oh_i^L+b_o)$$   (Eq. 10) \n\nwhere $h^L$ is the vector for $sent_i$ from the top layer (the $L$ -th layer ) of the Transformer. In experiments, we implemented Transformers with $L=1, 2, 3$ and found Transformer with 2 layers performs the best.\n\nAlthough the Transformer model achieved great results on several tasks, there are evidence that Recurrent Neural Networks still have their advantages, especially when combining with techniques in Transformer BIBREF9 . Therefore, we apply an LSTM layer over the BERT outputs to learn summarization-specific features.\n\nTo stabilize the training, pergate layer normalization BIBREF8 is applied within each LSTM cell. At time step $i$ , the input to the LSTM layer is the BERT output $T_i$ , and the output is calculated as: \n\n$$\\left(\n\\begin{tabular}{c}\nF_i \\\\\nI_i\\\\\nO_i\\\\\nG_i\n\\end{tabular}\n\\right)=\\mathrm {LN}_h(W_hh_{i-1})+\\mathrm {LN}_x(W_xT_i)\\\\\n{\\begin{@align}{1}{-1}\n\\nonumber C_i =&~\\sigma (F_i)\\odot C_{i-1}\\\\\n&+\\sigma (I_i)\\odot \\mathrm {tanh}(G_{i-1})\\\\\nh_i = &\\sigma (O_t)\\odot \\mathrm {tanh}(\\mathrm {LN}_c(C_t))\\end{@align}}$$   (Eq. 12) \n\nwhere $F_i, I_i, O_i$ are forget gates, input gates, output gates; $G_i$ is the hidden vector and $C_i$ is the memory vector; $h_i$ is the output vector; $\\mathrm {LN}_h, \\mathrm {LN}_x, \\mathrm {LN}_c$ are there difference layer normalization operations; Bias terms are not shown.\n\nThe final output layer is also a sigmoid classifier: \n\n$$\\hat{Y}_i = \\sigma (W_oh_i+b_o)$$   (Eq. 13) \n\nIn this section we present our implementation, describe the summarization datasets and our evaluation protocol, and analyze our results.\n\nWe use PyTorch, OpenNMT BIBREF10 and the `bert-base-uncased' version of BERT to implement the model. BERT and summarization layers are jointly fine-tuned. Adam with $\\beta _1=0.9$ , $\\beta _2=0.999$ is used for fine-tuning. Learning rate schedule is following BIBREF1 with warming-up on first 10,000 steps: \n\n$$\\nonumber lr = 2e^{-3}\\cdot min(step^{-0.5}, step \\cdot warmup^{-1.5})$$   (Eq. 17) \n\nAll models are trained for 50,000 steps on 3 GPUs (GTX 1080 Ti) with gradient accumulation per two steps, which makes the batch size approximately equal to 36. Model checkpoints are saved and evaluated on the validation set every 1,000 steps. We select the top-3 checkpoints based on their evaluation losses on the validations set, and report the averaged results on the test set.\n\nWhen predicting summaries for a new document, we first use the models to obtain the score for each sentence. We then rank these sentences by the scores from higher to lower, and select the top-3 sentences as the summary.\n\nDuring the predicting process, Trigram Blocking is used to reduce redundancy. Given selected summary $S$ and a candidate sentence $c$ , we will skip $c$ is there exists a trigram overlapping between $c$ and $S$ . This is similar to the Maximal Marginal Relevance (MMR) BIBREF11 but much simpler.\n\nWe evaluated on two benchmark datasets, namely the CNN/DailyMail news highlights dataset BIBREF12 and the New York Times Annotated Corpus (NYT; BIBREF13 ). The CNN/DailyMail dataset contains news articles and associated highlights, i.e., a few bullet points giving a brief overview of the article. We used the standard splits of BIBREF12 for training, validation, and testing (90,266/1,220/1,093 CNN documents and 196,961/12,148/10,397 DailyMail documents). We did not anonymize entities. We first split sentences by CoreNLP and pre-process the dataset following methods in BIBREF14 .\n\nThe NYT dataset contains 110,540 articles with abstractive summaries. Following BIBREF15 , we split these into 100,834 training and 9,706 test examples, based on date of publication (test is all articles published on January 1, 2007 or later). We took 4,000 examples from the training set as the validation set. We also followed their filtering procedure, documents with summaries that are shorter than 50 words were removed from the raw dataset. The filtered test set (NYT50) includes 3,452 test examples. We first split sentences by CoreNLP and pre-process the dataset following methods in BIBREF15 .\n\nBoth datasets contain abstractive gold summaries, which are not readily suited to training extractive summarization models. A greedy algorithm was used to generate an oracle summary for each document. The algorithm greedily select sentences which can maximize the ROUGE scores as the oracle sentences. We assigned label 1 to sentences selected in the oracle summary and 0 otherwise.\n\nThe experimental results on CNN/Dailymail datasets are shown in Table 1. For comparison, we implement a non-pretrained Transformer baseline which uses the same architecture as BERT, but with smaller parameters. It is randomly initialized and only trained on the summarization task. The Transformer baseline has 6 layers, the hidden size is 512 and the feed-forward filter size is 2048. The model is trained with same settings following BIBREF1 . We also compare our model with several previously proposed systems.\n\nAs illustrated in the table, all BERT-based models outperformed previous state-of-the-art models by a large margin. Bertsum with Transformer achieved the best performance on all three metrics. The Bertsum with LSTM model does not have an obvious influence on the summarization performance compared to the Classifier model.\n\nAblation studies are conducted to show the contribution of different components of Bertsum. The results are shown in in Table 2. Interval segments increase the performance of base model. Trigram blocking is able to greatly improve the summarization results. This is consistent to previous conclusions that a sequential extractive decoder is helpful to generate more informative summaries. However, here we use the trigram blocking as a simple but robust alternative.\n\nThe experimental results on NYT datasets are shown in Table 3. Different from CNN/Dailymail, we use the limited-length recall evaluation, following BIBREF15 . We truncate the predicted summaries to the lengths of the gold summaries and evaluate summarization quality with ROUGE Recall. Compared baselines are (1) First- $k$ words, which is a simple baseline by extracting first $k$ words of the input article; (2) Full is the best-performed extractive model in BIBREF15 ; (3) Deep Reinforced BIBREF18 is an abstractive model, using reinforce learning and encoder-decoder structure. The Bertsum+Classifier can achieve the state-of-the-art results on this dataset.\n\nIn this paper, we explored how to use BERT for extractive summarization. We proposed the Bertsum model and tried several summarization layers can be applied with BERT. We did experiments on two large-scale datasets and found the Bertsum with inter-sentence Transformer layers can achieve the best performance.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 43
+    },
+    {
+      "section": "Abstract",
+      "start": 45,
+      "end": 460
+    },
+    {
+      "section": "Introduction",
+      "start": 462,
+      "end": 2135
+    },
+    {
+      "section": "Methodology",
+      "start": 2137,
+      "end": 2566
+    },
+    {
+      "section": "Extractive Summarization with BERT",
+      "start": 2568,
+      "end": 3864
+    },
+    {
+      "section": "Fine-tuning with Summarization Layers",
+      "start": 3866,
+      "end": 6870
+    },
+    {
+      "section": "Experiments",
+      "start": 6872,
+      "end": 7008
+    },
+    {
+      "section": "Implementation Details",
+      "start": 7010,
+      "end": 8306
+    },
+    {
+      "section": "Summarization Datasets",
+      "start": 8308,
+      "end": 9880
+    },
+    {
+      "section": "Experimental Results",
+      "start": 9882,
+      "end": 11851
+    },
+    {
+      "section": "Conclusion",
+      "start": 11853,
+      "end": 12162
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1903.10318",
+    "arxiv_id": "1903.10318",
+    "source_url": "https://arxiv.org/abs/1903.10318",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

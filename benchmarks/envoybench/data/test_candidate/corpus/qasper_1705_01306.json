@@ -1,0 +1,104 @@
+{
+  "doc_id": "qasper_1705_01306",
+  "title": "Amobee at SemEval-2017 Task 4: Deep Learning System for Sentiment Detection on Twitter",
+  "text": "Amobee at SemEval-2017 Task 4: Deep Learning System for Sentiment Detection on Twitter\n\nThis paper describes the Amobee sentiment analysis system, adapted to compete in SemEval 2017 task 4. The system consists of two parts: a supervised training of RNN models based on a Twitter sentiment treebank, and the use of feedforward NN, Naive Bayes and logistic regression classifiers to produce predictions for the different sub-tasks. The algorithm reached the 3rd place on the 5-label classification task (sub-task C).\n\nSentiment detection is the process of determining whether a text has a positive or negative attitude toward a given entity (topic) or in general. Detecting sentiment on Twitter—a social network where users interact via short 140-character messages, exchanging information and opinions—is becoming ubiquitous. Sentiment in Twitter messages (tweets) can capture the popularity level of political figures, ideas, brands, products and people. Tweets and other social media texts are challenging to analyze as they are inherently different; use of slang, mis-spelling, sarcasm, emojis and co-mentioning of other messages pose unique difficulties. Combined with the vast amount of Twitter data (mostly public), these make sentiment detection on Twitter a focal point for data science research.\n\nSemEval is a yearly event in which teams compete in natural language processing tasks. Task 4 is concerned with sentiment analysis in Twitter; it contains five sub-tasks which include classification of tweets according to 2, 3 or 5 labels and quantification of sentiment distribution regarding topics mentioned in tweets; for a complete description of task 4 see BIBREF0 .\n\nThis paper describes our system and participation in all sub-tasks of SemEval 2017 task 4. Our system consists of two parts: a recurrent neural network trained on a private Twitter dataset, followed by a task-specific combination of model stacking and logistic regression classifiers.\n\nThe paper is organized as follows: section SECREF2 describes the training of RNN models, data being used and model selection; section SECREF3 describes the extraction of semantic features; section SECREF4 describes the task-specific workflows and scores. We review and summarize in section SECREF5 . Finally, section SECREF6 describes our future plans, mainly the development of an LSTM algorithm.\n\nThe first part of our system consisted of training recursive-neural-tensor-network (RNTN) models BIBREF1 .\n\nOur training data for this part was created by taking a random sample from Twitter and having it manually annotated on a 5-label basis to produce fully sentiment-labeled parse-trees, much like the Stanford sentiment treebank. The sample contains twenty thousand tweets with sentiment distribution as following:\n\nFirst we build a custom dictionary by means of crawling Wikipedia and extracting lists of brands, celebrities, places and names. The lists were then pruned manually. Then we define the following steps when preprocessing tweets:\n\nStandard tokenization of the sentences, using the Stanford coreNLP tools BIBREF2 .\n\nWord-replacement step using the Wiki dictionary with representative keywords.\n\nLemmatization, using coreNLP.\n\nEmojis: removing duplicate emojis, clustering them according to sentiment and replacing them with representative keywords, e.g. “happy-emoji”.\n\nRegex: removing duplicate punctuation marks, replacing URLs with a keyword, removing Camel casing.\n\nParsing: parts-of-speech and constituency parsing using a shift-reduce parser, which was selected for its speed over accuracy.\n\nNER: using entity recognition annotator, replacing numbers, dates and locations with representative keywords.\n\nWiki: second step of word-replacement using our custom wiki dictionary.\n\nWe used the Stanford coreNLP sentiment annotator, introduced by BIBREF1 . Words are initialized either randomly as INLINEFORM0 dimensional vectors, or given externally as word vectors. We used four versions of the training data; with and without lemmatization and with and without pre-trained word representations BIBREF3 .\n\nTwitter messages can be comprised of several sentences, with different and sometimes contrary sentiments. However, the trained models predict sentiment on individual sentences. We aggregated the sentiment for each tweet by taking a linear combination of the individual sentences comprising the tweet with weights having the following power dependency: DISPLAYFORM0 \n\n where INLINEFORM0 are numerical factors to be found, INLINEFORM1 are the fraction of known words, length of the sentence and polarity, respectively, with polarity defined by: DISPLAYFORM0 \n\n where vn, n, p, vp are the probabilities as assigned by the RNTN for very-negative, negative, positive and very-positive label for each sentence. We then optimized the parameters INLINEFORM0 with respect to the true labels.\n\nAfter training dozens of models, we chose to combine only the best ones using stacking, namely combining the models output using a supervised learning algorithm. For this purpose, we used the Scikit-learn BIBREF4 recursive feature elimination (RFE) algorithm to find both the optimal number and the actual models, thus choosing the best five models. The models chosen include a representative from each type of the data we used and they were:\n\nTraining data without lemmatization step, with randomly initialized word-vectors of size 27.\n\nTraining data with lemmatization step, with pre-trained word-vectors of size 25.\n\n3 sets of training data with lemmatization step, with randomly initialized word-vectors of sizes 24, 26.\n\nThe five models output is concatenated and used as input for the various tasks, as described in SECREF27 .\n\nIn addition to the RNN trained models, our system includes feature extraction step; we defined a set of lexical and semantical features to be extracted from the original tweets:\n\nFor this purpose, we used the Stanford deterministic coreference resolution system BIBREF5 , BIBREF6 .\n\nThe experiments were developed by using Scikit-learn machine learning library and Keras deep learning library with TensorFlow backend BIBREF7 . Results for all sub-tasks are summarized in table\n\n TABREF26 .\n\nFor each tweet, we first ran the RNN models and got a 5-category probability distribution from each of the trained models, thus a 25-dimensional vector. Then we extracted sentence features and concatenated them with the RNN vector. We then trained a Feedforward NN which outputs a 5-label probability distribution for each tweet. That was the starting point for each of the tasks; we refer to this process as the pipeline.\n\nThe goal of this task is to classify tweets sentiment into three classes (negative, neutral, positive) where the measured metric is a macro-averaged recall.\n\nWe used the SemEval 2017 task A data in the following way: using SemEval 2016 TEST as our TEST, partitioning the rest into TRAIN and DEV datasets. The test dataset went through the previously mentioned pipeline, getting a 5-label probability distribution.\n\nWe anticipated the sentiment distribution of the test data would be similar to the training data—as they may be drawn from the same distribution. Therefore we used re-sampling of the training dataset to obtain a skewed dataset such that a logistic regression would predict similar sentiment distributions for both the train and test datasets. Finally we trained a logistic regression on the new dataset and used it on the task A test set. We obtained a macro-averaged recall score of INLINEFORM0 and accuracy of INLINEFORM1 .\n\nApparently, our assumption about distribution similarity was misguided as one can observe in the next table.\n\nThe goals of these tasks are to classify tweets sentiment regarding a given entity as either positive or negative (task B) and estimate sentiment distribution for each entity (task D). The measured metrics are macro-averaged recall and KLD, respectively.\n\nWe started with the training data passing our pipeline. We calculated the mean distribution for each entity on the training and testing datasets. We trained a logistic regression from a 5-label to a binary distribution and predicted a positive probability for each entity in the test set. This was used as a prior distribution for each entity, modeled as a Beta distribution. We then trained a logistic regression where the input is a concatenation of the 5-labels with the positive component of the probability distribution of the entity's sentiment and the output is a binary prediction for each tweet. Then we chose the label—using the mean positive probability as a threshold. These predictions are submitted as task B. We obtained a macro-averaged recall score of INLINEFORM0 and accuracy of INLINEFORM1 .\n\nNext, we took the predictions mean for each entity as the likelihood, modeled as a Binomial distribution, thus getting a Beta posterior distribution for each entity. These were submitted as task D. We obtained a score of INLINEFORM0 .\n\nThe goals of these tasks are to classify tweets sentiment regarding a given entity into five classes—very negative, negative, neutral, positive, very positive—(task C) and estimate sentiment distribution over five classes for each entity (task E). The measured metrics are macro-averaged MAE and earth-movers-distance (EMD), respectively.\n\nWe first calculated the mean sentiment for each entity. We then used bootstrapping to generate a sample for each entity. Then we trained a logistic regression model which predicts a 5-label distribution for each entity. We modified the initial 5-label probability distribution for each tweet using the following formula: DISPLAYFORM0 \n\n where INLINEFORM0 are the current tweet and label, INLINEFORM1 is the sentiment prediction of the logistic regression model for an entity, INLINEFORM2 is the set of all tweets and INLINEFORM3 is the set of labels. We trained a logistic regression on the new distribution and the predictions were submitted as task C. We obtained a macro-averaged MAE score of INLINEFORM4 .\n\nNext, we defined a loss function as follows: DISPLAYFORM0 \n\n where the probabilities are the predicted probabilities after the previous logistic regression step. Finally we predicted a label for each tweet according to the lowest loss, and calculated the mean sentiment for each entity. These were submitted as task E. We obtained a score of INLINEFORM0 .\n\nIn this paper we described our system of sentiment analysis adapted to participate in SemEval task 4. The highest ranking we reached was third place on the 5-label classification task. Compared with classification with 2 and 3 labels, in which we scored lower, and the fact we used similar workflow for tasks A, B, C, we speculate that the relative success is due to our sentiment treebank ranking on a 5-label basis. This can also explain the relatively superior results in quantification of 5 categories as opposed to quantification of 2 categories.\n\nOverall, we have had some unique advantages and disadvantages in this competition. On the one hand, we enjoyed an additional twenty thousand tweets, where every node of the parse tree was labeled for its sentiment, and also had the manpower to manually prune our dictionaries, as well as the opportunity to get feedback from our clients. On the other hand, we did not use any user information and/or metadata from Twitter, nor did we use the SemEval data for training the RNTN models. In addition, we did not ensemble our models with any commercially or freely available pre-trained sentiment analysis packages.\n\nWe have several plans to improve our algorithm and to use new data. First, we plan to extract more semantic features such as verb and adverb classes and use them in neural network models as additional input. Verb classification was used to improve sentiment detection BIBREF8 ; we plan to label verbs according to whether their sentiment changes as we change the tense, form and active/passive voice. Adverbs were also used to determine sentiment BIBREF9 ; we plan to classify adverbs into sentiment families such as intensifiers (“very”), diminishers (“slightly”), positive (“delightfully”) and negative (“shamefully”).\n\nSecondly, we can use additional data from Twitter regarding either the users or the entities-of-interest.\n\nFinally, we plan to implement a long short-term memory (LSTM) network BIBREF10 which trains on a sentence together with all the syntax and semantic features extracted from it. There is some work in the field of semantic modeling using LSTM, e.g. BIBREF11 , BIBREF12 . Our plan is to use an LSTM module to extend the RNTN model of BIBREF1 by adding the additional semantic data of each phrase and a reference to the entity-of-interest. An illustration of the computational graph for the proposed model is presented in figure FIGREF33 . The inputs/outputs are: INLINEFORM0 is a word vector representation of dimension INLINEFORM1 , INLINEFORM2 encodes the parts-of-speech (POS) tagging, syntactic category and an additional bit indicating whether the entity-of-interest is present in the expression—all encoded in a 7 dimensional vector, INLINEFORM3 is a control channel of dimension INLINEFORM4 , INLINEFORM5 is an output layer of dimension INLINEFORM6 and INLINEFORM7 is a sentiment vector of dimension INLINEFORM8 .\n\nThe module functions are defined as following: DISPLAYFORM0 \n\n where INLINEFORM0 is a matrix to be learnt, INLINEFORM1 denotes Hadamard (element-wise) product and INLINEFORM2 denotes concatenation. The functions INLINEFORM3 are the six NN computations, given by: DISPLAYFORM0 \n\n where INLINEFORM0 are the INLINEFORM1 dimensional word embedding, 6-bit encoding of the syntactic category and an indication bit of the entity-of-interest for the INLINEFORM2 th phrase, respectively, INLINEFORM3 encodes the inputs of a left descendant INLINEFORM4 and a right descendant INLINEFORM5 in a parse tree and INLINEFORM6 . Define INLINEFORM7 , then INLINEFORM8 is a tensor defining bilinear forms, INLINEFORM9 with INLINEFORM10 are indication functions for having the entity-of-interest on the left and/or right child and INLINEFORM11 are matrices to be learnt.\n\nThe algorithm processes each tweet according to its parse tree, starting at the leaves and going up combining words into expressions; this is different than other LSTM algorithms since the parsing data is used explicitly. As an example, figure FIGREF36 presents the simple sentence “Amobee is awesome” with its parsing tree. The leaves are given by INLINEFORM0 -dimensional word vectors together with their POS tagging, syntactic categories (if defined for the leaf) and an entity indicator bit. The computation takes place in the inner nodes; “is” and “awesome” are combined in a node marked by “VP” which is the phrase category. In terms of our terminology, “is” and “awesome” are the INLINEFORM1 nodes, respectively for “VP” node calculation. We define INLINEFORM2 as the cell's state for the left child, in this case the “is” node. Left and right are concatenated as input INLINEFORM3 and the metadata INLINEFORM4 is from the right child while INLINEFORM5 is the metadata from the left child. The second calculation takes place at the root “S”; the input INLINEFORM6 is now a concatenation of “Amobee” word vector, the input INLINEFORM7 holds the INLINEFORM8 output of the previous step in node “VP”; the cell state INLINEFORM9 comes from the “Amobee” node.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 86
+    },
+    {
+      "section": "Abstract",
+      "start": 88,
+      "end": 514
+    },
+    {
+      "section": "Introduction",
+      "start": 516,
+      "end": 2362
+    },
+    {
+      "section": "RNN Models",
+      "start": 2364,
+      "end": 2470
+    },
+    {
+      "section": "Data",
+      "start": 2472,
+      "end": 2782
+    },
+    {
+      "section": "Preprocessing",
+      "start": 2784,
+      "end": 3761
+    },
+    {
+      "section": "Training",
+      "start": 3763,
+      "end": 4086
+    },
+    {
+      "section": "Tweet Aggregation",
+      "start": 4088,
+      "end": 4870
+    },
+    {
+      "section": "Model Selection",
+      "start": 4872,
+      "end": 5704
+    },
+    {
+      "section": "Features Extraction",
+      "start": 5706,
+      "end": 5987
+    },
+    {
+      "section": "Experiments",
+      "start": 5989,
+      "end": 6195
+    },
+    {
+      "section": "General Workflow",
+      "start": 6197,
+      "end": 6619
+    },
+    {
+      "section": "Task A",
+      "start": 6621,
+      "end": 7671
+    },
+    {
+      "section": "Tasks B, D",
+      "start": 7673,
+      "end": 8975
+    },
+    {
+      "section": "Tasks C, E",
+      "start": 8977,
+      "end": 10383
+    },
+    {
+      "section": "Review and Conclusions",
+      "start": 10385,
+      "end": 11549
+    },
+    {
+      "section": "Future Work",
+      "start": 11551,
+      "end": 15411
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1705.01306",
+    "arxiv_id": "1705.01306",
+    "source_url": "https://arxiv.org/abs/1705.01306",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

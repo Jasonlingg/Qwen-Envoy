@@ -1,0 +1,79 @@
+{
+  "doc_id": "qasper_1710_11334",
+  "title": "Shallow Discourse Parsing with Maximum Entropy Model",
+  "text": "Shallow Discourse Parsing with Maximum Entropy Model\n\nIn recent years, more research has been devoted to studying the subtask of the complete shallow discourse parsing, such as indentifying discourse connective and arguments of connective. There is a need to design a full discourse parser to pull these subtasks together. So we develop a discourse parser turning the free text into discourse relations. The parser includes connective identifier, arguments identifier, sense classifier and non-explicit identifier, which connects with each other in pipeline. Each component applies the maximum entropy model with abundant lexical and syntax features extracted from the Penn Discourse Tree-bank. The head-based representation of the PDTB is adopted in the arguments identifier, which turns the problem of indentifying the arguments of discourse connective into finding the head and end of the arguments. In the non-explicit identifier, the contextual type features like words which have high frequency and can reflect the discourse relation are introduced to improve the performance of non-explicit identifier. Compared with other methods, experimental results achieve the considerable performance.\n\nAutomated deriving discourse relation from free text is a challenging but im-portant problem. The shallow discourse parsing is very useful in the text summariza-tion BIBREF0 , opinion analysis BIBREF1 and natural language generation. Shallow discourse parser is the system of parsing raw text into a set of discourse relations between two adjacent or non-adjacent text spans. Discourse relation is composed of a discourse connective, two arguments of the discourse connective and the sense of the discourse connective. Discourse connective signals the explicit dis-course relation, but in non-explicit discourse relation, a discourse connective is omit-ted. Two arguments of the discourse connective, Arg1 and Arg2, which are the two adjacent or non-adjacent text spans connecting in the discourse relation. The sense of the discourse connective characterizes the nature of the discourse relations. The following discourse relation annotation is taken from the document in the PDTB. Arg1 is shown in italicized, and Arg2 is shown in bold. The discourse connective is underlined.\n\nThe connective identifier finds the connective word, “unless”. The arguments identifier locates the two arguments of “unless”. The sense classifier labels the dis-course relation. The non-explicit identifier checks all the pair of adjacent sentences. If the non-explicit identifier indentifies the pair of sentences as non-explicit relation, it will label it the relation sense. Though many research work BIBREF2 , BIBREF3 , BIBREF4 are committed to the shallow discourse parsing field, all of them are focus on the subtask of parsing only rather than the whole parsing process. Given all that, a full shallow discourse parser framework is proposed in our paper to turn the free text into discourse relations set. The parser includes connective identifier, arguments identifier, sense classifier and non-explicit identifier, which connects with each other in pipeline. In order to enhance the performance of the parser, the feature-based maximum entropy model approach is adopted in the experiment. Maximum entropy model offers a clean way to combine diverse pieces of contextual evidence in order to estimate the probability of a certain linguistic class occurring with a certain linguistic context in a simple and accessible manner. The three main contributions of the paper are:\n\nThe rest of this paper is organized as follows. Section 2 reviews related work in discourse parsing. Section 3 describes the experimental corpus–PDTB. Section 4 de-scribes the framework and the components of the parser. Section 5 presents experi-ments and evaluations. Conclusions are presented in the Section 6.\n\nDifferent from traditional shallow parsing BIBREF5 , BIBREF6 , BIBREF7 which is dealing with a single sentence, the shallow discourse parsing tries to analyze the discourse level information, which is more complicated. Since the release of second version of the Penn Discourse Treebank (PDTB), which is over the 1 million word Wall Street Journal corpus, analyzing the PDTB-2.0 is very useful for further study on shallow discourse parsing. Prasad et al. PrasadDLMRJW08 describe lexically-grounded annotations of discourse relations in PDTB. Identifying the discourse connective from ordinary words accurately is not easy because discourse words can have discourse or non-discourse usage. Pitler and Nenkova PitlerN09 use syntax feature to disambiguate explicit discourse connective in text and prove that the syntactic features can improve performance in disambiguation task. After identifying the discourse connective, there is a need to find the arguments. There are some different methods to find the arguments. Ziheng Lin et al. LinNK14 first identify the locations of Arg1, and choose sentence from prior candidate sentence if the location is before the connective. Otherwise, label arguments span by choosing the high node in the parse tree. Wellner and Pustejovsky WellnerP07 focus on identifying rela-tions between the pairs of head words. Based on such thinking, Robert Elwell and Jason Baldridge ElwellB08 improve the performance using connective specific rankers, which differentiate between specific connectives and types of connectives. Ziheng Lin et al. LinNK14 present an implicit discourse relation classifier based the Penn Discourse Treebank. All of these efforts can be viewed as the part of the full parser. More and more researcher has been devoted to the subtask of the shallow discourse parsing, like dis-ambiguating discourse connective BIBREF8 , finding implicit relation BIBREF9 . There is a need to pull these subtasks together to achieve more efforts. So in this paper, we develop a full shallow discourse parser based on the maximum entropy model using abundant features. Our parser attempts to identify connective, arguments of discourse connec-tive and the relation into right sense.\n\nThe Penn Discourse Treebank is the corpus which is over one million words from the Wall Street Journal BIBREF10 , annotated with discourse relations. The table one shows the discourse relation extracted from PDTB. Arg1 is shown in italicized, Arg2 is shown in bold. The discourse connective is underlined.\n\nDiscourse connective is the signal of explicit relation. Discourse connective in the PTDB can be classified as three categories: subordinating conjunctions (e.g., because, if, etc.), coordinating conjunctions (e.g., and, but, etc.), and discourse adverbials (e.g., however, also, tec.). Different category has different discourse usage. Discourse connective word can be ambiguous between discourse or non-discourse usage. An apparent example is 'after' because it can be a VP (e.g., \"If you are after something, you are trying to get it\") or it can be a connective (e.g., “It wasn't until after Christmas that I met Paul”). In the case of explicit relation, Arg2 is the argument to which the connective is syntactically bound, and Arg1 is the other argument. But the span of the arguments of explicit relation can be clauses or sentences. In the case of implicit relation, Arg1 is before Arg2 BIBREF11 . For explicit, implicit and altLex relation, there are three-level hierarchy of relation senses. The first level consists of four major relation classes: Temporal, Contingency, Comparison, and Expansion.\n\nWe design a complete discourse parser connecting subtasks together in pipeline. First let’s have a quick view about the procedure of the parser. The first step is pre-processing, which takes the raw text as input and generates POS tag of token, the dependency tree, constituent tree and so on. Next the parser needs to distinguish the connective between discourse usage and non-discourse usage. Then, the two argu-ments of discourse connective need to be identified. Next to above steps, the parser labels the discourse relation right sense. Until now the explicit relations already have been found fully. The last step is indentifying the non-explicit relation. The parser will handle every pair of adjacent sentences in same paragraph. The text is pre-processed by the Stanford CoreNLP tools. Stanford CoreNLP provides a series of natural language analysis tools which can tokenize the text, label tokens with their part-of-speech (POS) tag, and provides full syntactic analysis, in-cluding both constituent and dependency representation. The parser uses Stanford CoreNLP toolkit to preprocess the raw text. Next, each component of the parser will be described in detail.\n\nThe main duty of this component is disambiguate the connective words which are in PDTB predefined set. Pitler and Nenkova citePitlerN09 show that syntactic features are very useful on disambiguate discourse connective, so we adopt these syntactic fea-tures as part of our features. Ziheng Lin et al. LinKN09 show that a connective’s context and part-of-speech (POS) gives a very strong indication of discourse usage. The table 1 shows the feature we use.\n\nOn this step, we adopt the head-based thinking BIBREF12 , which turns the problem of identifying arguments of discourse connective into identifying the head and end of the arguments. First, we need to extract the candidates of arguments. To reduce the Arg1 candidates space, we only consider words with appropriate part-of-speech (all verbs, common nouns, adjectives) and within 10 ”steps” between word and connec-tive as candidates, where a step is either a sentence boundary or a dependency link. Only words in the same sentence with the connective are considered for Arg2 candi-dates. Second, we need to choose the best candidate as the head of Arg1 and Arg2. In the end, we need to obtain the arguments span according head and end of argu-ments on the constituent tree. The table 2 shows the feature we use. The table 3 shows the procedure of the arguments identifier.\n\nThe sense of discourse relation has three levels: class, type and subtype. There are four classes on the top level of the sense: Comparison, Temporal , Con-tingency, Expansion. Each class includes a set of different types, and some types may have different subtypes. The connective itself is a very good feature because discourse connective almost determine senses. So we train an explicit classifier using simple but effective features.\n\nThe non-explicit relation is the relation between adjacent sentences in same para-graph. So we just check adjacent sentences which don’t form explicit relation and then label them with non-explicit relation or nothing. In the experiment, we find that the two arguments of non-explicit relation have association with each other and also have some common words. So we introduce feature words, which indicate appear-ance of relation, like “it, them”.\n\nIn our experiments, we make use of the Section 02-21 in the PDTB as training set, Section 22 as testing set. All of components adopt maximum entropy model. In order to evaluate the performance of the discourse parser, we compare it with other approaches: (1) Baseline_1, which applies the probability information. The connective identifier predicts the connective according the frequency of the connec-tive in the train set. The arguments identifier takes the immediately previous sentence in which the connective appears as Arg1 and the text span after the connective but in the same sentence with connective as Arg2. The non-explicit identifier labels the ad-jacent sentences according to the frequency of the non-explicit relation. (2) Base-line_2, which is the parser using the Support Vector Maching as the train and predic-tion model with numeric type feature from the hashcode of the textual type feature.\n\nIt is not surprised to find that Baseline_1 shows the poorest performance, which it just considers the probability information, ignores the contextual link. The perfor-mance of Baseline_2 is better than that of “Baseline_1”. This can be mainly credited to the ability of abundant lexical and syntax features. Our parser shows better per-formance than Baselin_2 because the most of features we use are textual type fea-tures, which are convenient for the maximum entropy model. Though the textual type features can turn into numeric type according to hashcode of string, it is incon-venient for Support Vector Machine because the hashcode of string is not continu-ous. According the performance of the parser, we find that the connective identifying can achieve higher precision and recall rate. In addition, the precision and recall rate of identifying Arg2 is higher than that of identifying Arg1 because Arg2 has stronger syntax link with connective compared to Arg1. The sense has three layers: class, type and subtype.\n\nIn this paper, we design a full discourse parser to turn any free English text into discourse relation set. The parser pulls a set of subtasks together in a pipeline. On each component, we adopt the maximum entropy model with abundant lexical, syntactic features. In the non-explicit identifier, we introduce some contextual infor-mation like words which have high frequency and can reflect the discourse relation to improve the performance of non-explicit identifier. In addition, we report another two baselines in this paper, namely Baseline1 and Baseline2, which base on probabilistic model and support vector machine model, respectively. Compared with two baselines, our parser achieves the considerable improvement. As future work, we try to explore the deep learning methods BIBREF13 , BIBREF14 , BIBREF15 , BIBREF16 , BIBREF17 , BIBREF18 , BIBREF19 to improve this study. We believe that our discourse parser is very useful in many applications because we can provide the full discourse parser turning any unrestricted text into discourse structure.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 52
+    },
+    {
+      "section": "Abstract",
+      "start": 54,
+      "end": 1197
+    },
+    {
+      "section": "Introduction",
+      "start": 1199,
+      "end": 3874
+    },
+    {
+      "section": "Related Work",
+      "start": 3876,
+      "end": 6091
+    },
+    {
+      "section": "The Penn Discourse Treebank",
+      "start": 6093,
+      "end": 7506
+    },
+    {
+      "section": "Shallow Discourse Parser framework",
+      "start": 7508,
+      "end": 8681
+    },
+    {
+      "section": " Connective Identifier",
+      "start": 8683,
+      "end": 9137
+    },
+    {
+      "section": "Arguments Identifier",
+      "start": 9139,
+      "end": 10011
+    },
+    {
+      "section": "Sense Classifier",
+      "start": 10013,
+      "end": 10450
+    },
+    {
+      "section": "Non-explicit Identifier",
+      "start": 10452,
+      "end": 10899
+    },
+    {
+      "section": "Experiments",
+      "start": 10901,
+      "end": 12837
+    },
+    {
+      "section": "Conclusion",
+      "start": 12839,
+      "end": 13896
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1710.11334",
+    "arxiv_id": "1710.11334",
+    "source_url": "https://arxiv.org/abs/1710.11334",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

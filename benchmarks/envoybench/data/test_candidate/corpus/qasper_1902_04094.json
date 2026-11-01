@@ -1,0 +1,74 @@
+{
+  "doc_id": "qasper_1902_04094",
+  "title": "BERT has a Mouth, and It Must Speak: BERT as a Markov Random Field Language Model",
+  "text": "BERT has a Mouth, and It Must Speak: BERT as a Markov Random Field Language Model\n\nWe show that BERT (Devlin et al., 2018) is a Markov random field language model. Formulating BERT in this way gives way to a natural procedure to sample sentence from BERT. We sample sentences from BERT and find that it can produce high-quality, fluent generations. Compared to the generations of a traditional left-to-right language model, BERT generates sentences that are more diverse but of slightly worse quality.\n\nBERT BIBREF0 is a recently released sequence model used to achieve state-of-art results on a wide range of natural language understanding tasks, including constituency parsing BIBREF1 and machine translation BIBREF2 . Early work probing BERT's linguistic capabilities has found it surprisingly robust BIBREF3 .\n\nBERT is trained on a masked language modeling objective. Unlike a traditional language modeling objective of predicting the next word in a sequence given the history, masked language modeling predicts a word given its left and right context. Because the model expects context from both directions, it is not immediately obvious how to efficiently evaluate BERT as a language model (i.e., use it to evaluate the probability of a text sequence) or how to sample from it.\n\nWe attempt to answer these questions by showing that BERT is a combination of a Markov random field language model BIBREF4 , BIBREF5 with pseudo log-likelihood BIBREF6 training. This formulation automatically leads to a sampling procedure based on Gibbs sampling.\n\nLet $X=(x_1, \\ldots , x_T)$ be a sequence of random variables $x_i$ 's. Each random variable is categorical in that it can take one of $M$ items from a vocabulary $V=\\left\\lbrace  v_1, \\ldots , v_{M} \\right\\rbrace $ . These random variables form a fully-connected graph with undirected edges, indicating that each variable $x_i$ is dependent on all the other variables.\n\nThe discussion so far implies that BERT is in fact a Markov random field language model (MRF-LM) and that it learns a distribution over sentences (of some given length.) This suggests that we can use BERT not only as parameter initialization for finetuning but as a generative model of sentences to either score a sentence or sample a sentence.\n\nOur experiments demonstrate the potential of using BERT as a standalone language model rather than as a parameter initializer for transfer learning BIBREF0 , BIBREF2 , BIBREF16 . We show that sentences sampled from BERT are well-formed and are assigned high probabilities by an off-the-shelf language model. We take pretrained BERT models trained on a mix of Toronto Book Corpus BIBREF17 and Wikipedia provided by BIBREF0 and its PyTorch implementation provided by HuggingFace.\n\nWe consider several evaluation metrics to estimate the quality and diversity of the generations.\n\nWe follow BIBREF18 by computing BLEU BIBREF19 between the generations and the original data distributions to measure how similar the generations are. We use a random sample of 5000 sentences from the test set of WikiText-103 BIBREF20 and a random sample of 5000 sentences from TBC as references.\n\nWe also evaluate the perplexity of a trained language model on the generations as a rough proxy for fluency. Specifically, we use the Gated Convolutional Language Model BIBREF21 pretrained on WikiText-103.\n\nFollowing BIBREF22 , we compute self-BLEU: for each generated sentence, we compute BLEU treating the rest of the sentences as references, and average across sentences. Self-BLEU measures how similar each generated sentence is to the other generations; high self-BLEU indicates that the model has low sample diversity.\n\nWe also evaluate the percentage of $n$ -grams that are unique, when compared to the original data distribution and within the corpus of generations. We note that this metric is somewhat in opposition to BLEU between generations and data, as fewer unique $n$ -grams implies higher BLEU.\n\nWe use the non-sequential sampling scheme, as empirically this led to the most coherent generations. We show generations from the sequential sampler in Table 4 in the appendix. We compare against generations from a high-quality neural language model, the OpenAI Generative Pre-Training Transformer BIBREF23 , which was trained on TBC and has approximately the same number of parameters as the base configuration of BERT. For all models, we generate 1000 uncased sequences of length 40.\n\nWe present sample generations, quality results, and diversity results respectively in Tables 1 , 2 , 3 .\n\nWe find that, compared to GPT, the BERT generations are of worse quality, but are more diverse. Particularly telling is that the outside language model, which was trained on Wikipedia, is less perplexed by the GPT generations than the BERT generations. GPT was only trained on romance novels, whereas BERT was trained on romance novels and Wikipedia. However, we do see that the perplexity on BERT samples is not absurdly high, and in reading the samples, we find that many are fairly coherent.\n\nWe find that BERT generations are more diverse than GPT generations. GPT has high $n$ -gram overlap (smaller percent of unique $n$ -grams) with TBC, but surprisingly also with WikiText-103, despite being trained on different data. BERT has lower $n$ -gram overlap with both corpora, perhaps because of worse quality generations, but also has lower self-BLEU.\n\nWe show that BERT is a Markov random field language model. We give a practical algorithm for generating from BERT without any additional training and verify in experiments that the algorithm produces diverse and fairly fluent generations. Further work might explore sampling methods that do not need to run the model over the entire sequence each iteration and that enable conditional generation. To facilitate further investigation, we release our code on GitHub at https://github.com/kyunghyuncho/bert-gen and a demo as a Colab notebook at https://colab.research.google.com/drive/1MxKZGtQ9SSBjTK5ArsZ5LKhkztzg52RV.\n\nAW is supported by an NSF Graduate Research Fellowship. KC is partly supported by Samsung Advanced Institute of Technology (Next Generation Deep Learning: from Pattern Recognition to AI) and Samsung Electronics (Improving Deep Learning using Latent Structure).\n\nWe investigated two other sampling strategies: left-to-right and generating for all positions at each time step. See Section \"Using BERT as an MRF-LM\" for an explanation of the former. For the latter, we start with an initial sequence of all masks, and at each time step, we would not mask any positions but would generate for all positions. This strategy is designed to save on computation. However, we found that this tended to get stuck in non-fluent sentences that could not be recovered from. We present sample generations for the left-to-right strategy in Table 4 .",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 81
+    },
+    {
+      "section": "Abstract",
+      "start": 83,
+      "end": 501
+    },
+    {
+      "section": "Introduction",
+      "start": 503,
+      "end": 1548
+    },
+    {
+      "section": "BERT as a Markov Random Field",
+      "start": 1550,
+      "end": 1919
+    },
+    {
+      "section": "Using BERT as an MRF-LM",
+      "start": 1921,
+      "end": 2265
+    },
+    {
+      "section": "Experiments",
+      "start": 2267,
+      "end": 2744
+    },
+    {
+      "section": "Evaluation",
+      "start": 2746,
+      "end": 4439
+    },
+    {
+      "section": "Results",
+      "start": 4441,
+      "end": 5401
+    },
+    {
+      "section": "Conclusion",
+      "start": 5403,
+      "end": 6019
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 6021,
+      "end": 6281
+    },
+    {
+      "section": "Other Sampling Strategies",
+      "start": 6283,
+      "end": 6854
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1902.04094",
+    "arxiv_id": "1902.04094",
+    "source_url": "https://arxiv.org/abs/1902.04094",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

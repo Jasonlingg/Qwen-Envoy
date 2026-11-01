@@ -1,0 +1,104 @@
+{
+  "doc_id": "qasper_1604_02201",
+  "title": "Transfer Learning for Low-Resource Neural Machine Translation",
+  "text": "Transfer Learning for Low-Resource Neural Machine Translation\n\nThe encoder-decoder framework for neural machine translation (NMT) has been shown effective in large data scenarios, but is much less effective for low-resource languages. We present a transfer learning method that significantly improves Bleu scores across a range of low-resource languages. Our key idea is to first train a high-resource language pair (the parent model), then transfer some of the learned parameters to the low-resource pair (the child model) to initialize and constrain training. Using our transfer learning method we improve baseline NMT models by an average of 5.6 Bleu on four low-resource language pairs. Ensembling and unknown word replacement add another 2 Bleu which brings the NMT performance on low-resource machine translation close to a strong syntax based machine translation (SBMT) system, exceeding its performance on one language pair. Additionally, using the transfer learning model for re-scoring, we can improve the SBMT system by an average of 1.3 Bleu, improving the state-of-the-art on low-resource machine translation.\n\nNeural machine translation (NMT) BIBREF0 is a promising paradigm for extracting translation knowledge from parallel text. NMT systems have achieved competitive accuracy rates under large-data training conditions for language pairs such as English-French. However, neural methods are data-hungry and learn poorly from low-count events. This behavior makes vanilla NMT a poor choice for low-resource languages, where parallel data is scarce. Table 1 shows that for 4 low-resource languages, a standard string-to-tree statistical MT system (SBMT) BIBREF1 , BIBREF2 strongly outperforms NMT, even when NMT uses the state-of-the-art local attention plus feed-input techniques from luong2015effective.\n\nIn this paper, we give a method for substantially improving NMT results on these languages. Neural models learn representations of their input that are often useful across tasks. Our key idea is to first train a high-resource language pair, then use the resulting trained network (the parent model) to initialize and constrain training for our low-resource language pair (the child model). We find that we can optimize our results by fixing certain parameters of the parent model, letting the rest be fine-tuned by the child model. We report NMT improvements from transfer learning of 5.6 Bleu on average, and we provide an analysis of why the method works. The final NMT system approaches strong SBMT baselines in in all four language pairs, and exceeds SBMT performance in one of them. Furthermore, we show that NMT is an exceptional re-scorer of `traditional' MT output; even NMT that on its own is worse than SBMT is consistently able to improve upon SBMT system output when incorporated as a re-scoring model.\n\nWe start by a brief description of our NMT model in Section \"NMT Background\" . Section \"Transfer Results\" gives some background on transfer learning and explains how we use it to improve machine translation performance. Our main experiments translating Hausa, Turkish, Uzbek and Urdu into English with the help of a French-English parent model are presented in Section \"Experiments\" . Section \"Analysis\" explores alternatives to our model to enhance understanding. We find that the choice of parent language pair affects performance, and provide an empirical upper bound on transfer performance using an artificial language. We experiment with English-only language models, copy models, and word-sorting models to show that what we transfer goes beyond monolingual information and using a translation model trained on bilingual corpora as a parent is essential. We show the effects of freezing, fine-tuning, and smarter initialization of different components of the attention-based NMT system during transfer. We compare the learning curves of transfer and no-transfer models showing that transfer solves an overfitting problem, not a search problem. We summarize our contributions in Section \"Conclusion\" .\n\nIn the neural encoder-decoder framework for MT BIBREF3 , BIBREF4 , BIBREF0 , BIBREF5 , BIBREF6 , we use a recurrent neural network (encoder) to convert a source sentence into a dense, fixed-length vector. We then use another recurrent network (decoder) to convert that vector to a target sentence. In this paper, we use a two-layer encoder-decoder system (Figure 1 ) with long short-term memory (LSTM) units BIBREF7 trained to optimize maximum likelihood (via a softmax layer) with back-propagation through time BIBREF8 . Additionally, we use an attention mechanism that allows the target decoder to look back at the source encoder, specifically the local attention plus feed-input model from luong2015effective.\n\nTransfer learning uses knowledge from a learned task to improve the performance on a related task, typically reducing the amount of required training data BIBREF9 , BIBREF10 . In natural language processing, transfer learning methods have been successfully applied to speech recognition, document classification and sentiment analysis BIBREF11 . Deep learning models discover multiple levels of representation, some of which may be useful across tasks, which makes them particularly suited to transfer learning BIBREF12 . For example, cirecsan2012transfer use a convolutional neural network to recognize handwritten characters and show positive effects of transfer between models for Latin and Chinese characters. Ours is the first study to apply transfer learning to neural machine translation.\n\nThe transfer learning approach we use is simple and effective. We first train an NMT model on a dataset where there is a large amount of bilingual data (e.g., French-English), which we call the parent model. Next, we initialize an NMT model with the already-trained parent model. This new model is then trained on a dataset with very little bilingual data (e.g., Uzbek-English), which we call the child model. This means that the low-data NMT model will not start with random weights, but with the weights from the parent model.\n\nA justification for this approach is that in scenarios where we have limited training data, we need a strong prior distribution over models. The parent model trained on a large amount of bilingual data can be considered an anchor point, the peak of our prior distribution in model space. When we train the child model initialized with the parent model, we fix parameters likely to be useful across tasks so that they will not be changed during child-model training. In the French-English to Uzbek-English example, as a result of the initialization, the English word embeddings from the parent model are copied, but the Uzbek words are initially mapped to random French embeddings. The English embeddings should be kept but the Uzbek embeddings should be modified during training of the child model. Freezing certain portions of the parent model and fine tuning others can be considered a hard approximation to a tight prior or strong regularization applied to some of the parameters. We also experiment with ordinary L2 regularization, but find it does not significantly improve over the parameter freezing described above.\n\nOur method results in large Bleu increases for a variety of low resource languages. In one of the four language pairs our NMT system using transfer beats a strong SBMT baseline. Not only do these transfer models do well on their own, they also give large gains when used for rescoring $n$ -best lists ( $n = 1000$ ) from the SBMT system. Section \"Experiments\" details these results.\n\nTo evaluate how well our transfer method works we apply it to a variety of low-resource languages, both stand-alone and for re-scoring a strong SBMT baseline. We report large Bleu increases across the board with our transfer method.\n\nFor all of our experiments with low-resource languages we use French as the parent source language and for child source languages we use Hausa, Turkish, Uzbek, and Urdu. The target language is always English. Table 1 shows parallel training data set sizes for the child languages, where the language with the most data has only 1.8m English tokens. For comparison, our parent French-English model uses a training set with 300 million English tokens and achieves 26 Bleu on the development set. Table 1 also shows the SBMT system scores along with the NMT baselines that do not use transfer. There is a large gap between the SBMT and NMT systems without using our transfer method.\n\nThe SBMT system used in this paper is a string-to-tree statistical machine translation system BIBREF2 , BIBREF1 . In this system there are two count-based 5-gram language models. One is trained on the English side of the WMT 2015 English-French dataset and the other is trained on the English side of the low-resource bitext. Additionally, the SBMT models use thousands of sparsely-occurring, lexicalized syntactic features BIBREF13 .\n\nFor our NMT system, we use development sets for Hausa, Turkish, Uzbek, and Urdu to tune the learning rate, parameter initialization range, dropout rate and hidden state size for all the experiments. For training we use a minibatch size of 128, hidden state size of 1000, a target vocabulary size of 15K and a source vocabulary size of 30K. The child models are trained with a dropout probability of 0.5 as in dropout. The common parent model is trained with a dropout probability of 0.2. The learning rate used for both child and parents is 0.5 with a decay rate of 0.9 when the development perplexity does not improve. The child models are all trained for 100 epochs. We re-scale the gradient when the gradient norm is greater than 5. The initial parameter range is $[$ -0.08, +0.08 $]$ .\n\nThe results for our transfer learning method applied to the four languages above are in Table 2 . The parent models were trained on the WMT 2015 BIBREF14 French-English corpus for 5 epochs. Our baseline NMT systems (`NMT' column) all receive a large Bleu improvement when using the transfer method (the `Xfer' column) with an average Bleu improvement of 5.6. Additionally, when we use unknown word replacement from luong-EtAl:2015:ACL-IJCNLP and ensemble together 8 models (the `Final' column) we further improve upon our Bleu scores, bringing the average Bleu improvement to 7.5. Overall our method allows the NMT system to reach competitive scores and beat the SBMT system in one of the four language pairs.\n\nWe also use the NMT model with transfer learning to re-score output $n$ -best lists ( $n = 1000$ ) from the SBMT system. Table 3 shows the results of re-scoring. Transfer NMT models give the highest gains over using re-scoring with a neural language model or an NMT system that does not use transfer. The neural language model is an LSTM RNN with 2 layers and 1000 hidden states. It has a target vocabulary of 100K and is trained using noise-contrastive estimation BIBREF15 , BIBREF16 , BIBREF17 , BIBREF18 . Additionally, it is trained using dropout with a dropout probability of 0.2 as in BIBREF19 . From re-scoring with the transfer model, we get an improvement of 1.1–1.6 Bleu points above the strong SBMT system.\n\nWe ran a number of additional experiments to understand what components of our final transfer model significantly contribute to the overall result. Section \"Analysis\" details these experiments.\n\nWe analyze the effects of using different parent models, regularizing different parts of the child model and trying different regularization techniques.\n\nIn the above experiments we use French-English as the parent language pair. Here, we experiment with different parent languages. In this set of experiments we use Spanish-English as the child language pair, rather then Hausa, Turkish, Uzbek, or Urdu. A description of the data used in this section is presented in Table 4 .\n\nOur experimental results are shown in Table 5 , where we use French and German as parent languages. If we just train a model with no transfer on a small Spanish-English training set we get a Bleu score of 16.4. When using our transfer method using French and German as parent languages, we get Bleu scores of 31.0 and 29.8 respectively. As expected, French is a better parent than German for Spanish, which could be the result of the parent language being more similar to the child language.\n\nOverall, we can see that the choice of parent language can make a difference in the Bleu score, so in our Hausa, Turkish, Uzbek, and Urdu experiments, a parent language more optimal than French might improve results.\n\nNext, we look at a best-case scenario in which the parent language is as similar as possible to the child language. Here we devise a synthetic child language (called French') which is exactly like French, except its vocabulary is shuffled randomly. (e.g., “internationale” is now “pomme”, etc). This language, which looks unintelligible to human eyes, nevertheless has the same distributional and relational properties as actual French, i.e. the word that, prior to vocabulary reassignment, was `roi' (king) is likely to share distributional characteristics, and hence embedding similarity, to the word that, prior to reassignment, was `reine' (queen). Such a language should be the ideal parent model.\n\nThe results of this experiment are shown in Table 6 . We get a 4.3 Bleu improvement with an unrelated parent (i.e. French-parent and Uzbek-child), but we get a 6.7 Bleu improvement with a `closely related' parent (i.e. French-parent and French'-child). We conclude that the choice of parent model can have a strong impact on transfer models, and choosing better parents for our low-resource languages (if data for such parents can be obtained) could improve the final results.\n\nIn all the above experiments, only the target input and output embeddings are fixed during training. In this section we analyze what happens when different parts of the model are fixed, in order to see what yields optimal performance. Figure 2 shows a diagram of the components of a sequence-to-sequence model. Table 7 shows how we begin to allow more components of the child NMT model to be trained and see the effect on performance in the model. We see that the optimal setting for transferring from French-English to Uzbek-English in terms of Bleu performance is to allow all of the components of the child model to be trained except for the input and output target embeddings.\n\nEven though we use this setting for our main experiments, the optimum setting is likely to be language- and corpus-dependent. For Turkish, experiments show that freezing target attention parameters as well gives slightly better results. For parent-child models with closely related languages we expect freezing, or strongly regularizing, more components of the model to give better results.\n\nIn Figure 3 we plot learning curves for both a transfer and a non-transfer model on training and development sets. We see that the final training set perplexities for both the transfer and non-transfer model are very similar, but the development set perplexity for the transfer model is much better.\n\nThe fact that the two models start from and converge to very different points, yet have similar training set performances, indicates that our architecture and training algorithm are able to reach a good minimum of the training objective regardless of the initialization. However, the training objective seems to have a large basin of models with similar performance and not all of them generalize well to the development set. The transfer model, starting with and staying close to a point known to perform well on a related task, is guided to a final point in the weight space that generalizes to the development set much better.\n\nUsing the transfer method, we always initialize input language embeddings for the child model with randomly-assigned embeddings from the parent (which has a different input language). A smarter method might be to initialize child embeddings with similar parent embeddings, where similarity is measured by word-to-word t-table probabilities. To get these probabilities we compose Uzbek-English and English-French t-tables obtained from the Berkeley Aligner BIBREF20 . We see from Figure 4 that this dictionary-based assignment results in faster improvement in the early part of the training. However the final performance is similar to our standard model, indicating that the training is able to untangle the dictionary permutation introduced by randomly-assigned embeddings.\n\nIn the above experiments, we use a parent model trained on a large French/English bilingual corpus. One might hypothesize that our gains come from exploiting the English half of the corpus as an additional language model resource. Therefore, we explore transfer learning for the child model with parent models that only use the English side of the bilingual corpus. Table 8 shows the results for these experiments where we train one parent model to copy English sentences (English-English) and another parent model to un-permute scrambled English sentences (EngPerm-English). Additionally, we train a parent model that is just an RNN language model. These results show that our transfer learning is not simply importing an English language model, but making use of translation parameters learned from the parent's large bilingual text.\n\nOverall our transfer method improves NMT scores on low-resource languages by a large margin and allows our transfer NMT system to come close to the performance of a very strong SBMT system, even exceeding its performance on Hausa-English. In addition, we consistently and significantly improve state-of-the-art SBMT systems on low-resource languages when the transfer NMT system is used for re-scoring. Our experiments suggest that there is still room for improvement in selecting parent languages that are more similar to child languages, provided data for such parents can be found.\n\nThis work was carried out with funding from DARPA (HR0011-15-C-0115) and ARL/ARO (W911NF-10-1-0533).",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 61
+    },
+    {
+      "section": "Abstract",
+      "start": 63,
+      "end": 1122
+    },
+    {
+      "section": "Introduction",
+      "start": 1124,
+      "end": 4044
+    },
+    {
+      "section": "NMT Background",
+      "start": 4046,
+      "end": 4758
+    },
+    {
+      "section": "Transfer Learning",
+      "start": 4760,
+      "end": 7594
+    },
+    {
+      "section": "Experiments",
+      "start": 7596,
+      "end": 9736
+    },
+    {
+      "section": "Transfer Results",
+      "start": 9738,
+      "end": 10447
+    },
+    {
+      "section": "Re-scoring Results",
+      "start": 10449,
+      "end": 11361
+    },
+    {
+      "section": "Analysis",
+      "start": 11363,
+      "end": 11515
+    },
+    {
+      "section": "Different Parent Languages",
+      "start": 11517,
+      "end": 12551
+    },
+    {
+      "section": "Effects of having Similar Parent Language",
+      "start": 12553,
+      "end": 13733
+    },
+    {
+      "section": "Ablation Analysis",
+      "start": 13735,
+      "end": 14807
+    },
+    {
+      "section": "Learning Curve",
+      "start": 14809,
+      "end": 15739
+    },
+    {
+      "section": "Dictionary Initialization",
+      "start": 15741,
+      "end": 16515
+    },
+    {
+      "section": "Different Parent Models",
+      "start": 16517,
+      "end": 17352
+    },
+    {
+      "section": "Conclusion",
+      "start": 17354,
+      "end": 17938
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 17940,
+      "end": 18040
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1604.02201",
+    "arxiv_id": "1604.02201",
+    "source_url": "https://arxiv.org/abs/1604.02201",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

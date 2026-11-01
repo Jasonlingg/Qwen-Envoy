@@ -1,0 +1,84 @@
+{
+  "doc_id": "qasper_1805_11598",
+  "title": "Polyglot Semantic Role Labeling",
+  "text": "Polyglot Semantic Role Labeling\n\nPrevious approaches to multilingual semantic dependency parsing treat languages independently, without exploiting the similarities between semantic structures across languages. We experiment with a new approach where we combine resources from a pair of languages in the CoNLL 2009 shared task to build a polyglot semantic role labeler. Notwithstanding the absence of parallel data, and the dissimilarity in annotations between languages, our approach results in an improvement in SRL performance on multiple languages over a monolingual baseline. Analysis of the polyglot model shows it to be advantageous in lower-resource settings.\n\nThe standard approach to multilingual NLP is to design a single architecture, but tune and train a separate model for each language. While this method allows for customizing the model to the particulars of each language and the available data, it also presents a problem when little data is available: extensive language-specific annotation is required. The reality is that most languages have very little annotated data for most NLP tasks.\n\nammar2016malopa found that using training data from multiple languages annotated with Universal Dependencies BIBREF1 , and represented using multilingual word vectors, outperformed monolingual training. Inspired by this, we apply the idea of training one model on multiple languages—which we call polyglot training—to PropBank-style semantic role labeling (SRL). We train several parsers for each language in the CoNLL 2009 dataset BIBREF0 : a traditional monolingual version, and variants which additionally incorporate supervision from English portion of the dataset. To our knowledge, this is the first multilingual SRL approach to combine supervision from several languages.\n\nThe CoNLL 2009 dataset includes seven different languages, allowing study of trends across the same. Unlike the Universal Dependencies dataset, however, the semantic label spaces are entirely language-specific, making our task more challenging. Nonetheless, the success of polyglot training in this setting demonstrates that sharing of statistical strength across languages does not depend on explicit alignment in annotation conventions, and can be done simply through parameter sharing. We show that polyglot training can result in better labeling accuracy than a monolingual parser, especially for low-resource languages. We find that even a simple combination of data is as effective as more complex kinds of polyglot training. We include a breakdown into label categories of the differences between the monolingual and polyglot models. Our findings indicate that polyglot training consistently improves label accuracy for common labels.\n\nWe evaluate our system on the semantic role labeling portion of the CoNLL-2009 shared task BIBREF0 , on all seven languages, namely Catalan, Chinese, Czech, English, German, Japanese and Spanish. For each language, certain tokens in each sentence in the dataset are marked as predicates. Each predicate takes as arguments other words in the same sentence, their relationship marked by labeled dependency arcs. Sentences may contain no predicates.\n\nDespite the consistency of this format, there are significant differences between the training sets across languages. English uses PropBank role labels BIBREF2 . Catalan, Chinese, English, German, and Spanish include (but are not limited to) labels such as “arg INLINEFORM0 -agt” (for “agent”) or “A INLINEFORM1 ” that may correspond to some degree to each other and to the English roles. Catalan and Spanish share most labels (being drawn from the same source corpus, AnCora; BIBREF3 ), and English and German share some labels. Czech and Japanese each have their own distinct sets of argument labels, most of which do not have clear correspondences to English or to each other.\n\nWe also note that, due to semi-automatic projection of annotations to construct the German dataset, more than half of German sentences do not include labeled predicate and arguments. Thus while German has almost as many sentences as Czech, it has by far the fewest training examples (predicate-argument structures); see Table TABREF3 .\n\nGiven a sentence with a marked predicate, the CoNLL 2009 shared task requires disambiguation of the sense of the predicate, and labeling all its dependent arguments. The shared task assumed predicates have already been identified, hence we do not handle the predicate identification task.\n\nOur basic model adapts the span-based dependency SRL model of He2017-deepsrl. This adaptation treats the dependent arguments as argument spans of length 1. Additionally, BIO consistency constraints are removed from the original model— each token is tagged simply with the argument label or an empty tag. A similar approach has also been proposed by marcheggiani2017lstm.\n\nThe input to the model consists of a sequence of pretrained embeddings for the surface forms of the sentence tokens. Each token embedding is also concatenated with a vector indicating whether the word is a predicate or not. Since the part-of-speech tags in the CoNLL 2009 dataset are based on a different tagset for each language, we do not use these. Each training instance consists of the annotations for a single predicate. These representations are then passed through a deep, multi-layer bidirectional LSTM BIBREF4 , BIBREF5 with highway connections BIBREF6 .\n\nWe use the hidden representations produced by the deep biLSTM for both argument labeling and predicate sense disambiguation in a multitask setup; this is a modification to the models of He2017-deepsrl, who did not handle predicate senses, and of marcheggiani2017lstm, who used a separate model. These two predictions are made independently, with separate softmaxes over different last-layer parameters; we then combine the losses for each task when training. For predicate sense disambiguation, since the predicate has been identified, we choose from a small set of valid predicate senses as the tag for that token. This set of possible senses is selected based on the training data: we map from lemmatized tokens to predicates and from predicates to the set of all senses of that predicate. Most predicates are only observed to have one or two corresponding senses, making the set of available senses at test time quite small (less than five senses/predicate on average across all languages). If a particular lemma was not observed in training, we heuristically predict it as the first sense of that predicate. For Czech and Japanese, the predicate sense annotation is simply the lemmatized token of the predicate, giving a one-to-one predicate-“sense” mapping.\n\nFor argument labeling, every token in the sentence is assigned one of the argument labels, or INLINEFORM0 if the model predicts it is not an argument to the indicated predicate.\n\nWe use pretrained word embeddings as input to the model. For each of the shared task languages, we produced GloVe vectors BIBREF7 from the news, web, and Wikipedia text of the Leipzig Corpora Collection BIBREF8 . We trained 300-dimensional vectors, then reduced them to 100 dimensions with principal component analysis for efficiency.\n\nIn the first polyglot variant, we consider multilingual sharing between each language and English by using pretrained multilingual embeddings. This polyglot model is trained on the union of annotations in the two languages. We use stratified sampling to give the two datasets equal effective weight in training, and we ensure that every training instance is seen at least once per epoch.\n\nThe basis of our polyglot training is the use of pretrained multilingual word vectors, which allow representing entirely distinct vocabularies (such as the tokens of different languages) in a shared representation space, allowing crosslingual learning BIBREF9 . We produced multilingual embeddings from the monolingual embeddings using the method of ammar2016massively: for each non-English language, a small crosslingual dictionary and canonical correlation analysis was used to find a transformation of the non-English vectors into the English vector space BIBREF10 .\n\nUnlike multilingual word representations, argument label sets are disjoint between language pairs, and correspondences are not clearly defined. Hence, we use separate label representations for each language's labels. Similarly, while (for example) eng:look and spa:mira may be semantically connected, the senses look.01 and mira.01 may not correspond. Hence, predicate sense representations are also language-specific.\n\nIn the second variant, we concatenate a language ID vector to each multilingual word embedding and predicate indicator feature in the input representation. This vector is randomly initialized and updated in training. These additional parameters provide a small degree of language-specificity in the model, while still sharing most parameters.\n\nThis third variant takes inspiration from the “frustratingly easy” architecture of daumeiii2007easy for domain adaptation. In addition to processing every example with a shared biLSTM as in previous models, we add language-specific biLSTMs that are trained only on the examples belonging to one language. Each of these language-specific biLSTMs is two layers deep, and is combined with the shared biSLTM in the input to the third layer. This adds a greater degree of language-specific processing while still sharing representations across languages. It also uses the language identification vector and multilingual word vectors in the input.\n\nWe present our results in Table TABREF11 . We observe that simple polyglot training improves over monolingual training, with the exception of Czech, where we observe no change in performance. The languages with the fewest training examples (German, Japanese, Catalan) show the most improvement, while large-dataset languages such as Czech or Chinese see little or no improvement (Figure FIGREF10 ).\n\nThe language ID model performs inconsistently; it is better than the simple polyglot model in some cases, including Czech, but not in all. The language-specific LSTMs model performs best on a few languages, such as Catalan and Chinese, but worst on others. While these results may reflect differences between languages in the optimal amount of crosslingual sharing, we focus on the simple polyglot results in our analysis, which sufficiently demonstrate that polyglot training can improve performance over monolingual training.\n\nWe also report performance of state-of-the-art systems in each of these languages, all of which make explicit use of syntactic features, marcheggiani2017lstm excepted. While this results in better performance on many languages, our model has the advantage of not relying on a syntactic parser, and is hence more applicable to languages with lower resources. However, the results suggest that syntactic information is critical for strong performance on German, which has the fewest predicates and thus the least semantic annotation for a semantics-only model to learn from. Nevertheless, our baseline is on par with the best published scores for Chinese, and it shows strong performance on most languages.\n\nRecent improvements in multilingual SRL can be attributed to neural architectures. Swayamdipta2016-qt present a transition-based stack LSTM model that predicts syntax and semantics jointly, as a remedy to the reliance on pipelined models. Guo2016-zc and BIBREF11 use deep biLSTM architectures which use syntactic information to guide the composition. marcheggiani2017lstm use a simple LSTM model over word tokens to tag semantic dependencies, like our model. Their model predicts a token's label based on the combination of the token vector and the predicate vector, and saw benefits from using POS tags, both improvements that could be added to our model. marcheggiani2017gcn apply the recently-developed graph convolutional networks to SRL, obtaining state of the art results on English and Chinese. All of these approaches are orthogonal to ours, and might benefit from polyglot training.\n\nOther polyglot models have been proposed for semantics. Richardson2018-ov-naacl train on multiple (natural language)-(programming language) pairs to improve a model that translates API text into code signature representations. Duong2017-qy treat English and German semantic parsing as a multi-task learning problem and saw improvement over monolingual baselines, especially for small datasets. Most relevant to our work is Johannsen2015-nb, which trains a polyglot model for frame-semantic parsing. In addition to sharing features with multilingual word vectors, they use them to find word translations of target language words for additional lexical features.\n\nIn this work, we have explored a straightforward method for polyglot training in SRL: use multilingual word vectors and combine training data across languages. This allows sharing without crosslingual alignments, shared annotation, or parallel data. We demonstrate that a polyglot model can outperform a monolingual one for semantic analysis, particularly for languages with less data.\n\nWe thank Luke Zettlemoyer, Luheng He, and the anonymous reviewers for helpful comments and feedback. This research was supported in part by the Defense Advanced Research Projects Agency (DARPA) Information Innovation Office (I2O) under the Low Resource Languages for Emergent Incidents (LORELEI) program issued by DARPA/I2O under contract HR001115C0113 to BBN. Views expressed are those of the authors alone.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "section": "Abstract",
+      "start": 33,
+      "end": 666
+    },
+    {
+      "section": "Introduction",
+      "start": 668,
+      "end": 2731
+    },
+    {
+      "section": "Data",
+      "start": 2733,
+      "end": 4197
+    },
+    {
+      "section": "Model",
+      "start": 4199,
+      "end": 6868
+    },
+    {
+      "section": "Monolingual Baseline",
+      "start": 6870,
+      "end": 7204
+    },
+    {
+      "section": "Simple Polyglot Sharing",
+      "start": 7206,
+      "end": 8584
+    },
+    {
+      "section": "Language Identification",
+      "start": 8586,
+      "end": 8928
+    },
+    {
+      "section": "Language-Specific LSTMs",
+      "start": 8930,
+      "end": 9571
+    },
+    {
+      "section": "Experiments",
+      "start": 9573,
+      "end": 11206
+    },
+    {
+      "section": "Related Work",
+      "start": 11208,
+      "end": 12761
+    },
+    {
+      "section": "Conclusion",
+      "start": 12763,
+      "end": 13148
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 13150,
+      "end": 13558
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1805.11598",
+    "arxiv_id": "1805.11598",
+    "source_url": "https://arxiv.org/abs/1805.11598",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

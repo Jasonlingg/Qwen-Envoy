@@ -1,0 +1,99 @@
+{
+  "doc_id": "qasper_1909_04242",
+  "title": "Mitigating Annotation Artifacts in Natural Language Inference Datasets to Improve Cross-dataset Generalization Ability",
+  "text": "Mitigating Annotation Artifacts in Natural Language Inference Datasets to Improve Cross-dataset Generalization Ability\n\nNatural language inference (NLI) aims at predicting the relationship between a given pair of premise and hypothesis. However, several works have found that there widely exists a bias pattern called annotation artifacts in NLI datasets, making it possible to identify the label only by looking at the hypothesis. This irregularity makes the evaluation results over-estimated and affects models' generalization ability. In this paper, we consider a more trust-worthy setting, i.e., cross-dataset evaluation. We explore the impacts of annotation artifacts in cross-dataset testing. Furthermore, we propose a training framework to mitigate the impacts of the bias pattern. Experimental results demonstrate that our methods can alleviate the negative effect of the artifacts and improve the generalization ability of models.\n\nNatural language inference (NLI) is a widely-studied problem in natural language processing. It aims at comparing a pair of sentences (i.e. a premise and a hypothesis), and inferring the relationship between them (i.e., entailment, neutral and contradiction). Large-scaled datasets like SNLI BIBREF0 and MultiNLI BIBREF1 have been created by crowd-sourcing and fertilized NLI research substantially.\n\nHowever, several works BIBREF2, BIBREF3, BIBREF4 have pointed out that crowd-sourcing workers have brought a bias pattern named annotation artifacts in these NLI datasets. Such artifacts in hypotheses can reveal the labels and make it possible to predict the labels solely by looking at the hypotheses. For example, models trained on SNLI with only the hypotheses can achieve an accuracy of 67.0%, despite the always predicting the majority-class baseline is only 34.3% BIBREF2.\n\nClassifiers trained on NLI datasets are supposed to make predictions by understanding the semantic relationships between given sentence pairs. However, it is shown that models are unintentionally utilizing the annotation artifacts BIBREF4, BIBREF2. If the evaluation is conducted under a similar distribution as the training data, e.g., with the given testing set, models will enjoy additional advantages, making the evaluation results over-estimated. On the other hand, if the bias pattern cannot be generalized to the real-world, it may introduce noise to models, thus hurting the generalization ability.\n\nIn this paper, we use cross-dataset testing to better assess models' generalization ability. We investigate the impacts of annotation artifacts in cross-dataset testing. Furthermore, we propose an easy-adopting debiasing training framework, which doesn't require any additional data or annotations, and apply it to the high-performing Densely Interactive Inference Network BIBREF5. Experiments show that our method can effectively mitigate the bias pattern and improve the cross-dataset generalization ability of models. To the best of our knowledge, our work is the first attempt to alleviate the annotation artifacts without any extra resources.\n\nFrequently-used NLI datasets such as SNLI and MultiNLI are created by crowd-sourcing BIBREF0, BIBREF1, during which they present workers a premise and ask them to produce three hypotheses corresponding to labels. As BIBREF2 pointed out, workers may adopt some specific annotation strategies and heuristics when authoring hypotheses to save efforts, which produces certain patterns called annotation artifacts in the data. Models' trained on such datasets are heavily affected by the bias pattern BIBREF2.\n\nBIBREF4 further investigate models' robustness to the bias pattern using swapping operations. BIBREF6 demonstrate that the annotation artifacts widely exist among NLI datasets. They show that hypothesis-only-model, which refers to models trained and predict only with hypotheses, outperforms always predicting the majority-class in six of ten NLI datasets.\n\nThe emergence of the pattern can be due to selection bias BIBREF7, BIBREF8, BIBREF9 in the datasets preparing procedure. Several works BIBREF10, BIBREF11 investigate the bias problem in relation inference datasest. BIBREF12 investigate the selection bias embodied in the comparing relationships in six natural language sentence matching datasets and propose a debiasing training and evaluation framework.\n\nEssentially speaking, the problem of the bias pattern is that the artifacts in hypotheses are distributed differently among labels, so balancing them across labels may be a good solution to alleviate the impacts BIBREF2.\n\nBased on the idea proposed by BIBREF12, we demonstrate that we can make artifacts in biased datasets balanced across different classes by assigning specific weights for every sample. We refer the distribution of the acquired weighted dataset as artifact-balanced distribution. We consider a supervised NLI task, which is to predict the relationship label $y$ given a sentence pair $x$, and we denote the hypothesis in $x$ as $h$. Without loss of generality, we assume that the prior probability of different labels is equal, and then we have the following theorem.\n\nTheorem 1 For any classifier $f=f(x, h)$, and for any loss function $\\Delta (f(x, h), y)$, if we use $w = \\frac{1}{P(y|h)}$ as weight for every sample during training, it's equivalent to training with the artifact-balanced distribution.\n\nDetailed assumptions and the proof of the theorem is presented in Appendix SECREF6. With the theorem, we can simply use cross predictions to estimate $P(y|h)$ in origin datasets and use them as sample weights during training. The step-by-step procedure for artifact-balanced learning is presented in Algorithm 1.\n\nHowever, it is difficult to precisely estimate the probability $P(y|h)$. A minor error might lead to a significant difference to the weight, especially when the probability is close to zero. Thus, in practice, we use $w = \\frac{1}{(1-\\epsilon )P(y|h) + \\epsilon }$ as sample weights during training in order to improve the robustness. We can find that as $\\epsilon $ increases, the weights tend to be uniform, indicating that the debiasing effect decreases as the smooth term grows. Moreover, in order to keep the prior probability $P(Y)$ unchanged, we normalize the sum of weights of the three labels to the same.\n\nIn this section, we present the experimental results for cross-dataset testing of artifacts and artifact-balanced learning. We show that cross-dataset testing is less affected by annotation artifacts, while there are still some influences more or less in different datasets. We also demonstrate that our proposed framework can mitigate the bias and improve the generalization ability of models.\n\nWe utilize SNLI BIBREF0, MultiNLI BIBREF1, JOCI BIBREF13 and SICK BIBREF14 for cross-dataset testing.\n\nSNLI and MultiNLI are prepared by Human Elicited, in which workers are given a context and asked to produce hypotheses corresponding to labels. SICK and JOCI are created by Human Judged, referring that hypotheses and premises are automatically paired while labels are generated by humans BIBREF6. In order to maximumly mitigate the impacts of annotation artifacts during evaluations, we train and validate models respectively on SNLI and MultiNLI and test on both SICK and JOCI. We also report models' performances on SNLI and MultiNLI.\n\nAs to SNLI, we use the same partition as BIBREF0. For MultiNLI, we separately use two origin validation sets (Matched and Mismatched) as the testing sets for convenience, and refer them as MMatch and MMismatch. We randomly select 10000 samples out of the origin training set for validation and use the rest for training. As to JOCI, we use the whole “B” subsets for testing, whose premises are from SNLI-train while hypotheses are generated based on world knowledge BIBREF13, and convert the score to NLI labels following BIBREF6. As to SICK, we use the whole dataset for testing.\n\nTo determine how biased the models are, we partition the testing set of SNLI and MMatch into two subsets: examples that the hypothesis-only model can be correctly classified as Easy and the rest as Hard as seen in BIBREF2. More detailed information is presented in Appendix SECREF14.\n\nWe refer models trained only with hypotheses as hypothesis-only-model (Hyp), and models that utilize both premises and hypotheses as normal-model (Norm). We implement a simple LSTM model for Hyp and use DIIN BIBREF5 as Norm. We report AUC for Hyp and ACC for Norm. More details can be seen in Appendix SECREF15\n\nWe estimate $P(y|h)$ for SNLI and MultiNLI respectively using BERT BIBREF15 with 10-fold predictions. To investigate the impacts of smooth terms, we choose a series of smooth values and present the results. Considering models may jiggle during the training phase due to the varied scale of weights, we sample examples with probabilities proportional to the weights for every mini-batch instead of adding weights to the loss directly.\n\nThe evaluation results are reported in Table TABREF3.\n\nAnotation Artifacts can be generalized across Human Elicited datasets. From the AUC of Hyp baseline trained with SNLI, we can see that the bias pattern of SNLI has a strong predictive ability in itself and the other two testing sets of Human Elicited. The behavior of those trained with MultiNLI is similar.\n\nAnotation Artifacts of SNLI and MultiNLI can be generalized to SICK. Unexpectedly, it is shown that Hyp baseline can get $0.6250$ (AUC) trained with SNLI and $0.6079$ (AUC) with MultiNLI when tested on SICK, indicating that the bias pattern of SNLI and MultiNLI are predictive on SICK. The results imply that the bias pattern can even be generalized across datasets prepared by different methods.\n\nAnnotation Artifacts of SNLI are nearly neutral in JOCI, while MultiNLI is misleading. We find that AUC of Hyp baseline trained with SNLI is very close to $0.5$ on JOCI, indicating that JOCI is nearly neutral to artifacts in SNLI. However, when it comes to training with MultiNLI, the AUC of Hyp baseline is lower than $0.5$, indicating that the artifacts are misleading in JOCI.\n\nFocusing on the results when smooth equals $0.01$ for SNLI and smooth equals $0.02$ for MultiNLI, we observe that the AUC of Hyp for all testing sets are approximately $0.5$, indicating Hyp's predictions are approximately equivalent to randomly guessing. Also, the gap between Hard and Easy for Norm significantly decreases comparing with the baseline. With the smooth, we can conclude that our method effectively alleviates the bias pattern.\n\nWith other smooth terms, our method still has more or less debiasing abilities. In those testing sets which are not neutral to the bias pattern, the AUC of Hyp always come closer to $0.5$ comparing with the baseline with whatever smooth values. Performances of Norm on Hard and Easy also come closer comparing with the baseline. Norm trained with SNLI even exceed baseline in Hard with most smooth terms.\n\nFrom the results of Hyp, we can find a trend that the larger the smooth value is, the lower the level of debiasing is, while with a very small or even no smooth value, the AUC may be lower than $0.5$. As mentioned before, we owe this to the imperfect estimation of $P(y|h)$, and we can conclude that a proper smooth value is a prerequisite for the best debiasing effect.\n\nDebiasing may improve models' generalization ability from two aspects: (1) Mitigate the misleading effect of annotation artifacts. (2) Improve models' semantic learning ability.\n\nWhen the annotation artifacts of the training set cannot be generalized to the testing set, which should be more common in the real-world, predicting by artifacts may hurt models' performance. Centering on the results of JOCI, in which the bias pattern of MultiNLI is misleading, we find that Norm trained with MultiNLI outperforms baseline after debiasing with all smooth values tested.\n\nFurthermore, debiasing can reduce models' dependence on the bias pattern during training, thus force models to better learn semantic information to make predictions. Norm trained with SNLI exceed baseline in JOCI with smooth terms $0.01$ and $0.1$. With larger smooth terms, Norm trained with both SNLI and MultiNLI exceeds baseline in SICK. Given the fact that JOCI is almost neutral to artifacts in SNLI, and the bias pattern of both SNLI and MultiNLI are even predictive in SICK, we owe these promotions to that our method improves models' semantic learning ability.\n\nAs to other testing sets like SNLI, MMatch and MMismatch, we notice that the performance of Norm always decreases compared with the baseline. As mentioned before, both SNLI and MultiNLI are prepared by Huamn Elicited, and their artifacts can be generalized across each other. We owe the drop to that the detrimental effect of mitigating the predictable bias pattern exceeds the beneficial effect of the improvement of semantic learning ability.\n\nIn this paper, we take a close look at the annotation artifacts in NLI datasets. We find that the bias pattern could be predictive or misleading in cross-dataset testing. Furthermore, we propose a debiasing framework and experiments demonstrate that it can effectively mitigate the impacts of the bias pattern and improve the cross-dataset generalization ability of models. However, it remains an open problem that how we should treat the annotation artifacts. We cannot assert whether the bias pattern should not exist at all or it is actually some kind of nature. We hope that our findings will encourage more explorations on reliable evaluation protocols for NLI models.\n\nWe make a few assumptions about an artifact-balanced distribution and how the biased datasets are generated from it, and demonstrate that we can train models fitting the artifact-balanced distribution using only the biased datasets.\n\nWe consider the domain of the artifact-balanced distribution ${D}$ as $\\mathcal {X} \\times \\mathcal {A} \\times \\mathcal {Y} \\times \\mathcal {S}$, in which $\\mathcal {X}$ is the input variable space, $\\mathcal {Y}$ is the label space, $\\mathcal {A}$ is the feature space of annotation artifacts in hypotheses, $\\mathcal {S}$ is the selection intention space. We assume that the biased distribution $\\widehat{{D}}$ of origin datasets can be generated from the artifact-balanced distribution by selecting samples with $S = Y$, i.e., the selection intention matches with the label. We use $P(\\cdot )$ to represent the probability on $\\widehat{{D}}$ and use $Q(\\cdot )$ for ${D}$.\n\nWe also make some assumptions about the artifact-balanced distribution. The first one is that the label is independent with the artifact in the hypothesis, defined as follows,\n\nThe second one is that the selection intention is independent with $X$ and $Y$ when the annotation artifact is given,\n\nAnd we can prove the equivalence of training with weight $\\frac{1}{P(Y|A)}$ and fitting the artifact-balanced distribution. We first present an equation as follows,\n\nWithout loss of generality, we can assume $Q(Y=i)=\\frac{1}{3}~(i=0,1,2)$ and get that,\n\nWith the above derivation, we can prove the equivalence like following,\n\nAs $Q(S=Y)$ is just a constant, training with the loss is equivalent to fitting the artifact-balanced distribution. Given hypotheses variable H, the probability $P(Y|A)$ can be replaced by $P(Y|H)$ since the predictive ability of hypotheses totally comes from the annotation artifacts, and we can have $w=\\frac{1}{P(Y|H)}$ as weights during training.\n\nFor SNLI, we use Hard released by BIBREF2. For MMatch, we manually partition the set using fastText BIBREF18. And we summarize the size of the datasets used in Hard-Easy Testing below.\n\nFor DIIN, we use settings same as BIBREF5 but do not use syntactical features. Priors of labels are normalized to be the same. For hypothesis-only-model, we implement a naïve model with one LSTM layer and a three-layer MLP behind, implemented with Keras and Tensorflow backend BIBREF16. We use the 300-dimensional GloVe embeddings trained on the Common Crawl 840B tokens dataset BIBREF19 and keep them fixed during training. Batch Normalization BIBREF17 are applied after every hidden layer in MLP and we use Dropout BIBREF20 with rate 0.5 after the last hidden layer. We use RMSPropBIBREF21 as optimizer and set the learning rate as 1e-3. We set the gradient clipping to 1.0 and the batch size to 256.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 118
+    },
+    {
+      "section": "Abstract",
+      "start": 120,
+      "end": 939
+    },
+    {
+      "section": "Introduction",
+      "start": 941,
+      "end": 3077
+    },
+    {
+      "section": "Related Work",
+      "start": 3079,
+      "end": 4347
+    },
+    {
+      "section": "Making Artifacts Unpredictable",
+      "start": 4349,
+      "end": 6303
+    },
+    {
+      "section": "Experimental Results",
+      "start": 6305,
+      "end": 6699
+    },
+    {
+      "section": "Experimental Results ::: Evaluation Scheme ::: Cross-dataset Testing",
+      "start": 6701,
+      "end": 7922
+    },
+    {
+      "section": "Experimental Results ::: Evaluation Scheme ::: Hard-Easy Testing",
+      "start": 7924,
+      "end": 8207
+    },
+    {
+      "section": "Experimental Results ::: Experiment Setup",
+      "start": 8209,
+      "end": 9009
+    },
+    {
+      "section": "Experimental Results ::: Can Artifacts Generalize Across Datasets?",
+      "start": 9011,
+      "end": 10097
+    },
+    {
+      "section": "Experimental Results ::: Debiasing Results ::: Effectiveness of Debiasing",
+      "start": 10099,
+      "end": 11319
+    },
+    {
+      "section": "Experimental Results ::: Debiasing Results ::: Benefits of Debiasing",
+      "start": 11321,
+      "end": 12904
+    },
+    {
+      "section": "Conclusion",
+      "start": 12906,
+      "end": 13579
+    },
+    {
+      "section": "Detailed Assumptions and Proof of Theorem @!START@UID1@!END@",
+      "start": 13581,
+      "end": 15465
+    },
+    {
+      "section": "Experiment Setting ::: Hard-Easy Datasets Setting",
+      "start": 15467,
+      "end": 15651
+    },
+    {
+      "section": "Experiment Setting ::: Experiment Setup",
+      "start": 15653,
+      "end": 16355
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1909.04242",
+    "arxiv_id": "1909.04242",
+    "source_url": "https://arxiv.org/abs/1909.04242",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

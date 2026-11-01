@@ -1,0 +1,59 @@
+{
+  "doc_id": "qasper_1901_10133",
+  "title": "Structuring an unordered text document",
+  "text": "Structuring an unordered text document\n\nSegmenting an unordered text document into different sections is a very useful task in many text processing applications like multiple document summarization, question answering, etc. This paper proposes structuring of an unordered text document based on the keywords in the document. We test our approach on Wikipedia documents using both statistical and predictive methods such as the TextRank algorithm and Google's USE (Universal Sentence Encoder). From our experimental results, we show that the proposed model can effectively structure an unordered document into sections.\n\nTo structure an unordered document is an essential task in many applications. It is a post-requisite for applications like multiple document extractive text summarization where we have to present a summary of multiple documents. It is a prerequisite for applications like question answering from multiple documents where we have to present an answer by processing multiple documents. In this paper, we address the task of segmenting an unordered text document into different sections. The input document/summary that may have unordered sentences is processed so that it will have sentences clustered together. Clustering is based on the similarity with the respective keyword as well as with the sentences belonging to the same cluster. Keywords are identified and clusters are formed for each keyword.\n\nWe use TextRank algorithm BIBREF0 to extract the keywords from a text document. TextRank is a graph-based ranking algorithm which decides the importance of a vertex within a graph by considering the global information recursively computed from the entire graph rather than focusing on local vertex specific information. The model uses knowledge acquired from the entire text to extract the keywords. A cluster is generated for every keyword.\n\nWhile generating clusters, the similarity between a sentence and a topic/keyword is calculated using the cosine similarity of embeddings generated using Google's USE (Universal Sentence Encoder) BIBREF1 . USE is claimed to have better performance of transfer learning when used with sentence-level embeddings as compared to word-level embeddings alone. This model is claimed to have better performance even if there is less task-specific training data available. We observed that the quality of clusters/section is better if the similarity of a sentence with the keyword is considered along with the similarity of the sentence with the sentences already available in the respective section.\n\nTo test our approach, we jumble the ordering of sentences in a document, process the unordered document and compare the similarity of the output document with the original document.\n\nSeveral models have been performed in the past to retrieve sentences of a document belonging to a particular topic BIBREF2 . Given a topic, retrieving sentences that may belong to that topic should be considered as a different task than what we aim in this paper. A graph based approach for extracting information relevant to a query is presented in BIBREF3 , where subgraphs are built using the relatedness of the sentences to the query. An incremental integrated graph to represent the sentences in a collection of documents is presented in BIBREF4 , BIBREF5 . Sentences from the documents are merged into a master sequence to improve coherence and flow. The same ordering is used for sequencing the sentences in the extracted summary. Ordering of sentences in a document is discussed in BIBREF6 .\n\nIn this paper, we aim to generate the sections/clusters from an unordered document. To the best of our knowledge, this is a first attempt to address this problem formally.\n\nOur methodology is described in the Figure 1 . The process starts by taking an unordered document as an input. The next step is to extract the keywords from the input document using TextRank algorithm BIBREF0 and store them in a list $K$ . The keywords stored in $K$ act as centroids for the clusters. Note that, the quality of keywords extracted will have a bearing on the final results. In this paper, we present a model that can be used for structuring an unstructured document. In the process, we use a popular keyword extraction algorithm. Our model is not bound to TextRank, and if a better keyword extraction algorithm is available, it can replace TextRank.\n\nThe next step is to find the most relevant sentence for each keyword in $K$ . The most relevant sentence is mapped to the keyword and assigned in the respective cluster. This similarity between the keyword and the sentence is calculated by the cosine similarity of embeddings generated from Google's USE. Now, we have a list of keywords $K$ , and a sentence mapped to each keyword. The next step is to map the remaining sentences. In the next step, we go through all the sentences in the document that have not been mapped yet and find the relevant keywords that can be mapped with them. We do this by the following procedure:\n\n $S_1(x,y)$ is the similarity between the current sentence $x$ and the keyword $y$ . $S_2(x,y)$ is the maximum similarity between the current sentence $x$ and the sentences that are already mapped with the keyword $y$ . If $y$ has three sentences mapped to it, then the similarity between $x$ and the sentences mapped to $y$ are computed, and the maximum similarity among the three is assigned to $S_2(x,y)$ . The overall similarity $x$0 is calculated as: \n\n$$S(x,y)= t*S_1(x,y) + (1-t)*S_2(x,y)$$   (Eq. 1) \n\nWe map every other sentence $x$ to the keyword with which they have maximum similarity $Max_y (S(x,y))$ . Later, we cluster the keywords along with the sentences mapped to them. The value of $t$ signifies the importance to be given to the keyword and its associated sentences respectively. In our experiments, we empirically fix the value of $t$ to $0.25$ .\n\nTo evaluate our algorithm, we propose two similarity metrics, $Sim1$ and $Sim2$ . These metrics compute the similarity of each section of the original document with all the sections/clusters (keyword and the sentences mapped to it) of the output document and assign the maximum similarity. $Sim1$ between an input section and an output section is calculated as the number of sentences of the input section that are present in the output section divided by the total number of sentences in the input section. To calculate the final similarity (similarity of the entire output document) we take the weighted mean of similarity calculated corresponding to each input section. $Sim2$ between an input section and an output section is computed as the number of sentences of an input section that are present in an output section divided by the sum of sentences in the input and output sections. The final similarity is computed in a similar manner.\n\nFor our experiments, we prepared five sets of documents. Each set has 100 wiki documents (randomly chosen). Each document is restructured randomly (sentences are rearranged randomly). This restructured document is the input to our model and the output document is compared against the original input document.\n\nAlso, we compare our results with the baseline being the results when we consider only the similarity between sentences and keywords. The results are shown in Table 1 . Here, both $Sim1$ and $Sim2$ are the mean of similarities of the entire Set. $BaseSim1$ and $BaseSim1$ are computed similar to $Sim1$ and $Sim2$ respectively but with the $t$ value as 1 in Equation 1 . It is evident that the results are better if both similarities ( $S_1(x,y)$ and $S_2(x,y)$ ) are considered.\n\nWe proposed an efficient model to structure an unordered document. We evaluated our model against the baseline and found that our proposed model has a significant improvement. We observed that while ordering an unordered document, the initial sentences associated with a keyword/topic play a significant role.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 38
+    },
+    {
+      "section": "Abstract",
+      "start": 40,
+      "end": 618
+    },
+    {
+      "section": "Introduction",
+      "start": 620,
+      "end": 2740
+    },
+    {
+      "section": "Related Work",
+      "start": 2742,
+      "end": 3714
+    },
+    {
+      "section": "Proposed model",
+      "start": 3716,
+      "end": 5877
+    },
+    {
+      "section": "Metrics to evaluate our algorithm",
+      "start": 5879,
+      "end": 6822
+    },
+    {
+      "section": "Experimental setup and Results",
+      "start": 6824,
+      "end": 7614
+    },
+    {
+      "section": "Conclusions",
+      "start": 7616,
+      "end": 7925
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "validation",
+    "qasper_paper_id": "1901.10133",
+    "arxiv_id": "1901.10133",
+    "source_url": "https://arxiv.org/abs/1901.10133",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

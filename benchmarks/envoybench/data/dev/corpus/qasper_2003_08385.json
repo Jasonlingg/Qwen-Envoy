@@ -1,0 +1,194 @@
+{
+  "doc_id": "qasper_2003_08385",
+  "title": "X-Stance: A Multilingual Multi-Target Dataset for Stance Detection",
+  "text": "X-Stance: A Multilingual Multi-Target Dataset for Stance Detection\n\nWe extract a large-scale stance detection dataset from comments written by candidates of elections in Switzerland. The dataset consists of German, French and Italian text, allowing for a cross-lingual evaluation of stance detection. It contains 67 000 comments on more than 150 political issues (targets). Unlike stance detection models that have specific target issues, we use the dataset to train a single model on all the issues. To make learning across targets possible, we prepend to each instance a natural question that represents the target (e.g.\"Do you support X?\"). Baseline results from multilingual BERT show that zero-shot cross-lingual and cross-target transfer of stance detection is moderately successful with this approach.\n\nIn recent years many datasets have been created for the task of automated stance detection, advancing natural language understanding systems for political science, opinion research and other application areas. Typically, such benchmarks BIBREF0 are composed of short pieces of text commenting on politicians or public issues and are manually annotated with their stance towards a target entity (e.g. Climate Change, or Trump). However, they are limited in scope on multiple levels BIBREF1.\n\nFirst of all, it is questionable how well current stance detection methods perform in a cross-lingual setting, as the multilingual datasets available today are relatively small, and specific to a single target BIBREF2, BIBREF3. Furthermore, specific models tend to be developed for each single target or pair of targets BIBREF4. Concerns have been raised that cross-target performance is often considerably lower than fully supervised performance BIBREF1.\n\nIn this paper we propose a much larger dataset that combines multilinguality and a multitude of topics and targets. x-stance comprises more than 150 questions concerning Swiss politics and more than 67k answers given in the last decade by candidates running for political office in Switzerland.\n\nQuestions are available in four languages: English, Swiss Standard German, French, and Italian. The language of a comment depends on the candidate's region of origin.\n\nWe have extracted the data from the voting advice application Smartvote. On that platform, candidates respond to questions mainly in categorical form (yes / rather yes / rather no / no). They can also submit a free-text comment in order to justify, explain or differentiate their categorical answer. An example is given in Figure FIGREF1.\n\nWe transform the dataset into a stance detection task by interpreting the question as a natural-language representation of the target, and the commentary as the input to be classified.\n\nThe dataset is split into a multilingual training set and into multiple test sets to evaluate zero-shot cross-lingual and cross-target transfer. To provide a baseline, we fine-tune a multilingual Bert model BIBREF5 on x-stance. We show that the baseline accuracy is comparable to previous stance detection benchmarks while leaving ample room for improvement. In addition, multilingual Bert can generalize to a degree both cross-lingually and in a cross-target setting.\n\nWe have made the dataset and the code for reproducing the baseline model publicly available.\n\nIn the context of the IberEval shared tasks, two related multilingual datasets have been created BIBREF2, BIBREF3. Both are a collection of annotated Spanish and Catalan tweets. Crucially, the tweets in both languages focus on the same issue (Catalan independence); given this fact they are the first truly multilingual stance detection datasets known to us.\n\nWith regard to the languages covered by x-stance, only monolingual datasets seem to be available. For French, a collection of tweets on French presidential candidates has been annotated with stance BIBREF6. Similarly, two datasets of Italian tweets on the occasion of the 2016 constitutional referendum have been created BIBREF7, BIBREF6. For German, there is no known stance detection dataset, but an aspect-based sentiment dataset has been created for a GermEval 2017 shared task BIBREF8.\n\nThe SemEval-2016 task on detecting stance in tweets BIBREF9 offers data concerning multiple targets (Atheism, Climate Change, Feminism, Hillary Clinton, and Abortion). In the supervised subtask A, participants tended to develop a target-specific model for each of those targets. In subtask B cross-target transfer to the target “Donald Trump” was tested, for which no annotated training data were provided. While this required the development of more universal models, their performance was generally much lower.\n\nBIBREF4 introduced a multi-target stance dataset which provides two targets per instance. For example, a model designed in this framework is supposed to simultaneously classify a tweet with regard to Clinton and with regard to Trump. While in theory the framework allows for more than two targets, it is still restricted to a finite and clearly defined set of targets. It focuses on modeling the dependencies of multiple targets within the same text sample, while our approach focuses on learning stance detection from many samples with many different targets.\n\nIn a target-specific setting, BIBREF10 perform a systematic evaluation of stance detection approaches. They also evaluate Bert BIBREF5 and find that it consistently outperforms previous approaches.\n\nHowever, they only experimented with a single-segment encoding of the input, preventing cross-target transfer of the model. BIBREF11 propose a conditional encoding approach to encode both the target and the tweet as sequences. They use a bidirectional LSTM to condition the encoding of the tweets on the encoding of the target, and then apply a nonlinear projection on the conditionally encoded tweet. This allows them to train a model that can generalize to previously unseen targets.\n\nThe input provided by x-stance is two-fold: (A) a natural language question concerning a political issue; (B) a natural language commentary on a specific stance towards the question.\n\nThe label to be predicted is either `favor' or `against`. This corresponds to a standard established by BIBREF0. However, x-stance differs from that dataset in that it lacks a `neither' class; all comments refer to either a `favor' or an `against` position. The task posed by x-stance is thus a binary classification task.\n\nAs an evaluation metric we report the macro-average of the F1-score for `favor' and the F1-score for `against', similar to BIBREF9. We use this metric mainly to strengthen comparability with the previous benchmarks.\n\nWe downloaded questions and answers via the Smartvote API. The downloaded data cover 175 communal, cantonal and national elections between 2011 and 2020.\n\nAll candidates in an election who participate in Smartvote are asked the same set of questions, but depending on the locale they see translated versions of the questions. They can answer each question with either `yes', `rather yes', `rather no', or `no'. They can supplement each answer with a comment of at most 500 characters.\n\nThe questions asked on Smartvote have been edited by a team of political scientists. They are intended to cover a broad range of political issues relevant at the time of the election. A detailed documentation of the design of Smartvote and the editing process of the questions is provided by BIBREF12.\n\nWe merged the two labels on each pole into a single label: `yes' and `rather yes' were combined into `favor'; `rather no', or `no' into `against`. This improves the consistency of the data and the comparability to previous stance detection datasets.\n\nWe did not further preprocess the text of the comments.\n\nAs the API does not provide the language of comments, we employed a language identifier to automatically annotate this information. We used the langdetect library BIBREF13. For each responder we classified all the comments jointly, assuming that responders did not switch code during the answering of the questionnaire.\n\nWe applied the identifier in a two-step approach. In the first run we allowed the identifier to output all 55 languages that it supports out of the box, plus Romansh, the fourth official language in Switzerland. We found that no Romansh comments were detected and that all unexpected outputs were misclassifications of German, French or Italian comments. We further concluded that little or no Swiss German comments are in the dataset: If they were, some of them would have manifested themselves in the form of misclassifications (e.g. as Dutch).\n\nIn the second run, drawing from these conclusions, we restricted the identifier's output to English, French, German and Italian.\n\nWe pre-filtered the questions and answers to improve the quality of the dataset. To keep the domain of the data surveyable, we set a focus on national-level questions. Therefore, all questions and corresponding answers pertaining to national elections were included.\n\nIn the context of communal and cantonal elections, candidates have answered both local questions and a subset of the national questions. Of those elections, we only considered answers to the questions that also had been asked in a national election. Furthermore, they were only used to augment the training set while the validation and test sets were restricted to answers from national elections.\n\nWe discarded the less than 20 comments classified as English. Furthermore, instances that met any of the following conditions were filtered from the dataset:\n\nQuestion is not a closed question or does not address a clearly defined political issue.\n\nNo comment was submitted by the candidate or the comment is shorter than 50 characters.\n\nComment starts with “but” or a similar indicator that the comment is not a self-contained statement.\n\nComment contains a URL.\n\nIn total, a fifth of the original comments were filtered out.\n\nThe questions have been organized by the Smartvote editors into categories (such as “Economy”). We further consolidated the pre-defined categories into 12 broad topics (Table TABREF7).\n\nThe dataset is shared under a CC BY-NC 4.0 license. Copyright remains with www.smartvote.ch.\n\nGiven the sensitive nature of the data, we increase the anonymity of the data by hashing the respondents' IDs. No personal attributes of the respondents, such as their party affiliation, are included in the dataset. We provide a data statement BIBREF15 in Appendix SECREF8.\n\nWe held out the topics “Healthcare” and “Political System” from the training data and created a separate cross-topic test set that contains the questions and answers related to those topics.\n\nFurthermore, in order to test cross-question generalization performance within previously seen topics, we manually selected 16 held-out questions that are distributed over the remaining 10 topics. We selected the held-out questions manually because we wanted to make sure that they are truly unseen and that no paraphrases of the questions are found in the training set.\n\nWe designated Italian as a test-only language, since relatively few comments have been written in Italian. From the remaining German and French data we randomly selected a percentage of respondents as validation or as test respondents.\n\nAs a result we received one training set, one validation set and four test sets. The sizes of the sets are listed in Table TABREF8. We did not consider test sets that are cross-lingual and cross-target at the same time, as they would have been too small to yield significant results.\n\nSome observations regarding the composition of x-stance can be made.\n\nFigure FIGREF23 visualizes the proportion of `favor' and `against` stances for each target in the dataset. The ratio differs between questions but is relatively equally distributed across the topics. In particular, the questions belonging to the held-out topics (with a `favor' ratio of 49.4%) have a similar class distribution as the questions within other topics (with a `favor' ratio of 50.0%).\n\nNot every question is unique; some questions are paraphrases describing the same political issue. For example, in the 2015 election, the candidates were asked: “Should the consumption of cannabis as well as its possession for personal use be legalised?” Four years later they were asked: “Should cannabis use be legalized?” However, we do not see any need to consolidate those duplicates because they contribute to the diversity of the training data.\n\nWe further observe that while some questions in the dataset are quite short, some questions are rather convoluted. For example, a typical long question reads:\n\nSome 1% of direct payments to Swiss agriculture currently go to organic farming operations. Should this proportion be increased at the expense of standard farming operations as part of Switzerland's 2014-2017 agricultural policy?\n\nSuch longer questions might be more challenging to process semantically.\n\nThe x-stance dataset has more German samples than French samples. The language ratio of about 3:1 is consistent across all training and test sets. Given the two languages it is possible to either train two monolingual models or to train a single model in a multi-source setup BIBREF16. We choose a multi-source baseline because M-Bert is known to benefit from multilingual training data both in a supervised and in a cross-lingual scenario BIBREF17.\n\nWe evaluate two types of baselines to obtain an impression of the difficulty of the task.\n\nThe first pair of baselines uses the most frequent class in the training set for prediction. Specifically, the global majority class baseline predicts the most frequent class across all training targets while the target-wise majority class baseline predicts the class that is most frequent for a given target question. The latter can only be applied to the supervised test set.\n\nSecondly, we fine-tune multilingual Bert (M-Bert) on the task BIBREF5 which has been pretrained jointly in 104 languages and has established itself as a state of the art for various multilingual tasks BIBREF18, BIBREF19. Within the field of stance detection, Bert can outperform both feature-based and other neural approaches in a monolingual English setting BIBREF10.\n\nIn the context of Bert we interpret the x-stance task as sequence pair classification inspired by natural language inference tasks BIBREF20. We follow the procedure outlined by BIBREF5 for such tasks. We designate the question as segment A and the comment as segment B. The two segments are separated with the special token [SEP], and the special token [CLS] is prepended to the sequence. The final hidden state corresponding to [CLS] is then classified by a linear layer.\n\nWe fine-tune the full model with a cross-entropy loss, using the AllenNLP library BIBREF21 as a basis for our implementation.\n\nWe upsampled the `favor' class so that the two classes are balanced when summing over all questions and topics. A maximum sequence length of 512 subwords and a batch size of 16 was chosen for all training runs. We then performed a grid search within the following range of hyperparameters based on the validation accuracy:\n\nLearning rate: 5e-5, 3e-5, 2e-5\n\nNumber of epochs: 3, 4\n\nThe grid search was repeated independently for every variant that we tested. Furthermore, the standard recommendations for fine-tuning Bert were used: Adam with ${\\beta }_1=0.9$ and ${\\beta }_2=0.999$; an L2 weight decay of $0.01$; a learning rate warmup over the first 10% of the steps; and a linear decay of the learning rate. A dropout probability of 0.1 was set on all layers.\n\nTable TABREF36 shows the results for the cross-lingual setting. M-Bert performs consistently better than the majority class baselines. Even the zero-short performance in Italian, while significantly lower than the supervised scores, is much better than the target-wise majority class baseline.\n\nResults for the cross-target setting are given in Table TABREF37. Similar to the cross-lingual setting, M-Bert performs worse in a cross-target setting but easily surpasses the majority class baselines. Furthermore, the cross-question score of M-Bert is slightly lower than the cross-topic score.\n\nThe default setup preserves horizontal language consistency in that the language of the questions always matches the language of the comments. For example, the Italian test instances are combined with the Italian version of the questions, even though during training the model has only ever seen the German and French versions of the questions.\n\nAn alternative concept is vertical language consistency, whereby the questions are consistently presented in one language, regardless of the comment. To test whether horizontal or vertical consistency is more helpful, we train and evaluate M-Bert on a dataset variant where all questions are in their English version. We chose English as a lingua franca because it had the largest share of data during the pretraining of M-Bert.\n\nThe results are shown in Table TABREF39. While the effect is negligible in most settings, the cross-lingual performance clearly increases when all questions are given in English.\n\nIn order to rule out that only the questions or only the comments are necessary to optimally solve the task, we conduct some additional experiments:\n\nOnly use a single segment containing the comment, removing the questions from the training and test data (missing questions).\n\nOnly use the question and remove the comment (missing comments).\n\nIn both cases the performance decreases across all evaluation settings (Table TABREF39). The loss in performance is much higher when comments are missing, indicating that the comments contain the most important information about stance. As can be expected, the score achieved without comments is only slightly different from the target-wise majority class baseline.\n\nBut there is also a loss in performance when the questions are missing, which underlines the importance of pairing both pieces of text. The effect of missing questions is especially strong in the supervised and cross-lingual settings. To illustrate this, we provide in Table TABREF48 some examples of comments that occur with multiple different targets in the training set. Those examples can explain why the target can be essential for disambiguating a stance detection problem. On the other hand, the effect of omitting the questions is less pronounced in the cross-target settings.\n\nThe above single-segment experiments tell us that both the comment and the question provide crucial information. But it is possible that the M-Bert model, even though trained on both segments, mainly looks at a single segment at test time. To rule this out, we probe the model with randomized data at test time:\n\nTest the model on versions of the test sets where the comments remain in place but the questions are shuffled randomly (random questions). We make sure that the random questions come from the same test set and language as the original questions.\n\nKeep the questions in place and randomize the comments (random comments). Again we shuffle the comments only within test set boundaries.\n\nThe results in Table TABREF39 show that the performance of the model decreases in both cases, confirming that it learns to take into account both segments.\n\nFinally we test whether the target really needs to be represented by natural language (e.g. “Do you support X?”). Namely, an alternative is to represent the target with a trainable embedding instead of a question.\n\nIn order to fit target embeddings smoothly into our architecture, we represent each target type with a different reserved symbol from the M-Bert vocabulary. Segment A is then set to this symbol instead of a natural language question.\n\nThe results for this experiment are listed in the bottom row of Table TABREF39. An M-Bert model that learns target embeddings instead of encoding a question performs clearly worse in the supervised and cross-lingual settings. From this we conclude that spelled-out natural language questions provide important linguistic detail that can help in stance detection.\n\nThe baseline experiments confirm that M-Bert can achieve a reasonable accuracy on x-stance.\n\nTo put the supervised score into context we list scores that variants of Bert have achieved on other stance detection datasets in Table TABREF46. It seems that the supervised part of x-stance has a similar difficulty as the SemEval-2016 BIBREF0 or MPCHI BIBREF22 datasets on which Bert has previously been evaluated.\n\nOn the other hand, in the cross-lingual and cross-target settings, the mean score drops by 6–8 percentage points compared to the supervised setting; while zero-shot transfer is possible to a degree, it can still be improved.\n\nThe additional experiments (Table TABREF39) validate the results and show that the sequence-pair classification approach to stance detection is justified.\n\nIt is interesting to see what errors the M-Bert model makes. Table TABREF47 presents instances where it predicts the wrong label with a high confidence. These examples indicate that many comments express their stance only on a very implicit level, and thus hint at a potential weakness of the dataset. Because on the voting advice platform the label is explicitly shown to readers in addition to the comments, the comments do not need to express the stance explicitly. Manual annotation could eliminate very implicit samples in a future version of the dataset. However, the sheer size and breadth of the dataset could not realistically be achieved with manual annotation, and, in our view, largely compensates for the implicitness of the texts.\n\nWe have presented a new dataset for political stance detection called x-stance. The dataset extends over a broad range of topics and issues regarding national Swiss politics. This diversity of topics opens up an opportunity to further study multi-target learning. Moreover, being partly Swiss Standard German, partly French and Italian, the dataset promotes a multilingual approach to stance detection.\n\nBy compiling formal commentary that politicians have written on political questions, we add a new text genre to the field of stance detection. We also propose a question–answer format that allows us to condition stance detection models on a target naturally.\n\nOur baseline results with multilingual Bert show that the model has some capability to perform zero-shot transfer to unseen languages and to unseen targets (both within a topic and to unseen topics). However, there is some gap in performance that future work could address. We expect that the x-stance dataset could furthermore be a valuable resource for fields such as argument mining, argument search or topic classification.\n\nThis work was funded by the Swiss National Science Foundation (project MUTAMUR; no. 176727). We would like to thank Isabelle Augenstein for helpful feedback.\n\nIn order to study the automatic detection of stances on political issues, questions and candidate responses on the voting advice application smartvote.ch were downloaded. Mainly data pertaining to national-level issues were included to reduce variability.\n\nThe training set consists of questions and answers in Swiss Standard German and Swiss French (74.1% de-CH; 25.9% fr-CH). The test sets also contain questions and answers in Swiss Italian (67.1% de-CH; 24.7% fr-CH; 8.2% it-CH). The questions have also been translated into English.\n\nCandidates for communal, cantonal or national elections in Switzerland who have filled out an online questionnaire.\n\nAge: 18 or older – mixed.\n\nGender: Unknown – mixed.\n\nRace/ethnicity: Unknown – mixed.\n\nNative language: Unknown – mixed.\n\nSocioeconomic status: Unknown – mixed.\n\nDifferent speakers represented: 7581.\n\nPresence of disordered speech: Unknown.\n\nThe questions were edited and translated by political scientists for a public voting advice website.\n\nThe answers were written between 2011 and 2020 by the users of the website.\n\nQuestions, answers, arguments and comments regarding political issues.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 66
+    },
+    {
+      "section": "Abstract",
+      "start": 68,
+      "end": 808
+    },
+    {
+      "section": "Introduction",
+      "start": 810,
+      "end": 3310
+    },
+    {
+      "section": "Related Work ::: Multilingual Stance Detection",
+      "start": 3312,
+      "end": 4162
+    },
+    {
+      "section": "Related Work ::: Multi-Target Stance Detection",
+      "start": 4164,
+      "end": 5238
+    },
+    {
+      "section": "Related Work ::: Representation Learning for Stance Detection",
+      "start": 5240,
+      "end": 5924
+    },
+    {
+      "section": "The x-stance Dataset ::: Task Definition",
+      "start": 5926,
+      "end": 6649
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Provenance",
+      "start": 6651,
+      "end": 7438
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Preprocessing",
+      "start": 7440,
+      "end": 7746
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Language Identification",
+      "start": 7748,
+      "end": 8745
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Filtering",
+      "start": 8747,
+      "end": 9940
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Topics",
+      "start": 9942,
+      "end": 10126
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Collection ::: Compliance",
+      "start": 10128,
+      "end": 10495
+    },
+    {
+      "section": "The x-stance Dataset ::: Data Split",
+      "start": 10497,
+      "end": 11581
+    },
+    {
+      "section": "The x-stance Dataset ::: Analysis",
+      "start": 11583,
+      "end": 11651
+    },
+    {
+      "section": "The x-stance Dataset ::: Analysis ::: Class Distribution",
+      "start": 11653,
+      "end": 12050
+    },
+    {
+      "section": "The x-stance Dataset ::: Analysis ::: Linguistic Properties",
+      "start": 12052,
+      "end": 12967
+    },
+    {
+      "section": "The x-stance Dataset ::: Analysis ::: Languages",
+      "start": 12969,
+      "end": 13418
+    },
+    {
+      "section": "Baseline Experiments",
+      "start": 13420,
+      "end": 13509
+    },
+    {
+      "section": "Baseline Experiments ::: Majority Class Baselines",
+      "start": 13511,
+      "end": 13888
+    },
+    {
+      "section": "Baseline Experiments ::: Multilingual BERT Baseline",
+      "start": 13890,
+      "end": 14258
+    },
+    {
+      "section": "Baseline Experiments ::: Multilingual BERT Baseline ::: Architecture",
+      "start": 14260,
+      "end": 14859
+    },
+    {
+      "section": "Baseline Experiments ::: Multilingual BERT Baseline ::: Training",
+      "start": 14861,
+      "end": 15622
+    },
+    {
+      "section": "Baseline Experiments ::: Multilingual BERT Baseline ::: Results",
+      "start": 15624,
+      "end": 16215
+    },
+    {
+      "section": "Baseline Experiments ::: How Important is Consistent Language?",
+      "start": 16217,
+      "end": 17171
+    },
+    {
+      "section": "Baseline Experiments ::: How Important are the Segments?",
+      "start": 17173,
+      "end": 19322
+    },
+    {
+      "section": "Baseline Experiments ::: How Important are Spelled-Out Targets?",
+      "start": 19324,
+      "end": 20136
+    },
+    {
+      "section": "Discussion",
+      "start": 20138,
+      "end": 21675
+    },
+    {
+      "section": "Conclusion",
+      "start": 21677,
+      "end": 22768
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 22770,
+      "end": 22927
+    },
+    {
+      "section": "Data Statement ::: Curation rationale",
+      "start": 22929,
+      "end": 23184
+    },
+    {
+      "section": "Data Statement ::: Language variety",
+      "start": 23186,
+      "end": 23466
+    },
+    {
+      "section": "Data Statement ::: Speaker demographic (answers)",
+      "start": 23468,
+      "end": 23825
+    },
+    {
+      "section": "Data Statement ::: Speech situation",
+      "start": 23827,
+      "end": 24004
+    },
+    {
+      "section": "Data Statement ::: Text characteristics",
+      "start": 24006,
+      "end": 24076
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "validation",
+    "qasper_paper_id": "2003.08385",
+    "arxiv_id": "2003.08385",
+    "source_url": "https://arxiv.org/abs/2003.08385",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

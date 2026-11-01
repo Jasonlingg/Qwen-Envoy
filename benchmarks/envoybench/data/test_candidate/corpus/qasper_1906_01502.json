@@ -1,0 +1,114 @@
+{
+  "doc_id": "qasper_1906_01502",
+  "title": "How multilingual is Multilingual BERT?",
+  "text": "How multilingual is Multilingual BERT?\n\nIn this paper, we show that Multilingual BERT (M-BERT), released by Devlin et al. (2018) as a single language model pre-trained from monolingual corpora in 104 languages, is surprisingly good at zero-shot cross-lingual model transfer, in which task-specific annotations in one language are used to fine-tune the model for evaluation in another language. To understand why, we present a large number of probing experiments, showing that transfer is possible even to languages in different scripts, that transfer works best between typologically similar languages, that monolingual corpora can train models for code-switching, and that the model can find translation pairs. From these results, we can conclude that M-BERT does create multilingual representations, but that these representations exhibit systematic deficiencies affecting certain language pairs.\n\nDeep, contextualized language models provide powerful, general-purpose linguistic representations that have enabled significant advances among a wide range of natural language processing tasks BIBREF1 , BIBREF0 . These models can be pre-trained on large corpora of readily available unannotated text, and then fine-tuned for specific tasks on smaller amounts of supervised data, relying on the induced language model structure to facilitate generalization beyond the annotations. Previous work on model probing has shown that these representations are able to encode, among other things, syntactic and named entity information, but they have heretofore focused on what models trained on English capture about English BIBREF2 , BIBREF3 , BIBREF4 .\n\nIn this paper, we empirically investigate the degree to which these representations generalize across languages. We explore this question using Multilingual BERT (henceforth, M-Bert), released by BIBREF0 as a single language model pre-trained on the concatenation of monolingual Wikipedia corpora from 104 languages. M-Bert is particularly well suited to this probing study because it enables a very straightforward approach to zero-shot cross-lingual model transfer: we fine-tune the model using task-specific supervised training data from one language, and evaluate that task in a different language, thus allowing us to observe the ways in which the model generalizes information across languages.\n\nOur results show that M-Bert is able to perform cross-lingual generalization surprisingly well. More importantly, we present the results of a number of probing experiments designed to test various hypotheses about how the model is able to perform this transfer. Our experiments show that while high lexical overlap between languages improves transfer, M-Bert is also able to transfer between languages written in different scripts—thus having zero lexical overlap—indicating that it captures multilingual representations. We further show that transfer works best for typologically similar languages, suggesting that while M-Bert's multilingual representation is able to map learned structures onto new vocabularies, it does not seem to learn systematic transformations of those structures to accommodate a target language with different word order.\n\nLike the original English BERT model (henceforth, En-Bert), M-Bert is a 12 layer transformer BIBREF0 , but instead of being trained only on monolingual English data with an English-derived vocabulary, it is trained on the Wikipedia pages of 104 languages with a shared word piece vocabulary. It does not use any marker denoting the input language, and does not have any explicit mechanism to encourage translation-equivalent pairs to have similar representations.\n\nFor ner and pos, we use the same sequence tagging architecture as BIBREF0 . We tokenize the input sentence, feed it to Bert, get the last layer's activations, and pass them through a final layer to make the tag predictions. The whole model is then fine-tuned to minimize the cross entropy loss for the task. When tokenization splits words into multiple pieces, we take the prediction for the first piece as the prediction for the word.\n\nWe perform ner experiments on two datasets: the publicly available CoNLL-2002 and -2003 sets, containing Dutch, Spanish, English, and German BIBREF5 , BIBREF6 ; and an in-house dataset with 16 languages, using the same CoNLL categories. Table TABREF4 shows M-Bert zero-shot performance on all language pairs in the CoNLL data.\n\nWe perform pos experiments using Universal Dependencies (UD) BIBREF7 data for 41 languages. We use the evaluation sets from BIBREF8 . Table TABREF7 shows M-Bert zero-shot results for four European languages. We see that M-Bert generalizes well across languages, achieving over INLINEFORM0 accuracy for all pairs.\n\nBecause M-Bert uses a single, multilingual vocabulary, one form of cross-lingual transfer occurs when word pieces present during fine-tuning also appear in the evaluation languages. In this section, we present experiments probing M-Bert's dependence on this superficial form of generalization: How much does transferability depend on lexical overlap? And is transfer possible to languages written in different scripts (no overlap)?\n\nIf M-Bert's ability to generalize were mostly due to vocabulary memorization, we would expect zero-shot performance on ner to be highly dependent on word piece overlap, since entities are often similar across languages. To measure this effect, we compute INLINEFORM0 and INLINEFORM1 , the sets of word pieces used in entities in the training and evaluation datasets, respectively, and define overlap as the fraction of common word pieces used in the entities: INLINEFORM2 .\n\nFigure FIGREF9 plots ner F1 score versus entity overlap for zero-shot transfer between every language pair in an in-house dataset of 16 languages, for both M-Bert and En-Bert. We can see that performance using En-Bert depends directly on word piece overlap: the ability to transfer deteriorates as word piece overlap diminishes, and F1 scores are near zero for languages written in different scripts. M-Bert's performance, on the other hand, is flat for a wide range of overlaps, and even for language pairs with almost no lexical overlap, scores vary between INLINEFORM0 and INLINEFORM1 , showing that M-Bert's pretraining on multiple languages has enabled a representational capacity deeper than simple vocabulary memorization.\n\nTo further verify that En-Bert's inability to generalize is due to its lack of a multilingual representation and not an inability of its English-specific word piece vocabulary to represent data in other languages, we evaluate on non-cross-lingual ner and see that it performs comparably to a previous state of the art model (see Table TABREF12 ).\n\nM-Bert's ability to transfer between languages that are written in different scripts, and thus have effectively zero lexical overlap, is surprising given that it was trained on separate monolingual corpora and not with a multilingual objective. To probe deeper into how the model is able to perform this generalization, Table TABREF14 shows a sample of pos results for transfer across scripts.\n\nAmong the most surprising results, an M-Bert model that has been fine-tuned using only pos-labeled Urdu (written in Arabic script), achieves 91% accuracy on Hindi (written in Devanagari script), even though it has never seen a single pos-tagged Devanagari word. This provides clear evidence of M-Bert's multilingual representation ability, mapping structures onto new vocabularies based on a shared representation induced solely from monolingual language model training data.\n\nHowever, cross-script transfer is less accurate for other pairs, such as English and Japanese, indicating that M-Bert's multilingual representation is not able to generalize equally well in all cases. A possible explanation for this, as we will see in section SECREF18 , is typological similarity. English and Japanese have a different order of subject, verb and object, while English and Bulgarian have the same, and M-Bert may be having trouble generalizing across different orderings.\n\nIn the previous section, we showed that M-Bert's ability to generalize cannot be attributed solely to vocabulary memorization, and that it must be learning a deeper multilingual representation. In this section, we present probing experiments that investigate the nature of that representation: How does typological similarity affect M-Bert's ability to generalize? Can M-Bert generalize from monolingual inputs to code-switching text? Can the model generalize to transliterated text without transliterated language model pretraining?\n\nFollowing BIBREF10 , we compare languages on a subset of the WALS features BIBREF11 relevant to grammatical ordering. Figure FIGREF17 plots pos zero-shot accuracy against the number of common WALS features. As expected, performance improves with similarity, showing that it is easier for M-Bert to map linguistic structures when they are more similar, although it still does a decent job for low similarity languages when compared to En-Bert.\n\nTable TABREF20 shows macro-averaged pos accuracies for transfer between languages grouped according to two typological features: subject/object/verb order, and adjective/noun order BIBREF11 . The results reported include only zero-shot transfer, i.e. they do not include cases training and testing on the same language. We can see that performance is best when transferring between languages that share word order features, suggesting that while M-Bert's multilingual representation is able to map learned structures onto new vocabularies, it does not seem to learn systematic transformations of those structures to accommodate a target language with different word order.\n\nCode-switching (CS)—the mixing of multiple languages within a single utterance—and transliteration—writing that is not in the language's standard script—present unique test cases for M-Bert, which is pre-trained on monolingual, standard-script corpora. Generalizing to code-switching is similar to other cross-lingual transfer scenarios, but would benefit to an even larger degree from a shared multilingual representation. Likewise, generalizing to transliterated text is similar to other cross-script transfer experiments, but has the additional caveat that M-Bert was not pre-trained on text that looks like the target.\n\nWe test M-Bert on the CS Hindi/English UD corpus from BIBREF12 , which provides texts in two formats: transliterated, where Hindi words are written in Latin script, and corrected, where annotators have converted them back to Devanagari script. Table TABREF22 shows the results for models fine-tuned using a combination of monolingual Hindi and English, and using the CS training set (both fine-tuning on the script-corrected version of the corpus as well as the transliterated version).\n\nFor script-corrected inputs, i.e., when Hindi is written in Devanagari, M-Bert's performance when trained only on monolingual corpora is comparable to performance when training on code-switched data, and it is likely that some of the remaining difference is due to domain mismatch. This provides further evidence that M-Bert uses a representation that is able to incorporate information from multiple languages.\n\nHowever, M-Bert is not able to effectively transfer to a transliterated target, suggesting that it is the language model pre-training on a particular language that allows transfer to that language. M-Bert is outperformed by previous work in both the monolingual-only and code-switched supervision scenarios. Neither BIBREF13 nor BIBREF12 use contextualized word embeddings, but both incorporate explicit transliteration signals into their approaches.\n\nIn this section, we study the structure of M-Bert's feature space. If it is multilingual, then the transformation mapping between the same sentence in 2 languages should not depend on the sentence itself, just on the language pair.\n\nWe sample 5000 pairs of sentences from WMT16 BIBREF14 and feed each sentence (separately) to M-Bert with no fine-tuning. We then extract the hidden feature activations at each layer for each of the sentences, and average the representations for the input tokens except [cls] and [sep], to get a vector for each sentence, at each layer INLINEFORM0 , INLINEFORM1 . For each pair of sentences, e.g. INLINEFORM2 , we compute the vector pointing from one to the other and average it over all pairs: INLINEFORM3 , where INLINEFORM4 is the number of pairs. Finally, we translate each sentence, INLINEFORM5 , by INLINEFORM6 , find the closest German sentence vector, and measure the fraction of times the nearest neighbour is the correct pair, which we call the “nearest neighbor accuracy”.\n\nIn Figure FIGREF27 , we plot the nearest neighbor accuracy for en-de (solid line). It achieves over INLINEFORM0 accuracy for all but the bottom layers, which seems to imply that the hidden representations, although separated in space, share a common subspace that represents useful linguistic information, in a language-agnostic way. Similar curves are obtained for en-ru, and ur-hi (in-house dataset), showing this works for multiple languages.\n\nAs to the reason why the accuracy goes down in the last few layers, one possible explanation is that since the model was pre-trained for language modeling, it might need more language-specific information to correctly predict the missing word.\n\nIn this work, we showed that M-Bert's robust, often surprising, ability to generalize cross-lingually is underpinned by a multilingual representation, without being explicitly trained for it. The model handles transfer across scripts and to code-switching fairly well, but effective transfer to typologically divergent and transliterated targets will likely require the model to incorporate an explicit multilingual training objective, such as that used by BIBREF15 or BIBREF16 .\n\nAs to why M-Bert generalizes across languages, we hypothesize that having word pieces used in all languages (numbers, URLs, etc) which have to be mapped to a shared space forces the co-occurring pieces to also be mapped to a shared space, thus spreading the effect to other word pieces, until different languages are close to a shared space.\n\nIt is our hope that these kinds of probing experiments will help steer researchers toward the most promising lines of inquiry by encouraging them to focus on the places where current contextualized word representation approaches fall short.\n\nWe would like to thank Mark Omernick, Livio Baldini Soares, Emily Pitler, Jason Riesa, and Slav Petrov for the valuable discussions and feedback.\n\nAll models were fine-tuned with a batch size of 32, and a maximum sequence length of 128 for 3 epochs. We used a learning rate of INLINEFORM0 with learning rate warmup during the first INLINEFORM1 of steps, and linear decay afterwards. We also applied INLINEFORM2 dropout on the last layer. No parameter tuning was performed. We used the BERT-Base, Multilingual Cased checkpoint from https://github.com/google-research/bert.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 38
+    },
+    {
+      "section": "Abstract",
+      "start": 40,
+      "end": 898
+    },
+    {
+      "section": "Introduction",
+      "start": 900,
+      "end": 3198
+    },
+    {
+      "section": "Models and Data",
+      "start": 3200,
+      "end": 4100
+    },
+    {
+      "section": "Named entity recognition experiments",
+      "start": 4102,
+      "end": 4428
+    },
+    {
+      "section": "Part of speech tagging experiments",
+      "start": 4430,
+      "end": 4742
+    },
+    {
+      "section": "Vocabulary Memorization ",
+      "start": 4744,
+      "end": 5175
+    },
+    {
+      "section": "Effect of vocabulary overlap",
+      "start": 5177,
+      "end": 6729
+    },
+    {
+      "section": "Generalization across scripts",
+      "start": 6731,
+      "end": 8090
+    },
+    {
+      "section": "Encoding Linguistic Structure ",
+      "start": 8092,
+      "end": 8625
+    },
+    {
+      "section": "Effect of language similarity",
+      "start": 8627,
+      "end": 9069
+    },
+    {
+      "section": "Generalizing across typological features ",
+      "start": 9071,
+      "end": 9743
+    },
+    {
+      "section": "Code switching and transliteration",
+      "start": 9745,
+      "end": 11720
+    },
+    {
+      "section": "Multilingual characterization of the feature space ",
+      "start": 11722,
+      "end": 11953
+    },
+    {
+      "section": "Experimental Setup",
+      "start": 11955,
+      "end": 12737
+    },
+    {
+      "section": "Results",
+      "start": 12739,
+      "end": 13429
+    },
+    {
+      "section": "Conclusion",
+      "start": 13431,
+      "end": 14495
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 14497,
+      "end": 14642
+    },
+    {
+      "section": "Model Parameters",
+      "start": 14644,
+      "end": 15068
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1906.01502",
+    "arxiv_id": "1906.01502",
+    "source_url": "https://arxiv.org/abs/1906.01502",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

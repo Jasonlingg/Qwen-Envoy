@@ -1,0 +1,194 @@
+{
+  "doc_id": "qasper_1908_11664",
+  "title": "Exploring Domain Shift in Extractive Text Summarization",
+  "text": "Exploring Domain Shift in Extractive Text Summarization\n\nAlthough domain shift has been well explored in many NLP applications, it still has received little attention in the domain of extractive text summarization. As a result, the model is under-utilizing the nature of the training data due to ignoring the difference in the distribution of training sets and shows poor generalization on the unseen domain. With the above limitation in mind, in this paper, we first extend the conventional definition of the domain from categories into data sources for the text summarization task. Then we re-purpose a multi-domain summarization dataset and verify how the gap between different domains influences the performance of neural summarization models. Furthermore, we investigate four learning strategies and examine their abilities to deal with the domain shift problem. Experimental results on three different settings show their different characteristics in our new testbed. Our source code including \\textit{BERT-based}, \\textit{meta-learning} methods for multi-domain summarization learning and the re-purposed dataset \\textsc{Multi-SUM} will be available on our project: \\url{http://pfliu.com/TransferSum/}.\n\nText summarization has been an important research topic due to its widespread applications. Existing research works for summarization mainly revolve around the exploration of neural architectures BIBREF0, BIBREF1 and design of training constraints BIBREF2, BIBREF3. Apart from these, several works try to integrate document characteristics (e.g. domain) to enhance the model performance BIBREF4, BIBREF5, BIBREF6, BIBREF7, BIBREF8, BIBREF9 or make interpretable analysis towards existing neural summarization models BIBREF10.\n\nDespite their success, only a few literature BIBREF11, BIBREF12 probes into the exact influence domain can bring, while none of them investigates the problem of domain shift, which has been well explored in many other NLP tasks. This absence poses some challenges for current neural summarization models: 1) How will the domain shift exactly affect the performance of existing neural architectures? 2) How to take better advantage of the domain information to improve the performance for current models? 3) Whenever a new model is built which can perform well on its test set, it should also be employed to unseen domains to make sure that it learns something useful for summarization, instead of overfitting its source domains.\n\nThe most important reason for the lack of approaches that deal with domain shift might lay in the unawareness of different domain definitions in text summarization. Most literature limits the concept of the domain into the document categories or latent topics and uses it as the extra loss BIBREF6, BIBREF7 or feature embeddings BIBREF8, BIBREF9. This definition presumes that category information will affect how summaries should be formulated. However, such information may not always be obtained easily and accurately. Among the most popular five summarization datasets, only two of them have this information and only one can be used for training. Besides, the semantic categories do not have a clear definition. Both of these prevent previous work from the full use of domains in existing datasets or building a new multi-domain dataset that not only can be used for multi-domain learning but also is easy to explore domain connection across datasets.\n\nIn this paper, we focus on the extractive summarization and demonstrate that news publications can cause data distribution differences, which means that they can also be defined as domains. Based on this, we re-purpose a multi-domain summarization dataset MULTI-SUM and further explore the issue of domain shift.\n\nMethodologically, we employ four types of models with their characteristics under different settings. The first model is inspired by the joint training strategy, and the second one builds the connection between large-scale pre-trained models and multi-domain learning. The third model directly constructs a domain-aware model by introducing domain type information explicitly. Lastly, we additionally explore the effectiveness of meta-learning methods to get better generalization. By analyzing their performance under in-domain, out-of-domain, and cross-dataset, we provide a preliminary guideline in Section SECREF31 for future research in multi-domain learning of summarization tasks.\n\nOur contributions can be summarized as follows:\n\nWe analyze the limitation of the current domain definition in summarization tasks and extend it into article publications. We then re-purpose a dataset MULTI-SUM to provide a sufficient multi-domain testbed (in-domain and out-of-domain).\n\nTo the best of our knowledge, this is the first work that introduces domain shift to text summarization. We also demonstrate how domain shift affects the current system by designing a verification experiment.\n\nInstead of pursuing a unified model, we aim to analyze how different choices of model designs influence the generalization ability of dealing with the domain shift problem, shedding light on the practical challenges and provide a set of guidelines for future researchers.\n\nIn this section, we first describe similar concepts used as the domain in summarization tasks. Then we extend the definition into article sources and verify its rationality through several indicators that illustrate the data distribution on our re-purposed multi-domain summarization dataset.\n\nAlthough a domain is often defined by the content category of a text BIBREF17, BIBREF18 or image BIBREF19, the initial motivation for a domain is a metadata attribute which is used in order to divide the data into parts with different distributions BIBREF20.\n\nFor text summarization, the differences between data distribution are often attributed to the document categories, such as sports or business, or the latent topics within articles, which can be caught by classical topic models like Latent Dirichlet Allocation (LDA) BIBREF21. Although previous works have shown that taking consideration of those distribution differences can improve summarization models performance BIBREF7, BIBREF8, few related them with the concept of the domain and investigated the summarization tasks from a perspective of multi-domain learning.\n\nIn this paper, we extend the concept into the article sources, which can be easily obtained and clearly defined.\n\nWe assume that the publications of news may also affect data distribution and thus influence the summarization styles. In order to verify our hypothesis, we make use of three indicators (Coverage, Density and Compression) defined by BIBREF16 to measure the overlap and compression between the (document, summary) pair. The coverage and the density are the word and the longest common subsequence (LCS) overlaps, respectively. The compression is the length ratio between the document and the summary.\n\nWe also calculate two strong summarization baselines for each publication. The LEAD baseline concatenates the first few sentences as the summary and calculates its ROUGE score. This baseline shows the lead bias of the dataset, which is an essential factor in news articles. The Ext-Oracle baseline evaluates the performance of the ground truth labels and can be viewed as the upper bound of the extractive summarization models BIBREF1, BIBREF9.\n\nThe recently proposed dataset Newsroom BIBREF16 is used, which was scraped from 38 major news publications. We select top ten publications (NYTimes, WashingtonPost, FoxNews, TheGuardian, NYDailyNews, WSJ, USAToday, CNN, Time and Mashable) and process them in the way of BIBREF22. To obtain the ground truth labels for extractive summarization task, we follow the greedy approach introduced by BIBREF1. Finally, we randomly divide ten domains into two groups, one for training and the other for test. We call this re-purposed subset of Newsroom MULTI-SUM to indicate it is specially designed for multi-domain learning in summarization tasks.\n\nFrom Table TABREF6, we can find that data from those news publications vary in indicators that are closely relevant to summarization. This means that (document, summary) pairs from different publications will have unique summarization formation, and models might need to learn different semantic features for different publications. Furthermore, we follow the simple experiment by BIBREF23 to train a classifier for the top five domains. A simple classification model with GloVe initializing words can also achieve 74.84% accuracy (the chance is 20%), which ensures us that there is a built-in bias in each publication. Therefore, it is reasonable to view one publication as a domain and use our multi-publication MULTI-SUM as a multi-domain dataset.\n\nDomain shift refers to the phenomenon that a model trained on one domain performs poorly on a different domainBIBREF19, BIBREF24. To clearly verify the existence of domain shift in the text summarization, we design a simple experiment on MULTI-SUM dataset.\n\nConcretely, we take turns choosing one domain and use its training data to train the basic model. Then, we use the testing data of the remaining domains to evaluate the model with the automatic metric ROUGE BIBREF25\n\nROUGE-2 and ROUGE-L show similar trends and their results are attached in Appendix.\n\nLike a few recent approaches, we define extractive summarization as a sequence labeling task. Formally, given a document $S$ consisting of $n$ sentences $s_1, \\cdots , s_n$, the summaries are extracted by predicting a sequence of label $Y = y_1, \\cdots , y_n$ ($y_i \\in \\lbrace 0,1\\rbrace $) for the document, where $y_i = 1$ represents the $i$-th sentence in the document should be included in the summaries.\n\nIn this paper, we implement a simple but powerful model based on the encoder-decoder architecture. We choose CNN as the sentence encoder following prior works BIBREF26 and employ the popular modular Transformer BIBREF27 as the document encoder. The detailed settings are described in Section SECREF28.\n\nFrom Table TABREF14, we find that the values are negative except the diagonal, which indicates models trained and tested on the same domain show the great advantage to those trained on other domains. The significant performance drops demonstrate that the domain shift problem is quite serious in extractive summarization tasks, and thus pose challenges to current well-performed models, which are trained and evaluated particularly under the strong hypothesis: training and test data instances are drawn from the identical data distribution. Motivated by this vulnerability, we investigate the domain shift problem under both multi-domain training and evaluation settings.\n\nWith the above observations in mind, we are seeking an approach which can alleviate the domain shift problem effectively in text summarization. Specifically, the model should not only perform well on source domains where it is trained on, but also show advantage on the unseen target domains. This involves the tasks of multi-domain learning and domain adaptation. Here, we begin with several simple approaches for multi-domain summarization based on multi-domain learning.\n\nTo facilitate the following description, we first set up mathematical notations. Assuming that there are $K$ related domains, we refer to $D_k$ as a dataset with $N_k$ samples for domain $k$. $D_k = \\lbrace (S_i^{(k)},Y_i^{(k)})\\rbrace _{i=1}^{N_k}$, where $S_i^{(k)}$ and $Y_i^{(k)}$ represent a sequence of sentences and the corresponding label sequence from a document of domain $k$, respectively. The goal is to estimate the conditional probability $P(Y|S)$ by utilizing the complementarities among different domains.\n\nThis is a simple but effective model for multi-domain learning, in which all domains are aggregated together and will be further used for training a set of shared parameters. Notably, domains in this model are not explicitly informed of their differences.\n\nTherefore, the loss function of each domain can be written as:\n\nwhere Basic denotes our CNN-Transformer encoder framework (As described in Section SECREF15). $\\theta ^{(s)}$ means that all domains share the same parameters.\n\nAnalysis: The above model benefits from the joint training strategy, which can allow a monolithic model to learn shared features from different domains. However, it is not sufficient to alleviate the domain shift problem, because two potential limitations remain: 1) The joint model is not aware of the differences across domains, which would lead to poor performance on in-task evaluation since some task-specific features shared by other tasks. 2) Negative transferring might happened on new domains. Next, we will study three different approaches to address the above problems.\n\nMore recently, unsupervised pre-training has achieved massive success in NLP community BIBREF28, BIBREF29, which usually provides tremendous external knowledge. However, there are few works on building the connection between large-scale pre-trained models and multi-domain learning. In this model, we explore how the external knowledge unsupervised pre-trained models bring can contribute to multi-domain learning and new domain adaption .\n\nWe achieve this by pre-training our basic model $Model^{I}_{Base}$ with BERT BIBREF28, which is one of the most successful learning frameworks. Then we investigate if BERT can provide domain information and bring the model good domain adaptability. To avoid introducing new structures, we use the feature-based BERT with its parameters fixed.\n\nAnalysis: This model instructs the processing of multi-domain learning by utilizing external pre-trained knowledge. Another perspective is to address this problem algorithmically.\n\nThe domain type can also be introduced directly as a feature vector, which can augment learned representations with domain-aware ability.\n\nSpecifically, each domain tag $C^{(k)}$ will be embedded into a low dimensional real-valued vector and then be concatenated with sentence embedding $\\mathbf {s^{(k)}_i}$. The loss function can be formulated as:\n\nIt is worth noting that, on unseen domains, the information of real domain tags is not available. Thus we design a domain tag `$\\mathfrak {X}$' for unknown domains and randomly relabeled examples with it during training. Since the real tag of the data tagged with `$\\mathfrak {X}$' may be any source domain, this embedding will force the model to learn the shared features and makes it more adaptive to unseen domains. In the experiment, this improves the performance on both source domains and target domains.\n\nAnalysis: This domain-aware model makes it possible to learn domain-specific features, while it still suffers from the negative transfer problem since private and shared features are entangled in shared space BIBREF31, BIBREF32. Specifically, each domain has permission to modify shared parameters, which makes it easier to update parameters along different directions.\n\n-0.7cm\n\nIn order to overcome the above limitations, we try to bridge the communication gap between different domains when updating shared parameters via meta-learning BIBREF33, BIBREF34, BIBREF35.\n\nHere, the introduced communicating protocol claims that each domain should tell others what its updating details (gradients) are. Through its different updating behaviors of different domains can be more consistent.\n\nFormally, given a main domain $A$ and an auxiliary domain $B$, the model will first compute the gradients of A $\\nabla _{\\theta } \\mathcal {L}^{A}$ with regard to the model parameters $\\theta $. Then the model will be updated with the gradients and calculate the gradients of B.\n\nOur objective is to produce maximal performance on sample $(S^{(B)},Y^{(B)})$:\n\nSo, the loss function for each domain can be finally written as:\n\nwhere $\\gamma $ $(0 \\le \\gamma \\le 1)$ is the weight coefficient and $\\mathcal {L}$ can be instantiated as $\\mathcal {L}_{I}$ (Eqn. DISPLAY_FORM19), $\\mathcal {L}_{II}$ or $\\mathcal {L}_{III}$ (Eqn. DISPLAY_FORM23).\n\nAnalysis: To address the multi-domain learning task and the adaptation to new domains, Model$^{II}_{BERT}$, Model$^{III}_{Tag}$, Model$^{IV}_{Meta}$ take different angles. Specifically, Model$^{II}_{BERT}$ utilizes a large-scale pre-trained model while Model$^{III}_{Tag}$ proposes to introduce domain type information explicitly. Lastly, Model$^{IV}_{Meta}$ is designed to update parameters more consistently, by adjusting the gradient direction of the main domain A with the auxiliary domain B during training. This mechanism indeed purifies the shared feature space via filtering out the domain-specific features which only benefit A.\n\nWe investigate the effectiveness of the above four strategies under three evaluation settings: in-domain, out-of-domain and cross-dataset. These settings make it possible to explicitly evaluate models both on the quality of domain-aware text representation and on their adaptation ability to derive reasonable representations in unfamiliar domains.\n\nWe perform our experiments mainly on our multi-domain MULTI-SUM dataset. Source domains are defined as the first five domains (in-domain) in Table TABREF6 and the other domains (out-of-domain) are totally invisible during training. The evaluation under the in-domain setting tests the model ability to learn different domain distribution on a multi-domain set and later out-of-domain investigates how models perform on unseen domains. We further make use of CNN/DailyMail as a cross-dataset evaluation environment to provide a larger distribution gap.\n\nWe use Model$^{I}_{Basic}$ as a baseline model, build Model$^{II}_{BERT}$ with feature-based BERT and Model$^{III}_{Tag}$ with domain embedding on it. We further develop Model$^{III}_{Tag}$ as the instantiation of Model$^{IV}_{Meta}$. For the detailed dataset statistics, model settings and hyper-parameters, the reader can refer to Appendix.\n\n-12pt\n\nWe compare our models by ROUGE-1 scores in Table TABREF29. Note that we select two sentences for MULTI-SUM domains and three sentences for CNN/Daily Mail due to the different average lengths of reference summaries.\n\nFrom Table TABREF29, we observe that the domain-aware model outperforms the monolithic model under both in-domain and out-of-domain settings. The significant improvement of in-domain demonstrates domain information is effective for summarization models trained on multiple domains. Meanwhile, the superior performance on out-of-domain further illustrates that, the awareness of domain difference also benefits under the zero-shot setting. This might suggest that the domain-aware model could capture domain-specific features by domain tags and have learned domain-invariant features at the same time, which can be transferred to unseen domains.\n\nDespite a little drop under in-domain setting, the narrowed performance gap, as shown in $\\Delta R$ of Table TABREF29, indicates Model$^{IV}_{Meta}$ has better generalization ability as a compensation. The performance decline mainly lies in the more consistent way to update parameters, which purifies shared feature space at the expense of filtering out some domain-specific features. The excellent results under cross-dataset settings further suggest the meta-learning strategy successfully improve the model transferability not only among the domains of MULTI-SUM but also across different datasets.\n\nSupported by the smaller $\\Delta R$ compared with Model$^{I}_{Base}$, we can draw the conclusion that BERT shows some domain generalization ability within MULTI-SUM. However, this ability is inferior to Model$^{III}_{Tag}$ and Model$^{IV}_{Meta}$, which further leads to the worse performance on cross-dataset. Thus we cannot attribute its success in MULTI-SUM to the ability to address multi-domain learning nor domain adaptation. Instead, we suppose the vast external knowledge of BERT provides its superior ability for feature extraction. That causes Model$^{II}_ {BERT}$ to overfit MULTI-SUM and perform excellently across all domains, but fails on the more different dataset CNN/Daily Mail.\n\nThis observation also suggests that although unsupervised pre-trained models are powerful enough BIBREF30, still, it can not take place the role of supervised learning methods (i.e. Model$^{III}_{Tag}$ and Model$^{IV}_{Meta}$), which is designed specifically for addressing multi-domain learning and new domain adaptation.\n\nTo summarize, Model$^{III}_ {Tag} $ is a simple and efficient method, which can achieve good performance under in-domain setting and shows certain generalization ability on the unseen domain. Model$^{IV}_ {Meta} $ shows the best generalization ability at the cost of relatively lower in-domain performance. Therefore, using Model$^{IV}_ {Meta} $ is not a good choice if in-domain performance matters for end users. Model$^{II}_ {BERT} $ can achieve the best performance under in-domain settings at expense of training time and shows worse generalization ability than Model$^{IV}_ {Meta} $. If the training time is not an issue, Model$^{II}_ {BERT} $ could be a good supplement for other methods.\n\nInspired by such observations, we further employ our four learning strategies to the mainstream summarization dataset CNN/DailyMail BIBREF22, which also includes two different data sources: CNN and DailyMail. We use the publication as the domain and train our models on its 28w training set. As Table TABREF30 shows, our basic model has comparable performance with other extractive summarization models. Besides, the publication tags can improve ROUGE scores significantly by 0.13 points in ROUGE-1 and the meta learning strategy does not show many advantages when dealing with in-domain examples, what we have expected. BERT with tags achieves the best performance, although the performance increment is not as much as what publication tags bring to the basic model, which we suppose that BERT itself has contained some degree of domain information.\n\nWe furthermore design several experiments to probe into some potential factors that might contribute to the superior performance of domain-aware models over the monolithic basic model.\n\nSentence position is a well known and powerful feature, especially for extractive summarization BIBREF40 . We compare the relative position of sentences selected by our models with the ground truth labels on source domains to investigate how well these models fit the distribution and whether they can distinguish between domains. We select the most representative models Model$^{I}_{Base}$ and Model$^{III}_{Tag}$ illustrated in Figure FIGREF34 .\n\nThe percentage of the first sentence on FoxNews is significantly higher than others: (1) Unaware of different domains, Model$^{I}_{Base}$ learns a similar distribution for all domains and is seriously affected by this extreme distribution. In its density histogram, the probability of the first sentence being selected is much higher than the ground truth on the other four domains. (2) Compared with Model$^{I}_{Base}$, domain-aware models are more robust by learning different relative distributions for different domains. Model$^{III}_{Tag}$ constrains the extreme trend especially obviously on CNN and Mashable.\n\n-2cm\n\nWe investigate several $\\gamma $ to further probe into the performance of Model$^{IV}_{Meta}$. In Eqn. DISPLAY_FORM27, $\\gamma $ is the weight coefficient of main domain A. When $\\gamma =0$, the model ignores A and focuses on the auxiliary domain B and when $\\gamma =1$ it is trained only on the loss of main domain A (the same as the instantiation Model$^{III}_{Tag}$). As Figure FIGREF43 shows, with the increase of $\\gamma $, the Rouge scores rise on in-domain while decline on out-of-domain and cross-dataset. The performances under in-domain settings prove that the import of the auxiliary domain hurts the model ability to learn domain-specific features. However, results under both out-of-domain and cross-dataset settings indicate the loss of B, which is informed of A's gradient information, helps the model to learn more general features, thus improving the generalization ability.\n\nWe briefly outline connections and differences to the following related lines of research.\n\nThere have been several works in summarization exploring the concepts of domains. BIBREF11 explored domain-specific knowledge and associated it as template information. BIBREF12 investigated domain adaptation in abstractive summarization and found the content selection is transferable to a new domain. BIBREF41 trained a selection mask for abstractive summarization and proved it has excellent adaptability. However, previous works just investigated models trained on a single domain and did not explore multi-domain learning in summarization.\n\nWe focus on the testbed that requires both training and evaluating performance on a set of domains. Therefore, we care about two questions: 1) how to learn a model when the training set contains multiple domains – involving MDL. 2) how to adapt the multi-domain model to new domains – involving DA. Beyond the investigation of some effective approaches like existing works, we have first verified how domain shift influences the summarization tasks.\n\nIt has a long history of fine-tuning downstream tasks with supervised or unsupervised pre-trained models BIBREF42, BIBREF28, BIBREF29. However, there is a rising interest in applying large-scale pre-trained models to zero-shot transfer learning BIBREF30. Different from the above works, we focus on addressing domain shift and generalization problem. One of our explored methods is semi-supervised pre-training, which combines supervised and unsupervised approaches to achieve zero-shot transfer.\n\nIn this paper, we explore publication in the context of the domain and investigate the domain shift problem in summarization. When verified its existence, we propose to build a multi-domain testbed for summarization that requires both training and measuring performance on a set of domains. Under these new settings, we propose four learning schemes to give a preliminary explore in characteristics of different learning strategies when dealing with multi-domain summarization tasks.\n\nWe thank Jackie Chi Kit Cheung for useful comments and discussions. The research work is supported by National Natural Science Foundation of China (No. 61751201 and 61672162), Shanghai Municipal Science and Technology Commission (16JC1420401 and 17JC1404100), Shanghai Municipal Science and Technology Major Project(No.2018SHZDZX01)and ZJLab.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 55
+    },
+    {
+      "section": "Abstract",
+      "start": 57,
+      "end": 1209
+    },
+    {
+      "section": "Introduction",
+      "start": 1211,
+      "end": 5198
+    },
+    {
+      "section": "Domains in Text Summarization",
+      "start": 5200,
+      "end": 5492
+    },
+    {
+      "section": "Domains in Text Summarization ::: Common Domain Definition",
+      "start": 5494,
+      "end": 6321
+    },
+    {
+      "section": "Domains in Text Summarization ::: Publications as Domain",
+      "start": 6323,
+      "end": 6435
+    },
+    {
+      "section": "Domains in Text Summarization ::: Publications as Domain ::: Three Measures",
+      "start": 6437,
+      "end": 6936
+    },
+    {
+      "section": "Domains in Text Summarization ::: Publications as Domain ::: Two Baselines",
+      "start": 6938,
+      "end": 7382
+    },
+    {
+      "section": "Domains in Text Summarization ::: Publications as Domain ::: MULTI-SUM",
+      "start": 7384,
+      "end": 8776
+    },
+    {
+      "section": "Analytical Experiment for Domain Shift",
+      "start": 8778,
+      "end": 9336
+    },
+    {
+      "section": "Analytical Experiment for Domain Shift ::: Basic Model",
+      "start": 9338,
+      "end": 10050
+    },
+    {
+      "section": "Analytical Experiment for Domain Shift ::: Results",
+      "start": 10052,
+      "end": 10724
+    },
+    {
+      "section": "Multi-domain Summarization",
+      "start": 10726,
+      "end": 11199
+    },
+    {
+      "section": "Multi-domain Summarization ::: Four Learning Strategies",
+      "start": 11201,
+      "end": 11722
+    },
+    {
+      "section": "Multi-domain Summarization ::: Four Learning Strategies ::: Model@!START@$^{I}_{Base}$@!END@",
+      "start": 11724,
+      "end": 12786
+    },
+    {
+      "section": "Multi-domain Summarization ::: Four Learning Strategies ::: Model@!START@$^{II}_{BERT}$@!END@",
+      "start": 12788,
+      "end": 13752
+    },
+    {
+      "section": "Multi-domain Summarization ::: Four Learning Strategies ::: Model@!START@$^{III}_{Tag}$@!END@",
+      "start": 13754,
+      "end": 14994
+    },
+    {
+      "section": "Multi-domain Summarization ::: Four Learning Strategies ::: Model@!START@$^{IV}_{Meta}$@!END@",
+      "start": 14996,
+      "end": 16683
+    },
+    {
+      "section": "Experiment",
+      "start": 16685,
+      "end": 17033
+    },
+    {
+      "section": "Experiment ::: Experiment Setup",
+      "start": 17035,
+      "end": 17937
+    },
+    {
+      "section": "Experiment ::: Quantitative Results",
+      "start": 17939,
+      "end": 18153
+    },
+    {
+      "section": "Experiment ::: Quantitative Results ::: Model@!START@$^{I}_{Basic}$@!END@ vs Model@!START@$^{III}_{Tag}$@!END@",
+      "start": 18155,
+      "end": 18799
+    },
+    {
+      "section": "Experiment ::: Quantitative Results ::: Model@!START@$^{I}_{Basic}$@!END@ vs Model@!START@$^{IV}_{Meta}$@!END@",
+      "start": 18801,
+      "end": 19403
+    },
+    {
+      "section": "Experiment ::: Quantitative Results ::: Model@!START@$^{II}_ {BERT}$@!END@",
+      "start": 19405,
+      "end": 20424
+    },
+    {
+      "section": "Experiment ::: Quantitative Results ::: Analysis of Different Model Choices",
+      "start": 20426,
+      "end": 21121
+    },
+    {
+      "section": "Experiment ::: Results on CNN/DailyMail",
+      "start": 21123,
+      "end": 21973
+    },
+    {
+      "section": "Experiment ::: Qualitative Analysis",
+      "start": 21975,
+      "end": 22159
+    },
+    {
+      "section": "Experiment ::: Qualitative Analysis ::: Label Position",
+      "start": 22161,
+      "end": 23231
+    },
+    {
+      "section": "Experiment ::: Qualitative Analysis ::: Weight @!START@$\\gamma $@!END@ for Model@!START@$^{IV}_{Meta}$@!END@",
+      "start": 23233,
+      "end": 24124
+    },
+    {
+      "section": "Related Work",
+      "start": 24126,
+      "end": 24216
+    },
+    {
+      "section": "Related Work ::: Domains in Summarization",
+      "start": 24218,
+      "end": 24762
+    },
+    {
+      "section": "Related Work ::: Multi-domain Learning (MDL) & Domain Adaptation (DA)",
+      "start": 24764,
+      "end": 25213
+    },
+    {
+      "section": "Related Work ::: Semi-supervised Pre-training for Zero-shot Transfer",
+      "start": 25215,
+      "end": 25711
+    },
+    {
+      "section": "Conclusion",
+      "start": 25713,
+      "end": 26196
+    },
+    {
+      "section": "Acknowledgment",
+      "start": 26198,
+      "end": 26540
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1908.11664",
+    "arxiv_id": "1908.11664",
+    "source_url": "https://arxiv.org/abs/1908.11664",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

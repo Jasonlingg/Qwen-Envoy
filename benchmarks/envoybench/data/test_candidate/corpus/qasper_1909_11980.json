@@ -1,0 +1,119 @@
+{
+  "doc_id": "qasper_1909_11980",
+  "title": "Spoken Conversational Search for General Knowledge",
+  "text": "Spoken Conversational Search for General Knowledge\n\nWe present a spoken conversational question answering proof of concept that is able to answer questions about general knowledge from Wikidata. The dialogue component does not only orchestrate various components but also solve coreferences and ellipsis.\n\nConversational question answering is an open research problem. It studies the integration of question answering (QA) systems in a dialogue system(DS). Not long ago, each of these research subjects were studied separately; only very recently has studying the intersection between them gained increasing interest BIBREF0, BIBREF1.\n\nWe present a spoken conversational question answering system that is able to answer questions about general knowledge in French by calling two distinct QA systems. It solves coreference and ellipsis by modelling context. Furthermore, it is extensible, thus other components such as neural approaches for question-answering can be easily integrated. It is also possible to collect a dialogue corpus from its iterations.\n\nIn contrast to most conversational systems which support only speech, two input and output modalities are supported speech and text. Thus it is possible to let the user check the answers by either asking relevant Wikipedia excerpts or by navigating through the retrieved name entities or by exploring the answer details of the QA components: the confidence score as well as the set of explored triplets. Therefore, the user has the final word to consider the answer as correct or incorrect and to provide a reward, which can be used in the future for training reinforcement learning algorithms.\n\nThe high-level architecture of the proposed system consists of a speech-processing front-end, an understanding component, a context manager, a generation component, and a synthesis component. The context manager provides contextualised mediation between the dialogue components and several question answering back-ends, which rely on data provided by WikidataFOOTREF1. Interaction with a human user is achieved through a graphical user interface (GUI). Figure 1 depicts the components together with their interactions.\n\nIn the remainder of this section, we explain the components of our system.\n\nThe user vocally asks her question which is recorded through a microphone driven by the GUI. The audio chunks are then processed in parallel by a speech recognition component and a speaker recognition component.\n\nThe Speech Recognition component enables the translation of speech into text. Cobalt Speech Recognition for French is a Kaldi-based speech-to-text decoder using a TDNN BIBREF2 acoustic model; trained on more than 2 000 hours of clean and noisy speech, a 1.7-million-word lexicon, and a 5-gram language model trained on 3 billion words.\n\nThe Speaker Recognition component answers the question “Who is speaking?”. This component is based on deep neural network speaker embeddings called “x-vectors” BIBREF3. Our team participated to the NIST SRE18 challenge BIBREF4, reaching the 11th position among 48 participants.\n\nOnce identified, it is possible to access the information of the speaker by accessing a speaker database which includes attributes such as nationality. This is a key module for personalising the behaviour of the system, for instance, by supporting questions such as \"Who is the president of the country where I was born?\".\n\nThe transcribed utterance and the speaker information are passed to the dialogue system. This system contains an understanding component, a context manager, and a generation component (Figure FIGREF7).\n\nThe understanding component relies on a linguistic module to parser the user's inputs. The linguistic module supports part-of-the-speech (POS) tagging, lemmatisation, dependency syntax and semantics provided by an adapted version of UDpipe BIBREF5, extended with a French full-form lexicon. UDpipe was trained on the French GSD treebank version 2.3. Since the syntax of questions in French differs from that of declaratives, we annotated manually about 500 questions to be merged into the UD treebank (which originally did not contain questions). Tests show that the labelled attached score (LAS) is thereby increased by 10% absolute, to 92%.\n\nThe Context Manager component is able to solve coreferences by using an adaptation of the end-to-end model presented in BIBREF6, that we trained for French by using fasttext multilingual character embeddings BIBREF7. The data used to train the coreference resolution model is a subset of the corpus CALOR BIBREF8 (Table TABREF11), which has been manually annotated with coreferences. This corpus contains coreference chains of named entities, nouns and pronouns (such as “the president” – “JFK” – “he” – “his”).\n\nThe dependency tree and semantic frames provided by the linguistic module are used to solve ellipsis by taking into account the syntactic and semantic structure of the previous question. Once the question has been resolved, it calls the QA systems and passes their results to the generation module.\n\nThe generation component either returns the short answer provided by QA systems or relies on an external generation module that uses dependency grammar templates to generate more elaborated answers.\n\nTwo complementary question answering components were integrated into the system: the Reasoning QA and Search QA. Each of these QA systems computes a confidence score for every answer by using icsiboost BIBREF9, an Adaboost-based classifier trained on a corpus of around 21 000 questions. The Context Manager takes into account these scores to pick the higher-confidence of the two answers.\n\nBesides the QA components, there are two other components that are able to provide complementary information about the Wikidata's entities under discussion: Documentary and Entity Sheet.\n\nThe Reasoning QA system first parses the question by using a Prolog definite clause grammar (DCG), extended with word-embeddings to support variability in the vocabulary. Then it explores a graph containing logical patterns that are used to produce requests in SPARQL that agree with the question.\n\nThe Search QA system uses an internal knowledge base, which finely indexes data using Elasticsearch. It is powered by Wikidata and enriched by Wikipedia, especially to calculate a Page-Rank BIBREF10 on each entity. This QA system first determines the potential named entities in the question (i.e. subjects, predicates, and types of subjects). Second, it constructs a correlation matrix by looking for the triplets in Wikidata that link these entities. This matrix is filtered according the coverage of the question and the relevance of each entity in order to find the best answer.\n\nThe documentary component is able to extract pertinent excerpts of Wikipedia. It uses an internal documentary base, which indexes Wikipedia's paragraphs by incorporating the Wikidata entity's IDs into elasticsearch indexes. Thus, it is possible to find paragraphs (ranked by elasticsearch) illustrating the answer to the given question by taking into account the entities detected in the question and in the answer.\n\nThe entity sheet component summarises an entity in Wikidata returning the description, the picture and the type of the entity.\n\nFinally, the generated response is passed to the GUI, which in turn passes it to the Voxygen synthesis solution.\n\nThe evaluation of the individual components of the proposed system was performed outside the scope of this work. We evaluated out-of-context questions, as well as the coreference resolution module.\n\nPerformance on out-of-context questions was evaluated on Bench'It, a dataset containing 150 open ended questions about general knowledge in French (Figure FIGREF20). The system reached a macro precision, recall and F-1 of $64.14\\%$, $64.33\\%$ and $63.46\\%$ respectively.\n\nWe also evaluated the coreference resolution model on the test-set of CALOR (Table TABREF11), obtaining an average precision, recall and F-1 of 65.59%, 48.86% and 55.77% respectively. The same model reached a average F-1 of 68.8% for English BIBREF6. Comparable measurements are not available for French. F-1 scores for French are believed to be lower because of the lower amount of annotated data.\n\nOn the one hand, the system is able to answer complex out-of-context questions such as “What are the capitals of the countries of the Iberian Peninsula?\", by correctly answering the list of capitals: “Andorra la Vella, Gibraltar, Lisbon, Madrid\".\n\nOn the other hand, consider the dialogue presented in Figure FIGREF23, in which the user asks several related questions about Michael Jackson. First she asks “Who is Michael Jackson?” and the system correctly answers “Michael Jackson is an American author, composer, singer and dancer”, note that this is the generated long answer.\n\nThe subsequent questions are related to the names of his family members. In order to correctly answer these questions, the resolution of coreferences is neccesary to solve the possessive pronouns, which in French agree in gender and number with the noun they introduce. In this specific example, while in English “his” is used in all the cases, in French it changes to: son père (father), sa mère (mother), ses frères (brothers). This example also illustrates resolution of elliptical questions in the context, by solving the question “and his mother's\" as “What is the name of his mother\".\n\nWe have presented a spoken conversational question answering system, in French. The DS orchestrates different QA systems and returns the response with the higher confidence score. The system contains modules specifically designed for dealing with common spoken conversation phenomena such as coreference and ellipsis.\n\nWe will soon integrate a state-of-the art reading comprehension approach, support English language and improve the coreference resolution module. We are also interested in exploring policy learning, thus the system will be able to find the best criterion to chose the answer or to ask for clarification in the case of ambiguity and uncertainty.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 50
+    },
+    {
+      "section": "Abstract",
+      "start": 52,
+      "end": 304
+    },
+    {
+      "section": "Introduction",
+      "start": 306,
+      "end": 1650
+    },
+    {
+      "section": "Architectural Description",
+      "start": 1652,
+      "end": 2246
+    },
+    {
+      "section": "Architectural Description ::: Speech and Speaker Recognition",
+      "start": 2248,
+      "end": 2459
+    },
+    {
+      "section": "Architectural Description ::: Speech and Speaker Recognition ::: Speech Recognition",
+      "start": 2461,
+      "end": 2796
+    },
+    {
+      "section": "Architectural Description ::: Speech and Speaker Recognition ::: Speaker Recognition",
+      "start": 2798,
+      "end": 3399
+    },
+    {
+      "section": "Architectural Description ::: The Dialogue System",
+      "start": 3401,
+      "end": 3602
+    },
+    {
+      "section": "Architectural Description ::: The Dialogue System ::: Understanding",
+      "start": 3604,
+      "end": 4246
+    },
+    {
+      "section": "Architectural Description ::: The Dialogue System ::: Context Manager",
+      "start": 4248,
+      "end": 5059
+    },
+    {
+      "section": "Architectural Description ::: The Dialogue System ::: Generation",
+      "start": 5061,
+      "end": 5259
+    },
+    {
+      "section": "Architectural Description ::: QA Systems",
+      "start": 5261,
+      "end": 5838
+    },
+    {
+      "section": "Architectural Description ::: QA Systems ::: Reasoning QA",
+      "start": 5840,
+      "end": 6137
+    },
+    {
+      "section": "Architectural Description ::: QA Systems ::: Search QA",
+      "start": 6139,
+      "end": 6721
+    },
+    {
+      "section": "Architectural Description ::: QA Systems ::: Documentary",
+      "start": 6723,
+      "end": 7138
+    },
+    {
+      "section": "Architectural Description ::: QA Systems ::: Entity Sheet",
+      "start": 7140,
+      "end": 7266
+    },
+    {
+      "section": "Architectural Description ::: Speech Synthesis",
+      "start": 7268,
+      "end": 7380
+    },
+    {
+      "section": "Evaluation",
+      "start": 7382,
+      "end": 8251
+    },
+    {
+      "section": "Examples",
+      "start": 8253,
+      "end": 9424
+    },
+    {
+      "section": "Conclusion and Future Work",
+      "start": 9426,
+      "end": 10089
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1909.11980",
+    "arxiv_id": "1909.11980",
+    "source_url": "https://arxiv.org/abs/1909.11980",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -561,7 +561,7 @@ def _run_payload(
         "automatic_diagnostics": automatic,
         "retrieval_baseline": prepared_retrieval_status(
             benchmark, manifest,
-            HERE.parents[1] / "out/envoybench/retrieval-baseline-prepared-20260930/plan.json",
+            HERE.parents[1] / "release/qasper-agent-study/retrieval-baseline/plan.json",
         ),
         "promotion": promotion,
         "provenance": {

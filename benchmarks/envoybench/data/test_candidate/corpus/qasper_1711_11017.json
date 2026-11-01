@@ -1,0 +1,79 @@
+{
+  "doc_id": "qasper_1711_11017",
+  "title": "HoME: a Household Multimodal Environment",
+  "text": "HoME: a Household Multimodal Environment\n\nWe introduce HoME: a Household Multimodal Environment for artificial agents to learn from vision, audio, semantics, physics, and interaction with objects and other agents, all within a realistic context. HoME integrates over 45,000 diverse 3D house layouts based on the SUNCG dataset, a scale which may facilitate learning, generalization, and transfer. HoME is an open-source, OpenAI Gym-compatible platform extensible to tasks in reinforcement learning, language grounding, sound-based navigation, robotics, multi-agent learning, and more. We hope HoME better enables artificial agents to learn as humans do: in an interactive, multimodal, and richly contextualized setting.\n\nHuman learning occurs through interaction BIBREF0 and multimodal experience BIBREF1 , BIBREF2 . Prior work has argued that machine learning may also benefit from interactive, multimodal learning BIBREF3 , BIBREF4 , BIBREF5 , termed virtual embodiment BIBREF6 . Driven by breakthroughs in static, unimodal tasks such as image classification BIBREF7 and language processing BIBREF8 , machine learning has moved in this direction. Recent tasks such as visual question answering BIBREF9 , image captioning BIBREF10 , and audio-video classification BIBREF11 make steps towards learning from multiple modalities but lack the dynamic, responsive signal from exploratory learning. Modern, challenging tasks incorporating interaction, such as Atari BIBREF12 and Go BIBREF13 , push agents to learn complex strategies through trial-and-error but miss information-rich connections across vision, language, sounds, and actions. To remedy these shortcomings, subsequent work introduces tasks that are both multimodal and interactive, successfully training virtually embodied agents that, for example, ground language in actions and visual percepts in 3D worlds BIBREF3 , BIBREF4 , BIBREF14 .\n\nFor virtual embodiment to reach its full potential, though, agents should be immersed in a rich, lifelike context as humans are. Agents may then learn to ground concepts not only in various modalities but also in relationships to other concepts, i.e. that forks are often in kitchens, which are near living rooms, which contain sofas, etc. Humans learn by concept-to-concept association, as shown in child learning psychology BIBREF1 , BIBREF2 , cognitive science BIBREF15 , neuroscience BIBREF16 , and linguistics BIBREF17 . Even in machine learning, contextual information has given rise to effective word representations BIBREF8 , improvements in recommendation systems BIBREF18 , and increased reward quality in robotics BIBREF19 . Importantly, scale in data has proven key in algorithms learning from context BIBREF8 and in general BIBREF20 , BIBREF21 , BIBREF22 .\n\nTo this end, we present HoME: the Household Multimodal Environment (Figure 1 ). HoME is a large-scale platform for agents to navigate and interact within over 45,000 hand-designed houses from the SUNCG dataset BIBREF23 . Specifically, HoME provides:\n\nHoME is a general platform extensible to many specific tasks, from reinforcement learning to language grounding to blind navigation, in a real-world context. HoME is also the first major interactive platform to support high fidelity audio, allowing researchers to better experiment across modalities and develop new tasks. While HoME is not the first platform to provide realistic context, we show in following sections that HoME provides a more large-scale and multimodal testbed than existing environments, making it more conducive to virtually embodied learning in many scenarios.\n\nThe AI community has built numerous platforms to drive algorithmic advances: the Arcade Learning Environment BIBREF12 , OpenAI Universe BIBREF26 , Minecraft-based Malmo BIBREF27 , maze-based DeepMind Lab BIBREF28 , Doom-based ViZDoom BIBREF29 , AI2-THOR BIBREF30 , Matterport3D Simulator BIBREF31 and House3D BIBREF32 . Several of these environments were created to be powerful 3D sandboxes for developing learning algorithms BIBREF27 , BIBREF28 , BIBREF29 , while HoME additionally aims to provide a unified platform for multimodal learning in a realistic context (Fig. 2 ). Table 1 compares these environments to HoME.\n\nThe most closely related environments to HoME are House3D, AI2-THOR, and Matterport3D Simulator, three other household environments. House3D is a concurrently developed environment also based on SUNCG, but House3D lacks sound, true physics simulation, and the capability to interact with objects — key aspects of multimodal, interactive learning. AI2-THOR and Matterport3D Simulator are environments focused specifically on visual navigation, using 32 and 90 photorealistic houses, respectively. HoME instead aims to provide an extensive number of houses (45,622) and easy integration with multiple modalities and new tasks.\n\nOther 3D house datasets could also be turned into interactive platforms, but these datasets are not as large-scale as SUNCG, which consists of 45622 house layouts. These datasets include Stanford Scenes (1723 layouts) BIBREF33 , Matterport3D BIBREF34 (90 layouts), sceneNN (100 layouts) BIBREF35 , SceneNet (57 layouts) BIBREF36 , and SceneNet RGB-D (57 layouts) BIBREF37 . We used SUNCG, as scale and diversity in data have proven critical for machine learning algorithms to generalize BIBREF20 , BIBREF21 and transfer, such as from simulation to real BIBREF22 . SUNCG's simpler graphics also allow for faster rendering.\n\nOverviewed in Figure 1 , HoME is an interactive extension of the SUNCG dataset BIBREF23 . SUNCG provides over 45,000 hand-designed house layouts containing over 750,000 hand-designed rooms and sometimes multiple floors. Within these rooms, of which there are 24 kinds, there are objects from among 84 categories and on average over 14 objects per room. As shown in Figure 3 , HoME consists of several, distinct components built on SUNCG that can be utilized individually. The platform runs faster than real-time on a single-core CPU, enables GPU acceleration, and allows users to run multiple environment instances in parallel. These features facilitate faster algorithmic development and learning with more data. HoME provides an OpenAI Gym-compatible environment which loads agents into randomly selected houses and lets it explore via actions such as moving, looking, and interacting with objects (i.e. pick up, drop, push). HoME also enables multiple agents to be spawned at once. The following sections detail HoME's core components.\n\nThe rendering engine is implemented using Panda3D BIBREF38 , an open-source 3D game engine which ships with complete Python bindings. For each SUNCG house, HoME renders RGB+Depth scenes based on house and object textures (wooden, metal, rubber, etc.), multi-source lighting, and shadows. The rendering engine enables tasks such as vision-based navigation, imitation learning, and planning.\n\nThis module provides: RGB image (with different shader presets), depth image.\n\nThe acoustic engine is implemented using EVERT, which handles real-time acoustic ray-tracing based on the house and object 3D geometry. EVERT also supports multiple microphones and sound sources, distance-dependent sound attenuation, frequency-dependent material absorption and reflection (walls muffle sounds, metallic surfaces reflect acoustics, etc.), and air-absorption based on atmospheric conditions (temperature, pressure, humidity, etc.). Sounds may be instantiated artificially or based on the environment (i.e. a TV with static noise or an agent's surface-dependent footsteps).\n\nThis module provides: stereo sound frames for agents w.r.t. environmental sound sources.\n\nHoME provides a short text description for each object, as well as the following semantic information:\n\n[leftmargin=*]\n\nColor, calculated from object textures and discretized into 16 basic colors, ~130 intermediate colors, and ~950 detailed colors.\n\nCategory, extracted from SUNCG object metadata. HoME provides both generic object categories (i.e. “air conditioner,” “mirror,” or “window”) as well as more detailed categories (i.e. “accordion,” “mortar and pestle,” or “xbox”).\n\nMaterial, calculated to be the texture, out of 20 possible categories (“wood,” “textile,” etc.), covering the largest object surface area.\n\nSize (“small,” “medium,” or “large”) calculated by comparing an object's mesh volume to a histogram of other objects of the same category.\n\nLocation, based on ground-truth object coordinates from SUNCG.\n\nWith these semantics, HoME may be extended to generate language instructions, scene descriptions, or questions, as in BIBREF3 , BIBREF4 , BIBREF14 . HoME can also provide agents dense, ground-truth, semantically-annotated images based on SUNCG's 187 fine-grained categories (e.g. bathtub, wall, armchair).\n\nThis module provides: image segmentations, object semantic attributes and text descriptions.\n\nThe physics engine is implemented using the Bullet 3 engine. For objects, HoME provides two rigid body representations: (a) fast minimal bounding box approximation and (b) exact mesh-based body. Objects are subject to external forces such as gravity, based on volume-based weight approximations. The physics engine also allows agents to interact with objects via picking, dropping, pushing, etc. These features are useful for applications in robotics and language grounding, for instance.\n\nThis module provides: agent and object positions, velocities, physical interaction, collision.\n\nUsing these engines and/or external data collection, HoME can facilitate tasks such as:\n\nOur Household Multimodal Environment (HoME) provides a platform for agents to learn within a world of context: hand-designed houses, high fidelity sound, simulated physics, comprehensive semantic information, and object and multi-agent interaction. In this rich setting, many specific tasks may be designed relevant to robotics, reinforcement learning, language grounding, and audio-based learning. HoME's scale may also facilitate better learning, generalization, and transfer. We hope the research community uses HoME as a stepping stone towards virtually embodied, general-purpose AI.\n\nWe are grateful for the collaborative research environment provided by MILA. We also acknowledge the following agencies for research funding and computing support: CIFAR, CHISTERA IGLU and CPER Nord-Pas de Calais/FEDER DATA Advanced data science and technologies 2015-2020, Calcul Québec, Compute Canada, and Google. We further thank NVIDIA for donating a DGX-1 and Tesla K40 used in this work. Lastly, we thank acronymcreator.net for the acronym HoME.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "section": "Abstract",
+      "start": 42,
+      "end": 718
+    },
+    {
+      "section": "Introduction",
+      "start": 720,
+      "end": 3604
+    },
+    {
+      "section": "Related work",
+      "start": 3606,
+      "end": 5475
+    },
+    {
+      "section": "HoME",
+      "start": 5477,
+      "end": 6515
+    },
+    {
+      "section": "Rendering engine",
+      "start": 6517,
+      "end": 6985
+    },
+    {
+      "section": "Acoustic engine",
+      "start": 6987,
+      "end": 7664
+    },
+    {
+      "section": "Semantic engine",
+      "start": 7666,
+      "end": 8889
+    },
+    {
+      "section": "Physics engine",
+      "start": 8891,
+      "end": 9475
+    },
+    {
+      "section": "Applications",
+      "start": 9477,
+      "end": 9564
+    },
+    {
+      "section": "Conclusion",
+      "start": 9566,
+      "end": 10153
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 10155,
+      "end": 10607
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1711.11017",
+    "arxiv_id": "1711.11017",
+    "source_url": "https://arxiv.org/abs/1711.11017",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

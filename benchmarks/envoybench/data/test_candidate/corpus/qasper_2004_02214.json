@@ -1,0 +1,204 @@
+{
+  "doc_id": "qasper_2004_02214",
+  "title": "Prototype-to-Style: Dialogue Generation with Style-Aware Editing on Retrieval Memory",
+  "text": "Prototype-to-Style: Dialogue Generation with Style-Aware Editing on Retrieval Memory\n\nThe ability of a dialog system to express prespecified language style during conversations has a direct, positive impact on its usability and on user satisfaction. We introduce a new prototype-to-style (PS) framework to tackle the challenge of stylistic dialogue generation. The framework uses an Information Retrieval (IR) system and extracts a response prototype from the retrieved response. A stylistic response generator then takes the prototype and the desired language style as model input to obtain a high-quality and stylistic response. To effectively train the proposed model, we propose a new style-aware learning objective as well as a de-noising learning strategy. Results on three benchmark datasets from two languages demonstrate that the proposed approach significantly outperforms existing baselines in both in-domain and cross-domain evaluations\n\nMost early research on dialogue response generation focused on generating grammatical and contextually relevant responses BIBREF0, BIBREF1, BIBREF2. While promising results have been demonstrated BIBREF3, BIBREF4, syntactically coherent responses alone do not guarantee an engaging and attractive dialogue system. Expressing a unique and consistent speaking style has been shown to be crucial for increasing the user's engagement with dialogue systems BIBREF5. There are various definitions of language style BIBREF6, BIBREF7, BIBREF8, BIBREF9, BIBREF10. In this work, from a purely computational standpoint, we refer to language style as any characteristic style of expression. Hence, our work is in line with previous work on dialogue generation with emotion BIBREF11, BIBREF12, BIBREF13, BIBREF14; response attitude BIBREF15, and speaker personality BIBREF16.\n\nThe aforementioned approaches explicitly incorporate the language style information into the model configuration either via embeddings or memory modules to control the process of response generation. In our replication experiments, we found that these approaches tend to overemphasise the importance of the language style. As a result, the generated responses tend to be generic and non-informative BIBREF17, but they do express a distinct style; e.g., they generate a generic response: “I am happy to hear that.\" that conveys a `happy' emotion to different queries.\n\nIn this work, we propose a novel prototype-to-style (PS) framework to tackle the challenge of stylistic dialogue generation. Our motivation is two-fold: (1) Human-written responses are informative and diverse, which could be leveraged as guidance for the generation model; (2) However, the retrieved response is not guaranteed to express the desired language style. Moreover, the quality of the retrieved response varies among different queries due to the instability of the IR system. Therefore, to transform the retrieved result into a relevant and stylistic response, an adequate editing process is necessary.\n\nAn illustration of the proposed framework is shown in Figure FIGREF2, where a prototype is first extracted from the retrieved response. The stylistic response generator then takes the desired language style and the extracted prototype as additional input to obtain an adequate and stylistic response. The proposed stylistic response generator mainly inherits from the GPT-2 model BIBREF18 which is pre-trained with a large unlabeled text corpus. However, the GPT-2 model does not naturally fit the task of dialogue generation. To this end, we design various adaptations to the model architecture to extend the GPT-2 model to address the task of dialogue generation. Furthermore, in order to control the style of the generated responses, we train the model with a novel style-aware maximum likelihood estimation (MLE) objective that encodes additional style knowledge into the model's parameters. Finally, to mitigate the possible effect that the retrieved response containing irrelevant and inappropriate information with respect to the input query, we adopt a de-noising learning strategy BIBREF19, BIBREF20 to prevent the model from uncritically copying the prototype.\n\nTo fully evaluate the proposed approach, we conduct extensive experiments on three benchmark datasets. Results of both human and automatic evaluation show that the proposed approach significantly outperforms several strong baselines. In addition, we also conduct an extensive cross-domain experiment to demonstrate that the proposed approach is more robust than such baselines.\n\nIt should be noted that stylistic dialogue generation is different from the task of text style transfer. Text style transfer aims to rewrite the input sentences such that they possess certain language styles, while rigorously preserving their semantic meaning BIBREF21. On the other hand, stylistic dialogue generation does not aim at preserving the semantic meaning of the input sentences. Instead, it aims at generating sentences that are adequate and relevant responses to the input sentences, while expressing the prespecified language styles.\n\nIn summary, the contributions of this work are: (1) We propose a novel framework that tackles the challenge of stylistic dialogue generation by leveraging useful information contained in the retrieved responses; (2) We propose a new stylistic response generator by making proper adaptations to a large-scale pre-trained language model. We train our model with a new style-aware learning objective in a de-noising manner. Experiments show that the proposed model outperforms many strong baselines on three benchmark datasets on both in-domain and cross-domain evaluations.\n\nWe summarize three categories of relevant work in the following.\n\nThe task of text style transfer aims to transfer the style contained in a sentence while preserving its meaning. BIBREF22 proposed a DRG framework to tackle this task with the help of external knowledge. Recently, based on the pre-trained language model, BIBREF23 further improved the system performance under the same DRG framework.\n\nMany prior works BIBREF24, BIBREF25, BIBREF26, BIBREF27 proposed to leverage information from the retrieved responses to improve the system performance on non-task oriented dialogue generation. It should be noted that all these approaches aim to improve the content quality of the generated responses but do not take the style aspect into consideration.\n\nExtensive research has tried to tackle the task of stylistic dialogue generation. BIBREF16 proposed to represent the user's personality with embeddings and incorporated them into the decoder structure to control the response generation process. BIBREF15 used reinforcement learning to train the generation model via the interaction with a pre-trained classifier to generate responses with specified attitude. BIBREF11, BIBREF12, BIBREF13, BIBREF14 incorporated external knowledge into the model architecture either via embeddings or internal and external memory modules, such that during the generation process, emotion-based styles can be dynamically controlled. BIBREF28 proposed to use a shared latent space for stylistic dialogue generation.\n\nThe proposed framework leverages the results acquired from an IR system, A major challenge is that the retrieved response is not guaranteed to express the desired language style. At the first step, a neutral response prototype is extracted by masking all stylistic words contained in the retrieved response. A stylistic response generator then takes the desired language style and the extracted prototype as additional input to generate an adequate and stylistic response to the input query. To better emphasize the generation of stylistic expressions, we propose a style-aware learning objective. Finally, to prevent the model from learning to uncritically copy the prototype, we adopt a de-noising learning strategy BIBREF19, BIBREF20 to train the generator.\n\nThe response prototype is constructed from the retrieved response by masking the stylistic words. To determine whether a word is stylistic, we use the pointwise mutual information (PMI) BIBREF29 metric. The relevance between the word $x$ and the style $s$ is measured as\n\nwhere $p(x, s)$ is the frequency that the word $x$ appears in a response with style $s$ in the training corpus. And a word $x$ is stylistic given the style $s$ if $\\textup {PMI}(x,s)\\ge t_s$. In our experiments, we empirically set $t_s$ as $t_s = \\frac{3}{4}\\times \\max _{v\\in \\mathcal {V}}\\textup {PMI}(v; s)$, where $\\mathcal {V}$ is the vocabulary set of the training corpus. Given the set of all possible language styles $\\mathcal {S}$, the stylistic vocabulary $\\mathcal {SV}$ is defined as all words that express any style $s\\in \\mathcal {S}$. An example is provided in Figure FIGREF2 where the prototype: “That's _ . I will go with my _ together !” is extracted from the retrieved response by masking the stylistic words great, bro and buddies.\n\nThe proposed Stylistic Response Generator inherits from the GPT-2 BIBREF18 model which consists of a 12-layer decoder-only Transformer BIBREF30. To make use of the GPT-2 model, the input tokens must be a consecutive natural sequence (e.g. sentence, document). Based on the input sequence, the input representation is constructed by adding up the token embeddings and the corresponding position embeddings.\n\nTo achieve the goal of adapting the GPT-2 model under the proposed PS framework, we first make modifications to the form of the input sequence. As shown in Figure FIGREF6, we construct the input sequence as the concatenation of the input query, the response prototype and the reference response. Then we introduce a special token $[B]$ to indicate the boundary between these three parts. To further ensure the model can identify the different parts of the input sequence, we introduce a new segment level input which consists of three learnable segment embeddings $E_Q$, $E_P$ and $E_R$ to indicate the positions of the input query, the response prototype and the response history. To control the language style of the generated response, we propose to incorporate learnable style embeddings into the input representation. Specifically, we add the style embeddings to the entire part of the response history. This way, the model is constantly aware of the desired language style through the entire generation process.\n\nWe propose to use a new style-aware learning objective to train the stylistic response generator. Consider a training instance consists of the input query ${\\bf X} = (x_1, ..., x_N)$, the reference response ${\\bf Y} = (y_1, ..., y_T)$, the reference language style $s$ and the response prototype ${\\bf C} = (c_1, ..., c_T)$, the proposed objective is defined as\n\nwhere $\\theta $ are the model parameters and $\\mathcal {SV}$ is the stylistic vocabulary introduced in SV. By increasing $\\alpha $, the proposed objective encodes more knowledge about stylistic expressions into the model parameters.\n\nWe find that including the language model as an auxiliary objective in addition to the supervised style-aware learning objective helps to improve generalization as well as accelerate convergence. This observation is in line with BIBREF31, BIBREF32. In this work, the language model objective is defined as the reconstruction loss of the input query based on itself:\n\nThe final learning objective is then defined as\n\nwhere $\\beta $ regulates the importance of the auxiliary objective.\n\nWe use a de-noising training strategy similar to DBLP:conf/nips/JainS08, DBLP:conf/cvpr/KrullBJ19 for training data construction, as shown in Figure FIGREF17. Specifically, during training, the response prototype is extracted from the reference response by the following steps. First, we mask all the stylistic words in the reference response. Second, we randomly select some words (40%) and replace it with a special token [MASK] or a random word drawn from the vocabulary.\n\nThe second step is necessary otherwise the model will learn to generate a response by uncritically copying the response prototype, since the prototype after the first step is always an integral part of the golden response. This copy mechanism is undesirable since during testing the retrieved response is likely to contain information that is irrelevant to the input query. Thus, we deliberately train the response generator with noisy input to let the model learn to filter out the inappropriate information contained in the response prototype.\n\nWe conduct extensive experiments on three dialogue datasets: gender-specific (Chinese) dataset, emotion-specific (Chinese) dataset, and sentiment-specific (English) dataset. For each dataset, we randomly select 200 instances as a held-out test set for evaluation.\n\nWe use a publicly available gender-specific dialogue dataset BIBREF33. In this dataset, each response contains one specific gender preference including Female, Male and Neutral.\n\nWe use a publicly available emotion-specific dataset BIBREF11 which contains responses with 6 different emotions including Like, Disgust, Happy, Anger, Sad and Other.\n\nTo construct this dataset, we first build a classifier on the basis of BERT BIBREF34 and finetuned it on the the SemEval-2017 Subtask A dataset BIBREF35. This dataset consists of twitter instances with different sentiments including Positive, Negative and Neutral.\n\nThe sentiment classifier attains 81.4% classification accuracy which is further used to annotate the OpenSubtitles dataset BIBREF36. The data statistic of the resulting sentiment-specific dialogue dataset is shown in Table TABREF21.\n\nAs there is no off-the-shelf pre-trained word-level language model in Chinese, we manually pre-trained one. The corpus collection and model pre-training details are presented in the supplementary material. For the English pre-trained language model, we use the PyTorch adaptation released by the HuggingFace team.\n\nTo optimize the model, we use the Adam optimizer BIBREF37 with a batch size of 64 and learning rate of 2e-5. During inference, the retrieval system is built from the training corpus, and the retrieved responses are selected using the Jaccard similarity BIBREF38 between queries.\n\nDuring the inference stage, we retrieve the candidates from the training set. Specifically, we employ Jacquard Similarity to calculate the similarity between the input query q and queries in training set and find the most similar query q$^\\prime $. Then we directly adopt the response of the retrieved query q$^\\prime $ to construct the response prototype.\n\nWe compare the proposed approach with several competitive baselines that can be categorized into two classes: generative approaches and retrieval-based approaches.\n\nStandard sequence-to-sequence model with attention mechanism BIBREF39, BIBREF40.\n\nTo examine the effect of leveraging the pre-trained language model for the task of dialogue generation, we directly fine-tune the GPT-2 model on the dialogue data without any designed adaptations.\n\nModel proposed by BIBREF16 which incorporates distributed style embeddings into the structure of decoding cells to control the generation process.\n\nModel proposed by BIBREF11 which uses memory modules to control the stylistic expressions in the generated responses.\n\nModel proposed by BIBREF27 which modifies the retrieved response based on the lexical difference between the input and the retrieved query. This approach does not take the style aspect into consideration.\n\nFor this approach, we apply the state-of-the-art style transfer BIBREF23 model on the retrieved response. This approach does not consider the input query information during the transfer process.\n\nGiven the input query, a style classifier is used to rerank the top 10 retrieved responses. The response with the highest score on the desired style is selected.\n\nThe full model proposed in this work.\n\nIn the ablated model, we examine how the retrieved prototype effects our model's performance. To this end, we remove the response prototype from the input representation.\n\nThe quality of dialogue responses is known to be difficult to measure automatically BIBREF41; we therefore rely on human evaluation. To evaluate the responses, we hire five annotators from a commercial annotation company. To prevent introducing potential bias to the annotators, all results are randomly shuffled before being evaluated. All results are evaluated by the annotators following the metrics below.\n\nThis metric evaluates the content quality of the generated responses. The annotators are asked to give a score within 5-point scale where 5 means perfectly human-like response (relevant, fluent and informative), 3 means marginally acceptable and 1 means unreadable and impossible to understand.\n\nThis metric measures how well the generated responses express the desired style. The annotators give a score ranging from 1 to 5 to this metric, where 5 means very strong style, 3 means no obvious style and 1 means very conflicted style. The style conflict means the generated style is conflicted to the desired one (e.g. female to male, positive to negative emotion).\n\nThe annotators are further asked to jointly evaluate the content quality and the style expression of the generated responses from different approaches. Then the annotators give a ranking to each result where top 1 means the best.\n\nBoth human and automatic evaluation results on the three benchmark datasets are shown in Table TABREF25, TABREF26 and TABREF27. For each dataset, we present results on individual styles as well as the overall results. We observe that the proposed model achieves the top performance results on most of the metrics. It generates responses with both intense style and high response quality. In addition, we also measure the diversity of the generated responses with two automatic metrics: Distinct-1 and Distinct-2 BIBREF16. The results show that the proposed model achieves the closest performance to that of the RRe approach whose responses are all written by human. On the ranking metric which jointly evaluates the content quality and the style expression, the proposed model outperforms other approaches by a substantial margin.\n\nFrom the results in Table TABREF26 and TABREF27, we can observe that ECM obtains the highest style expression scores on the emotion and sentiment dialogue datasets. This is because ECM directly incorporates the style information into its model architecture to force the generation of stylistic expressions. However, as shown in the quality scores, this behavior also undermines the quality of the generated responses. Therefore, the overall performance of ECM is not optimal as shown in the results of the ranking metric.\n\nFrom the experiment results, we observe that removing retrieved information (PS w/o R) from the proposed model causes a drastic drop on the quality score. This demonstrates that the retrieved information is indispensable for the model to generate a stylistic response and maintain a high response quality. In addition, comparing with GPT2-FT baseline, the ablated model (PS w/o R) shows similar content quality and much stronger stylistic expression, which is gained from the model architectural design and the new training strategy.\n\nWe present further discussions and empirical analysis of the proposed approach.\n\nIn practice, a satisfactory stylistic dialogue system should express the desired style on the premise of the response quality. Based on the criterion of human evaluation metric, 3 is the marginal score of acceptance. So we deem a response as marginally acceptable by actual users when both quality and style expression scores are greater or equal to 3. On the other hand, 4 is the score that well satisfies the users, so responses with both scores greater or equal to 4 are deemed as satisfying to actual users.\n\nThe ratios of both scores $\\ge 3$ and $\\ge 4$ are shown in Figure FIGREF47, from which we can see that the proposed approach outperforms all other approaches on $\\ge 3$-ratio and $\\ge 4$-ratio. The proposed model best balances the trade-off between the response quality and style expression and therefore generating most acceptable and satisfying responses.\n\nTo evaluate the robustness of different approaches, we further analyze their performances when there is a notable difference between the data distribution of the training and testing set. Specifically, we use the models trained on gender-specific dataset to conduct inference on the test set of emotion-specific dataset and vise versa, which is regarded as domain variation. In Figure FIGREF50, we show the data distributions of these two datasets from which we can observe a notable distribution discrepancy. For evaluation, all results are evaluated with the same metrics as in the previous experiments. The averages response quality scores before and after domain variation are shown in Figure FIGREF55. For a direct comparison, the in-domain performance of each model can be found in Table TABREF25 and TABREF26.\n\nAs shown in Figure FIGREF55, some of the strong baselines exhibit a drastic drop in response quality after domain variation such as GPT2-FT and PS w/o R. In contrast, the PS model successfully maintains high response quality in spite of domain variation. The model seems to benefit from leveraging retrieved results to bridge the gap between the two different domains. This can also be observed in the results of RST and RRe which also use the retrieved results and get a even higher performance when facing domain variation.\n\nWe present several examples of generated responses by the proposed PS approach. Table TABREF51 shows responses with different gender and emotion styles, and Table TABREF52 shows responses with different sentiments. Examples in Table TABREF51 show that the proposed approach is able to extract informative details such as “have nightmares” and “higher salary” that are relevant to the queries from the retrieved responses. By taking the desired style as input, the proposed model generates adequate and stylistic responses while producing the informative details. Examples in Table TABREF52 also demonstrate that the proposed model is able to generate responses with desired sentiments based on the informative details (e.g. “_ want us to target _ ones _”, “_ can make _ decision.” and “_ sound _ to me _”) contained in the retrieved response.\n\nIn this work, we propose a novel PS framework to tackle the task of stylistic dialogue generation. Additionally, we propose a new stylistic response generator which works coherently with the proposed framework. We conduct extensive experiments on three benchmark datasets from two languages. Results of human and automatic evaluation show that the proposed approach outperforms many strong baselines by a substantial margin.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 84
+    },
+    {
+      "section": "Abstract",
+      "start": 86,
+      "end": 948
+    },
+    {
+      "section": "Introduction",
+      "start": 950,
+      "end": 5667
+    },
+    {
+      "section": "Related Work",
+      "start": 5669,
+      "end": 5733
+    },
+    {
+      "section": "Related Work ::: Text Style Transfer:",
+      "start": 5735,
+      "end": 6068
+    },
+    {
+      "section": "Related Work ::: Retrieval Guided Dialogue Generation:",
+      "start": 6070,
+      "end": 6423
+    },
+    {
+      "section": "Related Work ::: Stylistic Dialogue Generation:",
+      "start": 6425,
+      "end": 7170
+    },
+    {
+      "section": "Methodology",
+      "start": 7172,
+      "end": 7932
+    },
+    {
+      "section": "Methodology ::: Prototype Extraction",
+      "start": 7934,
+      "end": 8957
+    },
+    {
+      "section": "Methodology ::: Stylistic Response Generator",
+      "start": 8959,
+      "end": 10383
+    },
+    {
+      "section": "Methodology ::: Learning ::: Style-Aware Learning Objective",
+      "start": 10385,
+      "end": 11465
+    },
+    {
+      "section": "Methodology ::: Learning ::: De-noising Training",
+      "start": 11467,
+      "end": 12488
+    },
+    {
+      "section": "Datasets",
+      "start": 12490,
+      "end": 12753
+    },
+    {
+      "section": "Datasets ::: Gender-Specific Dialogue Dataset",
+      "start": 12755,
+      "end": 12932
+    },
+    {
+      "section": "Datasets ::: Emotion-Specific Dialogue Dataset",
+      "start": 12934,
+      "end": 13100
+    },
+    {
+      "section": "Datasets ::: Sentiment-Specific Dialogue Dataset",
+      "start": 13102,
+      "end": 13600
+    },
+    {
+      "section": "Experiments ::: Pretraining and Implementation Details",
+      "start": 13602,
+      "end": 14553
+    },
+    {
+      "section": "Experiments ::: Model Comparison",
+      "start": 14555,
+      "end": 14718
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Generative Approaches ::: Seq2seq:",
+      "start": 14720,
+      "end": 14800
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Generative Approaches ::: GPT2-FT:",
+      "start": 14802,
+      "end": 14998
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Generative Approaches ::: Speaker:",
+      "start": 15000,
+      "end": 15146
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Generative Approaches ::: ECM:",
+      "start": 15148,
+      "end": 15265
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Retrieval-Based Approaches ::: Skeleton-to-Response (SR):",
+      "start": 15267,
+      "end": 15471
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Retrieval-Based Approaches ::: Retrieval + Style Transfer (RST):",
+      "start": 15473,
+      "end": 15667
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Retrieval-Based Approaches ::: Retrieval + Reranking (RRe):",
+      "start": 15669,
+      "end": 15830
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Ablation Study ::: PS:",
+      "start": 15832,
+      "end": 15869
+    },
+    {
+      "section": "Experiments ::: Model Comparison ::: Ablation Study ::: PS w/o R:",
+      "start": 15871,
+      "end": 16041
+    },
+    {
+      "section": "Experiments ::: Evaluation Metrics",
+      "start": 16043,
+      "end": 16452
+    },
+    {
+      "section": "Experiments ::: Evaluation Metrics ::: Quality:",
+      "start": 16454,
+      "end": 16748
+    },
+    {
+      "section": "Experiments ::: Evaluation Metrics ::: Style Expression:",
+      "start": 16750,
+      "end": 17118
+    },
+    {
+      "section": "Experiments ::: Evaluation Metrics ::: Ranking:",
+      "start": 17120,
+      "end": 17349
+    },
+    {
+      "section": "Experiments ::: Main Results",
+      "start": 17351,
+      "end": 19239
+    },
+    {
+      "section": "Experiments ::: Further Analysis",
+      "start": 19241,
+      "end": 19320
+    },
+    {
+      "section": "Experiments ::: Further Analysis ::: Balance between Quality and Style",
+      "start": 19322,
+      "end": 20192
+    },
+    {
+      "section": "Experiments ::: Further Analysis ::: Cross-Domain Evaluation",
+      "start": 20194,
+      "end": 21537
+    },
+    {
+      "section": "Experiments ::: Case Study",
+      "start": 21539,
+      "end": 22381
+    },
+    {
+      "section": "Conclusion",
+      "start": 22383,
+      "end": 22807
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "2004.02214",
+    "arxiv_id": "2004.02214",
+    "source_url": "https://arxiv.org/abs/2004.02214",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

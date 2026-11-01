@@ -1,0 +1,79 @@
+{
+  "doc_id": "qasper_1608_07836",
+  "title": "What to do about non-standard (or non-canonical) language in NLP",
+  "text": "What to do about non-standard (or non-canonical) language in NLP\n\nReal world data differs radically from the benchmark corpora we use in natural language processing (NLP). As soon as we apply our technologies to the real world, performance drops. The reason for this problem is obvious: NLP models are trained on samples from a limited set of canonical varieties that are considered standard, most prominently English newswire. However, there are many dimensions, e.g., socio-demographics, language, genre, sentence type, etc. on which texts can differ from the standard. The solution is not obvious: we cannot control for all factors, and it is not clear how to best go beyond the current practice of training on homogeneous data from a single domain and language. In this paper, I review the notion of canonicity, and how it shapes our community's approach to language. I argue for leveraging what I call fortuitous data, i.e., non-obvious data that is hitherto neglected, hidden in plain sight, or raw data that needs to be refined. If we embrace the variety of this heterogeneous data by combining it with proper algorithms, we will not only produce more robust models, but will also enable adaptive language technology capable of addressing natural language variation.\n\nThe publication of the Penn Treebank Wall Street Journal (WSJ) corpus in the late 80s has undoubtedly pushed NLP from symbolic computation to statistical approaches, which dominate our field up to this day. The WSJ has become the NLP benchmark dataset for many tasks (e.g., part-of-speech tagging, parsing, semantic role labeling, discourse parsing), and has developed into the de-facto “standard” in our field.\n\nHowever, while it has advanced the field in so many ways, it has also introduced almost imperceptible biases: why is newswire considered more standard or more canonical than other text types? Journalists are trained writers who make fewer errors and adhere to a codified norm. But let us pause for a minute. If NLP had emerged only in the last decade, would newswire data still be our canon? Or would, say, Wikipedia be considered canonical? User-generated data is less standardized, but is highly available. If we take this thought further and start over today, maybe we would be in an `inverted' world: social media is standard and newswire with its `headlinese' is the `bad language' BIBREF0 . It is easy to collect large quantities of social media data. Whatever we consider canonical, all data comes with its biases, even more democratic media like Wikipedia carry their own peculiarities.\n\nIt seems that what is considered canonical hitherto is mostly a historical coincidence and motivated largely by availability of resources. Newswire has and actually still does dominate our field. For example, in Figure 1 , I plot domains versus languages for the treebank data in version 1.3 of the on-going Universal Dependencies project BIBREF1 . Almost all languages include newswire, except ancient languages (for obvious reasons), English (since most data comes from the Web Treebank) and Khazak, Chinese (Wikipedia). While including other domains and languages is highly desirable, it is impossible to find unbiased data. Let's be aware of this fact and try to collect enough biased data.\n\nProcessing non-canonical (or non-canonical) data is difficult. A series of papers document large drops in accuracy when moving across domains BIBREF3 , BIBREF4 . There is a large body of work focusing on correcting for domain differences. Typically, in domain adaptation (DA) the task is to adapt a model trained on some source domain to perform better on some new target domain. However, it is less clear what really folds into a domain. In Section \"The variety space\" , I will review the notion of domain and propose what I call variety space.\n\nIs the annotation of non-canonical also more difficult, just like its processing appears to be? Processing and annotating are two aspects, and the difficulty in one, say processing, does not necessarily propagate the same way to annotation BIBREF5 . However, very little work exists on disentangling the two. The same is true for examining what really constitutes a domain. What remains is clear: the challenge is all about variations of data. Language continuously changes, for various reasons (different social groups, communicative purposes, changes over time), and so we will continuously face interesting challenges, both for processing and annotation.\n\nIn the remainder I will look at the NLP community's approach to face these challenges. I will outline one potential way to go about it, arguing for the use of fortuitous data, and end by returning to the question of domain.\n\nThere are generally three main approaches to go about non-standard data.\n\nAnnotating more data is a first and intuitive solution. However, it is naïve, for several reasons.\n\nDomain (whatever that means) and language (whatever that comprises) are two factors of text variation. Now take the cross-product between the two. We will never be able to create annotated data that spans all possible combinations. This is the problem of training data sparsity, illustrated in Figure 1 . The figure only shows a tiny subset of the world's languages, and a tiny fraction of potential domains out there. The problem is that most of the data that is available out there is unlabeled. Annotation requires time. At the same time, ways of communication change, so what we annotate today might be very distant to what we need to process tomorrow. We cannot just “annotate our way out\" BIBREF0 . Moreover, it might not be trivial to find the right annotators; annotation schemes might need adaptation as well BIBREF6 and tradeoffs for doing so need to be defined BIBREF7 .\n\nWhat we need is quick ways to semi-automatically gather annotated data, and use more unsupervised and weakly supervised approaches.\n\nThe second approach is based on the idea of making data resemble each other more. The first strategy here is normalization, that is, preprocess the input to make it closer to what our technology expects, e.g. han:baldwin:2013. A less known but similar approach is to artificially corrupt the training data to make it more similar to the expected target domain BIBREF8 . However, normalization implies “norm”, and as eisenstein:2013:bad remarks: whose norm are we targeting? (e.g., labor vs labour). Furthermore, he notes that it is surprisingly difficult to find a precise notion of the normalization task.\n\nCorrupting the training data is a less explored endeavor. This second strategy though hinges on the assumption that one knows what to expect.\n\nWhat we need are models that do provide nonsensical predictions on unexpected inputs, i.e., models that include invariant representations. For example, our models should be capable of learning similar representations for the same inherent concept, e.g., kiss vs :* or love vs $<$ 3. Recent shifts towards using sub-token level information can be seen as one step in this direction.\n\nThere is a large body of work on adapting models trained on some source domain to work better on some new target domain. Approaches range from feature augmentation, shared representation learning, instance weighting, to approaches that exploit representation induced from general background corpora. For an overview, see BIBREF9 , BIBREF10 . However, what all of these approaches have in common is an unrealistic assumption: they know the target domain. That is, researchers typically have a small amount of target data available that they can use to adapt their models.\n\nAn extreme case of adaptation is cross-lingual learning, whose goal is similar: adapt models trained on some source languages to languages in which few or no resources exist. Also here a large body of work assumes knowledge of the target language and requires some in-domain, typically parallel data. However, most work has focused on a restricted set of languages, only recently approaches emerged that aim to transfer from multiple sources to many target languages BIBREF11 .\n\nWhat we need are methods that can adapt quickly to unknown domains and languages, without much assumptions on what to expect, and use multiple sources, rather than just one. In addition, our models need to detect when to trigger domain adaptation approaches.\n\nIn the next parts I will outline some possibilities to address these challenges. However, there are other important areas that I will not touch upon here (e.g., evaluation).\n\nWhat we need are models that are more robust, work better on unexpected input and can be trained from semi-automatically or weakly annotated data, from a variety of sources. In order to build such models, I argue that the key is to look for signal in non-obvious places, i.e., fortuitous data.\n\nFortuitous data is data out there that just waits to be harvested. It might be in plain sight, but is neglected (available but not used), or it is in raw form and first needs to be refined (almost ready but needs refinement). Availability and ease-of-use (or readiness) are therefore two important dimensions that define fortuitous data. Fortuitous data is the unintended yield of a process, a promising by-product or side benefit.\n\nIn the following I will outline potential sources of fortuitous data. An overview is given in Table 1 .\n\nAs already noted earlier BIBREF9 , there is no common ground on what constitutes a domain. blitzer2006domain attribute domain differences mostly to differences in vocabulary, biber explores differences between corpora from a sociolinguistics perspective. mcclosky:2010 considers it in a broader view: “By domain, we mean the style, genre, and medium of a document.” Terms such as genre, register, text type, domain, style are often used differently in different communities BIBREF20 , or interchangeably.\n\nWhile there exists no definition of domain, work on domain adaptation is plentiful but mostly focused on assuming a dichotomy: source versus target, without much interest in how they differ. In fact, there is surprisingly little work on how texts vary and the consequence for NLP. It is established that out-of-vocabulary (OOV) tokens impact NLP performance. However, what are other factors?\n\nInterest in this question re-emerged recently. For example, focusing on annotation difficulty, zeldes-simonson:2016 remark “that domain adaptation may be folding in sentence type effects”, motivated by earlier findings by silveira2014gold who remark that “[t]he most striking difference between the two types of data [Web and newswire] has to do with imperatives, which occur two orders of magnitude more often in the EWT [English Web Treebank].” A very recent paper examines word order properties and their impact on parsing taking a control experiment approach BIBREF21 . On another angle, it has been shown that tagging accuracy correlates with demographic factors such as age BIBREF22 .\n\nI want to propose that `domain' is an overloaded term. Besides the mathematical definition, in NLP it is typically used to refer to some coherent data with respect to topic or genre. However, there are many other (including yet unknown factors) out there, such as demographic factors, communicational purpose, but also sentence type, style, medium, technology/medium, language, etc. At the same time, these categories are not sharply defined either. Rather than imposing hard categories, let us consider a Wittgensteinian view.\n\nI here propose to see a domain as variety in a high-dimensional variety space. Points in the space are the data instances, and regions form domains. A dataset $\\mathcal {D}$ is a sample from the variety space, conditioned on latent factors $V$ : $\\mathcal {D} \\sim P(X,Y|V)$ \n\nThe variety space is a unknown high-dimensional space, whose dimensions (latent factors $V$ ) include (fuzzy) aspects such as language (or dialect), topic or genre, and social factors (age, gender, personality, etc.), amongst others. A domain is a variety that forms a region in this complicated network of similarities, with some members more prototypical than others. However, we have neither access to the number of latent factors nor to their types. This vision is inspired by the notion of prototype theory in Cognitive Science and Wittgenstein's graded notion of categories. Figure 2 shows a hypothetical example of this variety space.\n\nOur datasets are subspaces of this high-dimensional space. Depending on our task, instances are sentences, documents etc. In the following I will use POS tagging as a running example to analyze what's in a domain, by referring to the datasets with the typically used categories.\n\nCurrent NLP models still suffer dramatically when applied to non-canonical data, where canonicity is a relative notion; in our field, newswire was and still often is the de-facto standard, the canonical data we typically train our models on.\n\nWhile newswire has advanced the field in so many ways, it has also introduced almost imperceptible biases. What we need is to be aware of such biases, collect enough biased data, and model variety. I argue that if we embrace the variety of this heterogeneous data by combining it with proper algorithms, in addition to including text covariates/latent factors, we will not only produce more robust models, but will also enable adaptive language technology capable of addressing natural language variation.\n\nI would like to thank the organizers for the invitation to the keynote at KONVENS 2016. I am also grateful to Héctor Martínez Alonso, Dirk Hovy, Anders Johannsen, Zeljko Agić and Gertjan van Noord for valuable discussions and feedback on earlier drafts of this paper.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 64
+    },
+    {
+      "section": "Abstract",
+      "start": 66,
+      "end": 1273
+    },
+    {
+      "section": "Introduction",
+      "start": 1275,
+      "end": 4709
+    },
+    {
+      "section": "What to do about non-standard data",
+      "start": 4711,
+      "end": 4783
+    },
+    {
+      "section": "Annotate more data",
+      "start": 4785,
+      "end": 5899
+    },
+    {
+      "section": "Bring training and test data closer to each other",
+      "start": 5901,
+      "end": 7033
+    },
+    {
+      "section": "Domain adaptation",
+      "start": 7035,
+      "end": 8519
+    },
+    {
+      "section": "Fortuitous data",
+      "start": 8521,
+      "end": 9352
+    },
+    {
+      "section": "But what's in a domain?",
+      "start": 9354,
+      "end": 11472
+    },
+    {
+      "section": "The variety space",
+      "start": 11474,
+      "end": 12672
+    },
+    {
+      "section": "Conclusions",
+      "start": 12674,
+      "end": 13422
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 13424,
+      "end": 13691
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1608.07836",
+    "arxiv_id": "1608.07836",
+    "source_url": "https://arxiv.org/abs/1608.07836",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

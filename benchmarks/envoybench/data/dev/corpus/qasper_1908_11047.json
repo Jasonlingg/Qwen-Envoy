@@ -1,0 +1,129 @@
+{
+  "doc_id": "qasper_1908_11047",
+  "title": "Shallow Syntax in Deep Water",
+  "text": "Shallow Syntax in Deep Water\n\nShallow syntax provides an approximation of phrase-syntactic structure of sentences; it can be produced with high accuracy, and is computationally cheap to obtain. We investigate the role of shallow syntax-aware representations for NLP tasks using two techniques. First, we enhance the ELMo architecture to allow pretraining on predicted shallow syntactic parses, instead of just raw text, so that contextual embeddings make use of shallow syntactic context. Our second method involves shallow syntactic features obtained automatically on downstream task data. Neither approach leads to a significant gain on any of the four downstream tasks we considered relative to ELMo-only baselines. Further analysis using black-box probes confirms that our shallow-syntax-aware contextual embeddings do not transfer to linguistic tasks any more easily than ELMo's embeddings. We take these findings as evidence that ELMo-style pretraining discovers representations which make additional awareness of shallow syntax redundant.\n\nThe NLP community is revisiting the role of linguistic structure in applications with the advent of contextual word representations (cwrs) derived from pretraining language models on large corpora BIBREF2, BIBREF3, BIBREF4, BIBREF5. Recent work has shown that downstream task performance may benefit from explicitly injecting a syntactic inductive bias into model architectures BIBREF6, even when cwrs are also used BIBREF7. However, high quality linguistic structure annotation at a large scale remains expensive—a trade-off needs to be made between the quality of the annotations and the computational expense of obtaining them. Shallow syntactic structures (BIBREF8; also called chunk sequences) offer a viable middle ground, by providing a flat, non-hierarchical approximation to phrase-syntactic trees (see Fig. FIGREF1 for an example). These structures can be obtained efficiently, and with high accuracy, using sequence labelers. In this paper we consider shallow syntax to be a proxy for linguistic structure.\n\nWhile shallow syntactic chunks are almost as ubiquitous as part-of-speech tags in standard NLP pipelines BIBREF9, their relative merits in the presence of cwrs remain unclear. We investigate the role of these structures using two methods. First, we enhance the ELMo architecture BIBREF0 to allow pretraining on predicted shallow syntactic parses, instead of just raw text, so that contextual embeddings make use of shallow syntactic context (§SECREF2). Our second method involves classical addition of chunk features to cwr-infused architectures for four different downstream tasks (§SECREF3). Shallow syntactic information is obtained automatically using a highly accurate model (97% $F_1$ on standard benchmarks). In both settings, we observe only modest gains on three of the four downstream tasks relative to ELMo-only baselines (§SECREF4).\n\nRecent work has probed the knowledge encoded in cwrs and found they capture a surprisingly large amount of syntax BIBREF10, BIBREF1, BIBREF11. We further examine the contextual embeddings obtained from the enhanced architecture and a shallow syntactic context, using black-box probes from BIBREF1. Our analysis indicates that our shallow-syntax-aware contextual embeddings do not transfer to linguistic tasks any more easily than ELMo embeddings (§SECREF18).\n\nOverall, our findings show that while shallow syntax can be somewhat useful, ELMo-style pretraining discovers representations which make additional awareness of shallow syntax largely redundant.\n\nWe briefly review the shallow syntactic structures used in this work, and then present a model architecture to obtain embeddings from shallow Syntactic Context (mSynC).\n\nBase phrase chunking is a cheap sequence-labeling–based alternative to full syntactic parsing, where the sequence consists of non-overlapping labeled segments (Fig. FIGREF1 includes an example.) Full syntactic trees can be converted into such shallow syntactic chunk sequences using a deterministic procedure BIBREF9. BIBREF12 offered a rule-based transformation deriving non-overlapping chunks from phrase-structure trees as found in the Penn Treebank BIBREF13. The procedure percolates some syntactic phrase nodes from a phrase-syntactic tree to the phrase in the leaves of the tree. All overlapping embedded phrases are then removed, and the remainder of the phrase gets the percolated label—this usually corresponds to the head word of the phrase.\n\nIn order to obtain shallow syntactic annotations on a large corpus, we train a BiLSTM-CRF model BIBREF14, BIBREF15, which achieves 97% $F_1$ on the CoNLL 2000 benchmark test set. The training data is obtained from the CoNLL 2000 shared task BIBREF12, as well as the remaining sections (except §23 and §20) of the Penn Treebank, using the official script for chunk generation. The standard task definition from the shared task includes eleven chunk labels, as shown in Table TABREF4.\n\nTraditional language models are estimated to maximize the likelihood of each word $x_i$ given the words that precede it, $p(x_i \\mid x_{<i})$. Given a corpus that is annotated with shallow syntax, we propose to condition on both the preceding words and their annotations.\n\nWe associate with each word $x_i$ three additional variables (denoted $c_i$): the indices of the beginning and end of the last completed chunk before $x_i$, and its label. For example, in Fig. FIGREF8, $c_4=\\langle 3, 3, \\text{VP}\\rangle $ for $x_4=\\text{the}$. Chunks, $c$ are only used as conditioning context via $p(x_i \\mid x_{<i}, c_{\\leqslant i})$; they are not predicted. Because the $c$ labels depend on the entire sentence through the CRF chunker, conditioning each word's probability on any $c_i$ means that our model is, strictly speaking, not a language model, and it can no longer be meaningfully evaluated using perplexity.\n\nA right-to-left model is constructed analogously, conditioning on $c_{\\geqslant i}$ alongside $x_{>i}$. Following BIBREF2, we use a joint objective maximizing data likelihood objectives in both directions, with shared softmax parameters.\n\nOur model uses two encoders: $e_{\\mathit {seq}}$ for encoding the sequential history ($x_{<i}$), and $e_{\\mathit {syn}}$ for shallow syntactic (chunk) history ($c_{\\leqslant i}$). For both, we use transformers BIBREF16, which consist of large feedforward networks equipped with multiheaded self-attention mechanisms.\n\nAs inputs to $e_{\\mathit {seq}}$, we use a context-independent embedding, obtained from a CNN character encoder BIBREF17 for each token $x_i$. The outputs $h_i$ from $e_{\\mathit {seq}}$ represent words in context.\n\nNext, we build representations for (observed) chunks in the sentence by concatenating a learned embedding for the chunk label with $h$s for the boundaries and applying a linear projection ($f_\\mathit {proj}$). The output from $f_\\mathit {proj}$ is input to $e_{\\mathit {syn}}$, the shallow syntactic encoder, and results in contextualized chunk representations, $g$. Note that the number of chunks in the sentence is less than or equal to the number of tokens.\n\nEach $h_i$ is now concatentated with $g_{c_i}$, where $g_{c_i}$ corresponds to $c_i$, the last chunk before position $i$. Finally, the output is given by $\\mbox{\\textbf {mSynC}}_i = {u}_\\mathit {proj}(h_i, g_{c_i}) = W^\\top [h_i; g_{c_i}]$, where $W$ is a model parameter. For training, $\\mbox{\\textbf {mSynC}}_i$ is used to compute the probability of the next word, using a sampled softmax BIBREF18. For downstream tasks, we use a learned linear weighting of all layers in the encoders to obtain a task-specific mSynC, following BIBREF2.\n\nJointly training both the sequential encoder $e_{\\mathit {seq}}$, and the syntactic encoder $e_{\\mathit {syn}}$ can be expensive, due to the large number of parameters involved. To reduce cost, we initialize our sequential cwrs $h$, using pretrained embeddings from ELMo-transformer. Once initialized as such, the encoder is fine-tuned to the data likelihood objective (§SECREF5). This results in a staged parameter update, which reduces training duration by a factor of 10 in our experiments. We discuss the empirical effect of this approach in §SECREF20.\n\nOur second approach incorporates shallow syntactic information in downstream tasks via token-level chunk label embeddings. Task training (and test) data is automatically chunked, and chunk boundary information is passed into the task model via BIOUL encoding of the labels. We add randomly initialized chunk label embeddings to task-specific input encoders, which are then fine-tuned for task-specific objectives. This approach does not require a shallow syntactic encoder or chunk annotations for pretraining cwrs, only a chunker. Hence, this can more directly measure the impact of shallow syntax for a given task.\n\nOur experiments evaluate the effect of shallow syntax, via contextualization (mSynC, §SECREF2) and features (§SECREF3). We provide comparisons with four baselines—ELMo-transformer BIBREF0, our reimplementation of the same, as well as two cwr-free baselines, with and without shallow syntactic features. Both ELMo-transformer and mSynC are trained on the 1B word benchmark corpus BIBREF19; the latter also employs chunk annotations (§SECREF2). Experimental settings are detailed in Appendix §SECREF22.\n\nWe employ four tasks to test the impact of shallow syntax. The first three, namely, coarse and fine-grained named entity recognition (NER), and constituency parsing, are span-based; the fourth is a sentence-level sentiment classification task. Following BIBREF2, we do not apply finetuning to task-specific architectures, allowing us to do a controlled comparison with ELMo. Given an identical base architecture across models for each task, we can attribute any difference in performance to the incorporation of shallow syntax or contextualization. Details of downstream architectures are provided below, and overall dataset statistics for all tasks is shown in the Appendix, Table TABREF26.\n\nWe use the English portion of the CoNLL 2003 dataset BIBREF20, which provides named entity annotations on newswire data across four different entity types (PER, LOC, ORG, MISC). A bidirectional LSTM-CRF architecture BIBREF14 and a BIOUL tagging scheme were used.\n\nThe same architecture and tagging scheme from above is also used to predict fine-grained entity annotations from OntoNotes 5.0 BIBREF21. There are 18 fine-grained NER labels in the dataset, including regular named entitities as well as entities such as date, time and common numerical entries.\n\nWe use the standard Penn Treebank splits, and adopt the span-based model from BIBREF22. Following their approach, we used predicted part-of-speech tags from the Stanford tagger BIBREF23 for training and testing. About 51% of phrase-syntactic constituents align exactly with the predicted chunks used, with a majority being single-width noun phrases. Given that the rule-based procedure used to obtain chunks only propagates the phrase type to the head-word and removes all overlapping phrases to the right, this is expected. We did not employ jack-knifing to obtain predicted chunks on PTB data; as a result there might be differences in the quality of shallow syntax annotations between the train and test portions of the data.\n\nWe consider fine-grained (5-class) classification on Stanford Sentiment Treebank BIBREF24. The labels are negative, somewhat_negative, neutral, positive and somewhat_positive. Our model was based on the biattentive classification network BIBREF25. We used all phrase lengths in the dataset for training, but test results are reported only on full sentences, following prior work.\n\nResults are shown in Table TABREF12. Consistent with previous findings, cwrs offer large improvements across all tasks. Though helpful to span-level task models without cwrs, shallow syntactic features offer little to no benefit to ELMo models. mSynC's performance is similar. This holds even for phrase-structure parsing, where (gold) chunks align with syntactic phrases, indicating that task-relevant signal learned from exposure to shallow syntax is already learned by ELMo. On sentiment classification, chunk features are slightly harmful on average (but variance is high); mSynC again performs similarly to ELMo-transformer. Overall, the performance differences across all tasks are small enough to infer that shallow syntax is not particularly helpful when using cwrs.\n\nWe further analyze whether awareness of shallow syntax carries over to other linguistic tasks, via probes from BIBREF1. Probes are linear models trained on frozen cwrs to make predictions about linguistic (syntactic and semantic) properties of words and phrases. Unlike §SECREF11, there is minimal downstream task architecture, bringing into focus the transferability of cwrs, as opposed to task-specific adaptation.\n\nThe ten different probing tasks we used include CCG supertagging BIBREF26, part-of-speech tagging from PTB BIBREF13 and EWT (Universal Depedencies BIBREF27), named entity recognition BIBREF20, base-phrase chunking BIBREF12, grammar error detection BIBREF28, semantic tagging BIBREF29, preposition supersense identification BIBREF30, and event factuality detection BIBREF31. Metrics and references for each are summarized in Table TABREF27. For more details, please see BIBREF1.\n\nResults in Table TABREF13 show ten probes. Again, we see the performance of baseline ELMo-transformer and mSynC are similar, with mSynC doing slightly worse on 7 out of 9 tasks. As we would expect, on the probe for predicting chunk tags, mSynC achieves 96.9 $F_1$ vs. 92.2 $F_1$ for ELMo-transformer, indicating that mSynC is indeed encoding shallow syntax. Overall, the results further confirm that explicit shallow syntax does not offer any benefits over ELMo-transformer.\n\nWe test whether our staged parameter training (§SECREF9) is a viable alternative to an end-to-end training of both $e_{\\mathit {syn}}$ and $e_{\\mathit {seq}}$. We make a further distinction between fine-tuning $e_{\\mathit {seq}}$ vs. not updating it at all after initialization (frozen).\n\nDownstream validation-set $F_1$ on fine-grained NER, reported in Table TABREF21, shows that the end-to-end strategy lags behind the others, perhaps indicating the need to train longer than 10 epochs. However, a single epoch on the 1B-word benchmark takes 36 hours on 2 Tesla V100s, making this prohibitive. Interestingly, the frozen strategy, which takes the least amount of time to converge (24 hours on 1 Tesla V100), also performs almost as well as fine-tuning.\n\nWe find that exposing cwr-based models to shallow syntax, either through new cwr learning architectures or explicit pipelined features, has little effect on their performance, across several tasks. Linguistic probing also shows that cwrs aware of such structures do not improve task transferability. Our architecture and methods are general enough to be adapted for richer inductive biases, such as those given by full syntactic trees (RNNGs; BIBREF32), or to different pretraining objectives, such as masked language modeling (BERT; BIBREF5); we leave this pursuit to future work.\n\nOur baseline pretraining model was a reimplementation of that given in BIBREF0. Hyperparameters were generally identical, but we trained on only 2 GPUs with (up to) 4,000 tokens per batch. This difference in batch size meant we used 6,000 warm up steps with the learning rate schedule of BIBREF16.\n\nThe function $f_{seq}$ is identical to the 6-layer biLM used in ELMo-transformer. $f_{syn}$, on the other hand, uses only 2 layers. The learned embeddings for the chunk labels have 128 dimensions and are concatenated with the two boundary $h$ of dimension 512. Thus $f_{proj}$ maps $1024 + 128$ dimensions to 512. Further, we did not perform weight averaging over several checkpoints.\n\nThe size of the shallow syntactic feature embedding was 50 across all experiments, initialized uniform randomly.\n\nAll model implementations are based on the AllenNLP library BIBREF33.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "section": "Abstract",
+      "start": 30,
+      "end": 1045
+    },
+    {
+      "section": "Introduction",
+      "start": 1047,
+      "end": 3566
+    },
+    {
+      "section": "Pretraining with Shallow Syntactic Annotations",
+      "start": 3568,
+      "end": 3736
+    },
+    {
+      "section": "Pretraining with Shallow Syntactic Annotations ::: Shallow Syntax",
+      "start": 3738,
+      "end": 4973
+    },
+    {
+      "section": "Pretraining with Shallow Syntactic Annotations ::: Pretraining Objective",
+      "start": 4975,
+      "end": 6124
+    },
+    {
+      "section": "Pretraining with Shallow Syntactic Annotations ::: Pretraining Model Architecture",
+      "start": 6126,
+      "end": 7659
+    },
+    {
+      "section": "Pretraining with Shallow Syntactic Annotations ::: Pretraining Model Architecture ::: Staged parameter updates",
+      "start": 7661,
+      "end": 8217
+    },
+    {
+      "section": "Shallow Syntactic Features",
+      "start": 8219,
+      "end": 8835
+    },
+    {
+      "section": "Experiments",
+      "start": 8837,
+      "end": 9337
+    },
+    {
+      "section": "Experiments ::: Downstream Task Transfer",
+      "start": 9339,
+      "end": 10030
+    },
+    {
+      "section": "Experiments ::: Downstream Task Transfer ::: NER",
+      "start": 10032,
+      "end": 10294
+    },
+    {
+      "section": "Experiments ::: Downstream Task Transfer ::: Fine-grained NER",
+      "start": 10296,
+      "end": 10589
+    },
+    {
+      "section": "Experiments ::: Downstream Task Transfer ::: Phrase-structure parsing",
+      "start": 10591,
+      "end": 11319
+    },
+    {
+      "section": "Experiments ::: Downstream Task Transfer ::: Sentiment analysis",
+      "start": 11321,
+      "end": 12476
+    },
+    {
+      "section": "Experiments ::: Linguistic Probes",
+      "start": 12478,
+      "end": 12894
+    },
+    {
+      "section": "Experiments ::: Linguistic Probes ::: Probing Tasks",
+      "start": 12896,
+      "end": 13849
+    },
+    {
+      "section": "Experiments ::: Effect of Training Scheme",
+      "start": 13851,
+      "end": 14604
+    },
+    {
+      "section": "Conclusion",
+      "start": 14606,
+      "end": 15187
+    },
+    {
+      "section": "Supplemental Material ::: Hyperparameters ::: ELMo-transformer",
+      "start": 15189,
+      "end": 15486
+    },
+    {
+      "section": "Supplemental Material ::: Hyperparameters ::: mSynC",
+      "start": 15488,
+      "end": 15872
+    },
+    {
+      "section": "Supplemental Material ::: Hyperparameters ::: Shallow Syntax",
+      "start": 15874,
+      "end": 16057
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "validation",
+    "qasper_paper_id": "1908.11047",
+    "arxiv_id": "1908.11047",
+    "source_url": "https://arxiv.org/abs/1908.11047",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

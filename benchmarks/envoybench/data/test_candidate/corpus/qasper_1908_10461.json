@@ -1,0 +1,94 @@
+{
+  "doc_id": "qasper_1908_10461",
+  "title": "A survey of cross-lingual features for zero-shot cross-lingual semantic parsing",
+  "text": "A survey of cross-lingual features for zero-shot cross-lingual semantic parsing\n\nThe availability of corpora to train semantic parsers in English has lead to significant advances in the field. Unfortunately, for languages other than English, annotation is scarce and so are developed parsers. We then ask: could a parser trained in English be applied to language that it hasn't been trained on? To answer this question we explore zero-shot cross-lingual semantic parsing where we train an available coarse-to-fine semantic parser (Liu et al., 2018) using cross-lingual word embeddings and universal dependencies in English and test it on Italian, German and Dutch. Results on the Parallel Meaning Bank - a multilingual semantic graphbank, show that Universal Dependency features significantly boost performance when used in conjunction with other lexical features but modelling the UD structure directly when encoding the input does not.\n\nSemantic parsing is a task of transducing natural language to meaning representations, which in turn can be expressed through many different semantic formalisms including lambda calculus BIBREF1, DCS BIBREF2, Discourse Representation Theory (DRT) BIBREF3, AMR BIBREF4 and so on. This availability of annotated data in English has translated into the development of a plethora of models, including encoder-decoders BIBREF5, BIBREF6 as well as tree or graph-structured decoders BIBREF5, BIBREF7, BIBREF0, BIBREF8.\n\nWhereas the majority of semantic banks focus on English, recent effort has focussed on building multilingual representations, e.g. PMB BIBREF9, MRS BIBREF10 and FrameNetBIBREF11. However, manually annotating meaning representations in a new language is a painstaking process which explains why there are only a few datasets available for different formalisms in languages other than English. As a consequence, whereas the field has made great advances for English, little work has been done in other languages.\n\nWe ask: can we learn a semantic parser for English and test it where in another where annotations are not available? What would that require?\n\nTo answer this question, previous work have leveraged machine translation techniques to map the semantics from a language to another BIBREF12. However, these methods require parallel corpora to extract automatic alignments which are often noisy or not available at all.\n\nIn this paper we explore parameter-shared models instead, where a model is trained on English using language independent features and tested in a target language.\n\nTo show how this approach performs, we focus on the Parallel Meaning Bank BIBREF13 – a multilingual semantic bank, where sentences in English, German, Italian and Dutch have been annotated with their meaning representations. The annotations in the PMB are based on Discourse Representation Theory BIBREF3, a popular theory of meaning representation designed to account for intra and inter-sentential phenomena, like temporal expressions and anaphora. Figure 1 shows an example DRT for the sentence `I sat down and opened my laptop' in its canonical `box' representation. A DRS is a nested structure with the top part containing the discourse references and the bottom with unary and binary predicates, as well as semantic constants (e.g. `speaker'). DRS can be linked to each other via logic operator (e.g. $\\lnot $, $\\rightarrow $, $\\diamond $) or, as in this case, discourse relations (e.g. CONTINUATION, RESULT, ELABORATION, etc.).\n\nTo test our approach we leverage the DRT parser of liu2018discourse, an encoder-decoder architecture where the meaning representation is reconstructed in three stages, coarse-to-fine, by first building the DRS skeleton (i.e. the `box' structures) and then fill each DRS with predicates and variables. Whereas the original parser utilizes a sequential Bi-LSTM encoder with monolingual lexical features, we experiment with language-independent features in the form of cross-lingual word-embeddings, universal PoS tags and universal dependencies. In particular, we also make use of tree encoders to assess whether modelling syntax can be beneficial in cross-lingual settings, as shown for other semantic tasks (e.g. negation scope detection BIBREF14).\n\nResults show that language-independent features are a valid alternative to projection methods for cross-lingual semantic parsing. We show that adding dependency relation as features is beneficial, even when they are the only feature used during encoding. However, we also show that modeling the dependency structure directly via tree encoders does not outperform a sequential BiLSTM architecture for the three languages we have experimented with.\n\nIn this section, we describe the modifications to the coarse-to-fine encoder-decoder architecture of BIBREF0; for more detail, we refer the reader to the original paper.\n\nBiLSTM. We use BIBREF0's Bi-LSTM as baseline. However, whereas the original model represents each token in the input sentence as the concatenation of word ($e_{w_i}$) and lemma embeddings, we discard the latter and add a POS tag embedding ($e_{p_i}$) and dependency relation embedding ($e_{d_i}$) feature. These embeddings are concatenated to represent the input token. The final encoder representation is obtained by concatenating both final forward and backward hidden states.\n\nTreeLSTM. To model the dependency structure directly, we use a child-sum tree-LSTM BIBREF15, where each word in the input sentence corresponds to a node in the dependency tree. In particular, summing across children is advantageous for cross-lingual tasks since languages might display different word orders. Computation follows Equation (1).\n\nPo/treeLSTM. Completely discarding word order might hurt performance for related languages, where a soft notion of positioning can help. To this end, we add a positional embeddings $P_i$ BIBREF16 that helps the child-sum tree-LSTM discriminating between the left and right child of a parent node. This is computed following Equation (2) where $i$ is the position of the word, $j$ is the $jth$ dimension in total $d$ dimensions.\n\nBi/treeLSTM. Finally, similarly to chen2017improved, we combine tree-LSTM and Bi-LSTM, where a tree-LSTM come is initialized using the last layer of a Bi-LSTM, which encodes order information. Computation is shown in Equation (3).\n\nThe decoder of liu2018discourse reconstructs the DRS in three steps, by first predicting the overall structure (the `boxes'), then the predicates and finally the referents, with each subsequent step being conditioned on the output of the previous. During predicate prediction, the decoder uses a copying mechanism to predict those unary predicates that are also lemmas in the input sentence (e.g. `eat'). For the those that are not, soft attention is used instead. No modifications were done to the decoder; for more detail, we refer the reader to the original paper.\n\nWe use the PMB v.2.1.0 for the experiments. The dataset consists of 4405 English sentences, 1173 German sentences, 633 Italian sentences and 583 Dutch sentences. We divide the English sentences into 3072 training sentences, 663 development and 670 testing sentences. We consider all the sentences in other languages as test set.\n\nIn order to be used as input to the parser, liu2018discourse first convert the DRS into tree-based representations, which are subsequently linearized into PTB-style bracketed sequences. This transformation is lossless in that re-entrancies are duplicated to fit in the tree structure. We use the same conversion in this work; for further detail we refer the reader to the original paper.\n\nFinally, it is worth noting that lexical predicates in PMB are in English, even for non-English languages. Since this is not compatible with our copy mechanism, we revert predicates to their original language by substituting them with the lemmas of the tokens they are aligned to (since gold alignment information is included in the PMB).\n\nIn order to make the model directly transferable to the German, Italian and Dutch test data, we use the following language-independent features.\n\nMultilingual word embeddings. We use the MUSE BIBREF17 pre-trained multilingual word embeddings and keep them fixed during training.\n\nUD relations and structure. We use UDPipe BIBREF18 to obtain parses for English, German, Italian and Dutch. UD relation embeddings are randomly initialized and updated.\n\nUniversal POS tags. We use the Universal POS tags BIBREF19 obtained with UDPipe parser. Universal POS tag embeddings are randomly initialized and updated during training.\n\nWe use the BiLSTM model as baseline (Bi) and compare it to the child-sum tree-LSTM (tree) with positional information added (Po/tree), as well as to a treeLSTM initialized with the hidden states of the BiLSTM(Bi/tree). We also conduct an ablation study on the features used, where WE, PE and DE are the word-embedding, PoS embedding and dependency relation embedding respectively. For completeness, along with the results for the cross-lingual task, we also report results for monolingual English semantic parsing, where word embedding features are randomly initialized.\n\nWe use Counter BIBREF20 to evaluate the performance of our models. Counter looks for the best alignment between the predicted and gold DRS and computes precision, recall and F1. For further details about Counter, the reader is referred to van2018evaluating. It is worth reminding that unlike other work on the PMB BIBREF21, BIBREF0 does not deal with presupposition. In the PMB, presupposed variables are extracted from a main box and included in a separate one. In our work, we revert this process so to ignore presupposed boxes. Similarly, we also do not deal with sense tags which we aim to include in future work.\n\nTable TABREF12 shows the performance of our cross-lingual models in German, Italian and Dutch. We summarize the results as follows:\n\nDependency features are crucial for zero-shot cross-lingual semantic parsing. Adding dependency features dramatically improves the performance in all three languages, when compared to using multilingual word-embedding and universal PoS embeddings alone. We hypothesize that the quality of the multilingual word-embeddings is poor, given that models using embeddings for the dependency relations alone outperform those using the other two features.\n\nTreeLSTMs slightly improve performance only for German. TreeLSTMs do not outperform a baseline BiLSTM for Italian and Dutch and they show little improvement in performance for German. This might be due to different factors that deserve more analysis including the performance of the parsers and syntactic similarity between these languages. When only dependency features are available, we found treeLSTM to boost performance only for Dutch.\n\nBiLSTM are still state-of-the-art for monolingual semantic parsing for English. Table TABREF14 shows the result for the models trained and tested in English. Dependency features in conjunction with word and PoS embeddings lead to the best performance; however, in all settings explored treeLSTMs do not outperform a BiLSTM.\n\nWe perform an error analysis to assess the quality of the prediction for operators (i.e. logic operators like “Not” as well as discourse relations “Contrast”), non-lexical predicates, such as binary predicates (e.g. Agent(e,x)) as well as unary predicates (e.g. time(t), entity(x), etc.), as well as for lexical predicates (e.g. open(e)). Results in Table TABREF15 show that predicting operators and binary predicates across language is hard, compared to the other two categories. Prediction of lexical predicates is relatively good even though most tokens in the test set where never seen during training; this can be attributable to the copy mechanism that is able to transfer tokens from the input directly during predication.\n\nPrevious work have explored two main methods for cross-lingual semantic parsing. One method requires parallel corpora to extract alignments between source and target languages using machine translation BIBREF11, BIBREF22, BIBREF23 The other method is to use parameter-shared models in the target language and the source language by leveraging language-independent features such as multilingual word embeddings, Universal POS tags and UD BIBREF24, BIBREF25, BIBREF26, BIBREF27. For semantic parsing, encoder-decoder models have achieved great success. Amongst these, tree or graph-structured decoders have recently shown to be state-of-the-art BIBREF5, BIBREF7, BIBREF0, BIBREF28, BIBREF8.\n\nWe go back to the questions in the introduction:\n\nCan we train a semantic parser in a language where annotation is available?. In this paper we show that this is indeed possible and we propose a zero-shot cross-lingual semantic parsing method based on language-independent features, where a parser trained in English – where labelled data is available, is used to parse sentences in three languages, Italian, German and Dutch.\n\nWhat would that require? We show that universal dependency features can dramatically improve the performance of a cross-lingual semantic parser but modelling the tree structure directly does not outperform sequential BiLSTM architectures, not even when the two are combined together.\n\nWe are planning to extend this initial survey to other DRS parsers that does not exclude presupposition and sense as well as to other semantic formalisms (e.g. AMR, MRS) where data sets annotated in languages other than English are available. Finally, we want to understand whether adding a bidirectionality to the treeLSTM will help improving the performance on modelling the dependency structure directly.\n\nThis work was done while Federico Fancellu was a post-doctoral researcher at the University of Edinburgh. The views expressed are his own and do not necessarily represent the views of Samsung Research.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 79
+    },
+    {
+      "section": "Abstract",
+      "start": 81,
+      "end": 937
+    },
+    {
+      "section": "Introduction",
+      "start": 939,
+      "end": 4674
+    },
+    {
+      "section": "Methods ::: Model",
+      "start": 4676,
+      "end": 4845
+    },
+    {
+      "section": "Methods ::: Model ::: Encoder",
+      "start": 4847,
+      "end": 6330
+    },
+    {
+      "section": "Methods ::: Model ::: Decoder",
+      "start": 6332,
+      "end": 6899
+    },
+    {
+      "section": "Methods ::: Data",
+      "start": 6901,
+      "end": 7958
+    },
+    {
+      "section": "Methods ::: Cross-lingual features",
+      "start": 7960,
+      "end": 8580
+    },
+    {
+      "section": "Methods ::: Model comparison",
+      "start": 8582,
+      "end": 9152
+    },
+    {
+      "section": "Methods ::: Evaluation",
+      "start": 9154,
+      "end": 9771
+    },
+    {
+      "section": "Results and Analysis",
+      "start": 9773,
+      "end": 11120
+    },
+    {
+      "section": "Results and Analysis ::: Error Analysis",
+      "start": 11122,
+      "end": 11851
+    },
+    {
+      "section": "Related work",
+      "start": 11853,
+      "end": 12541
+    },
+    {
+      "section": "Conclusions",
+      "start": 12543,
+      "end": 13663
+    },
+    {
+      "section": "Acknowledgements",
+      "start": 13665,
+      "end": 13866
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1908.10461",
+    "arxiv_id": "1908.10461",
+    "source_url": "https://arxiv.org/abs/1908.10461",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "doc_id": "qasper_1705_10272",
+  "title": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!",
+  "text": "Who's to say what's funny? A computer using Language Models and Deep Learning, That's Who!\n\nHumor is a defining characteristic of human beings. Our goal is to develop methods that automatically detect humorous statements and rank them on a continuous scale. In this paper we report on results using a Language Model approach, and outline our plans for using methods from Deep Learning.\n\nComputational humor is an emerging area of research that ties together ideas from psychology, linguistics, and cognitive science. Humor generation is the problem of automatically creating humorous statements (e.g., BIBREF0 , BIBREF1 ). Humor detection seeks to identify humor in text, and is sometimes cast as a binary classification problem that decides if some input is humorous or not (e.g., BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 ). However, our focus is on the continuous and subjective aspects of humor.\n\nWe learn a particular sense of humor from a data set of tweets which are geared towards a certain style of humor BIBREF6 . This data consists of humorous tweets which have been submitted in response to hashtag prompts provided during the Comedy Central TV show @midnight with Chris Hardwick. Since not all jokes are equally funny, we use Language Models and methods from Deep Learning to allow potentially humorous statements to be ranked relative to each other.\n\nWe used traditional Ngram language models as our first approach for two reasons : First, Ngram language models can learn a certain style of humor by using examples of that as the training data for the model. Second, they assign a probability to each input they are given, making it possible to rank statements relative to each other. Thus, Ngram language models make relative rankings of humorous statements based on a particular style of humor, thereby accounting for the continuous and subjective nature of humor.\n\nWe began this research by participating in SemEval-2017 Task 6 #HashtagWars: Learning a Sense of Humor BIBREF7 . This included two subtasks : Pairwise Comparison (Subtask A) and Semi-ranking (Subtask B). Pairwise comparison asks a system to choose the funnier of two tweets. Semi-ranking requires that each of the tweets associated with a particular hashtag be assigned to one of the following categories : top most funny tweet, next nine most funny tweets, and all remaining tweets.\n\nOur system estimated tweet probabilities using Ngram language models. We created models from two different corpora - a collection of funny tweets from the @midnight program, and a corpus of news data that is freely available for research. We scored tweets by assigning them a probability based on each model. Tweets that have a higher probability according to the funny tweet model are considered funnier since they are more like the humorous training data. However, tweets that have a lower probability according to the news language model are viewed as funnier since they are least like the (unfunny) news corpus. We took a standard approach to language modeling and used bigrams and trigrams as features in our models. We used KenLM BIBREF8 with modified Kneser-Ney smoothing and a back-off technique as our language modeling tool.\n\nTable 1 shows our results for both data sets when trained on bigrams and trigrams. The accuracy and distance measures are defined by the task organizers BIBREF7 . We seek high accuracy in picking the funnier tweet (Subtask A) and low distance (from the gold standard) in organizing the tweets into categories (Subtask B).\n\nThese results show that models trained on the news data have a significant advantage over the tweets model, and that bigram models performed slightly better than trigrams. We submitted trigram models trained on news and tweets to the official evaluation of SemEval-2017 Task 6. The trigram language models trained on the news data placed fourth in Subtask A and first in Subtask B.\n\nWe believe that the significant advantage of the news data over the tweet data is caused by the much larger quantity of news data available. The tweet data only consists of approximately 21,000 tweets, whereas the news data totals approximately 6.2 GB of text. In the future we intend to collect more tweet data, especially those participating in the ongoing #HashtagWars staged nightly by @midnight. We also plan to experiment with equal amounts of tweet data and news data, to see if one has an inherent advantage over the other.\n\nOur language models performed better in the pairwise comparison, but it is clear that more investigation is needed to improve the semi-ranking results. We believe that Deep Learning may overcome some of the limits of Ngram language models, and so will explore those next.\n\nOne limitation of our language model approach is the large number of out of vocabulary words we encounter. This problem can not be solved by increasing the quantity of training data because humor relies on creative use of language. For example, jokes often include puns based on invented words, e.g., a singing cat makes beautiful meowsic. BIBREF6 suggests that character–based Convolutional Neural Networks (CNNs) are an effective solution for these situations since they are not dependent on observing tokens in training data. Previous work has also shown the CNNs are effective tools for language modeling, even in the presence of complex morphology BIBREF9 . Other recent work has shown that Recurrent Neural Networks (RNNs), in particular Long Short–Term Memory networks (LSTMs), are effective in a wide range of language modeling tasks (e.g., BIBREF10 , BIBREF11 ). This seems to be due to their ability to capture long distance dependencies, which is something that Ngram language models can not do.\n\n BIBREF6 finds that external knowledge is necessary to detect humor in tweet based data. This might include information about book and movie titles, song lyrics, biographies of celebrities etc. and is necessary given the reliance on current events and popular culture in making certain kinds of jokes.\n\nWe believe that Deep Learning techniques potentially offer improved handling of unknown words, long distance dependencies in text, and non–linear relationships among words and concepts. Moving forward we intend to explore a variety of these ideas and describe those briefly below.\n\nOur current language model approach is effective but does not account for out of vocabulary words nor long distance dependencies. CNNs in combination with LSTMs seem to be a particularly promising way to overcome these limitations (e.g., BIBREF12 ) which we will explore and compare to our existing results.\n\nAfter evaluating CNNs and LSTMs we will explore how to include domain knowledge in these models. One possibility is to create word embeddings from domain specific materials and provide those to the CNNs along with more general text. Another is to investigate the use of Tree–Structured LSTMs BIBREF13 . These have the potential advantage of preserving non-linear structure in text, which may be helpful in recognizing some of the unusual variations of words and concepts that are characteristic of humor.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 90
+    },
+    {
+      "section": "Abstract",
+      "start": 92,
+      "end": 385
+    },
+    {
+      "section": "Introduction",
+      "start": 387,
+      "end": 1359
+    },
+    {
+      "section": "Language Models",
+      "start": 1361,
+      "end": 4709
+    },
+    {
+      "section": "Deep Learning",
+      "start": 4711,
+      "end": 6302
+    },
+    {
+      "section": "Future Work",
+      "start": 6304,
+      "end": 7117
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1705.10272",
+    "arxiv_id": "1705.10272",
+    "source_url": "https://arxiv.org/abs/1705.10272",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "doc_id": "qasper_1908_05803",
+  "title": "Quoref: A Reading Comprehension Dataset with Questions Requiring Coreferential Reasoning",
+  "text": "Quoref: A Reading Comprehension Dataset with Questions Requiring Coreferential Reasoning\n\nMachine comprehension of texts longer than a single sentence often requires coreference resolution. However, most current reading comprehension benchmarks do not contain complex coreferential phenomena and hence fail to evaluate the ability of models to resolve coreference. We present a new crowdsourced dataset containing more than 24K span-selection questions that require resolving coreference among entities in over 4.7K English paragraphs from Wikipedia. Obtaining questions focused on such phenomena is challenging, because it is hard to avoid lexical cues that shortcut complex reasoning. We deal with this issue by using a strong baseline model as an adversary in the crowdsourcing loop, which helps crowdworkers avoid writing questions with exploitable surface cues. We show that state-of-the-art reading comprehension models perform significantly worse than humans on this benchmark---the best model performance is 70.5 F1, while the estimated human performance is 93.4 F1.\n\nParagraphs and other longer texts typically make multiple references to the same entities. Tracking these references and resolving coreference is essential for full machine comprehension of these texts. Significant progress has recently been made in reading comprehension research, due to large crowdsourced datasets BIBREF0, BIBREF1, BIBREF2, BIBREF3. However, these datasets focus largely on understanding local predicate-argument structure, with very few questions requiring long-distance entity tracking. Obtaining such questions is hard for two reasons: (1) teaching crowdworkers about coreference is challenging, with even experts disagreeing on its nuances BIBREF4, BIBREF5, BIBREF6, BIBREF7, and (2) even if we can get crowdworkers to target coreference phenomena in their questions, these questions may contain giveaways that let models arrive at the correct answer without performing the desired reasoning (see §SECREF3 for examples).\n\nWe introduce a new dataset, Quoref , that contains questions requiring coreferential reasoning (see examples in Figure FIGREF1). The questions are derived from paragraphs taken from a diverse set of English Wikipedia articles and are collected using an annotation process (§SECREF2) that deals with the aforementioned issues in the following ways: First, we devise a set of instructions that gets workers to find anaphoric expressions and their referents, asking questions that connect two mentions in a paragraph. These questions mostly revolve around traditional notions of coreference (Figure FIGREF1 Q1), but they can also involve referential phenomena that are more nebulous (Figure FIGREF1 Q3). Second, inspired by BIBREF8, we disallow questions that can be answered by an adversary model (uncased base BERT, BIBREF9, trained on SQuAD 1.1, BIBREF0) running in the background as the workers write questions. This adversary is not particularly skilled at answering questions requiring coreference, but can follow obvious lexical cues—it thus helps workers avoid writing questions that shortcut coreferential reasoning.\n\nQuoref contains more than 15K questions whose answers are spans or sets of spans in 3.5K paragraphs from English Wikipedia that can be arrived at by resolving coreference in those paragraphs. We manually analyze a sample of the dataset (§SECREF3) and find that 78% of the questions cannot be answered without resolving coreference. We also show (§SECREF4) that the best system performance is 49.1% $F_1$, while the estimated human performance is 87.2%. These findings indicate that this dataset is an appropriate benchmark for coreference-aware reading comprehension.\n\nWe scraped paragraphs from Wikipedia pages about English movies, art and architecture, geography, history, and music. For movies, we followed the list of English language films, and extracted plot summaries that are at least 40 tokens, and for the remaining categories, we followed the lists of featured articles. Since movie plot summaries usually mention many characters, it was easier to find hard Quoref questions for them, and we sampled about 60% of the paragraphs from this category.\n\nWe crowdsourced questions about these paragraphs on Mechanical Turk. We asked workers to find two or more co-referring spans in the paragraph, and to write questions such that answering them would require the knowledge that those spans are coreferential. We did not ask them to explicitly mark the co-referring spans. Workers were asked to write questions for a random sample of paragraphs from our pool, and we showed them examples of good and bad questions in the instructions (see Appendix ). For each question, the workers were also required to select one or more spans in the corresponding paragraph as the answer, and these spans are not required to be same as the coreferential spans that triggered the questions. We used an uncased base BERT QA model BIBREF9 trained on SQuAD 1.1 BIBREF0 as an adversary running in the background that attempted to answer the questions written by workers in real time, and the workers were able to submit their questions only if their answer did not match the adversary's prediction. Appendix further details the logistics of the crowdsourcing tasks. Some basic statistics of the resulting dataset can be seen in Table .\n\nTo better understand the phenomena present in Quoref , we manually analyzed a random sample of 100 paragraph-question pairs. The following are some empirical observations.\n\nWe found that 78% of the manually analyzed questions cannot be answered without coreference resolution. The remaining 22% involve some form of coreference, but do not require it to be resolved for answering them. Examples include a paragraph that mentions only one city, “Bristol”, and a sentence that says “the city was bombed”. The associated question, Which city was bombed?, does not really require coreference resolution from a model that can identify city names, making the content in the question after Which city unnecessary.\n\nQuestions in Quoref require resolving pronominal and nominal mentions of entities. Table shows percentages and examples of analyzed questions that fall into these two categories. These are not disjoint sets, since we found that 32% of the questions require both (row 3). We also found that 10% require some form of commonsense reasoning (row 4).\n\nUnlike traditional coreference annotations in datasets like those of BIBREF4, BIBREF10, BIBREF11 and BIBREF7, which aim to obtain complete coreference clusters, our questions require understanding coreference between only a few spans. While this means that the notion of coreference captured by our dataset is less comprehensive, it is also less conservative and allows questions about coreference relations that are not marked in OntoNotes annotations. Since the notion is not as strict, it does not require linguistic expertise from annotators, making it more amenable to crowdsourcing.\n\nThere are many reading comprehension datasets BIBREF12, BIBREF0, BIBREF3, BIBREF8. Most of these datasets principally require understanding local predicate-argument structure in a paragraph of text. Quoref also requires understanding local predicate-argument structure, but makes the reading task harder by explicitly querying anaphoric references, requiring a system to track entities throughout the discourse.\n\nWe present Quoref , a focused reading comprehension benchmark that evaluates the ability of models to resolve coreference. We crowdsourced questions over paragraphs from Wikipedia, and manual analysis confirmed that most cannot be answered without coreference resolution. We show that current state-of-the-art reading comprehension models perform poorly on this benchmark, significantly lower than human performance. Both these findings provide evidence that Quoref is an appropriate benchmark for coreference-aware reading comprehension.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 88
+    },
+    {
+      "section": "Abstract",
+      "start": 90,
+      "end": 1074
+    },
+    {
+      "section": "Introduction",
+      "start": 1076,
+      "end": 3713
+    },
+    {
+      "section": "Dataset Construction ::: Collecting paragraphs",
+      "start": 3715,
+      "end": 4205
+    },
+    {
+      "section": "Dataset Construction ::: Crowdsourcing setup",
+      "start": 4207,
+      "end": 5368
+    },
+    {
+      "section": "Semantic Phenomena in Quoref",
+      "start": 5370,
+      "end": 5541
+    },
+    {
+      "section": "Semantic Phenomena in Quoref ::: Requirement of coreference resolution",
+      "start": 5543,
+      "end": 6076
+    },
+    {
+      "section": "Semantic Phenomena in Quoref ::: Types of coreferential reasoning",
+      "start": 6078,
+      "end": 6423
+    },
+    {
+      "section": "Related Work ::: Traditional coreference datasets",
+      "start": 6425,
+      "end": 7013
+    },
+    {
+      "section": "Related Work ::: Reading comprehension datasets",
+      "start": 7015,
+      "end": 7426
+    },
+    {
+      "section": "Conclusion",
+      "start": 7428,
+      "end": 7966
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1908.05803",
+    "arxiv_id": "1908.05803",
+    "source_url": "https://arxiv.org/abs/1908.05803",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

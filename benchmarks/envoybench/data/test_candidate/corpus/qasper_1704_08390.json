@@ -1,0 +1,74 @@
+{
+  "doc_id": "qasper_1704_08390",
+  "title": "Duluth at SemEval-2017 Task 6: Language Models in Humor Detection",
+  "text": "Duluth at SemEval-2017 Task 6: Language Models in Humor Detection\n\nThis paper describes the Duluth system that participated in SemEval-2017 Task 6 #HashtagWars: Learning a Sense of Humor. The system participated in Subtasks A and B using N-gram language models, ranking highly in the task evaluation. This paper discusses the results of our system in the development and evaluation stages and from two post-evaluation runs.\n\nHumor is an expression of human uniqueness and intelligence and has drawn attention in diverse areas such as linguistics, psychology, philosophy and computer science. Computational humor draws from all of these fields and is a relatively new area of study. There is some history of systems that are able to generate humor (e.g., BIBREF0 , BIBREF1 ). However, humor detection remains a less explored and challenging problem (e.g., BIBREF2 , BIBREF3 , BIBREF4 , BIBREF5 ).\n\nSemEval-2017 Task 6 BIBREF6 also focuses on humor detection by asking participants to develop systems that learn a sense of humor from the Comedy Central TV show, @midnight with Chris Hardwick. Our system ranks tweets according to how funny they are by training N-gram language models on two different corpora. One consisting of funny tweets provided by the task organizers, and the other on a freely available research corpus of news data. The funny tweet data is made up of tweets that are intended to be humorous responses to a hashtag given by host Chris Hardwick during the program.\n\nTraining Language Models (LMs) is a straightforward way to collect a set of rules by utilizing the fact that words do not appear in an arbitrary order; we in fact can gain useful information about a word by knowing the company it keeps BIBREF7 . A statistical language model estimates the probability of a sequence of words or an upcoming word. An N-gram is a contiguous sequence of N words: a unigram is a single word, a bigram is a two-word sequence, and a trigram is a three-word sequence. For example, in the tweet\n\ntears in Ramen #SingleLifeIn3Words\n\n“tears”, “in”, “Ramen” and “#SingleLifeIn3Words” are unigrams; “tears in”, “in Ramen” and “Ramen #SingleLifeIn3Words” are bigrams and “tears in Ramen” and “in Ramen #SingleLifeIn3Words” are trigrams.\n\nAn N-gram model can predict the next word from a sequence of N-1 previous words. A trigram Language Model (LM) predicts the conditional probability of the next word using the following approximation: DISPLAYFORM0 \n\nThe assumption that the probability of a word depends only on a small number of previous words is called a Markov assumption BIBREF8 . Given this assumption the probability of a sentence can be estimated as follows: DISPLAYFORM0 \n\nIn a study on how phrasing affects memorability, BIBREF9 take a language model approach to measure the distinctiveness of memorable movie quotes. They do this by evaluating a quote with respect to a “common language” model built from the newswire sections of the Brown corpus BIBREF10 . They find that movie quotes which are less like “common language” are more distinctive and therefore more memorable. The intuition behind our approach is that humor should in some way be memorable or distinct, and so tweets that diverge from a “common language” model would be expected to be funnier.\n\nIn order to evaluate how funny a tweet is, we train language models on two datasets: the tweet data and the news data. Tweets that are more probable according to the tweet data language model are ranked as being funnier. However, tweets that have a lower probability according to the news language model are considered the funnier since they are the least like the (unfunny) news corpus. We relied on both bigrams and trigrams when training our models.\n\nWe use KenLM BIBREF11 as our language modeling tool. Language models are estimated using modified Kneser-Ney smoothing without pruning. KenLM also implements a back-off technique so if an N-gram is not found, KenLM applies the lower order N-gram's probability along with its back-off weights.\n\nOur system estimated tweet probability using N-gram LMs. Specifically, it solved the comparison (Subtask A) and semi-ranking (Subtask B) subtasks in four steps:\n\nThe tweet data was provided by the task organizers. It consists of 106 hashtag files made up of about 21,000 tokens. The hashtag files were further divided into a development set trial_dir of 6 hashtags and a training set of 100 hashtags train_dir. We also obtained 6.2 GB of English news data with about two million tokens from the News Commentary Corpus and the News Crawl Corpus from 2008, 2010 and 2011. Each tweet and each sentence from the news data is found on a single line in their respective files.\n\nDuring the development of our system we trained our language models solely on the 100 hashtag files from train_dir and then evaluated our performance on the 6 hashtag files found in trial_dir. That data was formatted such that each tweet was found on a single line.\n\nPre-processing consists of two steps: filtering and tokenization. The filtering step was only for the tweet training corpus. We experimented with various filtering and tokenziation combinations during the development stage to determine the best setting.\n\nFiltering removes the following elements from the tweets: URLs, tokens starting with the “@” symbol (Twitter user names), and tokens starting with the “#” symbol (Hashtags).\n\nTokenization: Text in all training data was split on white space and punctuation\n\nOnce we had the corpora ready, we used the KenLM Toolkit to train the N-gram language models on each corpus. We trained using both bigrams and trigrams on the tweet and news data. Our language models accounted for unknown words and were built both with and without considering sentence or tweet boundaries.\n\nAfter training the N-gram language models, the next step was scoring. For each hashtag file that needed to be evaluated, the logarithm of the probability was assigned to each tweet in the hashtag file based on the trained language model. The larger the probability, the more likely that tweet was according to the language model. Table 1 shows an example of two scored tweets from hashtag file Bad_Job_In_5_Words.tsv based on the tweet data trigram language model. Note that KenLM reports the log of the probability of the N-grams rather than the actual probabilities so the value closer to 0 (-19) has the higher probability and is associated with the tweet judged to be funnier.\n\nThe system sorts all the tweets for each hashtag and orders them based on their log probability score, where the funniest tweet should be listed first. If the scores are based on the tweet language model then they are sorted in ascending order since the log probability value closest to 0 indicates the tweet that is most like the (funny) tweets model. However, if the log probability scores are based on the news data then they are sorted in descending order since the largest value will have the smallest probability associated with it and is therefore least like the (unfunny) news model.\n\nFor Subtask A, the system goes through the sorted list of tweets in a hashtag file and compares each pair of tweets. For each pair, if the first tweet was funnier than the second, the system would output the tweet_ids for the pair followed by a “1”. If the second tweet is funnier it outputs the tweet_ids followed by a “0”. For Subtask B, the system outputs all the tweet_ids for a hashtag file starting from the funniest.\n\nIn this section we present the results from our development stage (Table 2), the evaluation stage (Table 3), and two post-evaluation results (Table 3). Since we implemented both bigram and trigam language models during the development stage but only results from trigram language models were submitted to the task, we evaluated bigram language models in the post-evaluation stage. Note that the accuracy and distance measurements listed in Table 2 and Table 3 are defined by the task organizers BIBREF6 .\n\nTable 2 shows results from the development stage. These results show that for the tweet data the best setting is to keep the # and @, omit sentence boundaries, be case sensitive, and ignore tokenization. While using these settings the trigram language model performed better on Subtask B (.887) and the bigram language model performed better on Subtask A (.548). We decided to rely on trigram language models for the task evaluation since the advantage of bigrams on Subtask A was very slight (.548 versus .543). For the news data, we found that the best setting was to perform tokenization, omit sentence boundaries, and to be case sensitive. Given that trigrams performed most effectively in the development stage, we decided to use those during the evaluation.\n\nTable 3 shows the results of our system during the task evaluation. We submitted two runs, one with a trigram language model trained on the tweet data, and another with a trigram language model trained on the news data. In addition, after the evaluation was concluded we also decided to run the bigram language models as well. Contrary to what we observed in the development data, the bigram language model actually performed somewhat better than the trigram language model. In addition, and also contrary to what we observed with the development data, the news data proved generally more effective in the post–evaluation runs than the tweet data.\n\nWe relied on bigram and trigram language models because tweets are short and concise, and often only consist of just a few words.\n\nThe performance of our system was not consistent when comparing the development to the evaluation results. During development language models trained on the tweet data performed better. However during the evaluation and post-evaluation stage, language models trained on the news data were significantly more effective. We also observed that bigram language models performed slightly better than trigram models on the evaluation data. This suggests that going forward we should also consider both the use of unigram and character–level language models.\n\nThese results suggest that there are only slight differences between bigram and trigram models, and that the type and quantity of corpora used to train the models is what really determines the results.\n\nThe task description paper BIBREF6 reported system by system results for each hashtag. We were surprised to find that our performance on the hashtag file #BreakUpIn5Words in the evaluation stage was significantly better than any other system on both Subtask A (with accuracy of 0.913) and Subtask B (with distance score of 0.636). While we still do not fully understand the cause of these results, there is clearly something about the language used in this hashtag that is distinct from the other hashtags, and is somehow better represented or captured by a language model. Reaching a better understanding of this result is a high priority for future work.\n\nThe tweet data was significantly smaller than the news data, and so certainly we believe that this was a factor in the performance during the evaluation stage, where the models built from the news data were significantly more effective. Going forward we plan to collect more tweet data, particularly those that participate in #HashtagWars. We also intend to do some experiments where we cut the amount of news data and then build models to see how those compare.\n\nWhile our language models performed well, there is some evidence that neural network models can outperform standard back-off N-gram models BIBREF12 . We would like to experiment with deep learning methods such as recurrent neural networks, since these networks are capable of forming short term memory and may be better suited for dealing with sequence data.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 65
+    },
+    {
+      "section": "Abstract",
+      "start": 67,
+      "end": 423
+    },
+    {
+      "section": "Introduction",
+      "start": 425,
+      "end": 1484
+    },
+    {
+      "section": "Background",
+      "start": 1486,
+      "end": 4024
+    },
+    {
+      "section": "Method",
+      "start": 4026,
+      "end": 4186
+    },
+    {
+      "section": "Corpus Preparation and Pre-processing",
+      "start": 4188,
+      "end": 5475
+    },
+    {
+      "section": "Language Model Training",
+      "start": 5477,
+      "end": 5783
+    },
+    {
+      "section": "Tweet Scoring",
+      "start": 5785,
+      "end": 6465
+    },
+    {
+      "section": "Tweet Prediction",
+      "start": 6467,
+      "end": 7483
+    },
+    {
+      "section": "Experiments and Results",
+      "start": 7485,
+      "end": 9403
+    },
+    {
+      "section": "Discussion and Future Work",
+      "start": 9405,
+      "end": 11772
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1704.08390",
+    "arxiv_id": "1704.08390",
+    "source_url": "https://arxiv.org/abs/1704.08390",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "doc_id": "qasper_1703_04357",
+  "title": "Nematus: a Toolkit for Neural Machine Translation",
+  "text": "Nematus: a Toolkit for Neural Machine Translation\n\nWe present Nematus, a toolkit for Neural Machine Translation. The toolkit prioritizes high translation accuracy, usability, and extensibility. Nematus has been used to build top-performing submissions to shared translation tasks at WMT and IWSLT, and has been used to train systems for production environments.\n\nNeural Machine Translation (NMT) BIBREF0 , BIBREF1 has recently established itself as a new state-of-the art in machine translation. We present Nematus, a new toolkit for Neural Machine Translation.\n\nNematus has its roots in the dl4mt-tutorial. We found the codebase of the tutorial to be compact, simple and easy to extend, while also producing high translation quality. These characteristics make it a good starting point for research in NMT. Nematus has been extended to include new functionality based on recent research, and has been used to build top-performing systems to last year's shared translation tasks at WMT BIBREF2 and IWSLT BIBREF3 .\n\nNematus is implemented in Python, and based on the Theano framework BIBREF4 . It implements an attentional encoder–decoder architecture similar to DBLP:journals/corr/BahdanauCB14. Our neural network architecture differs in some aspect from theirs, and we will discuss differences in more detail. We will also describe additional functionality, aimed to enhance usability and performance, which has been implemented in Nematus.\n\nNematus implements an attentional encoder–decoder architecture similar to the one described by DBLP:journals/corr/BahdanauCB14, but with several implementation differences. The main differences are as follows:\n\nWe will here describe some differences in more detail:\n\nGiven a source sequence INLINEFORM0 of length INLINEFORM1 and a target sequence INLINEFORM2 of length INLINEFORM3 , let INLINEFORM4 be the annotation of the source symbol at position INLINEFORM5 , obtained by concatenating the forward and backward encoder RNN hidden states, INLINEFORM6 , and INLINEFORM7 be the decoder hidden state at position INLINEFORM8 .\n\nBy default, the training objective in Nematus is cross-entropy minimization on a parallel training corpus. Training is performed via stochastic gradient descent, or one of its variants with adaptive learning rate (Adadelta BIBREF14 , RmsProp BIBREF15 , Adam BIBREF16 ).\n\nAdditionally, Nematus supports minimum risk training (MRT) BIBREF17 to optimize towards an arbitrary, sentence-level loss function. Various MT metrics are supported as loss function, including smoothed sentence-level Bleu BIBREF18 , METEOR BIBREF19 , BEER BIBREF20 , and any interpolation of implemented metrics.\n\nTo stabilize training, Nematus supports early stopping based on cross entropy, or an arbitrary loss function defined by the user.\n\nIn addition to the main algorithms to train and decode with an NMT model, Nematus includes features aimed towards facilitating experimentation with the models, and their visualisation. Various model parameters are configurable via a command-line interface, and we provide extensive documentation of options, and sample set-ups for training systems.\n\nNematus provides support for applying single models, as well as using multiple models in an ensemble – the latter is possible even if the model architectures differ, as long as the output vocabulary is the same. At each time step, the probability distribution of the ensemble is the geometric average of the individual models' probability distributions. The toolkit includes scripts for beam search decoding, parallel corpus scoring and n-best-list rescoring.\n\nNematus includes utilities to visualise the attention weights for a given sentence pair, and to visualise the beam search graph. An example of the latter is shown in Figure FIGREF16 . Our demonstration will cover how to train a model using the command-line interface, and showing various functionalities of Nematus, including decoding and visualisation, with pre-trained models.\n\nWe have presented Nematus, a toolkit for Neural Machine Translation. We have described implementation differences to the architecture by DBLP:journals/corr/BahdanauCB14; due to the empirically strong performance of Nematus, we consider these to be of wider interest.\n\nWe hope that researchers will find Nematus an accessible and well documented toolkit to support their research. The toolkit is by no means limited to research, and has been used to train MT systems that are currently in production BIBREF21 .\n\nNematus is available under a permissive BSD license.\n\nThis project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreements 645452 (QT21), 644333 (TraMOOC), 644402 (HimL) and 688139 (SUMMA).",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 49
+    },
+    {
+      "section": "Abstract",
+      "start": 51,
+      "end": 361
+    },
+    {
+      "section": "Introduction",
+      "start": 363,
+      "end": 1441
+    },
+    {
+      "section": "Neural Network Architecture",
+      "start": 1443,
+      "end": 2068
+    },
+    {
+      "section": "Training Algorithms",
+      "start": 2070,
+      "end": 2784
+    },
+    {
+      "section": "Usability Features",
+      "start": 2786,
+      "end": 3975
+    },
+    {
+      "section": "Conclusion",
+      "start": 3977,
+      "end": 4540
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 4542,
+      "end": 4738
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1703.04357",
+    "arxiv_id": "1703.04357",
+    "source_url": "https://arxiv.org/abs/1703.04357",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

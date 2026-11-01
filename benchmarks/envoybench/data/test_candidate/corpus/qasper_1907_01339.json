@@ -1,0 +1,69 @@
+{
+  "doc_id": "qasper_1907_01339",
+  "title": "Sequence Labeling Parsing by Learning Across Representations",
+  "text": "Sequence Labeling Parsing by Learning Across Representations\n\nWe use parsing as sequence labeling as a common framework to learn across constituency and dependency syntactic abstractions. To do so, we cast the problem as multitask learning (MTL). First, we show that adding a parsing paradigm as an auxiliary loss consistently improves the performance on the other paradigm. Secondly, we explore an MTL sequence labeling model that parses both representations, at almost no cost in terms of performance and speed. The results across the board show that on average MTL models with auxiliary losses for constituency parsing outperform single-task ones by 1.05 F1 points, and for dependency parsing by 0.62 UAS points.\n\nConstituency BIBREF0 and dependency grammars BIBREF1 , BIBREF2 are the two main abstractions for representing the syntactic structure of a given sentence, and each of them has its own particularities BIBREF3 . While in constituency parsing the structure of sentences is abstracted as a phrase-structure tree (see Figure FIGREF6 ), in dependency parsing the tree encodes binary syntactic relations between pairs of words (see Figure FIGREF6 ).\n\nWhen it comes to developing natural language processing (nlp) parsers, these two tasks are usually considered as disjoint tasks, and their improvements therefore have been obtained separately BIBREF4 , BIBREF5 , BIBREF6 , BIBREF7 , BIBREF8 , BIBREF9 .\n\nDespite the potential benefits of learning across representations, there have been few attempts in the literature to do this. klein2003fast considered a factored model that provides separate methods for phrase-structure and lexical dependency trees and combined them to obtain optimal parses. With a similar aim, ren2013combine first compute the n best constituency trees using a probabilistic context-free grammar, convert those into dependency trees using a dependency model, compute a probability score for each of them, and finally rerank the most plausible trees based on both scores. However, these methods are complex and intended for statistical parsers. Instead, we propose a extremely simple framework to learn across constituency and dependency representations.\n\nTo learn across representations we cast the problem as multi-task learning. mtl enables learning many tasks jointly, encapsulating them in a single model and leveraging their shared representation BIBREF12 , BIBREF22 . In particular, we will use a hard-sharing architecture: the sentence is first processed by stacked bilstms shared across all tasks, with a task-dependent feed-forward network on the top of it, to compute each task's outputs. In particular, to benefit from a specific parsing abstraction we will be using the concept of auxiliary tasks BIBREF23 , BIBREF24 , BIBREF25 , where tasks are learned together with the main task in the mtl setup even if they are not of actual interest by themselves, as they might help to find out hidden patterns in the data and lead to better generalization of the model. For instance, BIBREF26 have shown that semantic parsing benefits from that approach.\n\nThe input is the same for both types of parsing and the same number of timesteps are required to compute a tree (equal to the length of the sentence), which simplifies the joint modeling. In this work, we focus on parallel data (we train on the same sentences labeled for both constituency and dependency abstractions). In the future, we plan to explore the idea of exploiting joint training over disjoint treebanks BIBREF27 .\n\nWe test different sequence labeling parsers to determine whether there are any benefits in learning across representations. We compare: (i) a single-task model for constituency parsing and another one for dependency parsing, (ii) a multi-task model for constituency parsing (and another for dependency parsing) where each element of the 3-tuple is predicted as a partial label in a separate subtask instead of as a whole, (iii) different mtl models where the partial labels from a specific parsing abstraction are used as auxiliary tasks for the other one, and (iv) an mtl model that learns to produce both abstractions as main tasks.\n\nFor constituency parsing, we use the single-task model by BIBREF10 . The input is the raw sentence and the output for each token a single label of the form INLINEFORM0 = INLINEFORM1 . For dependency parsing we use the model by BIBREF11 to predict a single dependency label of the form INLINEFORM2 = INLINEFORM3 for each token.\n\nFor constituency parsing, instead of predicting a single label output of the form INLINEFORM0 , we generate three partial and separate labels INLINEFORM1 , INLINEFORM2 and INLINEFORM3 through three task-dependent feed-forward networks on the top of the stacked bilstms. This is similar to BIBREF28 . For dependency parsing, we propose in this work a mtl version too. We observed in preliminary experiments, as shown in Table TABREF14 , that casting the problem as 3-task learning led to worse results. Instead, we cast it as a 2-task learning problem, where the first task consists in predicting the head of a word INLINEFORM4 , i.e. predicting the tuple INLINEFORM5 , and the second task predicts the type of the relation INLINEFORM6 . The loss is here computed as INLINEFORM7 = INLINEFORM8 , where INLINEFORM9 is the partial loss coming from the subtask INLINEFORM10 .\n\nWe predict the partial labels from one of the parsing abstractions as main tasks. The partial labels from the other parsing paradigm are used as auxiliary tasks. The loss is computed as INLINEFORM0 = INLINEFORM1 , where INLINEFORM2 is an auxiliary loss and INLINEFORM3 its specific weighting factor. Figure FIGREF17 shows the architecture used in this and the following multi-paradigm model.\n\nAll tasks are learned as main tasks instead.\n\nIn the following experiments we use two parallel datasets that provide syntactic analyses for both dependency and constituency parsing.\n\nFor the evaluation on English language we use the English Penn Treebank BIBREF40 , transformed into Stanford dependencies BIBREF41 with the predicted PoS tags as in BIBREF32 .\n\nWe also use the spmrl datasets, a collection of parallel dependency and constituency treebanks for morphologically rich languages BIBREF42 . In this case, we use the predicted PoS tags provided by the organizers. We observed some differences between the constituency and dependency predicted input features provided with the corpora. For experiments where dependency parsing is the main task, we use the input from the dependency file, and the converse for constituency, for comparability with other work. d-mtl models were trained twice (one for each input), and dependency and constituent scores are reported on the model trained on the corresponding input.\n\nWe use bracketing F-score from the original evalb and eval_spmrl official scripts to evaluate constituency trees. For dependency parsing, we rely on las and uas scores where punctuation is excluded in order to provide a homogeneous setup for PTB and SPMRL.\n\nTable TABREF18 compares single-paradigm models against their double-paradigm mtl versions. On average, mtl models with auxiliary losses achieve the best performance for both parsing abstractions. They gain INLINEFORM0 F1 points on average in comparison with the single model for constituency parsing, and INLINEFORM1 uas and INLINEFORM2 las points for dependency parsing. In comparison to the single-paradigm MTL models, the average gain is smaller: 0.05 f1 points for constituency parsing, and 0.09 uas and 0.21 las points for dependency parsing.\n\nmtl models that use auxiliary tasks (d-mtl-aux) consistently outperform the single-task models (s-s) in all datasets, both for constituency parsing and for dependency parsing in terms of uas. However, this does not extend to las. This different behavior between uas and las seems to be originated by the fact that 2-task dependency parsing models, which are the basis for the corresponding auxiliary task and mtl models, improve uas but not las with respect to single-task dependency parsing models. The reason might be that the single-task setup excludes unlikely combinations of dependency labels with PoS tags or dependency directions that are not found in the training set, while in the 2-task setup, both components are treated separately, which may be having a negative influence on dependency labeling accuracy.\n\nIn general, one can observe different range of gains of the models across languages. In terms of uas, the differences between single-task and mtl models span between INLINEFORM0 (Basque) and INLINEFORM1 (Hebrew); for las, INLINEFORM2 and INLINEFORM3 (both for Hebrew); and for F1, INLINEFORM4 (Hebrew) and INLINEFORM5 (Korean). Since the sequence labeling encoding used for dependency parsing heavily relies on PoS tags, the result for a given language can be dependent on the degree of the granularity of its PoS tags.\n\nIn addition, Table TABREF19 provides a comparison of the d-mtl-aux models for dependency and constituency parsing against existing models on the PTB test set. Tables TABREF20 and TABREF21 shows the results for various existing models on the SPMRL test sets.\n\nTable TABREF22 shows the speeds (sentences/second) on a single core of a CPU. The d-mtl setup comes at almost no added computational cost, so the very good speed-accuracy tradeoff already provided by the single-task models is improved.\n\nWe have described a framework to leverage the complementary nature of constituency and dependency parsing. It combines multi-task learning, auxiliary tasks, and sequence labeling parsing, so that constituency and dependency parsing can benefit each other through learning across their representations. We have shown that mtl models with auxiliary losses outperform single-task models, and mtl models that treat both constituency and dependency parsing as main tasks obtain strong results, coming almost at no cost in terms of speed. Source code will be released upon acceptance.\n\nThis work has received funding from the European Research Council (ERC), under the European Union's Horizon 2020 research and innovation programme (FASTPARSE, grant agreement No 714150), from the ANSWER-ASAP project (TIN2017-85160-C2-1-R) from MINECO, and from Xunta de Galicia (ED431B 2017/01).\n\nThe models were trained up to 150 iterations and optimized with Stochastic Gradient Descent (SGD) with a batch size of 8. The best model for constituency parsing was chosen with the highest achieved F1 score on the development set during the training and for dependency parsing with the highest las score. The best double paradigm, multi-task model was chosen based on the highest harmonic mean among las and F1 scores.\n\nTable TABREF30 shows model hyperparameters.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 60
+    },
+    {
+      "section": "Abstract",
+      "start": 62,
+      "end": 715
+    },
+    {
+      "section": "Introduction",
+      "start": 717,
+      "end": 2186
+    },
+    {
+      "section": "Learning across representations",
+      "start": 2188,
+      "end": 3518
+    },
+    {
+      "section": "Baselines and models",
+      "start": 3520,
+      "end": 5793
+    },
+    {
+      "section": "Data",
+      "start": 5795,
+      "end": 7026
+    },
+    {
+      "section": "Results",
+      "start": 7028,
+      "end": 9412
+    },
+    {
+      "section": "Conclusion",
+      "start": 9414,
+      "end": 9992
+    },
+    {
+      "section": "Acknowlegments",
+      "start": 9994,
+      "end": 10289
+    },
+    {
+      "section": "Model parameters",
+      "start": 10291,
+      "end": 10755
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1907.01339",
+    "arxiv_id": "1907.01339",
+    "source_url": "https://arxiv.org/abs/1907.01339",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "doc_id": "qasper_1803_04579",
+  "title": "It was the training data pruning too!",
+  "text": "It was the training data pruning too!\n\nWe study the current best model (KDG) for question answering on tabular data evaluated over the WikiTableQuestions dataset. Previous ablation studies performed against this model attributed the model's performance to certain aspects of its architecture. In this paper, we find that the model's performance also crucially depends on a certain pruning of the data used to train the model. Disabling the pruning step drops the accuracy of the model from 43.3% to 36.3%. The large impact on the performance of the KDG model suggests that the pruning may be a useful pre-processing step in training other semantic parsers as well.\n\nQuestion answering on tabular data is an important problem in natural language processing. Recently, a number of systems have been proposed for solving the problem using the WikiTableQuestions dataset BIBREF1 (henceforth called WTQ). This dataset consists of triples of the form INLINEFORM0 question, table, answer INLINEFORM1 where the tables are scraped from Wikipedia and questions and answers are gathered via crowdsourcing. The dataset is quite challenging, with the current best model BIBREF0 (henceforth called KDG) achieving a single model accuracy of only 43.3% . This is nonetheless a significant improvement compared to the 34.8% accuracy achieved by the previous best single model BIBREF2 .\n\nWe sought to analyze the source of the improvement achieved by the KDG model. The KDG paper claims that the improvement stems from certain aspects of the model architecture.\n\nIn this paper, we find that a large part of the improvement also stems from a certain pruning of the data used to train the model. The KDG system generates its training data using an algorithm proposed by BIBREF3 . This algorithm applies a pruning step (discussed in Section SECREF3 ) to eliminate spurious training data entries. We find that without this pruning of the training data, accuracy of the KDG model drops to 36.3%. We consider this an important finding as the pruning step not only accounts for a large fraction of the improvement in the state-of-the-art KDG model but may also be relevant to training other models. In what follows, we briefly discuss the pruning algorithm, how we identified its importance for the KDG model, and its relevance to further work.\n\nThe KDG system operates by translating a natural language question and a table to a logical form in Lambda-DCS BIBREF4 . A logical form is an executable formal expression capturing the question's meaning. It is executed on the table to obtain the final answer.\n\nThe translation to logical forms is carried out by a deep neural network, also called a neural semantic parser. Training the network requires a dataset of questions mapped to one or more logical forms. The WTQ dataset only contains the correct answer label for question-table instances. To obtain the desired training data, the KDG system enumerates consistent logical form candidates for each INLINEFORM0 triple in the WTQ dataset, i.e., it enumerates all logical forms that lead to the correct answer INLINEFORM1 on the given table INLINEFORM2 . For this, it relies on the dynamic programming algorithm of BIBREF3 . This algorithm is called dynamic programming on denotations (DPD).\n\nA key challenge in generating consistent logical forms is that many of them are spurious, i.e., they do not represent the question's meaning. For instance, a spurious logical form for the question “which country won the highest number of gold medals” would be one which simply selects the country in the first row of the table. This logical form leads to the correct answer only because countries in the table happen to be sorted in descending order.\n\n BIBREF3 propose a separate algorithm for pruning out spurious logical forms using fictitious tables. Specifically, for each question-table instance in the dataset, fictitious tables are generated, and answers are crowdsourced on them. A logical form that fails to obtain the correct answer on any fictitious table is filtered out. The paper presents an analysis over 300 questions revealing that the algorithm eliminated 92.1% of the spurious logical forms.\n\nThe KDG system relies on the DPD algorithm for generating consistent logical form candidates for training. It does not explicitly prescribe pruning out spurious logical forms candidates before training. Since this training set contains spurious logical forms, we expected the model to also sometimes predict spurious logical forms.\n\nHowever, we were somewhat surprised to find that the logical forms predicted by the KDG model were largely non-spurious. We then examined the logical form candidates that the KDG model was trained on. Through personal communication with Panupong Pasupat, we learned that all of these candidates had been pruned using the algorithm mentioned in Section SECREF3 .\n\nWe trained the KDG model on unpruned logical form candidates generated using the DPD algorithm, and found its accuracy to drop to 36.3% (from 43.3%); all configuring parameters were left unchanged. This implies that pruning out spurious logical forms before training is necessary for the performance improvement achieved by the KDG model.\n\n BIBREF3 claimed “the pruned set of logical forms would provide a stronger supervision signal for training a semantic parser”. This paper provides empirical evidence in support of this claim. We further believe that the pruning algorithm may also be valuable to models that score logical forms. Such scoring models are typically used by grammar-based semantic parsers such as the one in BIBREF1 . Using the pruning algorithm, the scoring model can be trained to down-score spurious logical forms. Similarly, neural semantic parsers trained using reinforcement learning may use the pruning algorithm to only assign rewards to non-spurious logical forms.\n\nThe original WTQ dataset may also be extended with the fictitious tables used by the pruning algorithm. This means that for each INLINEFORM0 triple in the original dataset, we would add additional triples INLINEFORM1 where INLINEFORM2 are the fictitious tables and INLINEFORM3 are the corresponding answers to the question INLINEFORM4 on those tables. Such training data augmentation may improve the performance of neural networks that are directly trained over the WTQ dataset, such as BIBREF5 . The presence of fictitious tables in the training set may help these networks to generalize better, especially on tables that are outside the original WTQ training set.\n\n BIBREF0 present several ablation studies to identify the sources of the performance improvement achieved by the KDG model. These studies comprehensively cover novel aspects of the model architecture. On the training side, the studies only vary the number of logical forms per question in the training dataset. Pruning of the logical forms was not considered. This may have happened inadvertently as the KDG system may have downloaded the logical forms dataset made available by Pasupat et al. without noticing that it had been pruned out.\n\nWe note that our finding implies that pruning out spurious logical forms before training is an important factor in the performance improvement achieved by the KDG model. It does not imply that pruning is the only important factor. The architectural innovations are essential for the performance improvement too.\n\nIn light of our finding, we would like to emphasize that the performance of a machine learning system depends on several factors such as the model architecture, training algorithm, input pre-processing, hyper-parameter settings, etc. As BIBREF6 point out, attributing improvements in performance to the individual factors is a valuable exercise in understanding the system, and generating ideas for improving it and other systems. In performing these attributions, it is important to consider all factors that may be relevant to the system's performance.\n\nWe would like to thank Panupong Pasupat for helpful discussions on the pruning algorithm, and for providing us with the unpruned logical form candidates. We would like to thank Pradeep Dasigi for helping us train the KDG model. ",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "section": "Abstract",
+      "start": 39,
+      "end": 664
+    },
+    {
+      "section": "Introduction",
+      "start": 666,
+      "end": 2319
+    },
+    {
+      "section": "KDG Training Data",
+      "start": 2321,
+      "end": 3267
+    },
+    {
+      "section": "Pruning algorithm",
+      "start": 3269,
+      "end": 4179
+    },
+    {
+      "section": "Importance of pruning for KDG",
+      "start": 4181,
+      "end": 5215
+    },
+    {
+      "section": "Directions for further work",
+      "start": 5217,
+      "end": 6536
+    },
+    {
+      "section": "Discussion",
+      "start": 6538,
+      "end": 7946
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 7948,
+      "end": 8176
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1803.04579",
+    "arxiv_id": "1803.04579",
+    "source_url": "https://arxiv.org/abs/1803.04579",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

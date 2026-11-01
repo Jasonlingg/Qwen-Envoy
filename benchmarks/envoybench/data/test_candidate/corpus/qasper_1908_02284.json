@@ -1,0 +1,84 @@
+{
+  "doc_id": "qasper_1908_02284",
+  "title": "Two-stage Training for Chinese Dialect Recognition",
+  "text": "Two-stage Training for Chinese Dialect Recognition\n\nIn this paper, we present a two-stage language identification (LID) system based on a shallow ResNet14 followed by a simple 2-layer recurrent neural network (RNN) architecture, which was used for Xunfei (iFlyTek) Chinese Dialect Recognition Challenge and won the first place among 110 teams. The system trains an acoustic model (AM) firstly with connectionist temporal classification (CTC) to recognize the given phonetic sequence annotation and then train another RNN to classify dialect category by utilizing the intermediate features as inputs from the AM. Compared with a three-stage system we further explore, our results show that the two-stage system can achieve high accuracy for Chinese dialects recognition under both short utterance and long utterance conditions with less training time.\n\nThe aim of language identification (LID) is to determine the language of an utterance and can be defined as a variable-length sequence classification task on the utterance-level. The task introduced in this paper is more challenging than general LID tasks cause we use a dialect database which contains 10 dialects in China. The dialects' regions are close to each other and they all belong to Chinese, so they have the same characters and similar pronunciations.\n\nRecently, the use of deep neural network (DNN) has been explored in LID tasks. The DNN is trained to discriminate individual physical states of a tied-state triphone and then extract the bottleneck features to a back-end system for classification BIBREF0 , BIBREF1 , BIBREF2 , BIBREF3 . End-to-end frameworks based on DNN later are trained for LID BIBREF4 . Other network architectures are successfully applied to LID task, example for convolutional neural network (CNN) BIBREF5 , BIBREF6 , time delay neural network (TDNN) BIBREF7 , RNN BIBREF8 , BIBREF9 , BIBREF10 , and BIBREF11 has a CNN followed by an RNN structure, which is similar to ours. They predict the final category of an utterance directly by the last fully connected layer, or derive the results by averaging the the frame-level posteriors. These frameworks just trained end-to-end to recognize languages, but they do not consider the phonetic information concretely.\n\nOn the other hand, in many utterance analyzing tasks such as acoustic speech recognition (ASR), speaker verification (SV) and our LID, only a simple task or a specific aim is focused on. However, an utterance always has multi-dimensional information such as content, emotion, speaker and language and there are some certain correlations between them. Although the LID task is text-independent, which means the content of each utterance is totally different, different languages may have its own pronunciations or tones. Thus acoustic and language are two components in the LID task, BIBREF12 , BIBREF13 , BIBREF14 , BIBREF15 use the bottleneck features from an ASR system and feed to another neural network for recognition. Nevertheless, these ASR DNNs constituted by fully connected layers adds significant computational complexity and also require labels of physical states of a tied-state triphone.\n\nInspired by all this, we assume that the high-dim features extracted from the network will contain information of pronunciation and language category, so we combine the ASR method with our LID task and here are our main contributions:\n\nThe remainder of the paper is organized as follows. Section 2 introduces some related works about ASR and section 3 introduces the ResNet14 structure and gives processing of the two multi-stage systems. We present details of the database and initialization methods of the network in Section 4. The results of experiments and analysis are shown in Section 5. Lastly we give the conclusion and some future work in Section 6.\n\nASR BIBREF17 task enables the recognition and translation of spoken language into text. Traditionally, we can train an AM based on frame-wise cross-entropy loss to recognize phoneme, which requires tedious label alignment procedure such as Hidden Markov Model and Gaussian Mixture Model (HMM-GMM) paradigm. Then we can use a pronunciation model and a language model to transfer into text.\n\nIn the latter case, CTC is used in training end-to-end ASR network BIBREF18 , BIBREF19 , BIBREF20 , which means that we do not have to align the phoneme label before training. CNN followed by RNN architectures have shown strong ability in dealing sequence-related problems such as sense text recognition BIBREF21 and ASR BIBREF22 . These make the ASR network easy to train and perform better with fewer parameters. BIBREF23 , BIBREF24 further add residual links to the CNN and RNN respectively and both make significant progress.\n\nThe major network structure we use in the two-stage system can be divided to the CNN part and the RNN part, as described in Table TABREF7 . Given the input data of shape INLINEFORM0 , where INLINEFORM1 is the frame length of an utterance, we finally get 512-dimensional frame-level representation and INLINEFORM2 is the number of phonemes or dialect categories.\n\nCompared with other DNN based systems, we design the CNN part based on ResNet-18 BIBREF25 structure, named ResNet14, as the main part, which decreases the parameters a lot. The first conv layer is with kernel size INLINEFORM0 and stride size INLINEFORM1 , followed by a maxpool layer with stride size INLINEFORM2 for downsampling. Then the residual blocks extract high-dim features from the input sequences and keep the low-rank information. There are 6 res-blocks in all for decreasing parameters, the kernel size of each block is INLINEFORM3 and the features are downsampled while adding channels.\n\nWe use 2-layer bidirectional long-short term memory (BLSTM) BIBREF26 as the RNN part following ResNet14. BLSTM extends original LSTM by introducing a backward direction layer so it considers the future context. The output of the network will be linked to different loss functions and different labels in different stages.\n\nCTC is an objective function that allows an RNN to be trained for sequence transcription tasks without requiring any prior alignment between the input and target sequences. The label sequence INLINEFORM0 can be mapped to its corresponding CTC paths. We denote the set of CTC paths for INLINEFORM1 as INLINEFORM2 . Thus the likelihood of INLINEFORM3 can be evaluated as a sum of the probabilities of its CTC paths: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the utterance and INLINEFORM1 is a CTC path. Then the network can be trained to optimize the CTC function INLINEFORM2 by the given sequence labeling. For the LID task, we use the multi-class cross-entropy loss for classification: DISPLAYFORM0 \n\nwhere INLINEFORM0 is the ground truth label and INLINEFORM1 is the output probability distribution.\n\nFigure FIGREF12 shows the architecture of the two-stage system. The input is the sound feature of each utterance. We firstly train the AM with the ResNet14 followed by an RNN architecture, then the intermediate results computed by res-blocks are feed to the second stage as the input. The framework does not need to compress the feature sequence so it keeps all the information from the ResNet14 part. The network of second stage is 2-layer BLSTM. The final pooling strategy is average pooling on time-dimension so we can get the utterance-level category results from frame-level, and the output is the prediction of dialect category. We use CTC loss to train the AM so the network outputs can align with the phoneme sequences automatically and use cross-entropy loss to discriminate between dialects.\n\nCompared with multi-task training BIBREF27 , BIBREF28 in SV tasks, it should be emphasized that these stages should be trained step by step instead of multi-task learning with shared layers, that is to say we backpropagate the whole network while training AM, and only backpropagate the RNN part in the second stage, or the network will be degenerated and lost the information of acoustic knowledge.\n\nThe three-stage system, as shown in Figure FIGREF14 , has a more complex architecture. Firstly, we still train an AM whose architecture is the same as the first-stage in the two-stage system. This AM is used to generate temporal locations of each phoneme through CTC loss, so that we can train an another AM by using cross-entropy loss as the second-stage to predict the corresponding phonetic labels of the input frames, in which we only use ResNet14 without an RNN because we have the precise locations of each phoneme from the first stage. The third stage is similar, we use the intermediate features from the second stage to train an RNN network for LID task, also the loss in this stage is cross-entropy loss.\n\nWe use a database covering 10 most widespread Chinese dialects, the dialects are Ningxia, Hefei, Sichuan, Shanxi, Changsha, Hebei, Nanchang, Shanghai, Kekka and Fujian. Each dialect has 6-hour audio data. For the training set, there will be 6000 audio files in each dialect with variable length (Figure FIGREF16 ), we can see that most files are longer than 3 seconds. The test set has 500 audio files in each dialect and the set is divided into two categories according to the duration of the audio file ( INLINEFORM0 3s for the first task and INLINEFORM1 3s for the second task).\n\nThe phonetic sequence annotation of the corresponding text to each speech is also provided in the training set. There are 27 initials and 39 finals with 148 tones in the whole database.\n\nWe convert the raw audio to 40-dimensional log Mel-filterbank coefficients with a frame-length of 25 ms, mean-normalized over the whole utterance. Then we stack all the log-mel filterbank features and feed it into the neural network, which is implemented in PyTorch. No voice activity detection (VAD) or other data augmentation approaches are applied. During the training process, we use Adam as the optimization method and set different learning rates and weight decay in different stages. We do not set dropout while training AM but set the dropout value=0.5 while training the LID network (the last stage).\n\nThe baseline we use for comparison is a one-stage RNN system, the RNN structure is the same as the last stage containing 2-layer BLSTM and directly trained to recognize dialect category. In the process of evaluation, we compute the accuracy of the two sub-tasks and the whole test set to evaluate the performance of each system.\n\nFirst of all, we compare the two-stage system and the three-stage system trained with phonetic sequence annotation and dialect category label with the baseline trained only with dialect category label. The two multi-stage system have the same ResNet14 architecture and use 2-layer BLSTM as the RNN part with 256 nodes. From the results in the Table TABREF20 , we can see that the relative accuracy (ACC) of the two multi-stage systems increases by 10% on every task relative to the baseline and the two-stage system performs best. We also observe that both two multi-stage systems perform excellently in long duration ( INLINEFORM0 3s) task and the two-stage system illustrates its advantageous and robustness in short duration ( INLINEFORM1 3s) task.\n\nBy analyzing the confusing matrices (Figure FIGREF19 ) of predicted results, we can find that the accuracy is high in several dialects' recognition, such as Shanghai (98.8%) and Hefei (99.8%), but the systems have some trouble while recognizing Minnan and Kekka, Hebei and Shanxi. The results accord with regional distribution of the dialects. For example, Minnan and Kekka are both in Fujian Province and have lots of cognate words, so it is hard to recognize them in reality.\n\nWe further explore the impact of different RNN structures with bidirectional gated recurrent unit (BGRU) and BLSTM. For the two-stage system (Table TABREF22 ), adding the nodes of BLSTM does not work, but adding another layer makes sense in short-duration task. Moreover, with the same layers and nodes, BLSTM outperforms BGRU in the two sub-tasks. We believe that sound related tasks do not need a very deep network as image related tasks, that is also the reason why we use a shallow ResNet14 as the CNN part.\n\nWe evaluate the three-stage system with the same experiments, and the results (Table TABREF23 ) demonstrate that the three-stage system can achieve high accuracy in long duration task by larger BLSTM layers and the BGRU structure outperforms BLSTM on the whole. But adding the third RNN layer also does not work in these experiments.\n\nAs Table TABREF24 shows, training networks in the first stage (with CTC loss) needs more time for convergence than training networks in the second or third stage (with cross-entropy loss). We can observe that the two-stage system spends less time while having a slightly higher accuracy compared to the three-stage system.\n\nThese two multi-stage systems both much outperform the baseline system. They learn acoustic and language knowledge successively, indicating that language and phoneme are features of different levels, so we have to train step by step to avoid the networks “forget\" some knowledge. Through the process, we can find the rules of multi-task and multi-stage training, if the labels are in different levels then multi-stage training should be used such as the situation in our paper, otherwise multi-task training should be used for parallel learning a wide range of knowledge.\n\nIn this work, we propose an acoustic model based on ResNet14 followed by an RNN to recognize phoneme sequence directly with CTC loss and train a simple RNN lastly to get posteriors for recognizing dialect category, forming a two-stage LID system. The system links the different stages by using intermediate features extracted by a shallow ResNet14 architecture. Compared with a simple network or the three-stage system, the two-stage system achieves the state-of-the-art in the Chinese dialect recognition task. We believe this idea of two-stage training can provide inspirations for learning different classes knowledge and can extend to other fields.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 50
+    },
+    {
+      "section": "Abstract",
+      "start": 52,
+      "end": 850
+    },
+    {
+      "section": "Introduction",
+      "start": 852,
+      "end": 3813
+    },
+    {
+      "section": "Related works",
+      "start": 3815,
+      "end": 4734
+    },
+    {
+      "section": "Network structure",
+      "start": 4736,
+      "end": 6021
+    },
+    {
+      "section": "Loss function",
+      "start": 6023,
+      "end": 6817
+    },
+    {
+      "section": "Two-stage system",
+      "start": 6819,
+      "end": 8021
+    },
+    {
+      "section": "Three-stage system",
+      "start": 8023,
+      "end": 8737
+    },
+    {
+      "section": "Data description",
+      "start": 8739,
+      "end": 9507
+    },
+    {
+      "section": "Experimental setup",
+      "start": 9509,
+      "end": 10448
+    },
+    {
+      "section": "Comparison of different stage systems",
+      "start": 10450,
+      "end": 11680
+    },
+    {
+      "section": "Comparison of different RNN structures",
+      "start": 11682,
+      "end": 13425
+    },
+    {
+      "section": "Conclusions",
+      "start": 13427,
+      "end": 14079
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1908.02284",
+    "arxiv_id": "1908.02284",
+    "source_url": "https://arxiv.org/abs/1908.02284",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

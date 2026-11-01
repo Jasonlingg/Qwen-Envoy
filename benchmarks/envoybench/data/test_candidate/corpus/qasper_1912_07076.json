@@ -1,0 +1,209 @@
+{
+  "doc_id": "qasper_1912_07076",
+  "title": "Multilingual is not enough: BERT for Finnish",
+  "text": "Multilingual is not enough: BERT for Finnish\n\nDeep learning-based language models pretrained on large unannotated text corpora have been demonstrated to allow efficient transfer learning for natural language processing, with recent approaches such as the transformer-based BERT model advancing the state of the art across a variety of tasks. While most work on these models has focused on high-resource languages, in particular English, a number of recent efforts have introduced multilingual models that can be fine-tuned to address tasks in a large number of different languages. However, we still lack a thorough understanding of the capabilities of these models, in particular for lower-resourced languages. In this paper, we focus on Finnish and thoroughly evaluate the multilingual BERT model on a range of tasks, comparing it with a new Finnish BERT model trained from scratch. The new language-specific model is shown to systematically and clearly outperform the multilingual. While the multilingual model largely fails to reach the performance of previously proposed methods, the custom Finnish BERT model establishes new state-of-the-art results on all corpora for all reference tasks: part-of-speech tagging, named entity recognition, and dependency parsing. We release the model and all related resources created for this study with open licenses at this https URL .\n\nTransfer learning approaches using deep neural network architectures have recently achieved substantial advances in a range of natural language processing (NLP) tasks ranging from sequence labeling tasks such as part-of-speech (POS) tagging and named entity recognition (NER) BIBREF0 to dependency parsing BIBREF1 and natural language understanding (NLU) tasks BIBREF2. While the great majority of this work has focused primarily on English, a number of studies have also targeted other languages, typically through multilingual models.\n\nThe BERT model of devlin2018bert has been particularly influential, establishing state-of-the-art results for English for a range of NLU tasks and NER when it was released. For most languages, the only currently available BERT model is the multilingual model (M-BERT) trained on pooled data from 104 languages. While M-BERT has been shown to have a remarkable ability to generalize across languages BIBREF3, several studies have also demonstrated that monolingual BERT models, where available, can notably outperform M-BERT. Such results include the evaluation of the recently released French BERT model BIBREF4, the preliminary results accompanying the release of a German BERT model, and the evaluation of ronnqvist-etal-2019-multilingual comparing M-BERT with English and German monolingual models.\n\nIn this paper, we study the application of language-specific and multilingual BERT models to Finnish NLP. We introduce a new Finnish BERT model trained from scratch and perform a comprehensive evaluation comparing its performance to M-BERT on established datasets for POS tagging, NER, and dependency parsing as well as a range of diagnostic text classification tasks. The results show that 1) on most tasks the multilingual model does not represent an advance over previous state of the art, indicating that multilingual models may fail to deliver on the promise of deep transfer learning for lower-resourced languages, and 2) the custom Finnish BERT model systematically outperforms the multilingual as well as all previously proposed methods on all benchmark tasks, showing that language-specific deep transfer learning models can provide comparable advances to those reported for much higher-resourced languages.\n\nThe current transfer learning methods have evolved from word embedding techniques, such as word2vec BIBREF5, GLoVe BIBREF6 and fastText BIBREF7, to take into account the textual context of words. Crucially, incorporating the context avoids the obvious limitations stemming from the one-vector-per-unique-word assumption inherent to the previous word embedding methods. The current successful wave of work proposing and applying different contextualized word embeddings was launched with ELMo BIBREF0, a context embedding method based on bidirectional LSTM networks. Another notable example is the ULMFit model BIBREF8, which specifically focuses on techniques for domain adaptation of LSTM-based language models. Following the introduction of the attention-based (as opposed to recurrent) Transformer architecture BIBREF9, BERT was proposed by BIBREF2, demonstrating superior performance on a broad array of tasks. The BERT model has been further refined in a number of follow-up studies BIBREF10, BIBREF11 and, presently, BERT and related models form the de facto standard approach to embedding text segments as well as individual words in context.\n\nUnlike the previous generation of models, training BERT is a computationally intensive task, requiring substantial resources. As of this writing, Google has released English and Chinese monolingual BERT models and the multilingual M-BERT model covering 104 languages. Subsequently, monolingual BERT models have been published for German and French BIBREF4. In a separate line of work, a cross-lingual BERT model for 15 languages was published by BIBREF12, leveraging also cross-lingual signals. Finally, a number of studies have introduced monolingual models focusing on particular subdomains of English, such as BioBERT BIBREF13 and SciBERT BIBREF14 for biomedical publications and scientific text.\n\nWe next introduce the sources of unlabeled data used to pretrain FinBERT and present the data filtering and cleanup, vocabulary generation, and pretraining processes.\n\nTo provide a sufficiently large and varied unannotated corpus for pretraining, we compiled Finnish texts from three primary sources: news, online discussion, and an internet crawl. All of the unannotated texts were split into sentences, tokenized, and parsed using the Turku Neural Parser pipeline BIBREF15. Table TABREF4 summarizes the initial statistics of the three sources prior to cleanup and filtering.\n\nWe combine two major sources of Finnish news: the Yle corpus, an archive of news published by Finland's national public broadcasting company in the years 2011-2018, and The STT corpus of newswire articles sent to media outlets by the Finnish News Agency (STT) between 1992 and 2018. The combined resources contain approx. 900 million tokens, with 20% originating from the Yle corpus and 80% from STT.\n\nThe Suomi24 corpus (version 2017H2) contains all posts to the Suomi24 online discussion website from 2001 to 2017. Suomi24 is one of the largest social networking forums in Finland and covers a broad range of topics and levels of style and formality in language. The corpus is also roughly five times the size of the available news resources.\n\nTwo primary sources were used to create pretraining data from unrestricted crawls. First, we compiled documents from the dedicated internet crawl of the Finnish internet of luotolahti2015towards run between 2014 and 2016 using the SpiderLing crawler BIBREF16. Second, we selected texts from the Common Crawl project by running a a map-reduce language detection job on the plain text material from Common Crawl. These sources were supplemented with plain text extracted from the Finnish Wikipedia using the mwlib library. Following initial compilation, this text collection was analyzed for using the Onion deduplication tool. Duplicate documents were removed, and remaining documents grouped by their level of duplication.\n\nAs quality can be more important than quantity for pretraining data BIBREF17, we applied a series of custom cleaning and filtering steps to the raw textual data. Initial cleaning removed header and tag material from newswire documents. In the first filtering step, machine translated and generated texts were removed using a simple support vector machine (SVM) classifier with lexical features trained on data from the FinCORE corpus BIBREF18. The remaining documents were then aggressively filtered using language detection and hand-written heuristics, removing documents that e.g. had too high a ratio of digits, uppercase or non-Finnish alphabetic characters, or had low average sentence length. A delexicalized SVM classifier operating on parse-derived features was then trained on news (positives) and heuristically filtered documents (negatives) and applied to remove documents that were morphosyntactically similar to the latter. Finally, all internet crawl-sourced documents featuring 25% or more duplication were removed from the data. The statistics of the final pretraining data produced in this process are summarized in Table TABREF10. We note that even with this aggressive filtering, this data is roughly 30 times the size of the Finnish Wikipedia included in M-BERT pretraining data.\n\nTo generate dedicated BERT vocabularies for Finnish, a sample of cleaned and filtered sentences were first tokenized using BERT BasicTokenizer, generating both a cased version where punctuation is separated, and an uncased version where characters are additionally mapped to lowercase and accents stripped. We then used the SentencePiece BIBREF19 implementation of byte-pair-encoding (BPE) BIBREF20 to generate cased and uncased vocabularies of 50,000 word pieces each.\n\nTo assess the coverage of the generated cased and uncased vocabularies and compare these to previously introduced vocabularies, we sampled a random 1% of tokens extracted using WikiExtractor from the English and Finnish Wikipedias and tokenized the texts using various vocabularies to determine the number of word pieces and unknown pieces per basic token. Table TABREF15 shows the results of this evaluation. For English, both BERT and M-BERT generate less than 1.2 WordPieces per token, meaning that the model will represent the great majority of words as a single piece. For Finnish, this ratio is nearly 2 for M-BERT. While some of this difference is explained by the morphological complexity of the language, it also reflects that only a small part of the M-BERT vocabulary is dedicated to Finnish: using the language-specific FinBERT vocabularies, this ratio remains notably lower even though the size of these vocabularies is only half of the M-BERT vocabularies. Table TABREF16 shows examples of tokenization using the FinBERT and M-BERT vocabularies.\n\nWe used BERT tools to create pretraining examples using the same masked language model and next sentence prediction tasks used for the original BERT. Separate duplication factors were set for news, discussion and crawl texts to create a roughly balanced number of examples from each source. We also used whole-word masking, where all pieces of a word are masked together rather than selecting masked word pieces independently. We otherwise matched the parameters and process used to create pretraining data for the original BERT, including generating separate examples with sequence lengths 128 and 512 and setting the maximum number of masked tokens per sequence separately for each (20 and 77, respectively).\n\nWe pretrained cased and uncased models configured similarly to the base variants of BERT, with 110M parameters for each. The models were trained using 8 Nvidia V100 GPUs across 2 nodes on the Puhti supercomputer of CSC, the Finnish IT Center for Science. Following the approach of devlin2018bert, each model was trained for 1M steps, where the initial 90% used a maximum sequence length of 128 and the last 10% the full 512. A batch size of 140 per GPU was used for primary training, giving a global batch size of 1120. Due to memory constraints, the batch size was dropped to 20 per GPU for training with sequence length 512. We used the LAMB optimizer BIBREF21 with warmup over the first 1% of steps to a peak learning rate of 1e-4 followed by decay. Pretraining took approximately 12 days to complete per model variant.\n\nWe next present an evaluation of the M-BERT and FinBERT models on a series of Finnish datasets representing both downstream NLP tasks and diagnostic evaluation tasks.\n\nUnless stated otherwise, all experiments follow the basic setup used in the experiments of devlin2018bert, selecting the learning rate, batch size and the number of epochs used for fine-tuning separately for each model and dataset combination using a grid search with evaluation on the development data. Other model and optimizer parameters were kept at the BERT defaults. Excepting for the parsing experiments, we repeat each experiment 5-10 times and report result mean and standard deviation.\n\nPart of speech tagging is a standard sequence labeling task and several Finnish resources are available for the task.\n\nTo assess POS tagging performance, we use the POS annotations of the three Finnish treebanks included in the Universal Dependencies (UD) collection BIBREF24: the Turku Dependency Treebank (TDT) BIBREF25, FinnTreeBank (FTB) BIBREF26 and Parallel UD treebank (PUD) BIBREF27. A broad range of methods were applied to tagging these resources as a subtask in the recent CoNLL shared tasks in 2017 and 2018 BIBREF28, and we use the CoNLL 2018 versions (UD version 2.2) of these corpora to assure comparability with their results. The statistics of these resources are shown in Table TABREF17. As the PUD corpus only provides a test set, we train and select parameters on the training and development sets of the compatibly annotated TDT corpus for evaluation on PUD. The CoNLL shared task proceeds from raw text and thus requires sentence splitting and tokenization in order to assign POS tags. To focus on tagging performance while maintaining comparability, we predict tags for the tokens predicted by the Uppsala system BIBREF29, distributed as part of the CoNLL'18 shared task system outputs BIBREF30.\n\nWe implement the BERT POS tagger straightforwardly by attaching a time-distributed dense output layer over the top layer of BERT and using the first piece of each wordpiece-tokenized input word to represent the word. The implementation and data processing tools are openly available. We compare POS tagging results to the best-performing methods for each corpus in the CoNLL 2018 shared task, namely that of che2018towards for TDT and FTB and lim2018sex for PUD. We report performance for the UPOS metric as implemented by the official CoNLL 2018 evaluation script.\n\nTable TABREF25 summarizes the results for POS tagging. We find that neither M-BERT model improves on the previous state of the art for any of the three resources, with results ranging 0.1-0.8% points below the best previously published results. By contrast, both language-specific models outperform the previous state of the art, with absolute improvements for FinBERT cased ranging between 0.4 and 1.7% points. While these improvements over the already very high reference results are modest in absolute terms, the relative reductions in errors are notable: in particular, the FinBERT cased error rate on FTB is less than half of the best CoNLL'18 result BIBREF22. We also note that the uncased models are surprisingly competitive with their cased equivalents for a task where capitalization has long been an important feature: for example, FinBERT uncased performance is within approx. 0.1% points of FinBERT cased for all corpora.\n\nLike POS tagging, named entity recognition is conventionally cast as a sequence labeling task. During the development of FinBERT, only one corpus was available for Finnish NER.\n\nFiNER, a manually annotated NER corpus for Finnish, was recently introduced by ruokolainen2019finnish. The corpus annotations cover five types of named entities – person, organization, location, product and event – as well as dates. The primary corpus texts are drawn from a Finnish technology news publication, and it additionally contains an out-of-domain test set of documents drawn from the Finnish Wikipedia. In addition to conventional CoNLL-style named entity annotation, the corpus includes a small number of nested annotations (under 5% of the total). As ruokolainen2019finnish report results also for top-level (non-nested) annotations and the recognition of nested entity mentions would complicate evaluation, we here consider only the top-level annotations of the corpus. Table TABREF26 summarizes the statistics of these annotations.\n\nOur NER implementation is based on the approach proposed for CoNLL English NER by devlin2018bert. A dense layer is attached on top of the BERT model to predict IOB tags independently, without a CRF layer. To include document context for each sentence, we simply concatenate as many of the following sentences as can fit in the 512 wordpiece sequence. The FiNER data does not identify document boundaries, and therefore not all these sentences are necessarily from the same document. We make the our implementation available under an open licence.\n\nWe compare NER results to the rule-based FiNER-tagger BIBREF32 developed together with the FiNER corpus and to the neural network-based model of gungor2018improving targeted specifically toward morphologically rich languages. The former achieved the highest results on the corpus and the latter was the best-performing machine learning-based method in the experiments of ruokolainen2019finnish. Named entity recognition performance is evaluated in terms of exact mention-level precision, recall and F-score as implemented by the standard conlleval script, and F-score is used to compare performance.\n\nThe results for named entity recognition are summarized in Table TABREF34 for the in-domain (technology news) test set and Table TABREF35 for the out-of-domain (Wikipedia) test set. We find that while M-BERT is able to outperform the best previously published results on the in-domain test set, it fails to reach the performance of FiNER-tagger on the out-of-domain test set. As for POS tagging, the language-specific FinBERT model again outperforms both M-BERT as well as all previously proposed methods, establishing new state-of-the-art results for Finnish named entity recognition.\n\nDependency parsing involves the prediction of a directed labeled graph over tokens. Finnish dependency parsing has a long history and several established resources are available for the task.\n\nThe CoNLL 2018 shared task addressed end-to-end parsing from raw text into dependency structures on 82 different corpora representing 57 languages BIBREF28. We evaluate the pre-trained BERT models on the dependency parsing task using the three Finnish UD corpora introduced in Section SECREF27: the Turku Dependency Treebank (TDT), FinnTreeBank (FTB) and the Parallel UD treebank (PUD). To allow direct comparison with CoNLL 2018 results, we use the same versions of the corpora as used in the shared task (UD version 2.2) and evaluate performance using the official script provided by the task organizers. These corpora are the same used in the part-of-speech tagging experiments, and their key statistics were summarized above in Table TABREF17.\n\nWe evaluate the models using the Udify dependency parser recently introduced by BIBREF1. Udify is a multi-task model that support supporting multi- or monolingual fine-tuning of pre-trained BERT models on UD treebanks. Udify implements a multi-task network where a separate prediction layer for each task is added on top of the pre-trained BERT encoder. Additionally, instead of using only the top encoder layer representation in prediction, Udify adds a layers-wise dot-product attention, which calculates a weighted sum of all intermediate representation of 12 BERT layers for each token. All prediction layers as well as layer-wise attention are trained simultaneously, while also fine-tuning the pre-trained BERT weights.\n\nWe train separate Udify parsing models using monolingual fine-tuning for TDT and FTB. The TDT models are used to evaluate performance also on PUD, which does not include a training set. We report parser performance in terms of Labeled Attachment Score (LAS). Each parser model is fine-tuned for 160 epochs with BERT weights kept frozen during the first epoch and subsequently updated along with other weights. The learning rate scheduler warm-up period is defined to be approximately one epoch. Otherwise, parameters are the same as used in BIBREF1. As the Udify model does not implement sentence or token segmentation, we use UDPipe BIBREF34 to pre-segment the text when reporting LAS on predicted segmentation.\n\nWe compare our results to the best-performing system in the CoNLL 2018 shared task for the LAS metric, HIT-SCIR BIBREF22. In addition to having the highest average score over all treebanks for this metric, the system also achieved the highest LAS among 26 participants for each of the three Finnish treebanks. The dependency parser used in the HIT-SCIR system is the biaffine graph-based parser of BIBREF35 with deep contextualized word embeddings (ELMo) BIBREF36 trained monolingually on web crawl and Wikipedia data provided by BIBREF37. The final HIT-SCIR model is an ensemble over three parser models trained with different parameter initializations, where the final prediction is calculated by averaging the softmaxed output scores.\n\nWe also compare results to the recent work of BIBREF33, where the merits of two parsing architectures, graph-based BIBREF38 and transition-based BIBREF39, are studied with two different deep contextualized embeddings, ELMo and BERT. We include results for their best-performing combination on the Finnish TDT corpus, the transition-based parser with monolingual ELMo embeddings.\n\nTable TABREF41 shows LAS results for predicted and gold segmentation. While Udify initialized with M-BERT fails to outperform our strongest baseline BIBREF22, Udify initialized with FinBERT achieves notably higher performance on all three treebanks, establishing new state-of-the-art parsing results for Finnish with a large margin. Depending on the treebank, Udify with cased FinBERT LAS results are 2.3–3.6% points above the previous state of the art, decreasing errors by 24%–31% relatively.\n\nCasing seem to have only a moderate impact in parsing, as the performance of cased and uncased models falls within 0.1–0.6% point range in each treebank. However, in each case the trend is that with FinBERT the cased version always outperforms the uncased one, while with M-BERT the story is opposite, the uncased always outperforming the cased one.\n\nTo relate the high LAS of 93.56 achieved with the combination of the Udify parser and our pre-trained FinBERT model to human performance, we refer to the original annotation of the TDT corpus BIBREF40, where individual annotators were measured against the double-annotated and resolved final annotations. The comparison is reported in terms of LAS. Here, one must take into account that the original TDT corpus was annotated in the Stanford Dependencies (SD) annotation scheme BIBREF41, slightly modified to be suitable for the Finnish language, while the work reported in this paper uses the UD version of the corpus. Thus, the reported numbers are not directly comparable, but keeping in mind the similarities of SD and UD annotation schemes, give a ballpark estimate of human performance in the task. BIBREF40 report the average LAS of the five human annotators who participated in the treebank construction as 91.3, with individual LAS scores ranging from 95.9 to 71.8 (or 88.0 ignoring an annotator who only annotated 2% of the treebank and was still in the training phrase). Based on these numbers, the achieved parser LAS of 93.56 seems to be on par with or even above average human level performance and approaching the level of a well-trained and skilled annotator.\n\nFinnish lacks the annotated language resources to construct a comprehensive collection of classification tasks such as those available for English BIBREF42, BIBREF43, BIBREF44. To assess model performance at text classification, we create two datasets based on Finnish document collections with topic information, one representing formal language (news) and the other informal (online discussion).\n\nDocuments in the Yle news corpus (Section SECREF3) are annotated using a controlled vocabulary to identify subjects such as sports, politics, and economy. We identified ten such upper-level topics that were largely non-overlapping in the data and sampled documents annotated with exactly one selected topic to create a ten-class classification dataset. As the Yle corpus is available for download under a license that does not allow redistribution, we release tools to recreate this dataset. The Ylilauta corpus consists of the text of discussions on the Finnish online discussion forum Ylilauta from 2012 to 2014. Each posted message belongs to exactly one board, with topics such as games, fashion and television. We identified the ten most frequent topics and sampled messages consisting of at least ten tokens to create a text classification dataset from the Ylilauta data.\n\nTo facilitate analysis and comparison, we downsample both corpora to create balanced datasets with 10000 training examples as well as 1000 development and 1000 test examples of each class. To reflect generalization performance to new documents, both resources were split chronologically, drawing the training set from the oldest texts, the test set from the newest, and the development set from texts published between the two. To assess classifier performance across a range of training dataset sizes, we further downsampled the training sets to create versions with 100, 316, 1000, and 3162 examples of each class ($10^2, 10^{2.5}, \\ldots $). Finally, we truncated each document to a maximum of 256 basic tokens to minimize any advantage the language-specific model might have due to its more compact representation of Finnish.\n\nWe implement the text classification methods following devlin2018bert, minimizing task-specific architecture and simply attaching a dense output layer to the initial ([CLS]) token of the top layer of BERT. We establish baseline text classification performance using fastText BIBREF7. We evaluated a range of parameter combinations and different pretrained word vectors for the method using the development data, selecting character n-gram features of lengths 3–7, training for 25 epochs, and initialization with subword-enriched embeddings induced from Wikipedia texts BIBREF45 for the final experiments.\n\nThe text classification results for various training set sizes are shown in Table TABREF45 for Yle news and in Table TABREF46 for Ylilauta online discussion and illustrated in Figure FIGREF47. We first note that performance is notably higher for the news corpus, with error rates for a given method and data set size more than doubling when moving from news to the discussion corpus. As both datasets represent 10-class classification tasks with balanced classes, this suggests that the latter task is inherently more difficult, perhaps in part due to the incidence of spam and off-topic messages on online discussion boards.\n\nThe cased and uncased variants of FinBERT perform very similarly for both datasets and all training set sizes, while for M-BERT the uncased model consistently outperforms the cased – as was also found for parsing – with a marked advantage for small dataset sizes.\n\nComparing M-BERT and FinBERT, we find that the language-specific models outperform the multilingual models across the full range of training data sizes for both datasets. For news, the four BERT variants have broadly similar learning curves, with the absolute advantage for FinBERT models ranging from 3% points for 1K examples to just over 1% point for 100K examples, and relative reductions in error from 20% to 13%. For online discussion, the differences are much more pronounced, with M-BERT models performing closer to the FastText baseline than to FinBERT. Here the language-specific BERT outperforms the multilingual by over 20% points for the smallest training data and maintains a 5% point absolute advantage even with 100,000 training examples, halving the error rate of the multilingual model for the smallest training set and maintaining an over 20% relative reduction for the largest.\n\nThese contrasting results for the news and discussion corpora may be explained in part by domain mismatch: while the news texts are written in formal Finnish resembling the Wikipedia texts included as pretraining data for all BERT models as well as the FastText word vectors, only FinBERT pretraining material included informal Finnish from online discussions. This suggests that in pretraining BERT models care should be taken to assure that not only the targeted language but also the targeted text domains are sufficiently represented in the data.\n\nFinally, we explored the ability of the models to capture linguistic properties using the probing tasks proposed by BIBREF46. We use the implementation and Finnish data introduced for these tasks by BIBREF47, which omit the TopConst task defined in the original paper. We also left out the Semantic odd-man-out (SOMO) task, as we found the data to have errors making the task impossible to perform correctly. All of the tasks involve freezing the BERT layers and training a dense layer on top of it to function as a diagnostic classifier. The only information passed from BERT to the classifier is the state represented by the [CLS] token.\n\nIn brief, the tasks can be roughly categorized into 3 different groups: surface, syntactic and semantic information.\n\nIn the sentence length (SentLen) task, sentences are classified into 6 classes depending on their length. The word content (WC) task measures the model's ability to determine which of 1000 mid-frequency words occurs in a sentence, where only one of the words is present in any one sentence.\n\nThe tree depth (TreeDepth) task is used to test how well the model can identify the depth of the syntax tree of a sentence. We used dependency trees to maintain comparability with the work of BIBREF47, whereas the original task used constituency trees. Bigram shift (BiShift) tests the model's ability to recognize when two adjacent words have had their positions swapped.\n\nIn the subject number (SubjNum) task the number of the subject, i.e. singular or plural, connected to the main verb of a sentence is predicted. Object number (ObjNum) is similar to the previous task but for objects of the main verb. The Coordination inversion (CoordInv) has the order of two clauses joined by a coordinating conjunction reversed in half the examples. The model then has to predict whether or not a given example was inverted. In the Tense task the classifier has to predict whether a main verb of a sentence is in the present or past tense.\n\nTable TABREF57 presents results comparing the FinBERT models to replicated M-BERT results from BIBREF47. We find that the best performance is achieved by either the cased or uncased language-specific model for all tasks except TreeDepth, where M-BERT reaches the highest performance. The differences between the results for the language-specific and multilingual models are modest for most tasks with the exception of the BiShift task, where the FinBERT models are shown to be markedly better at identifying sentences with inverted words. While this result supports the conclusion of our other experiments that FinBERT is the superior language model, results for the other tasks offer only weak support at best. We leave for future work the question whether these tasks measure aspects where the language-specific model does not have a clear advantage over the multilingual or if the results reflect limitations in the implementation or data of the probing tasks.\n\nWe have demonstrated that it is possible to create a language-specific BERT model for a lower-resourced language, Finnish, that clearly outperforms the multilingual BERT at a range of tasks and advances the state of the art in many NLP tasks. These findings raise the question whether it would be possible to realize similar advantages for other languages that currently lack dedicated models of this type. It is likely that the feasibility of training high quality deep transfer learning models hinges on the availability of pretraining data.\n\nAs of this writing, Finnish ranks 24th among the different language editions of Wikipedia by article count, and 25th in Common Crawl by page count. There are thus dozens of languages for which unannotated corpora of broadly comparable size or larger than that used to pretrain FinBERT could be readily assembled from online resources. Given that language-specific BERT models have been shown to outperform multilingual ones also for high-resource languages such as French BIBREF4 – ranked 3rd by Wikipedia article count – it is further likely that the benefits of a language-specific model observed here extend at least to languages with more resources than Finnish. (We are not aware of efforts to establish the minimum amount of unannotated text required to train high-quality models of this type.)\n\nThe methods we applied to collect and filter texts for training FinBERT have only few language dependencies, such as the use of UD parsing results for filtering. As UD resources are already available for over 70 languages, the specific approach and tools introduced in this work could be readily applied to a large number of languages. To facilitate such efforts, we also make all of the supporting tools developed in this work available under open licenses.\n\nIn this work, we compiled and carefully filtered a large unannotated corpus of Finnish, trained language-specific FinBERT models, and presented evaluations comparing these to multilingual BERT models at a broad range of natural language processing tasks. The results indicate that the multilingual models fail to deliver on the promises of deep transfer learning for lower-resourced languages, falling behind the performance of previously proposed methods for most tasks. By contrast, the newly introduced FinBERT model was shown not only to outperform multilingual BERT for all downstream tasks, but also to establish new state-of-the art results for three different Finnish corpora for part-of-speech tagging and dependency parsing as well as for named entity recognition.\n\nThe FinBERT models and all of the tools and resources introduced in this paper are available under open licenses from https://turkunlp.org/finbert.\n\nWe gratefully acknowledge the support of CSC – IT Center for Science through its Grand Challenge program, the Academy of Finland, the Google Digital News Innovation Fund and collaboration of the Finnish News Agency STT, as well as the NVIDIA Corporation GPU Grant Program.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 44
+    },
+    {
+      "section": "Abstract",
+      "start": 46,
+      "end": 1378
+    },
+    {
+      "section": "Introduction",
+      "start": 1380,
+      "end": 3637
+    },
+    {
+      "section": "Related Work",
+      "start": 3639,
+      "end": 5489
+    },
+    {
+      "section": "Pretraining",
+      "start": 5491,
+      "end": 5657
+    },
+    {
+      "section": "Pretraining ::: Pretraining Data",
+      "start": 5659,
+      "end": 6067
+    },
+    {
+      "section": "Pretraining ::: Pretraining Data ::: News",
+      "start": 6069,
+      "end": 6469
+    },
+    {
+      "section": "Pretraining ::: Pretraining Data ::: Online discussion",
+      "start": 6471,
+      "end": 6813
+    },
+    {
+      "section": "Pretraining ::: Pretraining Data ::: Internet crawl",
+      "start": 6815,
+      "end": 7537
+    },
+    {
+      "section": "Pretraining ::: Pretraining Data ::: Cleanup and filtering",
+      "start": 7539,
+      "end": 8838
+    },
+    {
+      "section": "Pretraining ::: Vocabulary generation",
+      "start": 8840,
+      "end": 10370
+    },
+    {
+      "section": "Pretraining ::: Pretraining example generation",
+      "start": 10372,
+      "end": 11082
+    },
+    {
+      "section": "Pretraining ::: Pretraining process",
+      "start": 11084,
+      "end": 11906
+    },
+    {
+      "section": "Evaluation",
+      "start": 11908,
+      "end": 12571
+    },
+    {
+      "section": "Evaluation ::: Part of Speech Tagging",
+      "start": 12573,
+      "end": 12690
+    },
+    {
+      "section": "Evaluation ::: Part of Speech Tagging ::: Data",
+      "start": 12692,
+      "end": 13791
+    },
+    {
+      "section": "Evaluation ::: Part of Speech Tagging ::: Methods",
+      "start": 13793,
+      "end": 14358
+    },
+    {
+      "section": "Evaluation ::: Part of Speech Tagging ::: Results",
+      "start": 14360,
+      "end": 15293
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition",
+      "start": 15295,
+      "end": 15471
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition ::: Data",
+      "start": 15473,
+      "end": 16319
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition ::: Methods",
+      "start": 16321,
+      "end": 17468
+    },
+    {
+      "section": "Evaluation ::: Named Entity Recognition ::: Results",
+      "start": 17470,
+      "end": 18055
+    },
+    {
+      "section": "Evaluation ::: Dependency Parsing",
+      "start": 18057,
+      "end": 18248
+    },
+    {
+      "section": "Evaluation ::: Dependency Parsing ::: Data",
+      "start": 18250,
+      "end": 18997
+    },
+    {
+      "section": "Evaluation ::: Dependency Parsing ::: Methods",
+      "start": 18999,
+      "end": 21557
+    },
+    {
+      "section": "Evaluation ::: Dependency Parsing ::: Results",
+      "start": 21559,
+      "end": 23680
+    },
+    {
+      "section": "Evaluation ::: Text classification",
+      "start": 23682,
+      "end": 24079
+    },
+    {
+      "section": "Evaluation ::: Text classification ::: Data",
+      "start": 24081,
+      "end": 25789
+    },
+    {
+      "section": "Evaluation ::: Text classification ::: Methods",
+      "start": 25791,
+      "end": 26395
+    },
+    {
+      "section": "Evaluation ::: Text classification ::: Results",
+      "start": 26397,
+      "end": 28738
+    },
+    {
+      "section": "Evaluation ::: Probing Tasks",
+      "start": 28740,
+      "end": 29497
+    },
+    {
+      "section": "Evaluation ::: Probing Tasks ::: Surface tasks",
+      "start": 29499,
+      "end": 29789
+    },
+    {
+      "section": "Evaluation ::: Probing Tasks ::: Syntactic tasks",
+      "start": 29791,
+      "end": 30163
+    },
+    {
+      "section": "Evaluation ::: Probing Tasks ::: Semantic tasks",
+      "start": 30165,
+      "end": 30722
+    },
+    {
+      "section": "Evaluation ::: Probing Tasks ::: Results",
+      "start": 30724,
+      "end": 31687
+    },
+    {
+      "section": "Discussion",
+      "start": 31689,
+      "end": 33494
+    },
+    {
+      "section": "Conclusions",
+      "start": 33496,
+      "end": 34419
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 34421,
+      "end": 34693
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1912.07076",
+    "arxiv_id": "1912.07076",
+    "source_url": "https://arxiv.org/abs/1912.07076",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

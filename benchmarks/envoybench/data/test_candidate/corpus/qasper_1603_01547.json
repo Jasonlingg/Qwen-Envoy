@@ -1,0 +1,139 @@
+{
+  "doc_id": "qasper_1603_01547",
+  "title": "Text Understanding with the Attention Sum Reader Network",
+  "text": "Text Understanding with the Attention Sum Reader Network\n\nSeveral large cloze-style context-question-answer datasets have been introduced recently: the CNN and Daily Mail news data and the Children's Book Test. Thanks to the size of these datasets, the associated text comprehension task is well suited for deep-learning techniques that currently seem to outperform all alternative approaches. We present a new, simple model that uses attention to directly pick the answer from the context as opposed to computing the answer using a blended representation of words in the document as is usual in similar models. This makes the model particularly suitable for question-answering problems where the answer is a single word from the document. Ensemble of our models sets new state of the art on all evaluated datasets.\n\nMost of the information humanity has gathered up to this point is stored in the form of plain text. Hence the task of teaching machines how to understand this data is of utmost importance in the field of Artificial Intelligence. One way of testing the level of text understanding is simply to ask the system questions for which the answer can be inferred from the text. A well-known example of a system that could make use of a huge collection of unstructured documents to answer questions is for instance IBM's Watson system used for the Jeopardy challenge BIBREF0 .\n\nCloze-style questions BIBREF2 , i.e. questions formed by removing a phrase from a sentence, are an appealing form of such questions (for example see Figure FIGREF1 ). While the task is easy to evaluate, one can vary the context, the question sentence or the specific phrase missing in the question to dramatically change the task structure and difficulty.\n\nOne way of altering the task difficulty is to vary the word type being replaced, as in BIBREF3 . The complexity of such variation comes from the fact that the level of context understanding needed in order to correctly predict different types of words varies greatly. While predicting prepositions can easily be done using relatively simple models with very little context knowledge, predicting named entities requires a deeper understanding of the context.\n\nAlso, as opposed to selecting a random sentence from a text as in BIBREF3 ), the question can be formed from a specific part of the document, such as a short summary or a list of tags. Since such sentences often paraphrase in a condensed form what was said in the text, they are particularly suitable for testing text comprehension BIBREF1 .\n\nAn important property of cloze-style questions is that a large amount of such questions can be automatically generated from real world documents. This opens the task to data-hungry techniques such as deep learning. This is an advantage compared to smaller machine understanding datasets like MCTest BIBREF4 that have only hundreds of training examples and therefore the best performing systems usually rely on hand-crafted features BIBREF5 , BIBREF6 .\n\nIn the first part of this article we introduce the task at hand and the main aspects of the relevant datasets. Then we present our own model to tackle the problem. Subsequently we compare the model to previously proposed architectures and finally describe the experimental results on the performance of our model.\n\nIn this section we introduce the task that we are seeking to solve and relevant large-scale datasets that have recently been introduced for this task.\n\nThe task consists of answering a cloze-style question, the answer to which depends on the understanding of a context document provided with the question. The model is also provided with a set of possible answers from which the correct one is to be selected. This can be formalized as follows:\n\nThe training data consist of tuples INLINEFORM0 , where INLINEFORM1 is a question, INLINEFORM2 is a document that contains the answer to question INLINEFORM3 , INLINEFORM4 is a set of possible answers and INLINEFORM5 is the ground truth answer. Both INLINEFORM6 and INLINEFORM7 are sequences of words from vocabulary INLINEFORM8 . We also assume that all possible answers are words from the vocabulary, that is INLINEFORM9 , and that the ground truth answer INLINEFORM10 appears in the document, that is INLINEFORM11 .\n\nWe will now briefly summarize important features of the datasets.\n\nThe first two datasets BIBREF1 were constructed from a large number of news articles from the CNN and Daily Mail websites. The main body of each article forms a context, while the cloze-style question is formed from one of short highlight sentences, appearing at the top of each article page. Specifically, the question is created by replacing a named entity from the summary sentence (e.g. “Producer X will not press charges against Jeremy Clarkson, his lawyer says.”).\n\nFurthermore the named entities in the whole dataset were replaced by anonymous tokens which were further shuffled for each example so that the model cannot build up any world knowledge about the entities and hence has to genuinely rely on the context document to search for an answer to the question.\n\nQualitative analysis of reasoning patterns needed to answer questions in the CNN dataset together with human performance on this task are provided in BIBREF7 .\n\nThe third dataset, the Children's Book Test (CBT) BIBREF3 , is built from books that are freely available thanks to Project Gutenberg. Each context document is formed by 20 consecutive sentences taken from a children's book story. Due to the lack of summary, the cloze-style question is then constructed from the subsequent (21st) sentence.\n\nOne can also see how the task complexity varies with the type of the omitted word (named entity, common noun, verb, preposition). BIBREF3 have shown that while standard LSTM language models have human level performance on predicting verbs and prepositions, they lack behind on named entities and common nouns. In this article we therefore focus only on predicting the first two word types.\n\nBasic statistics about the CNN, Daily Mail and CBT datasets are summarized in Table TABREF2 .\n\nOur model called the psr is tailor-made to leverage the fact that the answer is a word from the context document. This is a double-edged sword. While it achieves state-of-the-art results on all of the mentioned datasets (where this assumption holds true), it cannot produce an answer which is not contained in the document. Intuitively, our model is structured as follows:\n\nOur model uses one word embedding function and two encoder functions. The word embedding function INLINEFORM0 translates words into vector representations. The first encoder function is a document encoder INLINEFORM1 that encodes every word from the document INLINEFORM2 in the context of the whole document. We call this the contextual embedding. For convenience we will denote the contextual embedding of the INLINEFORM3 -th word in INLINEFORM4 as INLINEFORM5 . The second encoder INLINEFORM6 is used to translate the query INLINEFORM7 into a fixed length representation of the same dimensionality as each INLINEFORM8 . Both encoders use word embeddings computed by INLINEFORM9 as their input. Then we compute a weight for every word in the document as the dot product of its contextual embedding and the query embedding. This weight might be viewed as an attention over the document INLINEFORM10 .\n\nTo form a proper probability distribution over the words in the document, we normalize the weights using the softmax function. This way we model probability INLINEFORM0 that the answer to query INLINEFORM1 appears at position INLINEFORM2 in the document INLINEFORM3 . In a functional form this is: DISPLAYFORM0 \n\nFinally we compute the probability that word INLINEFORM0 is a correct answer as: DISPLAYFORM0 \n\nwhere INLINEFORM0 is a set of positions where INLINEFORM1 appears in the document INLINEFORM2 . We call this mechanism pointer sum attention since we use attention as a pointer over discrete tokens in the context document and then we directly sum the word's attention across all the occurrences. This differs from the usual use of attention in sequence-to-sequence models BIBREF8 where attention is used to blend representations of words into a new embedding vector. Our use of attention was inspired by ptrnet BIBREF9 .\n\nA high level structure of our model is shown in Figure FIGREF10 .\n\nIn our model the document encoder INLINEFORM0 is implemented as a bidirectional Gated Recurrent Unit (GRU) network BIBREF10 , BIBREF11 whose hidden states form the contextual word embeddings, that is INLINEFORM1 , where INLINEFORM2 denotes vector concatenation and INLINEFORM3 and INLINEFORM4 denote forward and backward contextual embeddings from the respective recurrent networks. The query encoder INLINEFORM5 is implemented by another bidirectional GRU network. This time the last hidden state of the forward network is concatenated with the last hidden state of the backward network to form the query embedding, that is INLINEFORM6 . The word embedding function INLINEFORM7 is implemented in a usual way as a look-up table INLINEFORM8 . INLINEFORM9 is a matrix whose rows can be indexed by words from the vocabulary, that is INLINEFORM10 . Therefore, each row of INLINEFORM11 contains embedding of one word from the vocabulary. During training we jointly optimize parameters of INLINEFORM12 , INLINEFORM13 and INLINEFORM14 .\n\nSeveral recent deep neural network architectures BIBREF1 , BIBREF3 , BIBREF7 , BIBREF12 were applied to the task of text comprehension. The last two architectures were developed independently at the same time as our work. All of these architectures use an attention mechanism that allows them to highlight places in the document that might be relevant to answering the question. We will now briefly describe these architectures and compare them to our approach.\n\nAttentive and Impatient Readers were proposed in BIBREF1 . The simpler Attentive Reader is very similar to our architecture. It also uses bidirectional document and query encoders to compute an attention in a similar way we do. The more complex Impatient Reader computes attention over the document after reading every word of the query. However, empirical evaluation has shown that both models perform almost identically on the CNN and Daily Mail datasets.\n\nThe key difference between the Attentive Reader and our model is that the Attentive Reader uses attention to compute a fixed length representation INLINEFORM0 of the document INLINEFORM1 that is equal to a weighted sum of contextual embeddings of words in INLINEFORM2 , that is INLINEFORM3 . A joint query and document embedding INLINEFORM4 is then a non-linear function of INLINEFORM5 and the query embedding INLINEFORM6 . This joint embedding INLINEFORM7 is in the end compared against all candidate answers INLINEFORM8 using the dot product INLINEFORM9 , in the end the scores are normalized by INLINEFORM10 . That is: INLINEFORM11 .\n\nIn contrast to the Attentive Reader, we select the answer from the context directly using the computed attention rather than using such attention for a weighted sum of the individual representations (see Eq. EQREF17 ). The motivation for such simplification is the following.\n\nConsider a context “A UFO was observed above our city in January and again in March.” and question “An observer has spotted a UFO in ___ .”\n\nSince both January and March are equally good candidates, the attention mechanism might put the same attention on both these candidates in the context. The blending mechanism described above would compute a vector between the representations of these two words and propose the closest word as the answer - this may well happen to be February (it is indeed the case for Word2Vec trained on Google News). By contrast, our model would correctly propose January or March.\n\nA model presented in BIBREF7 is inspired by the Attentive Reader. One difference is that the attention weights are computed with a bilinear term instead of simple dot-product, that is INLINEFORM0 . The document embedding INLINEFORM1 is computed using a weighted sum as in the Attentive Reader, INLINEFORM2 . In the end INLINEFORM3 , where INLINEFORM4 is a new embedding function.\n\nEven though it is a simplification of the Attentive Reader this model performs significantly better than the original.\n\nMenNN BIBREF13 were applied to the task of text comprehension in BIBREF3 .\n\nThe best performing memory networks model setup - window memory - uses windows of fixed length (8) centered around the candidate words as memory cells. Due to this limited context window, the model is unable to capture dependencies out of scope of this window. Furthermore, the representation within such window is computed simply as the sum of embeddings of words in that window. By contrast, in our model the representation of each individual word is computed using a recurrent network, which not only allows it to capture context from the entire document but also the embedding computation is much more flexible than a simple sum.\n\nTo improve on the initial accuracy, a heuristic approach called self supervision is used in BIBREF3 to help the network to select the right supporting “memories” using an attention mechanism showing similarities to the ours. Plain MenNN without this heuristic are not competitive on these machine reading tasks. Our model does not need any similar heuristics.\n\nThe Dynamic Entity Representation model BIBREF12 has a complex architecture also based on the weighted attention mechanism and max-pooling over contextual embeddings of vectors for each named entity.\n\nOur model architecture was inspired by ptrnet BIBREF9 in using an attention mechanism to select the answer in the context rather than to blend words from the context into an answer representation. While a ptrnet consists of an encoder as well as a decoder, which uses the attention to select the output at each step, our model outputs the answer in a single step. Furthermore, the pointer networks assume that no input in the sequence appears more than once, which is not the case in our settings.\n\nOur model combines the best features of the architectures mentioned above. We use recurrent networks to “read” the document and the query as done in BIBREF1 , BIBREF7 , BIBREF12 and we use attention in a way similar to ptrnet. We also use summation of attention weights in a way similar to MenNN BIBREF3 .\n\nFrom a high level perspective we simplify all the discussed text comprehension models by removing all transformations past the attention step. Instead we use the attention directly to compute the answer probability.\n\nIn this section we evaluate our model on the CNN, Daily Mail and CBT datasets. We show that despite the model's simplicity its ensembles achieve state-of-the-art performance on each of these datasets.\n\nTo train the model we used stochastic gradient descent with the ADAM update rule BIBREF14 and learning rate of INLINEFORM0 or INLINEFORM1 . During training we minimized the following negative log-likelihood with respect to INLINEFORM2 : DISPLAYFORM0 \n\nwhere INLINEFORM0 is the correct answer for query INLINEFORM1 and document INLINEFORM2 , and INLINEFORM3 represents parameters of the encoder functions INLINEFORM4 and INLINEFORM5 and of the word embedding function INLINEFORM6 . The optimized probability distribution INLINEFORM7 is defined in Eq. EQREF17 .\n\nThe initial weights in the word embedding matrix were drawn randomly uniformly from the interval INLINEFORM0 . Weights in the GRU networks were initialized by random orthogonal matrices BIBREF15 and biases were initialized to zero. We also used a gradient clipping BIBREF16 threshold of 10 and batches of size 32.\n\nDuring training we randomly shuffled all examples in each epoch. To speedup training, we always pre-fetched 10 batches worth of examples and sorted them according to document length. Hence each batch contained documents of roughly the same length.\n\nFor each batch of the CNN and Daily Mail datasets we randomly reshuffled the assignment of named entities to the corresponding word embedding vectors to match the procedure proposed in BIBREF1 . This guaranteed that word embeddings of named entities were used only as semantically meaningless labels not encoding any intrinsic features of the represented entities. This forced the model to truly deduce the answer from the single context document associated with the question. We also do not use pre-trained word embeddings to make our training procedure comparable to BIBREF1 .\n\nWe did not perform any text pre-processing since the original datasets were already tokenized.\n\nWe do not use any regularization since in our experience it leads to longer training times of single models, however, performance of a model ensemble is usually the same. This way we can train the whole ensemble faster when using multiple GPUs for parallel training.\n\nFor Additional details about the training procedure see Appendix SECREF8 .\n\nDuring training we evaluated the model performance after each epoch and stopped the training when the error on the validation set started increasing. The models usually converged after two epochs of training. Time needed to complete a single epoch of training on each dataset on an Nvidia K40 GPU is shown in Table TABREF46 .\n\nThe hyperparameters, namely the recurrent hidden layer dimension and the source embedding dimension, were chosen by grid search. We started with a range of 128 to 384 for both parameters and subsequently kept increasing the upper bound by 128 until we started observing a consistent decrease in validation accuracy. The region of the parameter space that we explored together with the parameters of the model with best validation accuracy are summarized in Table TABREF47 .\n\nOur model was implemented using Theano BIBREF18 and Blocks BIBREF19 .\n\nWe evaluated the proposed model both as a single model and using ensemble averaging. Although the model computes attention for every word in the document we restrict the model to select an answer from a list of candidate answers associated with each question-document pair.\n\nFor single models we are reporting results for the best model as well as the average of accuracies for the best 20% of models with best performance on validation data since single models display considerable variation of results due to random weight initialization even for identical hyperparameter values. Single model performance may consequently prove difficult to reproduce.\n\nWhat concerns ensembles, we used simple averaging of the answer probabilities predicted by ensemble members. For ensembling we used 14, 16, 84 and 53 models for CNN, Daily Mail and CBT CN and NE respectively. The ensemble models were chosen either as the top 70% of all trained models, we call this avg ensemble. Alternatively we use the following algorithm: We started with the best performing model according to validation performance. Then in each step we tried adding the best performing model that had not been previously tried. We kept it in the ensemble if it did improve its validation performance and discarded it otherwise. This way we gradually tried each model once. We call the resulting model a greedy ensemble.\n\nPerformance of our models on the CNN and Daily Mail datasets is summarized in Table TABREF27 , Table TABREF28 shows results on the CBT dataset. The tables also list performance of other published models that were evaluated on these datasets. Ensembles of our models set new state-of-the-art results on all evaluated datasets.\n\nTable TABREF45 then measures accuracy as the proportion of test cases where the ground truth was among the top INLINEFORM0 answers proposed by the greedy ensemble model for INLINEFORM1 .\n\nCNN and Daily Mail. The CNN dataset is the most widely used dataset for evaluation of text comprehension systems published so far. Performance of our single model is a little bit worse than performance of simultaneously published models BIBREF7 , BIBREF12 . Compared to our work these models were trained with Dropout regularization BIBREF17 which might improve single model performance. However, ensemble of our models outperforms these models even though they use pre-trained word embeddings.\n\nOn the CNN dataset our single model with best validation accuracy achieves a test accuracy of 69.5%. The average performance of the top 20% models according to validation accuracy is 69.9% which is even 0.5% better than the single best-validation model. This shows that there were many models that performed better on test set than the best-validation model. Fusing multiple models then gives a significant further increase in accuracy on both CNN and Daily Mail datasets..\n\nCBT. In named entity prediction our best single model with accuracy of 68.6% performs 2% absolute better than the MenNN with self supervision, the averaging ensemble performs 4% absolute better than the best previous result. In common noun prediction our single models is 0.4% absolute better than MenNN however the ensemble improves the performance to 69% which is 6% absolute better than MenNN.\n\nTo further analyze the properties of our model, we examined the dependence of accuracy on the length of the context document (Figure FIGREF33 ), the number of candidate answers (Figure FIGREF38 ) and the frequency of the correct answer in the context (Figure FIGREF41 ).\n\nOn the CNN and Daily Mail datasets, the accuracy decreases with increasing document length (Figure FIGREF33 ). We hypothesize this may be due to multiple factors. Firstly long documents may make the task more complex. Secondly such cases are quite rare in the training data (Figure FIGREF33 ) which motivates the model to specialize on shorter contexts. Finally the context length is correlated with the number of named entities, i.e. the number of possible answers which is itself negatively correlated with accuracy (see Figure FIGREF38 ).\n\nOn the CBT dataset this negative trend seems to disappear (Fig. FIGREF33 ). This supports the later two explanations since the distribution of document lengths is somewhat more uniform (Figure FIGREF33 ) and the number of candidate answers is constant (10) for all examples in this dataset.\n\nThe effect of increasing number of candidate answers on the model's accuracy can be seen in Figure FIGREF38 . We can clearly see that as the number of candidate answers increases, the accuracy drops. On the other hand, the amount of examples with large number of candidate answers is quite small (Figure FIGREF38 ).\n\nFinally, since the summation of attention in our model inherently favours frequently occurring tokens, we also visualize how the accuracy depends on the frequency of the correct answer in the document. Figure FIGREF41 shows that the accuracy significantly drops as the correct answer gets less and less frequent in the document compared to other candidate answers. On the other hand, the correct answer is likely to occur frequently (Fig. FIGREF41 ).\n\nIn this article we presented a new neural network architecture for natural language text comprehension. While our model is simpler than previously published models, it gives a new state-of-the-art accuracy on all evaluated datasets.\n\nAn analysis by BIBREF7 suggests that on CNN and Daily Mail datasets a significant proportion of questions is ambiguous or too difficult to answer even for humans (partly due to entity anonymization) so the ensemble of our models may be very near to the maximal accuracy achievable on these datasets.\n\nWe would like to thank Tim Klinger for providing us with masked softmax code that we used in our implementation.\n\nIn Section SECREF6 we analysed how the test accuracy depends on how frequent the correct answer is compared to other answer candidates for the news datasets. The plots for the Children's Book Test looks very similar, however we are adding it here for completeness.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 56
+    },
+    {
+      "section": "Abstract",
+      "start": 58,
+      "end": 815
+    },
+    {
+      "section": "Introduction",
+      "start": 817,
+      "end": 3311
+    },
+    {
+      "section": "Task and datasets",
+      "start": 3313,
+      "end": 3463
+    },
+    {
+      "section": "Formal Task Description",
+      "start": 3465,
+      "end": 4277
+    },
+    {
+      "section": "Datasets",
+      "start": 4279,
+      "end": 6107
+    },
+    {
+      "section": "Our Model — Attention Sum Reader",
+      "start": 6109,
+      "end": 6481
+    },
+    {
+      "section": "Formal Description",
+      "start": 6483,
+      "end": 8381
+    },
+    {
+      "section": "Model instance details",
+      "start": 8383,
+      "end": 9412
+    },
+    {
+      "section": "Related Work",
+      "start": 9414,
+      "end": 9875
+    },
+    {
+      "section": "Attentive and Impatient Readers",
+      "start": 9877,
+      "end": 11859
+    },
+    {
+      "section": "Chen et al. 2016",
+      "start": 11861,
+      "end": 12360
+    },
+    {
+      "section": "Memory Networks",
+      "start": 12362,
+      "end": 13432
+    },
+    {
+      "section": "Dynamic Entity Representation",
+      "start": 13434,
+      "end": 13633
+    },
+    {
+      "section": "Pointer Networks",
+      "start": 13635,
+      "end": 14132
+    },
+    {
+      "section": "Summary",
+      "start": 14134,
+      "end": 14656
+    },
+    {
+      "section": "Evaluation",
+      "start": 14658,
+      "end": 14858
+    },
+    {
+      "section": "Training Details",
+      "start": 14860,
+      "end": 17876
+    },
+    {
+      "section": "Evaluation Method",
+      "start": 17878,
+      "end": 19258
+    },
+    {
+      "section": "Results",
+      "start": 19260,
+      "end": 21142
+    },
+    {
+      "section": "Analysis",
+      "start": 21144,
+      "end": 23018
+    },
+    {
+      "section": "Conclusion",
+      "start": 23020,
+      "end": 23553
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 23555,
+      "end": 23667
+    },
+    {
+      "section": "Dependence of accuracy on the frequency of the correct answer",
+      "start": 23669,
+      "end": 23933
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1603.01547",
+    "arxiv_id": "1603.01547",
+    "source_url": "https://arxiv.org/abs/1603.01547",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

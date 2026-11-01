@@ -1,0 +1,89 @@
+{
+  "doc_id": "qasper_1912_03010",
+  "title": "Semantic Mask for Transformer based End-to-End Speech Recognition",
+  "text": "Semantic Mask for Transformer based End-to-End Speech Recognition\n\nAttention-based encoder-decoder model has achieved impressive results for both automatic speech recognition (ASR) and text-to-speech (TTS) tasks. This approach takes advantage of the memorization capacity of neural networks to learn the mapping from the input sequence to the output sequence from scratch, without the assumption of prior knowledge such as the alignments. However, this model is prone to overfitting, especially when the amount of training data is limited. Inspired by SpecAugment and BERT, in this paper, we propose a semantic mask based regularization for training such kind of end-to-end (E2E) model. The idea is to mask the input features corresponding to a particular output token, e.g., a word or a word-piece, in order to encourage the model to fill the token based on the contextual information. While this approach is applicable to the encoder-decoder framework with any type of neural network architecture, we study the transformer-based model for ASR in this work. We perform experiments on Librispeech 960h and TedLium2 data sets, and achieve the state-of-the-art performance on the test set in the scope of E2E models.\n\nEnd-to-end (E2E) acoustic models, particularly with the attention-based encoder-decoder framework BIBREF0, have achieved a competitive recognition accuracy in a wide range of speech datasets BIBREF1. This model directly learns the mapping from the input acoustic signals to the output transcriptions without decomposing the problems into several different modules such as lexicon modeling, acoustic modeling and language modeling as in the conventional hybrid architecture. While this kind of E2E approach significantly simplifies the speech recognition pipeline, the weakness is that it is difficult to tune the strength of each component. One particular problem from our observations is that the attention based E2E model tends to make grammatical errors, which indicates that the language modeling power of the model is weak, possibly due to the small amount of training data, or the mismatch between the training and evaluation data. However, due to the jointly model approach in the attention model, it is unclear how to improve the strength of the language modeling power, i.e., attributing more weights to the previous output tokens in the decoder, or to improve the strength of the acoustic modeling power, i.e., attributing more weights to the context vector from the encoder.\n\nWhile an external language model may be used to mitigate the weakness of the language modeling power of an attention-based E2E model, by either re-scoring the hypothesis or through shallow or deep fusion BIBREF2, the improvements are usually limited, and it incurs additional computational cost. Inspired by SpecAgument BIBREF3 and BERT BIBREF4, we propose a semantic mask approach to improve the strength of the language modeling power in the attention-based E2E model, which, at the same time, improves the generalization capacity of the model as well. Like SpecAugment, this approach masks out partial of the acoustic features during model training. However, instead of using a random mask as in SpecAugment, our approach masks out the whole patch of the features corresponding to an output token during training, e.g., a word or a word-piece. The motivation is to encourage the model to fill in the missing token (or correct the semantic error) based on the contextual information with less acoustic evidence, and consequently, the model may have a stronger language modeling power and is more robust to acoustic distortions.\n\nIn principle, our approach is applicable to the attention-based E2E framework with any type of neural network encoder. To constrain our research scope, we focus on the transformer architecture BIBREF5, which is originally proposed for neural machine translation. Recently, it has been shown that the transformer model can achieve competitive or even higher recognition accuracy compared with the recurrent neural network (RNN) based E2E model for speech recognition BIBREF6. Compared with RNNs, the transformer model can capture the long-term correlations with a computational complexity of $O(1)$, instead of using many steps of back-propagation through time (BPTT) as in RNNs. We evaluate our transformer model with semantic masking on Librispeech and TedLium datasets. We show that semantic masking can achieve significant word error rate reduction (WER) on top of SpecAugment, and we report the lowest WERs on the test sets of the Librispeech corpus with an E2E model.\n\nAs aforementioned, our approach is closely related to SpecAugment BIBREF3, which applies a random mask to the acoustic features to regularize an E2E model. However, our masking approach is more structured in the sense that we mask the acoustic signals corresponding to a particular output token. Besides the benefit in terms of model regularization, our approach also encourages the model to reconstruct the missing token based on the contextual information, which improves the power of the implicit language model in the decoder. The masking approach operates as the output token level is also similar to the approach used in BERT BIBREF4, but with the key difference that our approaches works in the acoustic space.\n\nIn terms of the model structure, the transformer-based E2E model has been investigated for both attention-based framework as well as RNN-T based models BIBREF7. Our model structure generally follows BIBREF8, with a minor difference that we used a deeper CNN before the self-attention blocks. We used a joint CTC/Attention loss to train our model following BIBREF6.\n\nOur masking approach requires the alignment information in order to perform the token-wise masking as shown in Figure FIGREF2. There are multiple speech recognition toolkits available to generate such kind of alignments. In this work, we used the Montreal Forced Alignertrained with the training data to perform forced-alignment between the acoustic signals and the transcriptions to obtain the word-level timing information. During model training, we randomly select a percentage of the tokens and mask the corresponding speech segments in each iteration. Following BIBREF4, in our work, we randomly sample 15% of the tokens and set the masked piece to the mean value of the whole utterance.\n\nIt should be noted that the semantic masking strategy is easy to combine with the previous SpecAugment masking strategy. Therefore, we adopt a time warp, frequency masking and time masking strategy in our masking strategy.\n\nSpectrum augmentation BIBREF3 is similar to our method, since both propose to mask spectrum for E2E model training. However, the intuitions behind these two methods are different. SpecAugment randomly masks spectrum in order to add noise to the source input, making the E2E ASR problem harder and prevents the over-fitting problem in a large E2E model.\n\nIn contrast, our model aims to force the decoder to learn a better language model. Suppose that if a few words' speech features are masked, the E2E model has to predict the token based on other signals, such as tokens that have generated or other unmasked speech features. In this way, we might alleviate the over-fitting issue that generating words only considering its corresponding speech features while ignoring other useful features. We believe our model is more effective when the input is noisy, because a model may generate correct tokens without considering previous generated tokens in a noise-free setting but it has to consider other signals when inputs are noisy, which is confirmed in our experiment.\n\nFollowing BIBREF8, we add convolution layers before Transformer blocks and discard the widely used positional encoding component. According to our preliminary experiments, the convolution layers slightly improve the performance of the E2E model. In the following, we will describe the CNN layers and Transformer block respectively.\n\nWe represent input signals as a sequence of log-Mel filter bank features, denoted as $\\mathbf {X}=(x_0 \\ldots , x_n)$, where $x_i$ is a 83-dim vector. Since the length of spectrum is much longer than text, we use VGG-like convolution block BIBREF9 with layer normalization and max-pooling function. The specific architecture is shown in Figure FIGREF6 . We hope the convolution block is able to learn local relationships within a small context and relative positional information. According to our experiments, the specific architecture outperforms Convolutional 2D subsampling method BIBREF6. We also use 1D-CNN in the decoder to extract local features replacing the position embedding .\n\nOur Transformer architecture is implemented as BIBREF6, depicting in Figure FIGREF15. The transformer module consumes the outputs of CNN and extracts features with a self-attention mechanism. Suppose that $Q$, $K$ and $V$ are inputs of a transformer block, its outputs are calculated by the following equation\n\nwhere $d_k$ is the dimension of the feature vector. To enable dealing with multiple attentions, multi-head attention is proposed, which is formulated as\n\nwhere $d_{head}$ is the number of attention heads. Moreover, residual connection BIBREF10, feed-forward layer and layer normalization BIBREF11 are indispensable parts in Transformer, and their combinations are shown in Figure FIGREF15.\n\nFollowing previous work BIBREF6, we employ a multi-task learning strategy to train the E2E model. Formally speaking, both the E2E model decoder and the CTC module predict the frame-wise distribution of $Y$ given corresponding source $X$, denoted as $P_{s2s}(\\mathbf {Y}|\\mathbf {X})$ and $P_{ctc}(\\mathbf {Y}|\\mathbf {X})$. We weighted averaged two negative log likelihoods to train our model\n\nwhere $\\alpha $ is set to 0.7 in our experiment.\n\nWe combine scores of E2E model $P_{s2s}$, CTC score $P_{ctc}$ and a RNN based language model $P_{rnn}$ in the decoding process, which is formulated as\n\nwhere $\\beta _1$ and $\\beta _2$ are tuned on the development set. Following BIBREF12, we rescore our beam outputs based on another transformer based language model $P_{trans\\_lm}(\\mathbf {Y})$ and the sentence length penalty $\\text{Wordcount}(\\mathbf {Y})$.\n\nwhere $P_{trans\\_lm}$ denotes the sentence generative probability given by a Transformer language model.\n\nIn this section, we describe our experiments on LibriSpeech BIBREF1 and TedLium2 BIBREF13. We compare our results with state-of-the-art hybrid and E2E systems. We implemented our approach based on ESPnet BIBREF6, and the specific settings on two datasets are the same with BIBREF6, except the decoding setting. We use the beam size 20, $\\beta _1 = 0.5$, and $\\beta _2=0.7$ in our experiment.\n\nWe represent input signals as a sequence of 80-dim log-Mel filter bank with 3-dim pitch features BIBREF17. SentencePiece is employed as the tokenizer, and the vocabulary size is 5000. The hyper-parameters in Transformer and SpecAugment follow BIBREF6 for a fair comparison. We use Adam algorithm to update the model, and the warmup step is 25000. The learning rate decreases proportionally to the inverse square root of the step number after the 25000-th step. We train our model 100 epochs on 4 P40 GPUs, which approximately costs 5 days to coverage. We also apply speed perturbation by changing the audio speed to 0.9, 1.0 and 1.1. Following BIBREF6, we average the last 5 checkpoints as the final model. Unlike BIBREF14 and BIBREF15, we use the same checkpoint for test-clean and test-other dataset.\n\nThe RNN language model uses the released LSTM language model provided by ESPnet. The Transformer language model for rescoring is trained on LibriSpeech language model corpus with the GPT-2 base setting (308M parameters). We use the code of NVIDIA Megatron-LM to train the Transformer language model.\n\nWe evaluate our model in different settings. The baseline Transformer represents the model with position embedding. The comparison between baseline Transformer and our architecture (Model with SpecAugment) indicates the improvements attributed to the architecture. Model with semantic mask is we use the semantic mask strategy on top of SpecAugment, which outperforms Model with SpecAugment with a large margin in a no external language model fusion setting, demonstrating that our masking strategy helps the E2E model to learn a better language model. The gap becomes smaller when equipped with a language model fusion component, which further confirms our motivation in Section SECREF1. Speed Perturbation does not help model performance on the clean dataset, but it is effective on the test-other dataset. Rescore is beneficial to both test-clean and test-other datasets.\n\nAs far as we know, our model is the best E2E ASR system on the Librispeech testset, which achieves a comparable result with wav2letter Transformer on test-clean dataset and a better result on test-other dataset, even though our model (75M parameters) is much smaller than the wav2letter Transformer (210M parameters). The reason might be that our semantic masking is more suitable on a noisy setting, because the input features are not reliable and the model has to predict the next token relying on previous ones and the whole context of the input. Our model is built upon the code base of ESPnet, and achieves relative $10\\%$ gains due to the better architecture and masking strategy. Comparing with hybrid methods, our model obtains a similar performance on the test-clean set, but is still worse than the best hybrid model on the test-other dataset.\n\nWe also analyze the performance of different masking strategies, showing in Table TABREF20, where all models are shallow fused with the RNN language model. The SpecAugment provides 30$\\%$ relative gains on test-clean and other datasets. According to the comparison between the second line and the third line, we find that the word masking is more effective on test-other dataset. The last row indicates word mask is complementary to random mask on the time axis.\n\nTo verify the generalization of the semantic mask, we further conduct experiments on TedLium2 BIBREF18 dataset, which is extracted from TED talks. The corpus consists of 207 hours of speech data accompanying 90k transcripts. For a fair comparison, we use the same data-preprocessing method, Transformer architecture and hyperparameter settings as in BIBREF6. Our acoustic features are 80-dim log-Mel filter bank and 3-dim pitch features, which is normalized by the mean and the standard deviation for training set. The utterances with more than 3000 frames or more than 400 characters are discarded. The vocabulary size is set to 1000.\n\nThe experiment results are listed in Table TABREF21, showing a similar trend as the results in Librispeech dataset. Semantic mask is complementary to specagumentation, which enables better S2S language modeling training in an E2E model, resulting in a relative 4.5$\\%$ gain. The experiment proves the effectiveness of semantic mask on a different and smaller dataset.\n\nThis paper presents a semantic mask method for E2E speech recognition, which is able to train a model to better consider the whole audio context for the disambiguation. Moreover, we elaborate a new architecture for E2E model, achieving state-of-the-art performance on the Librispeech test set in the scope of E2E models.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 65
+    },
+    {
+      "section": "Abstract",
+      "start": 67,
+      "end": 1214
+    },
+    {
+      "section": "Introduction",
+      "start": 1216,
+      "end": 4606
+    },
+    {
+      "section": "Related Work",
+      "start": 4608,
+      "end": 5691
+    },
+    {
+      "section": "Semantic Masking ::: Masking Strategy",
+      "start": 5693,
+      "end": 6609
+    },
+    {
+      "section": "Semantic Masking ::: Why Semantic Mask Works?",
+      "start": 6611,
+      "end": 7679
+    },
+    {
+      "section": "Model",
+      "start": 7681,
+      "end": 8012
+    },
+    {
+      "section": "Model ::: CNN Layer",
+      "start": 8014,
+      "end": 8702
+    },
+    {
+      "section": "Model ::: Transformer Block",
+      "start": 8704,
+      "end": 9404
+    },
+    {
+      "section": "Model ::: ASR Training and Decoding",
+      "start": 9406,
+      "end": 10365
+    },
+    {
+      "section": "EXPERIMENT",
+      "start": 10367,
+      "end": 10758
+    },
+    {
+      "section": "EXPERIMENT ::: Librispeech 960h",
+      "start": 10760,
+      "end": 14058
+    },
+    {
+      "section": "EXPERIMENT ::: TedLium2",
+      "start": 14060,
+      "end": 15064
+    },
+    {
+      "section": "Conclusion",
+      "start": 15066,
+      "end": 15386
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1912.03010",
+    "arxiv_id": "1912.03010",
+    "source_url": "https://arxiv.org/abs/1912.03010",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

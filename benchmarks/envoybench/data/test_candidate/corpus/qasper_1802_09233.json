@@ -1,0 +1,84 @@
+{
+  "doc_id": "qasper_1802_09233",
+  "title": "EiTAKA at SemEval-2018 Task 1: An Ensemble of N-Channels ConvNet and XGboost Regressors for Emotion Analysis of Tweets",
+  "text": "EiTAKA at SemEval-2018 Task 1: An Ensemble of N-Channels ConvNet and XGboost Regressors for Emotion Analysis of Tweets\n\nThis paper describes our system that has been used in Task1 Affect in Tweets. We combine two different approaches. The first one called N-Stream ConvNets, which is a deep learning approach where the second one is XGboost regresseor based on a set of embedding and lexicons based features. Our system was evaluated on the testing sets of the tasks outperforming all other approaches for the Arabic version of valence intensity regression task and valence ordinal classification task.\n\nSentiment analysis in Twitter is the problem of identifying people’s opinions expressed in tweets. It normally involves the classification of tweets into categories such as “positive”, “negative” and in some cases, “neutral”. The main challenges in designing a sentiment analysis system for Twitter are the following:\n\nMost of the existing systems are inspired in the work presented in BIBREF0 . Machine Learning techniques have been used to build a classifier from a set of tweets with a manually annotated sentiment polarity. The success of the Machine Learning models is based on two main facts: a large amount of labeled data and the intelligent design of a set of features that can distinguish between the samples.\n\nWith this approach, most studies have focused on designing a set of efficient features to obtain a good classification performance BIBREF1 , BIBREF2 , BIBREF3 . For instance, the authors in BIBREF4 used diverse sentiment lexicons and a variety of hand-crafted features.\n\nThis paper proposes the representation of tweets using a novel set of features, which include the information provided by seven lexicons and a bag of negated words (BonW). The concatenation of these features with a set of basic features improves the classification performance. The polarity of tweets is determined by a classifier based on a Support Vector Machine.\n\nThe system has been evaluated on the Arabic and English language test sets of the Twitter Sentiment Analysis Track in SemEval 2017, subtask A (Message Polarity Classification). Our system (SiTAKA) has been ranked 8th over 36 teams in the English language test set and 2nd out of 8 teams in the Arabic language test set.\n\nThe rest of the paper is structured as follows. Section SECREF2 presents the tools and the resources that have been used. In Section SECREF3 we describe the system. The experiments and results are presented and discussed in Section SECREF4 . Finally, in the last section the conclusions as well as further work are presented.\n\nThis section explains the tools and the resources that have been used in the SiTAKA system. Let us denote to its Arabic language and English language versions by Ar-SiTAKA and En-SiTAKA, respectively.\n\nWe used for En-SiTAKA seven lexicons in this work, namely: General Inquirer BIBREF5 , Hu-Liu opinion lexicon (HL) BIBREF6 , NRC hashtags lexicon BIBREF4 , SenticNet BIBREF7 , and TS-Lex BIBREF8 . More details about each lexicon, such as how it was created, the polarity score for each term, and the statistical distribution of the lexicon, can be found in BIBREF9 .\n\nIn this version of the SiTAKA system, we used four lexicons created by BIBREF10 . Arabic Hashtag Lexicon, Dialectal Arabic Hashtag Lexicon, Arabic Bing Liu Lexicon and Arabic Sentiment140 Lexicon. The first two were created manually, whereas the rest were translated to Arabic from the English version using Google Translator.\n\nWe used two pre-trained embedding models in En-SiTAKA. The first one is word2vec which is provided by Google. It is trained on part of the Google News dataset (about 100 billion words) and it contains 300-dimensional vectors for 3M words and phrases BIBREF11 . The second one is SSWEu, which has been trained to capture the sentiment information of sentences as well as the syntactic contexts of words BIBREF12 . The SSWEu model contains 50-dimensional vectors for 100K words.\n\nIn Ar-SiTAKA we used the model Arabic-SKIP-G300 provided by BIBREF13 . Arabic-SKIP-G300 has been trained on a large corpus of Arabic text collected from different sources such as Arabic Wikipedia, Arabic Gigaword Corpus, Ksucorpus, King Saud University Corpus, Microsoft crawled Arabic Corpus, etc. It contains 300-dimensional vectors for 6M words and phrases.\n\nThis section explains the main steps of the SiTAKA system, the features used to describe a tweet and the classification method.\n\nSome standard pre-processing methods are applied on the tweets:\n\nNormalization: Each tweet in English is converted to the lowercase. URLs and usernames are omitted. Non-Arabic letters are removed from each tweet in the Arabic-language sets. Words with repeated letters (i.e. elongated) are corrected.\n\nTokenization and POS tagging: All English-language tweets are tokenized and tagged using Ark Tweet NLP BIBREF14 , while all Arabic-language tweets are tokenized and tagged using Stanford Tagger BIBREF15 .\n\nNegation: A negated context can be defined as a segment of tweet that starts with a negation word (e.g. no, don't for English-language, لا و ليس > for Arabic-language) and ends with a punctuation mark BIBREF0 . Each tweet is negated by adding a suffix (\"_NEG\" and \"_منفي>\") to each word in the negated context.\n\nIt is necessary to mention that in Ar-SiTAKA we did not use all the Arabic negation words due to the ambiguity of some of them. For example, the first word ما>, is a question mark in the following \"ما رأيك في ما حدث؟>-What do you think about what happened?\" and it means \"which/that\" in the following example \"إن ما حدث اليوم سيء جدا> - The matter that happened today was very bad\".\n\nAs shown in BIBREF16 , stopwords tend to carry sentiment information; thus, note that they were not removed from the tweets.\n\nSiTAKA uses five types of features: basic text, syntactic, lexicon, cluster and Word Embeddings. These features are described in the following subsections:\n\nThese basic features are extracted from the text. They are the following:\n\nBag of Words (BoW): Bag of words or n-grams features introduce some contextual information. The presence or absence of contiguous sequences of 1, 2, 3, and 4 tokens are used to represent the tweets.\n\nBag of Negated Words (BonW): Negated contexts are important keys in the sentiment analysis problem. Thus, we used the presence or absence of contiguous sequences of 1, 2, 3 and 4 tokens in the negated contexts as a set of features to represent the tweets.\n\nSyntactic features are useful to discriminate between neutral and non-neutral texts.\n\nPart of Speech (POS): Subjective and objective texts have different POS tags BIBREF17 . According to BIBREF18 , non-neutral terms are more likely to exhibit the following POS tags in Twitter: nouns, adjectives, adverbs, abbreviations and interjections. The number of occurrences of each part of speech tag is used to represent each tweet.\n\nBi-tagged: Bi-tagged features are extracted by combining the tokens of the bi-grams with their POS tag e.g. \"feel_VBP good_JJ\" \"جميل>_JJ جداً>_VBD\". It has been shown in the literature that adjectives and adverbs are subjective in nature and they help to increase the degree of expressiveness BIBREF19 , BIBREF0 .\n\nOpinion lexicons play an important role in sentiment analysis systems, and the majority of the existing systems rely heavily on them BIBREF20 . For each of the seven chosen lexicons, a tweet is represented by calculating the following features: (1) tweet polarity, (2) the average polarity of the positive terms, (3) the average polarity of the negative terms, (4) the score of the last positive term, (5) the score of the last negative term, (6) the maximum positive score and (7) the minimum negative score.\n\nThe polarity of a tweet T given a lexicon L is calculated using the equation (1). First, the tweet is tokenized. Then, the number of positive (P) and negative (N) tokens found in the lexicon are counted. Finally, the polarity measure is calculated as follows: DISPLAYFORM0 \n\nWe used two set of clusters in En-SiTAKA to represent the English-language tweets by mapping each tweet to a set of clusters. The first one is the well known set of clusters provided by the Ark Tweet NLP tool which contains 1000 clusters produced with the Brown clustering algorithm from 56M English-language tweets. These 1000 clusters are used to represent each tweet by mapping each word in the tweet to its cluster. The second one is Word2vec cluster ngrams, which is provided by BIBREF21 . They used the word2vec tool to learn 40-dimensional word embeddings of 255,657 words from a Twitter dataset and the K-means algorithm to cluster them into 4960 clusters. We were not able to find publicly available semantic clusters to be used in Ar-SiTAKA.\n\nWord embeddings are an approach for distributional semantics which represents words as vectors of real numbers. Such representation has useful clustering properties, since the words that are semantically and syntactically related are represented by similar vectors BIBREF22 . For example, the words \"coffee\" and \"tea\" will be very close in the created space.\n\nWe used sum, standard-deviation, min and max pooling functions BIBREF23 to obtain the tweet representation in the embedding space. The result is the concatenation of vectors derived from different pooling functions. More formally, let us consider an embedding matrix INLINEFORM0 and a tweet INLINEFORM1 , where INLINEFORM2 is the dimension size, INLINEFORM3 is the length of the vocabulary (i.e. the number of words in the embedding model), INLINEFORM4 is the word INLINEFORM5 in the tweet and INLINEFORM6 is the number of words. First, each word INLINEFORM7 is substituted by the corresponding vector INLINEFORM8 in the matrix INLINEFORM9 where INLINEFORM10 is the index of the word INLINEFORM11 in the vocabulary. This step ends with the matrix INLINEFORM12 . The vector INLINEFORM13 is computed using the following formula: DISPLAYFORM0 \n\nwhere INLINEFORM0 denotes the concatenation operation. The pooling function is an element-wise function, and it converts texts with various lengths into a fixed-length vector allowing to capture the information throughout the entire text.\n\nUp to now, support vector machines (SVM) BIBREF24 have been used widely and reported as the best classifier in the sentiment analysis problem. Thus, we trained a SVM classifier on the training sets provided by the organizers. For the English-language we combined the training sets of SemEval13-16 and testing sets of SemEval13-15, and used them as a training set. Table TABREF20 shows the numerical description of the datasets used in this work. We used the linear kernel with the value 0.5 for the cost parameter C. All the parameters and the set of features have been experimentally chosen based on the development sets.\n\nThe evaluation metrics used by the task organizers were the macroaveraged recall ( INLINEFORM0 ), the F1 averaged across the positives and the negatives INLINEFORM1 and the accuracy ( INLINEFORM2 ) BIBREF25 .\n\nThe system has been tested on 12,284 English-language tweets and 6100 Arabic-language tweets provided by the organizers. The golden answers of all the test tweets were omitted by the organizers. The official evaluation results of our system are reported along with the top 10 systems and the baseline results in Table 2 and 3. Our system ranks 8th among 38 systems in the English-language tweets and ranks 2nd among 8 systems in the Arabic language tweets. The baselines 1, 2 and 3 stand for case when the system classify all the tweets as positive, negative and neutral respectively.\n\nWe have presented a new set of rich sentimental features for the sentiment analysis of the messages posted on Twitter. A Support Vector Machine classifier has been trained using a set of basic features, information extracted from seven useful and publicly available opinion lexicons, syntactic features, clusters and embeddings. We have realized that the lexicon opinions are the key point in the improvement of the performance of the classifier; thus, for the future work we plan to focus on working on the development of an efficient lexicon-based method or building a new lexicon that can be used to improve the performance of the sentiment analysis systems. Deep learning approaches have recently been used to build supervised, unsupervised or even semi-supervised methods to analyze the sentiment of texts and to build efficient opinion lexicons BIBREF26 , BIBREF27 , BIBREF12 ; thus, the authors are considering the possibility of also using this technique to build a sentiment analysis system.\n\nThis work was partially supported by URV Research Support Funds (2015PFR-URV-B2-60, 2016PFR-URV-B2-60 and Martí i Franqués PhD grant).",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 118
+    },
+    {
+      "section": "Abstract",
+      "start": 120,
+      "end": 602
+    },
+    {
+      "section": "Introduction",
+      "start": 604,
+      "end": 2609
+    },
+    {
+      "section": "Resources",
+      "start": 2611,
+      "end": 2811
+    },
+    {
+      "section": "Sentiment Lexicons",
+      "start": 2813,
+      "end": 3506
+    },
+    {
+      "section": "Embeddings",
+      "start": 3508,
+      "end": 4346
+    },
+    {
+      "section": "System Description",
+      "start": 4348,
+      "end": 4475
+    },
+    {
+      "section": "Preprocessing and Normalization",
+      "start": 4477,
+      "end": 5805
+    },
+    {
+      "section": "Features ُExtraction",
+      "start": 5807,
+      "end": 10216
+    },
+    {
+      "section": "Classifier",
+      "start": 10218,
+      "end": 10840
+    },
+    {
+      "section": "Results",
+      "start": 10842,
+      "end": 11636
+    },
+    {
+      "section": "Conclusion",
+      "start": 11638,
+      "end": 12638
+    },
+    {
+      "section": "Acknowledgment",
+      "start": 12640,
+      "end": 12774
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1802.09233",
+    "arxiv_id": "1802.09233",
+    "source_url": "https://arxiv.org/abs/1802.09233",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

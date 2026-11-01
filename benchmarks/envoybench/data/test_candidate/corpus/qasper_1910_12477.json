@@ -1,0 +1,119 @@
+{
+  "doc_id": "qasper_1910_12477",
+  "title": "Multi-Module System for Open Domain Chinese Question Answering over Knowledge Base",
+  "text": "Multi-Module System for Open Domain Chinese Question Answering over Knowledge Base\n\nFor the task of open domain Knowledge Based Question Answering in CCKS2019, we propose a method combining information retrieval and semantic parsing. This multi-module system extracts the topic entity and the most related relation predicate from a question and transforms it into a Sparql query statement. Our method obtained the F1 score of 70.45% on the test data.\n\nWe introduce an open domain question answering system based on Chinese knowledge graph in this paper. We analyze the questions and find that most of the answers to the questions are within two hops. Therefore, we only solve the problem within two hops to reduce the complexity of the system. The system consists of a topic entity selection module, a relationship recognition module and an answer selection module. Firstly, we construct a scoring mechanism to select the core entity of the question; Then we score the relationship in the two-hop subgraph of the topic entity; Finally, we build a classier to judge whether a question is simple or complicated, so that we can choose the final relationship and generate sparql query.\n\nThere are two main approaches in Knowledge Graph based Question Answering(KBQA) : semantic parsing based and retrieval based.\n\nSemantic Parsing based approach is a linguistic method that transforms natural language into logic forms and queries them in the knowledge graph through corresponding semantic representations, such as lambda-Caculus, to arrive at an answer. Semantic parsing-based methods, including semantic parsing based on Lambda Dependency-Based Compositional Semantics (Lambda-DCS) BIBREF0, BIBREF1, semantic parsing based on Combinatory Categorical Grammars (CCG), semantic parsing based on Neural Machine Translation(NMT), and semantic parsing based on deep learning BIBREF2 released by Microsoft in 2015.\n\nRetrieval based approach could be regarded as a sorting algorithm for the answer: given the input question Q and the knowledge graph KB, by scoring and sorting the entities in the KB, the entity or entity set with the highest score is selected as the answer. It mainly includes feature-based method BIBREF3, extracting features from the input question Q and the answer candidate A, generating feature vectors, and training the classifier; vector-representation based method BIBREF4, the input question Q and the answer candidate A are represented as two vectors (distributed embedding) respectively, and vector distance is calculated for scoring; CNN network based method BIBREF5, the feature extraction is performed by a convolutional neural network; Gated-GNN based methodBIBREF6, etc.\n\nWe combine the above two methods. On the one hand, we use the retrieve based method to sort KB relationships and entities, and on the other hand, we use the most related relationship and entity to generate the sparql statement to query the final answer.\n\nOur model is mainly divided into three parts, namely Topic Entity Recognition, Relation Recognition and Answer Selection. The overall model is shown in Figure FIGREF1.\n\nAfter entering a question, the model first finds the topic entity in the sentence. Here we used the Entity-mention file provided by the contest organizer and some external tools such as paddle-paddle. Then in the relationship recognition module, the relationship of the question (also called the predicate) is found by extracting the subgraph of the topic entity in the knowledge graph. The ranking of all relationships is obtained by a similarity scoring model. Finally, in the answer selection module, according to the simple-complex problem classifier and some rules, the final answer is obtained.\n\nTopic entity is the core entity of the corresponding KB query. Since most of the problems are within two hops, so we only need to find a core entity and then search for its subgraph to find the answer of the question. The extraction of the topic entity is divided into two parts. Firstly, all the entities are extracted through the NER module. Then, the entities are scored by some rules and the entity with the highest score is selected as the topic entity.\n\nWe chose the pre-trained NER models released by Baidu Cloud and Paddle-paddle. These two models have their own preponderance in entity recognition, so we decide to combine the results of both. Unlike the common NER, we don't just extract the entities labeled 'LOC', 'ORG', 'PER' and 'TIME'. Since the entity in question is not always one of the four, we also extract 'n' (noun), 'nr' (person name), 'ns' (place name), 'nt' (institution name), 'nw' (work name). Besides, considering that there are many financial problems in this data set, we have compiled a small dictionary of vocabulary in the financial field on the public website in order to ensure that the model has strong adaptability.\n\nIn Chinese, many relationships exist in the form of nouns, so they are extracted in the NER module, such as `creator' and `inventor'. However, our topic entity should not use relationship as the core node, so we maintain a stop-words dictionary, which records the relationship in the form of nouns. Considering that some of the words also have the possibility of being a real entity, we set a rule that when a sentence has not been checked by any entity after passing the previous NER module , we reconsider detecting the words in the dictionary.\n\nAfter the NER module we get a series of entities, we select all possible entities according to the correspondence in the entity-mention dictionary. If an entity does not appear in the dictionary, we further query it in the knowledge base, and if it still does not, discard it. Then we constructed a scoring strategy for all the candidate entities generated above. The specific score rules are as follows:\n\nScore1 The Length of Entity. An entity with a longer length is usually given a higher score.\n\nScore2 The Out-degree of Entity in the KB. An entity with higher out-degree is more likely to be the topic entity. Meanwhile, it is more efficient to query the nodes pointed to other entity in the knowledge base than to be pointed.\n\nScore3 The Distance Between the Entity and Interrogative Word. We define ['who','what','where','how','how much','how many'] as interrogative words. An entity gets higher score if more close to the above words.\n\nScore4 Char Overlap between Entity and Question. The more overlap chars shared between entity and question, the bigger probability that the entity be a topic entity.\n\nScore5 Word Overlap between Entity-mention and Question. If an entity and its corresponding mention have more overlap with the problem, it is more likely to be the topic entity.\n\nScore6 NER Label of Entity. If an entity is recognized as special noun like 'ORG', it has more probability to be a topic entity than simple noun. Additionally, if an entity is a person name or financial related, we assign it higher score.\n\nScore7 Similarity between Entity-mention and Question. We simply fine-tune bert model to measure how well an entity matches a question. Matching rate is the corresponding score.\n\nAfter calculating the above scores, we normalize and add them, the entity with the highest score is selected as the topic entity. Figure FIGREF6 shows the flow of extraction. The scores of the first two entities are higher because they capture more keywords in the question and the reason why the first entity is higher than the second is that its out-degree is much higher, which means that it is more well-known.\n\nThe relationship in the question generally refers to the predicate in a sentence, and also the relationship between two entities in the knowledge base. The correct relationship should be the relationship between the topic entity and the answer entity.\n\nWe mainly use retrieval based method in recognizing relationships. By observing the dataset, we found that among the 2,298 questions in the training set, there were 1,160 questions that could be solved through one-hop in the knowledge graph, and 912 questions through two-hop, accounting for 90.17% of all data. Thus, We only consider the problem within two-hop in later experiments.\n\nFor each topic entity, we extract the subgraphs within its two-hop in the knowledge base, and each relationships in the subgraph could be the target relationship.\n\nAfter getting all the candidate relationships, we constructed a scoring strategy. The specific score rules are as follows:\n\nScore_relation_similarity Similarity between Relation and Question. We use the BERT-Base, Chinese BIBREF7 pre-trained model to initialize word vectors. Then fine-tune it through a similarity model BIBREF8. Question and relationship are first fed into the word embedding layer, mapping words to a fixed-dimensional word vector. It is then sent to the biLSTM layer, whose output is averaged at each step. The obtained result is sent to a fully connected layer, and finally the semantic embedding is obtained. The cosine similarity of the two semantic embeddings is calculated to represent the similarity between the question and relation.\n\nScore_object_similarity Similarity between Object and Question. This model is similar to the above relation similarity model. Although the similarity between relation and question is the main indicator of evaluation, the similarity between object and question also plays a supporting role. For example, the question \"What TV series did actor A and actor B play together?\", if actor A is recognized as the topic entity, and actor B appears as an object of a two-hop relation(actor A ==act in==> TV serie X <==act in== actor B), the score of this relation chain should be higher than other relations. An example is shown in figure FIGREF10.\n\nScore_char_overlap Char Overlap between Relation and Question. The more overlap chars shared between entity and question, the bigger probability that the relation be a correct relation. This score is added primarily to prevent the model from relying too heavily on the bert similarity model.\n\nThe final score of the relationship is the weighted addition of the above scores.\n\nAfter getting the topic entity and relationship scoring of the question, we need to generate the final sparql query and find the answer from the knowledge graph.\n\nAs mentioned before, we learned a classifier since we only consider one-hop (simple) and two-hop (complex) problems. Before performing the final sparql generation, we use the classifier to determine whether it is a simple or complex problem. If it is a simple problem, select the highest one-hop relationship as the answer. Conversely, if it is a complex problem, select the highest two-hop relationship.\n\nWe use a bert classifier to implement this classification model.\n\nWe need to generate the corresponding sparql statement based on the topic entity and the most relevant relation, and find the result from the knowledge graph.\n\nWe consider the relationship of the five structures shown in Figure FIGREF14. For the question \"What is the representative work of Monica Bellucci?\", we found the topic entity <Monica Bellucci>, it is classified as a simple one-hop question, the highest score relation is <representative work>, and the sparql statement is \"select ?x where <Monica Bellucci> <representative work> ?x\".\n\nIn addition, we have added some other rules, such as:\n\n(1) When there is a gender-related vocabulary in the question, add “?z <gender> <male/female>” to sparql as restriction.\n\n(2) When time appears in the question, it is unified into the format of “YYYY-MM-DD” (consistent with the knowledge graph).\n\n(3) When the two-hop object appears in the sentence, select the intermediate result ?y is the final result. Still consider question “What TV series did actor A and actor B play together?”, the highest score is “actor A ==act in==> TV serie X <==act in== actor B”, but ?y(TV serie X ) rather than ?x(actor B) is the correct result. Thus, the sparql should be “select ?y where <actor A> <act in> ?y. <actor B> <act in> ?y.”\n\nWe use CCKS 2019 dataset to evaluate our approach. The dataset is published by the CCKS 2019 task 6, which includes a knowledge base, an entity-mention file, and Q&A pairs for training, validation, and testing. The knowledge base has more than 30 million triples (We use gstore to manage the knowledge base), the training set has 2298 question and answer pairs, the dev set has 766 questions, and the test set has 766 questions. Since we don't have the correct answer to the dev set, in order to evaluate the model performance during the experiments, we randomly selected 100 Q&A pairs from the training set as the real development set.\n\nWe test the effects of different scores in the scoring mechanism. Table TABREF18 shows some results. Baseline refers to the sum of the scores excluded similarity score and out-degree score. We find that the impact of out-degree score is mainly reflected in confused entities. As shown in Figure FIGREF6, there are actually two singers named 'Wangfei'. At this time, we need to combine common sense to select the more likely one. Generally speaking, the more well-known entities correspond to more information (that is, the introduction more detailed). The score of similarity gives a higher weight to the entity more relevant to the sentence.\n\nWhen constructing the training set for the similarity scoring model, since the positive samples are significantly smaller than the negative samples, we performed 5 oversamplings on the positive samples and 5 randomly selected training sets from all negative samples of each data. The positive and negative relationship of the one-hop relationship is easier to understand. The positive sample of the two-hop relationship is the concatenation of the correct one-hop and two-hop relationship, and the wrong relationship is not put into the negative sample because it may interfere with the one-hop relationship score. In addition, entities in all questions are replaced with <e> in order to reduce entity interference. We tried several common models, the results of relation scoring model is shown in table TABREF20. Bert model has the highest accuracy of 95.7%.\n\nThe simple-complex model is a simple binary classifier, it has an accuracy rate of 91%. Final Answer Selection results are shown in table TABREF22. We evaluated the model using accuracy indicator. The baseline model, which is the bert relation similarity model mentioned above, has an accuracy of 68% over 100 dev data. After adding the object similarity score and sparql rules, the accuracy is increased to 75%.\n\nSince the correct answer to test set has not yet been released, we are unable to verify the accuracy of each model. According to the final version submitted on the website, our model has a F1-score of 70.45% in test set.\n\nWe introduce an open domain question answering system based on Chinese knowledge graph in this paper. The system consists of a topic entity selection module, a relationship recognition module and an answer selection module. Our method obtained an F1 score of 70.45% on the test data.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 82
+    },
+    {
+      "section": "Abstract",
+      "start": 84,
+      "end": 450
+    },
+    {
+      "section": "Introduction",
+      "start": 452,
+      "end": 1181
+    },
+    {
+      "section": "Related Work",
+      "start": 1183,
+      "end": 2949
+    },
+    {
+      "section": "The Proposed Model",
+      "start": 2951,
+      "end": 3720
+    },
+    {
+      "section": "The Proposed Model ::: Topic Entity Recognition",
+      "start": 3722,
+      "end": 4180
+    },
+    {
+      "section": "The Proposed Model ::: Topic Entity Recognition ::: NER Module",
+      "start": 4182,
+      "end": 4874
+    },
+    {
+      "section": "The Proposed Model ::: Topic Entity Recognition ::: Stop-words",
+      "start": 4876,
+      "end": 5422
+    },
+    {
+      "section": "The Proposed Model ::: Topic Entity Recognition ::: Scoring Module",
+      "start": 5424,
+      "end": 7547
+    },
+    {
+      "section": "The Proposed Model ::: Relation Recognition",
+      "start": 7549,
+      "end": 7800
+    },
+    {
+      "section": "The Proposed Model ::: Relation Recognition ::: Subgraph Extraction",
+      "start": 7802,
+      "end": 8349
+    },
+    {
+      "section": "The Proposed Model ::: Relation Recognition ::: Scoring Module",
+      "start": 8351,
+      "end": 10127
+    },
+    {
+      "section": "The Proposed Model ::: Answer Selection",
+      "start": 10129,
+      "end": 10290
+    },
+    {
+      "section": "The Proposed Model ::: Answer Selection ::: simple-complex Question Classifier",
+      "start": 10292,
+      "end": 10762
+    },
+    {
+      "section": "The Proposed Model ::: Answer Selection ::: Sparql Generation",
+      "start": 10764,
+      "end": 12033
+    },
+    {
+      "section": "Experiments and Results ::: Dataset",
+      "start": 12035,
+      "end": 12671
+    },
+    {
+      "section": "Experiments and Results ::: Topic Entity Recognition",
+      "start": 12673,
+      "end": 13315
+    },
+    {
+      "section": "Experiments and Results ::: Relation Recognition",
+      "start": 13317,
+      "end": 14176
+    },
+    {
+      "section": "Experiments and Results ::: Answer Selection",
+      "start": 14178,
+      "end": 14812
+    },
+    {
+      "section": "Conclusion",
+      "start": 14814,
+      "end": 15097
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "test",
+    "qasper_paper_id": "1910.12477",
+    "arxiv_id": "1910.12477",
+    "source_url": "https://arxiv.org/abs/1910.12477",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}

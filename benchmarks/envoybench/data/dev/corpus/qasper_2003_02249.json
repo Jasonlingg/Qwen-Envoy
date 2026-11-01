@@ -1,0 +1,114 @@
+{
+  "doc_id": "qasper_2003_02249",
+  "title": "jiant: A Software Toolkit for Research on General-Purpose Text Understanding Models",
+  "text": "jiant: A Software Toolkit for Research on General-Purpose Text Understanding Models\n\nWe introduce jiant, an open source toolkit for conducting multitask and transfer learning experiments on English NLU tasks. jiant enables modular and configuration-driven experimentation with state-of-the-art models and implements a broad set of tasks for probing, transfer learning, and multitask training experiments. jiant implements over 50 NLU tasks, including all GLUE and SuperGLUE benchmark tasks. We demonstrate that jiant reproduces published performance on a variety of tasks and models, including BERT and RoBERTa. jiant is available at https://jiant.info.\n\nThis paper introduces jiant, an open source toolkit that allows researchers to quickly experiment on a wide array of NLU tasks, using state-of-the-art NLP models, and conduct experiments on probing, transfer learning, and multitask training. jiant supports many state-of-the-art Transformer-based models implemented by Huggingface's Transformers package, as well as non-Transformer models such as BiLSTMs.\n\nPackages and libraries like HuggingFace's Transformers BIBREF0 and AllenNLP BIBREF1 have accelerated the process of experimenting and iterating on NLP models by both abstracting out implementation details, and simplifying the model training pipeline. jiant extends the capabilities of both toolkits by presenting a wrapper that implements a variety of complex experimental pipelines in a scalable and easily controllable setting. jiant contains a task bank of over 50 tasks, including all the tasks presented in GLUE BIBREF2, SuperGLUE BIBREF3, the edge-probing suite BIBREF4, and the SentEval probing suite BIBREF5, as well as other individual tasks including CCG supertagging BIBREF6, SocialIQA BIBREF7, and CommonsenseQA BIBREF8. jiant is also the official baseline codebase for the SuperGLUE benchmark.\n\njiant's core design principles are:\n\nEase of use: jiant should allow users to run a variety of experiments using state-of-the-art models via an easy to use configuration-driven interface. jiant should also provide features that support correct and reproducible experiments, including logging and saving and restoring model state.\n\nAvailability of NLU tasks: jiant should maintain and continue to grow a collection of tasks useful for NLU research, especially popular evaluation tasks and tasks commonly used in pretraining and transfer learning.\n\nAvailability of cutting-edge models: jiant should make implementations of state-of-the-art models available for experimentation.\n\nOpen source: jiant should be free to use, and easy to contribute to.\n\nEarly versions of jiant have already been used in multiple works, including probing analyses BIBREF4, BIBREF9, BIBREF10, BIBREF11, BIBREF12, BIBREF13, transfer learning experiments BIBREF14, BIBREF15, and dataset and benchmark construction BIBREF3, BIBREF2, BIBREF16.\n\nTransfer learning is an area of research that uses knowledge from pretrained models to transfer to new tasks. In recent years, Transformer-based models like BERT BIBREF17 and T5 BIBREF18 have yielded state-of-the-art results on the lion's share of benchmark tasks for language understanding through pretraining and transfer, often paired with some form of multitask learning.\n\njiant enables a variety of complex training pipelines through simple configuration changes, including multi-task training BIBREF19, BIBREF20 and pretraining, as well as the sequential fine-tuning approach from STILTs BIBREF15. In STILTs, intermediate task training takes a pretrained model like ELMo or BERT, and applies supplementary training on a set of intermediate tasks, before finally performing single-task training on additional downstream tasks.\n\njiant v1.3.0 requires Python 3.5 or later. jiant can be installed via pip, or cloned and installed from GitHub. jiant's core dependencies are PyTorch BIBREF21, AllenNLP BIBREF1, and HuggingFace's Transformers BIBREF0. jiant is released under the MIT License BIBREF22.\n\nTasks: Tasks have references to task data, methods for processing data, references to classifier heads, and methods for calculating performance metrics, and making predictions.\n\nSentence Encoder: Sentence encoders map from the indexed examples to a sentence-level representation. Sentence encoders can include an input module (e.g., Transformer models, ELMo, or word embeddings), followed by an optional second layer of encoding (usually a BiLSTM). Examples of possible sentence encoder configurations include BERT, ELMo followed by a BiLSTM, BERT with a variety of pooling and aggregation metthods, or a bag of words model.\n\nTask-Specific Output Heads: Task-specific output modules map representations from sentence encoders to outputs specific to a task, e.g. entailment/neutral/contradiction for NLI tasks, or tags for part-of-speech tagging. They also include logic for computing the corresponding loss for training (e.g. cross-entropy).\n\nTrainer: Trainers manage the control flow for the training and validation loop for experiments. They sample batches from one or more tasks, perform forward and backward passes, calculate training metrics, evaluate on a validation set, and save checkpoints. Users can specify experiment-specific parameters such as learning rate, batch size, and more.\n\nConfig: Config files or flags are defined in HOCON format. Configs specify parameters for jiant experiments including choices of tasks, sentence encoder, and training routine.\n\nConfigs are jiant's primary user interface. Tasks and modeling components are designed to be modular, while jiant's pipeline is a monolithic, configuration-driven design intended to facilitate a number of common workflows outlined in SECREF17.\n\njiant's core pipeline consists of the five stages described below and illustrated in Figure FIGREF16:\n\nA config or multiple configs defining an experiment are interpreted. Users can choose and configure models, tasks, and stages of training and evaluation.\n\nThe tasks and sentence encoder are prepared:\n\nThe task data is loaded, tokenized, and indexed, and (optionally) the preprocessed task objects are serialized and cached. In this process, AllenNLP is used to create the vocabulary and index the tokenized data.\n\nThe sentence encoder is constructed and (optionally) pretrained weights are loaded.\n\nThe task-specific output heads are created for each task, and task heads are attached to a common sentence encoder. Optionally, different tasks can share the same output head, as in BIBREF20.\n\nOptionally, in the intermediate phase the trainer samples batches randomly from one or more tasks, and trains the shared model.\n\nOptionally, in the target training phase, a copy of the model is configured and trained or fine-tuned for each target task separately.\n\nOptionally, the model is evaluated on the validation and/or test sets of the target tasks.\n\njiant supports over 50 tasks. Task types include classification, regression, sequence generation, tagging, and span prediction. jiant focuses on NLU tasks like MNLI BIBREF24, CommonsenseQA BIBREF8, the Winograd Schema Challenge BIBREF25, and SQuAD BIBREF26. A full inventory of tasks and task variants is available in the jiant/tasks module.\n\njiant provides support for cutting-edge sentence encoder models, including support for Huggingface's Transformers. Supported models include: BERT BIBREF17, RoBERTa BIBREF27, XLNet BIBREF28, XLM BIBREF29, GPT BIBREF30, GPT-2 BIBREF31, ALBERT BIBREF32 and ELMo BIBREF33. jiant also supports the from-scratch training of (bidirectional) LSTMs BIBREF34 and deep bag of words models BIBREF35, as well as syntax-aware models such as PRPN BIBREF36 and ON-LSTM BIBREF37. jiant also supports word embeddings such as GloVe BIBREF38.\n\njiant experiments can be run with a simple CLI:\n\njiant provides default config files that allow running many experiments without modifying source code.\n\njiant also provides baseline config files that can serve as a starting point for model development and evaluation against GLUE BIBREF2 and SuperGLUE BIBREF3 benchmarks.\n\nMore advanced configurations can be developed by composing multiple configurations files and overrides. Figure FIGREF29 shows a config file that overrides a default config, defining an experiment that uses BERT as the sentence encoder. This config includes an example of a task-specific configuration, which can be overridden in another config file or via a command line override.\n\njiant also implements the option to provide command line overrides with a flag. This option makes it easy to write scripts that launch jiant experiments over a range of parameters, for example while performing grid search across hyperparameters. jiant users have successfully run large-scale experiments launching hundreds of runs on both Kubernetes and Slurm.\n\nHere we highlight some example use cases and key corresponding jiant config options required in these experiments:\n\nFine-tune BERT on SWAG BIBREF39 and SQUAD BIBREF26, then fine-tune on HellaSwag BIBREF40:\n\nTrain a probing classifier over a frozen BERT model, as in BIBREF9:\n\nCompare performance of GloVe BIBREF38 embeddings using a BiLSTM:\n\nEvaluate ALBERT BIBREF32 on the MNLI BIBREF24 task:\n\njiant runs on consumer-grade hardware or in cluster environments with or without CUDA GPUs. The jiant repository also contains documentation and configuration files demonstrating how to deploy jiant in Kubernetes clusters on Google Kubernetes Engine.\n\njiant generates custom log files that capture experimental configurations, training and evaluation metrics, and relevant run-time information.\n\njiant also generates TensorBoard event files BIBREF41 for training and evaluation metric tracking. TensorBoard event files can be visualized using the TensorBoard Scalars Dashboard.\n\njiant implements features that improve run stability and efficiency:\n\njiant implements checkpointing options designed to offer efficient early stopping and to show consistent behavior when restarting after an interruption.\n\njiant caches preprocessed task data to speed up reuse across experiments which share common data resources and artifacts.\n\njiant implements gradient accumulation and multi-GPU, which enables training on larger batches than can fit in memory for a single GPU.\n\njiant supports outputting predictions in a format ready for GLUE and SuperGLUE benchmark submission.\n\njiant's design offers conveniences that reduce the need to modify code when making changes:\n\njiant's task registry makes it easy to define a new version of an existing task using different data. Once the new task is defined in the task registry, the task is available as an option in jiant's config.\n\njiant's sentence encoder and task output head abstractions allow for easy support of new sentence encoders.\n\nIn use cases requiring the introduction of a new task, users can use class inheritance to build on a number of available parent task types including classification, tagging, span prediction, span classification, sequence generation, regression, ranking, and multiple choice task classes. For these task types, corresponding task-specific output heads are already implemented.\n\nMore than 30 researchers and developers from more than 5 institutions have contributed code to the jiant project. jiant's maintainers welcome pull requests that introduce new tasks or sentence encoder components, and pull request are actively reviewed. The jiant repository's continuous integration system requires that all pull requests pass unit and integration tests and meet Black code formatting requirements.\n\nWhile jiant is quite flexible in the pipelines that can be specified through configs, and some components are highly modular (e.g., tasks, sentence encoders, and output heads), modification of the pipeline code can be difficult. For example, training in more than two phases would require modifying the trainer code. Making multi-stage training configurations more flexible is on jiant's development roadmap.\n\njiant is actively being developed. The jiant project has prioritized continuing to add support for new Transformer models and adding tasks that are commonly used for pretraining and evaluation in NLU, including sequence-to-sequence tasks.\n\nAdditionally, there are plans to make jiant's training phase configuration options more flexible to allow training in more than two phases, and to continue to refactor jiant's code to keep jiant flexible to track developments in NLU research.\n\nTo benchmark jiant, we perform a set of experiments that reproduce external results for single fine-tuning and transfer learning experiments. jiant has been benchmarked extensively in both published and ongoing work on a majority of the implemented tasks.\n\nWe benchmark single-task fine-tuning configurations using CommonsenseQA BIBREF8 and SocialIQA BIBREF7. On CommonsenseQA with $\\mathrm {RoBERTa}_\\mathrm {LARGE}$, jiant achieves an accuracy of 0.722, comparable to 0.721 reported by BIBREF27. On SocialIQA with BERT-large, jiant achieves a dev set accuracy of 0.658, comparable to 0.66 reported in BIBREF7.\n\nNext, we benchmark jiant's transfer learning regime. We perform transfer experiments from MNLI to BoolQ with BERT-large. In this configuration BIBREF42 demonstrated an accuracy improvement of 0.78 to 0.82 on the dev set, and jiant achieves an improvement of 0.78 to 0.80.\n\njiant provides a configuration-driven interface for defining transfer learning and representation learning experiments using a bank of over 50 NLU tasks, cutting-edge sentence encoder models, and multi-task and multi-stage training procedures. Further, jiant is shown to be able to replicate published performance on various NLU tasks.\n\njiant's modular design of task and sentence encoder components make it possible for users to quickly and easily experiment with a large number of tasks, models, and parameter configurations, without editing source code. jiant's design also makes it easy to add new tasks, and jiant's architecture makes it convenient to extend jiant to support new sentence encoders.\n\njiant code is open source, and jiant invites contributors to open issues or submit pull request to the jiant project repository: https://github.com/nyu-mll/jiant.\n\nKatherin Yu, Jan Hula, Patrick Xia, Raghu Pappagari, Shuning Jin, R. Thomas McCoy, Roma Patel, Yinghui Huang, Edouard Grave, Najoung Kim, Thibault Févry, Berlin Chen, Nikita Nangia, Anhad Mohananey, Katharina Kann, Shikha Bordia, Nicolas Patry, David Benton, and Ellie Pavlick have contributed substantial engineering assistance to the project.\n\nThe early development of jiant took at the 2018 Frederick Jelinek Memorial Summer Workshop on Speech and Language Technologies, and was supported by Johns Hopkins University with unrestricted gifts from Amazon, Facebook, Google, Microsoft and Mitsubishi Electric Research Laboratories.\n\nSubsequent development was possible in part by a donation to NYU from Eric and Wendy Schmidt made by recommendation of the Schmidt Futures program, by support from Intuit Inc., and by support from Samsung Research under the project Improving Deep Learning using Latent Structure. We gratefully acknowledge the support of NVIDIA Corporation with the donation of a Titan V GPU used at NYU in this work. Alex Wang's work on the project is supported by the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE 1342536. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation. Yada Pruksachatkun's work on the project is supported in part by the Moore-Sloan Data Science Environment as part of the NYU Data Science Services initiative. Sam Bowman's work on jiant during Summer 2019 took place in his capacity as a visiting researcher at Google.",
+  "sections": [
+    {
+      "section": "Title",
+      "start": 0,
+      "end": 83
+    },
+    {
+      "section": "Abstract",
+      "start": 85,
+      "end": 653
+    },
+    {
+      "section": "Introduction",
+      "start": 655,
+      "end": 2884
+    },
+    {
+      "section": "Background",
+      "start": 2886,
+      "end": 3717
+    },
+    {
+      "section": "jiant System Overview ::: Requirements",
+      "start": 3719,
+      "end": 3986
+    },
+    {
+      "section": "jiant System Overview ::: jiant Components",
+      "start": 3988,
+      "end": 5703
+    },
+    {
+      "section": "jiant System Overview ::: jiant Pipeline Overview",
+      "start": 5705,
+      "end": 6855
+    },
+    {
+      "section": "jiant System Overview ::: Task and Model resources in jiant",
+      "start": 6857,
+      "end": 7722
+    },
+    {
+      "section": "jiant System Overview ::: User Interface",
+      "start": 7724,
+      "end": 8789
+    },
+    {
+      "section": "jiant System Overview ::: Example jiant Use Cases and Options",
+      "start": 8791,
+      "end": 9184
+    },
+    {
+      "section": "jiant System Overview ::: jiant Deployment Environments",
+      "start": 9186,
+      "end": 9436
+    },
+    {
+      "section": "jiant System Overview ::: Logging and Metric Tracking",
+      "start": 9438,
+      "end": 9763
+    },
+    {
+      "section": "jiant System Overview ::: Optimizations and Other Features",
+      "start": 9765,
+      "end": 10349
+    },
+    {
+      "section": "jiant System Overview ::: Extensibility",
+      "start": 10351,
+      "end": 11552
+    },
+    {
+      "section": "jiant System Overview ::: Limitations",
+      "start": 11554,
+      "end": 11962
+    },
+    {
+      "section": "jiant System Overview ::: jiant Development Roadmap",
+      "start": 11964,
+      "end": 12446
+    },
+    {
+      "section": "Benchmark Experiments",
+      "start": 12448,
+      "end": 13332
+    },
+    {
+      "section": "Conclusion",
+      "start": 13334,
+      "end": 14201
+    },
+    {
+      "section": "Acknowledgments",
+      "start": 14203,
+      "end": 15840
+    }
+  ],
+  "metadata": {
+    "source_dataset": "allenai/qasper",
+    "source_split": "validation",
+    "qasper_paper_id": "2003.02249",
+    "arxiv_id": "2003.02249",
+    "source_url": "https://arxiv.org/abs/2003.02249",
+    "submitted": "unknown",
+    "coverage": "qasper_s2orc_text",
+    "source_kind": "research_paper",
+    "parser_version": "qasper-research-v2",
+    "license": "CC BY 4.0"
+  }
+}
