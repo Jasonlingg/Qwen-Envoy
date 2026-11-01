@@ -3,19 +3,22 @@
 Requires the [training] extra:
   pip install -e ".[training]"
 
-Run on a GPU box (single H100/A100/A10G):
-  python scripts/train_sft.py train --data data/sft/qwen_traj_smoke.jsonl --epochs 1
-  python scripts/train_sft.py train --data data/sft/qwen_traj_full.jsonl \
-      --epochs 2 --out checkpoints/sft_qwen_1.5b
+Check the published v5 split without loading a model:
+  python scripts/train_sft.py check-data --data data/sft/qasper-v5/train.jsonl \
+      --val-data data/sft/qasper-v5/val.jsonl \
+      --corpus-manifest data/sft/qasper-v5/manifest.json
 
-After training, sanity-check the checkpoint:
-  python scripts/train_sft.py sanity-check --model checkpoints/sft_qwen_1.5b/final
+Training requires a GPU, the [training] extra, and a new output directory.
+The frozen September 2026 training record is in release/qwen-v5-training/;
+this current script is an inspectable recipe, not its byte-identical source.
 """
 
 from __future__ import annotations
 
 import json
+import math
 import platform
+import re
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -25,6 +28,7 @@ import typer
 from rich.console import Console
 
 from src.eval.hashing import sha256 as _sha256
+from src.policies.code_execution import SYSTEM_PROMPT
 
 console = Console()
 app = typer.Typer()
@@ -45,6 +49,108 @@ LORA_CONFIG = {
     "bias": "none",
     "task_type": "CAUSAL_LM",
 }
+
+_ASSIGNED_DOC = re.compile(r'doc_id:\s*"([^"]+)"')
+
+
+def _load_conversations(path: Path, split: str) -> list[dict]:
+    """Read complete alternating agent turns before any model/GPU allocation."""
+    rows = []
+    for line_number, line in enumerate(path.read_text().splitlines(), 1):
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{split} line {line_number}: invalid JSON: {exc.msg}") from exc
+        messages = row.get("messages") if isinstance(row, dict) else None
+        if not isinstance(messages, list) or len(messages) < 3 or len(messages) % 2 != 1:
+            raise ValueError(f"{split} line {line_number}: need system, user, assistant turns")
+        for index, message in enumerate(messages):
+            role = "system" if index == 0 else ("user" if index % 2 else "assistant")
+            if (not isinstance(message, dict) or message.get("role") != role
+                    or not isinstance(message.get("content"), str)
+                    or not message["content"].strip()):
+                raise ValueError(
+                    f"{split} line {line_number}, message {index}: expected nonempty {role}"
+                )
+        rows.append(row)
+    if not rows:
+        raise ValueError(f"{split}: no conversations")
+    if len({row["messages"][1]["content"] for row in rows}) != len(rows):
+        raise ValueError(f"{split}: duplicate initial questions")
+    if len({row["messages"][0]["content"] for row in rows}) != 1:
+        raise ValueError(f"{split}: system prompts differ")
+    return rows
+
+
+def _check_splits(train_rows: list[dict], val_rows: list[dict] | None) -> None:
+    if val_rows is None:
+        return
+    if train_rows[0]["messages"][0]["content"] != val_rows[0]["messages"][0]["content"]:
+        raise ValueError("train and validation system prompts differ")
+    train_questions = {row["messages"][1]["content"] for row in train_rows}
+    val_questions = {row["messages"][1]["content"] for row in val_rows}
+    if train_questions & val_questions:
+        raise ValueError("train and validation share an initial question")
+    all_questions = train_questions | val_questions
+    doc_matches = [_ASSIGNED_DOC.search(question) for question in all_questions]
+    if any(doc_matches):
+        if not all(doc_matches):
+            raise ValueError("assigned-paper data has a missing doc_id")
+        train_docs = {_ASSIGNED_DOC.search(q).group(1) for q in train_questions}
+        val_docs = {_ASSIGNED_DOC.search(q).group(1) for q in val_questions}
+        if train_docs & val_docs:
+            raise ValueError("train and validation share an assigned paper")
+
+
+def _check_declared_manifest(
+    path: Path | None, data: Path, val_data: Path | None, train_rows: list[dict],
+) -> None:
+    """Check pinned v5 split hashes and prompt when a split manifest is supplied."""
+    if path is None:
+        return
+    manifest = json.loads(path.read_text())
+    if not isinstance(manifest, dict):
+        raise ValueError("corpus manifest must be a JSON object")
+    splits = manifest.get("splits")
+    if splits is not None:
+        if not isinstance(splits, dict) or "train" not in splits:
+            raise ValueError("split manifest needs a train entry")
+        for name, file_path in (("train", data), ("val", val_data)):
+            if file_path is None:
+                continue
+            declared = splits.get(name)
+            if not isinstance(declared, dict) or declared.get("sha256") != _sha256(file_path):
+                raise ValueError(f"{name} file does not match split manifest hash")
+    prompt_hash = manifest.get("system_prompt_sha256")
+    if prompt_hash is not None:
+        import hashlib
+        actual = hashlib.sha256(train_rows[0]["messages"][0]["content"].encode()).hexdigest()
+        if prompt_hash != actual:
+            raise ValueError("system prompt does not match manifest hash")
+
+
+def _checked_data(data: Path, val_data: Path | None, corpus_manifest: Path | None):
+    rows = _load_conversations(data, "train")
+    val_rows = _load_conversations(val_data, "validation") if val_data is not None else None
+    _check_splits(rows, val_rows)
+    _check_declared_manifest(corpus_manifest, data, val_data, rows)
+    return rows, val_rows
+
+
+@app.command("check-data")
+def check_data(
+    data: Path = typer.Option(..., "--data"),
+    val_data: Path | None = typer.Option(None, "--val-data"),
+    corpus_manifest: Path | None = typer.Option(None, "--corpus-manifest"),
+) -> None:
+    """Check conversation structure and declared split identity without GPU/model loading."""
+    rows, val_rows = _checked_data(data, val_data, corpus_manifest)
+    console.print(
+        f"Validated {len(rows)} train and {len(val_rows) if val_rows is not None else 0} "
+        "validation conversations; no shared questions or assigned papers."
+    )
 
 
 def _expand_per_action(rows: list[dict]) -> list[dict]:
@@ -147,10 +253,13 @@ def _load_training_deps():
     try:
         import torch
         from datasets import Dataset
-        from peft import LoraConfig, PeftModel, get_peft_model
+        from peft import LoraConfig, PeftModel
         from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
         from trl import SFTConfig, SFTTrainer
-        return torch, Dataset, LoraConfig, PeftModel, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer
+        return (
+            torch, Dataset, LoraConfig, PeftModel, AutoModelForCausalLM,
+            AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer,
+        )
     except ImportError as e:
         console.print(f"[red]Missing dependency: {e}[/red]")
         console.print("Run: pip install -e '.[training]'")
@@ -159,10 +268,10 @@ def _load_training_deps():
 
 @app.command()
 def train(
-    data: Path = typer.Option(..., "--data", "-d", help="JSONL file from collect_sft_data.py"),
+    data: Path = typer.Option(..., "--data", "-d", help="Conversation JSONL"),
     val_data: Path = typer.Option(None, "--val-data",
         help="Held-out JSONL. Eval loss diverging from train loss means memorisation."),
-    out: Path = typer.Option(Path("checkpoints/sft_qwen_1.5b"), "--out", "-o"),
+    out: Path = typer.Option(Path("checkpoints/sft_qwen3_8b"), "--out", "-o"),
     epochs: int = typer.Option(1, "--epochs", "-e"),
     # LoRA needs a markedly higher LR than full fine-tuning; 2e-5 is a
     # full-fine-tune value and barely moves a rank-4 adapter.
@@ -198,19 +307,25 @@ def train(
         None, "--corpus-manifest", help="Source-corpus manifest recorded with the run"
     ),
 ) -> None:
-    torch, Dataset, LoraConfig, PeftModel, get_peft_model, AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, SFTConfig, SFTTrainer = _load_training_deps()
-
-    # Load data
-    rows = [json.loads(line) for line in data.read_text().splitlines() if line.strip()]
+    if (epochs <= 0 or batch_size <= 0 or grad_accum <= 0 or max_seq_len <= 0
+            or save_steps < 0 or save_total_limit <= 0 or seed < 0
+            or max_steps != -1 and max_steps <= 0
+            or not math.isfinite(lr) or lr <= 0):
+        raise ValueError("invalid training budget, sequence length, seed, or learning rate")
+    if out.exists() and (not out.is_dir() or any(out.iterdir())):
+        raise ValueError(f"output directory is not empty: {out}")
+    rows, val_rows = _checked_data(data, val_data, corpus_manifest)
     console.print(f"Loaded {len(rows)} conversations from {data}")
-
-    val_rows = None
-    if val_data:
-        val_rows = [json.loads(line) for line in val_data.read_text().splitlines() if line.strip()]
+    if val_rows is not None:
         console.print(f"Loaded {len(val_rows)} held-out conversations from {val_data}")
 
+    (
+        torch, hf_dataset, lora_config_cls, peft_model_cls, auto_model_cls,
+        auto_tokenizer_cls, bnb_config_cls, sft_config_cls, sft_trainer_cls,
+    ) = _load_training_deps()
+
     # Tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(
+    tokenizer = auto_tokenizer_cls.from_pretrained(
         base_model, revision=base_revision, trust_remote_code=True
     )
     if tokenizer.pad_token is None:
@@ -232,7 +347,7 @@ def train(
             tokenizer, action_rows, max_seq_len, "train"
         )
         train_stats.update(action_stats)
-        dataset = Dataset.from_list(tokenized_rows)
+        dataset = hf_dataset.from_list(tokenized_rows)
         eval_dataset = None
         if val_rows is not None:
             val_action_rows = _expand_per_action(val_rows)
@@ -240,7 +355,7 @@ def train(
                 tokenizer, val_action_rows, max_seq_len, "validation"
             )
             val_stats.update(val_action_stats)
-            eval_dataset = Dataset.from_list(tokenized_val)
+            eval_dataset = hf_dataset.from_list(tokenized_val)
         console.print(
             f"[green]Verified exact inference-prefix alignment for "
             f"{train_stats['actions']} training actions[/green]"
@@ -254,20 +369,20 @@ def train(
                 "Qwen3 full-conversation training misaligns intermediate action prefixes. "
                 "Use the default --per-action mode."
             )
-        dataset = Dataset.from_list(rows)
-        eval_dataset = Dataset.from_list(val_rows) if val_rows is not None else None
+        dataset = hf_dataset.from_list(rows)
+        eval_dataset = hf_dataset.from_list(val_rows) if val_rows is not None else None
 
     # Model
     bnb_config = None
     if load_in_4bit:
-        bnb_config = BitsAndBytesConfig(
+        bnb_config = bnb_config_cls(
             load_in_4bit=True,
             bnb_4bit_quant_type="nf4",
             bnb_4bit_compute_dtype=torch.bfloat16,
             bnb_4bit_use_double_quant=True,
         )
 
-    model = AutoModelForCausalLM.from_pretrained(
+    model = auto_model_cls.from_pretrained(
         base_model,
         revision=base_revision,
         quantization_config=bnb_config,
@@ -277,7 +392,7 @@ def train(
     )
 
     if adapter_checkpoint:
-        model = PeftModel.from_pretrained(
+        model = peft_model_cls.from_pretrained(
             model, adapter_checkpoint, is_trainable=True
         )
         lora_config = None
@@ -285,12 +400,12 @@ def train(
             f"[green]Continuing trainable adapter from {adapter_checkpoint}[/green]"
         )
     else:
-        lora_config = LoraConfig(**LORA_CONFIG)
+        lora_config = lora_config_cls(**LORA_CONFIG)
 
     out_dir = str(out)
     final_dir = str(out / "final")
 
-    sft_config = SFTConfig(
+    sft_config = sft_config_cls(
         output_dir=out_dir,
         num_train_epochs=epochs,
         per_device_train_batch_size=batch_size,
@@ -335,7 +450,7 @@ def train(
 
     tokenizer.model_max_length = max_seq_len
 
-    trainer = SFTTrainer(
+    trainer = sft_trainer_cls(
         model=model,
         processing_class=tokenizer,
         train_dataset=dataset,
@@ -361,7 +476,7 @@ def train(
             {"path": str(corpus_manifest), "sha256": _sha256(corpus_manifest)}
             if corpus_manifest is not None else None
         ),
-        "lora": LORA_CONFIG,
+        "lora": LORA_CONFIG if adapter_checkpoint is None else None,
         "training_script_sha256": _sha256(Path(__file__)),
         "training": {
             "epochs": epochs, "max_steps": max_steps, "learning_rate": lr,
@@ -389,6 +504,13 @@ def train(
     console.print(f"[green]Saved to {final_dir}[/green]")
 
 
+def _sanity_messages(question: str) -> list[dict[str, str]]:
+    return [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": f"Question: {question}"},
+    ]
+
+
 @app.command()
 def sanity_check(
     model: Path = typer.Option(..., "--model", "-m", help="Path to saved LoRA checkpoint"),
@@ -397,43 +519,37 @@ def sanity_check(
         "--question", "-q",
     ),
     max_new_tokens: int = typer.Option(512, "--max-tokens"),
+    base_model: str = typer.Option(BASE_MODEL, "--base-model"),
+    base_revision: str = typer.Option(BASE_REVISION, "--base-revision"),
 ) -> None:
-    """Greedy-decode one question. Output should be Python code, not prose."""
-    torch, _, LoraConfig, _, AutoModelForCausalLM, AutoTokenizer, _, _, _ = _load_training_deps()
-    from peft import PeftModel
+    """Greedy-decode one question with the non-thinking training prompt."""
+    if max_new_tokens <= 0:
+        raise ValueError("--max-tokens must be positive")
+    (
+        torch, _, _, peft_model_cls, auto_model_cls, auto_tokenizer_cls, _, _, _,
+    ) = _load_training_deps()
 
-    base_model = BASE_MODEL
-    tokenizer = AutoTokenizer.from_pretrained(base_model, trust_remote_code=True)
-    base = AutoModelForCausalLM.from_pretrained(
-        base_model, device_map="auto", dtype=torch.bfloat16, trust_remote_code=True
+    tokenizer = auto_tokenizer_cls.from_pretrained(
+        base_model, revision=base_revision, trust_remote_code=True
     )
-    peft_model = PeftModel.from_pretrained(base, str(model))
+    base = auto_model_cls.from_pretrained(
+        base_model, revision=base_revision, device_map="auto", dtype=torch.bfloat16,
+        trust_remote_code=True,
+    )
+    peft_model = peft_model_cls.from_pretrained(base, str(model))
     peft_model.eval()
 
-    _SYSTEM_PROMPT = (
-        "You are an agent exploring a document corpus via Python code.\n\n"
-        "Tools (already imported):\n"
-        "  search(query, top_k=5)         → [{\"doc_id\", \"title\", \"chunk\", \"score\"}]\n"
-        "  search(query, method=\"chunk\")  → chunk-level search for buried facts\n"
-        "  read(doc_id)                   → full document text\n"
-        "  extract(doc_id, regex)         → regex matches from a doc\n"
-        "  search_within(doc_id, query)   → relevant windows inside a specific doc\n"
-        "  verify(doc_id, claim)          → {\"found\", \"match_ratio\", \"excerpt\"}\n"
-        "  list_docs()                    → [{\"doc_id\", \"title\", \"chars\"}]\n\n"
-        "Each turn: write Python code OR a SUBMIT line. Never both. Never prose. Never markdown.\n"
-        "Variables persist across turns. Use print() to see output.\n\n"
-        "When you have the answer:\n"
-        "SUBMIT: <your answer> CITATIONS: [\"doc_id_1\", \"doc_id_2\"]"
+    messages = _sanity_messages(question)
+    text = tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True, enable_thinking=False,
     )
-    messages = [
-        {"role": "system", "content": _SYSTEM_PROMPT},
-        {"role": "user", "content": f"Question: {question}"},
-    ]
-    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt").to(peft_model.device)
 
     with torch.no_grad():
-        out = peft_model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
+        out = peft_model.generate(
+            **inputs, max_new_tokens=max_new_tokens, do_sample=False,
+            pad_token_id=tokenizer.eos_token_id,
+        )
     response = tokenizer.decode(out[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
 
     console.print(f"\n[bold]Question:[/bold] {question}")

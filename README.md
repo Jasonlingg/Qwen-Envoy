@@ -23,6 +23,23 @@ The first command checks saved results offline. The remaining commands set up
 the full test suite; QASPER paper text is generated from a pinned source and
 kept out of Git.
 
+For a training-code review, start at [`scripts/train_sft.py`](scripts/train_sft.py):
+it validates the split before loading a model, expands each trajectory into
+next-action targets, verifies token-for-token inference-prefix alignment, masks
+the prior context from the loss, then constructs the TRL/PEFT trainer and writes
+a run manifest. Its GPU-free data preflight is:
+
+```bash
+python scripts/train_sft.py check-data \
+  --data data/sft/qasper-v5/train.jsonl \
+  --val-data data/sft/qasper-v5/val.jsonl \
+  --corpus-manifest data/sft/qasper-v5/manifest.json
+```
+
+The [published training record](release/qwen-v5-training/README.md) pins the
+observed v5 run. The current script has changed since that run; this preflight
+does not retrain the model or prove its historical weights are reproducible.
+
 ## What the saved study shows
 
 Base Qwen3-8B and the v5 SFT adapter attempted the same 40 selected QASPER questions, each with an assigned paper. QASPER is by Dasigi et al. (2021), CC BY 4.0. This is a development study, not an original dataset or an official full-test leaderboard result.
