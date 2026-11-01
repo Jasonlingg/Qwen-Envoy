@@ -14,4 +14,4 @@ Main has two inspectable paths: QASPER Agent Studio and the optional experiment-
 | [`../src/product/experiment_atlas.py`](../src/product/experiment_atlas.py), [`EXPERIMENT_ATLAS.md`](EXPERIMENT_ATLAS.md) | Curated prior experiments and bounded source access. |
 | [`../release/`](../release/) | Recorded traces, scoring, training cards, and public inspector assets. |
 
-The [project guide](../PROJECT_GUIDE.md) has runnable commands. Frozen releases and replay hashes are unchanged by this organization work.
+The [project guide](../PROJECT_GUIDE.md) has runnable commands. The passage-pilot files remain on main because the experimental Prime-RL continuation checks their frozen hashes. Standalone timing diagnostics and unpromoted v6 packaging scripts are available at `archive-full`. Frozen releases and replay hashes are unchanged by this organization work.
