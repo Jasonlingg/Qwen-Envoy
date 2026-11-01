@@ -5,7 +5,7 @@ the preselected reranked candidate did not meet the acceptance rule.
 This evaluates passage selection for the existing multi-step Qwen code-execution
 reader. It makes no Qwen calls, launches no GPU and changes no product defaults.
 
-[Protocol and decision rule](../../docs/implementation/2026-10-22-hybrid-passage-retrieval.md).
+[Protocol and decision rule](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-22-hybrid-passage-retrieval.md).
 Compare exact previous BM25 with dense, equal-weight RRF hybrid, and top-10 hybrid
 cross-encoder reranking. Every arm returns two disjoint 1600-character windows,
 3200 characters total, selected from the full known target paper. Candidates and
@@ -82,7 +82,7 @@ not promote a different method after inspecting secondary scores. The production
 MCP, tool prompts, four-action reader budget and default retrieval remain unchanged.
 No Qwen answer, fine-tuning or workflow improvement was measured.
 
-[Previous live-smoke cases](previous-smoke-review.json): plain hybrid's humor
+[Previous live-smoke cases](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/previous-smoke-review.json): plain hybrid's humor
 window 2400..4000 contains all seven cue/category terms in the two original
 reference answers; BM25 and the cross encoder omit those terms. The complete
 annotated paragraph starts at 2045, so hybrid gets partial paragraph coverage
@@ -111,7 +111,7 @@ These are query timings on in-memory indexes, not end-to-end MCP/Qwen latency.
 Model loading in the new process took 2.97 seconds from cached files; this is not
 a network cold start. Per-paper dense-index construction medians were 0.249 /
 0.240 seconds. The evaluation reused one dev paper index. Full model/index/query
-records are in [environment](environment.json), [hardware](hardware.json) and the
+records are in [environment](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/environment.json), [hardware](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/hardware.json) and the
 per-split reports. Timings were measured without the test suite running.
 
 **Encoder truncation matters:** all 1252 dev and 1091 secondary per-question
@@ -157,14 +157,14 @@ new-paper set or start another paid reader attempt from this result alone.
 
 ## Validation and artifacts
 
-[Summary](summary.json), [primary dev report](dev.json), [secondary report](test_candidate.json)
-and [proposed reader assignments](reader-assignments.json) preserve per-question
+[Summary](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/summary.json), [primary dev report](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/dev.json), [secondary report](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/test_candidate.json)
+and [proposed reader assignments](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/reader-assignments.json) preserve per-question
 rankings, exact offsets, scores, truncation, paired differences and timing.
 The initial implementation was `e79bd99`, with plan frozen in `ce63cc3` before
-scoring. [35 focused tests](focused-tests-final.txt) passed, followed by the
-standalone [full suite](full-tests.txt): **1993 passed** in 108.40 seconds, no
+scoring. [35 focused tests](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/focused-tests-final.txt) passed, followed by the
+standalone [full suite](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/full-tests.txt): **1993 passed** in 108.40 seconds, no
 skips, three existing SWIG warnings. Ruff/diff checks passed. Existing V1 tools,
 legacy prompts, 11 protected user files, earlier live results and paid-attempt
-markers are unchanged; [preservation check](preservation.json) covers 774 prior
+markers are unchanged; [preservation check](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/hybrid-passage-retrieval/preservation.json) covers 774 prior
 files. Human review remains null. Saved metric reconstruction and artifact
 hashes are in `validation.json`.

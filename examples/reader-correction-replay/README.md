@@ -10,7 +10,7 @@ All three [original hybrid smoke](../qasper-hybrid-v5/README.md) episodes replay
 first. Each entire packet matched the saved original except its newly generated
 run UUID. Every generated policy payload matched the recorded model input.
 Only after that gate passed did the runner replace the final actions in the two
-[source-reviewed drafts](../reader-improvement-loop/correction-drafts.json).
+[source-reviewed drafts](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/reader-improvement-loop/correction-drafts.json).
 
 | Episode | Replay result | What it establishes |
 | --- | --- | --- |
@@ -67,7 +67,7 @@ python scripts/replay_reader_corrections.py \
 
 Packet UUIDs, container IDs and sandbox receipt filenames change on a fresh run.
 Original comparisons explicitly exclude only the UUID. The semantic review is
-not regenerated or relabeled. See the [workflow guide](../../docs/READER_IMPROVEMENT_LOOP.md).
+not regenerated or relabeled. See the [workflow guide](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/READER_IMPROVEMENT_LOOP.md).
 
 Verification: **39 focused tests passed; full suite 2051 passed in 137.22 seconds**,
 no skips and three existing SWIG warnings. Ruff/diff passed. Preservation checks

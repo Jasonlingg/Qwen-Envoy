@@ -1,7 +1,7 @@
 # Saved logprob execution diagnostic
 
 This is an offline analysis of the October 3, 2026 generated-token logprob
-[probe](LOGPROB_PROBE_20261003.md). It uses the previously used EnvoyBench `dev`
+[probe](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/LOGPROB_PROBE_20261003.md). It uses the previously used EnvoyBench `dev`
 questions. It is not a new inference run, answer-quality review, calibrated
 confidence measure, or model-promotion result.
 

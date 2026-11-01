@@ -138,4 +138,4 @@ python -m pytest -q tests/test_envoybench_paper_api.py \
 API tests exercise the real importer and investigator with explicitly scripted
 test policies. They verify integration, not Qwen quality. A real v5 endpoint
 smoke remains a separate check; no speedup is claimed for the prepared
-[cache experiment](INFERENCE_ABLATION.md).
+[cache experiment](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/INFERENCE_ABLATION.md).

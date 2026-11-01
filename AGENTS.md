@@ -1,73 +1,19 @@
 # Envoy agent guide
 
-## Current experiment-reading direction — October 26, 2026
+## Maintained scope
 
-The user wants a direct second-brain view of **previous experiment evidence**,
-without requiring an MCP connection. For questions about what was tried or what
-to do next, start with `docs/EXPERIMENT_ATLAS.md`, then inspect its linked
-primary artifacts. Treat the atlas as a curated index, not a new evaluation or
-an exhaustive import of ignored local `out/` files. The research MCP remains an
-optional interface. Do not convert experiment chronology or a paper-to-run link
-into a causal claim, and preserve the independent-review distinctions below.
+Qwen Envoy is a public technical case study: a Qwen3-8B code-execution worker, Docker paper tools, saved QASPER evaluation, and QASPER Agent Studio. An optional research MCP links paper evidence to experiment records. Read [the technical case study](docs/TECHNICAL_CASE_STUDY.md), [the findings](docs/QASPER_AGENT_STUDY.md), and [the project guide](PROJECT_GUIDE.md) before changing these paths. Historical prototypes and one-off experiments are preserved at the `archive-full` Git tag.
 
-The older October 9 release scope below describes the prior finishing pass. The
-user's later request authorizes this experiment atlas, while retaining the
-case-study safeguards and restrictions on unapproved paid or training runs.
+The QASPER study uses selected questions from Dasigi et al.'s dataset; it is not an original dataset or an official full-test leaderboard result. Saved replay verifies hashes and arithmetic, not semantic support. A quote match proves provenance, not claim correctness. Do not fill an independent human review with model judgments. The v5 dataset includes AI repairs, and the RL pilot did not establish answer-quality improvement.
 
-## Current release scope — October 9, 2026
+## Engineering boundaries
 
-The user chose to finish Qwen-Envoy as a public technical case study: the trained
-code-execution worker, its environment, reproducible saved evaluation, and the
-Studio trace inspector. Read `docs/TECHNICAL_CASE_STUDY.md` and `CODEX_HANDOFF.md`.
-Paper recommenders, method finders, new memory products, new benchmark tasks, and
-additional training are outside this finishing pass. The user subsequently
-authorized explicit QASPER attribution, official scoring of saved answers, and
-one bounded NVIDIA/Nebius reference run on the same 40 questions. That run is
-documented in `release/qasper-agent-study/EXPERIMENT.md`; no other paid runs or
-Runpod launch are included. Display the project as QASPER Agent Studio, a Qwen
-Envoy case study. It adapts QASPER; it is not an original question dataset or an
-official full-test QASPER leaderboard result.
+- Keep the agent multi-step and tool-mediated. Model-authored Python must run inside Docker, not on the host.
+- Preserve the recorded v1 execution and evaluation interfaces when inspecting old runs. New execution settings should be opt-in.
+- Treat [`src/env/reward.py`](src/env/reward.py) as the active historical MuSiQue reward, not a reward for research synthesis.
+- Before changing training or rewards, read [the improvement brief](docs/GPT_ASTRA_IMPROVEMENT_BRIEF.md) and state the hypothesis, expected signal, and decision rule.
+- Make experiments reproducible: record checkpoint, question split and IDs, corpus revision, decoding settings, reward version, hardware, and seed.
+- Prefer isolated changes and focused verification. Do not launch paid inference or training without a bounded plan and authorization.
+- Preserve uncommitted user files. Do not infer product success from a working MCP connection, valid JSON, or quotation spans.
 
-The weekly-digest/Obsidian plans and their success gates below are historical
-product goals, not blockers for publishing this narrower case study. Publishing
-the study does not mean those gates were achieved. Keep the safeguards and
-evidence distinctions below; never fill an independent human review with model
-judgments or equate a mechanical artifact check with answer correctness.
-
-Read [the Astra improvement brief](docs/GPT_ASTRA_IMPROVEMENT_BRIEF.md) before changing
-the training or reward code. It records the current evidence, research, and order of work.
-
-The user chose the executable-code track on September 15, 2026: Qwen writes Python against
-`search()`, `read()`, and `extract()` to explore a personal Obsidian snapshot. Read
-[the code-execution second-brain plan](docs/CODE_EXECUTION_SECOND_BRAIN.md) and
-[the weekly research radar product plan](docs/WEEKLY_RESEARCH_RADAR.md). The JSON-action research
-agent and QASPER routing/reranker track are paused unless their data is retargeted to code-execution
-trajectories.
-
-- Preserve the user's uncommitted changes in `scripts/train_grpo_custom.py`,
-  `tests/test_grpo_loss.py`, and `docs/QWEN_TRAINING_RESEARCH_AND_IMPROVEMENTS.md`.
-- Treat `src/env/reward.py` as the active reward definition. Historical reward formulas in
-  `README.md`, `RESULTS.md`, `STATUS.md`, and `PLAN.md` are not authoritative until reconciled.
-- That reward applies to MuSiQue, not research synthesis. Research quote-integrity checks are
-  not semantic support judgments or training rewards. The 20 starter questions are unreviewed
-  development prompts, not gold labels or a held-out test set.
-- Keep the task multi-step and tool-mediated. Do not collapse it into a one-shot classifier.
-- Make each experiment reproducible: record checkpoint identifier, question split and IDs,
-  corpus revision, policy decoding settings, reward version, hardware, and seed.
-- Prefer small, isolated changes followed by the narrowest meaningful verification. Do not run
-  another costly training job until a baseline over the personal-vault task has named questions,
-  reviewed outputs, and a decision rule.
-
-The user wants an evidence-based improvement, not a speculative rewrite. State the hypothesis,
-the expected signal, and the decision rule before each material experiment.
-
-The project succeeds only if both gates pass:
-
-1. **Usability:** the user receives a useful weekly AI-research digest in Obsidian and can query
-   the accumulated evidence through MCP from a larger assistant.
-2. **Model improvement:** on the same held-out code-execution tasks, trained Qwen must outperform
-   base Qwen on supported-answer quality without unacceptable regressions in execution failures,
-   latency, or cost.
-
-Do not substitute MuSiQue reward, QASPER conversion coverage, valid JSON, real quotation spans, or
-a working MCP connection for those product gates. They are component checks, not project success.
+A product-quality claim needs useful research workflow evidence and a held-out, human-reviewed supported-answer improvement over base Qwen without unacceptable execution, latency, or cost regressions. Neither has been established by the saved study.

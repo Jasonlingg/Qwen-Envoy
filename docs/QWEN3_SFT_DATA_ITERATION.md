@@ -75,7 +75,7 @@ questions in production.
 
 Corpus hash: `927f97bf4b07d4318d216467c00a5cc59f55fe20de554de1be93596d45df481f`.
 Question IDs, source/exclusion hashes, and the teacher-pilot selection are tracked in
-[`qasper_code_dev_v2_selection.json`](../data/research/qasper_code_dev_v2_selection.json).
+[`qasper_code_dev_v2_selection.json`](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/data/research/qasper_code_dev_v2_selection.json).
 The full corpus remains an ignored local artifact and must be copied with the run.
 
 This is **development**, available for error analysis and model selection. Any final
@@ -154,7 +154,7 @@ observed facts. Do not resolve anonymized citation names from model memory. Revi
 resulting data before expanding the teacher batch. Twelve examples are a process pilot,
 not a sufficient training-set claim.
 
-The tracked [review record](../data/research/qasper_sft_v3_pilot_review.json) contains every
+The tracked [review record](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/data/research/qasper_sft_v3_pilot_review.json) contains every
 question ID, decision, note, and trajectory hash. Raw trajectories, exact teacher prompts,
 generation identity, logs, and replay reports are in `out/research/qasper-sft-v3-pilot/`.
 No `train.jsonl` or `val.jsonl` was exported from this pilot.
@@ -219,7 +219,7 @@ pilots missed the original 10/12 gate; do not scale this prompt unattended.
 
 Artifacts:
 
-- [Readable examples](QASPER_SFT_V4_EXAMPLES.md).
+- [Readable examples](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/QASPER_SFT_V4_EXAMPLES.md).
 - `data/sft/qasper-v4/train.jsonl` and `val.jsonl`: complete conversations in the current
   student protocol. The existing per-action training loader supplies action-only loss.
 - `data/sft/qasper-v4/manifest.json`: hashes, paper-group split, IDs and reserved benchmarks.

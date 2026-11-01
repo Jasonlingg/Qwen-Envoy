@@ -43,7 +43,7 @@ codex mcp add envoy-research -- "$(command -v python)" \
   "$(pwd)/scripts/research_justification_mcp.py"
 ```
 
-The repository's [experiment-decision skill](../.codex/skills/envoy-research-decision/SKILL.md)
+The repository's [experiment-decision skill](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/.codex/skills/envoy-research-decision/SKILL.md)
 guides Codex on when to use these tools. It does not connect the server by
 itself, start a model, or save a record until the assistant calls an MCP tool.
 
@@ -139,6 +139,6 @@ with WebOrganizer's domain mixing. The broader transfer and paper-dependence
 claims were not independently validated. Independent human claim-level review
 was not performed.
 
-The [data-mixing workflow evaluation](RESEARCH_DECISION_EVAL_20261026.md) adds
+The [data-mixing workflow evaluation](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/RESEARCH_DECISION_EVAL_20261026.md) adds
 a real search probe, fresh-process recovery and claim-by-claim assistant review.
 It also records the missing numerical decision threshold before any training.

@@ -60,6 +60,6 @@ source integrity, not semantic support. Upstream training exposure is unknown.
 
 Use [the reader setup](PAPER_READER.md) for the live workflow. The model card
 includes the saved-comparison command, requiring no inference. The optional
-[prefix-cache experiment](INFERENCE_ABLATION.md) remains prepared, not measured.
+[prefix-cache experiment](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/INFERENCE_ABLATION.md) remains prepared, not measured.
 Historical base timing coverage is incomplete; no full cost or latency win is
 inferred from the missing measurements.

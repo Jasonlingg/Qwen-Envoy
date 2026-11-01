@@ -101,7 +101,7 @@ The watchdog deleted owned Pod `r4bp0gb1wv49sc` and STANDARD 600GB volume
 local Docker containers are absent. Unrelated resources were untouched.
 
 Reproducibility identities are bound in the saved plans and
-[summary](../examples/verifiers-port/reader-pilot-v2-20261025/summary.json):
+[summary](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/verifiers-port/reader-pilot-v2-20261025/summary.json):
 Qwen/Qwen3-8B revision `b968826d9c46dd6066d109eabc6255188de91218`, original
 V5 revision `27b912a863ff914ad45baa03624d8911dc1e17fb`, source revision
 `13b496d2a5359329b110e3419628de3cf791843b`, reward
@@ -119,9 +119,9 @@ check, not new semantic validation. All 2,534 pre-existing snapshotted files rem
 byte-identical except the intended handoff update. No files were staged or
 committed. Human review and model-quality comparison remain absent.
 
-Small receipts: [counter inspection](../examples/verifiers-port/reader-pilot-v2-20261025/optimizer-counters.json),
-[per-question groups](../examples/verifiers-port/reader-pilot-v2-20261025/question-group-results.json),
-[billing](../examples/verifiers-port/reader-pilot-v2-20261025/billing-receipt.json),
-[power events](../examples/verifiers-port/reader-pilot-v2-20261025/local-power-events.json).
+Small receipts: [counter inspection](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/verifiers-port/reader-pilot-v2-20261025/optimizer-counters.json),
+[per-question groups](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/verifiers-port/reader-pilot-v2-20261025/question-group-results.json),
+[billing](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/verifiers-port/reader-pilot-v2-20261025/billing-receipt.json),
+[power events](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/verifiers-port/reader-pilot-v2-20261025/local-power-events.json).
 Full raw traces, plans, native logs, metrics, archive and adapters are retained
 under `out/reader-prime-pilot-v2-20261025/`.

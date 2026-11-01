@@ -17,7 +17,7 @@ The dependency conflict, REPL recovery/output handling, rollout/scoring context
 mismatch, stdout-based shaping, and checkpoint-summary identity have been repaired.
 New runs use `outcome-v1` (0.8 answer F1 + 0.1 citation P + 0.1 citation R, no bonuses).
 Historical rewards below use older formulas and must not be treated as a common baseline.
-See [the readiness assessment](GPU_TRAINING_READINESS.md) for verification and remaining gates.
+See [the readiness assessment](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/GPU_TRAINING_READINESS.md) for verification and remaining gates.
 
 ## Why
 

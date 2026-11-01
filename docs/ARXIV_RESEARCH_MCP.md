@@ -72,12 +72,12 @@ implemented. With Qwen offline, the source-only tools remain available, but
 Qwen-powered investigation is unavailable. This hosting decision does not
 authorize a paid deployment or change the default `--reader none`.
 
-The [paired workflow pilot](implementation/2026-10-17-research-workflow-pilot.md)
+The [paired workflow pilot](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-17-research-workflow-pilot.md)
 prepares five frozen development questions comparing direct host tools with Qwen
 delegation. Preparation and the scripted Docker check make no model calls; live
 answering and human claim review remain separate steps.
 
-The proposed [native-web comparison](implementation/2026-10-19-native-web-comparison.md)
+The proposed [native-web comparison](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-19-native-web-comparison.md)
 tests the actual user alternative: the same assistant using ordinary web tools,
 then adding model-free MCP tools, then adding Qwen readers. It requires fresh
 native client runs and independent claim review; the frozen pilot cannot stand
@@ -132,7 +132,7 @@ paragraph scorer, not embeddings, a reranker, or a new BM25 quality result.
 V2 corpus discovery defaults to five documents; only paper-scoped search and
 search_within default to eight windows. Cross-paper find_evidence defaults to
 eight total excerpts (maximum 20, up to ten candidate passages per paper), with
-identical windows deduplicated. See [the harness diagnostic](HARNESS_V2.md) for
+identical windows deduplicated. See [the harness diagnostic](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/HARNESS_V2.md) for
 actual fixed-action results and their interpretation.
 
 ## Evaluation
@@ -152,7 +152,7 @@ model-output-token budgets at zero and never configures a reader or reasoner.
 It does not validate live Nemotron or Qwen answering. Agent-authored claim
 review below is separate from quote matching and is not human review.
 
-The [live source report](../reports/arxiv-mcp-live-20261016.json) records 19 MCP
+The [live source report](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/reports/arxiv-mcp-live-20261016.json) records 19 MCP
 calls and nine source fetches in 20.774 seconds. Dated arXiv discovery succeeded;
 Semantic Scholar search and references returned rate-limit statuses. Three
 papers opened as HTML: `2402.01030v4`, `2510.03215v2`, and `2511.20639v4`.

@@ -15,7 +15,7 @@ and export the saved run. `/model` records the observed v5 recipe and limitation
 Without an endpoint, uploads and saved views work but live inference is disabled.
 These product runs are unreviewed and separate from the frozen benchmark below.
 
-Studio also has a separate [web-to-evidence development pilot](WEB_EVIDENCE.md)
+Studio also has a separate [web-to-evidence development pilot](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/WEB_EVIDENCE.md)
 at `/web-evidence`. It replays frozen HTML/PDF responses to measure literal
 fact retention and top-three passage retrieval. Its assistant-checked labels
 and component scores are **not** Qwen answer-quality results.
@@ -34,7 +34,7 @@ any redistributed derivative. The contribution here is the bounded code-tool
 environment, paper-disjoint split audit, evidence and failure diagnostics, and
 paired model comparison. It is intended for people deciding whether a
 fine-tuned research agent is actually better than its base model. Related
-scientific-agent benchmarks already exist; [the prior-art review](PRIOR_ART.md)
+scientific-agent benchmarks already exist; [the prior-art review](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/PRIOR_ART.md)
 states what this protocol does and does not add.
 
 ## Current status
@@ -97,17 +97,17 @@ QASPER-derived set. It still failed its full promotion rule, and later training
 and transfer tests exposed regressions. Those observations motivate the
 benchmark's emphasis on supported answers, correct abstention, executable
 tool reliability, and per-question failures rather than one aggregate reward.
-See [the demo and evidence guide](../../docs/DEMO_AND_EVIDENCE.md) for the
+See [the demo and evidence guide](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/DEMO_AND_EVIDENCE.md) for the
 recorded-trace walkthrough. The recorded replays do not call a model live.
 
 ## Offline diagnostics and next comparisons
 
-The [prefix-cache experiment](INFERENCE_ABLATION.md) prepares a small same-v5
+The [prefix-cache experiment](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/INFERENCE_ABLATION.md) prepares a small same-v5
 serving comparison: caching OFF versus ON on three fixed development questions,
 with per-request timing and workload checks. It is **prepared, not run**; no
 speedup or model-quality gain is claimed. It does not change the base/v5 grades.
 
-The [Qwen thinking smoke](THINKING_ABLATION.md) prepares a matched v5
+The [Qwen thinking smoke](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/THINKING_ABLATION.md) prepares a matched v5
 thinking OFF/ON comparison. New runs can record the model's generated reasoning
 beside each code turn for inspection. No live thinking run or improvement claim
 exists yet; the saved September 30 run had thinking disabled.
@@ -144,7 +144,7 @@ an efficiency win. The original results are preserved.
 
 ### Deterministic retrieval comparator: prepared, not run
 
-The [known-paper retrieval comparator](RETRIEVAL_BASELINE.md) prepares a simple
+The [known-paper retrieval comparator](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/RETRIEVAL_BASELINE.md) prepares a simple
 alternative: fixed BM25 passage selection inside the already named paper,
 followed by one answer request to the same base or v5 checkpoint. It tests the
 value of the **agent architecture**, rather than treating a prompt/tool change
@@ -524,7 +524,7 @@ cannot establish a latency or compute-cost advantage.
 
 ## Execution boundary
 
-The benchmark's [Dockerfile](Dockerfile) contains Python tool dependencies but
+The benchmark's [Dockerfile](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/Dockerfile) contains Python tool dependencies but
 **no papers, questions, or answer keys**. The runner requires that image and
 mounts only the selected frozen corpus read-only for model-authored code. Do not
 serve an arbitrary public code-execution endpoint on the strength of this local

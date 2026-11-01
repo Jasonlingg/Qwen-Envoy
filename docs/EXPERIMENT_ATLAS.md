@@ -60,7 +60,7 @@ differ across rows. Do not compare their headline numbers as one leaderboard.
 
 ## Paper → attempt → result example
 
-The retrospective [PagedAttention question trail](../scripts/demo_research_question.py)
+The retrospective [PagedAttention question trail](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/scripts/demo_research_question.py)
 associates a verified passage from [PagedAttention, arXiv:2309.06180v1](https://arxiv.org/abs/2309.06180v1)
 with the recorded two-reader serving profile above. The trail names the paper
 as motivation; the saved profile shows two requests sharing one engine, while

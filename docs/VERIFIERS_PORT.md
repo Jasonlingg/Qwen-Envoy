@@ -1,8 +1,8 @@
 # Verifiers compatibility trial — October 22, 2026
 
 > **Historical report; current status updated October 24.** The single-update
-> [native GPU smoke](PRIME_RL_GPU_SMOKE.md) subsequently passed. The
-> [repeatable sequential launcher](PRIME_RL_REPEATABLE_RUN.md) is implemented and
+> [native GPU smoke](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PRIME_RL_GPU_SMOKE.md) subsequently passed. The
+> [repeatable sequential launcher](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PRIME_RL_REPEATABLE_RUN.md) is implemented and
 > locally tested; consecutive GPU updates and model-quality improvement remain
 > unverified. Counts and statements about native training below describe the
 > earlier compatibility stage, not the current implementation total. Generic
@@ -166,7 +166,7 @@ named rewards are absent: failure consumers must check `trace.ok` and reward
 availability rather than treating that aggregate as a task-failure label.
 
 The earlier token-contract check below covers the native client and graph in
-isolation. The [native prime-rl check](PRIME_RL_LOCAL_CHECK.md) now verifies the
+isolation. The [native prime-rl check](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PRIME_RL_LOCAL_CHECK.md) now verifies the
 actual investigator/interception path through native group scoring, batch packing
 and trainer-side transport decoding, using authored fixtures. Remaining GPU gates
 include exact V5 warm start, reference policy, resource fit, one bounded update,

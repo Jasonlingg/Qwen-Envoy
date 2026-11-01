@@ -3,7 +3,7 @@
 > Subsequent October 24 update: the first integration attempt ran one gradient
 > update but failed the optimizer-counter gate. Local repairs are tested; the
 > corrected GPU run and paired evaluation remain pending. Both temporary resources
-> are deleted. See [the actual report](PRIME_RL_INTEGRATION_20261024.md).
+> are deleted. See [the actual report](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PRIME_RL_INTEGRATION_20261024.md).
 
 October 24, 2026. Local implementation and scripted contract checks only. No new
 GPU, paid generation, optimizer update, locked-reference review, upload or commit.

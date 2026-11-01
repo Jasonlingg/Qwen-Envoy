@@ -5,10 +5,10 @@
 > The JSON-action/QASPER routing and reranker work is paused unless it produces code-execution
 > trajectories. The common-split MuSiQue evaluation is complete: SFT improved outcome from 0.158
 > to 0.176; the two GRPO Hub repositories contain the exact same adapter and therefore are one
-> result, not a checkpoint progression. See [the active plan](CODE_EXECUTION_SECOND_BRAIN.md).
+> result, not a checkpoint progression. See [the active plan](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/CODE_EXECUTION_SECOND_BRAIN.md).
 
 > Superseded September 12 direction: the user approved a focused AI-paper research assistant.
-> [The research runbook](RESEARCH_ASSISTANT.md) records the current milestone: establish a
+> [The research runbook](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/RESEARCH_ASSISTANT.md) records the current milestone: establish a
 > useful retrieval baseline, review failures, then choose an intervention. The MuSiQue
 > evidence and training cautions below remain relevant to the legacy experiment; its
 > checkpoint comparison was still unexecuted at that point and was not evidence of
@@ -16,7 +16,7 @@
 
 > September 10 update: the subsequent audit reproduced correctness failures and
 > the user authorized repairing them before checkpoint evaluation. Read the
-> [readiness report and completed repair pass](GPU_TRAINING_READINESS.md) first.
+> [readiness report and completed repair pass](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/GPU_TRAINING_READINESS.md) first.
 > The current suite has 72 passing tests. New runs use terminal-only `outcome-v1`;
 > use `requirements-pod.lock` and the updated evaluation runbook. Historical
 > observations and the original execution order below are superseded where they

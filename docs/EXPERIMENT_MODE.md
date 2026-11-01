@@ -154,7 +154,7 @@ responses. An existing output directory is refused rather than overwritten.
 `decision-thread.json` contains the stated choice and hashes of the exact run
 and research note used as its basis. It is not a human-approved conclusion.
 
-The [completed example](../examples/experiment-mode-complete/README.md) links
+The [completed example](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/experiment-mode-complete/README.md) links
 the earlier live paper investigation and actual Qwen serving measurements.
 It recovers a useful distinction: concurrent requests shared one loaded model,
 while the speed comparison remains inconclusive. Its imported paper research
@@ -290,12 +290,12 @@ content and revision retry is safe, even after the source disappears. A changed
 note requires a new ID; a new note with a stale brief revision is rejected.
 
 Qwen is optional. The combined server now supports a narrow
-[passage reader](PASSAGE_READER.md) when an explicit endpoint, model and checkpoint
+[passage reader](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PASSAGE_READER.md) when an explicit endpoint, model and checkpoint
 are configured. `read_experiment_passages` inspects host-selected source windows
 and saves candidate evidence under a single-attempt note ID. It makes model calls
 only when invoked and never activates compute. Semantic review remains the host's job.
 
-The broader [experiment research worker](EXPERIMENT_RESEARCH_MCP.md) remains separate.
+The broader [experiment research worker](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/EXPERIMENT_RESEARCH_MCP.md) remains separate.
 The host can explicitly attach a summary of its returned evidence with
 `origin: "qwen_research"`; origin is a caller declaration, not model attestation.
 This mode does not launch that worker, silently import saved reports, or send
@@ -340,17 +340,17 @@ preservation, decision-thread history, safe retries, concurrent notes, corruptio
 across a real stdio-server restart. They do not test live Qwen research or show
 a productivity or benchmark improvement.
 
-The [earlier real walkthrough](../examples/experiment-mode-walkthrough/README.md)
+The [earlier real walkthrough](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/experiment-mode-walkthrough/README.md)
 used live source discovery, paper opening and passage inspection. The
-[completed loop](../examples/experiment-mode-complete/README.md) now attaches
+[completed loop](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/experiment-mode-complete/README.md) now attaches
 the separately collected live measurements, preserves an inconclusive result,
 and verifies recovery through a fresh stdio process. This is a completed local
 research-to-result workflow, not a validated productivity or model-quality win.
 
-The broader [Qwen research worker](EXPERIMENT_RESEARCH_MCP.md) remains a
+The broader [Qwen research worker](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/EXPERIMENT_RESEARCH_MCP.md) remains a
 separate explicit tool. Its last complete live research smoke returned no
 verified evidence; later serving success does not change that result. The new
-[passage-focused path](PASSAGE_READER.md) deliberately removes discovery and
+[passage-focused path](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/PASSAGE_READER.md) deliberately removes discovery and
 paper navigation from the worker's job; its development evidence is recorded separately. The host
 can use the paper tools directly and save findings without depending on Qwen.
 No automatic GPU activation, training, recurring research or paid retry is

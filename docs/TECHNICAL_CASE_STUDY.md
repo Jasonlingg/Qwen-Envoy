@@ -314,7 +314,7 @@ answers have not received independent evidence-support review.
 
 An earlier, separate continuation experiment assembled 995 QASPER-derived
 conversations: 796 for training and 199 for paper-disjoint validation. Its
-[September 25 report](../reports/qasper-scale-sft-2026-09-25.json)
+[September 25 report](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/reports/qasper-scale-sft-2026-09-25.json)
 records 15/40 semantic passes for the starting adapter, 10/40 after epoch one,
 and 4/40 after epoch two on a different reserved validation set. Both
 continuation checkpoints failed the declared decision rule and were rejected.

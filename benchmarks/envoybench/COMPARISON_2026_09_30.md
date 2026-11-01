@@ -175,7 +175,7 @@ specific abstention/tool-use finding and retain the failures in the demo.
 
 ## Improvements ready without another paid run
 
-The [deterministic retrieval comparator](RETRIEVAL_BASELINE.md) has **40 prepared
+The [deterministic retrieval comparator](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/benchmarks/envoybench/RETRIEVAL_BASELINE.md) has **40 prepared
 question packets and 80 planned paired answer requests**. It ranks passages only
 within the disclosed target paper, then requests one answer from each matched
 checkpoint. It does not use reference answers or annotations to select context.

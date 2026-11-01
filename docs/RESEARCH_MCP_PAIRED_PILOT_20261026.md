@@ -67,7 +67,7 @@ ordinary browsing, even if all gates pass. Report failures and incomplete cases.
 ## Results
 
 The protocol above was committed as `092a647` before either arm ran. The
-[artifact bundle](../examples/research-mcp-paired-pilot-20261026/README.md)
+[artifact bundle](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/research-mcp-paired-pilot-20261026/README.md)
 contains the arm outputs, Markdown notes, MCP record exports, anonymized review
 inputs, blind assistant reviews, unblinding map, call events and
 [machine-readable scores](../examples/research-mcp-paired-pilot-20261026/summary.json).

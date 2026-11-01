@@ -12,7 +12,7 @@ Hypothesis: step 9 would improve complete, source-supported short-fact answers
 on the same twelve QASPER validation questions, without worse execution errors,
 unsupported claims, latency, or token use. The initial exploratory protocol was
 frozen before opening references. Source review then found two ambiguous
-questions (0 and 6) before any model output. The [audited protocol](../examples/reader-step9-eval-20261026/protocol-reference-audit.json)
+questions (0 and 6) before any model output. The [audited protocol](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/reader-step9-eval-20261026/protocol-reference-audit.json)
 kept all twelve, held the candidate and reference labels fixed, marked both
 ambiguous items unresolved in both arms, and forced the overall quality
 decision to **inconclusive**. The other ten yield descriptive paired diagnostics,
@@ -76,7 +76,7 @@ The answer review was **model-assisted**, performed on the identity-masked pack
 after both arms completed. It checked each material claim against the cited
 inspected passage and checked whether the requested fact was complete.
 `independent_human_review` remains `null`. Exact quotation and span matching
-alone did not establish semantic support. The [comparison record](../examples/reader-step9-eval-20261026/comparison.json)
+alone did not establish semantic support. The [comparison record](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/reader-step9-eval-20261026/comparison.json)
 contains per-question booleans, latency, reserved tokens, and source-bound
 review bindings; raw episodes and the private arm map remain in that ignored
 local run directory. The formal decision is
@@ -102,7 +102,7 @@ were $1.79 and $0.06 per hour, respectively; the conservative combined
 $1.90/hour allowance implies about **$0.47** for that observed lifetime,
 including the allowance for disk charges. This is an estimate, not final
 billing. Runpod's per-pod billing endpoint had posted **zero records** for
-these IDs at the last read; the [billing receipt](../examples/reader-step9-eval-20261026/billing-receipt.json)
+these IDs at the last read; the [billing receipt](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/reader-step9-eval-20261026/billing-receipt.json)
 marks actual spend pending rather than $0. The absolute rental deadline was
 15:23:52.808 UTC; both pods were deleted around 14:43:38 UTC.
 

@@ -20,7 +20,7 @@ experiment; the server has no built-in experiment recommendations.
 
 This companion saves, retrieves, lists, and freezes plans, then records supplied
 results against their original criteria (Tasks 2–4). Task 5's
-[real-project walkthrough](../examples/ml-experiment-qwen-v5/README.md) uses saved
+[real-project walkthrough](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/ml-experiment-qwen-v5/README.md) uses saved
 Qwen failures and online paper research to save one draft diagnostic, plus a
 separate historical result import. User review of its usefulness remains pending.
 It does not establish a Qwen improvement.
@@ -196,7 +196,7 @@ The tests' 100-to-75 latency example is synthetic, not a measured project gain.
 ## Limits and verification
 
 Storage details are in the [record implementation
-notes](implementation/2026-10-19-ml-experiment-records.md). This server uses that
+notes](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-19-ml-experiment-records.md). This server uses that
 256 KiB record bound, revision checks, file locking, and immutable content
 objects. Receipts count toward the bound; oversized saves fail rather than
 silently discarding evidence. Markdown display is capped at 20,000 characters
@@ -222,8 +222,7 @@ python -m pytest -q tests/test_ml_experiment*.py tests/test_arxiv_mcp_profiles.p
 
 Task 6's independent assistant code review found two validation/boundary gaps;
 both were fixed and re-reviewed. The full repository suite and configured-server
-read-back passed. See the [review and verification record](
-implementation/2026-10-19-ml-experiment-release-review.md) for commands, findings,
+read-back passed. See the [review and verification record](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-19-ml-experiment-release-review.md) for commands, findings,
 remaining limits and machine-readable evidence. This is code verification,
 not independent human validation of recommendations or model answers.
 

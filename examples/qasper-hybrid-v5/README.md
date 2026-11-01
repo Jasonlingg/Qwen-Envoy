@@ -2,7 +2,7 @@
 
 This freezes the same three exposed QASPER questions, V5 model, system prompt,
 decoding, source snapshots, Docker sandbox and four-request budget as the
-[historical BM25 smoke](../qasper-passage-v2/README.md). Only passage ranges/read
+[historical BM25 smoke](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-passage-v2/README.md). Only passage ranges/read
 examples change to the saved plain-hybrid windows. The run is complete, with
 one improved answer and continuing reader failures.
 
@@ -12,8 +12,8 @@ an earlier allowance or authorize any subsequent paid attempt. No base-model
 comparison, new fine-tuning, RL, reward change, new questions or reserved-pack
 access is included. The reranker is not used.
 
-[Predeclared scope, quality rule and budget](../../docs/implementation/2026-10-22-qasper-hybrid-v5-live.md).
-[Exact first-request comparison](frozen/first-input-comparison.json) confirms each
+[Predeclared scope, quality rule and budget](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/docs/implementation/2026-10-22-qasper-hybrid-v5-live.md).
+[Exact first-request comparison](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/frozen/first-input-comparison.json) confirms each
 payload matches its historical counterpart after replacing only the passage
 scope JSON; system prompt, query, source identity and decoding remain identical.
 Scoring references are separate and never sent to Qwen. Two disjoint windows,
@@ -86,7 +86,7 @@ completeness and gap classification. It is not an independent human review or
 an official QASPER score. In translation, the original annotated paragraph
 5164..5336 and the dropout sentence fall inside the returned verified quote
 4800..6000. In humor, the verified 2400..3600 quote itself contains all reference
-terms. [Actual-input receipt](actual-input-facts.json) confirms those terms were
+terms. [Actual-input receipt](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/actual-input-facts.json) confirms those terms were
 present in the final request sent to Qwen, not merely in a local source file.
 Literal presence alone does not establish semantic support; the review also
 compares the answers with the source statements and original references.
@@ -96,8 +96,8 @@ successful Docker source inspections. There were **zero Python execution errors,
 action rejections, submission rejections or gap rejections**, and no inference
 retry/resubmission. All raw actions matched the policy-cleaned actions in this
 run. Same-request in-session MCP retry dispatched nothing. Raw API outputs,
-[packets, verified quotes and MCP responses](live/) remain saved alongside the
-[request ledger](session.requests.jsonl). A provenance-valid packet can still
+[packets, verified quotes and MCP responses](https://github.com/Jasonlingg/Qwen-Envoy/tree/archive-full/examples/qasper-hybrid-v5/live) remain saved alongside the
+[request ledger](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/session.requests.jsonl). A provenance-valid packet can still
 contain an incorrect refusal or a semantically misclassified non-answer.
 
 The existing investigator clips authored 1600-character citation ranges to
@@ -133,10 +133,10 @@ began; that is not billed time or an invoice figure. Actual provider spend is
 unknown. At the checked $0.69/hour rate the authorized 900 active seconds estimate
 $0.1725 compute, not an enforceable invoice cap.
 
-[Fresh 16:35:47 UTC reads](fresh-shutdown.json) verified workers **0/0**, no workers
+[Fresh 16:35:47 UTC reads](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/fresh-shutdown.json) verified workers **0/0**, no workers
 or pending jobs, full original configuration equality, and nine additional
 completed jobs (186 → 195). The pre-existing failed count remained one. All
-[six owned Docker containers](container-cleanup-proof.json), three scripted and
+[six owned Docker containers](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/container-cleanup-proof.json), three scripted and
 three live, were independently confirmed absent. Other resources were untouched.
 The new `out/qasper-hybrid-v5-LIVE_ATTEMPT` marker is consumed; all older markers
 remain unchanged.
@@ -145,8 +145,8 @@ Scope `1de2485`, implementation `7ba4e52`, frozen inputs `6ff9404`. Final focuse
 checks: **64 passed**, including the real pinned Docker integration. Initial
 focused invocation used the default image tag and skipped one Docker test;
 rerunning with the pinned image passed all 64 with no source change. Standalone
-[full suite](full-tests.txt): **2012 passed** in 98.49 seconds, no skips, three
-existing SWIG warnings. Ruff/diff checks passed. [Preservation](preservation.json)
+[full suite](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/full-tests.txt): **2012 passed** in 98.49 seconds, no skips, three
+existing SWIG warnings. Ruff/diff checks passed. [Preservation](https://github.com/Jasonlingg/Qwen-Envoy/blob/archive-full/examples/qasper-hybrid-v5/preservation.json)
 verified 804 prior file hashes, including all 11 protected files and old attempts.
 Human-review fields remain null. `validation.json` records artifact hashes,
 reconstructed packet checks and exact first-input comparisons.
