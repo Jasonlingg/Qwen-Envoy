@@ -71,12 +71,10 @@ def _load_source(split: str, source: dict, arrow_dir: Path | None) -> tuple[list
         )
     arrow_path = arrow_dir / f"qasper-{split}.arrow"
     if arrow_path.is_file():
-        if sha256_file(arrow_path) != source["arrow_sha256"]:
-            raise ValueError(f"{split} Arrow SHA-256 differs from frozen source")
+        # Arrow bytes can change with the datasets/pyarrow version. The
+        # canonical source-row hash below is the content identity check.
         rows = list(Dataset.from_file(str(arrow_path)))
     else:
-        # A different datasets version may serialize Arrow differently. The
-        # canonical row hash below is the authority for source equivalence.
         dataset = load_dataset(
             QASPER_DATASET, QASPER_CONFIG, revision=QASPER_REVISION, split=split
         )

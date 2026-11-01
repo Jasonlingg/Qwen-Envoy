@@ -9,6 +9,10 @@ the cached Arrow files and canonical source rows. The repo releases frozen IDs
 and provenance, while `build_data.py` regenerates the paper text and benchmark
 JSON locally from that pinned source.
 
+Different `datasets` versions can serialize the Arrow cache differently. The
+builder accepts that variation only when the canonical source-row hash matches
+the frozen value; generated benchmark and corpus hashes must also match.
+
 `dev` reuses the 40 validation questions from the September 25 experiment. They
 have already influenced model decisions, so this is a **development set**, not a
 fresh test. It contains 20 answerable and 20 unanswerable questions from 39

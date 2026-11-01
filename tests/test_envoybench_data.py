@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
+import types
 
 import pytest
 
@@ -114,6 +116,35 @@ def _patch_source(monkeypatch, rows: dict[str, list[dict]]) -> None:
         }
 
     monkeypatch.setattr(build_data, "_load_source", fake_load)
+
+
+def test_changed_arrow_serialization_still_checks_canonical_rows(tmp_path, monkeypatch):
+    rows = _rows()["validation"]
+    arrow = tmp_path / "qasper-validation.arrow"
+    arrow.write_bytes(b"different Arrow serialization")
+    source = {
+        "arrow_sha256": "0" * 64,
+        "rows_sha256": build_data.canonical_rows_sha256(rows),
+    }
+    fake = types.ModuleType("datasets")
+
+    class FakeDataset:
+        @staticmethod
+        def from_file(path):
+            assert path == str(arrow)
+            return rows
+
+    fake.Dataset = FakeDataset
+    fake.load_dataset = lambda *args, **kwargs: pytest.fail("unexpected download")
+    monkeypatch.setitem(sys.modules, "datasets", fake)
+
+    loaded, audit = build_data._load_source("validation", source, tmp_path)
+    assert loaded == rows
+    assert audit["source_rows_sha256"] == source["rows_sha256"]
+
+    FakeDataset.from_file = staticmethod(lambda path: [])
+    with pytest.raises(ValueError, match="rows differ"):
+        build_data._load_source("validation", source, tmp_path)
 
 
 def test_candidate_selection_is_balanced_paper_disjoint_and_deterministic():
