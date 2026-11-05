@@ -62,12 +62,37 @@ or decision-thread records found in the two default local stores
 backlinks, and Graph view work on the exported notes. The exporter makes no model
 or network call and does not alter the source records.
 
-Run `python scripts/export_research_vault.py --refresh` after new records are
-saved. Refresh replaces only the generated folders and `Home.md` inside a vault
-previously created by this script; keep your own notes elsewhere in that vault.
+The current `research_justification_mcp.py` entry point automatically refreshes
+this vault after successful record saves. Restart the MCP server once after
+updating its code to activate this behavior. Reads and failed saves do not
+trigger exports; unchanged retries skip rendering. The hook uses the existing
+exporter, runs file work off the async event loop, and serializes refreshes.
+Only changed files are replaced and backed up, so unchanged paper copies keep
+their timestamps. A refresh failure leaves the authoritative record saved and
+returns a warning to the client; fix the problem and run the manual command.
+
+Use `--obsidian-vault /path/to/vault` to select another dedicated generated vault,
+`--obsidian-store /path/to/records` to include another record store, or
+`--no-obsidian-refresh` to disable automatic export. By default it includes the
+server's active store and `~/.envoy/research-second-brain/records`.
+The older MCP entry points do not enable this hook.
+
+Run `python scripts/export_research_vault.py --refresh` to refresh manually,
+including after changing repository reports. `Home.md` shows the refresh time
+and source checkout; `.envoy-export.json`
+records the store paths, atlas hash, counts, and hashes of generated files.
+Refresh validates and renders the new export before replacing the generated
+folders and `Home.md`. It preserves `.obsidian` settings and personal folders
+such as `My Notes`. If you edit or add a file inside a generated folder, refresh
+stops: move those annotations to `My Notes` before retrying. Replaced generated
+files are backed up under `.envoy-backups/`, including the first refresh of an
+older vault without a receipt. Backups are local and retained until you remove
+them. Export reads copies of the record files and does not modify their stores.
 Use `--output /path/to/vault` to choose another location, and repeat `--store
 /path/to/records` for custom record stores. The export is a reading copy, not a
 bidirectional sync: edit Envoy records through the MCP and regenerate the vault.
+Notes you write in Obsidian are not automatically searchable through the MCP.
+There is no background watcher; external file edits need a manual refresh.
 The exported README is a reading copy; its repository-relative links may require
 opening the original checkout. Refresh the vault after changing the README.
 Copied artifacts and source hashes show where claims came from; they do not

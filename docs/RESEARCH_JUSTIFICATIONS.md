@@ -26,6 +26,13 @@ If the key lives in a different checkout's ignored `.env`, add
 `--nebius-env-file /absolute/path/to/.env`; only the `NEBIUS_API_KEY` value is
 read from that file. Do not put the key itself in MCP configuration.
 
+After successful record saves, this entry point automatically updates the
+generated Obsidian vault at `out/envoy-research-vault`. Restart the MCP server
+after updating the code. Choose another generated vault with `--obsidian-vault`,
+or disable exports with `--no-obsidian-refresh`. Personal folders are preserved;
+edited generated notes block refresh and produce a warning without undoing the
+saved record. See [Obsidian refresh details](EXPERIMENT_MODE.md#browse-the-research-history-in-obsidian).
+
 ## Connect an MCP client
 
 From the repository root, after `pip install -e '.[mcp,vault]'`, Claude Code can

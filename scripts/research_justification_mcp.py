@@ -19,12 +19,13 @@ from src.product.arxiv_library import ArxivLibrary  # noqa: E402
 from src.product.experiment_discovery import ExperimentDiscovery  # noqa: E402
 from src.product.ml_experiment_evidence import EvidenceResolver  # noqa: E402
 from src.product.ml_experiment_store import ExperimentStore  # noqa: E402
+from src.product.obsidian_refresh import ObsidianRefresh  # noqa: E402
 from src.product.paper_discovery import PaperDiscovery  # noqa: E402
 from src.product.research_justification import justification_packet  # noqa: E402
 
 
 def create_server(store, library, discovery, *, nemotron_key=None,
-                  nemotron_transport=None):
+                  nemotron_transport=None, obsidian_vault=None, obsidian_stores=None):
     """Add one read-only view while retaining the pinned experiment-mode file."""
     server = experiment_server(store, library, discovery, nemotron_key=nemotron_key,
                                nemotron_transport=nemotron_transport)
@@ -39,6 +40,8 @@ def create_server(store, library, discovery, *, nemotron_key=None,
         view = store.get(experiment_id, research_note_id=note_id)
         return justification_packet(view["selected_research_note"])
 
+    if obsidian_vault is not None:
+        ObsidianRefresh(obsidian_vault, obsidian_stores or [store.files.root]).install(server)
     return server
 
 
@@ -47,6 +50,13 @@ def main():
     parser.add_argument("--store-root", type=Path, default=Path("~/.envoy/ml-experiments"))
     parser.add_argument("--library-root", type=Path, default=Path("~/.envoy/arxiv-library"))
     parser.add_argument("--artifact-root", type=Path)
+    parser.add_argument("--obsidian-vault", type=Path,
+                        default=ROOT / "out/envoy-research-vault",
+                        help="Automatically refresh this reading vault after successful saves")
+    parser.add_argument("--obsidian-store", type=Path, action="append", default=[],
+                        help="Additional Envoy record store to include in the vault")
+    parser.add_argument("--no-obsidian-refresh", action="store_true",
+                        help="Disable automatic Obsidian export")
     parser.add_argument("--enable-nemotron", action="store_true",
                         help="Opt in to bounded Nebius tools; calls still require invocation")
     parser.add_argument("--nebius-env-file", type=Path,
@@ -65,7 +75,11 @@ def main():
         library_root=library.root, artifact_root=args.artifact_root))
     discovery = ExperimentDiscovery(PaperDiscovery(library.root / "discovery-cache"))
     create_server(store, library, discovery,
-                  nemotron_key=nemotron_key).run(transport="stdio")
+                  nemotron_key=nemotron_key,
+                  obsidian_vault=None if args.no_obsidian_refresh else args.obsidian_vault,
+                  obsidian_stores=[store.files.root,
+                                   Path("~/.envoy/research-second-brain/records"),
+                                   *args.obsidian_store]).run(transport="stdio")
 
 
 if __name__ == "__main__":
