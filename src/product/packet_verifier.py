@@ -57,6 +57,10 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                                 expected_passage_windows=None) -> dict:
     """Return compact model output with every quoted span rebuilt from the corpus."""
     harness = _check_header(packet, manifest, allowed_prompt_sha256s)
+    # Validate the collection before passage inspection iterates over it.
+    supplied = packet.get("evidence")
+    if not isinstance(supplied, list) or len(supplied) > MAX_EVIDENCE_SPANS:
+        raise ValueError("Qwen packet has invalid or too many evidence spans")
     mode = packet.get("reader_mode", "discovery")
     if not isinstance(mode, str) or mode not in {"discovery", "assigned"}:
         raise ValueError("Qwen packet used an unknown reader mode")
@@ -84,7 +88,7 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                 raise ValueError("normalized passage trace differs from authored action")
             inspected.append(checked_read(displayed_tool_call(normalized), scope))
         if (packet.get("inspected_passage_windows") != inspected
-                or not evidence_is_inspected(packet.get("evidence", []), scope, inspected)):
+                or not evidence_is_inspected(supplied, scope, inspected)):
             raise ValueError("packet cites an uninspected or unassigned passage")
     elif expected_passage_windows is not None:
         raise ValueError("passage windows require passage guidance")
@@ -101,9 +105,6 @@ def verify_investigation_packet(packet: dict, manifest: dict, docs: dict, *,
                  if guidance == PASSAGES_V2 else len(inspected))
         if count < 2:
             raise ValueError("passage gap requires two inspected reads")
-    supplied = packet.get("evidence")
-    if not isinstance(supplied, list) or len(supplied) > MAX_EVIDENCE_SPANS:
-        raise ValueError("Qwen packet has too many evidence spans")
     if (status == "evidence_found") != bool(supplied):
         raise ValueError("Qwen packet status and evidence disagree")
 

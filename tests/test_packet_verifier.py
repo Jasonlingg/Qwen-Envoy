@@ -7,6 +7,8 @@ import pytest
 from src.env.tools import SEARCH_PROTOCOL_VERSION
 from src.env.tools_v2 import HARNESS_V2_SHA256
 from src.product.packet_verifier import TOOL_PREAMBLE_SHA256, verify_investigation_packet
+from src.product.paper_assignment import assignment_hash, paper_assignment
+from src.product.passage_scope import PASSAGES_V2, make_scope, scope_hash
 
 PROMPT = hashlib.sha256(b"prompt").hexdigest()
 TEXT = "A verifier checks citations exactly."
@@ -63,3 +65,38 @@ def test_unlisted_prompt_and_tampered_quote_are_rejected():
     tampered["evidence"][0]["quote"] = "checks citationz"
     with pytest.raises(ValueError, match="exact bounded paper span"):
         _verify(tampered)
+
+
+@pytest.mark.parametrize("guidance", [None, [], {}, 1])
+def test_malformed_guidance_is_rejected_cleanly(guidance):
+    with pytest.raises(ValueError, match="reader_guidance"):
+        _verify(_packet(reader_guidance=guidance))
+
+
+@pytest.mark.parametrize("evidence", [None, 1, "quote", {}])
+def test_passage_packet_checks_evidence_shape_before_inspection(evidence):
+    doc_id = "arxiv_2609_00001v1"
+    docs = {doc_id: {**DOCS["d1"], "doc_id": doc_id,
+                     "metadata": {**DOCS["d1"]["metadata"], "coverage": "html_paragraphs"}}}
+    assignment = paper_assignment(MANIFEST, docs)
+    windows = [{"start": 0, "end": len(TEXT)}]
+    scope = make_scope(docs, windows, version=PASSAGES_V2)
+    packet = _packet(
+        harness_version="v2", harness_shim_sha256=HARNESS_V2_SHA256,
+        reader_mode="assigned", reader_guidance=PASSAGES_V2,
+        passage_scope=scope, passage_scope_sha256=scope_hash(scope),
+        inspected_passage_windows=[], evidence=evidence,
+        paper_assignment=assignment, assignment_sha256=assignment_hash(assignment),
+    )
+    with pytest.raises(ValueError, match="evidence spans"):
+        verify_investigation_packet(
+            packet, MANIFEST, docs, allowed_prompt_sha256s=frozenset({PROMPT}),
+            expected_reader_mode="assigned", expected_reader_guidance=PASSAGES_V2,
+            expected_passage_windows=windows,
+        )
+
+
+def test_verified_quote_does_not_promote_model_supplied_support_judgment():
+    result = _verify(_packet(semantic_support="supported"))
+    assert result["semantic_support"] == "not_reviewed"
+    assert "not support" in result["warning"]

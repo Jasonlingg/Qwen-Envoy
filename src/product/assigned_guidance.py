@@ -38,7 +38,7 @@ reports and source access do not establish semantic support or prove absence.
 
 
 def validate_guidance(version: str, reader_mode: str) -> None:
-    if version not in {BASELINE, FOCUSED, *PASSAGE_GUIDANCES}:
+    if not isinstance(version, str) or version not in {BASELINE, FOCUSED, *PASSAGE_GUIDANCES}:
         raise ValueError("unknown reader_guidance")
     if version != BASELINE and reader_mode != "assigned":
         raise ValueError("focused-v1 guidance requires the assigned reader")

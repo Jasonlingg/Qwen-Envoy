@@ -11,10 +11,33 @@ from types import SimpleNamespace
 import pytest
 
 from src.eval.reader_improvement import file_hash, load
+from src.eval import passage_pilot_replay as replay
 from src.training import reader_evaluation as ev
 from src.training.prime_budget import loopback_engine
 from src.training.prime_run import prepare, write
 from src.training.reader_data import load_bundle
+
+
+@pytest.fixture
+def synthetic_runtime(tmp_path, monkeypatch):
+    """Pin this test's runtime without rewriting the historical pilot manifest."""
+    plan = load(replay.BASELINE)
+    for field in ("implementation_sha256", "additional_implementation_sha256"):
+        plan[field] = {path: file_hash(replay.ROOT / path) for path in plan[field]}
+    baseline = tmp_path / "synthetic-runtime.json"
+    write(baseline, plan)
+    monkeypatch.setattr(replay, "BASELINE", baseline)
+    return baseline
+
+
+def test_runtime_freeze_rejects_source_drift(synthetic_runtime):
+    assert replay.frozen_runtime() == load(synthetic_runtime)
+    plan = load(synthetic_runtime)
+    path = next(iter(plan["implementation_sha256"]))
+    plan["implementation_sha256"][path] = "0" * 64
+    write(synthetic_runtime, plan)
+    with pytest.raises(ValueError, match="frozen runtime changed"):
+        replay.frozen_runtime()
 
 
 @pytest.mark.parametrize(
@@ -39,7 +62,7 @@ def test_loopback_forward_can_use_nondefault_ssh_port():
     assert loopback_engine("http://127.0.0.1:18000/") == "http://127.0.0.1:18000"
 
 
-def test_missing_candidate_cannot_open_locked_references(tmp_path, monkeypatch):
+def test_missing_candidate_cannot_open_locked_references(tmp_path, monkeypatch, synthetic_runtime):
     original = ev.load
 
     def reject_locked(path):
@@ -246,7 +269,7 @@ def test_second_arm_cannot_run_before_v5_and_partial_arm_cannot_restart(tmp_path
 
 @pytest.mark.parametrize("protocol_path", [None, Path("examples/reader-rl-pilot-v2/protocol.json")])
 def test_candidate_freeze_is_portable_and_rejects_checkpoint_or_source_drift(
-    tmp_path, monkeypatch, protocol_path
+    tmp_path, monkeypatch, protocol_path, synthetic_runtime
 ):
     import hashlib
     import shutil
