@@ -1,75 +1,104 @@
-# Qwen Envoy
+# Envoy
 
 [![Case study checks](https://github.com/Jasonlingg/Qwen-Envoy/actions/workflows/release-check.yml/badge.svg)](https://github.com/Jasonlingg/Qwen-Envoy/actions/workflows/release-check.yml)
 
-**QASPER Agent Studio** is a case study of a Qwen3-8B paper-reading agent. The agent writes Python against `search()`, `read()`, and `extract()` inside Docker. This repository contains the environment, rank-4 QLoRA training recipe, saved paired evaluation, and a read-only trace inspector. An optional research MCP connects paper passages to saved ML experiment results and decisions.
+**Research memory for ML experiments.**
 
-[Open Studio](https://jasonlingg.github.io/Qwen-Envoy/) · [Findings](docs/QASPER_AGENT_STUDY.md) · [Technical case study](docs/TECHNICAL_CASE_STUDY.md) · [Project guide](PROJECT_GUIDE.md)
+Envoy is a personal second brain for keeping track of papers, experiments, and
+the decisions between them. It connects to your assistant through MCP and
+exports linked notes to Obsidian.
 
-## Start with three files
+Before starting another training run, you can ask:
 
-1. [`src/env/repl.py`](src/env/repl.py) is the Docker boundary for model-authored Python. Its cumulative-script design re-runs earlier actions, a known efficiency and side-effect limitation. The optional MCP reader uses stronger settings in [`src/env/hardened_repl.py`](src/env/hardened_repl.py).
-2. [`scripts/train_sft.py`](scripts/train_sft.py) turns reviewed trajectories into per-action examples and checks the inference chat prefix.
-3. [`scripts/reproduce_case_study.py`](scripts/reproduce_case_study.py) verifies packaged hashes and recounts the paired result without a model, GPU, API key, or network.
+> What have we already tried to reduce Qwen's false refusals? Show me the results
+> and the evidence behind our last decision.
+
+The assistant retrieves previous attempts, inspects their source artifacts,
+looks up papers, and saves useful findings or decisions for a later session.
+Envoy supplies the records and tools; the assistant interprets the evidence.
+
+## What works today
+
+- **Find previous work:** search the curated experiment history and saved records.
+- **Inspect paper evidence:** discover arXiv papers and read bounded source passages.
+- **Keep a research trail:** connect questions, findings, results, and decisions
+  while preserving revisions and source references.
+- **Browse in Obsidian:** successful MCP saves refresh linked notes, preserving
+  personal folders and Obsidian settings.
+
+```text
+Your assistant → Envoy MCP → Paper tools + saved experiment records
+                                      ↓
+                              Linked Obsidian notes
+```
+
+Recall currently uses word overlap. Personal Obsidian notes do not sync back
+into MCP recall. A PyTorch memory ranker is under investigation and is not yet
+integrated.
+
+## Try it
+
+From the repository root, with Python 3.10 or newer:
+
+```bash
+python -m pip install -e '.[mcp,vault]'
+```
+
+Configure your MCP client to launch:
+
+```bash
+python /absolute/path/to/rlm-explorer/scripts/research_justification_mcp.py
+```
+
+See [client setup](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client) for
+configuration examples. Core tools need no GPU or model API key. New paper
+searches use the public network; Nemotron tools are opt-in.
+
+To create the Obsidian view before saving any records:
+
+```bash
+python scripts/export_research_vault.py
+```
+
+Open `out/envoy-research-vault` as a vault in Obsidian and start at `Home.md`.
+Keep annotations in `My Notes`, outside the generated folders. For an existing
+export, add `--refresh`. See [refresh and backup details](docs/EXPERIMENT_MODE.md#browse-the-research-history-in-obsidian).
+
+## The Qwen case study
+
+Envoy grew out of a Qwen3-8B paper agent that writes Python inside Docker.
+Its training recipe, data, saved evaluation, and **QASPER Agent Studio** remain
+available to inspect.
+
+[Open Studio](https://jasonlingg.github.io/Qwen-Envoy/) ·
+[Findings](docs/QASPER_AGENT_STUDY.md) ·
+[Technical walkthrough](docs/TECHNICAL_CASE_STUDY.md)
+
+On 40 selected QASPER development questions, episodes without recorded execution
+errors increased from **18/40 to 39/40** after SFT. Provisional, model-assisted
+supported-answer passes on the 20 answerable questions remained **3/20 in both
+runs**. The 44 demonstrations include AI repairs. QASPER is from Dasigi et al.
+(2021); this is not an official full-test result or independently human-reviewed
+answer-quality improvement. The later Prime-RL pilot established no quality gain.
+
+Recount the saved comparison and verify packaged hashes without dependencies,
+network access, or a model:
 
 ```bash
 python -I -S scripts/reproduce_case_study.py
-python -m pip install -e '.[dev,viewer,mcp,vault,qasper]'
-python -m benchmarks.envoybench.build_data --output benchmarks/envoybench/data
-python -m pytest -q
 ```
 
-The first command checks saved results offline. The remaining commands set up
-the full test suite; QASPER paper text is generated from a pinned source and
-kept out of Git.
+For a code review, start with the [training script](scripts/train_sft.py),
+[Docker boundary](src/env/repl.py), and
+[result checker](scripts/reproduce_case_study.py).
+The [project guide](PROJECT_GUIDE.md) covers training preflight, local Studio,
+and tests. See the [repository map](docs/REPOSITORY_LAYOUT.md) for other entry
+points and [`archive-full`](https://github.com/Jasonlingg/Qwen-Envoy/tree/archive-full)
+for historical prototypes.
 
-For a training-code review, start at [`scripts/train_sft.py`](scripts/train_sft.py):
-it validates the split before loading a model, expands each trajectory into
-next-action targets, verifies token-for-token inference-prefix alignment, masks
-the prior context from the loss, then constructs the TRL/PEFT trainer and writes
-a run manifest. Its GPU-free data preflight is:
+## What is established
 
-```bash
-python scripts/train_sft.py check-data \
-  --data data/sft/qasper-v5/train.jsonl \
-  --val-data data/sft/qasper-v5/val.jsonl \
-  --corpus-manifest data/sft/qasper-v5/manifest.json
-```
-
-The [published training record](release/qwen-v5-training/README.md) pins the
-observed v5 run. The current script has changed since that run; this preflight
-does not retrain the model or prove its historical weights are reproducible.
-
-## What the saved study shows
-
-Base Qwen3-8B and the v5 SFT adapter attempted the same 40 selected QASPER questions, each with an assigned paper. QASPER is by Dasigi et al. (2021), CC BY 4.0. This is a development study, not an original dataset or an official full-test leaderboard result.
-
-| Recorded result | Base | v5 SFT |
-| --- | ---: | ---: |
-| Episodes with a tool, runtime, or endpoint error | 22/40 | 1/40 |
-| Provisional supported-answer passes on 20 answerable questions | 3/20 | 3/20 |
-| Official Answer F1, all 40 selected questions | 19.92% | 30.69% |
-| Official Answer F1, 20 answerable questions | 29.83% | 21.37% |
-
-The adapter improved execution reliability but did **not** establish better source-supported answers on answerable questions. Support judgments were model-assisted, not independently human reviewed. Overall F1 rose largely through refusals. See the [findings](docs/QASPER_AGENT_STUDY.md).
-
-The dataset comprises 44 teacher-seeded, AI-repaired, replay-verified demonstrations (35 train, nine validation). Of these, 37 contain Codex repairs; seven retain original teacher actions. Source and stopping review was performed by the editing assistant with labels visible. See the [dataset card](data/sft/qasper-v5/README.md). A later Prime-RL/Verifiers pilot did not establish answer-quality improvement; see the [run report](docs/READER_RL_PILOT_20261026.md).
-
-## Repository map
-
-| Path | Purpose |
-| --- | --- |
-| [`src/env/`](src/env/) and [`src/policies/`](src/policies/) | Paper tools, Docker boundary, Qwen policy. |
-| [`scripts/train_sft.py`](scripts/train_sft.py) and [`src/training/`](src/training/) | SFT and experimental Prime-RL/Verifiers integration. |
-| [`data/sft/qasper-v5/`](data/sft/qasper-v5/) | Training examples and provenance. |
-| [`release/qasper-agent-study/`](release/qasper-agent-study/) | Packaged traces and Studio assets. |
-| [`benchmarks/envoybench/`](benchmarks/envoybench/) | Frozen split, runner, scoring, and Studio API. |
-| [`scripts/research_justification_mcp.py`](scripts/research_justification_mcp.py) and [`docs/EXPERIMENT_ATLAS.md`](docs/EXPERIMENT_ATLAS.md) | Optional research MCP and curated experiment index. |
-
-The main branch keeps the runnable case study, optional MCP, their evidence, and tests. Historical experiments and one-off runners remain in the [`archive-full` snapshot](https://github.com/Jasonlingg/Qwen-Envoy/tree/archive-full). The [repository map](docs/REPOSITORY_LAYOUT.md) gives entry points.
-
-## Optional research MCP
-
-The MCP searches public arXiv papers and a curated [experiment atlas](docs/EXPERIMENT_ATLAS.md), opens bounded source excerpts, and records question → evidence → experiment → result → decision trails across sessions. It runs without Qwen or a GPU; Nemotron explanation is opt-in. Exact quotation proves provenance, not semantic support. A [five-question paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md) found no measured advantage over ordinary web research plus Markdown notes. Its demonstrated capability is a recoverable, source-linked experiment record.
-
-[Saved MCP inspector](https://jasonlingg.github.io/Qwen-Envoy/research-mcp/) · [MCP client instructions](docs/RESEARCH_JUSTIFICATIONS.md#connect-an-mcp-client)
+Envoy can recover source-linked experiment records. A small
+[paired pilot](docs/RESEARCH_MCP_PAIRED_PILOT_20261026.md) did not establish a
+workflow advantage over web research plus Markdown notes. Source hashes and
+exact quotations establish provenance, not whether a conclusion is correct.
